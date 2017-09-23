@@ -1,0 +1,265 @@
+ul.raiders {
+  margin: 5px 10px 0 10px;
+}
+ul.raiders li {
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  width: 100%;
+  height: 37px;
+  line-height: 37px;
+  border-bottom: 1px dotted #cccccc;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+ul.raiders li span {
+  display: block;
+  width: 31px;
+  height: 16px;
+  line-height: 16px;
+  color: #ffffff;
+  font-size: 12px;
+  padding-left: 2px;
+  background: url(../images/icons.png) no-repeat -1px -1px;
+  -webkit-background-size: 170px 421px;
+  -moz-background-size: 170px 421px;
+  -o-background-size: 170px 421px;
+  background-size: 170px 421px;
+  margin: 10px 10px 0 0;
+}
+ul.raiders li p {
+  display: block;
+  -moz-box-flex: 1;
+  -webkit-box-flex: 1;
+  box-flex: 1;
+}
+ul.ge_content li {
+  border-bottom: 1px dotted #cccccc;
+}
+ul.ge_content li a.con {
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  width: 100%;
+  padding: 15px 0;
+  overflow: hidden;
+}
+ul.ge_content li a.con:hover {
+  background-color: #eaebe8;
+}
+ul.ge_content li img {
+  display: block;
+  width: 55px;
+  height: 55px;
+  border-radius: 25px;
+  margin: 0 10px 0 0;
+  -webkit-background-size: 55px 55px;
+  -moz-background-size: 55px 55px;
+  -o-background-size: 55px 55px;
+  background-size: 55px 55px;
+}
+ul.hot_con li {
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  width: 100%;
+  padding: 15px 0;
+  overflow: hidden;
+}
+ul.hot_con li a.download {
+  display: inline-block;
+  width: 58px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 16px;
+  background-color: #7cb228;
+  border-radius: 8px;
+  text-align: center;
+  color: #ffffff;
+}
+ul.strategy {
+  padding: 0 10px;
+  overflow: hidden;
+}
+ul.strategy a {
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  width: 100%;
+  padding: 15px 0;
+  border-bottom: 1px dotted #cccccc;
+  overflow: hidden;
+}
+ul.strategy a:hover {
+  background-color: #eaebe8;
+}
+ul.strategy a:hover span {
+  color: #343434;
+}
+ul.strategy img {
+  display: block;
+  width: 55px;
+  height: 55px;
+  border-radius: 25px;
+  margin: 0 10px 0 0;
+  -webkit-background-size: 55px 55px;
+  -moz-background-size: 55px 55px;
+  -o-background-size: 55px 55px;
+  background-size: 55px 55px;
+}
+ul.strategy div {
+  display: block;
+  -moz-box-flex: 1;
+  -webkit-box-flex: 1;
+  box-flex: 1;
+}
+div.gameevaluation {
+  margin: 20px 10px 0 10px;
+}
+div.title {
+  width: 100%;
+  border-bottom: 1px solid #343434;
+}
+div.title h2 {
+  float: left;
+  font-size: 16px;
+  color: #7cb228;
+  height: 22px;
+  line-height: 22px;
+  border-bottom: 4px solid #7cb228;
+  margin-bottom: -1px;
+}
+div.title span a {
+  display: block;
+  float: right;
+  font-size: 16px;
+  line-height: 25px;
+}
+div.title span a:after {
+  display: inline-block;
+  content: '';
+  border-width: 0 6px 6px 6px;
+  border-style: solid;
+  border-color: #000 transparent;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+div.g_con {
+  -moz-box-flex: 1;
+  -webkit-box-flex: 1;
+  box-flex: 1;
+  padding-right: 15px;
+}
+div.g_con p {
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  color: #797979;
+  font-size: 12px;
+  line-height: 14px;
+  padding-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+div.g_content {
+  -moz-box-flex: 1;
+  -webkit-box-flex: 1;
+  box-flex: 1;
+  padding-right: 15px;
+}
+div.g_content p {
+  height: 20px;
+  line-height: 20px;
+}
+div.g_content p em {
+  margin: 0 5px;
+  color: #cccccc;
+}
+span.rightclick {
+  display: block;
+  width: 58px;
+  height: 44px;
+  margin-top: 5px;
+  border: 1px solid #7cb228;
+}
+span.rightclick i {
+  display: block;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  color: #fff;
+  background-color: #7cb228;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+span.rightclick em {
+  display: block;
+  height: 16px;
+  line-height: 16px;
+  color: #7cb228;
+  background-color: #fff;
+  font-size: 10px;
+  text-align: center;
+}
+.con-app-down {
+  padding: 37px 0 60px;
+}
+.art-title {
+  padding: 15px 0;
+  margin: 0 10px;
+  overflow: hidden;
+  border-bottom: 1px dotted #cccccc;
+}
+.art-title h1 {
+  font-size: 18px;
+  line-height: 24px;
+}
+.art-title p {
+  color: #797979;
+}
+.art-con {
+  padding: 15px 10px 10px 10px;
+  overflow: hidden;
+  text-indent: 2em;
+}
+.related {
+  margin: 0 10px;
+}
+.related h3 {
+  height: 35px;
+  line-height: 35px;
+  border-bottom: 1px dotted #cccccc;
+  font-size: 16px;
+  color: #797979;
+  padding-left: 20px;
+  background: url(../images/icon_resume.png) no-repeat 5px center;
+  -webkit-background-size: 11px 16.5px;
+  -moz-background-size: 11px 16.5px;
+  -o-background-size: 11px 16.5px;
+  background-size: 11px 16.5px;
+}
+.related li {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  height: 37px;
+  line-height: 37px;
+  width: 100%;
+  border-bottom: 1px dotted #cccccc;
+}
+ul.bg {
+  background-color: #000;
+  padding: 0 10px;
+}
+ul.bg h3 a {
+  color: #ffffff;
+}
+ul.bg div.g_content {
+  padding-top: 5px;
+}

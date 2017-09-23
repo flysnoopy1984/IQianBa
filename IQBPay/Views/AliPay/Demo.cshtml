@@ -1,0 +1,25 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Demo</title>
+</head>
+<body>
+    <div> 
+        <ul>
+            <li><a href=@Url.Action("Pay","AliPay")>Payment</a></li>
+            <li><a href=@Url.Action("AuthToUser", "AliPay")>AuthToUser</a></li>
+            <li><a href=@Url.Action("QRImg","AliPay")>QRImg</a></li>
+            <li><a href=@Url.Action("F2FPay", "AliPay")>F2F</a></li>
+        </ul>
+        
+        
+    </div>
+</body>
+</html>

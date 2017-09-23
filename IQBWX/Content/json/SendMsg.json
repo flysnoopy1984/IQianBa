@@ -1,0 +1,7 @@
+{
+  "touser": "{0}",
+  "msgtype": "text",
+  "text": {
+    "content": "Hello World"
+  }
+}

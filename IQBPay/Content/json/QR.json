@@ -1,0 +1,11 @@
+﻿{
+  "codeInfo": {
+    "scene": {
+      "sceneId": "Test1"
+    },
+    "gotoUrl": "http://ap.iqianba.cn/AliPay/Demo"
+  },
+  "codeType": "PERM",
+  "expireSecond": "",
+  "showLogo": "Y"
+}

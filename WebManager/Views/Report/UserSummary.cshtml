@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "UserSummary";
+}
+<script language="javascript" type="text/javascript" src="~/Content/My97DatePicker/WdatePicker.js"></script>
+<script src="~/Scripts/Report.js"></script>
+<link href="~/Content/divTable.css" rel="stylesheet" />
+<h2>User Summary</h2>
+
+<div>
+    日期：<input id="d12" type="text" />
+    <img onclick="WdatePicker({el:'d12'})" src="~/Content/My97DatePicker/skin/datePicker.gif" width="16" height="22" align="absmiddle">
+  
+    <input type="button"  value="查询概要"  onclick='SearchSummery("@Url.Action("GetSummery","Report")")'/>
+</div>
+<div>   
+        <ul>
+            <li>新增会员:<div id="mNum"></div></li>
+            <li>会员总数 :<div id="mTotal"></div></li>
+            <li>新增关注 :<div id="uNum"></div></li>
+            <li>用户总数 :<div id="uTotal"></div></li>
+        </ul> 
+</div>
+<div style="clear:both">
+    选项：<select id="selSummeryType">
+        <option value="1">关注用户</option>
+        <option value="2">新增会员</option>
+        <option value="3">订单</option>
+    </select>
+    <input type="button" value="详细列表" onclick='SearchDetail("@Url.Action("DetailList","Report")")' />
+</div>
+<div id="table">
+    <ul id="ulMember" style="display:none">
+        <li class="bt">会员OpenId</li>
+        <li class="bt">昵称</li>
+        <li class="bt">注册时间</li>
+        <li class="bt">提款总金额</li>
+        <li class="bt">可提金额</li>
+        <li class="bt">余额</li>        
+    </ul>
+    <ul id="ulUser" style="display:none">
+        <li class="bt">用户OpenId</li>
+        <li class="bt">昵称</li>
+        <li class="bt">关注时间</li>
+        <li class="bt">Sex</li>
+        <li class="bt">父级OpenId</li>      
+    </ul>
+    <ul id="ulARUserTrans" style="display:none">
+        <li class="bt">用户OpenId</li>
+        <li class="bt">收益来源用户</li>
+        <li class="bt">子用户关系</li>
+        <li class="bt">获得金额</li>
+        <li class="bt">订单产品</li>
+        <li class="bt">交易时间</li>
+    </ul>
+    <div id="Page"><a class="load-more" href="#!">加载更多数据</a></div>
+   
+</div>
+
+
+

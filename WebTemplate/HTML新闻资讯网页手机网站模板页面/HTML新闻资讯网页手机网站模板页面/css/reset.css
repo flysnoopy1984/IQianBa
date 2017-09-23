@@ -1,0 +1,122 @@
+html,
+body,
+div,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+pre,
+form,
+p,
+blockquote,
+input,
+textarea,
+abbr,
+article,
+aside,
+figcaption,
+figure,
+footer,
+header,
+mark,
+meter,
+menu,
+nav,
+output,
+progress,
+section,
+summary,
+time {
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+ul,
+ol {
+  list-style: none;
+}
+iframe,
+a,
+img,
+button {
+  border: 0;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+article,
+aside,
+footer,
+header,
+hgroup,
+nav,
+section,
+figure,
+figcaption {
+  display: block;
+}
+a,
+a:hover {
+  text-decoration: none;
+}
+.clear {
+  clear: both;
+}
+.fleft {
+  float: left;
+}
+.fright {
+  float: right;
+}
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+  overflow: hidden;
+}
+.hidden {
+  display: none;
+}
+.t-left {
+  text-align: left;
+}
+.t-center {
+  text-align: center;
+}
+.t-right {
+  text-align: right;
+}
+em,
+i,
+s {
+  font-style: normal;
+}
+body {
+  word-wrap: break-word;
+  -webkit-text-size-adjust: none;
+}
+input[type=submit],
+input[type=button],
+input[type=text],
+textarea,
+button,
+select {
+  font-size: 1em;
+  outline: none;
+  -webkit-appearance: none;
+}
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}

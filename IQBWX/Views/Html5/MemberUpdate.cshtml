@@ -1,0 +1,141 @@
+﻿@model IQBWX.Models.User.EMemberInfo
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+    <title>MemberUpdate</title>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Scrpit("~/Content/Script/UpdateMember.js")"></script>
+</head>
+<body>
+    <div class="grzxcon1 mgz">
+        <div class="grzxcon1l f"><img align="absmiddle" src="~/Content/images/tx2.jpg" width="130" height="130" /></div>
+        <div class="grzxcon1r f bai">
+            <div class="grzxcon1rs mg2">@Model.nickname</div>
+            <div class="grzxcon1rx mg2 xi21"><img align="absmiddle" src="~/Content/images/grzx_03.jpg" />@IQBWX.Common.IQBConst.GetMemberTypeValue(Model.MemberType)</div>
+        </div>
+    </div>
+    <div class="sjhycon1 mgz xi24">概览</div>
+    <div class="sjhycon2 mgz cen">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tab1 cen xi19">
+            <tr class="xi21">
+                <td>大区经理</td>
+                <td>城市经理</td>
+            </tr>
+            <tr class="hui">    
+                <td>4级推广收益</td>
+                <td>3级推广收益</td>
+            </tr>
+            <tr class="hui">
+                <td>9级贷款收益</td>
+                <td>4级贷款收益</td>
+            </tr>
+        </table>
+    </div>
+    <div class="sjhycon3 mgz">
+        <div class="sjhycon3l f huang"><img align="absmiddle" src="~/Content/images/shengjihuiyuan_02.jpg" />大区经理</div>
+        <div class="sjhycon3r r">
+            <div class="sjhycon3rl f xi20 bai cen" onclick='PayUpdateMember("@Url.Action("PostPayUpdateMember", "Pay")")' >我要升级</div>
+            <div class="sjhycon3rr f xi19 hui">200元</div>
+        </div>
+    </div>
+    <div class="sjhycon4 mgz">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tab1 cen xi19">
+            <tr class="xi21">
+                <td>推广等级</td>
+                <td>大区经理</td>
+                <td>城市经理</td>
+                <td>每发展10人收益(元)</td>
+            </tr>
+            <tr class="hui">
+                <td>一级用户</td>
+                <td>90元</td>
+                <td>60元</td>
+                <td>60*10=600</td>
+            </tr>
+            <tr class="hui">
+                <td>二级用户</td>
+                <td>50元</td>
+                <td>20元</td>
+                <td>20*10²=2000</td>
+            </tr>
+            <tr class="hui">
+                <td>三级用户</td>
+                <td>90元</td>
+                <td>40元</td>
+                <td>40*10³=4万</td>
+            </tr>
+            <tr class="hui">
+                <td>四级用户</td>
+                <td>20元</td>
+                <td>30元</td>
+                <td>20*10³*10=20万</td>
+            </tr>
+        </table>
+    </div>
+    <div class="sjhycon5 mg2 xi19 hui">例：推广一个大区经理，获90元佣金。一个城市经理，获40元佣金。</div>
+    <div class="sjhycon3 mgz">
+        <div class="sjhycon3l f lan"><img align="absmiddle" src="~/Content/images/shengjihuiyuan_05.jpg" />城市经理</div>
+    </div>
+    <div class="sjhycon4 mgz">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tab1 cen xi19">
+            <tr class="xi21">
+                <td>推广等级</td>
+                <td>大区经理</td>
+                <td>城市经理</td>
+                <td>每发展10人收益(元)</td>
+            </tr>
+            <tr class="hui">
+                <td>一级用户</td>
+                <td>90元</td>
+                <td>60元</td>
+                <td>60*10=600</td>
+            </tr>
+            <tr class="hui">
+                <td>二级用户</td>
+                <td>50元</td>
+                <td>20元</td>
+                <td>20*10²=2000</td>
+            </tr>
+            <tr class="hui">
+                <td>三级用户</td>
+                <td>90元</td>
+                <td>40元</td>
+                <td>40*10³=4万</td>
+            </tr>
+            <tr class="hui">
+                <td>四级用户</td>
+                <td>20元</td>
+                <td>30元</td>
+                <td>20*10³*10=20万</td>
+            </tr>
+        </table>
+    </div>
+    <div class="footerz xi19 cen mgz">
+        <ul>
+            <li class="bg1hover"><a href=@Url.Action("MemberUpdate")>升级会员</a></li>
+            <li class="bg2"><a href=@Url.Action("LoanMarket")>贷款超市</a></li>
+            <li class="bg3"><a href=@Url.Action("MemberQR")>推广</a></li>
+            <li class="bg4"><a href=@Url.Action("MemberCenter")>个人中心</a></li>
+        </ul>
+        <!--判断hover-->
+    </div>
+    <div class="footer mgz"></div>
+    <div class="tc mgz cen" onclick="HideInfo();" id="msg" style="display:none;">
+        <div class="tcs mg2 xi40">
+            <div class="tcss r">×</div>
+        </div>
+        <div class="tcc mg2 xi30" id="InfoTitle"></div>
+        <div class="tcx mg2 hui" id="InfoMessage"></div>
+        <div class="tcn mg2 xi28 bai tm"><a href="#">确定</a></div>
+    </div>
+    <input id="hUserId" type="hidden" value="@Session[IQBWX.Common.IQBConst.SessionUserId]" />
+</body>
+</html>

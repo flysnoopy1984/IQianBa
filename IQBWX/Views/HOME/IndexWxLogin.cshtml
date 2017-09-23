@@ -1,0 +1,33 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @*<META HTTP-EQUIV="Refresh" CONTENT="55;">*@
+    <title>IndexWxLogin</title>
+    <link href="~/Content/Css/WebCss.css" rel="stylesheet" />
+    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
+    <script src="@Url.Scrpit("~/Content/Script/sso.js")"></script>
+</head>
+<body>
+    <div class="login_box"> 
+        <div class="qrcode">
+            <img id="imgQR" />
+            <input type="hidden" id="SSOToken" value=@ViewData["ssoToken"] />
+            <div id="qrLoading">
+                <p>二维码生成中，请稍等</p>    
+            </div>
+            <div id="QRDesc" style="display:none;">
+                <p class="sub_title">使用手机微信扫码登录</p>
+                <p class="sub_desc">扫描后关注微信公众号看小说</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

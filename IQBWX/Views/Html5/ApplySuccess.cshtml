@@ -1,0 +1,31 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+    <title>ApplySuccess</title>
+    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Scrpit("~/Content/Script/ApplySuccess.js")"></script>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+</head>
+<body>
+    <style>
+        body {
+            background: #ffffff;
+        }
+    </style>
+    <div class="yue mgz cen">
+        <div class="z404 mg2"><img align="absmiddle" src="~/Content/images/gongxishengji_02.jpg" /><div class="z404_txt mg2 xi28 bai" id="imgTitle">@ViewData["imgTitle"]</div></div>
+        <div class="yuec mg2 xi21" id="Title">@ViewData["Title"]</div>
+        <div class="yuex mg2 xi44" id="Content">@ViewData["Content"]</div>
+    </div>
+    <div class="yuecon1 mgz cen xi28 bai tm"><a href=@Url.Action("MemberCenter")>跳转至个人中心</a></div>
+   
+</body>
+</html>

@@ -1,0 +1,32 @@
+.xing {
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;
+  display: inline-block;
+  width: 94px;
+  height: 17px;
+  background: url(../images/icons.png) no-repeat -79px -3px;
+}
+.xing i {
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;
+  display: inline-block;
+  height: 17px;
+  background: url(../images/icons.png) no-repeat -79px -21px;
+}
+h3 {
+  font-size: 16px;
+  height: 22px;
+  line-height: 22px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+img.imgs {
+  display: block;
+  overflow: hidden;
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto;
+}

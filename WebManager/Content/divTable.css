@@ -1,0 +1,30 @@
+﻿#table {
+    width:100%;
+    display:inline-block;
+  <!--  border:2px solid #eee; -->
+}
+#table li{
+    list-style-type:none;
+     float:left;
+    width:200px;
+    text-align:center;
+    background:#ccc;
+    margin-right:2px;
+    margin-bottom:2px;
+    line-height:30px;
+    font-size:14px;
+}
+#table li.bt{font-size:16px; font-weight:bold; background:#999;}
+#table li.cd{font-size:14px;}
+
+#Page .load-more{
+      clear:both;
+      display:block;
+      background:#C1D9FB;
+      margin-left:40px;
+      margin-right:1em;      
+      font-size:14px;
+      line-height:30px;
+      text-align:center;
+      text-decoration:none;
+}

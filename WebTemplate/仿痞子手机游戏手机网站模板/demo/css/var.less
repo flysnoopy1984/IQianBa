@@ -1,0 +1,64 @@
+//color
+@green: #7cb228;
+@black: #343434;
+@white: #fff;
+@grey_79: #797979;
+@grey_cc: #cccccc;
+@placeholder: #999999;
+
+//images
+@icons: url(../images/icons.png);
+
+//css3 
+
+//改变，使…变形；转换
+.transform(...){
+  -webkit-transform: @arguments;
+  -moz-transform: @arguments;
+  -ms-transform: @arguments;
+  -o-transform: @arguments;
+  transform: @arguments;
+}
+
+.animation(...){
+  -webkit-animation: @arguments;
+  -moz-animation: @arguments;
+  -ms-animation: @arguments;
+  -o-animation: @arguments;
+  animation: @arguments;
+}
+//过度
+.transition(...){
+  -webkit-transition: @arguments;
+  -moz-transition: @arguments;
+  -ms-transition: @arguments;
+  -o-transition: @arguments;
+  transition: @arguments;
+}
+
+.box-shadow(...){
+  -webkit-box-shadow: @arguments;
+  -moz-box-shadow: @arguments;
+  -ms-box-shadow: @arguments;
+  box-shadow: @arguments;
+}
+//布局
+.flex(...){
+  -moz-box-flex: @arguments;
+  -webkit-box-flex: @arguments;
+  box-flex: @arguments;
+}
+//设置背景图片的大小。
+.background-size(...){
+  -webkit-background-size: @arguments;
+  -moz-background-size: @arguments;
+  -o-background-size: @arguments;
+  background-size: @arguments;
+}
+//盒模型
+.box-sizing(){
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}

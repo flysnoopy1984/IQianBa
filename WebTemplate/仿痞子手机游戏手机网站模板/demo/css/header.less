@@ -1,0 +1,111 @@
+.page_hd{
+  width: 100%;
+  height: 98px;
+
+  .top{
+    width: 100%;
+    height: 60px;
+    background-color: @green;
+    border-top: 1px solid @green;
+    position: relative;
+    z-index: 10px;
+  }
+
+  .logo{
+    width: 88.5px;
+    height: 21.5px;
+    margin: 20px auto 0 auto;
+    background: url(../images/logo.png) no-repeat;
+    .background-size(88.5px,21.5px); 
+  }
+
+  .category{
+    position: absolute;
+    left: 10px;
+    top: 20px;
+    width: 28px;
+    height: 28px;
+    background: url(../images/sidebar_bg.jpg) no-repeat;
+    .background-size(28px,28px); 
+  }
+
+  .user{
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    width: 28px;
+    height: 28px;
+    background: url(../images/user_bg.jpg) no-repeat;
+    .background-size(28px,28px); 
+  }
+
+  .navbar{
+    width: 100%;
+    background-color: @black;
+    height: 38px;
+    line-height: 38px;
+    overflow: hidden;
+
+    li{
+      float: left;
+      width: 25%;
+      a{
+        display: block;
+        font-size: 16px;
+        text-align: center;
+        color: @white;
+        border-right: 1px solid #4c4b4b;
+        &.onclick{
+          background-color: #000;
+          color: @green;
+        }
+      }
+      &:last-child{
+        a{
+          border-right-width: 0;
+        }
+      }
+    }
+  }
+}
+//内容页header
+.con_hd{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  height: 37px;
+  background-color: @green;
+  z-index: 50;
+
+  .hd-back{
+    display: block;
+    width: 40px;
+    height: 7px;
+    text-align: center;
+    cursor: pointer;
+
+    &:after{
+      content: '';
+      display: inline-block;
+      border: #fff solid;
+      border-width: 0 0 2px 2px;
+      width: 12px;
+      height: 12px;
+      margin-top: 11px;
+      .transform(rotate(45deg));
+    }
+  }
+  h2.hd-tit{
+      .flex(1);
+      display: block;
+      color: #fff;
+      font-size: 16px;
+      line-height: 37px;
+      text-align: center;
+      margin-left: -40px;
+    }
+}

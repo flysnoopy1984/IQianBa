@@ -1,0 +1,9 @@
+drop table [dbo].[ARUserTrans]
+drop table [dbo].[MemberChildren]
+drop table [dbo].[MemberInfo]
+drop table [dbo].[OrderLine]
+drop table [dbo].[UserInfo]
+drop table [dbo].APUserTrans
+drop table [dbo].[UserSMSVerify]
+drop table [dbo].InfoDetail
+drop table [dbo].InforSummery

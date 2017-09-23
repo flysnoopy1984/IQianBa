@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Policy>
+  <FromUser Level="1">
+    <tc level="1" PoPCommission="35" />
+    <tc level="2" PoPCommission="80" />
+  </FromUser>
+  <FromUser Level="2">
+    <tc level="1" PoPCommission="60" />
+    <tc level="2" PoPCommission="90" />
+  </FromUser>
+</Policy>

@@ -1,0 +1,63 @@
+﻿@model IQBWX.Models.User.EMemberInfo
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+    <title>个人中心</title>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Scrpit("~/Content/Script/MemberInfo.js")"></script>
+</head>
+<body>
+    <div class="grzxcon1 mgz">
+        <div class="grzxcon1l f"><img align="absmiddle" src="@Model.headimgurl" width="130" height="130" /></div>
+        <div class="grzxcon1r f bai">
+            <div class="grzxcon1rs mg2">@Model.nickname</div>
+            <div class="grzxcon1rx mg2 xi21"><img align="absmiddle" src="~/Content/images/grzx_03.jpg" />
+            @IQBWX.Common.IQBConst.GetMemberTypeValue(Model.MemberType)</div>
+        </div>
+    </div>
+    <div class="grzlcon1 mgz xi21">
+        <ul>
+            <li>
+                <div class="grzlcon1l f">姓名</div>
+                <div class="grzlcon1r f">@Model.UserName</div>
+            </li>
+            <li>
+                <div class="grzlcon1l f">手机</div>
+                <div class="grzlcon1r f">@Model.PhoneNumber</div>
+            </li>
+            <li>
+                <div class="grzlcon1l f">微信好友数</div>
+                <div class="grzlcon1r f">
+                 @Model.WXMemberRange
+                </div>
+            </li>
+            <li>
+                <div class="grzlcon1l f">所在省市</div>
+                <div class="grzlcon1r f">
+                @Model.ProvinceValue
+                </div>
+            </li>
+          
+        </ul>
+    </div>
+    <div class="footerz xi19 cen mgz">
+        <ul>
+            <li class="bg1"><a href=@Url.Action("MemberUpdate")>升级会员</a></li>
+            <li class="bg2"><a href=@Url.Action("LoanMarket")>贷款超市</a></li>
+            <li class="bg3"><a href=@Url.Action("MemberQR")>推广</a></li>
+            <li class="bg4"><a href=@Url.Action("MemberCenter")>个人中心</a></li>
+        </ul>
+        <!--判断hover-->
+    </div>
+    <div class="footer mgz"></div>
+    <script src="js/mjs.js"></script>
+</body>
+</html>

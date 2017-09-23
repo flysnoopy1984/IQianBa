@@ -1,0 +1,1 @@
+﻿var PageSens = 0;

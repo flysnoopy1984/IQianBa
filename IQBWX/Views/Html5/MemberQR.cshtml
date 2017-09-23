@@ -1,0 +1,29 @@
+﻿@model IQBWX.Models.Results.RMemberQR
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+    <title>MemberQR</title>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+</head>
+<body>
+    <div class="lxwmcon1 mgz">
+        <div class="grzxcon1l f"><img align="absmiddle" src="@Model.HeaderImg" width="134" height="134" /></div>
+        <div class="grzxcon1r f">
+            <div class="grzxcon1rs mg2">@Model.NickName</div>
+            @*<div class="grzxcon1rx mg2 xi21 hui"></div>*@
+        </div>
+    </div>
+    <div class=" mgz xi19 cen hui"><img align="absmiddle" src="@Model.BKImg" width="439" height="615" />
+    <br />扫上方二维码，推广我的二维码</div>
+    <div class="lxwmcon4 mgz"></div>
+    <div class="lxwmcon3 mgz xi15 cen hui">本服务Iqianb.cn提供底层技术支持</div>
+   
+</body>
+</html>

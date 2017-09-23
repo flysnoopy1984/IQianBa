@@ -1,0 +1,48 @@
+﻿@model IQBWX.Models.Results.DataMemberCenter
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+    <title>会员中心</title>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+</head>
+<body>
+    <div class="grzxcon1 mgz">
+        <div class="grzxcon1l f"><img align="absmiddle" src="@Model.HeaderImg" width="130" height="130" /></div>
+        <div class="grzxcon1r f bai">
+            <div class="grzxcon1rs mg2">@Model.NickName</div>
+            <div class="grzxcon1rx mg2 xi21"><img align="absmiddle" src="~/Content/images/grzx_03.jpg" />@Model.MemberTypeValue</div>
+        </div>
+    </div>
+    <div class="grzxcon2 mgz xi40 bai cen">
+        <ul>
+            <li><a href=@Url.Action("OutPay","Pay")>@Model.Balance<span class="xi20">余额(元)</span></a></li>
+            <li>+@Model.TotalIncome<span class="xi20">累计收益</span></li>
+        </ul>
+    </div>
+    <div class="grzxcon3 mgz xi21 cen">
+        <ul>
+            <li><a href=@Url.Action("MyChildren")><img align="absmiddle" src="~/Content/images/grzx_07.jpg" /><br />我的会员(@Model.ChildrenNum)</a></li>
+            <li><a href=@Url.Action("CommissionDetail")><img align="absmiddle" src="~/Content/images/grzx_10.jpg" /><br />佣金明细</a></li>
+            <li><a href=@Url.Action("CashOut")><img align="absmiddle" src="~/Content/images/grzx_14.jpg" /><br />提现记录</a></li>
+            <li><a href=@Url.Action("MemberInfo")><img align="absmiddle" src="~/Content/images/grzx_15.jpg" /><br />个人资料</a></li>
+        </ul>
+    </div>
+    <div class="footerz xi19 cen mgz">
+        <ul>
+            <li class="bg1"><a href=@Url.Action("MemberUpdate")>升级会员</a></li>
+            <li class="bg2"><a href=@Url.Action("LoanMarket")>贷款超市</a></li>
+            <li class="bg3"><a href=@Url.Action("MemberQR")>推广</a></li>
+            <li class="bg4"><a href=@Url.Action("MemberCenter")>个人中心</a></li>
+        </ul>
+        <!--判断hover-->
+    </div>
+    <div class="footer mgz"></div>
+  
+</html>

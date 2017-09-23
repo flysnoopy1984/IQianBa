@@ -1,0 +1,450 @@
+body {
+font: 12px/1.5 'MicroSoft YaHei';
+color: #333;
+}
+
+body, body dd, body dl, body dt, body form {
+margin: 0;
+}
+
+img {
+border: 0;
+}
+
+a {
+text-decoration: none;
+color: #666;
+}
+
+a.title {
+color: #333;
+font-size: 18px;
+}
+
+a.red {
+color: #F60;
+}
+
+a.gray {
+color: #999;
+}
+
+a:hover {
+color: #ee5525;
+}
+
+html body .red {
+color: #F60 !important;
+}
+
+html body .green {
+color: #54A200 !important;
+}
+
+html body .blue {
+color: #598EB7 !important;
+}
+
+html body .gray {
+color: #999 !important;
+}
+
+html body a.btn {
+display: inline-block;
+text-align: center;
+padding: 0 15px;
+border: 1px solid #F60;
+line-height: 30px;
+font-size: 12px;
+border-radius: 2px;
+}
+
+html body a.btn.white {
+color: #F60 !important;
+background: #fff !important;
+}
+
+html body a.btn.white:hover {
+border-color: #db5700;
+}
+
+html body a.btn.red {
+color: #fff !important;
+background: #F60 !important;
+border-color: #db5700;
+}
+
+html body a.btn.red:hover {
+border-color: #F60;
+}
+
+html body .border {
+border: 1px solid #E0E0E0;
+}
+
+.Header1 {
+z-index: 10;
+font-family: "microsoft yahei",serif;
+background: #fff;
+}
+
+.Header1 .cont_box {
+line-height: 46px;
+height: 46px;
+padding: 20px 0;
+margin: auto;
+position: relative;
+width: 1000px;
+}
+
+.Header1 .logo {
+float: left;
+margin-right: 50px;
+display: inline;
+background: url(../images/LOGO.png) no-repeat;
+width: 160px;
+height: 46px;
+}
+
+.Header1 .so {
+font-size: 0;
+float: left;
+margin-top: 3px;
+padding-left: 50px;
+height: 40px;
+border: 1px solid #E0E0E0;
+background: url(../images/icon_so.png) no-repeat 10px center;
+}
+
+.Header1 .so input {
+border: 0;
+padding: 0;
+margin: 0;
+}
+
+.Header1 .so .q {
+width: 150px;
+color: #a6a6a6;
+padding: 10px 0;
+height: 20px;
+line-height: 20px;
+outline: 0;
+float: left;
+}
+
+.Header1 .so .m {
+background: #999;
+color: #fff;
+width: 45px;
+height: 40px;
+float: left;
+}
+
+.Header1 .so .m:hover {
+background: #000;
+cursor: pointer;
+}
+
+.Header1 .nav {
+float: right;
+}
+
+.Header1 .nav dd {
+line-height: 40px;
+height: 40px;
+float: left;
+margin: 0 5px;
+display: inline;
+color: #999;
+width: 65px;
+}
+
+.Header1 .nav dd .icon {
+display: inline-block;
+background: url(../images/icons_nav.png) no-repeat;
+width: 20px;
+height: 20px;
+vertical-align: middle;
+}
+
+.Header1 .nav dd a {
+display: inline-block;
+color: #333;
+font-size: 12px;
+}
+
+.Header1 .nav dd a:hover {
+color: #F60;
+}
+
+.Header1 .nav .logout {
+text-align: center;
+padding: 15px;
+}
+
+.Header1 .nav .logout p {
+color: #999;
+font-size: 14px;
+margin: 0 0 10px;
+}
+
+.Header1 .nav .logout .btn.red {
+width: 80px;
+}
+
+.Header1 .nav .login {
+width: 120px;
+}
+
+.Header1 .nav .login .tit {
+text-align: center;
+}
+
+.Header1 .nav .login .tit img {
+width: 25px;
+height: 25px;
+border-radius: 50%;
+vertical-align: middle;
+margin-right: 5px;
+}
+
+.Header1 .nav .login .cont {
+width: 160px;
+}
+
+.Header1 .nav .login .cont dt {
+padding-left: 15px;
+line-height: 40px;
+border-bottom: 1px solid #E0E0E0;
+margin-right: 5px;
+}
+
+.Header1 .nav .login .cont dt a {
+float: right;
+color: #999;
+font-size: 12px;
+line-height: 30px;
+}
+
+.Header1 .nav .login .cont dt strong {
+font-size: 14px;
+color: #666;
+}
+
+.Header1 .nav .login .cont dd {
+line-height: 24px;
+padding: 10px 15px;
+margin: 0;
+float: none;
+display: block;
+width: auto;
+height: auto;
+}
+
+.Header1 .nav .login .cont dd.btnbox {
+padding-top: 0;
+padding-bottom: 15px;
+text-align: center;
+}
+
+.Header1 .nav .login .cont dd.btnbox a.btn {
+    display: inline-block;
+    width: 38px;
+}
+
+    .Header1 .nav .login .cont dd.btnbox a.btn.white {
+        margin-left: 10px;
+    }
+
+.Header1 .nav .histroy span.icon {
+background-position: 0 -52px;
+}
+
+.Header1 .nav .histroy .cont {
+width: 130px;
+}
+
+.Header1 .nav .booklib .cont {
+width: 130px;
+}
+
+.Header1 .nav .booklib span.icon {
+background-position: 0 -105px;
+}
+
+.Header1 .nav .message {
+position: relative;
+}
+
+.Header1 .nav .message .cont {
+width: 110px;
+}
+
+.Header1 .nav .message a.new {
+background: url(new.png) no-repeat right center;
+padding-right: 22px;
+}
+
+.Header1 .nav .message.now .pop {
+display: none;
+}
+
+.Header1 .nav .message .pop {
+background: #fff7e5;
+border: 1px solid #fee0b4;
+padding: 0 10px;
+height: 30px;
+line-height: 30px;
+position: absolute;
+top: 35px;
+left: -55px;
+width: 150px;
+color: #999;
+text-align: center;
+}
+
+.Header1 .nav .message .pop .arr {
+background: url(arrt.png) no-repeat;
+width: 10px;
+height: 6px;
+overflow: hidden;
+position: absolute;
+left: 49%;
+top: -5px;
+}
+
+.Header1 .nav .message .meg {
+font-size: 12px;
+}
+
+.Header1 .nav .message .meg a {
+font-size: 12px;
+display: block;
+background-position: 100px center;
+}
+
+.Header1 .nav .message .meg a.center {
+text-align: center;
+background: #ddd;
+line-height: 30px;
+padding: 0;
+}
+
+.Header1 .nav .message .meg a.center:hover {
+    color: #333;
+}
+
+.Header1 .nav .message span.icon {
+background-position: 0 -158px;
+}
+
+.Header1 .nav .write span.icon {
+background-position: 0 -211px;
+}
+
+.Header1 .nav .recharge span.icon {
+background-position: 0 -264px;
+}
+
+.Header1 .nav .now {
+position: relative;
+z-index: 10;
+}
+
+.Header1 .nav .now .tit {
+border-color: #E0E0E0;
+text-align: center;
+background: #fff;
+}
+
+.Header1 .nav .now .tit .icon {
+display: none;
+}
+
+.Header1 .nav .now .cont {
+position: absolute;
+z-index: 1;
+right: 0;
+top: 40px;
+max-height: 500px;
+border: 1px solid #E0E0E0;
+box-shadow: 0 3px 5px rgba(0,0,0,.3);
+}
+
+.Header1 .nav .tit {
+position: relative;
+z-index: 2;
+padding: 0 5px;
+border: 1px solid #fff;
+border-bottom: none;
+display: block;
+}
+
+.Header1 .nav .cont {
+background: #fff;
+min-width: 90px;
+max-height: 0;
+overflow: hidden;
+line-height: 30px;
+-webkit-transition: all .3s ease-out;
+-moz-transition: all .3s ease-out;
+transition: all .3s ease-out;
+}
+
+.Header1 .nav .cont a {
+display: block;
+line-height: 18px;
+padding: 3px 10px;
+font-size: 12px;
+color: #999;
+}
+
+.Header1 .nav .cont a:hover {
+background: #f1f1f1;
+}
+
+.NavBar{
+    width:100%;
+    height:50px;
+    background-color: #33261c;
+	overflow: hidden;
+}
+.NavBar .NavContainer
+{
+    height:50px;
+    width:1000px;
+    overflow: hidden;
+    margin:auto;
+}
+.NavBar .NavContainer a
+{
+    line-height:50px;
+    color:white;
+    
+}
+.NavBar .NavContainer a span
+{
+    padding-left:20px;
+    padding-right:20px;
+}
+
+/** Body **/
+.Layout{
+    width:1440px;
+    margin:0px auto;
+}
+.Layout .LeftPart{
+    width:40%;
+    background-color:cadetblue;
+    height:100px;
+    float:left;
+
+}
+.Layout .RightPart{
+     width:auto;
+    background-color:chocolate;
+    height:100px;
+}
+
+
+

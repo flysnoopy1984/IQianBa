@@ -1,0 +1,55 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Menus</title>
+    <script src="~/Content/Script/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        function CreateMenu()
+        {
+          
+           
+            $.ajax({
+                type: "POST",
+                url: "/api/WX/CreateMenu",
+                data: "actionId=1",
+                success: function (data) {
+                    $("#Msg").text(data);
+                },
+                error: function (ex) {
+                    alert(ex.responseText);
+                }
+            });
+        }
+
+        function InitMenu() {
+
+            $.ajax({
+                type: "POST",
+                url: "/api/Init/InitItem",
+                data: "",
+                success: function (data) {
+                    $("#Msg").text(data);
+                },
+                error: function (ex) {
+                    alert(ex.responseText);
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div> 
+        <input type="button" value="创建菜单" onclick="CreateMenu();" />
+        <input type="button" value="初始化Item" onclick="InitMenu();" />
+        <div id="Msg"></div>
+    </div>
+</body>
+</html>

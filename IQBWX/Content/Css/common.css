@@ -1,0 +1,20 @@
+﻿.absolute_center{
+                /*display:none;*/
+                position:absolute;
+                width:200px;
+                height:200px;
+                top:0;
+                bottom:0;
+                left:0;
+                right:0;
+                margin:auto;
+                background:#518fca;
+                resize:both;/*用于设置了所有除overflow为visible的元素*/
+                overflow:hidden;
+            }
+
+.head_img{ 
+    max-width:200px; 
+    height:auto; 
+    width:expression(this.width > 200 ? "200px" : this.width);
+}

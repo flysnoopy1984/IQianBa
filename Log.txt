@@ -1,0 +1,35 @@
+2017/4/28 16:18:20: DoDeposit Error:输入字符串的格式不正确。
+2017/4/28 16:18:20: DoDeposit StackTrace:   在 System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   在 System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   在 System.Convert.ToDecimal(String value)
+   在 IQBWX.Controllers.PayController.DoDepositTest() 位置 C:\My\Project\IQBWX\IQBWX\Controllers\PayController.cs:行号 83
+2017/4/28 16:22:24: DoDeposit Error:输入字符串的格式不正确。
+2017/4/28 16:22:24: DoDeposit StackTrace:   在 System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   在 System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   在 System.Convert.ToDecimal(String value)
+   在 IQBWX.Controllers.PayController.DoDepositTest() 位置 C:\My\Project\IQBWX\IQBWX\Controllers\PayController.cs:行号 83
+2017/4/28 16:24:06: DoDeposit Error:输入字符串的格式不正确。
+2017/4/28 16:24:07: DoDeposit StackTrace:   在 System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   在 System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   在 System.Convert.ToDecimal(String value)
+   在 IQBWX.Controllers.PayController.DoDepositTest() 位置 C:\My\Project\IQBWX\IQBWX\Controllers\PayController.cs:行号 83
+2017/4/28 16:24:08: DoDeposit Error:输入字符串的格式不正确。
+2017/4/28 16:24:08: DoDeposit StackTrace:   在 System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   在 System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   在 System.Convert.ToDecimal(String value)
+   在 IQBWX.Controllers.PayController.DoDepositTest() 位置 C:\My\Project\IQBWX\IQBWX\Controllers\PayController.cs:行号 83
+2017/4/28 16:24:09: DoDeposit Error:输入字符串的格式不正确。
+2017/4/28 16:24:09: DoDeposit StackTrace:   在 System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   在 System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   在 System.Convert.ToDecimal(String value)
+   在 IQBWX.Controllers.PayController.DoDepositTest() 位置 C:\My\Project\IQBWX\IQBWX\Controllers\PayController.cs:行号 83
+2017/4/28 16:25:25: DoDeposit Error:未将对象引用设置到对象的实例。
+2017/4/28 16:25:25: DoDeposit StackTrace:   在 IQBWX.BLL.EPPayment.GetResult(String responseXml) 位置 C:\My\Project\IQBWX\IQBWX\BLL\EPPayment.cs:行号 111
+   在 IQBWX.Controllers.PayController.DoDepositTest() 位置 C:\My\Project\IQBWX\IQBWX\Controllers\PayController.cs:行号 111
+2017/4/28 16:49:10: DoDeposit Error:输入字符串的格式不正确。
+2017/4/28 16:49:10: DoDeposit StackTrace:   在 System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   在 System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   在 System.Convert.ToDecimal(String value, IFormatProvider provider)
+   在 System.String.System.IConvertible.ToDecimal(IFormatProvider provider)
+   在 System.Convert.ToDecimal(Object value)
+   在 IQBWX.Controllers.PayController.DoDepositTest() 位置 C:\My\Project\IQBWX\IQBWX\Controllers\PayController.cs:行号 85

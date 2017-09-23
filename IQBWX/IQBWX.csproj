@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C4F07794-DC78-4E75-9B06-159B1272F93E}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IQBWX</RootNamespace>
+    <AssemblyName>IQBWX</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LitJson">
+      <HintPath>..\RefDll\LitJson.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entity.6.9.9\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\CatchSite\HJB\script\hjb.js" />
+    <Content Include="Content\Config\PopPolicy.xml" />
+    <Content Include="Content\Css\common.css" />
+    <Content Include="Content\CatchSite\HJB\list.html" />
+    <Content Include="Content\Css\MainCss.css" />
+    <Content Include="Content\Css\idangerous.swiper.css" />
+    <Content Include="Content\Css\WebCss.css" />
+    <Content Include="Content\images\404_02.jpg" />
+    <Content Include="Content\images\daikuanchaoshi_03.jpg" />
+    <Content Include="Content\images\daikuanchaoshi_05.jpg" />
+    <Content Include="Content\images\daikuanchaoshi_07.jpg" />
+    <Content Include="Content\images\daikuanchaoshi_12.jpg" />
+    <Content Include="Content\images\daikuanchaoshi_14.jpg" />
+    <Content Include="Content\images\daikuanchaoshi_16.jpg" />
+    <Content Include="Content\images\daikuanchaoshi_20.jpg" />
+    <Content Include="Content\images\daikuankouzi_06.jpg" />
+    <Content Include="Content\images\gerenziliao_03.jpg" />
+    <Content Include="Content\images\gongxishengji_02.jpg" />
+    <Content Include="Content\images\goumaihuiyuan2_03.jpg" />
+    <Content Include="Content\images\goumaihuiyuan3_03.jpg" />
+    <Content Include="Content\images\goumaihuiyuan_02.jpg" />
+    <Content Include="Content\images\goumaihuiyuan_04.jpg" />
+    <Content Include="Content\images\goumaihuiyuan_09.jpg" />
+    <Content Include="Content\images\goumaihuiyuan_11.jpg" />
+    <Content Include="Content\images\grzx_03.jpg" />
+    <Content Include="Content\images\grzx_07.jpg" />
+    <Content Include="Content\images\grzx_10.jpg" />
+    <Content Include="Content\images\grzx_14.jpg" />
+    <Content Include="Content\images\grzx_15.jpg" />
+    <Content Include="Content\images\grzx_19.png" />
+    <Content Include="Content\images\grzx_191.png" />
+    <Content Include="Content\images\grzx_21.png" />
+    <Content Include="Content\images\grzx_212.png" />
+    <Content Include="Content\images\grzx_23.png" />
+    <Content Include="Content\images\grzx_231.png" />
+    <Content Include="Content\images\grzx_25.png" />
+    <Content Include="Content\images\grzx_251.png" />
+    <Content Include="Content\images\kouzi_03.jpg" />
+    <Content Include="Content\images\kouzi_04.png" />
+    <Content Include="Content\images\lxwm_03.jpg" />
+    <Content Include="Content\images\qrLoading.gif" />
+    <Content Include="Content\images\shengjihuiyuan_02.jpg" />
+    <Content Include="Content\images\shengjihuiyuan_05.jpg" />
+    <Content Include="Content\images\show_03.jpg" />
+    <Content Include="Content\images\show_06.jpg" />
+    <Content Include="Content\images\tx2.jpg" />
+    <Content Include="Content\images\WXIcons.png" />
+    <Content Include="Content\images\wxLoginBK.jpg" />
+    <Content Include="Content\images\WXQR.jpg" />
+    <Content Include="Content\images\yue_03.jpg" />
+    <Content Include="Content\QRImg\BK\QRBK.jpg" />
+    <Content Include="Content\QRImg\bk_test.jpg" />
+    <Content Include="Content\Script\CashOut.js" />
+    <Content Include="Content\Script\CommissionDetail.js" />
+    <Content Include="Content\Script\Detail.js" />
+    <Content Include="Content\Script\dropload.js" />
+    <Content Include="Content\Script\ErrorMessage.js" />
+    <Content Include="Content\Script\idangerous.swiper.min.js" />
+    <Content Include="Content\Script\iqb.dropload.min.js" />
+    <Content Include="Content\Script\MemberInfo.js" />
+    <Content Include="Content\Script\ApplySuccess.js" />
+    <Content Include="Content\Script\ApplyMember.js" />
+    <Content Include="Content\Script\area.js" />
+    <Content Include="Content\Script\jquery-1.10.2.min.js" />
+    <Content Include="Content\Script\jsCommon.js" />
+    <Content Include="Content\Script\MyChildren.js" />
+    <Content Include="Content\Script\OutPay.js" />
+    <Content Include="Content\Script\Pay.js" />
+    <Content Include="Content\Script\SSO.js" />
+    <Content Include="Content\Script\Summery.js" />
+    <Content Include="Content\Script\swiper-3.4.2.jquery.min.js" />
+    <Content Include="Content\Script\swiper.jquery.min.js" />
+    <Content Include="Content\Script\SystemConfig.js" />
+    <Content Include="Content\Script\test.js" />
+    <Content Include="Content\Script\UpdateMember.js" />
+    <Content Include="Content\Script\UserJS.js" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BLL\MenuEvents.cs" />
+    <Compile Include="BLL\NT\Notification.cs" />
+    <Compile Include="BLL\NT\OrderCreationNT.cs" />
+    <Compile Include="BLL\NT\OrderPaidSuccessNT.cs" />
+    <Compile Include="BLL\NT\RegistrationNT.cs" />
+    <Compile Include="BLL\PopPolicy.cs" />
+    <Compile Include="BLL\Payment.cs" />
+    <Compile Include="BLL\SMS.cs" />
+    <Compile Include="Common\HttpHelper.cs" />
+    <Compile Include="Common\ImgHelper.cs" />
+    <Compile Include="Common\IQBConst.cs" />
+    <Compile Include="Common\IQBEnum.cs" />
+    <Compile Include="Common\IQBLog.cs" />
+    <Compile Include="Common\IQBUrlHelper.cs" />
+    <Compile Include="Common\StringHelper.cs" />
+    <Compile Include="Controllers\API\HJBController.cs" />
+    <Compile Include="Controllers\API\InitController.cs" />
+    <Compile Include="Controllers\API\SMSController.cs" />
+    <Compile Include="Controllers\Html5Controller.cs" />
+    <Compile Include="Controllers\InfoController.cs" />
+    <Compile Include="Controllers\IQBAsyncController.cs" />
+    <Compile Include="Controllers\WXBaseController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PayController.cs" />
+    <Compile Include="Controllers\WXController.cs" />
+    <Compile Include="DataBase\BookContent.cs" />
+    <Compile Include="DataBase\Html5Content.cs" />
+    <Compile Include="DataBase\InitContent.cs" />
+    <Compile Include="DataBase\OrderContent.cs" />
+    <Compile Include="DataBase\ProductContent.cs" />
+    <Compile Include="DataBase\TransContent.cs" />
+    <Compile Include="DataBase\UserContent.cs" />
+    <Compile Include="DataBase\WXContent.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Handler\CometAsyncHandler.cs" />
+    <Compile Include="Handler\CometResult.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Config\EPoPCommissionConfigration.cs" />
+    <Compile Include="Models\Crawler\EInfoDetail.cs" />
+    <Compile Include="Models\Crawler\EInfoSummery.cs" />
+    <Compile Include="Models\JsonData\jMemberUpdte.cs" />
+    <Compile Include="Models\JsonData\jsonApplyMember.cs" />
+    <Compile Include="Models\JsonData\jsonError.cs" />
+    <Compile Include="Models\JsonData\SSOQR.cs" />
+    <Compile Include="Models\Order\EOrderHeader.cs" />
+    <Compile Include="Models\Order\EOrderLine.cs" />
+    <Compile Include="Models\Product\EItemInfo.cs" />
+    <Compile Include="Models\Results\ESummery.cs" />
+    <Compile Include="Models\Results\MemberCenterData.cs" />
+    <Compile Include="Models\Results\RAPTrans.cs" />
+    <Compile Include="Models\Results\RARTrans.cs" />
+    <Compile Include="Models\Results\RInfoDetail.cs" />
+    <Compile Include="Models\Results\RMemberQR.cs" />
+    <Compile Include="Models\Results\RMyChildren.cs" />
+    <Compile Include="Models\Results\ROutPay.cs" />
+    <Compile Include="Models\Results\RSSOResult.cs" />
+    <Compile Include="Models\Transcation\BaseTrans.cs" />
+    <Compile Include="Models\Transcation\EUserAPTrans.cs" />
+    <Compile Include="Models\Transcation\EUserARTrans.cs" />
+    <Compile Include="Models\User\EMemberChildren.cs" />
+    <Compile Include="Models\User\EMemberInfo.cs" />
+    <Compile Include="Models\User\EUserInfo.cs" />
+    <Compile Include="BLL\EPPayment.cs" />
+    <Compile Include="Models\User\EUserSMSVerify.cs" />
+    <Compile Include="Models\WX\ESSOLogin.cs" />
+    <Compile Include="Models\WX\Template\BaseTemplate.cs" />
+    <Compile Include="Models\WX\Template\OrderCreationTemplate.cs" />
+    <Compile Include="Models\WX\Template\OrderPaidSuccessTemplate.cs" />
+    <Compile Include="Models\WX\Template\RegTemplate.cs" />
+    <Compile Include="Models\WX\Template\TemplateData.cs" />
+    <Compile Include="Models\WX\Template\TemplateField.cs" />
+    <Compile Include="Models\WX\WeiXinModel.cs" />
+    <Compile Include="Models\WX\WXError.cs" />
+    <Compile Include="Models\WX\WXParameter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebCore\WebGlobalAttribute.cs" />
+    <Compile Include="WxSDK\Config.cs" />
+    <Compile Include="WxSDK\Data.cs" />
+    <Compile Include="WxSDK\Exception.cs" />
+    <Compile Include="WxSDK\HttpService.cs" />
+    <Compile Include="WxSDK\JsApiPay.cs" />
+    <Compile Include="WxSDK\Log.cs" />
+    <Compile Include="WxSDK\WxPayApi.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config" />
+    <Content Include="packages.config" />
+    <Content Include="Views\HOME\Index.cshtml" />
+    <Content Include="Content\json\Menus.json" />
+    <Content Include="Content\json\Test.json" />
+    <Content Include="Content\json\Cities.json" />
+    <Content Include="Content\json\SendMsg.json" />
+    <None Include="Properties\PublishProfiles\IQBWX.pubxml" />
+    <Content Include="Views\Pay\Index.cshtml" />
+    <Content Include="Views\Pay\Test.cshtml" />
+    <Content Include="Views\Pay\PostPay.cshtml" />
+    <Content Include="Views\HOME\Message.cshtml" />
+    <Content Include="Views\HOME\Menus.cshtml" />
+    <Content Include="Views\Html5\ApplyMember.cshtml" />
+    <Content Include="Views\Html5\Test.cshtml" />
+    <Content Include="Views\Html5\ApplySuccess.cshtml" />
+    <Content Include="Views\Html5\Index.cshtml" />
+    <Content Include="Views\Html5\MemberQR.cshtml" />
+    <Content Include="Views\Html5\MemberInfo.cshtml" />
+    <Content Include="Views\HOME\ErrorMessage.cshtml" />
+    <Content Include="Views\HOME\DBInit.cshtml" />
+    <Content Include="Views\Info\Summery.cshtml" />
+    <Content Include="Views\Info\Detail.cshtml" />
+    <Content Include="Views\Html5\MemberCenter.cshtml" />
+    <Content Include="Views\Html5\MyChildren.cshtml" />
+    <Content Include="Views\Html5\CommissionDetail.cshtml" />
+    <Content Include="Views\Html5\CashOut.cshtml" />
+    <Content Include="Views\Html5\MemberUpdate.cshtml" />
+    <Content Include="Views\Html5\LoanMarket.cshtml" />
+    <Content Include="Views\Pay\OutPay.cshtml" />
+    <Content Include="Views\HOME\IndexWxLogin.cshtml" />
+    <Content Include="Views\HOME\WaitingScan.cshtml" />
+    <Content Include="Views\HOME\WXLoginWAP.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Content\CatchSite\HJB\css\" />
+    <Folder Include="Content\CatchSite\HJB\images\" />
+    <Folder Include="Content\Html\" />
+    <Folder Include="Content\QRImg\Temp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>34484</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:34484/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>此项目引用这台计算机上缺少的 NuGet 程序包。使用 NuGet 程序包还原可下载这些程序包。有关详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

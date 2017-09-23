@@ -1,0 +1,29 @@
+@charset "utf-8";
+/*public*/
+.left{float:left;}
+.right{float:right;}
+.relative{position:relative;left:0;top:0;}
+.clearfix:before,.clearfix:after{content:"";display:table;}
+.clearfix:after{clear:both;}
+.clearfix{zoom:1;}
+.opacity6{ -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; /* ie8  */filter:alpha(opacity=60);    /* ie5-7  */opacity:0.6;/* css standard, currently it works in most modern browsers  */}
+.app_center{width:100%;min-width:320px;margin-left:auto;margin-right:auto;}
+.red{color:red;}
+.c_999{color:#999;}
+.pt10{padding-top:10px;}
+.hide{display:none;}
+
+/*public scroll*/
+.scroll{margin:0 auto 10px auto;max-width:560px;}
+.scroll_box{overflow:hidden;visibility:hidden;position:relative;}
+.scroll_wrap{overflow:hidden; position:relative;}
+.scroll_wrap li{position:relative;display:block;width:100%;float:left;}
+.scroll_wrap li a{display:block;margin:0 auto;position:relative;}
+.scroll_position{position:absolute;left:45%;z-index:400px;bottom:14px;}
+.scroll_position li{display:inline-block;width:16px;height:16px;border-radius:10px;background:#fff;}
+.scroll_position li a{font-size:0;}
+.scroll_position li.on{background-color:#ffd800;}
+.scroll_position_bg{background:#000;position:absolute;bottom:12px;left:42%;padding:0 15px;z-index:380px;height:26px;border-radius:26px;}
+.scroll_wrap img{
+  height: 320px;
+}

@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+    <title>我的余额</title>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Scrpit("~/Content/Script/OutPay.js")"></script>
+
+</head>
+<body>
+    <style>
+        body {
+            background: #f7f7f7;
+        }
+    </style>
+    <div class="yue mgz cen">
+        <div class="yues mg2"><img align="absmiddle" src="~/Content/images/yue_03.jpg" height="178" /></div>
+        <div class="yuec mg2 xi21">可提余额(元)</div>
+        <div class="yuex mg2 xi71" id="MyBalance"></div>
+        <input type="hidden" id="mbVal" />
+    </div>
+    <div class="yuecon1 mgz cen xi28 bai tm" onclick="OutPay();">提现</div>
+    <!--弹出层 -->
+    <div class="tc mgz cen" id="msg" style="display:none;">
+        <div class="tcs mg2 xi40">
+            <div class="tcss r" onclick="closeMsg();">×</div>
+        </div>
+        <div class="tcc mg2 xi30" id="msgTitle"></div>
+        <div class="tcx mg2 hui" id="msgInfo"></div>
+        <div class="tcn mg2 xi28 bai tm" onclick="closeMsg();">确定</div>
+    </div>
+    <div class="mengban mgz"></div>
+  
+</body>
+</html>
