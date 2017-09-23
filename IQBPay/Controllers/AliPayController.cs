@@ -183,7 +183,7 @@ namespace IQBPay.Controllers
 
         public ActionResult AuthToISV()
         {
-           
+            return View();
         }
     }
 }
