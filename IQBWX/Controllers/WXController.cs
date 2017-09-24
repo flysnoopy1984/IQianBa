@@ -194,6 +194,10 @@ namespace IQBWX.Controllers
                         result.AppId = appId;
                         result.OpenId = sso.OpenId;
                         result.ssoToken = ssoToken;
+                        if(appId == "pp")
+                        {
+                            result.ReturnUrl = "http://ap.iqianba.cn/main/home";
+                        }
 
                         IsLogin = true;
                         continue;

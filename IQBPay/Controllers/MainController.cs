@@ -21,5 +21,11 @@ namespace IQBPay.Controllers
             ViewData["WXUrl"] = WXurl+ "?logintype=pp";
             return View();
         }
+
+        public ActionResult Register()
+        {
+
+            return View();
+        }
     }
 }

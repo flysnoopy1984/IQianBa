@@ -13,6 +13,7 @@ $(document).ready(function () {
     $.ajax({
         type: "get",
         url: "/API/WX/CreateSSOQR",
+        data:"appId="+appId,
         success: function (result) {
             $("#qrLoading").hide();
             $("#QRDesc").show();
@@ -27,19 +28,19 @@ function waitingScan(ssoToken,appId)
 {
     $.ajax({
         type: "get",
-        data: "",
-        url: "/API/WX/WaitingScan?ssoToken=" + ssoToken,
+        data: "ssoToken="+ssoToken+"&appId="+appId,
+        url: "/API/WX/WaitingScan",
         timeout: 60000,
         success: function (result) {
             if (result != "")
             {
                 if (appId == "PP")
                 {
-                    window.location = "#";
+                    window.location = result.ReturnUrl;
                     return;
                 }
-                if (appId == "1") {
-                    window.location = "http://book.iqianba.cn/member/wxlogin.php?openId=" + result;
+                if (appId == "" || appId == "1") {
+                    window.location = "http://book.iqianba.cn/member/wxlogin.php?openId=" + result.openId;
                     return;
                 }
                 

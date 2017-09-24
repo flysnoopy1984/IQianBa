@@ -172,6 +172,7 @@
     <Content Include="Content\minimal.css" />
     <Content Include="Content\QR\2017092214101400009702.jpg" />
     <Content Include="Content\Site.css" />
+    <Content Include="Document\TextFile1.txt" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
@@ -187,6 +188,7 @@
     <Compile Include="Core\AliPayConfig.cs" />
     <Compile Include="Core\AppConfig.cs" />
     <Compile Include="Core\AuthToISV.cs" />
+    <Compile Include="Core\BaseEnum\IQBPayEnum.cs" />
     <Compile Include="Core\F2FPayHandler.cs" />
     <Compile Include="Core\Helper\IQBLog.cs" />
     <Compile Include="Core\Helper\StringHelper.cs" />
@@ -194,6 +196,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\User\EUserAgent.cs" />
+    <Compile Include="Models\User\EUserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +223,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Main\Home.cshtml" />
+    <Content Include="Views\Main\Register.cshtml" />
+    <Content Include="Views\User\UserProfile.cshtml" />
+    <Content Include="Document\IQBPay.xlsx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -228,8 +235,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\UserInfo\" />
+    <Folder Include="Models\Order\" />
     <Folder Include="scripts\Web\" />
+    <Folder Include="Views\Order\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -13,5 +13,7 @@ namespace IQBWX.Models.Results
 
         public  string OpenId { get; set; }
 
+        public string ReturnUrl { get; set; }
+
     }
 }
