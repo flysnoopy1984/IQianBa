@@ -32,8 +32,19 @@ function waitingScan(ssoToken,appId)
         timeout: 60000,
         success: function (result) {
             if (result != "")
-                // window.location = "http://book.iqianba.cn/member/wxlogin.php?openId=" + result;
-                window.location = "#";
+            {
+                if (appId == "PP")
+                {
+                    window.location = "#";
+                    return;
+                }
+                if (appId == "1") {
+                    window.location = "http://book.iqianba.cn/member/wxlogin.php?openId=" + result;
+                    return;
+                }
+                
+            }
+                
             return;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

@@ -18,8 +18,8 @@
     <script type="text/javascript">
         function ToWXLogin(url)
         {
-            alert(url);
-            return false;
+            window.location = url;
+          
         }
     </script>
 </head>
@@ -53,7 +53,8 @@
                             <a href="#">忘记密码?</a>
                         </section>
                         <section class="log-in">
-                            <button class="btn btn-greensea" onclick="return javascript:ToWXLogin('@ViewData["WXUrl"]');">微信登陆</button>
+                            <input type="button" class="btn btn-greensea" onclick="ToWXLogin('@ViewData["WXUrl"]');" value="微信登陆" />
+                           
                         </section>
                     </form>
                 </div>
