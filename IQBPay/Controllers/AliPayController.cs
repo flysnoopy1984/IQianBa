@@ -7,6 +7,7 @@ using Com.Alipay.Business;
 using Com.Alipay.Domain;
 using Com.Alipay.Model;
 using IQBPay.Core;
+using IQBPay.Core.Helper;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -122,6 +123,7 @@ namespace IQBPay.Controllers
             {
                 case ResultEnum.SUCCESS:
                     result = handler.CreateQR(precreateResult);
+                    result = handler.DeQR(result);
                     break;
                 case ResultEnum.FAILED:
                     result = precreateResult.response.Body;
@@ -147,6 +149,28 @@ namespace IQBPay.Controllers
         // GET: AliPay
         public ActionResult Index()
         {
+
+            string authCode = Request["app_auth_code"];
+            string appId = Request["app_id"];
+            string openId = Request["OpenId"];
+            if(!string.IsNullOrEmpty(authCode))
+            { 
+                string url = string.Format("http://example.com/doc/toAuthPage.html?app_id={0}&app_auth_code={1}&openId={2}", appId, authCode,openId);
+
+                IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
+                privateKey, "json", "1.0", "RSA2", publicKey2, "UTF-8", false);
+                AlipayOpenAuthTokenAppRequest request = new AlipayOpenAuthTokenAppRequest();
+
+                AlipayOpenAuthTokenAppModel model = new AlipayOpenAuthTokenAppModel();
+                model.GrantType = "authorization_code";
+                model.Code = authCode;
+
+                AlipayOpenAuthTokenAppResponse response = alipayClient.Execute(request);
+                return Content(url);
+
+            }
+
+
             return View();
         }
 
@@ -168,8 +192,21 @@ namespace IQBPay.Controllers
 
         public ActionResult Demo()
         {
+            string url = string.Format("https://openauth.alipay.com/oauth2/appToAppAuth.htm?app_id={0}&redirect_uri={1}&openId=test",
+                                        AliPayConfig.appId, 
+                                        "http://ap.iqianba.cn/AliPay/");
+
+            F2FPayHandler handler = new F2FPayHandler();
+            string fp = handler.CreateQR(url);
+            ViewData["url"] = url;
+            string tmpRootDir = Server.MapPath(System.Web.HttpContext.Current.Request.ApplicationPath.ToString());//获取程序根目录
+            fp = StringHelper.urlconvertor(tmpRootDir, fp);
+            ViewData["imgSrc"] = fp;
+
             return View();
         }
+
+       
 
         public ActionResult QRImg()
         {

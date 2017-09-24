@@ -27,6 +27,14 @@ namespace IQBPay.Core.Helper
             return s;
         }
 
+        public static string urlconvertor(string WebRoot, string imagesurl1)
+        {
+
+            string imagesurl2 = imagesurl1.Replace(WebRoot, ""); //转换成相对路径
+            imagesurl2 = imagesurl2.Replace(@"\", @"/");
+            return "/"+imagesurl2;
+        }
+
         public static string GenerateOrderNo()
         {
             return DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(8,true,true,false,false,"");

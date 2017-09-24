@@ -81,8 +81,29 @@ namespace IQBPay.Core
             filePath = ConfigurationManager.AppSettings["QRPath"] + filename;
             bt.Save(filePath);
 
-            string ds = DeQR(filePath);
-            return ds;
+           // string ds = DeQR(filePath);
+            return filePath;
+
+        }
+
+        public string CreateQR(string ImageUrl)
+        {
+            Bitmap bt;
+            string filePath;
+            string enCodeString = ImageUrl;
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
+            qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
+            qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.H;
+            qrCodeEncoder.QRCodeScale = 3;
+            qrCodeEncoder.QRCodeVersion = 0;
+            bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
+            string filename = System.DateTime.Now.ToString("yyyyMMddHHmmss") + "0000" + (new Random()).Next(1, 10000).ToString()
+             + ".jpg";
+            filePath = ConfigurationManager.AppSettings["QRPath"] + filename;
+            bt.Save(filePath);
+
+            // string ds = DeQR(filePath);
+            return filePath;
 
         }
 
