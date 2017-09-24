@@ -172,6 +172,7 @@
     <Compile Include="Core\AppConfig.cs" />
     <Compile Include="Core\AuthToISV.cs" />
     <Compile Include="Core\F2FPayHandler.cs" />
+    <Compile Include="Core\Helper\StringHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

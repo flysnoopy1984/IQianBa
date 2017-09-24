@@ -2,6 +2,7 @@
 using Com.Alipay.Business;
 using Com.Alipay.Domain;
 using Com.Alipay.Model;
+using IQBPay.Core.Helper;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,15 +17,15 @@ namespace IQBPay.Core
 {
     public class F2FPayHandler
     {
-        public AlipayTradePrecreateContentBuilder BuildPrecreateContent()
+        public AlipayTradePrecreateContentBuilder BuildPrecreateContent(string sellerid)
         {
             //线上联调时，请输入真实的外部订单号。
-            string out_trade_no = "20170922";
+            string out_trade_no = StringHelper.GenerateOrderNo();
            
 
             AlipayTradePrecreateContentBuilder builder = new AlipayTradePrecreateContentBuilder();
             //收款账号
-            builder.seller_id = "2088821092484390";
+            builder.seller_id = sellerid; 
             
             //订单编号
             builder.out_trade_no = out_trade_no;

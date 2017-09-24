@@ -24,22 +24,7 @@ namespace ConsoleApplication1
             {
 
                 string ssoToken = "KJm20170805022230";
-                using (WXContent db = new WXContent())
-                {
-                    ESSOLogin sso = db.GetSSOEntity(ssoToken);
-
-                    if (sso != null)
-                    {
-                       
-                        //sso.OpenId = msg.FromUserName;
-                        sso.LoginStatus = LoginStatus.QRScaned;
-                        sso.IsValidate = true;
-                        db.SaveChanges();
-                      
-                    }
-                }
-
-
+                Console.WriteLine(DateTime.Now.ToString("yyyyMMddhhmmss"));
 
                 Console.WriteLine("Done");
                 Console.Read();
