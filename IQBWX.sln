@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQBConsole", "IQBConsole\IQ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQBPay", "IQBPay\IQBPay.csproj", "{7E6D5001-C117-4953-B10E-CB9DE9D9F1BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQBCore", "..\IQBCore\IQBCore.csproj", "{079669B1-7659-41C1-B5D6-FA7F634FAB3A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQBCore", "IQBCore\IQBCore.csproj", "{079669B1-7659-41C1-B5D6-FA7F634FAB3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
