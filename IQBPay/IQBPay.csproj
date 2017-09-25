@@ -226,6 +226,7 @@
     <Content Include="Views\Main\Register.cshtml" />
     <Content Include="Views\User\UserProfile.cshtml" />
     <Content Include="Document\IQBPay.xlsx" />
+    <Content Include="Views\Order\List.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -237,7 +238,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\Order\" />
     <Folder Include="scripts\Web\" />
-    <Folder Include="Views\Order\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
