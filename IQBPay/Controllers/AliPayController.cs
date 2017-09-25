@@ -115,9 +115,11 @@ namespace IQBPay.Controllers
                             AliPayConfig.sign_type, AliPayConfig.alipay_public_key, AliPayConfig.charset);
 
             F2FPayHandler handler = new F2FPayHandler();
+           // AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent("2088821092484390");
             AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent("2088821092484390");
 
             AlipayF2FPrecreateResult precreateResult = serviceClient.tradePrecreate(builder);
+            
 
             switch (precreateResult.Status)
             {
