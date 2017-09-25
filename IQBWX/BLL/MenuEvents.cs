@@ -1,4 +1,5 @@
-﻿using IQBWX.BLL.NT;
+﻿using IQBWX.BLL.ExternalWeb;
+using IQBWX.BLL.NT;
 using IQBWX.Common;
 using IQBWX.Controllers;
 using IQBWX.DataBase;
@@ -107,9 +108,11 @@ namespace IQBWX.BLL
                         if (ui == null)
                             ui = newUserSubscribe(udb, msg, controller, out pui, false);
                     }
-              
+
                     //用openId注册web,如果已经注册,不会反复注册。
+                   // BaseExternalWeb exWeb = BaseExternalWeb.GetExternalWeb()
                     int status = regeisterWebMember(ui, msg);
+
                     log.log("WXScanLogin status:" + status);
                     if (status == -1) return true;
 
@@ -118,9 +121,12 @@ namespace IQBWX.BLL
                         sso.OpenId = msg.FromUserName;
                         sso.LoginStatus = LoginStatus.QRScaned;
                         sso.IsValidate = true;
+
                         db.SaveChanges();
-                        if (!string.IsNullOrEmpty(ResponseContent)) ResponseContent += "\n";
-                        this.ResponseXml += msg.toText(ResponseContent+"爱钱吧-书站登录成功");
+                        if (!string.IsNullOrEmpty(ResponseContent))
+                            ResponseContent += "\n";
+
+                        this.ResponseXml += msg.toText(ResponseContent);
                         return true;
                     }
                   
@@ -150,17 +156,17 @@ namespace IQBWX.BLL
             log.log("regeisterWebMember response:" + res);
             if (res == "OK")
             {
-                ResponseContent += string.Format("亲爱的{0}，已为您注册为爱钱吧会员！", ui.nickname);
+                ResponseContent += string.Format("亲爱的{0}，已为您注册为爱钱吧会员！\n 爱钱吧-书站登录成功", ui.nickname);
                 return 1;
             }
             else if (res == "EXIST")
             {
-                ResponseContent += string.Format("您账号已经和微信绑定，欢迎回来，{0}！", ui.nickname);
+                ResponseContent += string.Format("您账号已经和微信绑定，欢迎回来，{0}！\n 爱钱吧-书站登录成功", ui.nickname);
                 return 2;
             }
             else
             {
-                this.ResponseXml = "您第一次访问爱钱吧-书站，但系统未注册成功，请+QQ:2551038207联系我们，非常抱歉！";
+                ResponseContent = "您第一次访问爱钱吧-书站，但系统未注册成功，请+QQ:2551038207联系我们，非常抱歉！";
             }
             return -1;
         }

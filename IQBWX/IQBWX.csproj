@@ -215,6 +215,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BLL\ExternalWeb\BaseExternalWeb.cs" />
+    <Compile Include="BLL\ExternalWeb\ExtWebBook.cs" />
+    <Compile Include="BLL\ExternalWeb\ExtWebPay.cs" />
     <Compile Include="BLL\MenuEvents.cs" />
     <Compile Include="BLL\NT\Notification.cs" />
     <Compile Include="BLL\NT\OrderCreationNT.cs" />
@@ -268,6 +271,7 @@
     <Compile Include="Models\Results\MemberCenterData.cs" />
     <Compile Include="Models\Results\RAPTrans.cs" />
     <Compile Include="Models\Results\RARTrans.cs" />
+    <Compile Include="Models\Results\RExternalWebResult.cs" />
     <Compile Include="Models\Results\RInfoDetail.cs" />
     <Compile Include="Models\Results\RMemberQR.cs" />
     <Compile Include="Models\Results\RMyChildren.cs" />

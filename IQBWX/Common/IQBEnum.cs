@@ -56,4 +56,10 @@ namespace IQBWX.Common
         QRScaned = 1,
         Login =2,
     }
+
+    public enum ExternalWeb
+    {
+        Book=1,
+        Pay =2,
+    }
 }
