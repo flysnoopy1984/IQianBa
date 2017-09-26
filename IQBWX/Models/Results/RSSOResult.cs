@@ -15,5 +15,7 @@ namespace IQBWX.Models.Results
 
         public string ReturnUrl { get; set; }
 
+        public string ErrorMsg { get; set; }
+
     }
 }

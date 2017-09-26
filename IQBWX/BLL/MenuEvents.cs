@@ -3,6 +3,7 @@ using IQBWX.BLL.NT;
 using IQBWX.Common;
 using IQBWX.Controllers;
 using IQBWX.DataBase;
+using IQBWX.Models.Results;
 using IQBWX.Models.User;
 using IQBWX.Models.WX;
 using Newtonsoft.Json;
@@ -110,23 +111,21 @@ namespace IQBWX.BLL
                     }
 
                     //用openId注册web,如果已经注册,不会反复注册。
-                   // BaseExternalWeb exWeb = BaseExternalWeb.GetExternalWeb()
-                    int status = regeisterWebMember(ui, msg);
+                    BaseExternalWeb exWeb = BaseExternalWeb.GetExternalWeb(sso.AppId);
+                    RExternalWebResult result = exWeb.WXInfo(ui,msg);
 
-                    log.log("WXScanLogin status:" + status);
-                    if (status == -1) return true;
+                    if (result.Status == -1) return true;
 
                     if (sso != null)
                     {
+                        log.log("WXScanLogin AppId:" + sso.AppId);
                         sso.OpenId = msg.FromUserName;
                         sso.LoginStatus = LoginStatus.QRScaned;
                         sso.IsValidate = true;
 
                         db.SaveChanges();
-                        if (!string.IsNullOrEmpty(ResponseContent))
-                            ResponseContent += "\n";
 
-                        this.ResponseXml += msg.toText(ResponseContent);
+                        this.ResponseXml += msg.toText(result.WXMessage);
                         return true;
                     }
                   
@@ -143,33 +142,7 @@ namespace IQBWX.BLL
             
         }
 
-        /// <summary>
-        /// 1 Ok 2 exist -1 其他
-        /// </summary>
-        /// <param name="ui"></param>
-        /// <param name="msg"></param>
-        /// <returns></returns>
-        private int regeisterWebMember(EUserInfo ui, WXMessage msg)
-        {
-        
-            string res = RegWebSiteMember(ui).Trim().ToUpper();
-            log.log("regeisterWebMember response:" + res);
-            if (res == "OK")
-            {
-                ResponseContent += string.Format("亲爱的{0}，已为您注册为爱钱吧会员！\n 爱钱吧-书站登录成功", ui.nickname);
-                return 1;
-            }
-            else if (res == "EXIST")
-            {
-                ResponseContent += string.Format("您账号已经和微信绑定，欢迎回来，{0}！\n 爱钱吧-书站登录成功", ui.nickname);
-                return 2;
-            }
-            else
-            {
-                ResponseContent = "您第一次访问爱钱吧-书站，但系统未注册成功，请+QQ:2551038207联系我们，非常抱歉！";
-            }
-            return -1;
-        }
+      
 
         public void ScanHandler(WXMessage msg)
         {
@@ -194,19 +167,7 @@ namespace IQBWX.BLL
                 
         }
 
-        private string RegWebSiteMember(EUserInfo ui)
-        {
-            string url = "http://book.iqianba.cn/member/wxRegNew.php";
-            string data = "wxRegNew=1&userId={0}&uname={1}&sex={2}&openId={3}&faceurl={4}";
-            string name = ui.nickname;
-            if (name == null) name = ui.UserName;
-            if (name == null) name = "wx" + ui.UserId.ToString().PadLeft(7, '0');
-
-            data = string.Format(data, "wx" + ui.UserId.ToString().PadLeft(7, '0'), name, ui.sex,ui.openid,ui.headimgurl);
-
-            string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
-            return res;
-        }
+       
 
         private EUserInfo newUserSubscribe(UserContent db,WXMessage msg, WXBaseController controller,out EUserInfo pui, bool isCheckParent = true)
         {

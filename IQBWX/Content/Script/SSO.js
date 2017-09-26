@@ -9,6 +9,12 @@ $(document).ready(function () {
     }
     */
     var appId = getUrlParam("logintype");
+    if (appId == null)
+    {
+        //1 指向book.iqianba.cn
+        appId = "1";
+    }
+  
     $("#imgQR").attr('src', '/Content/images/qrloading.gif');
     $.ajax({
         type: "get",
@@ -32,10 +38,13 @@ function waitingScan(ssoToken,appId)
         url: "/API/WX/WaitingScan",
         timeout: 60000,
         success: function (result) {
+            alert(result);
             if (result != "")
             {
-                if (appId == "PP")
+                
+                if (appId == "pp")
                 {
+                    alert(result.ReturnUrl);
                     window.location = result.ReturnUrl;
                     return;
                 }

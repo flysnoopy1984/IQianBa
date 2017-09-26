@@ -10,23 +10,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
     <title>Test</title>
-    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    
+    <script type="text/javascript">
+        function ToWXLogin(url)
+        {
+            window.location = url;
 
-    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
-   
-    <script src="@Url.Scrpit("~/Content/Script/SystemConfig.js")"></script>
-    <script src="@Url.Scrpit("~/Content/Script/test.js")"></script>
-
+        }
+    </script>
 </head>
 <body>
 
-    <div class="swiper-container kouzi_new mgz2" id="swiper-container">
-        <div class="con1 mgz2 xi20 hui">最新口子</div>   
-            <ul id="InfoUl"></ul>
-            <div class="nrxqcon3 mgz xi21 hui cen" id="InitloadBar" style="display:none">数据加载中</div>
-            <div class="nrxqcon3 mgz xi21 hui cen" id="LastRecored" style="display:none">已经到最后了</div>     
-        <div class="swiper-scrollbar"></div>
-    </div>
+   <div>
+       <input type="button" onclick="ToWXLogin('@Url.Action("IndexWxLogin","Home",new { @logintype = "pp" })');" value="微信登陆" />
+     
+   </div>
    
 
 </body>

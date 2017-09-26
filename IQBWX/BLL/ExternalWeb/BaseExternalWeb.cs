@@ -21,6 +21,17 @@ namespace IQBWX.BLL.ExternalWeb
 
         abstract public RExternalWebResult WXInfo(EUserInfo ui, WXMessage msg);
 
+        public static BaseExternalWeb GetExternalWeb(string appId)
+        {
+            switch(appId)
+            {
+                case "pp":
+                    return GetExternalWeb(IQBWX.Common.ExternalWeb.Pay);
+                default:
+                    return GetExternalWeb(IQBWX.Common.ExternalWeb.Book);
+            }
+        }
+
         public static BaseExternalWeb GetExternalWeb(IQBWX.Common.ExternalWeb _ExternalWeb)
         {
             switch(_ExternalWeb)

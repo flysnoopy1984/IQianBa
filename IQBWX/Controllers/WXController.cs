@@ -91,6 +91,7 @@ namespace IQBWX.Controllers
             using (WXContent db = new WXContent())
             {
                 ESSOLogin entity = new ESSOLogin();
+                entity.AppId = appId;
                 entity.LoginStatus = LoginStatus.QRCreated;
                 entity.ssoToken = ssoToken;
                 entity.IsValidate = false;
@@ -169,7 +170,7 @@ namespace IQBWX.Controllers
         }
 
         [HttpGet]
-        public string WaitingScan(string ssoToken,string appId)
+        public RSSOResult WaitingScan(string ssoToken,string appId)
         {
             DateTime beginTime = DateTime.Now;
             DateTime endTime = beginTime;
@@ -177,8 +178,7 @@ namespace IQBWX.Controllers
             ESSOLogin sso = null;
             bool IsLogin = false;
             RSSOResult result =new RSSOResult();
-
-            
+  
             while (!IsLogin)
             {
                 using (WXContent db = new WXContent())
@@ -196,7 +196,7 @@ namespace IQBWX.Controllers
                         result.ssoToken = ssoToken;
                         if(appId == "pp")
                         {
-                            result.ReturnUrl = "http://ap.iqianba.cn/main/home";
+                            result.ReturnUrl = ConfigurationManager.AppSettings["Site_IQBPay"]+"?do=1";
                         }
 
                         IsLogin = true;
@@ -209,14 +209,16 @@ namespace IQBWX.Controllers
                 ts = endTime - beginTime;
                 if(ts.Seconds>60)
                 {
-                    return "timeout";
+                    // return "timeout";
+                    result.ErrorMsg = "timeout";
                 }
             }
             if (IsLogin)
-              //  return sso.OpenId;
-                return JsonConvert.SerializeObject(result);
-            return "";
-          
+
+                return result;
+            return null;
+
+
         }
     }
 }
