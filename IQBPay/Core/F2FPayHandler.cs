@@ -25,8 +25,9 @@ namespace IQBPay.Core
 
             AlipayTradePrecreateContentBuilder builder = new AlipayTradePrecreateContentBuilder();
             //收款账号
-            builder.seller_id = sellerid; 
+            builder.seller_id = sellerid;
             
+
             //订单编号
             builder.out_trade_no = out_trade_no;
             //订单总金额
@@ -51,6 +52,7 @@ namespace IQBPay.Core
             GoodsInfo goods = new GoodsInfo();
             goods.goods_id = "goods id";
             goods.goods_name = "goods name";
+            
             goods.price = "0.01";
             goods.quantity = "1";
             gList.Add(goods);
@@ -59,6 +61,7 @@ namespace IQBPay.Core
             //系统商接入可以填此参数用作返佣
             ExtendParams exParam = new ExtendParams();
             exParam.sys_service_provider_id = AliPayConfig.pid;
+            
             builder.extend_params = exParam;
 
             return builder;
