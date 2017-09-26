@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IQBPay.Core.BaseEnum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,11 +18,16 @@ namespace IQBPay.Models.User
         [MaxLength(32)]
         public string OpenId { get; set; }
 
+        public UserStatus UserStatus { get; set; }
+
+        public UserRole UserRole { get; set; }
+
         [MaxLength(20)]
         public string Name { get; set; }
 
-        public string VendorPid { get; set; }
-        public string VendorAppId { get; set; }
+        public Boolean Isadmin { get; set; }
+
+       
 
         
 

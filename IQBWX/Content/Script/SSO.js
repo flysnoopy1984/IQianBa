@@ -38,21 +38,13 @@ function waitingScan(ssoToken,appId)
         url: "/API/WX/WaitingScan",
         timeout: 60000,
         success: function (result) {
-            alert(result);
+          
             if (result != "")
             {
                 
-                if (appId == "pp")
-                {
-                    alert(result.ReturnUrl);
-                    window.location = result.ReturnUrl;
-                    return;
-                }
-                if (appId == "" || appId == "1") {
-                    window.location = "http://book.iqianba.cn/member/wxlogin.php?openId=" + result.openId;
-                    return;
-                }
-                
+                window.location = result.ReturnUrl;
+                return;
+               
             }
                 
             return;

@@ -5,6 +5,8 @@ using System.Web;
 using IQBWX.Models.Results;
 using IQBWX.Models.User;
 using IQBWX.Models.WX;
+using IQBWX.Common;
+using System.Configuration;
 
 namespace IQBWX.BLL.ExternalWeb
 {
@@ -12,7 +14,17 @@ namespace IQBWX.BLL.ExternalWeb
     {
         public override string regeisterWebMember(EUserInfo ui)
         {
-            return "OK";
+            string url = ConfigurationManager.AppSettings["Site_IQBPay_Register"];
+            string data = "UserStatus=1&UserRole=1&Isadmin=false&name={0}&openId={1}";
+            string name = ui.nickname;
+            if (name == null) name = ui.UserName;
+            if (name == null) name = "wx" + ui.UserId.ToString().PadLeft(7, '0');
+
+            data = string.Format(data, "wx" + ui.UserId.ToString().PadLeft(7, '0'), name,ui.openid);
+
+            string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data);
+            return res;
+           
         }
 
         public override RExternalWebResult WXInfo(EUserInfo ui, WXMessage msg)
