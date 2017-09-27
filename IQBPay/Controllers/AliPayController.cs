@@ -206,11 +206,12 @@ namespace IQBPay.Controllers
                string tmpRootDir = Server.MapPath(System.Web.HttpContext.Current.Request.ApplicationPath.ToString());//获取程序根目录
                fp = StringHelper.urlconvertor(tmpRootDir, fp);
                ViewData["imgSrc"] = fp;*/
-            
+            /*
             string data = "UserStatus=1&UserRole=1&Isadmin=false&name={0}&openId={1}";
             data = string.Format(data, "test", "openIDxxxxxxx");
             string url = "http://localhost:24068/api/userapi/register";
             string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+            */
             return View();
         }
 

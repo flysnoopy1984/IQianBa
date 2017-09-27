@@ -15,6 +15,11 @@ namespace IQBPay.Controllers
             return View();
         }
 
+        public ActionResult Home()
+        {
+            return View();
+        }
+
         public ActionResult Login()
         {
             string WXurl =  ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
