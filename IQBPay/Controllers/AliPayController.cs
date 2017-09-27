@@ -6,8 +6,8 @@ using Com.Alipay;
 using Com.Alipay.Business;
 using Com.Alipay.Domain;
 using Com.Alipay.Model;
+using IQBCore.Common.Helper;
 using IQBPay.Core;
-using IQBPay.Core.Helper;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -194,17 +194,23 @@ namespace IQBPay.Controllers
 
         public ActionResult Demo()
         {
-            string url = string.Format("https://openauth.alipay.com/oauth2/appToAppAuth.htm?app_id={0}&redirect_uri={1}&openId=test",
-                                        AliPayConfig.appId, 
-                                        "http://ap.iqianba.cn/AliPay/");
+            /* F2FPayHandler handler = new F2FPayHandler();
+               string url = string.Format("https://openauth.alipay.com/oauth2/appToAppAuth.htm?app_id={0}&redirect_uri={1}&openId=test",
+                                           AliPayConfig.appId, 
+                                           "http://ap.iqianba.cn/AliPay/");
 
-            F2FPayHandler handler = new F2FPayHandler();
-            string fp = handler.CreateQR(url);
-            ViewData["url"] = url;
-            string tmpRootDir = Server.MapPath(System.Web.HttpContext.Current.Request.ApplicationPath.ToString());//获取程序根目录
-            fp = StringHelper.urlconvertor(tmpRootDir, fp);
-            ViewData["imgSrc"] = fp;
 
+             string url = "http://ap.iqianba.cn/alipay/pp";
+             string fp = handler.CreateQR(url);
+               ViewData["url"] = url;
+               string tmpRootDir = Server.MapPath(System.Web.HttpContext.Current.Request.ApplicationPath.ToString());//获取程序根目录
+               fp = StringHelper.urlconvertor(tmpRootDir, fp);
+               ViewData["imgSrc"] = fp;*/
+            
+            string data = "UserStatus=1&UserRole=1&Isadmin=false&name={0}&openId={1}";
+            data = string.Format(data, "test", "openIDxxxxxxx");
+            string url = "http://localhost:24068/api/userapi/register";
+            string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
             return View();
         }
 
@@ -223,6 +229,13 @@ namespace IQBPay.Controllers
         public ActionResult AuthToISV()
         {
             return View();
+        }
+
+        public ActionResult PP()
+        {
+            IQBLog Log = new IQBLog();
+            Log.log("PP to https://qr.alipay.com/stx04233mlnkwff4e7sble7");
+            return Redirect("https://qr.alipay.com/stx04233mlnkwff4e7sble7");
         }
     }
 }

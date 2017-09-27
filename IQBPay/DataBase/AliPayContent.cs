@@ -16,6 +16,15 @@ namespace IQBPay.DataBase
 
         public DbSet<EUserInfo> UserInfoDB { get; set; }
 
-        
+        #region User  
+        public Boolean IsExistUser(string openId)
+        {
+            int i = UserInfoDB.Count(u => u.OpenId == openId);
+            return (i > 0);
+           
+        }
+        #endregion
+
+
     }
 }

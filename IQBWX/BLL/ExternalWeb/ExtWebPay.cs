@@ -22,7 +22,7 @@ namespace IQBWX.BLL.ExternalWeb
 
             data = string.Format(data, "wx" + ui.UserId.ToString().PadLeft(7, '0'), name,ui.openid);
 
-            string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data);
+            string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
             return res;
            
         }
@@ -46,7 +46,8 @@ namespace IQBWX.BLL.ExternalWeb
             }
             else
             {
-                result.WXMessage += "您第一次访问爱钱吧-支付平台，但系统未注册成功，请+QQ:2551038207联系我们，非常抱歉！";
+                result.WXMessage += "您第一次访问爱钱吧-支付平台，但系统未注册成功，请+QQ:2551038207联系我们，非常抱歉！/n";
+                result.WXMessage += res;
                 result.Status = -1;
                 return result;
             }
