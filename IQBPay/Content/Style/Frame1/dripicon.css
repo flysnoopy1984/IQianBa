@@ -1,13 +1,13 @@
-
+﻿
 @charset "UTF-8";
 
 @font-face {
   font-family: "dripicons";
-  src:url("../font/dripicons.eot");
-  src:url("../font/dripicons.eot?#iefix") format("embedded-opentype"),
-    url("../font/dripicons.ttf") format("truetype"),
-    url("../font/dripicons.svg#dripicons") format("svg"),
-    url("../font/dripicons.woff") format("woff");
+  src:url("font/dripicons.eot");
+  src:url("font/dripicons.eot?#iefix") format("embedded-opentype"),
+    url("font/dripicons.ttf") format("truetype"),
+    url("font/dripicons.svg#dripicons") format("svg"),
+    url("font/dripicons.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 

@@ -1353,7 +1353,7 @@ img.icon-menu {
     margin-top: 3px;
 }
 ul.topnav {
-    margin: 0;
+    margin: 10px;
     font-size: 14px;
     line-height: 0.5em!important;
     list-style: none!important;

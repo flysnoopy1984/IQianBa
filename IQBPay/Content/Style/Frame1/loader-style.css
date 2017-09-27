@@ -1,7 +1,7 @@
 
 
 
-@import "../js/skin-select/skin-select.css";
+@import "as/skin-select.css";
 
 @import "font-awesome.css";
 @import "entypo-icon.css";
@@ -15,13 +15,13 @@
 
 
 
-@import "../js/pnotify/jquery.pnotify.default.css";
-@import "../js/tip/tooltipster.css";
+@import "as/jquery.pnotify.default.css";
+@import "as/tooltipster.css";
 
  
 
 
 
-@import "../js/pace/themes/pace-theme-center-simple.css";
-@import "../js/slidebars/slidebars.css";
-@import "../js/gage/jquery.easy-pie-chart.css";
+@import "as/pace-theme-center-simple.css";
+@import "as/slidebars.css";
+@import "as/jquery.easy-pie-chart.css";
