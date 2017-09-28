@@ -8,41 +8,8 @@
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
     border-radius: 3px;
 }
-#skin-select {
-    height: auto;
-    position: absolute;
-    top: 20px;
-    width: 250px;
-    z-index: 1000;
-}
-#skin-select #toggle {
-    /*  background: url("img/style-toggle.png") no-repeat scroll -5px -5px  rgba(0, 0, 0, 0.4);*/
-    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.3);
-    border-radius: 3px;
-    color: rgba(255, 255, 255, 0.8);
-    cursor: pointer;
-    display: block;
-    height: 30px;
-    line-height: 30px;
-    position: absolute;
-    right: 10px;
-    text-align: center;
-    top: -10px;
-    width: 30px;
-    font-size: 14px;
-}
-#skin-select #toggle:hover {
-    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.8);
-}
-#skin-select #toggle.active {
-    background-position: -5px -45px;
-    height: 30px;
-    left: 210px;
-    position: absolute;
-    top: -10px;
-    width: 30px;
-    border-radius: 3px;
-}
+
+
 #skin-select li {
     font-size: 20px;
     line-height: 0;

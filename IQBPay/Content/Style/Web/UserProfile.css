@@ -1,0 +1,124 @@
+﻿#ProfileAreaContainer
+{
+   
+    background-color:#FAFAFA;
+    height:auto;
+    overflow:auto;
+    
+}
+/*Left Area Begin */
+#ProfileAreaContainer #LeftUL
+{
+    display: block;
+    width:25%;
+    margin-top:30px;
+    float:left;
+    border-radius: 5px;
+}
+
+#ProfileAreaContainer #LeftUL li
+{
+    padding:10px 15px;
+    display: block;
+    border:1px solid #EEEEEE;
+    margin-top:-1px;
+    font-weight:bold;
+
+}
+
+#ProfileAreaContainer #LeftUL li span
+{
+    float:right;
+}
+/* Left Area End */
+
+/* Right Area Begin */
+#ProfileAreaContainer #Right
+{
+    margin-top:30px;
+    margin-bottom:30px;
+    margin-left:20px;
+    float:left;
+    width:45%;
+    border:1px solid #EEEEEE;
+    border-radius: 5px;
+    padding:10px;
+}
+
+#ProfileAreaContainer #Right #dtUserDetail
+{
+    display:block;
+}
+
+#ProfileAreaContainer #Right #dtUserDetail dt {
+   
+    float: left;
+    overflow: hidden;
+    padding: 8px 0;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 160px;
+}
+#ProfileAreaContainer #Right #dtUserDetail dd{
+     padding: 8px 0;
+}
+
+#ProfileAreaContainer #Right #dtUserDetail dd:before {
+    content: ":";
+    padding-right: 20px;
+}
+/* Right Area End */
+
+/*Action Area*/
+#ActionContainer
+{
+     background-color:#FAFAFA;
+     height:400px;
+     overflow:hidden;
+    
+}
+#ActionContainer #Title
+{
+  margin-top:20px;
+}
+
+.AtionList li button
+{
+    width:250px;
+    height:80px; 
+
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 22px;
+  font-weight: normal;
+  line-height: 1.428571429;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+       -o-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+   
+}
+
+.AtionList li 
+{
+    margin-left:40px;
+    margin-right:40px;
+}
+
+.img-profile-big {
+  border-radius: 50%;
+  border:2px solid white;
+  width:180px;
+  height:180px;
+  margin:0 auto;
+}

@@ -441,6 +441,7 @@
     <Content Include="Content\Style\Frame1\social.css" />
     <Content Include="Content\Style\Frame1\style.css" />
     <Content Include="Content\Style\Frame1\weather-icons.min.css" />
+    <Content Include="Content\Style\Web\UserProfile.css" />
     <Content Include="Document\good1\404.html" />
     <Content Include="Document\good1\500.html" />
     <Content Include="Document\good1\andvance-form.html" />
@@ -979,6 +980,7 @@
     <Content Include="Content\Style\Frame1\font\weathericons-regular-webfont.eot" />
     <Content Include="Content\Style\Frame1\font\weathericons-regular-webfont.ttf" />
     <Content Include="Content\Style\Frame1\font\weathericons-regular-webfont.woff" />
+    <Content Include="Views\Shared\_Layout - 复制.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

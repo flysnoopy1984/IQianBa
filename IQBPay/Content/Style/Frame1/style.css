@@ -1451,42 +1451,7 @@ ul.topnav li a:hover:after {
     -o-transform: rotate(90deg);
     tranform: rotate(90deg);
 }
-ul.topnav ul {
-    margin: 0;
-    padding: 0;
-    display: none;
-}
-ul.topnav ul li {
-    margin: 0;
-    padding: 0;
-    clear: both;
-    list-style: none outside none;
-}
-ul.topnav ul li a {
-    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.3);
-    color: rgba(255, 255, 255, 0.9) !important;
-    font-size: 13px;
-    font-weight: normal;
-    outline: 0 none;
-    padding-left: 30px;
-    /* transition: all 0.2s ease 0s;*/
-}
-ul.topnav ul li a i {
-}
-ul.topnav ul li a:hover {
-    background-color: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
-    color: #FFFFFF!important;
-}
-ul.topnav ul ul li a {
-    color: #444;
-    padding-left: 40px;
-    background: #252d3b;
-    transition: all 0.2s ease 0s;
-}
-ul.topnav ul ul li a:hover {
-    background-color: #D3CEB8;
-    color: #675C7C;
-}
+
 ul.topnav h4 {
     float: right !important;
     margin-top: -2px;
@@ -2669,19 +2634,7 @@ b#speed {
     padding: 20px;
     min-height: 1430px;
 }
-.bevel.tlbr {
-    background: #f5f5f5;
-    background: -moz-linear-gradient(45deg, #f5f5f5 30px, #f5f5f5 30px), -moz-linear-gradient(135deg, transparent 30px, #f5f5f5 30px), -moz-linear-gradient(225deg, #f5f5f5 30px, #f5f5f5 30px), -moz-linear-gradient(315deg, transparent 30px, #f5f5f5 30px);
-    background: -o-linear-gradient(45deg, #f5f5f5 30px, #f5f5f5 30px), -o-linear-gradient(135deg, transparent 30px, #f5f5f5 30px), -o-linear-gradient(225deg, #f5f5f5 30px, #f5f5f5 30px), -o-linear-gradient(315deg, transparent 30px, #f5f5f5 30px);
-    background: -webkit-linear-gradient(45deg, #f5f5f5 30px, #f5f5f5 30px), -webkit-linear-gradient(135deg, transparent 30px, #f5f5f5 30px), -webkit-linear-gradient(225deg, #f5f5f5 30px, #f5f5f5 30px), -webkit-linear-gradient(315deg, transparent 30px, #f5f5f5 30px);
-}
-.bevel.all, .bevel.trbl, .bevel.tlbr, .bevel.tr {
-    background-position: bottom left, bottom right, top right, top left;
-    -moz-background-size: 52% 52%;
-    -webkit-background-size: 52% 52%;
-    background-size: 52% 52%;
-    background-repeat: no-repeat;
-}
+
 .paper-wrap:before {
     content:"";
     position: absolute;
@@ -3047,3 +3000,44 @@ small.pull-right {
     margin: 30px 0 20px!important;
     border-bottom: 0px solid #eee!important;
 }
+/*
+    IQB Pay Customization Begin
+*/
+
+
+
+
+
+ul.topnav ul li a {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.3);
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 13px;
+    font-weight: normal;
+    outline: 0 none;
+    padding-left: 30px;
+    /* transition: all 0.2s ease 0s;*/
+}
+ul.topnav ul li a i {
+}
+ul.topnav ul li a:hover {
+ 
+    color: #FFFFFF!important;
+}
+ul.topnav ul ul li a {
+    color: #444;
+    padding-left: 40px;
+    background: #252d3b;
+    transition: all 0.2s ease 0s;
+}
+ul.topnav ul ul li a:hover {
+    background-color: #D3CEB8;
+    color: #675C7C;
+}
+
+
+
+/*
+    IQB Pay Customization End
+*/
+
+

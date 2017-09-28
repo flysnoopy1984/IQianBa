@@ -42,7 +42,7 @@ function waitingScan(ssoToken,appId)
             if (result != "")
             {
                 
-                window.location = result.ReturnUrl;
+                window.location = result.ReturnUrl + "?openId=" + result.OpenId;
                 return;
                
             }
