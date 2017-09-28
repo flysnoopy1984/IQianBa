@@ -441,7 +441,8 @@
     <Content Include="Content\Style\Frame1\social.css" />
     <Content Include="Content\Style\Frame1\style.css" />
     <Content Include="Content\Style\Frame1\weather-icons.min.css" />
-    <Content Include="Content\Style\Web\UserProfile.css" />
+    <Content Include="Content\Style\Web\Store.css" />
+    <Content Include="Content\Style\Web\User.css" />
     <Content Include="Document\good1\404.html" />
     <Content Include="Document\good1\500.html" />
     <Content Include="Document\good1\andvance-form.html" />
@@ -844,6 +845,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ExternalAPI\TestController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Core\AliPayConfig.cs" />
     <Compile Include="Core\AppConfig.cs" />
@@ -856,6 +858,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\QR\EQRInfo.cs" />
+    <Compile Include="Models\Store\EStoreInfo.cs" />
     <Compile Include="Models\User\EUserAgent.cs" />
     <Compile Include="Models\User\EUserInfo.cs" />
     <Compile Include="Models\User\EUserStore.cs" />
@@ -885,7 +888,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Main\Home.cshtml" />
     <Content Include="Views\Main\Register.cshtml" />
-    <Content Include="Views\User\UserProfile.cshtml" />
+    <Content Include="Views\User\Profile.cshtml" />
     <Content Include="Document\IQBPay.xlsx" />
     <Content Include="Views\Order\List.cshtml" />
     <Content Include="Views\AliPay\PP.cshtml" />
@@ -981,6 +984,8 @@
     <Content Include="Content\Style\Frame1\font\weathericons-regular-webfont.ttf" />
     <Content Include="Content\Style\Frame1\font\weathericons-regular-webfont.woff" />
     <Content Include="Views\Shared\_Layout - 复制.cshtml" />
+    <Content Include="Views\Store\Info.cshtml" />
+    <Content Include="Views\Store\List.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -994,7 +999,6 @@
     <Folder Include="Content\Images\Frame1\credit\" />
     <Folder Include="Content\Style\Frame1\as\js\wizard\build\" />
     <Folder Include="Models\Order\" />
-    <Folder Include="Models\Store\" />
     <Folder Include="scripts\Web\" />
   </ItemGroup>
   <ItemGroup>

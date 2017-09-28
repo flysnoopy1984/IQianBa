@@ -6,15 +6,21 @@ using System.Web.Mvc;
 
 namespace IQBPay.Controllers
 {
-    public class UserController : Controller
+    public class StoreController : Controller
     {
-        // GET: User
+        // GET: Store
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Profile()
+        public ActionResult List()
+        {
+
+            return View();
+        }
+
+        public ActionResult Info()
         {
             return View();
         }

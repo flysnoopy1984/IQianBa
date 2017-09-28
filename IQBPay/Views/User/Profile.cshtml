@@ -2,7 +2,13 @@
 @{
     ViewBag.Title = "User Profile";
 }
-<link href="~/Content/Style/Web/UserProfile.css" rel="stylesheet" />
+@section SubMenu1{
+    用户管理
+}
+@section SubMenu2{
+    用户信息
+}
+<link href="~/Content/Style/Web/User.css" rel="stylesheet" />
 <div id="ProfileAreaContainer">
     <ul id="LeftUL">
         <li><span style="float:left !important;" class="entypo-user"></span>&nbsp;&nbsp;用户</li>
@@ -67,16 +73,11 @@
         <strong>您可以开始以下操作</strong>
     </div>
     <div>
-        <ul class="UlHorizontal AtionList">
+        <ul class="UlHorizontal AtionList" style="width:1024px">
             <li><button type="button" class="btn-warning">获取我的收款二维码</button></li>
             <li><button type="button" class="btn-info">创建代理</button></li>
             <li><button type="button" class="btn-primary">订单查询</button></li>
         </ul>
-        
-
-       
-
-        
     </div>
 </div>
 

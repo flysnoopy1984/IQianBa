@@ -43,4 +43,10 @@ namespace IQBPay.Core.BaseEnum
 
     }
 
+    public enum RecordStatus
+    {
+        Normal=0,
+        Blocked=1,
+    }
+
 }

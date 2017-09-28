@@ -1,0 +1,12 @@
+﻿/*Action Area*/
+#ListArea
+{
+     background-color:#FAFAFA;
+     height:1000px;
+     overflow:hidden;
+    
+}
+#Title button
+{
+    float:right;
+}
