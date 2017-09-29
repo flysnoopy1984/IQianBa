@@ -66,7 +66,7 @@ namespace IQBCore.Common.Helper
             return JsonConvert.DeserializeObject<T>(result);
         }
 
-        public static string RequestUrlSendMsg(string url, HttpMethod method, string JSONData, String ContentType = "text/html")
+        public static string RequestUrlSendMsg(string url, HttpMethod method, string JSONData, String ContentType = "text/html",string charset="utf-8")
         {
             byte[] bytes = Encoding.UTF8.GetBytes(JSONData);
             // 设置参数
@@ -76,18 +76,21 @@ namespace IQBCore.Common.Helper
             request.AllowAutoRedirect = true;
             request.Method = method.ToString();
             request.ContentType = ContentType;
-            request.Headers.Add("charset", "utf-8");
+            
+            request.Headers.Add("charset", charset);
+            request.Headers.Add("CharacterEncoding", charset);
             Stream reqstream = request.GetRequestStream();
             reqstream.Write(bytes, 0, bytes.Length);
             //声明一个HttpWebRequest请求  
             request.Timeout = 90000;
             //设置连接超时时间  
             request.Headers.Set("Pragma", "no-cache");
+            request.Headers.Set("Cache-Control", "no-cache");
             //发送请求并获取相应回应数据
             HttpWebResponse response = request.GetResponse() as HttpWebResponse;
             //直到request.GetResponse()程序才开始向目标网页发送Post请求
             Stream responseStream = response.GetResponseStream();
-            StreamReader sr = new StreamReader(responseStream, Encoding.Default);
+            StreamReader sr = new StreamReader(responseStream, Encoding.UTF8);
             //返回结果网页（html）代码
             string content = sr.ReadToEnd();
             return content;

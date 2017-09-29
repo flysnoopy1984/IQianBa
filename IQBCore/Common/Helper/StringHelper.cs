@@ -39,5 +39,10 @@ namespace IQBCore.Common.Helper
         {
             return DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(8,true,true,false,false,"");
         }
+
+        public static string GenerateSubAccountTransNo()
+        {
+            return DateTime.Now.ToString("SubyyyyMMddhhmmss") + GetRnd(8, true, true, false, false, "");
+        }
     }
 }

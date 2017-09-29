@@ -9,6 +9,16 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Demo</title>
+    <script type="text/javascript">
+      
+        function Go(url)
+        {
+            var TotalAmt = $("#TotalAmt").val();
+            var OrderNo = $("#OrderNo").val();
+            var url = url + "?TotalAmt=" + 1 + "&orderNo=201709290433312gbadd9d";
+            window.location = url;
+        }
+    </script>
 </head>
 <body>
     <div> 
@@ -17,6 +27,10 @@
             <li><a href=@Url.Action("AuthToISV", "AliPay")>AuthToUser</a></li>
             <li><a href=@Url.Action("QRImg","AliPay")>QRImg</a></li>
             <li><a href=@Url.Action("F2FPay", "AliPay")>F2F</a></li> 
+            <li>
+               
+               <a href=@Url.Action("SubAccount", "AliPay", new { @TotalAmt = "1", orderNo = "2017092921001004530201479792" })>分账</a>
+            </li>
         </ul>
         <img src=@ViewData["imgSrc"] />
         <span>@ViewData["url"]</span>

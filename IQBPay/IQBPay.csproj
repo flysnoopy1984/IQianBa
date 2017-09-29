@@ -836,6 +836,7 @@
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
+    <Content Include="scripts\Web\Common.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -847,6 +848,7 @@
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\WapController.cs" />
     <Compile Include="Core\AliPayConfig.cs" />
     <Compile Include="Core\AppConfig.cs" />
     <Compile Include="Core\AuthToISV.cs" />
@@ -986,6 +988,8 @@
     <Content Include="Views\Shared\_Layout - 复制.cshtml" />
     <Content Include="Views\Store\Info.cshtml" />
     <Content Include="Views\Store\List.cshtml" />
+    <Content Include="Views\Wap\Pay.cshtml" />
+    <Content Include="Views\Wap\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -999,7 +1003,6 @@
     <Folder Include="Content\Images\Frame1\credit\" />
     <Folder Include="Content\Style\Frame1\as\js\wizard\build\" />
     <Folder Include="Models\Order\" />
-    <Folder Include="scripts\Web\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IQBCore\IQBCore.csproj">

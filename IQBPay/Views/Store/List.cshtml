@@ -9,6 +9,52 @@
 @section SubMenu2{
     我的商户列表
 }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tbData tr td").each(function () {
+          
+            return;
+
+    //        var tr = $(this).children();
+
+    //        tr.mousedown(function () {
+    //            var s = $(this).attr("class");
+            
+    //            if (s != null && s != 'undefined') {
+
+    //                var ofright = $(this).attr("class").indexOf("TableRowSelected");
+
+
+    //                if (ofright > -1) {
+    //                    $(this).removeClass("TableRowSelected");
+    //                } else {
+    //                    $(this).addClass("TableRowSelected");
+    //                }
+    //            } else {
+
+    //                // $(this).addClass("TableRowSelected");
+                    
+    //                $(this).children().each(function () {
+    //                    $(this).addClass("TableRowSelected");
+    //                });
+    //            }
+    //        });
+
+           
+       });
+/*
+        $("#tbData tr").mouseover(function () {
+            $(this).addClass("TableRowOver");//添加样式tr1，$(this)表示当前选择的元素。
+        });
+        // mouseout--鼠标离开的事件
+        $("#tbData tr").mouseout(function () {
+            $(this).removeClass("TableRowOver");//去掉样式tr1
+        });
+  */      
+    });
+</script>
+<link href="~/Content/Style/Web/Store.css" rel="stylesheet" />
 <div id="ListArea">
     <div id="Title" style="margin:0px;">
         商户列表
@@ -23,7 +69,7 @@
         </ul>
 </div>
     <div id="ListContent">
-        <table class="table table-bordered table-striped cf">
+        <table id="tbData" class="table table-hover table-bordered table-striped cf">
             <thead class="cf">
                 <tr>
                     <th>Code</th>
@@ -40,7 +86,7 @@
             <tbody>
                 <tr>
                     <td>AAC</td>
-                    <td>AUSTRALIAN AGRICULTURAL COMPANY LIMITED.</td>
+                    <td style="background-color:red;">AUSTRALIAN AGRICULTURAL COMPANY LIMITED.</td>
                     <td class="numeric">$1.38</td>
                     <td class="numeric">-0.01</td>
                     <td class="numeric">-0.36%</td>

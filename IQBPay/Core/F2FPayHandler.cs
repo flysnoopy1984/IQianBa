@@ -17,7 +17,7 @@ namespace IQBPay.Core
 {
     public class F2FPayHandler
     {
-        public AlipayTradePrecreateContentBuilder BuildPrecreateContent(string sellerid)
+        public AlipayTradePrecreateContentBuilder BuildPrecreateContent(string sellerid,string TotalAmt)
         {
             //线上联调时，请输入真实的外部订单号。
             string out_trade_no = StringHelper.GenerateOrderNo();
@@ -26,12 +26,12 @@ namespace IQBPay.Core
             AlipayTradePrecreateContentBuilder builder = new AlipayTradePrecreateContentBuilder();
             //收款账号
             builder.seller_id = sellerid;
-            
 
+           
             //订单编号
             builder.out_trade_no = out_trade_no;
             //订单总金额
-            builder.total_amount = "0.01";
+            builder.total_amount = TotalAmt;
             //参与优惠计算的金额
             //builder.discountable_amount = "";
             //不参与优惠计算的金额

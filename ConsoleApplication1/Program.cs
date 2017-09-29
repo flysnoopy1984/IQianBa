@@ -24,7 +24,8 @@ namespace ConsoleApplication1
             {
 
                 string ssoToken = "KJm20170805022230";
-                Console.WriteLine(DateTime.Now.ToString("yyyyMMddhhmmss"));
+                long amt = Convert.ToInt64(1.4221);
+                Console.WriteLine(amt);
 
                 Console.WriteLine("Done");
                 Console.Read();

@@ -68,7 +68,7 @@ namespace IQBPay.Controllers
         }
 
 
-        private string CallAliPay()
+        private string CallAliPay(string amt)
         {
           
             // AlipayClient alipayClient = new DefaultAlipayClien
@@ -78,7 +78,7 @@ namespace IQBPay.Controllers
             AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
             model.Body = "至尊宝";
             model.Subject = "爱钱吧币";
-            model.TotalAmount = "0.01";
+            model.TotalAmount =amt;
             model.OutTradeNo = "IQB20170921";
             model.ProductCode = "QUICK_WAP_PAY";
           //  model.SellerId = "2088821092484390";
@@ -106,7 +106,7 @@ namespace IQBPay.Controllers
         }
 
 
-        public string callF2FPay()
+        public string callF2FPay(string TotalAmt,string sellerid)
         {
 
             string result="";  
@@ -115,8 +115,8 @@ namespace IQBPay.Controllers
                             AliPayConfig.sign_type, AliPayConfig.alipay_public_key, AliPayConfig.charset);
 
             F2FPayHandler handler = new F2FPayHandler();
-           // AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent("2088821092484390");
-            AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent("2088821092484390");
+          
+            AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent(sellerid,TotalAmt);
 
             AlipayF2FPrecreateResult precreateResult = serviceClient.tradePrecreate(builder);
             
@@ -126,6 +126,7 @@ namespace IQBPay.Controllers
                 case ResultEnum.SUCCESS:
                     result = handler.CreateQR(precreateResult);
                     result = handler.DeQR(result);
+                    
                     break;
                 case ResultEnum.FAILED:
                     result = precreateResult.response.Body;
@@ -145,6 +146,74 @@ namespace IQBPay.Controllers
                     break;
             }
             return result;
+        }
+
+        private string callSubAccount2()
+        {
+            IAopClient client = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
+              privateKey, "json", "1.0", "RSA2", publicKey2, "GBK", false);
+            AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
+            
+            request.BizContent = "{" +
+            "\"out_request_no\":\"201709290001\"," +
+            "\"trade_no\":\"2017092921001004530201479792\"," +
+            "      \"royalty_parameters\":[{" +
+            "        \"trans_out\":\"2088821092484390\"," +
+            "\"trans_in\":\"2088101126708402\"," +
+            "\"amount\":0.5," +
+            "\"amount_percentage\":30," +
+            "\"desc\":\"2088721665327500\"" +
+            "        }]," +
+            "\"operator_id\":\"A0001\"" +
+            "  }";
+            AlipayTradeOrderSettleResponse response = client.Execute(request);
+            return response.Body;
+        }
+
+        private string callSubAccount(string orderNo,string sellerId,long TotalAmt,int Percentage)
+        {
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
+               privateKey, "json", "1.0", "RSA2", publicKey2, "GBK", false);
+           
+
+            AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
+        Aop.Api.Domain.AlipayTradeOrderSettleModel model = new AlipayTradeOrderSettleModel();
+
+            model.OutRequestNo = StringHelper.GenerateSubAccountTransNo();
+            model.TradeNo = orderNo;
+
+            List<OpenApiRoyaltyDetailInfoPojo> paramList = new List<OpenApiRoyaltyDetailInfoPojo>();
+
+            OpenApiRoyaltyDetailInfoPojo p = new OpenApiRoyaltyDetailInfoPojo();
+            p.TransOut = sellerId;
+            p.TransIn = AliPayConfig.pid;
+            p.Amount = TotalAmt;
+            p.AmountPercentage = Percentage;
+            
+           
+            paramList.Add(p);
+           
+            model.RoyaltyParameters = paramList;
+            request.SetBizModel(model);
+          
+/*
+            request.BizContent = "{" +
+            "\"out_request_no\":\"{0}\"," +
+            "\"trade_no\":\"{1}\"," +
+            "      \"royalty_parameters\":[{" +
+            "        \"trans_out\":\"{2}\"," +
+            "\"trans_in\":\"{3}\"," +
+            "\"amount\":1," +
+            "\"amount_percentage\":30," +
+            "\"desc\":\"test\"" +
+            "        }]," +
+            "\"operator_id\":\"A0001\"" +
+            "  }";
+
+            request.BizContent = string.Format(request.BizContent, StringHelper.GenerateSubAccountTransNo(), orderNo, sellerId, AliPayConfig.pid);
+            */
+            AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request,null, "201709BB365d9e48da1f41398bce8ad681d81X39");
+            return response.Body; 
         }
 
 
@@ -189,7 +258,7 @@ namespace IQBPay.Controllers
 
         public ActionResult Pay()
         {
-            return Content(CallAliPay());
+            return Content(CallAliPay("0.01"));
         }
 
         public ActionResult Demo()
@@ -224,7 +293,9 @@ namespace IQBPay.Controllers
 
         public ActionResult F2FPay()
         {
-            return Content(callF2FPay());
+            string TotalAmt = Request["TotalAmt"];
+            string sellerid = Request["sellerid"];// "2088821092484390"; 
+            return Content(callF2FPay(TotalAmt, sellerid));
         }
 
         public ActionResult AuthToISV()
@@ -238,5 +309,23 @@ namespace IQBPay.Controllers
             Log.log("PP to https://qr.alipay.com/stx04233mlnkwff4e7sble7");
             return Redirect("https://qr.alipay.com/stx04233mlnkwff4e7sble7");
         }
+
+        public ActionResult TestUrl()
+        {
+            
+            string result = Request.QueryString["goto"];
+            result = HttpHelper.RequestUrlSendMsg(result, HttpHelper.HttpMethod.Post, "", "text/html");
+            return Content(result);
+        }
+
+        public ActionResult SubAccount()
+        {
+            string orderNo = Request.QueryString["orderNo"];
+            long TotalAmt = Convert.ToInt64(Request.QueryString["TotalAmt"]);
+           // return Content(callSubAccount2());
+           return Content(callSubAccount(orderNo, "2088821092484390", TotalAmt, 100)); 
+        }
+
+
     }
 }

@@ -1,0 +1,44 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>支付界面</title>
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        function Pay(url)
+        {
+            var TotalAmt = $("#TotalAmt").val();
+            $.ajax({
+                type: "post",
+                url: url,
+                data: "TotalAmt=" + TotalAmt,
+                success: function (result) {
+                    window.location = result;
+                },
+            });
+        }
+
+        function Go(url)
+        {
+            var TotalAmt = $("#TotalAmt").val();
+            var url = url + "?goto=" + TotalAmt;
+            window.location = url;
+        }
+    </script>
+</head>
+<body>
+    <div>
+        金额：<input  type="text" id="TotalAmt" value="0.05"/><br />
+        收款码:<input type="text" id="sellerid" value="2088821092484390" /><br />
+        <input type="button" onclick="Pay('@Url.Action("F2FPay","AliPay")');" value="付款" />
+        @*<input type="button" onclick="Go('@Url.Action("TestUrl","AliPay")');" value="GO" />*@
+    </div>
+    <div id="Result"></div>
+</body>
+</html>
