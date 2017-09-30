@@ -7,6 +7,7 @@ using Com.Alipay.Business;
 using Com.Alipay.Domain;
 using Com.Alipay.Model;
 using IQBCore.Common.Helper;
+using IQBCore.Controllers;
 using IQBPay.Core;
 using System;
 using System.Collections.Generic;
@@ -56,12 +57,16 @@ namespace IQBPay.Controllers
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
                 privateKey, "json", "1.0", "RSA2", publicKey2, "UTF-8", false);
 
-
+            AlipayOpenAuthTokenAppQueryModel model = new AlipayOpenAuthTokenAppQueryModel();
+            model.AppAuthToken = "201709BB409adf95ae524bf7809e12d114180X39";
 
             AlipayOpenAuthTokenAppQueryRequest request = new AlipayOpenAuthTokenAppQueryRequest();
+            /*
             request.BizContent ="{" +
             "    \"app_auth_token\":\"201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39\"" +
             "  }";
+            */
+            request.SetBizModel(model);
             AlipayOpenAuthTokenAppQueryResponse response = aliyapClient.Execute(request);
           
             return response.Body;
@@ -99,7 +104,7 @@ namespace IQBPay.Controllers
 */
             request.SetBizModel(model);
 
-            AlipayTradeWapPayResponse response = aliyapClient.Execute(request, null, "201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39");
+            AlipayTradeWapPayResponse response = aliyapClient.Execute(request, "201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39", "201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39");
             
             string ret = response.Body;
             return ret;
@@ -194,25 +199,27 @@ namespace IQBPay.Controllers
             paramList.Add(p);
            
             model.RoyaltyParameters = paramList;
+            
             request.SetBizModel(model);
-          
-/*
-            request.BizContent = "{" +
-            "\"out_request_no\":\"{0}\"," +
-            "\"trade_no\":\"{1}\"," +
-            "      \"royalty_parameters\":[{" +
-            "        \"trans_out\":\"{2}\"," +
-            "\"trans_in\":\"{3}\"," +
-            "\"amount\":1," +
-            "\"amount_percentage\":30," +
-            "\"desc\":\"test\"" +
-            "        }]," +
-            "\"operator_id\":\"A0001\"" +
-            "  }";
+            
 
-            request.BizContent = string.Format(request.BizContent, StringHelper.GenerateSubAccountTransNo(), orderNo, sellerId, AliPayConfig.pid);
-            */
-            AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request,null, "201709BB365d9e48da1f41398bce8ad681d81X39");
+            /*
+                        request.BizContent = "{" +
+                        "\"out_request_no\":\"{0}\"," +
+                        "\"trade_no\":\"{1}\"," +
+                        "      \"royalty_parameters\":[{" +
+                        "        \"trans_out\":\"{2}\"," +
+                        "\"trans_in\":\"{3}\"," +
+                        "\"amount\":1," +
+                        "\"amount_percentage\":30," +
+                        "\"desc\":\"test\"" +
+                        "        }]," +
+                        "\"operator_id\":\"A0001\"" +
+                        "  }";
+
+                        request.BizContent = string.Format(request.BizContent, StringHelper.GenerateSubAccountTransNo(), orderNo, sellerId, AliPayConfig.pid);
+                        */
+            AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request, "201709BB409adf95ae524bf7809e12d114180X39");
             return response.Body; 
         }
 
@@ -301,6 +308,27 @@ namespace IQBPay.Controllers
         public ActionResult AuthToISV()
         {
             return View();
+        }
+
+        public ActionResult GetAuthToken()
+        {
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
+                privateKey, "json", "1.0", "RSA2", publicKey2, "GBK", false);
+
+            AlipayOpenAuthTokenAppRequest request = new AlipayOpenAuthTokenAppRequest();
+            AlipayOpenAuthTokenAppModel model = new AlipayOpenAuthTokenAppModel();
+            model.GrantType = "authorization_code";
+            model.Code = "a7cf51f66a8f4ec1b82edfdec3fcdF39";
+            /*
+            request.setBizContent("{" +
+            "    \"grant_type\":\"authorization_code\"," +
+            "    \"code\":\"1cc19911172e4f8aaa509c8fb5d12F56\"" +
+            "  }");
+            */
+            request.SetBizModel(model);
+            AlipayOpenAuthTokenAppResponse response = aliyapClient.Execute(request);
+
+            return Content(response.Body);
         }
 
         public ActionResult PP()

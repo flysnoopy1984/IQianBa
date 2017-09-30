@@ -1,4 +1,5 @@
-﻿using IQBPay.Models.User;
+﻿using IQBPay.Models.Store;
+using IQBPay.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,10 +12,12 @@ namespace IQBPay.DataBase
     {
         public AliPayContent() : base("PPConnection")
         {
-
+             //Database.SetInitializer<AliPayContent>(new DropCreateDatabaseAlways<AliPayContent>());
         }
 
         public DbSet<EUserInfo> UserInfoDB { get; set; }
+
+        public DbSet<EStoreInfo> StoreInfoDB { get; set; }
 
         #region User  
         public Boolean IsExistUser(string openId)
@@ -25,6 +28,15 @@ namespace IQBPay.DataBase
         }
         #endregion
 
+        #region Store
+        public Boolean IsExistStore(string openId,string name)
+        {
+            int i = StoreInfoDB.Count(u => u.OwnnerOpenId == openId && u.Name == name);
+
+            return (i > 0);
+
+        }
+        #endregion
 
     }
 }

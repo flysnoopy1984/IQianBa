@@ -164,6 +164,8 @@
     <Content Include="Content\bootstrap-checkbox.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.css" />
+    <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.js" />
     <Content Include="Content\Images\backgrounds\1.jpg" />
     <Content Include="Content\Images\backgrounds\2.jpg" />
     <Content Include="Content\Images\backgrounds\3.jpg" />
@@ -441,7 +443,8 @@
     <Content Include="Content\Style\Frame1\social.css" />
     <Content Include="Content\Style\Frame1\style.css" />
     <Content Include="Content\Style\Frame1\weather-icons.min.css" />
-    <Content Include="Content\Style\Web\Store.css" />
+    <Content Include="Content\Style\Web\Info.css" />
+    <Content Include="Content\Style\Web\List.css" />
     <Content Include="Content\Style\Web\User.css" />
     <Content Include="Document\good1\404.html" />
     <Content Include="Document\good1\500.html" />
@@ -835,16 +838,17 @@
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="scripts\Component\IQBTable.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\Web\Common.js" />
+    <Content Include="scripts\Web\StoreInfo.js" />
+    <Content Include="scripts\Web\StoreList.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AliPayController.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\ExternalAPI\TestController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -863,7 +867,6 @@
     <Compile Include="Models\Store\EStoreInfo.cs" />
     <Compile Include="Models\User\EUserAgent.cs" />
     <Compile Include="Models\User\EUserInfo.cs" />
-    <Compile Include="Models\User\EUserStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

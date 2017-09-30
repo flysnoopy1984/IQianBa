@@ -1,0 +1,38 @@
+﻿#InfoArea
+{
+     background-color:#FAFAFA;
+     overflow:hidden; 
+     margin:30px; 
+     width:95%;
+}
+
+#InfoArea #EditArea
+{
+    width:800px;
+    overflow:hidden;
+
+}
+
+.BarTitle
+{   
+    width:80%;
+    padding:10px;
+}
+.ButtonList
+{
+    width:60%;
+   
+}
+.ButtonList button
+{
+   margin:0 10px;
+   float:right;
+ 
+}
+
+#EditArea > div
+{
+    overflow:hidden;
+    clear:both;
+ 
+}

@@ -1,8 +1,52 @@
 ﻿
 @{
-    ViewBag.Title = "StoreList";
+    ViewBag.Title = "商户详情";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section SubMenu1{
+    商户
+}
+@section SubMenu2{
+    商户编辑
+}
+<link href="~/Content/Style/Web/Info.css" rel="stylesheet" />
+<script src="~/scripts/Web/StoreInfo.js"></script>
+<link href="~/Content/Component/bootstrap-switch/bootstrap-switch.min.css" rel="stylesheet" />
+<script src="~/Content/Component/bootstrap-switch/bootstrap-switch.min.js"></script>
 
-<h2>StoreList</h2>
 
+<div id="InfoArea">
+    <div id="Title" class="alert alert-info BarTitle">
+        <span class="entypo-info-circled"></span>
+        <strong>查看或编辑信息</strong>
+        
+       
+    </div>
+    <div id="EditArea">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">商户名</label>
+            <div class="col-sm-6">
+                <input id="Name" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注</label>
+            <div class="col-sm-6">
+                <input id="Remark" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">状态</label>
+            <div class="switch col-sm-6" data-on="success" data-off="warning">
+                <input type="checkbox" id="StoreStatus">
+            </div>
+        </div>
+    </div>
+
+    <div class="ButtonList">
+        <button type="button" class="btn btn-warning">新增</button>
+        <button type="button" class="btn btn-success" onclick="Save();">保存</button>
+    </div>
+ </div>

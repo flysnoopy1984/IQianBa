@@ -10,201 +10,37 @@
     我的商户列表
 }
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#tbData tr td").each(function () {
-          
-            return;
-
-    //        var tr = $(this).children();
-
-    //        tr.mousedown(function () {
-    //            var s = $(this).attr("class");
-            
-    //            if (s != null && s != 'undefined') {
-
-    //                var ofright = $(this).attr("class").indexOf("TableRowSelected");
 
 
-    //                if (ofright > -1) {
-    //                    $(this).removeClass("TableRowSelected");
-    //                } else {
-    //                    $(this).addClass("TableRowSelected");
-    //                }
-    //            } else {
-
-    //                // $(this).addClass("TableRowSelected");
-                    
-    //                $(this).children().each(function () {
-    //                    $(this).addClass("TableRowSelected");
-    //                });
-    //            }
-    //        });
-
-           
-       });
-/*
-        $("#tbData tr").mouseover(function () {
-            $(this).addClass("TableRowOver");//添加样式tr1，$(this)表示当前选择的元素。
-        });
-        // mouseout--鼠标离开的事件
-        $("#tbData tr").mouseout(function () {
-            $(this).removeClass("TableRowOver");//去掉样式tr1
-        });
-  */      
-    });
-</script>
-<link href="~/Content/Style/Web/Store.css" rel="stylesheet" />
+<link href="~/Content/Style/Web/List.css" rel="stylesheet" />
+<script src="~/scripts/Component/IQBTable.js"></script>
+<script src="~/scripts/Web/StoreList.js"></script>
 <div id="ListArea">
     <div id="Title" style="margin:0px;">
         商户列表
         <ul class="UlHorizontal" style="float:right">
             <li>
-                <button type="button" class="btn btn-warning">编辑</button>
+                <button type="button" class="btn btn-warning" onclick="ToInfo(1);">新增</button>
             </li>
             <li>
-                <button type="button" class="btn btn-primary">查询</button>
+                <button type="button" class="btn btn-primary" onclick="Query();">查询</button>
             </li>
            
         </ul>
-</div>
+    </div>
     <div id="ListContent">
-        <table id="tbData" class="table table-hover table-bordered table-striped cf">
+        <table id="tbData" class="table table-hover table-bordered TableOverflowHidden">
             <thead class="cf">
-                <tr>
-                    <th>Code</th>
-                    <th>Company</th>
-                    <th class="numeric">Price</th>
-                    <th class="numeric">Change</th>
-                    <th class="numeric">Change %</th>
-                    <th class="numeric">Open</th>
-                    <th class="numeric">High</th>
-                    <th class="numeric">Low</th>
-                    <th class="numeric">Volume</th>
+                <tr id="trHeader">
+                    <th width="50px;">ID</th>
+                    <th width="50px;">商户名</th>
+                    <th width="500px;">备注</th>
+                    <th width="100px;">状态</thwidth="500px;"> 
+                    <th width="100px;"> 操作</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>AAC</td>
-                    <td style="background-color:red;">AUSTRALIAN AGRICULTURAL COMPANY LIMITED.</td>
-                    <td class="numeric">$1.38</td>
-                    <td class="numeric">-0.01</td>
-                    <td class="numeric">-0.36%</td>
-                    <td class="numeric">$1.39</td>
-                    <td class="numeric">$1.39</td>
-                    <td class="numeric">$1.38</td>
-                    <td class="numeric">9,395</td>
-                </tr>
-                <tr>
-                    <td>AAD</td>
-                    <td>ARDENT LEISURE GROUP</td>
-                    <td class="numeric">$1.15</td>
-                    <td class="numeric">+0.02</td>
-                    <td class="numeric">1.32%</td>
-                    <td class="numeric">$1.14</td>
-                    <td class="numeric">$1.15</td>
-                    <td class="numeric">$1.13</td>
-                    <td class="numeric">56,431</td>
-                </tr>
-                <tr>
-                    <td>AAX</td>
-                    <td>AUSENCO LIMITED</td>
-                    <td class="numeric">$4.00</td>
-                    <td class="numeric">-0.04</td>
-                    <td class="numeric">-0.99%</td>
-                    <td class="numeric">$4.01</td>
-                    <td class="numeric">$4.05</td>
-                    <td class="numeric">$4.00</td>
-                    <td class="numeric">90,641</td>
-                </tr>
-                <tr>
-                    <td>ABC</td>
-                    <td>ADELAIDE BRIGHTON LIMITED</td>
-                    <td class="numeric">$3.00</td>
-                    <td class="numeric">+0.06</td>
-                    <td class="numeric">2.04%</td>
-                    <td class="numeric">$2.98</td>
-                    <td class="numeric">$3.00</td>
-                    <td class="numeric">$2.96</td>
-                    <td class="numeric">862,518</td>
-                </tr>
-                <tr>
-                    <td>ABP</td>
-                    <td>ABACUS PROPERTY GROUP</td>
-                    <td class="numeric">$1.91</td>
-                    <td class="numeric">0.00</td>
-                    <td class="numeric">0.00%</td>
-                    <td class="numeric">$1.92</td>
-                    <td class="numeric">$1.93</td>
-                    <td class="numeric">$1.90</td>
-                    <td class="numeric">595,701</td>
-                </tr>
-                <tr>
-                    <td>ABY</td>
-                    <td>ADITYA BIRLA MINERALS LIMITED</td>
-                    <td class="numeric">$0.77</td>
-                    <td class="numeric">+0.02</td>
-                    <td class="numeric">2.00%</td>
-                    <td class="numeric">$0.76</td>
-                    <td class="numeric">$0.77</td>
-                    <td class="numeric">$0.76</td>
-                    <td class="numeric">54,567</td>
-                </tr>
-                <tr>
-                    <td>ACR</td>
-                    <td>ACRUX LIMITED</td>
-                    <td class="numeric">$3.71</td>
-                    <td class="numeric">+0.01</td>
-                    <td class="numeric">0.14%</td>
-                    <td class="numeric">$3.70</td>
-                    <td class="numeric">$3.72</td>
-                    <td class="numeric">$3.68</td>
-                    <td class="numeric">191,373</td>
-                </tr>
-                <tr>
-                    <td>ADU</td>
-                    <td>ADAMUS RESOURCES LIMITED</td>
-                    <td class="numeric">$0.72</td>
-                    <td class="numeric">0.00</td>
-                    <td class="numeric">0.00%</td>
-                    <td class="numeric">$0.73</td>
-                    <td class="numeric">$0.74</td>
-                    <td class="numeric">$0.72</td>
-                    <td class="numeric">8,602,291</td>
-                </tr>
-                <tr>
-                    <td>AGG</td>
-                    <td>ANGLOGOLD ASHANTI LIMITED</td>
-                    <td class="numeric">$7.81</td>
-                    <td class="numeric">-0.22</td>
-                    <td class="numeric">-2.74%</td>
-                    <td class="numeric">$7.82</td>
-                    <td class="numeric">$7.82</td>
-                    <td class="numeric">$7.81</td>
-                    <td class="numeric">148</td>
-                </tr>
-                <tr>
-                    <td>AGK</td>
-                    <td>AGL ENERGY LIMITED</td>
-                    <td class="numeric">$13.82</td>
-                    <td class="numeric">+0.02</td>
-                    <td class="numeric">0.14%</td>
-                    <td class="numeric">$13.83</td>
-                    <td class="numeric">$13.83</td>
-                    <td class="numeric">$13.67</td>
-                    <td class="numeric">846,403</td>
-                </tr>
-                <tr>
-                    <td>AGO</td>
-                    <td>ATLAS IRON LIMITED</td>
-                    <td class="numeric">$3.17</td>
-                    <td class="numeric">-0.02</td>
-                    <td class="numeric">-0.47%</td>
-                    <td class="numeric">$3.11</td>
-                    <td class="numeric">$3.22</td>
-                    <td class="numeric">$3.10</td>
-                    <td class="numeric">5,416,303</td>
-                </tr>
+            <tbody id="trContainer">
+              
             </tbody>
         </table>
     </div>

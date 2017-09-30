@@ -4,6 +4,8 @@
     background-color:#FAFAFA;
     height:auto;
     overflow:auto;
+     margin:30px;
+      width:95%;
     
 }
 /*Left Area Begin */
@@ -76,6 +78,8 @@
      background-color:#FAFAFA;
      height:400px;
      overflow:auto;
+     margin:30px;
+      width:95%;
     
 }
 #ActionContainer #Title
