@@ -53,7 +53,7 @@ namespace IQBPay.Core
             goods.goods_id = "goods id";
             goods.goods_name = "goods name";
             
-            goods.price = "0.01";
+            goods.price = TotalAmt;
             goods.quantity = "1";
             gList.Add(goods);
             builder.goods_detail = gList;

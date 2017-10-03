@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "应用列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+    系统
+}
+@section SubMenu2{
+    应用列表
+}
+
+
+
+<link href="~/Content/Style/Web/List.css" rel="stylesheet" />
+<script src="~/scripts/Component/IQBTable.js"></script>
+<script src="~/scripts/Web/App.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        Query();
+    });
+</script>
+<div id="ListArea">
+    <div id="Title" style="margin:0px;">
+        应用列表
+        <ul class="UlHorizontal" style="float:right">
+            <li>
+                <button type="button" class="btn btn-warning" onclick="ToInfo(1);">新增</button>
+            </li>
+            <li>
+                <button type="button" class="btn btn-primary" onclick="Query();">查询</button>
+            </li>
+
+        </ul>
+    </div>
+    <div id="ListContent">
+        <table id="tbData" style="width:800px;" class="table table-hover table-bordered TableOverflowHidden">
+            <thead class="cf">
+                <tr id="trHeader">
+                    <th>AppId</th>
+                    <th>AppName</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="trContainer"></tbody>
+        </table>
+    </div>
+</div>

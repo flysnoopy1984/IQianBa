@@ -100,7 +100,6 @@ namespace IQBWX.BLL
                 
                 using (WXContent db = new WXContent())
                 {
-
                     sso = db.GetSSOEntity(ssoToken);
                     if (sso == null) return false;
                     using (UserContent udb = new UserContent())
@@ -110,10 +109,12 @@ namespace IQBWX.BLL
                             ui = newUserSubscribe(udb, msg, controller, out pui, false);
                     }
 
-                    //用openId注册web,如果已经注册,不会反复注册。
+                   
                     BaseExternalWeb exWeb = BaseExternalWeb.GetExternalWeb(sso.AppId);
+                 
                     RExternalWebResult result = exWeb.WXInfo(ui,msg);
 
+                    //用openId注册web,如果已经注册,将不注册注册。
                     if (result.Status == -1) return true;
 
                     if (sso != null)

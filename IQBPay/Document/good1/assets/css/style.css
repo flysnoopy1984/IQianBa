@@ -1654,7 +1654,27 @@ ul.topnav h4 {
     position: fixed;
     top: 61px;
 }
-
+.breadcrumb {
+    background-color: #F5F5F5 !important;
+    border-radius: 0 !important;
+    list-style: none outside none !important;
+    margin: 0 0 0 15px !important;
+    padding: 0 !important;
+    z-index: 99;
+}
+.breadcrumb li {
+    display: inline-block;
+    text-shadow: none!important;
+}
+.breadcrumb li a {
+    color: #9EA7B3 !important;
+    font-size: 13px;
+    transition: all 0.4s ease 0s;
+}
+.breadcrumb li a:hover {
+    color: #6ADAE4 !important;
+    text-decoration: none;
+}
 .nav-date-picker {
     cursor: pointer;
     padding-left: 20px

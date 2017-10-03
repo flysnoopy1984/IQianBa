@@ -16,6 +16,9 @@ namespace IQBPay.Models.User
         public int Id { get; set; }
 
         [MaxLength(32)]
+        public string parentOpenId { get; set; }
+
+        [MaxLength(32)]
         public string OpenId { get; set; }
 
         public UserStatus UserStatus { get; set; }
@@ -27,11 +30,10 @@ namespace IQBPay.Models.User
 
         public Boolean Isadmin { get; set; }
 
-       
+        public long QRDefaultId { get; set; }
 
-        
+        [MaxLength(256)]
+        public string Headimgurl { get; set; }
 
-
-        
     }
 }

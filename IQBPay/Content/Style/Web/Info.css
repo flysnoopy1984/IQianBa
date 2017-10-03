@@ -13,6 +13,36 @@
 
 }
 
+#EditArea > div
+{
+    overflow:hidden;
+    clear:both;
+ 
+}
+
+/*Left Area*/
+#EditLeftArea
+{
+    width:500px;
+    overflow:hidden;
+    float:left;
+}
+
+#EditLeftArea > div
+{
+    overflow:hidden;
+    clear:both;
+ 
+}
+/*Right Area */
+#EditRightArea
+{
+    width:500px;
+    overflow:hidden;
+    float:left;
+
+}
+
 .BarTitle
 {   
     width:80%;
@@ -21,6 +51,7 @@
 .ButtonList
 {
     width:60%;
+    clear:both;
    
 }
 .ButtonList button
@@ -30,9 +61,3 @@
  
 }
 
-#EditArea > div
-{
-    overflow:hidden;
-    clear:both;
- 
-}

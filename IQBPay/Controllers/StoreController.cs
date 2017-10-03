@@ -1,4 +1,4 @@
-﻿using IQBCore.Controllers;
+﻿using IQBPay.Core;
 using IQBPay.DataBase;
 using IQBPay.Models.Store;
 using System;
@@ -26,7 +26,7 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(int pageIndex = 0, int pageSize = 100)
+        public ActionResult Query(int pageIndex = 0, int pageSize = IQBConfig.PageSize)
         {
             List<EStoreInfo> result = new List<EStoreInfo>();
             try
@@ -35,7 +35,7 @@ namespace IQBPay.Controllers
 
                 using (AliPayContent db = new AliPayContent())
                 {
-                    var list = db.StoreInfoDB.Where(i => i.OwnnerOpenId == openId).OrderByDescending(i => i.CreateDate);
+                    var list = db.DBStoreInfo.Where(i => i.OwnnerOpenId == openId).OrderByDescending(i => i.CreateDate);
 
                     int totalCount = list.Count();
                     if (pageIndex == 0)
@@ -71,7 +71,7 @@ namespace IQBPay.Controllers
                     }
                     else
                     {
-                        db.StoreInfoDB.Add(store);
+                        db.DBStoreInfo.Add(store);
                         db.SaveChanges();
                     }
 
@@ -81,7 +81,7 @@ namespace IQBPay.Controllers
             {
                 Content("Save Store Error"+ex.Message);
             }
-            return Content("OK");
+            return Json("OK");
         }
 
 

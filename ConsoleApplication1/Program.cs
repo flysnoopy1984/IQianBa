@@ -23,13 +23,12 @@ namespace ConsoleApplication1
             try
             {
 
-                string ssoToken = "KJm20170805022230";
-                long amt = Convert.ToInt64(1.4221);
-                Console.WriteLine(amt);
+                string url = @"http://wx.qlogo.cn/mmopen/xbIQx1GRqdvyqkMMhEaGOX802l1CyqMJNgUzKP8MeAeHFicRDSnZH7FY4XB7p8XHXIf6uJA2SCun
+TPicGKezDC4saKISzRj3nz/0";
 
-                Console.WriteLine("Done");
-                Console.Read();
-               
+                Console.WriteLine(string.Format("{0}",url.Length));
+
+
             }
             catch(Exception ex)
             {

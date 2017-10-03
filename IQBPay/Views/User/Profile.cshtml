@@ -9,24 +9,29 @@
     用户信息
 }
 <link href="~/Content/Style/Web/User.css" rel="stylesheet" />
+<script src="~/scripts/Web/UserProfile.js"></script>
+
 <div id="ProfileAreaContainer">
     <ul id="LeftUL">
-        <li><span style="float:left !important;" class="entypo-user"></span>&nbsp;&nbsp;用户</li>
-        <li style="text-align:center;"><img class="img-profile-big" src="http://wx.qlogo.cn/mmopen/wiaLKhKTxZqNrdZZDewJMIvMqJEib79Z7wYAzqX5TB4adpyBs8IrSx2sh4tLXbyD4RiaPLorwhcebS8AO2JfdiaO9JBWHvMAJ2HU/0" /></li>
+        <li>
+        <span style="float:left !important;" class="entypo-user">
+            </span>&nbsp;&nbsp;用户</li>
+        <li style="text-align:center;">
+        <img id="" class="img-profile-big" src="http://wx.qlogo.cn/mmopen/wiaLKhKTxZqNrdZZDewJMIvMqJEib79Z7wYAzqX5TB4adpyBs8IrSx2sh4tLXbyD4RiaPLorwhcebS8AO2JfdiaO9JBWHvMAJ2HU/0" /></li>
         <li>角色类型：
-            <span>aaa</span>
+            <span id="UserRole"></span>
         </li>
         <li>注册日期
-            <span>aaa</span>
+            <span id="RegisterDate"></span>
         </li>
         <li>最后登录日期
-            <span>aaa</span>
+            <span id="LastLoginDate"></span>
         </li>
     </ul>
 
     <div id="Right">
-        <h2>
-            Dave Mattew
+        <h2 id="Name">
+            xxxxx
            
         </h2>
         <hr />
@@ -37,32 +42,8 @@
             <dt>Name</dt>
             <dd>Eko Sulistyo</dd>
 
-            <dt>Email</dt>
-            <dd>eko.sulistyo@yahoo.com</dd>
-
             <dt>Phone</dt>
             <dd>081 725 xxx</dd>
-
-            <dt>Active Periode</dt>
-            <dd>02 Dec 2014</dd>
-
-            <dt>Last Update</dt>
-            <dd>02 Apr 2014</dd>
-
-            <dt>About</dt>
-            <dd>Web Designer / UI</dd>
-
-            <dt>Hobbies</dt>
-            <dd>Read, out with friends, listen to music, draw and learn new things</dd>
-
-            <dt>Skills</dt>
-            <dd>
-                <span class="tags">html5</span>
-                <span class="tags">css3</span>
-                <span class="tags">jquery</span>
-                <span class="tags">bootstrap3</span>
-            </dd>
-
         </dl>
     </div>
 </div>
@@ -75,9 +56,9 @@
     <div>
         <ul class="UlHorizontal AtionList" style="width:1024px">
             <li><button type="button" class="btn-warning">获取我的收款二维码</button></li>
-            <li><button type="button" class="btn-info">创建代理</button></li>
+           
             <li><button type="button" class="btn-primary">订单查询</button></li>
         </ul>
     </div>
 </div>
-
+<input type="hidden" id="RecId" />

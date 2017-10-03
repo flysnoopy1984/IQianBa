@@ -108,6 +108,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -840,9 +841,16 @@
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="scripts\Component\IQBTable.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
+    <Content Include="scripts\Web\App.js" />
     <Content Include="scripts\Web\Common.js" />
+    <Content Include="scripts\Web\FormUtility.js" />
+    <Content Include="scripts\Web\QR_ARInfo.js" />
+    <Content Include="scripts\Web\QR_ARList.js" />
+    <Content Include="scripts\Web\QR_ARDefaultInfo.js" />
     <Content Include="scripts\Web\StoreInfo.js" />
     <Content Include="scripts\Web\StoreList.js" />
+    <Content Include="scripts\Web\SysConfig.js" />
+    <Content Include="scripts\Web\UserProfile.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -850,23 +858,35 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AliPayController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\QRController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WapController.cs" />
     <Compile Include="Core\AliPayConfig.cs" />
     <Compile Include="Core\AppConfig.cs" />
     <Compile Include="Core\AuthToISV.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Core\BaseEnum\IQBPayEnum.cs" />
     <Compile Include="Core\F2FPayHandler.cs" />
+    <Compile Include="Core\IQBConfig.cs" />
+    <Compile Include="Core\QRManager.cs" />
     <Compile Include="DataBase\AliPayContent.cs" />
     <Compile Include="Controllers\ExternalAPI\UserAPIController.cs" />
+    <Compile Include="DataBase\SysContent.cs" />
+    <Compile Include="DataBase\WXContent.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\QR\EQRInfo.cs" />
+    <Compile Include="Models\QR\EQRUser.cs" />
+    <Compile Include="Models\Result\RQRInfo.cs" />
+    <Compile Include="Models\Result\RUserInfo.cs" />
     <Compile Include="Models\Store\EStoreInfo.cs" />
+    <Compile Include="Models\System\EAliPayApplication.cs" />
+    <Compile Include="Models\System\ESysConfig.cs" />
     <Compile Include="Models\User\EUserAgent.cs" />
     <Compile Include="Models\User\EUserInfo.cs" />
+    <Compile Include="Models\User\EWXUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -988,11 +1008,20 @@
     <Content Include="Content\Style\Frame1\font\weathericons-regular-webfont.eot" />
     <Content Include="Content\Style\Frame1\font\weathericons-regular-webfont.ttf" />
     <Content Include="Content\Style\Frame1\font\weathericons-regular-webfont.woff" />
-    <Content Include="Views\Shared\_Layout - 复制.cshtml" />
     <Content Include="Views\Store\Info.cshtml" />
     <Content Include="Views\Store\List.cshtml" />
     <Content Include="Views\Wap\Pay.cshtml" />
     <Content Include="Views\Wap\Index.cshtml" />
+    <Content Include="Views\QR\ARList.cshtml" />
+    <Content Include="Views\QR\ARInfo.cshtml" />
+    <Content Include="Views\Main\SysConfig.cshtml" />
+    <Content Include="Views\Main\AppList.cshtml" />
+    <Content Include="Views\Main\AppInfo.cshtml" />
+    <Content Include="Views\QR\My.cshtml" />
+    <Content Include="Views\QR\MyList.cshtml" />
+    <Content Include="Views\Wap\Auth_AR.cshtml" />
+    <Content Include="Views\QR\ARDefaultInfo.cshtml" />
+    <Content Include="Views\User\Demo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1004,6 +1033,8 @@
     <Folder Include="App_Data\" />
     <Folder Include="BLL\" />
     <Folder Include="Content\Images\Frame1\credit\" />
+    <Folder Include="Content\QR\ARMaster\" />
+    <Folder Include="Content\QR\ARUser\" />
     <Folder Include="Content\Style\Frame1\as\js\wizard\build\" />
     <Folder Include="Models\Order\" />
   </ItemGroup>

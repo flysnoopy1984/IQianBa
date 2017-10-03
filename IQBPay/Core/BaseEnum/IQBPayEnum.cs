@@ -37,10 +37,25 @@ namespace IQBPay.Core.BaseEnum
         /// <summary>
         /// 关注
         /// </summary>
-        Follow=1,
-        Register =2,
+        Follow=0,
+        Register =1,
 
 
+    }
+
+    public enum QRType
+    {
+        AR =1,
+        Auth =2,
+        AgentJoin =3,
+        Temp =0,
+    }
+
+    public enum QRChannel
+    {
+        PP=0,
+        PPAuto= 99,
+        Party=1,
     }
 
     public enum RecordStatus

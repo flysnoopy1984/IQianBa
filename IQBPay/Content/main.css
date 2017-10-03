@@ -100,9 +100,18 @@ border: 1px solid #E0E0E0;
     border: 1px solid ;
     border-radius: 4px;
     box-shadow: none !important;
-    color: #C7D5E0 ;
+    color: #50482f !important;
     font-size: 13px !important;
     height: 31px !important;
+}
+.form-Area{
+    background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid ;
+    border-radius: 4px;
+    box-shadow: none !important;
+    color: #50482f !important;
+    font-size: 13px !important;
 }
 
 .UlHorizontal
@@ -284,6 +293,7 @@ ul.topnav ul li {
     width: 20px;
 }
 
+/*Table Row Begin */
 .TableOverflowHidden
 {
     table-layout: fixed;
@@ -294,6 +304,12 @@ ul.topnav ul li {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+/*Table Row End*/
+
+.NeedFill
+{
+
 }
 
 /* IQB Pay Frame End */

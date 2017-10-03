@@ -43,7 +43,7 @@ namespace IQBWX.Models.WX
         [MaxLength(20)]
         public string country { get; set; }
 
-        [MaxLength(200)]
+        [MaxLength(256)]
         public string headimgurl { get; set; }
         
         public string unionid { get; set; }

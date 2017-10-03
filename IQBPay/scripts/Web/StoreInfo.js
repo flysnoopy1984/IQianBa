@@ -18,11 +18,23 @@
 
 });
 
+function CheckForm() {
+    $("#EditArea").find("input[class*='NeedFill']").each(function (i) {
+        if ($.trim($(this).val()) == "") {
+            alert($(this).parent().prev().text() + "不能空");
+            return false;
+        }
+    });
+    return true;
+}
+
 function Save()
 {
     var StoreStatus = $("#StoreStatus").val();
     var name = $("#Name").val();
     var remake = $("#Remark").val();
+
+    if (!CheckForm()) return;
 
     var url = "/Store/Add";
     $.ajax({
@@ -42,7 +54,7 @@ function Save()
         },
         error: function (xhr, type) {
 
-            alert('Ajax error!');
+            alert(xhr.responseText);
 
         }
     });

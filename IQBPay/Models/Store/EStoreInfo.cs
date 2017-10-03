@@ -33,5 +33,16 @@ namespace IQBPay.Models.Store
         /// </summary>
         public RecordStatus RecordStatus{ get; set; }
 
+        [MaxLength(28)]
+        /// <summary>
+        /// 支付宝的商户Id 2088xxx
+        /// </summary>
+        public string AliPayAccount { get; set; }
+
+        /// <summary>
+        /// 是否在平台池中
+        /// </summary>
+        public bool IsPool { get; set; }
+
     }
 }

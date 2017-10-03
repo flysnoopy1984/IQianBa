@@ -8,7 +8,7 @@ function Query() {
     var url = "/Store/Query";
     $.ajax({
         type: 'post',
-        data: "pageIndex=0&pageSize=100",
+        data: "pageIndex=0&pageSize=20",
         url: url,
         success: function (data) {
             var arrLen = data.length;
