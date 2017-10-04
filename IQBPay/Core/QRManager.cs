@@ -21,8 +21,8 @@ namespace IQBPay.Core
         /// </summary>
         public static EQRUser CreateUserUrlById(EQRUser qrUser)
         {
-            string site = ConfigurationManager.AppSettings["Main_SiteUrl"];
-            string url = site + "Wap/Pay?Id=" + qrUser.ID;
+            string site = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
+            string url = site + "PP/Pay?Id=" + qrUser.QRId;
 
             string filePath = ConfigurationManager.AppSettings["QR_ARUser_FP"];
             string filename = "QRARM" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()
@@ -53,11 +53,31 @@ namespace IQBPay.Core
 
         public static EQRInfo CreateMasterUrlById(EQRInfo qr)
         {
-            string site = ConfigurationManager.AppSettings["Main_SiteUrl"];
-            string url = site + "Wap/Auth_AR?Id=" + qr.ID;
+            string site = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
+            string url = site + "PP/Auth_AR?Id=" + qr.ID;
 
             string filePath = ConfigurationManager.AppSettings["QR_ARMaster_FP"];
-            string filename = "QRARM"+System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()
+            string filename = "QRARU"+System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()
+            + ".jpg";
+
+            filePath += filename;
+            qr.FilePath = filePath;
+            qr.TargetUrl = url;
+
+            //Create QR
+            // filePath = PageController.Server.MapPath(filePath);
+            filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
+            QRManager.CreateQR(url, filePath);
+            return qr;
+        }
+
+        public static EQRInfo CreateStoreAuthUrlById(EQRInfo qr)
+        {
+            string site = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
+            string url = site + "PP/Auth_Store?Id=" + qr.ID;
+
+            string filePath = ConfigurationManager.AppSettings["QR_AuthStore_FP"];
+            string filename = "QRAS" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()
             + ".jpg";
 
             filePath += filename;

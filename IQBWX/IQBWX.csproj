@@ -239,6 +239,7 @@
     <Compile Include="Controllers\Html5Controller.cs" />
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\IQBAsyncController.cs" />
+    <Compile Include="Controllers\PPController.cs" />
     <Compile Include="Controllers\WXBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PayController.cs" />
@@ -339,6 +340,8 @@
     <Content Include="Views\HOME\IndexWxLogin.cshtml" />
     <Content Include="Views\HOME\WaitingScan.cshtml" />
     <Content Include="Views\HOME\WXLoginWAP.cshtml" />
+    <Content Include="Views\PP\Auth_AR.cshtml" />
+    <Content Include="Views\PP\Pay.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

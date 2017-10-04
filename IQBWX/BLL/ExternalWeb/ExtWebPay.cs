@@ -28,9 +28,9 @@ namespace IQBWX.BLL.ExternalWeb
                 string name = ui.nickname;
                 if (name == null) name = ui.UserName;
                 if (name == null) name = "wx" + ui.UserId.ToString().PadLeft(7, '0');
-                
+               
                 data = string.Format(data, name, ui.openid, ui.headimgurl);
-              
+                log.log("regeisterWebMember Data " + data);
                 string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
                 return res;
             }

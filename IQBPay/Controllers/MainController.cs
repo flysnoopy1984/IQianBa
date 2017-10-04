@@ -6,6 +6,7 @@ using IQBPay.Models.System;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Transactions;
 using System.Web;
@@ -36,10 +37,18 @@ namespace IQBPay.Controllers
                 qr.Channel = QRChannel.PPAuto;
                 qr.Type = QRType.AR;
                 qr.Rate = 5;
+                qr.Name = "平台默认二维码";
+
+                db.DBQRInfo.Add(qr);
+                db.SaveChanges();
 
                 qr = QRManager.CreateMasterUrlById(qr);
-                db.DBQRInfo.Add(qr);
-               
+                db.Entry(qr).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                EAliPayApplication delApp = db.DBAliPayApp.FirstOrDefault();
+                if (delApp != null)
+                    db.DBAliPayApp.Remove(delApp);
 
                 EAliPayApplication app = new EAliPayApplication();
                 app.Version = AliPayConfig.version;

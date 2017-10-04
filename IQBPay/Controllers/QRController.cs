@@ -36,7 +36,7 @@ namespace IQBPay.Controllers
             List<EQRInfo> result = new List<EQRInfo>();
             try
             {
-                string openId = Convert.ToString(Session["OpenId"]);
+                string openId = this.GetOpenId(true);
 
                 using (AliPayContent db = new AliPayContent())
                 {
@@ -123,13 +123,17 @@ namespace IQBPay.Controllers
                     }
                     else
                     {
-                        db.IsExistQR(qr.OwnnerOpenId, qr.Name, QRType.AR);
+                        
                         qr.OwnnerOpenId = this.GetOpenId(true);
                         qr.Channel = QRChannel.PP;
                         qr.Type = QRType.AR;
-                        qr = QRManager.CreateMasterUrlById(qr);
                         db.DBQRInfo.Add(qr);
+                        db.SaveChanges();      
+                                         
+                        qr = QRManager.CreateMasterUrlById(qr);
+                        db.Entry(qr).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
+
                     }
 
                 }
@@ -173,6 +177,7 @@ namespace IQBPay.Controllers
                     EQRInfo updateObj = db.DBQRInfo.Where(q=>q.Channel == QRChannel.PPAuto).FirstOrDefault();
                     if (updateObj != null)
                     {
+
                         qr.TargetUrl = updateObj.TargetUrl;
                         qr.FilePath = updateObj.FilePath;
                         qr.Channel = QRChannel.PPAuto;
@@ -200,6 +205,80 @@ namespace IQBPay.Controllers
             return Json("OK");
         }
 
+        #endregion
+
+        #region AuthList
+        public ActionResult AuthList()
+        {
+            Session["OpenId"] = this.GetOpenId(true);
+
+
+
+            return View();
+        }
+
+        #endregion
+
+        #region AuthInfo
+        public ActionResult AuthInfo()
+        {
+            Session["OpenId"] = this.GetOpenId(true);
+
+
+
+            return View();
+        }
+
+        public ActionResult SaveAuth(EQRInfo qr)
+        {
+
+            try
+            {
+                qr.OwnnerOpenId = this.GetOpenId(true);
+                using (AliPayContent db = new AliPayContent())
+                {
+                    if (qr.ID > 0)
+                    {
+                        EQRInfo updateObj = db.DBQRInfo.Where(q => q.ID == qr.ID).FirstOrDefault();
+                        if (updateObj != null)
+                        {
+
+                            qr.TargetUrl = updateObj.TargetUrl;
+                            qr.FilePath = updateObj.FilePath;
+                            qr.Channel = QRChannel.Party;
+                            qr.Type = QRType.StoreAuth;
+                            db.Entry(updateObj).CurrentValues.SetValues(qr);
+
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            return Content("Id " + qr.ID + " 没有找到，无法更新");
+                        }
+                    }
+                    else
+                    {
+
+                        qr.OwnnerOpenId = this.GetOpenId(true);
+                        qr.Channel = QRChannel.Party;
+                        qr.Type = QRType.StoreAuth;
+                        db.DBQRInfo.Add(qr);
+                        db.SaveChanges();
+
+                        qr = QRManager.CreateMasterUrlById(qr);
+                        db.Entry(qr).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content("Save Store Error" + ex.Message);
+            }
+            return Json("OK");
+        }
         #endregion
 
     }

@@ -79,8 +79,8 @@ namespace IQBPay.Controllers
             string data = "UserStatus=1&UserRole=1&Isadmin=false&name={0}&openId={1}&Headimgurl=aaaaaaaaaaa";
             string name = "22";
            
-            data = string.Format(data, "wx" + ui.Id.ToString().PadLeft(7, '0'), name, ui.OpenId);
-
+            data = string.Format(data, name, "orKUAw16WK0BmflDLiBYsR-Kh5bE");
+          
             string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
             if(res.Contains("EXIST"))
             {

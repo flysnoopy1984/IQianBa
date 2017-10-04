@@ -27,15 +27,18 @@ namespace IQBPay.Controllers.ExternalAPI
                     {
                         using (AliPayContent db = new AliPayContent())
                         {
+                            //检查用户是否已经注册
                             updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
                             if (updateUser!=null)
                             {
+
                                 updateUser.InitModify();
-                                db.Entry(updateUser).CurrentValues.SetValues(ui);
+                              
                                 db.SaveChanges();
+                                sc.Complete();
                                 return "EXIST";
                             }
-
+                            //通过QR模板获取QRUser
                             EQRUser qrUser = new EQRUser();
                             EQRInfo qr = db.DBQRInfo.Where(a => a.Channel == Core.BaseEnum.QRChannel.PPAuto).FirstOrDefault();
                             if (qr == null)
@@ -48,7 +51,6 @@ namespace IQBPay.Controllers.ExternalAPI
                             qrUser.Rate = qr.Rate;
                             qrUser = QRManager.CreateUserUrlById(qrUser);
                         
-
                             db.DBQRUser.Add(qrUser);
                             db.SaveChanges();
 

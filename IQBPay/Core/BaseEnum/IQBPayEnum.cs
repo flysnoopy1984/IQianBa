@@ -46,7 +46,7 @@ namespace IQBPay.Core.BaseEnum
     public enum QRType
     {
         AR =1,
-        Auth =2,
+        StoreAuth =2,
         AgentJoin =3,
         Temp =0,
     }
