@@ -9,11 +9,16 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Pay</title>
-</head>
-<body>
-    <div> 
-        <input type="text" />
-        <button type="button">付款</button>
+    <link href="~/Content/Wap/Wap.css" rel="stylesheet" />
+ </head>
+
+<body class="WapPay">
+    <div class="form-group">
+        <label class="AmtLabel">输入金额</label>
+        <div class="AmtEdit">
+            <input id="Remark" type="text" class="form-control">
+        </div>
     </div>
+    <div><button type="button" class="btn btn-success" onclick="Save();">支付</button></div>
 </body>
 </html>

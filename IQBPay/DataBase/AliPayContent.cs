@@ -13,11 +13,15 @@ namespace IQBPay.DataBase
 {
     public class AliPayContent: DbContext
     {
-        public AliPayContent() : base("PPConnection")
+        public AliPayContent(bool isInit=false) : base("PPConnection")
         {
-          // Database.SetInitializer<AliPayContent>(new DropCreateDatabaseAlways<AliPayContent>());
-            Database.SetInitializer<SysContent>(new DropCreateDatabaseIfModelChanges<SysContent>());
-           // Database.SetInitializer<AliPayContent>(new CreateDatabaseIfNotExists<AliPayContent>());
+            if(isInit)
+                Database.SetInitializer<AliPayContent>(new DropCreateDatabaseAlways<AliPayContent>());
+            else
+                Database.SetInitializer<AliPayContent>(null);
+
+            //    Database.SetInitializer<AliPayContent>(new DropCreateDatabaseIfModelChanges<AliPayContent>());
+            // Database.SetInitializer<AliPayContent>(new CreateDatabaseIfNotExists<AliPayContent>());
         }
 
         public DbSet<EUserInfo> DBUserInfo { get; set; }
@@ -28,6 +32,10 @@ namespace IQBPay.DataBase
 
         public DbSet<EQRUser> DBQRUser { get; set; }
         public DbSet<EAliPayApplication> DBAliPayApp { get; set; }
+
+        public DbSet<ESysConfig> DBSysConfig { get; set; }
+
+
 
         #region User  
         public Boolean IsExistUser(string openId)

@@ -17,22 +17,26 @@ namespace IQBPay.Controllers.ExternalAPI
         [HttpPost]
         public string Register([FromBody]EUserInfo ui)
         {
-           
+            EUserInfo updateUser = null;
             try
             {
+             
                 if (ui != null)
                 {
                     using (TransactionScope sc = new TransactionScope())
                     {
                         using (AliPayContent db = new AliPayContent())
                         {
-                            if (db.IsExistUser(ui.OpenId))
+                            updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
+                            if (updateUser!=null)
                             {
+                                updateUser.InitModify();
+                                db.Entry(updateUser).CurrentValues.SetValues(ui);
+                                db.SaveChanges();
                                 return "EXIST";
                             }
 
                             EQRUser qrUser = new EQRUser();
-
                             EQRInfo qr = db.DBQRInfo.Where(a => a.Channel == Core.BaseEnum.QRChannel.PPAuto).FirstOrDefault();
                             if (qr == null)
                             {
@@ -40,7 +44,6 @@ namespace IQBPay.Controllers.ExternalAPI
                             }
                             
                             qrUser.QRId = qr.ID;
-
                             qrUser.OpenId = ui.OpenId;
                             qrUser.Rate = qr.Rate;
                             qrUser = QRManager.CreateUserUrlById(qrUser);
@@ -56,7 +59,6 @@ namespace IQBPay.Controllers.ExternalAPI
 
                             db.DBUserInfo.Add(ui);
                             db.SaveChanges();
-
                         }
                        
                         sc.Complete();

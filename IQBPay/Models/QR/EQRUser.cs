@@ -7,6 +7,7 @@ using System.Web;
 
 namespace IQBPay.Models.QR
 {
+    [Table("QRUser")]
     public class EQRUser
     {
         [Key]

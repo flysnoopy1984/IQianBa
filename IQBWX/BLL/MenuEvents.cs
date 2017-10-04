@@ -109,11 +109,10 @@ namespace IQBWX.BLL
                             ui = newUserSubscribe(udb, msg, controller, out pui, false);
                     }
 
-                   
                     BaseExternalWeb exWeb = BaseExternalWeb.GetExternalWeb(sso.AppId);
                  
                     RExternalWebResult result = exWeb.WXInfo(ui,msg);
-
+                    log.log("WXScanLogin result.Status:" + result.Status);
                     //用openId注册web,如果已经注册,将不注册注册。
                     if (result.Status == -1) return true;
 

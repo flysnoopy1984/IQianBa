@@ -20,10 +20,11 @@ namespace IQBPay.Controllers
             {
                 if(_ESysConfig == null)
                 {
-                    using (SysContent db = new SysContent())
+                    using (AliPayContent db = new AliPayContent())
                     {
                         _ESysConfig = db.DBSysConfig.FirstOrDefault();
-                        
+                       
+
                     }
                 }
                 return _ESysConfig;
@@ -35,6 +36,10 @@ namespace IQBPay.Controllers
             
         }
 
+        protected void SetOpenId(string openId)
+        {
+            Session["OpenId"] = openId;
+        } 
         protected string GetOpenId(bool isTest = false)
         {
             if (isTest) return "orKUAw16WK0BmflDLiBYsR-Kh5bE";

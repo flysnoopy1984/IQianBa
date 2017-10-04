@@ -200,14 +200,14 @@ namespace IQBWX.Controllers
                             result.ReturnUrl = ConfigurationManager.AppSettings["Site_IQBBook"];
 
                         IsLogin = true;
-                        continue;
+                        break;
                     }
                 }
 
                 Thread.Sleep(500);
                 endTime = DateTime.Now;
                 ts = endTime - beginTime;
-                if(ts.Seconds>60)
+                if(ts.Seconds>120)
                 {
                     // return "timeout";
                     result.ErrorMsg = "timeout";

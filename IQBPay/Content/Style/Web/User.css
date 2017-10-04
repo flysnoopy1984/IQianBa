@@ -126,3 +126,10 @@
   height:180px;
   margin:0 auto;
 }
+
+.QRImg_Desc{
+    height:180px;
+    width:250px;
+    position:absolute;
+    margin:10px;
+}

@@ -17,7 +17,7 @@
         <span style="float:left !important;" class="entypo-user">
             </span>&nbsp;&nbsp;用户</li>
         <li style="text-align:center;">
-        <img id="" class="img-profile-big" src="http://wx.qlogo.cn/mmopen/wiaLKhKTxZqNrdZZDewJMIvMqJEib79Z7wYAzqX5TB4adpyBs8IrSx2sh4tLXbyD4RiaPLorwhcebS8AO2JfdiaO9JBWHvMAJ2HU/0" /></li>
+        <img id="HeaderImg" class="img-profile-big" src="" /></li>
         <li>角色类型：
             <span id="UserRole"></span>
         </li>
@@ -30,21 +30,25 @@
     </ul>
 
     <div id="Right">
-        <h2 id="Name">
-            xxxxx
+        <h2 id="UserName">
+           用户名
            
         </h2>
         <hr />
         <dl id="dtUserDetail" class="dl-horizontal-profile">
-            <dt>User Id</dt>
-            <dd>eko.sulis</dd>
+            <dt>用户Id</dt>
+            <dd id="UserId"></dd>
 
-            <dt>Name</dt>
-            <dd>Eko Sulistyo</dd>
-
-            <dt>Phone</dt>
-            <dd>081 725 xxx</dd>
-        </dl>
+            <dt>手机</dt>
+            <dd id="UserPhone"></dd>
+            <dt>默认收款二维码</dt>
+            <dd>
+                <img id="QRImg" sstyle="width:150px;height:150px;" src="" />
+                <span class="QRImg_Desc">新注册用户将默认使用网站平台收款码。若扫描邀请码注册，则根据邀请码扣点获取二维码。如果需要更少的扣点，请扫描代理收款邀请码</span>
+            </dd>
+            <dt>收款码扣点率</dt>
+            <dd id="Rate"></dd>
+</dl>
     </div>
 </div>
 
@@ -55,8 +59,7 @@
     </div>
     <div>
         <ul class="UlHorizontal AtionList" style="width:1024px">
-            <li><button type="button" class="btn-warning">获取我的收款二维码</button></li>
-           
+            <li><button type="button" class="btn-warning">我的收款二维码列表</button></li>
             <li><button type="button" class="btn-primary">订单查询</button></li>
         </ul>
     </div>

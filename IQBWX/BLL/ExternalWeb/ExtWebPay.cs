@@ -12,33 +12,49 @@ namespace IQBWX.BLL.ExternalWeb
 {
     public class ExtWebPay : BaseExternalWeb
     {
+        IQBLog log = new IQBLog();
+        public ExtWebPay()
+        {
+
+        }
+       
         public override string regeisterWebMember(EUserInfo ui)
         {
-            string url = ConfigurationManager.AppSettings["Site_IQBPay_Register"];
-            string data = "UserStatus=1&UserRole=1&Isadmin=false&name={0}&openId={1}";
-            string name = ui.nickname;
-            if (name == null) name = ui.UserName;
-            if (name == null) name = "wx" + ui.UserId.ToString().PadLeft(7, '0');
-
-            data = string.Format(data, "wx" + ui.UserId.ToString().PadLeft(7, '0'), name,ui.openid);
-
-            string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
-            return res;
+           
+            try
+            {
+                string url = ConfigurationManager.AppSettings["Site_IQBPay_Register"];
+                string data = "UserStatus=1&UserRole=1&Isadmin=false&name={0}&openId={1}&Headimgurl={2}";
+                string name = ui.nickname;
+                if (name == null) name = ui.UserName;
+                if (name == null) name = "wx" + ui.UserId.ToString().PadLeft(7, '0');
+                
+                data = string.Format(data, name, ui.openid, ui.headimgurl);
+              
+                string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+                return res;
+            }
+            catch(Exception ex)
+            {
+                log.log("Regeister Pay Web Error" + ex.Message);
+            }
+            return null;
            
         }
 
         public override RExternalWebResult WXInfo(EUserInfo ui, WXMessage msg)
         {
             string res = regeisterWebMember(ui).Trim().ToUpper();
+            log.log("ExtWebPay WXInfo:" + res);
             RExternalWebResult result = new RExternalWebResult();
 
-            if (res == "OK")
+            if (res.Contains("OK"))
             {
                 result.WXMessage += string.Format("亲爱的{0}，您已成功加入爱钱吧-支付平台！", ui.nickname);
                 result.Status = 1;
                 return result;
             }
-            else if (res == "EXIST")
+            else if (res.Contains("EXIST"))
             {
                 result.WXMessage += string.Format("欢迎回来,亲爱的{0}!", ui.nickname);
                 result.Status = 2;

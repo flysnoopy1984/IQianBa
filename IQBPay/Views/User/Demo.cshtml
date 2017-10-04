@@ -1,8 +1,25 @@
 ﻿
 @{
-    ViewBag.Title = "Demo";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
 
-<h2>Demo</h2>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>WebEntry</title>
+    <script type="text/javascript">
+    function Test()
+    {
+        window.location.href = "/Main/WebEntry?OpenId= 11111";
+    }
+    </script>
+</head>
+<body>
+    <div>
+        <a href="javascript:Test();">Go</a>
+    </div>
+</body>
+</html>
 

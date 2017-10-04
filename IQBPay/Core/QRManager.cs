@@ -51,7 +51,7 @@ namespace IQBPay.Core
             return qr;
         }
 
-        public static EQRInfo CreateMasterUrlById(Controller PageController, EQRInfo qr)
+        public static EQRInfo CreateMasterUrlById(EQRInfo qr)
         {
             string site = ConfigurationManager.AppSettings["Main_SiteUrl"];
             string url = site + "Wap/Auth_AR?Id=" + qr.ID;
@@ -73,20 +73,27 @@ namespace IQBPay.Core
 
         public static bool CreateQR(string Url,string FilePath)
         {
-            Bitmap bt;
+            try
+            { 
+                Bitmap bt;
          
-            string enCodeString = Url;
-            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
-            qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
-            qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.H;
-            qrCodeEncoder.QRCodeScale = 3;
-            qrCodeEncoder.QRCodeVersion = 0;
-            bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
+                string enCodeString = Url;
+                QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
+                qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
+                qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.H;
+                qrCodeEncoder.QRCodeScale = 3;
+                qrCodeEncoder.QRCodeVersion = 0;
+                bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
            
            
-            bt.Save(FilePath);
+                bt.Save(FilePath);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
 
-          
+
             return true;
 
         }

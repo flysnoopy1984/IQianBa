@@ -447,6 +447,8 @@
     <Content Include="Content\Style\Web\Info.css" />
     <Content Include="Content\Style\Web\List.css" />
     <Content Include="Content\Style\Web\User.css" />
+    <Content Include="Content\Wap\bg.jpg" />
+    <Content Include="Content\Wap\Wap.css" />
     <Content Include="Document\good1\404.html" />
     <Content Include="Document\good1\500.html" />
     <Content Include="Document\good1\andvance-form.html" />
@@ -872,7 +874,6 @@
     <Compile Include="Core\QRManager.cs" />
     <Compile Include="DataBase\AliPayContent.cs" />
     <Compile Include="Controllers\ExternalAPI\UserAPIController.cs" />
-    <Compile Include="DataBase\SysContent.cs" />
     <Compile Include="DataBase\WXContent.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -912,7 +913,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Main\Home.cshtml" />
-    <Content Include="Views\Main\Register.cshtml" />
     <Content Include="Views\User\Profile.cshtml" />
     <Content Include="Document\IQBPay.xlsx" />
     <Content Include="Views\Order\List.cshtml" />
@@ -1022,6 +1022,8 @@
     <Content Include="Views\Wap\Auth_AR.cshtml" />
     <Content Include="Views\QR\ARDefaultInfo.cshtml" />
     <Content Include="Views\User\Demo.cshtml" />
+    <Content Include="Views\Main\WebEntry.cshtml" />
+    <Content Include="Views\Main\Init.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

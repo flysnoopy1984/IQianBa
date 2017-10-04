@@ -76,6 +76,7 @@ namespace IQBWX.Common
                 request.Method = method.ToString();
                 request.ContentType = ContentType;
                 request.Headers.Add("charset", "utf-8");
+                request.Headers.Add("CharacterEncoding", "utf-8");
                 Stream reqstream = request.GetRequestStream();
                 reqstream.Write(bytes, 0, bytes.Length);
                 //声明一个HttpWebRequest请求  

@@ -1,10 +1,10 @@
 ﻿$(document).ready(function () {
 
-    var Id = $("#RecId").val();
+    Init();
    
 })
 
-function Init(Id) {
+function Init() {
 
     var url = "/User/Get";
     $.ajax({
@@ -12,8 +12,10 @@ function Init(Id) {
         //data: "Id=" + Id,
         url: url,
         success: function (data) {
-
-            InitFormData(data);
+            if (data.QueryResult == false)
+                window.location.href = "/Main/Login";
+            else
+                InitFormData(data);
         },
         error: function (xhr, type) {
 
@@ -26,5 +28,15 @@ function Init(Id) {
 
 function InitFormData(data)
 {
-    $("#UserRole").text(data.)
+    $("#UserRole").text(data.UserRoleName);
+    $("#RegisterDate").text(data.CDate);
+    $("#LastLoginDate").text(data.MDate);
+
+    $("#UserId").text(data.Id);
+    $("#UserPhone").text("");
+    $("#UserName").text(data.Name);
+    $("#Rate").text(data.Rate);
+
+    $("#HeaderImg").attr("src",data.Headimgurl);
+    $("#QRImg").attr("src",data.QRFilePath);
 }

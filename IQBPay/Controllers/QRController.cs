@@ -127,7 +127,7 @@ namespace IQBPay.Controllers
                         qr.OwnnerOpenId = this.GetOpenId(true);
                         qr.Channel = QRChannel.PP;
                         qr.Type = QRType.AR;
-                        qr = QRManager.CreateMasterUrlById(this,qr);
+                        qr = QRManager.CreateMasterUrlById(qr);
                         db.DBQRInfo.Add(qr);
                         db.SaveChanges();
                     }
@@ -157,6 +157,7 @@ namespace IQBPay.Controllers
             using (AliPayContent db = new AliPayContent())
             {
                 result = db.DBQRInfo.Where(a => a.Channel == QRChannel.PPAuto).FirstOrDefault();
+                if (result==null) result = new EQRInfo();
             }
          
             return Json(result);
@@ -184,7 +185,7 @@ namespace IQBPay.Controllers
                     {
                         qr.Channel = QRChannel.PPAuto;
                         qr.Type = QRType.AR;
-                        qr = QRManager.CreateMasterUrlById(this, qr);
+                        qr = QRManager.CreateMasterUrlById(qr);
 
                         db.DBQRInfo.Add(qr);
                         db.SaveChanges();

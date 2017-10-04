@@ -51,9 +51,6 @@ function New() {
 }
 
 function Save() {
-
-  
-
     var name = $("#Name").val();
     var rate = $("#Rate").val();
     var remake = $("#Remark").val();

@@ -1,4 +1,5 @@
-﻿using IQBPay.Core.BaseEnum;
+﻿using IQBCore.Model;
+using IQBPay.Core.BaseEnum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,12 +10,12 @@ using System.Web;
 namespace IQBPay.Models.User
 {
     [Table("UserInfo")]
-    public class EUserInfo
+    public class EUserInfo:BaseModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
+     
         [MaxLength(32)]
         public string parentOpenId { get; set; }
 
@@ -30,6 +31,7 @@ namespace IQBPay.Models.User
 
         public Boolean Isadmin { get; set; }
 
+        
         public long QRDefaultId { get; set; }
 
         [MaxLength(256)]
