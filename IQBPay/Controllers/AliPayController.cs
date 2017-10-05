@@ -354,6 +354,13 @@ namespace IQBPay.Controllers
                             store.AliPayAccount = response.UserId;
                             store.AliPayAuthAppId = response.AuthAppId;
                             store.AliPayAuthToke = response.AppAuthToken;
+
+                            store.OwnnerOpenId = qr.OwnnerOpenId;
+                            store.Channel = qr.Channel;
+                            store.Remark = qr.Remark;
+                            store.QRId = qr.ID;
+                            store.Rate = qr.Rate;
+
                         }
                         qr.InitModify();
                         qr.RecordStatus = Core.BaseEnum.RecordStatus.Blocked;
