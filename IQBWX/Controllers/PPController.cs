@@ -18,6 +18,7 @@ namespace IQBWX.Controllers
             return Content(JsApiPay.openid);
         }
 
-      
+       
+
     }
 }

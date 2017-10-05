@@ -51,17 +51,23 @@ namespace IQBPay.Core.BaseEnum
         Temp =0,
     }
 
-    public enum QRChannel
+    public enum Channel
     {
         PP=0,
-        PPAuto= 99,
-        Party=1,
+
+        League = 1,
+        PPAuto = 99,
+        All =-1,
     }
 
     public enum RecordStatus
     {
         Normal=0,
+       
         Blocked=1,
+
+        Process = 2,
     }
+
 
 }

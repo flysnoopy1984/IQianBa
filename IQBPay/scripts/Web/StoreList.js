@@ -1,14 +1,24 @@
 ﻿
-$(document).ready(function () { 
-        Query();
+$(document).ready(function () {
+    var Channel = GetUrlParam("Channel");
+    if (Channel == null || Channel == undefined)
+        Channel = -1;
+    else
+    {
+        if (Channel == 0)
+            $("#ListTitleName").text("平台商户列表");
+        else if(Channel == 1)
+            $("#ListTitleName").text("加盟商户列表");
+    }
+        Query(Channel);
     });
 
-function Query() {
+function Query(Channel) {
 
     var url = "/Store/Query";
     $.ajax({
         type: 'post',
-        data: "pageIndex=0&pageSize=20",
+        data: "Channel="+Channel+"&pageIndex=0&pageSize=20",
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -32,10 +42,21 @@ function generateData(result)
     var strCtrl = "";
     $.each(result, function (i) {
         
+        var cn;
+        var channel = result[i].Channel;
+        if (channel == 0)
+            cn = "平台";
+        else if (channel == 1)
+            cn = "加盟商";
+
         strCtrl = "";
         strCtrl += "<tr>";
-        strCtrl += "<td>" + result[i].ID + "</td>";
         strCtrl += "<td>" + result[i].Name + "</td>";
+        strCtrl += "<td>" + cn + "</td>";
+        strCtrl += "<td>" + result[i].Rate + "</td>";
+        strCtrl += "<td>" + result[i].AliPayAccount + "</td>";
+        strCtrl += "<td>" + result[i].OpenTime + "</td>";
+        strCtrl += "<td>" + result[i].CloseTime + "</td>";
         strCtrl += "<td>" + result[i].Remark + "</td>";
 
         if (result[i].RecordStatus == 0)
@@ -43,7 +64,7 @@ function generateData(result)
         else
             strCtrl += "<td><div class='noft-red-number'></div>停用</td>";
 
-        strCtrl += "<td><a href='/Store/Info?id='" + result[i].ID + " class='td'>详情</a></td>";
+        strCtrl += "<td><a href='/Store/Info?id=" + result[i].ID + "' class='td'>详情</a></td>";
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);
@@ -51,8 +72,10 @@ function generateData(result)
     });
 }
 
-function ToInfo(action)
+// 根据channel 去不同的页面
+function ToInfo(action,channel)
 {
-    window.location.href = "Info?do="+action;
+    window.location.href = "/QR/AuthInfo?do=" + action+"&c="+channel;
+    
     return;
 }

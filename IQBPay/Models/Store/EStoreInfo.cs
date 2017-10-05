@@ -2,6 +2,7 @@
 using IQBPay.Core.BaseEnum;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace IQBPay.Models.Store
         public int ID { get; set; }
 
         /// <summary>
-        /// 拥有者
+        /// 谁的邀请码，店的主就是谁的，和实际店主无关。
         /// </summary>
         [MaxLength(32)]
         public string OwnnerOpenId { get; set; }
@@ -25,9 +26,13 @@ namespace IQBPay.Models.Store
         [MaxLength(20)]
         public string Name { get; set; }
 
+        [DefaultValue("")]
         [MaxLength(100)]
         public string Remark { get; set; }
 
+        public long QRId { get; set; }
+
+        public float Rate { get; set; }
         /// <summary>
         /// 可能被禁用
         /// </summary>
@@ -39,10 +44,27 @@ namespace IQBPay.Models.Store
         /// </summary>
         public string AliPayAccount { get; set; }
 
-        /// <summary>
-        /// 是否在平台池中
-        /// </summary>
-        public bool IsPool { get; set; }
+        [MaxLength(40)]
+        public string AliPayAuthToke { get; set; }
+
+        [MaxLength(32)]
+        public string AliPayAuthAppId { get; set; }
+
+       
+        public Channel Channel { get; set; }
+
+        [DefaultValue("")]
+        [MaxLength(20)]
+        public string OpenTime { get; set; }
+
+        [DefaultValue("")]
+        [MaxLength(20)]
+        public string CloseTime { get; set; }
+
+
+     
+
+        
 
     }
 }

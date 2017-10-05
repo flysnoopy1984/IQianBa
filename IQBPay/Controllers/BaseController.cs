@@ -1,4 +1,5 @@
-﻿using IQBPay.DataBase;
+﻿using IQBCore.Common.Helper;
+using IQBPay.DataBase;
 using IQBPay.Models.System;
 using System;
 using System.Collections.Generic;
@@ -13,23 +14,37 @@ namespace IQBPay.Controllers
     public class BaseController : Controller
     {
         public static ESysConfig _ESysConfig;
+        public static EAliPayApplication _App;
+        public IQBLog _Log;
 
-        public static ESysConfig ESysConfig
+        public IQBLog Log
         {
             get
             {
-                if(_ESysConfig == null)
+                if (_Log == null)
+                    _Log = new IQBLog();
+                return _Log;
+            }
+
+
+        }
+
+        public static EAliPayApplication App
+        {
+            get
+            {
+                if (_App == null)
                 {
                     using (AliPayContent db = new AliPayContent())
                     {
-                        _ESysConfig = db.DBSysConfig.FirstOrDefault();
-                       
-
+                        _App = db.DBAliPayApp.FirstOrDefault();
                     }
                 }
-                return _ESysConfig;
+                return _App;
             }
         }
+
+      
 
         public BaseController()
         {
@@ -49,6 +64,19 @@ namespace IQBPay.Controllers
 
             }
             return openId;
+        }
+
+        public string UserHeaderImg
+        {
+            get
+            {
+                return (string)Session["UserHeaderImg"];
+            }
+            set
+            {
+                Session["UserHeaderImg"] = value;
+            }
+
         }
 
 

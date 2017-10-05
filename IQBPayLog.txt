@@ -1,0 +1,2 @@
+2017/10/5 18:26:40: User Get Error:未将对象引用设置到对象的实例。
+2017/10/5 22:22:48: Store Query Error:The property 'CreateDate' is not a String or Byte array. Length can only be configured for String and Byte array properties.

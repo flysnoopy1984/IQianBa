@@ -1,8 +1,11 @@
 ﻿using IQBPay.Core;
+using IQBPay.Core.BaseEnum;
 using IQBPay.DataBase;
 using IQBPay.Models.Store;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -25,17 +28,44 @@ namespace IQBPay.Controllers
             return View();
         }
 
+        public ActionResult Get(int Id)
+        {
+
+            EStoreInfo result = null;
+
+            if (Id == -1)
+            {
+                result.RunResult = "没有获取Id";
+                return Json(result);
+            }
+            else
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                 
+                    result = db.DBStoreInfo.Where(a => a.ID == Id).FirstOrDefault();
+                    result.RunResult = "OK";
+                }
+            }
+            return Json(result);
+        }
+
         [HttpPost]
-        public ActionResult Query(int pageIndex = 0, int pageSize = IQBConfig.PageSize)
+        public ActionResult Query(Channel Channel,int pageIndex = 0, int pageSize = IQBConfig.PageSize)
         {
             List<EStoreInfo> result = new List<EStoreInfo>();
+            IQueryable<EStoreInfo> list = null ;
             try
             {
                 string openId = Convert.ToString(Session["OpenId"]);
 
                 using (AliPayContent db = new AliPayContent())
                 {
-                    var list = db.DBStoreInfo.Where(i => i.OwnnerOpenId == openId).OrderByDescending(i => i.CreateDate);
+                    
+                    if (Channel == Channel.All)
+                        list = db.DBStoreInfo.Where(i => i.OwnnerOpenId == openId).OrderByDescending(i => i.CreateDate);
+                    else
+                        list = db.DBStoreInfo.Where(i => i.OwnnerOpenId == openId && i.Channel == Channel).OrderByDescending(i => i.CreateDate);
 
                     int totalCount = list.Count();
                     if (pageIndex == 0)
@@ -52,33 +82,43 @@ namespace IQBPay.Controllers
             }
             catch(Exception ex)
             {
+                Log.log("Store Query Error:" + ex.Message);
                 throw ex;
             }
             return Json(result);
         }
 
-        public ActionResult Add(EStoreInfo store)
+        public ActionResult Save(EStoreInfo store)
         {
             try
             {
-              
-                store.OwnnerOpenId = this.GetOpenId(true);
                 using (AliPayContent db = new AliPayContent())
                 {
-                    if(db.IsExistStore(store.OwnnerOpenId, store.Name))
-                    {
-                        return Content("同名店铺已经存在");
-                    }
-                    else
-                    {
-                        db.DBStoreInfo.Add(store);
-                        db.SaveChanges();
-                    }
 
+                    store.InitModify();
+
+                    DbEntityEntry<EStoreInfo> entry = db.Entry<EStoreInfo>(store);
+                    entry.State = EntityState.Unchanged;
+
+                    entry.Property(t => t.Name).IsModified = true;
+                    entry.Property(t => t.OpenTime).IsModified = true;
+                    entry.Property(t => t.CloseTime).IsModified = true;
+                    entry.Property(t => t.RecordStatus).IsModified = true;
+                    entry.Property(t => t.Rate).IsModified = true;
+                    entry.Property(t => t.Remark).IsModified = true;
+
+                    entry.Property(t => t.MDate).IsModified = true;
+                    entry.Property(t => t.MTime).IsModified = true;
+                    entry.Property(t => t.ModifyDate).IsModified = true;
+
+                    db.SaveChanges();
+
+                
                 }
             }
             catch(Exception ex)
             {
+              
                 Content("Save Store Error"+ex.Message);
             }
             return Json("OK");

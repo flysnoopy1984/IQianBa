@@ -42,5 +42,12 @@ namespace IQBPay.Models.System
 
         public RecordStatus RecordStatus { get; set; }
 
+
+        [MaxLength(256)]
+        /// <summary>
+        /// 支付宝的Url
+        /// </summary>
+        public string AuthUrl_Store { get; set; }
+
     }
 }

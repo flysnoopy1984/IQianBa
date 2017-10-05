@@ -20,7 +20,7 @@
         商户授权码
         <ul class="UlHorizontal" style="float:right">
             <li>
-                <button type="button" class="btn btn-warning" onclick="ToInfo(1);">新增</button>
+                <button type="button" class="btn btn-warning" onclick="ToInfo(1,0);">新增授权码</button>
             </li>
             <li>
                 <button type="button" class="btn btn-primary" onclick="Query();">查询</button>
@@ -32,9 +32,9 @@
         <table id="tbData" class="table table-hover table-bordered TableOverflowHidden">
             <thead class="cf">
                 <tr id="trHeader">
-                    <th width="50px;">ID</th>
                     <th width="150px;">二维码
                     <th width="150px">点率(0-100)</th>
+                    <th width="150px">所属渠道</th>
                     <th>备注</th>
                     <th width="150px;">使用状态</th>
                     <th width="100px;"> 操作</th>

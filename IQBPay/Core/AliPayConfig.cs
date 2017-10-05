@@ -26,6 +26,8 @@ namespace IQBPay.Core
         public static string pid = "2088721665327500";
 
 
+        public static string AuthUrl_Store = "http://openauth.alipay.com/oauth2/appToAppAuth.htm?app_id=2017092008828512&redirect_uri=http%3A%2F%2Fap.iqianba.cn%2FAliPay%2FAuth";
+
         //支付宝网关
         public static string serverUrl = "https://openapi.alipay.com/gateway.do";
         public static string mapiUrl = "https://mapi.alipay.com/gateway.do";

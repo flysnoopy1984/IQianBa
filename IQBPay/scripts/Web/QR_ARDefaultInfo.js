@@ -26,10 +26,11 @@ function Init() {
 function InitFormData(data) {
     if (data.ID == 0) return;
 
+    $("#RecId").val(data.ID);
     $("#Name").val(data.Name);
     $("#Rate").val(data.Rate);
     $("#Remark").val(data.Remark);
-
+    
     var filePath = data.FilePath;
     $("#QRImg").attr("src", filePath);
 
@@ -46,15 +47,12 @@ function CheckForm() {
     return true;
 }
 
-function New() {
-    window.location = "ARInfo?do=1";
-}
 
 function Save() {
     var name = $("#Name").val();
     var rate = $("#Rate").val();
     var remake = $("#Remark").val();
-  
+    var ID = $("#RecId").val();
 
   //  if (!CheckForm()) return;
 
@@ -62,7 +60,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "Name": name, "Rate": rate, "Remark": remake},
+        data: {"ID":ID, "Name": name, "Rate": rate, "Remark": remake},
         url: url,
         success: function (data) {
             if (data == "OK") {

@@ -81,6 +81,8 @@ function InitFormData(result) {
     $("#Charset").val(result.Charset);
     $("#AppStatus").val(result.RecordStatus);
 
+    $("#AuthUrl_Store").val(result.AuthUrl_Store);
+
     if ($("#AppStatus").val() == 0) st = true;
     else st = false;
 
@@ -108,7 +110,8 @@ function Save() {
     var AppId = $("#AppId").val();
     var AppName = $("#AppName").val();
     var ServerUrl = $("#ServerUrl").val();
-
+    var AuthUrl_Store = $("#AuthUrl_Store").val();
+  
     var Private_Key = $("#Private_Key").val();
     var Public_Key = $("#Public_Key").val();
     var Version = $("#Version").val();
@@ -126,7 +129,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID":Id,"AppId": AppId, "AppName": AppName, "ServerUrl": ServerUrl, "Merchant_Private_Key": Private_Key, "Merchant_Public_key": Public_Key, "Version": Version, "SignType": SignType, "Charset": Charset, "RecordStatus": AppStatus },
+        data: { "ID":Id,"AppId": AppId, "AppName": AppName,"AuthUrl_Store":AuthUrl_Store, "ServerUrl": ServerUrl, "Merchant_Private_Key": Private_Key, "Merchant_Public_key": Public_Key, "Version": Version, "SignType": SignType, "Charset": Charset, "RecordStatus": AppStatus },
         url: url,
         success: function (data) {
             if (data == "OK") {

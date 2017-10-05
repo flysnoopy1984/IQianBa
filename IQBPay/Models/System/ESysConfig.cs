@@ -8,6 +8,7 @@ using System.Web;
 
 namespace IQBPay.Models.System
 {
+    [NotMapped]
     [Table("SysConfig")]
     public class ESysConfig:BaseModel
     {

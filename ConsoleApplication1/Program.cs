@@ -22,6 +22,13 @@ namespace ConsoleApplication1
         {
             try
             {
+                
+                DateTime fd = DateTime.Parse("21:00");
+                //   DateTime fd = DateTime.Parse(f);
+                // Thread.Sleep(3000);
+                TimeSpan ts = DateTime.Now - fd;
+
+                 Console.WriteLine(string.Format("{0}", DateTime.Now.ToShortTimeString()));
 
                 string url = @"http://wx.qlogo.cn/mmopen/xbIQx1GRqdvyqkMMhEaGOX802l1CyqMJNgUzKP8MeAeHFicRDSnZH7FY4XB7p8XHXIf6uJA2SCun
 TPicGKezDC4saKISzRj3nz/0";

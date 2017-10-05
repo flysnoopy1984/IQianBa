@@ -6,6 +6,8 @@ using IQBPay.Models.Result;
 using IQBPay.Models.Store;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -56,6 +58,7 @@ namespace IQBPay.Controllers
             }
             catch (Exception ex)
             {
+                Log.log("QR Query Error:" + ex.Message);
                 return Content(ex.Message);
             }
             return Json(result);
@@ -104,28 +107,26 @@ namespace IQBPay.Controllers
                 {
                     if(qr.ID>0)
                     {
-                        EQRInfo updateObj = db.DBQRInfo.Where(q=>q.ID == qr.ID).FirstOrDefault();
-                        if (updateObj != null)
-                        {
-                           
-                            qr.TargetUrl = updateObj.TargetUrl;
-                            qr.FilePath = updateObj.FilePath;
-                            qr.Channel = QRChannel.PP;
-                            qr.Type = QRType.AR;
-                            db.Entry(updateObj).CurrentValues.SetValues(qr);
+                        qr.InitModify();
 
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            return Content("Id "+ qr.ID+" 没有找到，无法更新");
-                        }
+                        DbEntityEntry<EQRInfo> entry = db.Entry<EQRInfo>(qr);
+                        entry.State = EntityState.Unchanged;
+
+                        entry.Property(t => t.Name).IsModified = true;
+                        entry.Property(t => t.Rate).IsModified = true;
+                        entry.Property(t => t.Remark).IsModified = true;
+                        entry.Property(t => t.RecordStatus).IsModified = true;
+
+                        entry.Property(t => t.MDate).IsModified = true;
+                        entry.Property(t => t.MTime).IsModified = true;
+                        entry.Property(t => t.ModifyDate).IsModified = true;
+                        db.SaveChanges();
                     }
                     else
                     {
                         
                         qr.OwnnerOpenId = this.GetOpenId(true);
-                        qr.Channel = QRChannel.PP;
+                        qr.Channel = Channel.PP;
                         qr.Type = QRType.AR;
                         db.DBQRInfo.Add(qr);
                         db.SaveChanges();      
@@ -140,7 +141,8 @@ namespace IQBPay.Controllers
             }
             catch (Exception ex)
             {
-               return Content("Save Store Error" + ex.Message);
+                Log.log("QR Save Error:" + ex.Message);
+                return Content("Save Store Error" + ex.Message);
             }
             return Json("OK");
         }
@@ -160,7 +162,7 @@ namespace IQBPay.Controllers
 
             using (AliPayContent db = new AliPayContent())
             {
-                result = db.DBQRInfo.Where(a => a.Channel == QRChannel.PPAuto).FirstOrDefault();
+                result = db.DBQRInfo.Where(a => a.Channel == Channel.PPAuto).FirstOrDefault();
                 if (result==null) result = new EQRInfo();
             }
          
@@ -171,31 +173,22 @@ namespace IQBPay.Controllers
 
             try
             {
-                qr.RecordStatus = RecordStatus.Normal;
+               
                 using (AliPayContent db = new AliPayContent())
                 {
-                    EQRInfo updateObj = db.DBQRInfo.Where(q=>q.Channel == QRChannel.PPAuto).FirstOrDefault();
-                    if (updateObj != null)
-                    {
-
-                        qr.TargetUrl = updateObj.TargetUrl;
-                        qr.FilePath = updateObj.FilePath;
-                        qr.Channel = QRChannel.PPAuto;
-                        qr.Type = QRType.AR;
-                        db.Entry(updateObj).CurrentValues.SetValues(qr);
-
-                        db.SaveChanges();
-                    }
-                    else
-                    {
-                        qr.Channel = QRChannel.PPAuto;
-                        qr.Type = QRType.AR;
-                        qr = QRManager.CreateMasterUrlById(qr);
-
-                        db.DBQRInfo.Add(qr);
-                        db.SaveChanges();
-                    }
+                    qr.InitModify();
+                    DbEntityEntry<EQRInfo> entry = db.Entry<EQRInfo>(qr);
+                    entry.State = EntityState.Unchanged;
                   
+                    entry.Property(t => t.Name).IsModified = true;
+                    entry.Property(t => t.Rate).IsModified = true;
+                    entry.Property(t => t.Remark).IsModified = true;
+
+                    entry.Property(t => t.MDate).IsModified = true;
+                    entry.Property(t => t.MTime).IsModified = true;
+                    entry.Property(t => t.ModifyDate).IsModified = true;
+                    db.SaveChanges();
+
                 }
             }
             catch (Exception ex)
@@ -235,37 +228,37 @@ namespace IQBPay.Controllers
             try
             {
                 qr.OwnnerOpenId = this.GetOpenId(true);
+                qr.RunResult = "OK";
                 using (AliPayContent db = new AliPayContent())
                 {
                     if (qr.ID > 0)
                     {
-                        EQRInfo updateObj = db.DBQRInfo.Where(q => q.ID == qr.ID).FirstOrDefault();
-                        if (updateObj != null)
-                        {
+                        qr.InitModify();
 
-                            qr.TargetUrl = updateObj.TargetUrl;
-                            qr.FilePath = updateObj.FilePath;
-                            qr.Channel = QRChannel.Party;
-                            qr.Type = QRType.StoreAuth;
-                            db.Entry(updateObj).CurrentValues.SetValues(qr);
+                        DbEntityEntry<EQRInfo> entry = db.Entry<EQRInfo>(qr);
+                        entry.State = EntityState.Unchanged;
 
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            return Content("Id " + qr.ID + " 没有找到，无法更新");
-                        }
+                        entry.Property(t => t.Name).IsModified = true;
+                        entry.Property(t => t.Rate).IsModified = true;
+                        entry.Property(t => t.Remark).IsModified = true;
+                        entry.Property(t => t.RecordStatus).IsModified = true;
+                        entry.Property(t => t.Channel).IsModified = true;
+
+                        entry.Property(t => t.MDate).IsModified = true;
+                        entry.Property(t => t.MTime).IsModified = true;
+                        entry.Property(t => t.ModifyDate).IsModified = true;
+                        db.SaveChanges();
                     }
                     else
                     {
 
                         qr.OwnnerOpenId = this.GetOpenId(true);
-                        qr.Channel = QRChannel.Party;
+                     
                         qr.Type = QRType.StoreAuth;
                         db.DBQRInfo.Add(qr);
                         db.SaveChanges();
 
-                        qr = QRManager.CreateMasterUrlById(qr);
+                        qr = QRManager.CreateStoreAuthUrlById(qr);
                         db.Entry(qr).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
 
@@ -275,9 +268,10 @@ namespace IQBPay.Controllers
             }
             catch (Exception ex)
             {
-                return Content("Save Store Error" + ex.Message);
+                qr.RunResult = "Save Store Error" + ex.Message;
+                
             }
-            return Json("OK");
+            return Json(qr);
         }
         #endregion
 

@@ -56,8 +56,12 @@
                             <a class="tooltip-tip ajax-load" href="#" title="订单管理">
                                 <i class="icon-feed"></i>
                                 <span>系统管理</span>
-
                             </a>
+                            <ul>
+                                <li>
+                                    <a class="tooltip-tip2 ajax-load" href="/Main/AppList" title="应用APP"><i class="icon icon-user"></i><span>应用APP</span></a>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <a class="tooltip-tip ajax-load" href="#" title="二维码管理">
@@ -84,10 +88,10 @@
                             </a>
                             <ul>
                                 <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/QR/ARDefaultInfo" title="平台商户"><i class="icon icon-user"></i><span>平台商户</span></a>
+                                    <a class="tooltip-tip2 ajax-load" href="/Store/List?Channel=0" title="平台商户"><i class="icon icon-user"></i><span>平台商户</span></a>
                                 </li>
                                 <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/QR/ARDefaultInfo" title="加盟商户"><i class="icon icon-user"></i><span>加盟商户</span></a>
+                                    <a class="tooltip-tip2 ajax-load" href="/Store/List?Channel=1" title="加盟商户"><i class="icon icon-user"></i><span>加盟商户</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -110,7 +114,7 @@
         <div id="ulRightTopBar">
             <ul  class="UlHorizontal">
                 <li>
-                    <img class="img-profile" src="http://wx.qlogo.cn/mmopen/wiaLKhKTxZqNrdZZDewJMIvMqJEib79Z7wYAzqX5TB4adpyBs8IrSx2sh4tLXbyD4RiaPLorwhcebS8AO2JfdiaO9JBWHvMAJ2HU/0" />
+                    <img class="img-profile" src="@Session["UserHeaderImg"]" />
                     <span>Hi User 你好！</span>
                 </li>
                 <li>

@@ -1,9 +1,15 @@
 ﻿$(document).ready(function () {
 
     var Id = GetUrlParam("id");
+    var channel = GetUrlParam("c");
 
     if (Id != null && Id != "")
         Init(Id);
+    else
+    {
+        if (channel == 0 || channel == 1)
+            $("#Channel").val(channel);
+    }
 
     $("#QRStatus").bootstrapSwitch({
         onText: "有效",
@@ -47,9 +53,11 @@ function Init(Id) {
 }
 
 function InitFormData(data) {
+
     $("#Name").val(data.Name);
     $("#Rate").val(data.Rate);
     $("#Remark").val(data.Remark);
+    $("#Channel").val(data.Channel);
 
     var filePath = data.FilePath;
     $("#QRImg").attr("src", filePath);
@@ -77,6 +85,8 @@ function Save() {
     var name = $("#Name").val();
     var rate = $("#Rate").val();
     var remake = $("#Remark").val();
+    var Channel = $("#Channel").val();
+
     var ID = $("#RecId").val();
 
     if (!CheckForm()) return;
@@ -85,11 +95,12 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID, "Name": name, "Rate": rate, "Remark": remake, "RecordStatus": QRStatus },
+        data: { "ID": ID, "Name": name, "Rate": rate,"Channel":Channel, "Remark": remake, "RecordStatus": QRStatus },
         url: url,
         success: function (data) {
-            if (data == "OK") {
+            if (data.RunResult == "OK") {
                 alert("Save Done");
+                InitFormData(data);
             }
             else {
                 alert(data);

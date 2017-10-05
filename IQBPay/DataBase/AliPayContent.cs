@@ -33,7 +33,7 @@ namespace IQBPay.DataBase
         public DbSet<EQRUser> DBQRUser { get; set; }
         public DbSet<EAliPayApplication> DBAliPayApp { get; set; }
 
-        public DbSet<ESysConfig> DBSysConfig { get; set; }
+       
 
 
 
@@ -60,6 +60,16 @@ namespace IQBPay.DataBase
             return (i > 0);
 
         }
+
+        /// <summary>
+        /// 根据支付宝的UserId获取商铺
+        /// </summary>
+        /// <param name="AliPayUserId"></param>
+        /// <returns></returns>
+        public EStoreInfo Store_GetByAliPayUserId(string AliPayUserId)
+        {
+            return DBStoreInfo.Where(s => s.AliPayAccount == AliPayUserId).FirstOrDefault();
+        }
         #endregion
 
         #region QR
@@ -69,6 +79,11 @@ namespace IQBPay.DataBase
 
             return (i > 0);
 
+        }
+
+        public EQRInfo QR_GetById(long Id,QRType qrType)
+        {
+           return  DBQRInfo.Where(a => a.ID == Id && a.Type == qrType).FirstOrDefault();
         }
         #endregion
 

@@ -40,7 +40,7 @@ namespace IQBPay.Controllers.ExternalAPI
                             }
                             //通过QR模板获取QRUser
                             EQRUser qrUser = new EQRUser();
-                            EQRInfo qr = db.DBQRInfo.Where(a => a.Channel == Core.BaseEnum.QRChannel.PPAuto).FirstOrDefault();
+                            EQRInfo qr = db.DBQRInfo.Where(a => a.Channel == Core.BaseEnum.Channel.PPAuto).FirstOrDefault();
                             if (qr == null)
                             {
                                 throw new Exception("没有配置默认QR,请联系站长！");

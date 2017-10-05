@@ -13,14 +13,18 @@
 
 
 <link href="~/Content/Style/Web/List.css" rel="stylesheet" />
+<script src="~/scripts/Web/Common.js"></script>
 <script src="~/scripts/Component/IQBTable.js"></script>
 <script src="~/scripts/Web/StoreList.js"></script>
 <div id="ListArea">
     <div id="Title" style="margin:0px;">
-        平台商户
+        <span id="ListTitleName"></span>
         <ul class="UlHorizontal" style="float:right">
             <li>
-                <button type="button" class="btn btn-warning" onclick="ToInfo(1);">新增</button>
+                <button type="button" class="btn btn-warning" onclick="ToInfo(1,0);">添加平台商户</button>
+            </li>
+            <li>
+                <button type="button" class="btn btn-success" onclick="ToInfo(1,1);">添加加盟商户</button>
             </li>
             <li>
                 <button type="button" class="btn btn-primary" onclick="Query();">查询</button>
@@ -32,9 +36,13 @@
         <table id="tbData" class="table table-hover table-bordered TableOverflowHidden">
             <thead class="cf">
                 <tr id="trHeader">
-                    <th width="50px;">ID</th>
-                    <th width="50px;">商户名</th>
-                    <th width="500px;">备注</th>
+                    <th width="150px;">商户名</th>
+                    <th width="150px">渠道</th>
+                    <th width="150px">点率</th>
+                    <th width="200px">AliPay UserId</th>
+                    <th width="150px">开启时间</th>
+                    <th width="150px">关闭时间</th>
+                    <th>备注</th>
                     <th width="100px;">状态</th> 
                     <th width="100px;"> 操作</th>
                 </tr>

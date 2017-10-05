@@ -30,11 +30,19 @@ function generateData(result) {
     var strCtrl = "";
     $.each(result, function (i) {
 
+        var cn;
+        var channel = result[i].Channel;
+        if (channel == 0)
+            cn = "平台";
+        else if (channel == 1)
+            cn = "加盟商";
+
         strCtrl = "";
         strCtrl += "<tr>";
-        strCtrl += "<td>" + result[i].ID + "</td>";
+    
         strCtrl += "<td>" + result[i].Name + "</td>";
         strCtrl += "<td>" + result[i].Rate + "</td>";
+        strCtrl += "<td>" + cn + "</td>";
         strCtrl += "<td>" + result[i].Remark + "</td>";
 
         if (result[i].RecordStatus == 0)
@@ -42,7 +50,7 @@ function generateData(result) {
         else
             strCtrl += "<td><div class='noft-red-number'></div>已使用</td>";
 
-        strCtrl += "<td><a href='/QR/ARInfo?id=" + result[i].ID + "' class='td'>详情</a>";
+        strCtrl += "<td><a href='/QR/AuthInfo?id=" + result[i].ID + "' class='td'>详情</a>";
         strCtrl += " <input type='hidden' value='" + result[i].FilePath + "'</td>";
         strCtrl += "</tr>";
 
@@ -51,7 +59,7 @@ function generateData(result) {
     });
 }
 
-function ToInfo(action) {
-    window.location.href = "AuthInfo?do=" + action;
+function ToInfo(action,channel) {
+    window.location.href = "AuthInfo?do=" + action + "&c=" + channel;
     return;
 }

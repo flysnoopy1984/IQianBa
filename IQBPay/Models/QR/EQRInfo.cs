@@ -37,7 +37,7 @@ namespace IQBPay.Models.QR
 
         public RecordStatus RecordStatus { get; set; }
 
-        public QRChannel Channel { get; set; }
+        public Channel Channel { get; set; }
 
         public QRType Type { get; set; }
 

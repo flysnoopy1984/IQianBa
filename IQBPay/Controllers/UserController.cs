@@ -23,14 +23,14 @@ namespace IQBPay.Controllers
         public ActionResult Profile()
         {
             string OpenId = this.GetOpenId(true);
-
+            UserHeaderImg = "http://wx.qlogo.cn/mmopen/v6XbW38nFORmMzMtm1VjI3WYE7onmicI6UheCgyKJZwPFWTRXSTZqVROYkdllKNGzF82uicVp1ZLPGM9dGKe0KbgE0NVPicWWg7/0";
             return View();
         }
 
         public ActionResult Get()
         {
            
-             Action< string > mylog = null;
+           
             string OpenId = this.GetOpenId(true);
           
             RUserInfo result = null;
@@ -47,7 +47,7 @@ namespace IQBPay.Controllers
                         result.QueryResult = false;
                         return Json(result);
                     }
-                    EQRUser qrUser = db.DBQRUser.Where(a => a.QRId == ui.QRDefaultId).FirstOrDefault();
+                    EQRUser qrUser = db.DBQRUser.Where(a => a.ID == ui.QRDefaultId).FirstOrDefault();
                   
                     result = new RUserInfo();
                     result.InitFromChild(ui);
@@ -58,7 +58,7 @@ namespace IQBPay.Controllers
                 }
                 catch (Exception ex)
                 {
-                    mylog = db.Database.Log;
+                    Log.log("User Get Error:" + ex.Message);
                     throw ex;
                 }
            
@@ -74,9 +74,9 @@ namespace IQBPay.Controllers
            
             EUserInfo ui = new EUserInfo();
             ui.Headimgurl = "http://ssdakdla";
-            // string url = "http://ap.iqianba.cn/api/userapi/register/";
+           // string url = "http://ap.iqianba.cn/api/userapi/register/";
             string url = "http://localhost:24068/api/userapi/register/";
-            string data = "UserStatus=1&UserRole=1&Isadmin=false&name={0}&openId={1}&Headimgurl=aaaaaaaaaaa";
+            string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=Jacky&openId=orKUAw16WK0BmflDLiBYsR-Kh5bE&Headimgurl=http://wx.qlogo.cn/mmopen/v6XbW38nFORmMzMtm1VjI3WYE7onmicI6UheCgyKJZwPFWTRXSTZqVROYkdllKNGzF82uicVp1ZLPGM9dGKe0KbgE0NVPicWWg7/0";
             string name = "22";
            
             data = string.Format(data, name, "orKUAw16WK0BmflDLiBYsR-Kh5bE");

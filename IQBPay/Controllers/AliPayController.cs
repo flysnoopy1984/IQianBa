@@ -8,6 +8,10 @@ using Com.Alipay.Domain;
 using Com.Alipay.Model;
 using IQBCore.Common.Helper;
 using IQBPay.Core;
+using IQBPay.DataBase;
+using IQBPay.Models.QR;
+using IQBPay.Models.Store;
+using IQBPay.Models.System;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -53,8 +57,41 @@ namespace IQBPay.Controllers
 
         public string callQuery_AuthToken()
         {
-            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
-                privateKey, "json", "1.0", "RSA2", publicKey2, "UTF-8", false);
+            int i =0 ;
+            EAliPayApplication app = BaseController.App;
+             IAopClient a2 = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
+                 privateKey, "json", "1.0", "RSA2", publicKey2, "UTF-8", false);
+ 
+            if(AppID!=app.AppId)
+            {
+                i++;
+            }
+
+            if (privateKey != app.Merchant_Private_Key)
+            {
+                i++;
+            }
+
+            if ("1.0" != app.Version)
+            {
+                i++;
+            }
+
+            if ("RSA2" != app.SignType)
+            {
+                i++;
+            }
+
+            if (publicKey2 != app.Merchant_Public_key)
+            {
+                i++;
+            }
+
+         
+
+            IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+                                app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
+
 
             AlipayOpenAuthTokenAppQueryModel model = new AlipayOpenAuthTokenAppQueryModel();
             model.AppAuthToken = "201709BB409adf95ae524bf7809e12d114180X39";
@@ -66,7 +103,7 @@ namespace IQBPay.Controllers
             "  }";
             */
             request.SetBizModel(model);
-            AlipayOpenAuthTokenAppQueryResponse response = aliyapClient.Execute(request);
+            AlipayOpenAuthTokenAppQueryResponse response = alipayClient.Execute(request);
           
             return response.Body;
         }
@@ -227,25 +264,7 @@ namespace IQBPay.Controllers
         public ActionResult Index()
         {
 
-            string authCode = Request["app_auth_code"];
-            string appId = Request["app_id"];
-            string openId = Request["OpenId"];
-            if(!string.IsNullOrEmpty(authCode))
-            { 
-                string url = string.Format("http://example.com/doc/toAuthPage.html?app_id={0}&app_auth_code={1}&openId={2}", appId, authCode,openId);
-
-                IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
-                privateKey, "json", "1.0", "RSA2", publicKey2, "UTF-8", false);
-                AlipayOpenAuthTokenAppRequest request = new AlipayOpenAuthTokenAppRequest();
-
-                AlipayOpenAuthTokenAppModel model = new AlipayOpenAuthTokenAppModel();
-                model.GrantType = "authorization_code";
-                model.Code = authCode;
-
-                AlipayOpenAuthTokenAppResponse response = alipayClient.Execute(request);
-                return Content(url);
-
-            }
+          
 
 
             return View();
@@ -253,8 +272,112 @@ namespace IQBPay.Controllers
 
         public ActionResult Auth()
         {
+           
+            string authCode = Request["app_auth_code"];
+            string appId = Request["app_id"];
+            string Id = Request["Id"];
+            long qrId;
+            EQRInfo qr = null;
+            EStoreInfo store = null;
+            Log.log("Auth Code:"+authCode);
+            EAliPayApplication app = null;
+            AlipayOpenAuthTokenAppResponse response = null;
+            if (!string.IsNullOrEmpty(authCode))
+            {
+                if (string.IsNullOrEmpty(Id) || !long.TryParse(Id, out qrId))
+                {
+                    Log.log("Auth No Id");
+                    return Content("【传入的值不正确】无法授权，请联系平台");
+                }
+                app = BaseController.App;
+                if (app == null)
+                {
+                    Log.log("Auth No app");
+                    return Content("【没有APP】无法授权，请联系平台");
+                }
+                using (AliPayContent db = new AliPayContent())
+                {
+                    qr = db.QR_GetById(qrId, Core.BaseEnum.QRType.StoreAuth);
 
-            return View();
+                }
+
+                if (qr == null)
+                {
+                    Log.log("Auth No QR");
+                    return Content("【授权码不存在】无法授权，请联系平台！");
+                }
+                else if (qr.RecordStatus == Core.BaseEnum.RecordStatus.Blocked)
+                    return Content("【授权码已被使用】无法授权，请联系平台！");
+
+                try
+                {
+                   
+                    IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+                    app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
+
+                    AlipayOpenAuthTokenAppRequest request = new AlipayOpenAuthTokenAppRequest();
+
+                    AlipayOpenAuthTokenAppModel model = new AlipayOpenAuthTokenAppModel();
+                    model.GrantType = "authorization_code";
+                    model.Code = authCode;
+
+                    request.SetBizModel(model);
+
+                    response = alipayClient.Execute(request);
+                    Log.log("Auth response:" + response.Body);
+
+                    using (AliPayContent db = new AliPayContent())
+                    {
+                        store = db.Store_GetByAliPayUserId(response.UserId);
+                        if (store == null)
+                        {
+                            store = new EStoreInfo
+                            {
+                                AliPayAccount = response.UserId,
+                                AliPayAuthAppId = response.AuthAppId,
+                                AliPayAuthToke = response.AppAuthToken,
+                                OwnnerOpenId = qr.OwnnerOpenId,
+                                Channel = qr.Channel,
+                                Name = qr.Name,
+                                Remark = qr.Remark,
+                                RecordStatus = Core.BaseEnum.RecordStatus.Normal,
+                                QRId = qr.ID,
+                                Rate = qr.Rate
+                            };
+                            store.InitCreate();
+                            store.InitModify();
+                            db.DBStoreInfo.Add(store);
+
+                        }
+                        else
+                        {
+                            store.AliPayAccount = response.UserId;
+                            store.AliPayAuthAppId = response.AuthAppId;
+                            store.AliPayAuthToke = response.AppAuthToken;
+                        }
+                        qr.InitModify();
+                        qr.RecordStatus = Core.BaseEnum.RecordStatus.Blocked;
+                        db.SaveChanges();
+                    }
+
+                    return Content("授权成功");
+
+                }
+                catch (Exception ex)
+                {
+                    Log.log("Auth Response Error:" + ex.Message);
+                    Log.log("Auth Response Inner Error:" + ex.InnerException);
+                    return View();
+
+                }
+
+            }
+            else
+            {
+                return Content("No Auth Code");
+            }
+
+          
         }
 
         public ActionResult QueryToken()
@@ -311,13 +434,14 @@ namespace IQBPay.Controllers
 
         public ActionResult GetAuthToken()
         {
+            //GBK
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
-                privateKey, "json", "1.0", "RSA2", publicKey2, "GBK", false);
+                privateKey, "json", "1.0", "RSA2", publicKey2, "utf-8", false);
 
             AlipayOpenAuthTokenAppRequest request = new AlipayOpenAuthTokenAppRequest();
             AlipayOpenAuthTokenAppModel model = new AlipayOpenAuthTokenAppModel();
             model.GrantType = "authorization_code";
-            model.Code = "a7cf51f66a8f4ec1b82edfdec3fcdF39";
+            model.Code = "1627f85321104f4eba8e2b23342faB53";
             /*
             request.setBizContent("{" +
             "    \"grant_type\":\"authorization_code\"," +
