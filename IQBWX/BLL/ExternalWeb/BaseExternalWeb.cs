@@ -17,7 +17,7 @@ namespace IQBWX.BLL.ExternalWeb
         /// </summary>
         /// <param name="ui"></param>
         /// <returns>"OK",EXIST</returns>
-        abstract public string regeisterWebMember(EUserInfo ui);
+        abstract public string regeisterWebMember(EUserInfo ui, long QRAuthId = 0);
 
         abstract public RExternalWebResult WXInfo(EUserInfo ui, WXMessage msg);
 

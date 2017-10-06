@@ -18,6 +18,7 @@ namespace IQBWX.Common
         NotMember=1002,
         SystemMaintain = 9999,
         OpenIdNotFound = 1003,
+        NormalErrorNoButton = 2000, 
         
 
     }

@@ -1,11 +1,13 @@
-﻿using IQBPay.Core.BaseEnum;
-using IQBPay.Models.QR;
-using IQBPay.Models.Store;
-using IQBPay.Models.System;
-using IQBPay.Models.User;
+﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.Store;
+using IQBCore.IQBPay.Models.System;
+using IQBCore.IQBPay.Models.User;
+using IQBPay.Core;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 
@@ -89,6 +91,30 @@ namespace IQBPay.DataBase
 
         #region APP
 
+        #endregion
+
+        #region QRUser
+        public void UpdateQRUser(EQRInfo qr,EUserInfo ui)
+        {
+            EQRUser qrUser = new EQRUser();
+            using (AliPayContent db = new AliPayContent())
+            {
+                qrUser.QRId = qr.ID;
+                qrUser.OpenId = ui.OpenId;
+                qrUser.Rate = qr.Rate;
+                qrUser = QRManager.CreateUserUrlById(qrUser);
+                db.DBQRUser.Add(qrUser);
+                db.SaveChanges();
+
+                DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
+                entry.State = EntityState.Unchanged;
+                ui.QRDefaultId = qrUser.ID;
+
+                entry.Property(t => t.QRDefaultId).IsModified = true;     
+                db.SaveChanges();
+            }
+
+        }
         #endregion
     }
 }

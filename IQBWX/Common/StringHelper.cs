@@ -43,7 +43,7 @@ namespace IQBWX.Common
             string sd = dt.ToString("yyyyMMddhhmmss");
             string r3 = GetRnd(3, false, true, true, false, "");
 
-            return r3+ sd;
+            return sd+r3;
         }
     }
 }

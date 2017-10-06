@@ -103,7 +103,7 @@ function Save() {
                 InitFormData(data);
             }
             else {
-                alert(data);
+                alert(data.RunResult);
             }
         },
         error: function (xhr, type) {

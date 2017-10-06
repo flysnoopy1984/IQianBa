@@ -18,18 +18,18 @@ namespace IQBWX.BLL.ExternalWeb
 
         }
        
-        public override string regeisterWebMember(EUserInfo ui)
+        public override string regeisterWebMember(EUserInfo ui,long QRAuthId = 0)
         {
            
             try
             {
                 string url = ConfigurationManager.AppSettings["Site_IQBPay_Register"];
-                string data = "UserStatus=1&UserRole=1&Isadmin=false&name={0}&openId={1}&Headimgurl={2}";
+                string data = "UserStatus=1&UserRole=1&Isadmin=false&name={0}&openId={1}&Headimgurl={2}&QRAuthId={3}";
                 string name = ui.nickname;
                 if (name == null) name = ui.UserName;
                 if (name == null) name = "wx" + ui.UserId.ToString().PadLeft(7, '0');
                
-                data = string.Format(data, name, ui.openid, ui.headimgurl);
+                data = string.Format(data, name, ui.openid, ui.headimgurl, QRAuthId);
                 log.log("regeisterWebMember Data: " + data);
                 string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
                 return res;

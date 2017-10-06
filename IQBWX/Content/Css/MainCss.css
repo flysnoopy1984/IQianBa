@@ -18,8 +18,8 @@ a img{text-decoration: none;margin: 0px;padding: 0px;border:none;}
 .lan,.lan a{ color:#5783eb;}
 .lv,.lv a{ color:#2293d1;}
 .hui,.hui a{color:#909090;}
-.mgz{ margin-left:auto; margin-right:auto; overflow:hidden; width:640px;}
-.mg{ margin-left:auto; margin-right:auto; overflow:hidden; width:600px;}
+.mgz{ margin-left:auto; margin-right:auto; overflow:hidden;}
+.mg{ margin-left:auto; margin-right:auto; overflow:hidden;}
 .mg2{ margin-left:auto; margin-right:auto; overflow:hidden;}
 .cen{ text-align:center;}
 
@@ -124,9 +124,9 @@ background:url(../images/gerenziliao_03.jpg) no-repeat scroll right center trans
 .jzgdz{ height:52px;}
 /*余额*/
 .yue{ margin-top:88px;}
-.yuec{ height:63px; line-height:63px;}
+.yuec{ height:120px; line-height:120px;}
 .yuex{ height:153px; line-height:83px;}
-.yuecon1{ width:584px; height:65px; background:#668ff2; line-height:65px; border-radius:5px;}
+.yuecon1{ height:65px; background:#668ff2; line-height:65px; border-radius:5px;}
 .tc{ width:486px; height:324px; background:#ffffff; position:fixed; left:50%; margin-left:-243px; top:50%; margin-top:-162px;border-radius:5px; z-index:9999991; display:none;}
 .mengban{ display:none; background:rgba(0,0,0,0.5); height:100%; position:fixed; z-index:9998; left:0; top:0; width:100%; z-index:9999990;}
 .tcss{ margin-right:26px; height:49px; line-height:49px;}

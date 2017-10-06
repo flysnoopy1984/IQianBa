@@ -11,7 +11,7 @@ namespace IQBWX.BLL.ExternalWeb
 {
     public class ExtWebBook : BaseExternalWeb
     {
-        public override string regeisterWebMember(EUserInfo ui)
+        public override string regeisterWebMember(EUserInfo ui, long QRAuthId = 0)
         {
             string url = "http://book.iqianba.cn/member/wxRegNew.php";
             string data = "wxRegNew=1&userId={0}&uname={1}&sex={2}&openId={3}&faceurl={4}";

@@ -90,11 +90,13 @@ function Save() {
         data: { "ID": ID, "Name": name, "Rate": rate, "Remark": remake, "RecordStatus": QRStatus },
         url: url,
         success: function (data) {
-            if (data == "OK") {
+            if (data.RunResult == "OK") {
+
                 alert("Save Done");
+                InitFormData(data);
             }
             else {
-                alert(data);
+                alert(data.RunResult);
             }
         },
         error: function (xhr, type) {

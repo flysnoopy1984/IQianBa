@@ -117,8 +117,17 @@ namespace IQBWX.Controllers
             if (!string.IsNullOrEmpty(code))
             {
                 Errorcode ec = (Errorcode)Enum.Parse(typeof(Errorcode), code);
-                data = jsonError.GetErrorObj(ec);
-                
+                if(ec == Errorcode.NormalErrorNoButton)
+                {
+                    data = new jsonError();
+                    data.errorCode = Convert.ToInt32(ec);
+                    data.errorMsg = Request.QueryString["ErrorMsg"];
+
+                }
+                else
+                { 
+                    data = jsonError.GetErrorObj(ec);
+                }
                 return View(data);                       
                 
             }

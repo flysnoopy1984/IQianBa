@@ -189,6 +189,7 @@
     <Content Include="Content\Script\ErrorMessage.js" />
     <Content Include="Content\Script\idangerous.swiper.min.js" />
     <Content Include="Content\Script\iqb.dropload.min.js" />
+    <Content Include="Content\Script\IQBPay\Auth_AR.js" />
     <Content Include="Content\Script\MemberInfo.js" />
     <Content Include="Content\Script\ApplySuccess.js" />
     <Content Include="Content\Script\ApplyMember.js" />
@@ -244,6 +245,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PayController.cs" />
     <Compile Include="Controllers\WXController.cs" />
+    <Compile Include="DataBase\IQBPay\AliPayContent.cs" />
     <Compile Include="DataBase\BookContent.cs" />
     <Compile Include="DataBase\Html5Content.cs" />
     <Compile Include="DataBase\InitContent.cs" />
@@ -264,7 +266,6 @@
     <Compile Include="Models\JsonData\jMemberUpdte.cs" />
     <Compile Include="Models\JsonData\jsonApplyMember.cs" />
     <Compile Include="Models\JsonData\jsonError.cs" />
-    <Compile Include="Models\JsonData\SSOQR.cs" />
     <Compile Include="Models\Order\EOrderHeader.cs" />
     <Compile Include="Models\Order\EOrderLine.cs" />
     <Compile Include="Models\Product\EItemInfo.cs" />
@@ -342,6 +343,8 @@
     <Content Include="Views\HOME\WXLoginWAP.cshtml" />
     <Content Include="Views\PP\Auth_AR.cshtml" />
     <Content Include="Views\PP\Pay.cshtml" />
+    <Content Include="Views\PP\YunLong.cshtml" />
+    <Content Include="Views\PP\Demo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -355,9 +358,16 @@
     <Folder Include="Content\CatchSite\HJB\images\" />
     <Folder Include="Content\Html\" />
     <Folder Include="Content\QRImg\Temp\" />
+    <Folder Include="Models\IQBPay\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IQBCore\IQBCore.csproj">
+      <Project>{079669b1-7659-41c1-b5d6-fa7f634fab3a}</Project>
+      <Name>IQBCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

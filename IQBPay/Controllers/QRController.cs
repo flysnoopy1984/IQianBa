@@ -1,9 +1,9 @@
 ﻿using IQBPay.Core;
-using IQBPay.Core.BaseEnum;
+using IQBCore.IQBPay.BaseEnum;
 using IQBPay.DataBase;
-using IQBPay.Models.QR;
-using IQBPay.Models.Result;
-using IQBPay.Models.Store;
+using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.Result;
+using IQBCore.IQBPay.Models.Store;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -80,7 +80,7 @@ namespace IQBPay.Controllers
             {
                 result = new EQRInfo();
                 
-                result.RecordStatus = Core.BaseEnum.RecordStatus.Normal;
+                result.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal;
             }
             else
             {
@@ -103,6 +103,7 @@ namespace IQBPay.Controllers
             try
             {
                 qr.OwnnerOpenId = this.GetOpenId(true);
+                qr.RunResult = "OK";
                 using (AliPayContent db = new AliPayContent())
                 {
                     if(qr.ID>0)
@@ -127,7 +128,7 @@ namespace IQBPay.Controllers
                         
                         qr.OwnnerOpenId = this.GetOpenId(true);
                         qr.Channel = Channel.PP;
-                        qr.Type = QRType.AR;
+                        qr.Type = QRType.ARAuth;
                         db.DBQRInfo.Add(qr);
                         db.SaveChanges();      
                                          
@@ -141,6 +142,7 @@ namespace IQBPay.Controllers
             }
             catch (Exception ex)
             {
+                qr.RunResult = "Save QR Error:"+ex.Message;
                 Log.log("QR Save Error:" + ex.Message);
                 return Content("Save Store Error" + ex.Message);
             }
@@ -268,7 +270,7 @@ namespace IQBPay.Controllers
             }
             catch (Exception ex)
             {
-                qr.RunResult = "Save Store Error" + ex.Message;
+                qr.RunResult = "Save Store Error:" + ex.Message;
                 
             }
             return Json(qr);

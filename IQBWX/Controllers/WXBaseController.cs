@@ -90,8 +90,8 @@ namespace IQBWX.Controllers
                     string openId = this.GetOpenId();
                     if(!string.IsNullOrEmpty(openId))
                     { 
-                    userId = db.GetUserId(this.GetOpenId());
-                    Session[IQBWX.Common.IQBConst.SessionUserId] = userId;
+                        userId = db.GetUserId(this.GetOpenId());
+                        Session[IQBWX.Common.IQBConst.SessionUserId] = userId;
                     }
                 }
             }
@@ -103,14 +103,14 @@ namespace IQBWX.Controllers
         }
 
 
-        protected string GetOpenId(bool isTest = false)
+        protected string GetOpenId(bool isTest = false,bool IsforOpenId = true)
         {
             if (isTest) return "orKUAw16WK0BmflDLiBYsR-Kh5bE";
             string openId = (string)Session[IQBConst.SessionOpenId];
             if (string.IsNullOrEmpty(openId))
             {
                 JsApiPay jsApiPay = new JsApiPay(this.HttpContext);
-                jsApiPay.GetOpenidAndAccessToken();
+                jsApiPay.GetOpenidAndAccessToken(IsforOpenId);
                 openId = jsApiPay.openid;
                 Session[IQBConst.SessionOpenId] = openId;
             }

@@ -1,7 +1,7 @@
 ﻿using IQBPay.Core;
-using IQBPay.Core.BaseEnum;
+using IQBCore.IQBPay.BaseEnum;
 using IQBPay.DataBase;
-using IQBPay.Models.Store;
+using IQBCore.IQBPay.Models.Store;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

@@ -9,9 +9,9 @@ using Com.Alipay.Model;
 using IQBCore.Common.Helper;
 using IQBPay.Core;
 using IQBPay.DataBase;
-using IQBPay.Models.QR;
-using IQBPay.Models.Store;
-using IQBPay.Models.System;
+using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.Store;
+using IQBCore.IQBPay.Models.System;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,6 +20,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using IQBCore.IQBWX.Models.OutParameter;
 
 namespace IQBPay.Controllers
 {
@@ -297,7 +299,7 @@ namespace IQBPay.Controllers
                 }
                 using (AliPayContent db = new AliPayContent())
                 {
-                    qr = db.QR_GetById(qrId, Core.BaseEnum.QRType.StoreAuth);
+                    qr = db.QR_GetById(qrId, IQBCore.IQBPay.BaseEnum.QRType.StoreAuth);
 
                 }
 
@@ -306,7 +308,7 @@ namespace IQBPay.Controllers
                     Log.log("Auth No QR");
                     return Content("【授权码不存在】无法授权，请联系平台！");
                 }
-                else if (qr.RecordStatus == Core.BaseEnum.RecordStatus.Blocked)
+                else if (qr.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
                     return Content("【授权码已被使用】无法授权，请联系平台！");
 
                 try
@@ -340,7 +342,7 @@ namespace IQBPay.Controllers
                                 Channel = qr.Channel,
                                 Name = qr.Name,
                                 Remark = qr.Remark,
-                                RecordStatus = Core.BaseEnum.RecordStatus.Normal,
+                                RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal,
                                 QRId = qr.ID,
                                 Rate = qr.Rate
                             };
@@ -363,7 +365,7 @@ namespace IQBPay.Controllers
 
                         }
                         qr.InitModify();
-                        qr.RecordStatus = Core.BaseEnum.RecordStatus.Blocked;
+                        qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
                         db.SaveChanges();
                     }
 
@@ -425,6 +427,25 @@ namespace IQBPay.Controllers
         public ActionResult QRImg()
         {
            return Content( callQRImg());
+        }
+
+        public ActionResult QRImgWX()
+        {
+            string res = "";
+            try
+            {
+                string url = "http://wx.iqianba.cn/api/wx/CreatePayQRAuth";
+                string data = "QRId=13&QRType=1";
+                res= HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+                SSOQR obj = JsonConvert.DeserializeObject<SSOQR>(res);
+                 url = obj.QRImgUrl;
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return Content(res);
         }
 
         public ActionResult F2FPay()

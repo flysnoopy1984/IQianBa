@@ -1,6 +1,6 @@
 ﻿using IQBCore.Common.Helper;
 using IQBPay.DataBase;
-using IQBPay.Models.System;
+using IQBCore.IQBPay.Models.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;

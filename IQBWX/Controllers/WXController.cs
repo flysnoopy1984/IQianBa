@@ -1,4 +1,7 @@
-﻿using IQBWX.Common;
+﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBWX.Models.InParameter;
+using IQBCore.IQBWX.Models.OutParameter;
+using IQBWX.Common;
 using IQBWX.DataBase;
 using IQBWX.Models.JsonData;
 using IQBWX.Models.Results;
@@ -47,7 +50,7 @@ namespace IQBWX.Controllers
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        public WXQRResult getQR(String account, string access_token,string ssoToken=null)
+        public WXQRResult getQR(String account, string access_token,string ssoToken=null,bool isTemp = true)
         {
             WXQRResult resObj = null;
             try
@@ -59,8 +62,18 @@ namespace IQBWX.Controllers
                 //发送给微信服务器的数据
 
                 String jsonStr = "{\"action_name\": \"QR_LIMIT_SCENE\", \"action_info\":{\"scene\": {\"scene_id\":" + account + "}}}";
-                if(ssoToken!=null)
-                    jsonStr = "{\"expire_seconds\": \"60\",\"action_name\": \"QR_STR_SCENE\", \"action_info\":{\"scene\": {\"scene_str\":\""+ ssoToken + "\"}}}";
+                if (!string.IsNullOrEmpty(ssoToken))
+                {
+                    if (isTemp)
+                    {
+                        jsonStr = "{\"expire_seconds\": \"180\",\"action_name\": \"QR_STR_SCENE\", \"action_info\":{\"scene\": {\"scene_str\":\"" + ssoToken + "\"}}}";
+                    }
+                    else
+                    {
+                        jsonStr = "{\"action_name\": \"QR_LIMIT_SCENE\", \"action_info\":{\"scene\": {\"scene_str\":\"" + ssoToken + "\"}}}";
+                    }
+                }
+
 
 
                 //post请求得到返回数据（这里是封装过的，就是普通的java post请求）
@@ -101,6 +114,21 @@ namespace IQBWX.Controllers
             }
             ssrQR.QRImgUrl = Picurl;
 
+            return ssrQR;
+        }
+
+        [HttpPost]
+        public SSOQR CreatePayQRAuth([FromBody]InQR inQR)
+        {
+            AccessToken token = this.getToken();
+            SSOQR ssrQR = new SSOQR();
+
+            inQR.QRId = "IQBPay_QR_" + inQR.QRId;
+
+            WXQRResult resObj = this.getQR("", token.access_token, inQR.QRId, false);
+         
+            string Picurl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + resObj.ticket + "";
+            ssrQR.QRImgUrl = Picurl;
             return ssrQR;
         }
 

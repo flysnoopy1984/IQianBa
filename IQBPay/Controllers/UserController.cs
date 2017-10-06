@@ -1,9 +1,9 @@
 ﻿using IQBCore.Common.Helper;
 using IQBPay.Core;
 using IQBPay.DataBase;
-using IQBPay.Models.QR;
-using IQBPay.Models.Result;
-using IQBPay.Models.User;
+using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.Result;
+using IQBCore.IQBPay.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,6 +74,8 @@ namespace IQBPay.Controllers
            
             EUserInfo ui = new EUserInfo();
             ui.Headimgurl = "http://ssdakdla";
+            ui.QRAuthId = 13;
+
            // string url = "http://ap.iqianba.cn/api/userapi/register/";
             string url = "http://localhost:24068/api/userapi/register/";
             string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=Jacky&openId=orKUAw16WK0BmflDLiBYsR-Kh5bE&Headimgurl=http://wx.qlogo.cn/mmopen/v6XbW38nFORmMzMtm1VjI3WYE7onmicI6UheCgyKJZwPFWTRXSTZqVROYkdllKNGzF82uicVp1ZLPGM9dGKe0KbgE0NVPicWWg7/0";

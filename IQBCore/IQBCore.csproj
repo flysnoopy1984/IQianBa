@@ -85,6 +85,17 @@
     <Compile Include="Common\Helper\HttpHelper.cs" />
     <Compile Include="Common\Helper\IQBLog.cs" />
     <Compile Include="Common\Helper\StringHelper.cs" />
+    <Compile Include="IQBPay\BaseEnum\IQBPayEnum.cs" />
+    <Compile Include="IQBPay\Models\QR\EQRInfo.cs" />
+    <Compile Include="IQBPay\Models\QR\EQRUser.cs" />
+    <Compile Include="IQBPay\Models\Result\RQRInfo.cs" />
+    <Compile Include="IQBPay\Models\Result\RUserInfo.cs" />
+    <Compile Include="IQBPay\Models\Store\EStoreInfo.cs" />
+    <Compile Include="IQBPay\Models\System\EAliPayApplication.cs" />
+    <Compile Include="IQBPay\Models\System\ESysConfig.cs" />
+    <Compile Include="IQBPay\Models\User\EUserInfo.cs" />
+    <Compile Include="IQBWX\Models\InParameter\InQR.cs" />
+    <Compile Include="IQBWX\Models\OutParameter\SSOQR.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BasePageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,8 +103,7 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="DataBase\" />
-    <Folder Include="IQBPay\" />
-    <Folder Include="IQBWX\" />
+    <Folder Include="IQBPay\Models\Order\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

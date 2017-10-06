@@ -1,8 +1,8 @@
 ﻿using IQBPay.Core;
-using IQBPay.Core.BaseEnum;
+using IQBCore.IQBPay.BaseEnum;
 using IQBPay.DataBase;
-using IQBPay.Models.QR;
-using IQBPay.Models.System;
+using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.System;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -35,7 +35,7 @@ namespace IQBPay.Controllers
                 qr.InitCreate();
                 qr.InitModify();
                 qr.Channel = Channel.PPAuto;
-                qr.Type = QRType.AR;
+                qr.Type = QRType.ARAuth;
                 qr.Rate = 5;
                 qr.Name = "平台默认二维码";
 
@@ -55,7 +55,7 @@ namespace IQBPay.Controllers
                 app.SignType = AliPayConfig.sign_type;
                 app.ServerUrl = AliPayConfig.serverUrl;
                 app.Charset = AliPayConfig.charset;
-                app.RecordStatus = Core.BaseEnum.RecordStatus.Normal;
+                app.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal;
                 app.Merchant_Private_Key = AliPayConfig.merchant_private_key;
                 app.Merchant_Public_key = AliPayConfig.merchant_public_key;
                 app.AppId = AliPayConfig.appId;
@@ -159,7 +159,7 @@ namespace IQBPay.Controllers
                 result.ServerUrl = AliPayConfig.serverUrl;
                 result.Charset = AliPayConfig.charset;
                 result.AuthUrl_Store = AliPayConfig.AuthUrl_Store;
-                result.RecordStatus = Core.BaseEnum.RecordStatus.Normal;
+                result.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal;
             }     
             else
             {
