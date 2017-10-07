@@ -1,8 +1,11 @@
-﻿using IQBWX.BLL.ExternalWeb;
+﻿using IQBCore.Common.Constant;
+using IQBCore.IQBPay.Models.QR;
+using IQBWX.BLL.ExternalWeb;
 using IQBWX.BLL.NT;
 using IQBWX.Common;
 using IQBWX.Controllers;
 using IQBWX.DataBase;
+using IQBWX.DataBase.IQBPay;
 using IQBWX.Models.Results;
 using IQBWX.Models.User;
 using IQBWX.Models.WX;
@@ -78,8 +81,66 @@ namespace IQBWX.BLL
 
         }
 
+        private void IQBAuth(WXMessage msg, WXBaseController controller,string qrId)
+        {
+            EUserInfo ui = null, pui = null;
+            EQRInfo qr = null;
+            long Id;
+            string mText= null; 
+            
+            using (UserContent udb = new UserContent())
+            {
+                ui = udb.Get(msg.FromUserName);
+                if (ui == null)
+                    ui = newUserSubscribe(udb, msg, controller, out pui, false);
+                
+            }
+
+            if (string.IsNullOrEmpty(qrId) || !long.TryParse(qrId, out Id))
+            {
+                log.log("Auth_AR 没有 Id");
+                mText = "【传入的Id值不正确】无法授权，请联系平台";
+                
+                return;
+            }
+            using (AliPayContent db = new AliPayContent())
+            {
+                qr = db.QR_GetById(Id, IQBCore.IQBPay.BaseEnum.QRType.ARAuth);
+                if (qr == null)
+                {
+                    mText = msg.toText("【授权码不存在】无法授权，请联系平台！");
+                    return;
+                }
+            }
+
+            ExtWebPay exWeb = new ExtWebPay();
+
+            string result = exWeb.regeisterWebMember(ui, qr.ID);
+            if (result.Contains("OK"))
+            {
+                mText += "欢迎注册爱钱吧平台！\n";
+                mText += string.Format("你当前收款码的扣点率为【{0}%】", qr.Rate);
+            }
+            else if (result.Contains("EXIST"))
+            {
+                mText += string.Format("你当前收款码的扣点率为\n【{0}%】", qr.Rate);
+            }
+            else
+            {
+                mText += result;
+                mText += "\n请联系管理员";
+
+            }
+            if(!string.IsNullOrEmpty(mText))
+            {
+                ResponseXml = msg.toText(mText);
+            }
+            return;
+
+       }
+
         /// <summary>
-        /// true 代表是微信登录
+        /// true 代表是其他应用程序微信登录
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="controller"></param>
@@ -93,10 +154,22 @@ namespace IQBWX.BLL
                 string ssoToken = null;
                 EUserInfo ui =null ,pui = null;
 
+                log.log("WXScanLogin ssoToken:" + msg.EventKey);
+
                 if (msg.Event == "scan")
                     ssoToken = msg.EventKey;
                 else if (msg.Event == "subscribe")
                     ssoToken = msg.EventKey.Substring(8);
+
+                
+
+                if (ssoToken.StartsWith(IQBConstant.WXQR_IQBPAY_PREFIX))
+                {
+                    string qrId = ssoToken.Substring(IQBConstant.WXQR_IQBPAY_PREFIX.Length);
+                   
+                    IQBAuth(msg, controller,qrId);
+                    return true;
+                }
                 
                 using (WXContent db = new WXContent())
                 {

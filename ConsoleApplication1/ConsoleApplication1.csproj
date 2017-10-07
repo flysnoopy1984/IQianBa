@@ -92,6 +92,10 @@
       <Project>{7e16ccdc-f697-4e0f-807d-985edc805e47}</Project>
       <Name>CatchWebContent</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IQBCore\IQBCore.csproj">
+      <Project>{079669b1-7659-41c1-b5d6-fa7f634fab3a}</Project>
+      <Name>IQBCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IQBWX\IQBWX.csproj">
       <Project>{c4f07794-dc78-4e75-9b06-159b1272f93e}</Project>
       <Name>IQBWX</Name>

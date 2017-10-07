@@ -1,4 +1,5 @@
 ﻿using CatchWebContent;
+using IQBCore.Common.Constant;
 using IQBWX.Common;
 using IQBWX.DataBase;
 using IQBWX.Models.Order;
@@ -22,18 +23,11 @@ namespace ConsoleApplication1
         {
             try
             {
-                
-                DateTime fd = DateTime.Parse("21:00");
-                //   DateTime fd = DateTime.Parse(f);
-                // Thread.Sleep(3000);
-                TimeSpan ts = DateTime.Now - fd;
 
-                 Console.WriteLine(string.Format("{0}", DateTime.Now.ToShortTimeString()));
+                string st = IQBConstant.WXQR_IQBPAY_PREFIX + "3aa";
+                st = st.Substring(IQBConstant.WXQR_IQBPAY_PREFIX.Length);
 
-                string url = @"http://wx.qlogo.cn/mmopen/xbIQx1GRqdvyqkMMhEaGOX802l1CyqMJNgUzKP8MeAeHFicRDSnZH7FY4XB7p8XHXIf6uJA2SCun
-TPicGKezDC4saKISzRj3nz/0";
-
-                Console.WriteLine(string.Format("{0}",url.Length));
+                Console.WriteLine(string.Format("{0}", st));
 
 
             }

@@ -68,5 +68,12 @@ namespace IQBCore.IQBPay.BaseEnum
         Process = 2,
     }
 
+    public enum OrderStatus
+    {
+        Paid,
+
+        Closed,
+    }
+
 
 }

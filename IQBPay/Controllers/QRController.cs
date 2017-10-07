@@ -146,7 +146,7 @@ namespace IQBPay.Controllers
                 Log.log("QR Save Error:" + ex.Message);
                 return Content("Save Store Error" + ex.Message);
             }
-            return Json("OK");
+            return Json(qr);
         }
 
         #endregion

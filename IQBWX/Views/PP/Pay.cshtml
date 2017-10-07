@@ -7,11 +7,35 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Pay</title>
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    <script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
+    <script src="@Url.Scrpit("~/Content/Script/Pay.js")"></script>
+    <title>支付界面</title>
 </head>
 <body>
-    <div> 
+    <style>
+        body {
+            background: #ffffff;
+        }
+    </style>
+    <div class="mgz cen">
+        @*<div class="z404 mg2" id="ImgContainer">
+            <img align="absmiddle" src="~/Content/images/gongxishengji_02.jpg" />
+            <div class="z404_txt mg2 xi28 bai">授权成功</div>
+        </div>*@
+        <div id="Content">
+            <div class="yuec mg2 xi35">爱钱吧支付界面</div>
+            <div class="yuex mg2 xi20" style="color:cornflowerblue">请通过支付宝扫码支付</div>
+            <div class="form-group">
+                <label class="AmtLabel">输入金额</label>
+                <div class="AmtEdit">
+                    <input id="TotalAmout" type="text" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")'>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="yuecon1 mgz cen xi28 bai tm AlwaysBottom20" style="width:90%" id="btnPay"><a href="#">支付</a></div>
 </body>
 </html>

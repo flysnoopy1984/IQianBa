@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
-namespace IQBPay.Core
+namespace IQBCore.IQBPay
 {
     public class AliPayConfig
     {

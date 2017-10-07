@@ -52,8 +52,8 @@ function InitFormData(data)
     $("#Rate").val(data.Rate);
     $("#Remark").val(data.Remark);
 
-    var filePath =  data.FilePath;
-    $("#QRImg").attr("src", filePath);
+    //var filePath =  data.FilePath;
+    $("#QRImg").attr("src", data.TargetUrl);
   
 
 }

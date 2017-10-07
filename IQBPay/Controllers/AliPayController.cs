@@ -22,6 +22,8 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using IQBCore.IQBWX.Models.OutParameter;
+using IQBCore.IQBPay;
+using IQBCore.IQBPay.BLL;
 
 namespace IQBPay.Controllers
 {
@@ -36,119 +38,9 @@ namespace IQBPay.Controllers
         public string pk1_rs1 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3aaDFxkj4IfzV42j8lwdJCZgTPTfrwDTiFfxhQXwFk/9sstsNdSkrYzKAmMBgl95d7R9bA8ASc0A8JADgR1ye+gsky9K/l8DEI8ZbgSWgCdEkTHbuZtzLo0SN9Q+U6k/g3QWTV27+0WHXHNwECFhdk23V0s2MeF+HrYgPn0WSkpYwz58hCDV9Eh71sj05tcgWfitcEkMLSazXmDqRsv8LZjtzpXO9Chwssfi9iCWa3hfsuzfmXusk8TRwtRyUtD9hIq4Fxr2+QJ2AvMlyK7/Sgtnsgl+lIv869jVyaNydlwSv8js1TM8nXPVemTWvj7fQUnWhU0YRHVa0XcdeyvaBwIDAQAB";
 
         public string AppID = ConfigurationManager.AppSettings["APPID"];
+       
 
-
-        public string callQRImg()
-        {
-            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
-                privateKey, "json", "1.0", "RSA2", publicKey2, "UTF-8", false);
-
-            AlipayMobilePublicQrcodeCreateRequest request = new AlipayMobilePublicQrcodeCreateRequest();
-
-            string json = "";
-
-            using (StreamReader sr = new StreamReader(System.AppDomain.CurrentDomain.BaseDirectory + @"Content\json\QR.json"))
-            {
-                json = sr.ReadToEnd();
-            }
-            request.BizContent = json;
-
-            AlipayMobilePublicQrcodeCreateResponse response = aliyapClient.Execute(request);
-            return response.Body;
-        }
-
-        public string callQuery_AuthToken()
-        {
-            int i =0 ;
-            EAliPayApplication app = BaseController.App;
-             IAopClient a2 = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
-                 privateKey, "json", "1.0", "RSA2", publicKey2, "UTF-8", false);
- 
-            if(AppID!=app.AppId)
-            {
-                i++;
-            }
-
-            if (privateKey != app.Merchant_Private_Key)
-            {
-                i++;
-            }
-
-            if ("1.0" != app.Version)
-            {
-                i++;
-            }
-
-            if ("RSA2" != app.SignType)
-            {
-                i++;
-            }
-
-            if (publicKey2 != app.Merchant_Public_key)
-            {
-                i++;
-            }
-
-         
-
-            IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
-                                app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
-
-
-            AlipayOpenAuthTokenAppQueryModel model = new AlipayOpenAuthTokenAppQueryModel();
-            model.AppAuthToken = "201709BB409adf95ae524bf7809e12d114180X39";
-
-            AlipayOpenAuthTokenAppQueryRequest request = new AlipayOpenAuthTokenAppQueryRequest();
-            /*
-            request.BizContent ="{" +
-            "    \"app_auth_token\":\"201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39\"" +
-            "  }";
-            */
-            request.SetBizModel(model);
-            AlipayOpenAuthTokenAppQueryResponse response = alipayClient.Execute(request);
-          
-            return response.Body;
-        }
-
-
-        private string CallAliPay(string amt)
-        {
-          
-            // AlipayClient alipayClient = new DefaultAlipayClien
-            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
-                privateKey,"json", "1.0", "RSA2", publicKey2, "UTF-8", false);
-
-            AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
-            model.Body = "至尊宝";
-            model.Subject = "爱钱吧币";
-            model.TotalAmount =amt;
-            model.OutTradeNo = "IQB20170921";
-            model.ProductCode = "QUICK_WAP_PAY";
-          //  model.SellerId = "2088821092484390";
-            model.AuthToken = "201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39";
-
-            AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
-          
-            /*
-            request.BizContent = "{" +
-"    \"body\":\"至尊宝被\"," +
-"    \"subject\":\"爱钱吧币\"," +
-"    \"out_trade_no\":\"IQB20170921\"," +
-"    \"timeout_express\":\"90m\"," +
-"    \"total_amount\":1.00," +
-"    \"product_code\":\"QUICK_WAP_WAY\"" +
-"  }";
-
-*/
-            request.SetBizModel(model);
-
-            AlipayTradeWapPayResponse response = aliyapClient.Execute(request, "201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39", "201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39");
-            
-            string ret = response.Body;
-            return ret;
-        }
-
-
+        
         public string callF2FPay(string TotalAmt,string sellerid)
         {
 
@@ -156,14 +48,15 @@ namespace IQBPay.Controllers
            
             IAlipayTradeService serviceClient = F2FBiz.CreateClientInstance(AliPayConfig.serverUrl, AliPayConfig.appId, AliPayConfig.merchant_private_key, AliPayConfig.version,
                             AliPayConfig.sign_type, AliPayConfig.alipay_public_key, AliPayConfig.charset);
-
-            F2FPayHandler handler = new F2FPayHandler();
-          
-            AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent(sellerid,TotalAmt);
-
-            AlipayF2FPrecreateResult precreateResult = serviceClient.tradePrecreate(builder);
             
 
+            F2FPayHandler handler = new F2FPayHandler();
+           
+              AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent(sellerid,TotalAmt);
+
+            AlipayF2FPrecreateResult precreateResult = serviceClient.tradePrecreate(builder);
+
+            
             switch (precreateResult.Status)
             {
                 case ResultEnum.SUCCESS:
@@ -272,6 +165,11 @@ namespace IQBPay.Controllers
             return View();
         }
 
+        public ActionResult PayNotify()
+        {
+           
+            return View();
+        }
         public ActionResult Auth()
         {
            
@@ -391,34 +289,17 @@ namespace IQBPay.Controllers
 
         public ActionResult QueryToken()
         {
-            return Content(callQuery_AuthToken());
+            return Content(AliDemo.callQuery_AuthToke());
         }
 
         public ActionResult Pay()
         {
-            return Content(CallAliPay("0.01"));
+            return Content(AliDemo.callAliPay_Wap());
         }
 
         public ActionResult Demo()
         {
-            /* F2FPayHandler handler = new F2FPayHandler();
-               string url = string.Format("https://openauth.alipay.com/oauth2/appToAppAuth.htm?app_id={0}&redirect_uri={1}&openId=test",
-                                           AliPayConfig.appId, 
-                                           "http://ap.iqianba.cn/AliPay/");
-
-
-             string url = "http://ap.iqianba.cn/alipay/pp";
-             string fp = handler.CreateQR(url);
-               ViewData["url"] = url;
-               string tmpRootDir = Server.MapPath(System.Web.HttpContext.Current.Request.ApplicationPath.ToString());//获取程序根目录
-               fp = StringHelper.urlconvertor(tmpRootDir, fp);
-               ViewData["imgSrc"] = fp;*/
-            /*
-            string data = "UserStatus=1&UserRole=1&Isadmin=false&name={0}&openId={1}";
-            data = string.Format(data, "test", "openIDxxxxxxx");
-            string url = "http://localhost:24068/api/userapi/register";
-            string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
-            */
+           
             return View();
         }
 
@@ -426,7 +307,7 @@ namespace IQBPay.Controllers
 
         public ActionResult QRImg()
         {
-           return Content( callQRImg());
+           return Content(AliDemo.callQRImg());
         }
 
         public ActionResult QRImgWX()
@@ -448,6 +329,7 @@ namespace IQBPay.Controllers
             return Content(res);
         }
 
+        [HttpPost]
         public ActionResult F2FPay()
         {
             string TotalAmt = Request["TotalAmt"];
@@ -462,24 +344,8 @@ namespace IQBPay.Controllers
 
         public ActionResult GetAuthToken()
         {
-            //GBK
-            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
-                privateKey, "json", "1.0", "RSA2", publicKey2, "utf-8", false);
-
-            AlipayOpenAuthTokenAppRequest request = new AlipayOpenAuthTokenAppRequest();
-            AlipayOpenAuthTokenAppModel model = new AlipayOpenAuthTokenAppModel();
-            model.GrantType = "authorization_code";
-            model.Code = "1627f85321104f4eba8e2b23342faB53";
-            /*
-            request.setBizContent("{" +
-            "    \"grant_type\":\"authorization_code\"," +
-            "    \"code\":\"1cc19911172e4f8aaa509c8fb5d12F56\"" +
-            "  }");
-            */
-            request.SetBizModel(model);
-            AlipayOpenAuthTokenAppResponse response = aliyapClient.Execute(request);
-
-            return Content(response.Body);
+          
+            return Content(AliDemo.GetAuthToken());
         }
 
         public ActionResult PP()

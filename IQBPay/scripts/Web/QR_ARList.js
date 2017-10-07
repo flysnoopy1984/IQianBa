@@ -8,7 +8,7 @@ function Query() {
     var url = "/QR/Query";
     $.ajax({
         type: 'post',
-        data: "QRType=1&pageIndex=0",
+        data: "QRType=3&pageIndex=0",
         url: url,
         success: function (data) {
             var arrLen = data.length;

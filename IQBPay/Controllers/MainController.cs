@@ -11,6 +11,7 @@ using System.Linq;
 using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
+using IQBCore.IQBPay;
 
 namespace IQBPay.Controllers
 {
@@ -29,48 +30,59 @@ namespace IQBPay.Controllers
 
         public ActionResult Init()
         {
-            using (AliPayContent db = new AliPayContent(true))
+            try
             {
-                EQRInfo qr = new EQRInfo();
-                qr.InitCreate();
-                qr.InitModify();
-                qr.Channel = Channel.PPAuto;
-                qr.Type = QRType.ARAuth;
-                qr.Rate = 5;
-                qr.Name = "平台默认二维码";
+                using (AliPayContent db = new AliPayContent(true))
+                {
+                    EQRInfo delqr = db.DBQRInfo.Where(a=>a.Channel == Channel.PPAuto).FirstOrDefault();
+                    if (delqr != null)
+                        db.DBQRInfo.Remove(delqr);
 
-                db.DBQRInfo.Add(qr);
-                db.SaveChanges();
+                    EQRInfo qr = new EQRInfo();
+                    qr.InitCreate();
+                    qr.InitModify();
+                    qr.Channel = Channel.PPAuto;
+                    qr.Type = QRType.ARAuth;
+                    qr.Rate = 5;
+                    qr.Name = "平台默认二维码";
 
-                qr = QRManager.CreateMasterUrlById(qr);
-                db.Entry(qr).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                    db.DBQRInfo.Add(qr);
+                    db.SaveChanges();
 
-                EAliPayApplication delApp = db.DBAliPayApp.FirstOrDefault();
-                if (delApp != null)
-                    db.DBAliPayApp.Remove(delApp);
+                    qr = QRManager.CreateMasterUrlById(qr);
+                    db.Entry(qr).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
 
-                EAliPayApplication app = new EAliPayApplication();
-                app.Version = AliPayConfig.version;
-                app.SignType = AliPayConfig.sign_type;
-                app.ServerUrl = AliPayConfig.serverUrl;
-                app.Charset = AliPayConfig.charset;
-                app.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal;
-                app.Merchant_Private_Key = AliPayConfig.merchant_private_key;
-                app.Merchant_Public_key = AliPayConfig.merchant_public_key;
-                app.AppId = AliPayConfig.appId;
-                app.AuthUrl_Store = AliPayConfig.AuthUrl_Store;
-                app.AppName = "dingylpost@163.com";
-               
-                app.InitModify();
-                app.InitCreate();
-                db.DBAliPayApp.Add(app);
+                    EAliPayApplication delApp = db.DBAliPayApp.FirstOrDefault();
+                    if (delApp != null)
+                        db.DBAliPayApp.Remove(delApp);
 
-                db.SaveChanges();
+                    EAliPayApplication app = new EAliPayApplication();
+                    app.Version = AliPayConfig.version;
+                    app.SignType = AliPayConfig.sign_type;
+                    app.ServerUrl = AliPayConfig.serverUrl;
+                    app.Charset = AliPayConfig.charset;
+                    app.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal;
+                    app.Merchant_Private_Key = AliPayConfig.merchant_private_key;
+                    app.Merchant_Public_key = AliPayConfig.merchant_public_key;
+                    app.AppId = AliPayConfig.appId;
+                    app.AuthUrl_Store = AliPayConfig.AuthUrl_Store;
+                    app.AppName = "dingylpost@163.com";
+
+                    app.InitModify();
+                    app.InitCreate();
+                    db.DBAliPayApp.Add(app);
+
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                return Content("初始化失败:"+ex.Message);
             }
 
 
-            return View();
+            return Content("初始化完成");
         }
 
         public ActionResult Login()
@@ -93,6 +105,7 @@ namespace IQBPay.Controllers
                 BaseController._App = null;
             }
             ViewBag.Auth_Store = BaseController.App.AuthUrl_Store;
+            ViewBag.PublicKey = BaseController.App.Merchant_Public_key;
             return View();
         }
 

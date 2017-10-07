@@ -128,3 +128,8 @@ function fPostPay(url) {
     })
 
 }
+
+function PayToAli()
+{
+
+}

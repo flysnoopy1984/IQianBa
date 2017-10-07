@@ -482,12 +482,9 @@
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WapController.cs" />
-    <Compile Include="Core\AliPayConfig.cs" />
-    <Compile Include="Core\AppConfig.cs" />
-    <Compile Include="Core\AuthToISV.cs" />
+    <Compile Include="Core\AliDemo.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Core\Constant\ConstSysConfig.cs" />
-    <Compile Include="Core\F2FPayHandler.cs" />
     <Compile Include="Core\IQBConfig.cs" />
     <Compile Include="Core\QRManager.cs" />
     <Compile Include="DataBase\AliPayContent.cs" />

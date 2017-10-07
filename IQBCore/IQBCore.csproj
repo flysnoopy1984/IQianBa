@@ -30,8 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AopSdk">
+      <HintPath>..\IQBPay\ReferenceDLL\AopSdk.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\CatchWebContent\bin\Debug\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="F2FPayDll">
+      <HintPath>..\IQBPay\ReferenceDLL\F2FPayDll.dll</HintPath>
     </Reference>
     <Reference Include="LitJson">
       <HintPath>..\RefDll\LitJson.dll</HintPath>
@@ -48,6 +54,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -80,12 +87,21 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="ThoughtWorks.QRCode">
+      <HintPath>..\IQBPay\ReferenceDLL\ThoughtWorks.QRCode.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Constant\IQBConstant.cs" />
     <Compile Include="Common\Helper\HttpHelper.cs" />
     <Compile Include="Common\Helper\IQBLog.cs" />
     <Compile Include="Common\Helper\StringHelper.cs" />
+    <Compile Include="IQBPay\AliPayConfig.cs" />
+    <Compile Include="IQBPay\BLL\AliPayManager.cs" />
     <Compile Include="IQBPay\BaseEnum\IQBPayEnum.cs" />
+    <Compile Include="IQBPay\BLL\F2FPayHandler.cs" />
+    <Compile Include="IQBPay\Models\InParameter\InF2F.cs" />
+    <Compile Include="IQBPay\Models\Order\EOrderInfo.cs" />
     <Compile Include="IQBPay\Models\QR\EQRInfo.cs" />
     <Compile Include="IQBPay\Models\QR\EQRUser.cs" />
     <Compile Include="IQBPay\Models\Result\RQRInfo.cs" />
@@ -103,7 +119,6 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="DataBase\" />
-    <Folder Include="IQBPay\Models\Order\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

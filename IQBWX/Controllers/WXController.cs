@@ -1,4 +1,5 @@
-﻿using IQBCore.IQBPay.BaseEnum;
+﻿using IQBCore.Common.Constant;
+using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBWX.Models.InParameter;
 using IQBCore.IQBWX.Models.OutParameter;
 using IQBWX.Common;
@@ -70,11 +71,11 @@ namespace IQBWX.Controllers
                     }
                     else
                     {
-                        jsonStr = "{\"action_name\": \"QR_LIMIT_SCENE\", \"action_info\":{\"scene\": {\"scene_str\":\"" + ssoToken + "\"}}}";
+                        jsonStr = "{\"action_name\": \"QR_LIMIT_STR_SCENE\", \"action_info\":{\"scene\": {\"scene_str\":\"" + ssoToken + "\"}}}";
                     }
                 }
 
-
+                log.log("getQR"+jsonStr);
 
                 //post请求得到返回数据（这里是封装过的，就是普通的java post请求）
                 String response = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, jsonStr);
@@ -123,7 +124,7 @@ namespace IQBWX.Controllers
             AccessToken token = this.getToken();
             SSOQR ssrQR = new SSOQR();
 
-            inQR.QRId = "IQBPay_QR_" + inQR.QRId;
+            inQR.QRId = IQBConstant.WXQR_IQBPAY_PREFIX + inQR.QRId;
 
             WXQRResult resObj = this.getQR("", token.access_token, inQR.QRId, false);
          

@@ -41,7 +41,7 @@ namespace IQBCore.IQBPay.Models.QR
 
         public QRType Type { get; set; }
 
-        [MaxLength(128)]
+        [MaxLength(256)]
         public string TargetUrl { get; set; }
 
         /// <summary>

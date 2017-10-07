@@ -92,7 +92,8 @@ namespace IQBWX.Controllers
                         break;
                     }
                     log.log("Message: " + menuEvent. ResponseXml);
-                    if (menuEvent.ResponseXml != null) return Content(menuEvent.ResponseXml);
+                    if (menuEvent.ResponseXml != null)
+                        return Content(menuEvent.ResponseXml);
 
                     return View();
 

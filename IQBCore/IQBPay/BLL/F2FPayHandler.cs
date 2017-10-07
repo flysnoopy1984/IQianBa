@@ -3,7 +3,6 @@ using Com.Alipay.Business;
 using Com.Alipay.Domain;
 using Com.Alipay.Model;
 using IQBCore.Common.Helper;
-using IQBCore.IQBPay;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,7 +13,7 @@ using System.Web;
 using ThoughtWorks.QRCode.Codec;
 using ThoughtWorks.QRCode.Codec.Data;
 
-namespace IQBPay.Core
+namespace IQBCore.IQBPay.BLL
 {
     public class F2FPayHandler
     {
@@ -27,8 +26,7 @@ namespace IQBPay.Core
             AlipayTradePrecreateContentBuilder builder = new AlipayTradePrecreateContentBuilder();
             //收款账号
             builder.seller_id = sellerid;
-
-            
+ 
             //订单编号
             builder.out_trade_no = out_trade_no;
             //订单总金额
@@ -65,7 +63,8 @@ namespace IQBPay.Core
             
             builder.extend_params = exParam;
 
-           
+            
+
             return builder;
 
         }
@@ -82,8 +81,10 @@ namespace IQBPay.Core
             qrCodeEncoder.QRCodeVersion = 8;
             bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
             string filename = System.DateTime.Now.ToString("yyyyMMddHHmmss") + "0000" + (new Random()).Next(1, 10000).ToString()
-             + ".jpg";
-            filePath = ConfigurationManager.AppSettings["QRPath"] + filename;
+             + ".jpg";   
+            filePath = ConfigurationManager.AppSettings["QR_F2F_FP"] + filename;
+
+            filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
             bt.Save(filePath);
 
            // string ds = DeQR(filePath);
@@ -104,7 +105,7 @@ namespace IQBPay.Core
             bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
             string filename = System.DateTime.Now.ToString("yyyyMMddHHmmss") + "0000" + (new Random()).Next(1, 10000).ToString()
              + ".jpg";
-            filePath = ConfigurationManager.AppSettings["QR_F2F_FP"] + filename;
+            filePath = ConfigurationManager.AppSettings["QRPath"] + filename;
             bt.Save(filePath);
 
             // string ds = DeQR(filePath);

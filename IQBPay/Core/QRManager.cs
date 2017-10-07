@@ -11,6 +11,8 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using ThoughtWorks.QRCode.Codec;
+using IQBCore.IQBWX.Models.OutParameter;
+using Newtonsoft.Json;
 
 namespace IQBPay.Core
 {
@@ -28,7 +30,7 @@ namespace IQBPay.Core
             string url = site + "PP/Pay?Id=" + qrUser.QRId;
 
             string filePath = ConfigurationManager.AppSettings["QR_ARUser_FP"];
-            string filename = "QRARM" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()
+            string filename = "QRARU" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()
             + ".jpg";
 
             filePath += filename;
@@ -65,21 +67,33 @@ namespace IQBPay.Core
         {
             try
             {
-                string site = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
-                string url = site + "PP/Auth_AR?Id=" + qr.ID;
+                /*
+                 string site = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
+                 string url = site + "PP/Auth_AR?Id=" + qr.ID;
 
-                string filePath = ConfigurationManager.AppSettings["QR_ARMaster_FP"];
-                string filename = "QRARU" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()
-                + ".jpg";
+                 string filePath = ConfigurationManager.AppSettings["QR_ARMaster_FP"];
+                 string filename = "QRARU" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()
+                 + ".jpg";
 
-                filePath += filename;
-                qr.FilePath = filePath;
-                qr.TargetUrl = url;
+                 filePath += filename;
+                 qr.FilePath = filePath;
+                 qr.TargetUrl = url;
 
-                //Create QR
-                // filePath = PageController.Server.MapPath(filePath);
-                filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
-                QRManager.CreateQR(url, filePath);
+                 //Create QR
+                 // filePath = PageController.Server.MapPath(filePath);
+                 filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
+                 QRManager.CreateQR(url, filePath);
+                 */
+                if(qr.ID ==0 )
+                {
+                    throw new Exception("创建QR错误，QR ID 不存在");
+                }
+                string url = "http://wx.iqianba.cn/api/wx/CreatePayQRAuth";
+                string data = string.Format("QRId={0}&QRType={1}",qr.ID,qr.Type);
+                string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+                SSOQR obj = JsonConvert.DeserializeObject<SSOQR>(res);
+                qr.TargetUrl = obj.QRImgUrl;
+                
             }
             catch(Exception ex)
             {
