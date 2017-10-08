@@ -1,4 +1,6 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.IQBPay.Models.Store;
 using IQBCore.Model;
 using System;
 using System.Collections.Generic;
@@ -49,6 +51,12 @@ namespace IQBCore.IQBPay.Models.QR
         /// </summary>
         [MaxLength(128)]
         public string FilePath { get; set; }
+
+        public int ReceiveStoreId { get; set; }
+        
+        [NotMapped()]
+        public List<HashStore> HashStoreList { get; set; }
+
 
     }
 }

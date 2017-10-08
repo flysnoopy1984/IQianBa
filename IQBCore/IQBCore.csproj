@@ -102,6 +102,8 @@
     <Compile Include="IQBPay\BLL\F2FPayHandler.cs" />
     <Compile Include="IQBPay\Models\InParameter\InF2F.cs" />
     <Compile Include="IQBPay\Models\Order\EOrderInfo.cs" />
+    <Compile Include="IQBPay\Models\Order\ESettlement.cs" />
+    <Compile Include="IQBPay\Models\OutParameter\HashStore.cs" />
     <Compile Include="IQBPay\Models\QR\EQRInfo.cs" />
     <Compile Include="IQBPay\Models\QR\EQRUser.cs" />
     <Compile Include="IQBPay\Models\Result\RQRInfo.cs" />

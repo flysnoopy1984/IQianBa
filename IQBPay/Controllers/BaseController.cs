@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-
+using IQBCore.IQBPay.BaseEnum;
 
 namespace IQBPay.Controllers
 {
@@ -81,6 +81,17 @@ namespace IQBPay.Controllers
                 Session["UserHeaderImg"] = value;
             }
 
+        }
+
+        public UserRole UserRole
+        {
+            get {
+                return (UserRole)Enum.Parse(typeof(UserRole),Convert.ToString(Session["UserRole"]));
+            }
+            set
+            {
+                Session["UserRole"] = value;
+            }
         }
 
 

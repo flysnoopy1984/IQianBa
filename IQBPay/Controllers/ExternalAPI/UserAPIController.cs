@@ -55,24 +55,22 @@ namespace IQBPay.Controllers.ExternalAPI
                             //通过QR模板获取QRUser
                             qrUser = new EQRUser();
 
-                            if(ui.QRAuthId>0)
-                                qr = db.DBQRInfo.Where(a => a.ID == ui.QRAuthId).FirstOrDefault();
-                            else
-                                qr = db.DBQRInfo.Where(a => a.Channel == IQBCore.IQBPay.BaseEnum.Channel.PPAuto).FirstOrDefault();
+                          
+                            qr = db.DBQRInfo.Where(a => a.Channel == IQBCore.IQBPay.BaseEnum.Channel.PPAuto).FirstOrDefault();
 
                             if (qr == null)
                                 throw new Exception("没有找到对应的二维码,请联系平台！");
-                   
-                            
+
+                            qrUser.UserName = ui.Name;
                             qrUser.QRId = qr.ID;
                             qrUser.OpenId = ui.OpenId;
                             qrUser.Rate = qr.Rate;
-                            qrUser = QRManager.CreateUserUrlById(qrUser);
-                        
                             db.DBQRUser.Add(qrUser);
                             db.SaveChanges();
 
-                            ui.QRDefaultId = qrUser.ID;
+                            qrUser = QRManager.CreateUserUrlById(qrUser);
+
+                            ui.QRUserDefaultId = qrUser.ID;
                             ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.NormalUser;
                             ui.UserStatus = IQBCore.IQBPay.BaseEnum.UserStatus.Register;
                             

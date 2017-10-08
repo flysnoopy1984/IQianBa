@@ -77,5 +77,11 @@ namespace IQBCore.IQBPay.BaseEnum
         Closed= 2,
     }
 
+    public enum  OrderType
+    {
+        Normal,
+        UnKnow,
+    }
+
 
 }

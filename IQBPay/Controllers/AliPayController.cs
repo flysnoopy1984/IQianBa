@@ -170,26 +170,41 @@ namespace IQBPay.Controllers
         {
             try
             {
-                EOrderInfo order = new EOrderInfo();
-                order.AliPayOrderNo = Request["trade_no"];
-                order.AliPayPayChannel = "";
-                order.AliPayTradeStatus = Request["trade_status"];
-                order.AliPayAppId = Request["app_id"];
-
-                order.OrderNo = Request["out_trade_no"];
-
-                order.BuyerAliPayId = Request["buyer_id"];
-                order.BuyerAliPayLoginId = Request["buyer_logon_id"];
-                order.SellerAliPayId = Request["seller_id"];
-                order.SellerAliPayEmail = Request["seller_email"];
-
-                order.AliPayTotalAmount = Convert.ToSingle(Request["total_amount"]);
-                order.AliPayReceiptAmount = Convert.ToSingle(Request["receipt_amount"]);
-                order.AliPayBuerPayAmount = Convert.ToSingle(Request["buyer_pay_amount"]);
+               
+                string orderNo = Request["out_trade_no"];
+                AliPayManager payManager = new AliPayManager();
 
                 using (AliPayContent db = new AliPayContent())
                 {
-                    db.DBOrder.Add(order);
+
+                    EOrderInfo order = db.DBOrder.Where(o => o.OrderNo == orderNo).FirstOrDefault();
+
+                    if(order == null)
+                    {
+                        order = payManager.InitUnKnowOrderForAliPayNotice(Request);
+                        db.DBOrder.Add(order);
+                        db.SaveChanges();
+                        return View();
+                    }
+                    if (order.OrderStatus != IQBCore.IQBPay.BaseEnum.OrderStatus.WaitingAliPayNotify)
+                        return View();
+
+                    order.AliPayOrderNo = Request["trade_no"];
+                    order.AliPayPayChannel = "";
+                    order.AliPayTradeStatus = Request["trade_status"];
+                    order.AliPayAppId = Request["app_id"];
+
+                    order.BuyerAliPayId = Request["buyer_id"];
+                    order.BuyerAliPayLoginId = Request["buyer_logon_id"];
+                
+                    order.SellerAliPayEmail = Request["seller_email"];
+
+                    order.AliPayTotalAmount = Convert.ToSingle(Request["total_amount"]);
+                    order.AliPayReceiptAmount = Convert.ToSingle(Request["receipt_amount"]);
+                    order.AliPayBuerPayAmount = Convert.ToSingle(Request["buyer_pay_amount"]);
+                    order.AliPayTransDate = Convert.ToDateTime(Request["gmt_create"]);
+                    order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Paid;
+
                     db.SaveChanges();
                 }
 
@@ -393,13 +408,14 @@ namespace IQBPay.Controllers
                 }
                 using (AliPayContent db = new AliPayContent())
                 {
-                    //获取二维码
+                    //校验代理二维码
                     qrUser = db.DBQRUser.Where(q => q.ID == Id).FirstOrDefault();
                     if (qrUser == null)
                     {
                         ErrorUrl += "未获取对应二维码";
                         return Redirect(ErrorUrl);
                     }
+                    //校验授权二维码
                     qrInfo = db.DBQRInfo.Where(a => a.ID == qrUser.QRId).FirstOrDefault();
                     if (qrInfo == null)
                     {
@@ -413,8 +429,19 @@ namespace IQBPay.Controllers
                         return Redirect(ErrorUrl);
                     }
 
-                    //获取商户
-                    /*
+                    //获取并校验商户
+                    EStoreInfo store = db.DBStoreInfo.Where(a => a.ID == qrInfo.ReceiveStoreId).FirstOrDefault();
+                    if(store ==null)
+                    {
+                        ErrorUrl += "没有找到对应的收款商户";
+                        return Redirect(ErrorUrl);
+                    }
+                    if(store.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
+                    {
+                        ErrorUrl += "收款商户已下线";
+                        return Redirect(ErrorUrl);
+                    }
+                   /*
                     List<EStoreInfo> list = db.DBStoreInfo.Where(a => a.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Normal).ToList();
                     if (list.Count == 0)
                     {
@@ -424,26 +451,28 @@ namespace IQBPay.Controllers
                     Random r = new Random();
                     int i = r.Next(0, list.Count-1);
                     EStoreInfo store = list[i];
+                    
                     */
-                    EStoreInfo store = db.DBStoreInfo.Where(a => a.ID == 2).FirstOrDefault();
+                   
                     AliPayManager payManager = new AliPayManager();
                     ResultEnum status;
                    
                     string Res = payManager.PayF2F(BaseController.App, qrUser, store, Convert.ToSingle(Amount),out status);
 
-                    if(status == ResultEnum.SUCCESS)
+                    if (status == ResultEnum.SUCCESS)
                     {
-                      //  HttpHelper.RequestUrlSendMsg(Res, HttpHelper.HttpMethod.Post, "")
-                       return Redirect(Res);
+                        //创建初始化订单
+                        EOrderInfo order = payManager.InitOrder(qrUser, qrInfo, store,Convert.ToSingle(Amount));
+                        db.DBOrder.Add(order);
+                        db.SaveChanges();
+
+                        return Redirect(Res);
                     }
                     else
                     {
                         ErrorUrl += "【支付失败】" + Res;
                         return Redirect(ErrorUrl);
                     }
-
-
-
 
                 }
             }

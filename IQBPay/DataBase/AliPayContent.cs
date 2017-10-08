@@ -104,19 +104,22 @@ namespace IQBPay.DataBase
             {
                 qrUser.QRId = qr.ID;
                 qrUser.OpenId = ui.OpenId;
-                qrUser.Rate = qr.Rate;
-                qrUser = QRManager.CreateUserUrlById(qrUser);
+                qrUser.UserName = ui.Name;
+                qrUser.Rate = qr.Rate; 
                 db.DBQRUser.Add(qrUser);
                 db.SaveChanges();
 
+                qrUser = QRManager.CreateUserUrlById(qrUser);
+                db.Entry(qrUser).State = System.Data.Entity.EntityState.Modified;
+
                 DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
                 entry.State = EntityState.Unchanged;
-                ui.QRDefaultId = qrUser.ID;
+                ui.QRUserDefaultId = qrUser.ID;
 
                 //取消授权
                 ui.QRAuthId = 0;
 
-                entry.Property(t => t.QRDefaultId).IsModified = true;     
+                entry.Property(t => t.QRUserDefaultId).IsModified = true;     
                 db.SaveChanges();
             }
 

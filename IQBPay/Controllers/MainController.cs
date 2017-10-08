@@ -68,6 +68,7 @@ namespace IQBPay.Controllers
                     app.AppId = AliPayConfig.appId;
                     app.AuthUrl_Store = AliPayConfig.AuthUrl_Store;
                     app.AppName = "dingylpost@163.com";
+                    app.IsCurrent = true;
 
                     app.InitModify();
                     app.InitCreate();
@@ -106,6 +107,7 @@ namespace IQBPay.Controllers
             }
             ViewBag.Auth_Store = BaseController.App.AuthUrl_Store;
             ViewBag.PublicKey = BaseController.App.Merchant_Public_key;
+        
             return View();
         }
 

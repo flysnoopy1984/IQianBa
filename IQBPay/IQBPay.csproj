@@ -462,6 +462,7 @@
     <Content Include="scripts\Web\App.js" />
     <Content Include="scripts\Web\Common.js" />
     <Content Include="scripts\Web\FormUtility.js" />
+    <Content Include="scripts\Web\OrderList.js" />
     <Content Include="scripts\Web\QR_ARInfo.js" />
     <Content Include="scripts\Web\QR_ARList.js" />
     <Content Include="scripts\Web\QR_ARDefaultInfo.js" />

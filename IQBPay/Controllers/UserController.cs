@@ -47,7 +47,7 @@ namespace IQBPay.Controllers
                         result.QueryResult = false;
                         return Json(result);
                     }
-                    EQRUser qrUser = db.DBQRUser.Where(a => a.ID == ui.QRDefaultId).FirstOrDefault();
+                    EQRUser qrUser = db.DBQRUser.Where(a => a.ID == ui.QRUserDefaultId).FirstOrDefault();
                   
                     result = new RUserInfo();
                     result.InitFromChild(ui);

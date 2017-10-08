@@ -17,6 +17,9 @@ namespace IQBCore.IQBPay.Models.QR
         [MaxLength(32)]
         public string OpenId { get; set; }
 
+        [MaxLength(40)]
+        public string UserName { get; set; }
+
         public long QRId { get; set; }
 
         /// <summary>

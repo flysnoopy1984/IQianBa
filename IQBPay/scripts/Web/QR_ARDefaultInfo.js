@@ -24,6 +24,14 @@ function Init() {
 }
 
 function InitFormData(data) {
+    
+
+    $(data.HashStoreList).each(function (i,r) {
+
+        
+        $("#ReceiveStore").append("<option value='" + r.Id + "'>" + r.Name + "</option>");
+    });
+
     if (data.ID == 0) return;
 
     $("#RecId").val(data.ID);
@@ -33,6 +41,8 @@ function InitFormData(data) {
     
    // var filePath = data.FilePath;
     $("#QRImg").attr("src", data.TargetUrl);
+
+    $("#ReceiveStore").val(data.ReceiveStoreId);
 
 
 }
@@ -53,6 +63,7 @@ function Save() {
     var rate = $("#Rate").val();
     var remake = $("#Remark").val();
     var ID = $("#RecId").val();
+    var storeId = $("#ReceiveStore").val();
 
   //  if (!CheckForm()) return;
 
@@ -60,7 +71,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: {"ID":ID, "Name": name, "Rate": rate, "Remark": remake},
+        data: {"ID":ID, "Name": name, "Rate": rate, "Remark": remake,"ReceiveStoreId":storeId},
         url: url,
         success: function (data) {
             if (data == "OK") {

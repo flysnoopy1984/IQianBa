@@ -15,7 +15,7 @@
 <div id="InfoArea">
     <div id="Title" class="alert alert-info BarTitle">
         <span class="entypo-info-circled"></span>
-        <strong>查看编辑（平台默认收款二维码）</strong>
+        <strong>查看编辑（平台默认授权码）</strong>
     </div>
     <div id="EditLeftArea">
         <div class="form-group">
@@ -28,6 +28,14 @@
             <label class="col-sm-3 control-label">点率(0-100)</label>
             <div class="col-sm-6">
                 <input id="Rate" type="text" class="form-control NeedFill" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")'>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">收款商户</label>
+            <div class="col-sm-6">
+                <select class="form-control" id="ReceiveStore">
+                    
+                </select> 
             </div>
         </div>
         <div class="form-group">

@@ -9,5 +9,44 @@
 @section SubMenu2{
     列表
 }
-<h2>List</h2>
+<link href="~/Content/Style/Web/List.css" rel="stylesheet" />
+<script src="~/scripts/Web/Common.js"></script>
+<script src="~/scripts/Component/IQBTable.js"></script>
+<script src="~/scripts/Web/OrderList.js"></script>
+<div id="ListArea">
+    <div id="Title" style="margin:0px;">
+        <span id="ListTitleName"></span>
+        <ul class="UlHorizontal" style="float:right">
+            <li>
+                <button type="button" class="btn btn-primary" onclick="Query();">查询</button>
+            </li>
 
+        </ul>
+    </div>
+    <div id="ListContent">
+     
+        <table id="tbData" class="table table-hover table-bordered TableOverflowHidden">
+            <thead class="cf">
+                <tr id="trHeader">
+                    <th width="">订单编号</th>
+                    <th width="">支付宝订单编号</th>
+                    <th width="">总金额</th>
+                    <th width="">扣点率</th>
+                    <th width="">扣点金额</th>
+                    <th width="">代理用户</th>
+                    <th width="">代理实际收入</th>
+                    <th width="">收款商户名</th>
+                    <th width="">商户类型</th>
+                    <th width="">商户佣金点率</th>
+                    <th width="">商户佣金</th>
+                    <th width="">平台实际收入</th>
+                    <th width="">需打款金额</th>
+                    <th width="">已打款金额</th>
+                    <th width="">状态</th>
+                    <th width=""> 操作</th>
+                </tr>
+            </thead>
+            <tbody id="trContainer"></tbody>
+        </table>
+    </div>
+</div>

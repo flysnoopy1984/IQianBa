@@ -26,7 +26,7 @@ namespace IQBCore.IQBPay.Models.User
 
         public UserRole UserRole { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(40)]
         public string Name { get; set; }
 
         public Boolean Isadmin { get; set; }
@@ -34,7 +34,7 @@ namespace IQBCore.IQBPay.Models.User
         /// <summary>
         /// QRUser中的ID
         /// </summary>
-        public long QRDefaultId { get; set; }
+        public long QRUserDefaultId { get; set; }
 
         [MaxLength(256)]
         public string Headimgurl { get; set; }

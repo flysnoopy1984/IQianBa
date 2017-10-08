@@ -59,10 +59,13 @@ namespace IQBCore.IQBPay.Models.Order
         public string AliPayAppId { get; set; }
 
         /// <summary>
-        /// 支付金额
+        /// 订单总金额(平台记录)
         /// </summary>
         public float TotalAmount { get; set; }
 
+        /// <summary>
+        /// 代理实际收入
+        /// </summary>
 
         public float RealTotalAmount { get; set; }
         /// <summary>
@@ -77,6 +80,9 @@ namespace IQBCore.IQBPay.Models.Order
         [MaxLength(32)]
         public string AgentOpenId { get; set; }
 
+        [MaxLength(40)]
+        public string AgentName { get; set; }
+
         public OrderStatus OrderStatus { get; set; }
 
         [NotMapped]
@@ -86,5 +92,24 @@ namespace IQBCore.IQBPay.Models.Order
 
         public DateTime TransDate { get; set; }
 
+        public DateTime AliPayTransDate { get; set; }
+
+        public OrderType OrderType { get; set; }
+
+       
+        public Channel SellerChannel { get; set; }
+
+        public float SellerRate { get; set; }
+
+        public float SellerCommission { get; set; }
+
+        [MaxLength(20)]
+        public string SellerName { get; set; }
+
+        ///// <summary>
+        ///// 平台实际收入
+        ///// </summary>
+        //[NotMapped()]
+        //public float PPRealAmount { get; set; }
     }
 }

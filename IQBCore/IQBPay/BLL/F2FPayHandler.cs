@@ -18,18 +18,30 @@ namespace IQBCore.IQBPay.BLL
 {
     public class F2FPayHandler
     {
+        private string _OrderNo;
+        public string OrderNo
+        {
+            get { return _OrderNo; }
+        }
+
+        private string _SellerId;
+        public string SellerId
+        {
+            get { return _SellerId; }
+        }
+     
         public AlipayTradePrecreateContentBuilder BuildPrecreateContent(EAliPayApplication app, string sellerid,string TotalAmt)
         {
             //线上联调时，请输入真实的外部订单号。
-            string out_trade_no = StringHelper.GenerateOrderNo();
-           
+            _OrderNo = StringHelper.GenerateOrderNo();
+            _SellerId = sellerid;
 
-            AlipayTradePrecreateContentBuilder builder = new AlipayTradePrecreateContentBuilder();
+             AlipayTradePrecreateContentBuilder builder = new AlipayTradePrecreateContentBuilder();
             //收款账号
-            builder.seller_id = sellerid;
+            builder.seller_id = _SellerId;
  
             //订单编号
-            builder.out_trade_no = out_trade_no;
+            builder.out_trade_no = OrderNo;
             //订单总金额
             builder.total_amount = TotalAmt;
             //参与优惠计算的金额

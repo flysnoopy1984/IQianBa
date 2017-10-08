@@ -11,6 +11,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using IQBCore.IQBPay.Models.OutParameter;
 
 namespace IQBPay.Controllers
 {
@@ -75,20 +76,21 @@ namespace IQBPay.Controllers
         public ActionResult Get(long Id)
         {
             EQRInfo result = null;
-
-            if (Id == -1)
+            using (AliPayContent db = new AliPayContent())
             {
-                result = new EQRInfo();
-                
-                result.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal;
-            }
-            else
-            {
-                using (AliPayContent db = new AliPayContent())
+                if (Id == -1)
                 {
-                    result = db.DBQRInfo.Where(a=> a.ID == Id).FirstOrDefault();
+                    result = new EQRInfo();
+                    result.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal;
                 }
+                else
+                {
+                    result = db.DBQRInfo.Where(a => a.ID == Id).FirstOrDefault();
+                }
+                result.HashStoreList = db.Database.SqlQuery<HashStore>("select Id,Name from storeinfo").ToList();
             }
+
+
             return Json(result);
         }
 
@@ -115,6 +117,7 @@ namespace IQBPay.Controllers
 
                         entry.Property(t => t.Name).IsModified = true;
                         entry.Property(t => t.Rate).IsModified = true;
+                        entry.Property(t => t.ReceiveStoreId).IsModified = true;
                         entry.Property(t => t.Remark).IsModified = true;
                         entry.Property(t => t.RecordStatus).IsModified = true;
 
@@ -166,6 +169,8 @@ namespace IQBPay.Controllers
             {
                 result = db.DBQRInfo.Where(a => a.Channel == Channel.PPAuto).FirstOrDefault();
                 if (result==null) result = new EQRInfo();
+
+                result.HashStoreList = db.Database.SqlQuery<HashStore>("select Id,Name from storeinfo").ToList();
             }
          
             return Json(result);
@@ -184,6 +189,7 @@ namespace IQBPay.Controllers
                   
                     entry.Property(t => t.Name).IsModified = true;
                     entry.Property(t => t.Rate).IsModified = true;
+                    entry.Property(t => t.ReceiveStoreId).IsModified = true;
                     entry.Property(t => t.Remark).IsModified = true;
 
                     entry.Property(t => t.MDate).IsModified = true;

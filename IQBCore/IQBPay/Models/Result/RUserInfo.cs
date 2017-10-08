@@ -52,7 +52,7 @@ namespace IQBCore.IQBPay.Models.Result
             this.MTime = ui.MTime;
             this.Name = ui.Name;
             this.parentOpenId = ui.parentOpenId;
-            this.QRDefaultId = ui.QRDefaultId;
+            this.QRUserDefaultId = ui.QRUserDefaultId;
             this.UserRole = ui.UserRole;
             this.UserStatus = ui.UserStatus;
             this.Id = ui.Id;

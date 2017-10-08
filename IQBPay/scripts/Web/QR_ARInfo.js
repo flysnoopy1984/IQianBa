@@ -2,8 +2,8 @@
 
     var Id = GetUrlParam("id");
 
-    if (Id != null && Id != "")
-        Init(Id);
+  
+   Init(Id);
 
     $("#QRStatus").bootstrapSwitch({
         onText: "启用",
@@ -48,6 +48,11 @@ function Init(Id) {
 
 function InitFormData(data)
 {
+    $(data.HashStoreList).each(function (i, r) {
+
+        $("#ReceiveStore").append("<option value='" + r.Id + "'>" + r.Name + "</option>");
+    });
+
     $("#Name").val(data.Name);
     $("#Rate").val(data.Rate);
     $("#Remark").val(data.Remark);
@@ -55,7 +60,7 @@ function InitFormData(data)
     //var filePath =  data.FilePath;
     $("#QRImg").attr("src", data.TargetUrl);
   
-
+    $("#ReceiveStore").val(data.ReceiveStoreId);
 }
 
 function CheckForm() {
@@ -80,6 +85,7 @@ function Save() {
     var rate = $("#Rate").val();
     var remake = $("#Remark").val();
     var ID = $("#RecId").val();
+    var storeId = $("#ReceiveStore").val();
 
     if (!CheckForm()) return;
 
@@ -87,7 +93,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID, "Name": name, "Rate": rate, "Remark": remake, "RecordStatus": QRStatus },
+        data: { "ID": ID, "Name": name, "Rate": rate, "Remark": remake, "RecordStatus": QRStatus, "ReceiveStoreId": storeId },
         url: url,
         success: function (data) {
             if (data.RunResult == "OK") {
