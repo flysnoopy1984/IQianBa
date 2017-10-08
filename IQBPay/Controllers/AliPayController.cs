@@ -24,6 +24,7 @@ using Newtonsoft.Json;
 using IQBCore.IQBWX.Models.OutParameter;
 using IQBCore.IQBPay;
 using IQBCore.IQBPay.BLL;
+using IQBCore.IQBPay.Models.Order;
 
 namespace IQBPay.Controllers
 {
@@ -38,9 +39,9 @@ namespace IQBPay.Controllers
         public string pk1_rs1 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3aaDFxkj4IfzV42j8lwdJCZgTPTfrwDTiFfxhQXwFk/9sstsNdSkrYzKAmMBgl95d7R9bA8ASc0A8JADgR1ye+gsky9K/l8DEI8ZbgSWgCdEkTHbuZtzLo0SN9Q+U6k/g3QWTV27+0WHXHNwECFhdk23V0s2MeF+HrYgPn0WSkpYwz58hCDV9Eh71sj05tcgWfitcEkMLSazXmDqRsv8LZjtzpXO9Chwssfi9iCWa3hfsuzfmXusk8TRwtRyUtD9hIq4Fxr2+QJ2AvMlyK7/Sgtnsgl+lIv869jVyaNydlwSv8js1TM8nXPVemTWvj7fQUnWhU0YRHVa0XcdeyvaBwIDAQAB";
 
         public string AppID = ConfigurationManager.AppSettings["APPID"];
-       
 
-        
+        public object EORderInfo { get; private set; }
+
         public string callF2FPay(string TotalAmt,string sellerid)
         {
 
@@ -52,7 +53,7 @@ namespace IQBPay.Controllers
 
             F2FPayHandler handler = new F2FPayHandler();
            
-              AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent(sellerid,TotalAmt);
+              AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent(BaseController.App, sellerid,TotalAmt);
 
             AlipayF2FPrecreateResult precreateResult = serviceClient.tradePrecreate(builder);
 
@@ -167,7 +168,40 @@ namespace IQBPay.Controllers
 
         public ActionResult PayNotify()
         {
+            try
+            {
+                EOrderInfo order = new EOrderInfo();
+                order.AliPayOrderNo = Request["trade_no"];
+                order.AliPayPayChannel = "";
+                order.AliPayTradeStatus = Request["trade_status"];
+                order.AliPayAppId = Request["app_id"];
+
+                order.OrderNo = Request["out_trade_no"];
+
+                order.BuyerAliPayId = Request["buyer_id"];
+                order.BuyerAliPayLoginId = Request["buyer_logon_id"];
+                order.SellerAliPayId = Request["seller_id"];
+                order.SellerAliPayEmail = Request["seller_email"];
+
+                order.AliPayTotalAmount = Convert.ToSingle(Request["total_amount"]);
+                order.AliPayReceiptAmount = Convert.ToSingle(Request["receipt_amount"]);
+                order.AliPayBuerPayAmount = Convert.ToSingle(Request["buyer_pay_amount"]);
+
+                using (AliPayContent db = new AliPayContent())
+                {
+                    db.DBOrder.Add(order);
+                    db.SaveChanges();
+                }
+
+
+            }
+            catch(Exception ex)
+            {
+                Log.log("PayNotify Error:" + ex.Message);
+            }
            
+
+
             return View();
         }
         public ActionResult Auth()
@@ -195,78 +229,85 @@ namespace IQBPay.Controllers
                     Log.log("Auth No app");
                     return Content("【没有APP】无法授权，请联系平台");
                 }
-                using (AliPayContent db = new AliPayContent())
-                {
-                    qr = db.QR_GetById(qrId, IQBCore.IQBPay.BaseEnum.QRType.StoreAuth);
-
-                }
-
-                if (qr == null)
-                {
-                    Log.log("Auth No QR");
-                    return Content("【授权码不存在】无法授权，请联系平台！");
-                }
-                else if (qr.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
-                    return Content("【授权码已被使用】无法授权，请联系平台！");
-
+               
                 try
                 {
-                   
-                    IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
-                    app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
-
-                    AlipayOpenAuthTokenAppRequest request = new AlipayOpenAuthTokenAppRequest();
-
-                    AlipayOpenAuthTokenAppModel model = new AlipayOpenAuthTokenAppModel();
-                    model.GrantType = "authorization_code";
-                    model.Code = authCode;
-
-                    request.SetBizModel(model);
-
-                    response = alipayClient.Execute(request);
-                    Log.log("Auth response:" + response.Body);
-
                     using (AliPayContent db = new AliPayContent())
                     {
-                        store = db.Store_GetByAliPayUserId(response.UserId);
-                        if (store == null)
-                        {
-                            store = new EStoreInfo
-                            {
-                                AliPayAccount = response.UserId,
-                                AliPayAuthAppId = response.AuthAppId,
-                                AliPayAuthToke = response.AppAuthToken,
-                                OwnnerOpenId = qr.OwnnerOpenId,
-                                Channel = qr.Channel,
-                                Name = qr.Name,
-                                Remark = qr.Remark,
-                                RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal,
-                                QRId = qr.ID,
-                                Rate = qr.Rate
-                            };
-                            store.InitCreate();
-                            store.InitModify();
-                            db.DBStoreInfo.Add(store);
+                        qr = db.QR_GetById(qrId, IQBCore.IQBPay.BaseEnum.QRType.StoreAuth);
 
+                        if (qr == null)
+                        {
+                            Log.log("Auth No QR");
+                            return Content("【授权码不存在】无法授权，请联系平台！");
+                        }
+                        else if (qr.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
+                            return Content("【授权码已被使用】无法授权，请联系平台！");
+                  
+
+                        IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+                        app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
+
+                        AlipayOpenAuthTokenAppRequest request = new AlipayOpenAuthTokenAppRequest();
+
+                        AlipayOpenAuthTokenAppModel model = new AlipayOpenAuthTokenAppModel();
+                        model.GrantType = "authorization_code";
+                        model.Code = authCode;
+
+                        request.SetBizModel(model);
+
+                        response = alipayClient.Execute(request);
+                        if (response.Code == "10000")
+                        {
+
+                            store = db.Store_GetByAliPayUserId(response.UserId);
+                            if (store == null)
+                            {
+                                store = new EStoreInfo
+                                {
+                                    AliPayAccount = response.UserId,
+                                    AliPayAuthAppId = response.AuthAppId,
+                                    AliPayAuthToke = response.AppAuthToken,
+                                    OwnnerOpenId = qr.OwnnerOpenId,
+                                    Channel = qr.Channel,
+                                    Name = qr.Name,
+                                    Remark = qr.Remark,
+                                    RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal,
+                                    QRId = qr.ID,
+                                    Rate = qr.Rate,
+                                    FromIQBAPP = app.AppId,
+                                };
+                                store.InitCreate();
+                                store.InitModify();
+                                db.DBStoreInfo.Add(store);
+
+                            }
+                            else
+                            {
+                                store.AliPayAccount = response.UserId;
+                                store.AliPayAuthAppId = response.AuthAppId;
+                                store.AliPayAuthToke = response.AppAuthToken;
+
+                                store.FromIQBAPP = app.AppId;
+                                store.OwnnerOpenId = qr.OwnnerOpenId;
+                                store.Channel = qr.Channel;
+                                store.Remark = qr.Remark;
+                                store.QRId = qr.ID;
+                                store.Rate = qr.Rate;
+
+                            }
+                            qr.InitModify();
+                            qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
+                            Log.log("Auth QR Status:"+qr.RecordStatus);
+                            db.SaveChanges();
                         }
                         else
                         {
-                            store.AliPayAccount = response.UserId;
-                            store.AliPayAuthAppId = response.AuthAppId;
-                            store.AliPayAuthToke = response.AppAuthToken;
-
-                            store.OwnnerOpenId = qr.OwnnerOpenId;
-                            store.Channel = qr.Channel;
-                            store.Remark = qr.Remark;
-                            store.QRId = qr.ID;
-                            store.Rate = qr.Rate;
-
+                            Content("授权失败："+response.Msg);
                         }
-                        qr.InitModify();
-                        qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
-                        db.SaveChanges();
-                    }
 
+                    }
+                   
                     return Content("授权成功");
 
                 }
@@ -329,12 +370,92 @@ namespace IQBPay.Controllers
             return Content(res);
         }
 
-        [HttpPost]
-        public ActionResult F2FPay()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Id">QRUserId</param>
+        /// <param name="Amount"></param>
+        /// <returns></returns>   
+        public ActionResult F2FPay(string qrUserId, string Amount)
         {
-            string TotalAmt = Request["TotalAmt"];
-            string sellerid = Request["sellerid"];// "2088821092484390"; 
-            return Content(callF2FPay(TotalAmt, sellerid));
+            string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?code=2001&ErrorMsg=";
+            try
+            {
+                
+                AliPayManager payMag = new AliPayManager();
+                EQRUser qrUser = null;
+                EQRInfo qrInfo = null;
+                long Id;
+                if (string.IsNullOrEmpty(qrUserId) || !long.TryParse(qrUserId, out Id))
+                {
+                    ErrorUrl += "代理二维码ID获取错误";
+                    return Redirect(ErrorUrl);
+                }
+                using (AliPayContent db = new AliPayContent())
+                {
+                    //获取二维码
+                    qrUser = db.DBQRUser.Where(q => q.ID == Id).FirstOrDefault();
+                    if (qrUser == null)
+                    {
+                        ErrorUrl += "未获取对应二维码";
+                        return Redirect(ErrorUrl);
+                    }
+                    qrInfo = db.DBQRInfo.Where(a => a.ID == qrUser.QRId).FirstOrDefault();
+                    if (qrInfo == null)
+                    {
+                        ErrorUrl += "二维码对应的授权码不存";
+                        return Redirect(ErrorUrl);
+                    }
+
+                    if (qrInfo.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
+                    {
+                        ErrorUrl += "二维码对应的授权码已被禁用";
+                        return Redirect(ErrorUrl);
+                    }
+
+                    //获取商户
+                    /*
+                    List<EStoreInfo> list = db.DBStoreInfo.Where(a => a.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Normal).ToList();
+                    if (list.Count == 0)
+                    {
+                        ErrorUrl += "没有任何对应的支付商户，请联系平台";
+                        return Redirect(ErrorUrl);
+                    }
+                    Random r = new Random();
+                    int i = r.Next(0, list.Count-1);
+                    EStoreInfo store = list[i];
+                    */
+                    EStoreInfo store = db.DBStoreInfo.Where(a => a.ID == 2).FirstOrDefault();
+                    AliPayManager payManager = new AliPayManager();
+                    ResultEnum status;
+                   
+                    string Res = payManager.PayF2F(BaseController.App, qrUser, store, Convert.ToSingle(Amount),out status);
+
+                    if(status == ResultEnum.SUCCESS)
+                    {
+                      //  HttpHelper.RequestUrlSendMsg(Res, HttpHelper.HttpMethod.Post, "")
+                       return Redirect(Res);
+                    }
+                    else
+                    {
+                        ErrorUrl += "【支付失败】" + Res;
+                        return Redirect(ErrorUrl);
+                    }
+
+
+
+
+                }
+            }
+            catch(Exception ex)
+            {
+                ErrorUrl += ex.Message;
+                return Redirect(ErrorUrl);
+            }
+
+
+        
+            return View();
         }
 
         public ActionResult AuthToISV()

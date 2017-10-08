@@ -70,9 +70,11 @@ namespace IQBCore.IQBPay.BaseEnum
 
     public enum OrderStatus
     {
-        Paid,
+        WaitingAliPayNotify =0,
 
-        Closed,
+        Paid =1,
+
+        Closed= 2,
     }
 
 

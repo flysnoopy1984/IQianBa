@@ -154,7 +154,7 @@ namespace IQBWX.BLL
                 string ssoToken = null;
                 EUserInfo ui =null ,pui = null;
 
-                log.log("WXScanLogin ssoToken:" + msg.EventKey);
+              //  log.log("WXScanLogin ssoToken:" + msg.EventKey);
 
                 if (msg.Event == "scan")
                     ssoToken = msg.EventKey;
@@ -162,7 +162,6 @@ namespace IQBWX.BLL
                     ssoToken = msg.EventKey.Substring(8);
 
                 
-
                 if (ssoToken.StartsWith(IQBConstant.WXQR_IQBPAY_PREFIX))
                 {
                     string qrId = ssoToken.Substring(IQBConstant.WXQR_IQBPAY_PREFIX.Length);

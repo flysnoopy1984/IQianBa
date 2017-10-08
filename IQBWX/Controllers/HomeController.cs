@@ -62,7 +62,7 @@ namespace IQBWX.Controllers
                    
                     StreamReader reader = new StreamReader(Request.InputStream);
                     string strXml = reader.ReadToEnd();
-                    log.log("Message strXml:" + strXml);
+                    //log.log("Message strXml:" + strXml);
                     if (string.IsNullOrEmpty(strXml))
                         return View();
                
@@ -91,7 +91,7 @@ namespace IQBWX.Controllers
                         default:
                         break;
                     }
-                    log.log("Message: " + menuEvent. ResponseXml);
+                  //  log.log("Message: " + menuEvent. ResponseXml);
                     if (menuEvent.ResponseXml != null)
                         return Content(menuEvent.ResponseXml);
 
@@ -114,21 +114,12 @@ namespace IQBWX.Controllers
         public ActionResult ErrorMessage()
         {
             string code = Request.QueryString["code"];
+            string errorMsg = Request.QueryString["ErrorMsg"];
             jsonError data=null;
             if (!string.IsNullOrEmpty(code))
             {
                 Errorcode ec = (Errorcode)Enum.Parse(typeof(Errorcode), code);
-                if(ec == Errorcode.NormalErrorNoButton)
-                {
-                    data = new jsonError();
-                    data.errorCode = Convert.ToInt32(ec);
-                    data.errorMsg = Request.QueryString["ErrorMsg"];
-
-                }
-                else
-                { 
-                    data = jsonError.GetErrorObj(ec);
-                }
+                data = jsonError.GetErrorObj(ec, errorMsg);
                 return View(data);                       
                 
             }

@@ -60,7 +60,8 @@ function InitFormData(data) {
     $("#Channel").val(data.Channel);
 
     var filePath = data.FilePath;
-    $("#QRImg").attr("src", filePath);
+    if(filePath!=null && filePath!="")
+        $("#QRImg").attr("src", filePath);
 
 
 }

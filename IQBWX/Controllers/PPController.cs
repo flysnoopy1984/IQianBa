@@ -35,8 +35,9 @@ namespace IQBWX.Controllers
             return View();
         }
 
-        public ActionResult Pay()
+        public ActionResult Pay(string Id)
         {
+            ViewBag.QRUserId = Id;
             return View();
         }
 

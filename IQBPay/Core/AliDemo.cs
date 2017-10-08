@@ -129,7 +129,7 @@ namespace IQBPay.Core
 
 
             AlipayOpenAuthTokenAppQueryModel model = new AlipayOpenAuthTokenAppQueryModel();
-            model.AppAuthToken = "201709BB409adf95ae524bf7809e12d114180X39";
+            model.AppAuthToken = "201710BBe16e3147c5e2496ab259a894259caA50";
 
             AlipayOpenAuthTokenAppQueryRequest request = new AlipayOpenAuthTokenAppQueryRequest();
             /*

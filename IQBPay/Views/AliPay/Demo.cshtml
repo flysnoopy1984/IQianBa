@@ -29,10 +29,12 @@
             <li><a href=@Url.Action("QueryToken", "AliPay")>QueryToken</a></li> 
             <li><a href=@Url.Action("QRImg","AliPay")>QRImg</a></li>
             <li><a href=@Url.Action("QRImgWX","AliPay")>QRImg_WX</a></li>
-            <li><a href=@Url.Action("F2FPay", "AliPay")>F2F</a></li> 
-            <li>
-               
+            <li><a href="http://localhost:24068/AliPay/F2FPay?qrUserId=1&Amount=0.01">F2F</a></li> 
+            <li>           
                <a href=@Url.Action("SubAccount", "AliPay", new { @TotalAmt = "1", orderNo = "2017092921001004530201479792" })>分账</a>
+            </li>
+            <li>
+                <a href=@Url.Action("List", "Order", new { @TotalAmt = "1", orderNo = "2017092921001004530201479792" })>分账</a>
             </li>
         </ul>
         <img src=@ViewData["imgSrc"] />

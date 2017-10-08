@@ -37,7 +37,11 @@ namespace IQBPay.Controllers
                 {
                     using (AliPayContent db = new AliPayContent())
                     {
-                        _App = db.DBAliPayApp.FirstOrDefault();
+                        _App = db.DBAliPayApp.Where(a => a.IsCurrent == true).FirstOrDefault();
+                        if(_App == null)
+                        {
+                            throw new Exception("没有当前应用");
+                        }
                     }
                 }
                 return _App;

@@ -16,7 +16,24 @@ namespace IQBWX.Models.JsonData
         public int errorCode { get; set; }
         public string errorMsg { get; set; }
         public string btnText { get; set; }
-        public static jsonError GetErrorObj(Errorcode code)
+
+        private string _btnUrl;
+        public string btnUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_btnUrl))
+                    _btnUrl = "#";
+                return _btnUrl;
+            }
+            set
+            {
+                _btnUrl = value;
+
+            }
+        }
+      
+        public static jsonError GetErrorObj(Errorcode code,string errorMsg = "")
         {
             jsonError obj = new jsonError();
             obj.errorCode = Convert.ToInt32(code);
@@ -33,6 +50,14 @@ namespace IQBWX.Models.JsonData
                     break;
                 case Errorcode.OpenIdNotFound:
                     obj.errorMsg = "OpenId 未获取，请联系QQ";
+                    break;
+                case Errorcode.NormalErrorNoButton:
+                    obj.errorMsg = errorMsg;
+                    break;
+                case Errorcode.AliPay_PayError:
+                    obj.btnText = "返回支付";
+                    obj.errorMsg = errorMsg;
+                    obj.btnUrl = "/PP/Pay";
                     break;
             }
 

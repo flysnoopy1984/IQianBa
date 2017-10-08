@@ -27,7 +27,7 @@ namespace IQBPay.Core
             try
             { 
             string site = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
-            string url = site + "PP/Pay?Id=" + qrUser.QRId;
+            string url = site + "PP/Pay?Id=" + qrUser.ID;
 
             string filePath = ConfigurationManager.AppSettings["QR_ARUser_FP"];
             string filename = "QRARU" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()

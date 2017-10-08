@@ -61,10 +61,13 @@ namespace IQBCore.IQBPay.Models.Store
         [MaxLength(20)]
         public string CloseTime { get; set; }
 
+        public string FromIQBAPP { get; set; }
 
-     
 
-        
+
+
+
+
 
     }
 }

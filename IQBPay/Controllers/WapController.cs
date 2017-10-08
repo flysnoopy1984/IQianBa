@@ -24,15 +24,7 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        public ActionResult Auth_AR()
-        {
-            JsApiPay JsApiPay = new JsApiPay(this.HttpContext);
-            JsApiPay.GetOpenidAndAccessToken(true);
-
-            return Content(JsApiPay.openid);
-           
-        }
-
+      
         public ActionResult Auth_Store(string Id)
         {
           

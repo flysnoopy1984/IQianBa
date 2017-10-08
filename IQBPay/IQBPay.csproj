@@ -478,6 +478,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AliPayController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\QRController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -576,6 +577,8 @@
     <Content Include="Views\QR\AuthList.cshtml" />
     <Content Include="Views\Wap\AuthStore.cshtml" />
     <Content Include="Views\Main\Tools.cshtml" />
+    <Content Include="Views\Order\List.cshtml" />
+    <Content Include="Views\Order\Info.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

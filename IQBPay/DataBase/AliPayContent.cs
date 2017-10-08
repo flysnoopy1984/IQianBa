@@ -1,4 +1,5 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.System;
@@ -34,6 +35,8 @@ namespace IQBPay.DataBase
 
         public DbSet<EQRUser> DBQRUser { get; set; }
         public DbSet<EAliPayApplication> DBAliPayApp { get; set; }
+
+        public DbSet<EOrderInfo> DBOrder { get; set; }
 
        
 
@@ -109,6 +112,9 @@ namespace IQBPay.DataBase
                 DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
                 entry.State = EntityState.Unchanged;
                 ui.QRDefaultId = qrUser.ID;
+
+                //取消授权
+                ui.QRAuthId = 0;
 
                 entry.Property(t => t.QRDefaultId).IsModified = true;     
                 db.SaveChanges();

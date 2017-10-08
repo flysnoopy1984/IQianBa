@@ -54,6 +54,7 @@ function generateData(result) {
         strCtrl += "<tr>";
         strCtrl += "<td>" + result[i].AppId + "</td>";
         strCtrl += "<td>" + result[i].AppName + "</td>";
+        strCtrl += "<td>" + result[i].IsCurrent + "</td>";
         strCtrl += "<td><a href='/Main/AppInfo?id=" + result[i].ID + "' class='td'>详情</a>";
         strCtrl += "</tr>";
 
@@ -80,6 +81,8 @@ function InitFormData(result) {
     $("#SignType").val(result.SignType);
     $("#Charset").val(result.Charset);
     $("#AppStatus").val(result.RecordStatus);
+
+    $("#IsCurrent").attr("checked",result.IsCurrent);
 
     $("#AuthUrl_Store").val(result.AuthUrl_Store);
 
@@ -111,7 +114,8 @@ function Save() {
     var AppName = $("#AppName").val();
     var ServerUrl = $("#ServerUrl").val();
     var AuthUrl_Store = $("#AuthUrl_Store").val();
-  
+    
+    var IsCurrent = $("#IsCurrent").get(0).checked;
     var Private_Key = $("#Private_Key").val();
     var Public_Key = $("#Public_Key").val();
     var Version = $("#Version").val();
@@ -129,7 +133,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID":Id,"AppId": AppId, "AppName": AppName,"AuthUrl_Store":AuthUrl_Store, "ServerUrl": ServerUrl, "Merchant_Private_Key": Private_Key, "Merchant_Public_key": Public_Key, "Version": Version, "SignType": SignType, "Charset": Charset, "RecordStatus": AppStatus },
+        data: { "ID": Id, "AppId": AppId, "AppName": AppName, "AuthUrl_Store": AuthUrl_Store, "ServerUrl": ServerUrl, "Merchant_Private_Key": Private_Key, "Merchant_Public_key": Public_Key, "Version": Version, "SignType": SignType, "Charset": Charset, "RecordStatus": AppStatus, "IsCurrent": IsCurrent },
         url: url,
         success: function (data) {
             if (data == "OK") {

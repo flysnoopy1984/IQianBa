@@ -19,7 +19,7 @@ namespace IQBWX.Common
         SystemMaintain = 9999,
         OpenIdNotFound = 1003,
         NormalErrorNoButton = 2000, 
-        
+        AliPay_PayError = 2001,
 
     }
 

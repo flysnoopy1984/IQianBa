@@ -3,6 +3,7 @@ using Com.Alipay.Business;
 using Com.Alipay.Domain;
 using Com.Alipay.Model;
 using IQBCore.Common.Helper;
+using IQBCore.IQBPay.Models.System;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,7 +18,7 @@ namespace IQBCore.IQBPay.BLL
 {
     public class F2FPayHandler
     {
-        public AlipayTradePrecreateContentBuilder BuildPrecreateContent(string sellerid,string TotalAmt)
+        public AlipayTradePrecreateContentBuilder BuildPrecreateContent(EAliPayApplication app, string sellerid,string TotalAmt)
         {
             //线上联调时，请输入真实的外部订单号。
             string out_trade_no = StringHelper.GenerateOrderNo();
@@ -36,13 +37,13 @@ namespace IQBCore.IQBPay.BLL
             //不参与优惠计算的金额
             //builder.undiscountable_amount = "";
             //订单名称
-            builder.subject = "爱钱吧币";
+            builder.subject = "爱钱吧商品";
             //自定义超时时间
           //  builder.timeout_express = "5m";
             //订单描述
             builder.body = "至尊宝";
             //门店编号，很重要的参数，可以用作之后的营销
-          //  builder.store_id = "test store id";
+            builder.store_id = "test store id";
             //操作员编号，很重要的参数，可以用作之后的营销
            // builder.operator_id = "test";
 
@@ -59,7 +60,7 @@ namespace IQBCore.IQBPay.BLL
 
             //系统商接入可以填此参数用作返佣
             ExtendParams exParam = new ExtendParams();
-            exParam.sys_service_provider_id = AliPayConfig.pid;
+            exParam.sys_service_provider_id = app.AppId;
             
             builder.extend_params = exParam;
 

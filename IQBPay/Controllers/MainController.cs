@@ -191,6 +191,13 @@ namespace IQBPay.Controllers
 
                 using (AliPayContent db = new AliPayContent())
                 {
+                    if (app.IsCurrent)
+                    {
+                        EAliPayApplication curAPP = db.DBAliPayApp.Where(a => a.IsCurrent == true).FirstOrDefault();
+                        if (curAPP != null)
+                            curAPP.IsCurrent = false;
+                    }
+
                     db.DBAliPayApp.Add(app);
                     db.SaveChanges();
                     //清楚系统 App Caceh
@@ -215,9 +222,18 @@ namespace IQBPay.Controllers
                     EAliPayApplication updateApp = db.DBAliPayApp.Single(a => a.ID == app.ID);
                     if (updateApp != null)
                     {
+                        if (app.IsCurrent)
+                        {
+                            EAliPayApplication curAPP = db.DBAliPayApp.Where(a => a.IsCurrent == true && a.ID!=app.ID).FirstOrDefault();
+                            if (curAPP != null)
+                                curAPP.IsCurrent = false;
+                        }
+
                         db.Entry(updateApp).CurrentValues.SetValues(app);
                        
                         db.SaveChanges();
+
+                        
 
                         //清楚系统 App Caceh
                         _App = null;

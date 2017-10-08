@@ -49,5 +49,10 @@ namespace IQBCore.IQBPay.Models.System
         /// </summary>
         public string AuthUrl_Store { get; set; }
 
+        /// <summary>
+        /// 设置当前应用APP
+        /// </summary>
+        public bool IsCurrent { get; set; }
+
     }
 }

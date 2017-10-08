@@ -131,5 +131,11 @@ function fPostPay(url) {
 
 function PayToAli()
 {
-
+    var amt = $("#TotalAmout").val();
+    if(amt == null || amt == "" || amt == 0)
+    {
+        alert("金额不能为空");
+        return;
+    }
+    window.location = "http://ap.iqianba.cn/AliPay/F2FPay?qrUserId=1&Amount=" + amt;
 }
