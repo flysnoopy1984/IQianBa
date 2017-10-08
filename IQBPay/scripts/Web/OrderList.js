@@ -29,7 +29,8 @@ function generateData(result) {
     var strCtrl = "";
     $.each(result, function (i) {
 
-        var ppRealAmt = result[i].TotalAmount - 
+        var ppRealAmt = result[i].TotalAmount - result[i].SellerCommission;
+
         strCtrl = "";
         strCtrl += "<tr>";
    
@@ -44,16 +45,12 @@ function generateData(result) {
         strCtrl += "<td>" + result[i].SellerChannel + "</td>";
         strCtrl += "<td>" + result[i].SellerRate + "</td>";
         strCtrl += "<td>" + result[i].SellerCommission + "</td>";
-        strCtrl += "<td>" + result[i].Remark + "</td>";
-        strCtrl += "<td>" + result[i].Remark + "</td>";
-        strCtrl += "<td>" + result[i].Remark + "</td>";
-        strCtrl += "<td>" + result[i].Remark + "</td>";
-        strCtrl += "<td>" + result[i].Remark + "</td>";
-        strCtrl += "<td>" + result[i].Remark + "</td>";
-
+        strCtrl += "<td>" + ppRealAmt + "</td>";
+        strCtrl += "<td></td>";
+        strCtrl += "<td></td>";
       
 
-        strCtrl += "<td><a href='/QR/ARInfo?id=" + result[i].ID + "' class='td'>详情</a>";
+        strCtrl += "<td><a href='/Order/Info?id=" + result[i].OrderNo + "' class='td'>详情</a>";
         strCtrl += " <input type='hidden' value='" + result[i].FilePath + "'</td>";
         strCtrl += "</tr>";
 
