@@ -37,12 +37,12 @@ namespace IQBCore.Common.Helper
 
         public static string GenerateOrderNo()
         {
-            return "IQB"+DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(8,true,true,false,false,"");
+            return "IQBO"+DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(8,true,true,false,false,"");
         }
 
         public static string GenerateSubAccountTransNo()
         {
-            return "IQB"+DateTime.Now.ToString("SubyyyyMMddhhmmss") + GetRnd(8, true, true, false, false, "");
+            return "IQBSub"+DateTime.Now.ToString("SubyyyyMMddhhmmss") + GetRnd(8, true, true, false, false, "");
         }
     }
 }

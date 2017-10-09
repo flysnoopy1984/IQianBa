@@ -1,7 +1,12 @@
-﻿using Com.Alipay;
+﻿using Aop.Api;
+using Aop.Api.Domain;
+using Aop.Api.Request;
+using Aop.Api.Response;
+using Com.Alipay;
 using Com.Alipay.Business;
 using Com.Alipay.Domain;
 using Com.Alipay.Model;
+using IQBCore.Common.Helper;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
@@ -19,6 +24,39 @@ namespace IQBCore.IQBPay.BLL
     public class AliPayManager
     {
         private F2FPayHandler _handler =null;
+
+        public string DoSubAccount(EAliPayApplication app,EOrderInfo order,EStoreInfo store,EStoreInfo receiveStore)
+        {
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+              app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+
+
+            AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
+            Aop.Api.Domain.AlipayTradeOrderSettleModel model = new AlipayTradeOrderSettleModel();
+
+            model.OutRequestNo = StringHelper.GenerateSubAccountTransNo();
+            model.TradeNo = order.OrderNo;
+
+            List<OpenApiRoyaltyDetailInfoPojo> paramList = new List<OpenApiRoyaltyDetailInfoPojo>();
+
+            OpenApiRoyaltyDetailInfoPojo p = new OpenApiRoyaltyDetailInfoPojo();
+            p.TransOut = store.AliPayAccount;
+            p.TransIn = receiveStore.AliPayAccount;
+            p.Amount = Convert.ToInt64(order.TotalAmount*((100-store.Rate)/100));
+            p.AmountPercentage = 100;
+
+
+            paramList.Add(p);
+
+            model.RoyaltyParameters = paramList;
+
+            request.SetBizModel(model);
+
+
+           
+            AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request, "201709BB409adf95ae524bf7809e12d114180X39");
+            return response.Body;
+        }
 
         public EOrderInfo InitUnKnowOrderForAliPayNotice(HttpRequestBase Request)
         {
