@@ -43,32 +43,32 @@ namespace IQBPay.Controllers
 
         public object EORderInfo { get; private set; }
 
-        public string callF2FPay(string TotalAmt,string sellerid)
+        public string callF2FPay(string TotalAmt, string sellerid)
         {
 
-            string result="";  
-           
+            string result = "";
+
             IAlipayTradeService serviceClient = F2FBiz.CreateClientInstance(AliPayConfig.serverUrl, AliPayConfig.appId, AliPayConfig.merchant_private_key, AliPayConfig.version,
                             AliPayConfig.sign_type, AliPayConfig.alipay_public_key, AliPayConfig.charset);
-            
+
 
             F2FPayHandler handler = new F2FPayHandler();
-           
-              AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent(BaseController.App, sellerid,TotalAmt);
+
+            AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent(BaseController.App, sellerid, TotalAmt);
 
             AlipayF2FPrecreateResult precreateResult = serviceClient.tradePrecreate(builder);
 
-            
+
             switch (precreateResult.Status)
             {
                 case ResultEnum.SUCCESS:
                     result = handler.CreateQR(precreateResult);
                     result = handler.DeQR(result);
-                    
+
                     break;
                 case ResultEnum.FAILED:
                     result = precreateResult.response.Body;
-                  
+
                     break;
 
                 case ResultEnum.UNKNOWN:
@@ -80,7 +80,7 @@ namespace IQBPay.Controllers
                     {
                         result = "系统异常，请更新外部订单后重新发起请求";
                     }
-                   
+
                     break;
             }
             return result;
@@ -91,7 +91,7 @@ namespace IQBPay.Controllers
             IAopClient client = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
               privateKey, "json", "1.0", "RSA2", publicKey2, "GBK", false);
             AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
-            
+
             request.BizContent = "{" +
             "\"out_request_no\":\"201709290001\"," +
             "\"trade_no\":\"2017092921001004530201479792\"," +
@@ -108,14 +108,14 @@ namespace IQBPay.Controllers
             return response.Body;
         }
 
-        private string callSubAccount(string orderNo,string sellerId,long TotalAmt,int Percentage)
+        private string callSubAccount(string orderNo, string sellerId, long TotalAmt, int Percentage)
         {
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
                privateKey, "json", "1.0", "RSA2", publicKey2, "GBK", false);
-           
+
 
             AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
-        Aop.Api.Domain.AlipayTradeOrderSettleModel model = new AlipayTradeOrderSettleModel();
+            Aop.Api.Domain.AlipayTradeOrderSettleModel model = new AlipayTradeOrderSettleModel();
 
             model.OutRequestNo = StringHelper.GenerateSubAccountTransNo();
             model.TradeNo = orderNo;
@@ -127,14 +127,14 @@ namespace IQBPay.Controllers
             p.TransIn = AliPayConfig.pid;
             p.Amount = TotalAmt;
             p.AmountPercentage = Percentage;
-            
-           
+
+
             paramList.Add(p);
-           
+
             model.RoyaltyParameters = paramList;
-            
+
             request.SetBizModel(model);
-            
+
 
             /*
                         request.BizContent = "{" +
@@ -153,7 +153,7 @@ namespace IQBPay.Controllers
                         request.BizContent = string.Format(request.BizContent, StringHelper.GenerateSubAccountTransNo(), orderNo, sellerId, AliPayConfig.pid);
                         */
             AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request, "201709BB409adf95ae524bf7809e12d114180X39");
-            return response.Body; 
+            return response.Body;
         }
 
 
@@ -161,7 +161,7 @@ namespace IQBPay.Controllers
         public ActionResult Index()
         {
 
-          
+
 
 
             return View();
@@ -169,18 +169,16 @@ namespace IQBPay.Controllers
 
         public ActionResult PayNotify()
         {
+            string orderNo = Request["out_trade_no"];
+            AliPayManager payManager = new AliPayManager();
+
             try
             {
-               
-                string orderNo = Request["out_trade_no"];
-                AliPayManager payManager = new AliPayManager();
-
                 using (AliPayContent db = new AliPayContent())
                 {
-
                     EOrderInfo order = db.DBOrder.Where(o => o.OrderNo == orderNo).FirstOrDefault();
 
-                    if(order == null)
+                    if (order == null)
                     {
                         order = payManager.InitUnKnowOrderForAliPayNotice(Request);
                         db.DBOrder.Add(order);
@@ -193,30 +191,42 @@ namespace IQBPay.Controllers
                     order.AliPayOrderNo = Request["trade_no"];
                     order.AliPayPayChannel = "";
                     order.AliPayTradeStatus = Request["trade_status"];
+
                     order.AliPayAppId = Request["app_id"];
 
                     order.BuyerAliPayId = Request["buyer_id"];
                     order.BuyerAliPayLoginId = Request["buyer_logon_id"];
-                
+
                     order.SellerAliPayEmail = Request["seller_email"];
 
                     order.AliPayTotalAmount = Convert.ToSingle(Request["total_amount"]);
                     order.AliPayReceiptAmount = Convert.ToSingle(Request["receipt_amount"]);
                     order.AliPayBuerPayAmount = Convert.ToSingle(Request["buyer_pay_amount"]);
                     order.AliPayTransDate = Convert.ToDateTime(Request["gmt_create"]);
-                    order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Paid;
+                    if (order.AliPayTradeStatus == "TRADE_SUCCESS")
+                    {
+                        order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Paid;
+                        EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
+                        AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount);
+                        order.LogRemark += string.Format("[SubAccount] Code:{0};msg{1}; ##", res.Code, res.Msg);
 
+                        EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
+                        AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, ui,order.RealTotalAmount.ToString());
+                        order.LogRemark += string.Format("[Transfer] Code:{0};msg{1}", res2.Code, res2.Msg);
+                    }
+                    else
+                    {
+                        order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+
+                    }
                     db.SaveChanges();
                 }
-
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+
                 Log.log("PayNotify Error:" + ex.Message);
             }
-           
-
 
             return View();
         }
@@ -534,6 +544,15 @@ namespace IQBPay.Controllers
             long TotalAmt = Convert.ToInt64(Request.QueryString["TotalAmt"]);
            // return Content(callSubAccount2());
            return Content(callSubAccount(orderNo, "2088821092484390", TotalAmt, 100)); 
+        }
+
+        public ActionResult Transfer()
+        {
+            AliPayManager payManager = new AliPayManager();
+            EUserInfo ui = new EUserInfo();
+            ui.AliPayAccount = "song_fuwei@hotmail.com";
+            AlipayFundTransToaccountTransferResponse response =  payManager.TransferAmount(BaseController.App, ui,"1");
+            return Content(response.Body);
         }
 
 

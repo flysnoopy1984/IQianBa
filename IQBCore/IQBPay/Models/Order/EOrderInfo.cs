@@ -101,10 +101,18 @@ namespace IQBCore.IQBPay.Models.Order
 
         public float SellerRate { get; set; }
 
+        /// <summary>
+        /// 商户佣金
+        /// </summary>
         public float SellerCommission { get; set; }
 
         [MaxLength(20)]
         public string SellerName { get; set; }
+
+        public int SellerStoreId { get; set; }
+
+        [MaxLength(255)]
+        public string LogRemark { get; set; }
 
         ///// <summary>
         ///// 平台实际收入

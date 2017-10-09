@@ -40,6 +40,11 @@ namespace IQBCore.Common.Helper
             return "IQBO"+DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(8,true,true,false,false,"");
         }
 
+        public static string GenerateTransferNo()
+        {
+            return "IQBTO" + DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(8, true, true, false, false, "");
+        }
+
         public static string GenerateSubAccountTransNo()
         {
             return "IQBSub"+DateTime.Now.ToString("SubyyyyMMddhhmmss") + GetRnd(8, true, true, false, false, "");

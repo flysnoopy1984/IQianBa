@@ -11,6 +11,7 @@ using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.System;
+using IQBCore.IQBPay.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -25,7 +26,7 @@ namespace IQBCore.IQBPay.BLL
     {
         private F2FPayHandler _handler =null;
 
-        public string DoSubAccount(EAliPayApplication app,EOrderInfo order,EStoreInfo store,EStoreInfo receiveStore)
+        public AlipayTradeOrderSettleResponse DoSubAccount(EAliPayApplication app,EOrderInfo order,EStoreInfo store,EStoreInfo receiveStore)
         {
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
               app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
@@ -42,7 +43,7 @@ namespace IQBCore.IQBPay.BLL
             OpenApiRoyaltyDetailInfoPojo p = new OpenApiRoyaltyDetailInfoPojo();
             p.TransOut = store.AliPayAccount;
             p.TransIn = receiveStore.AliPayAccount;
-            p.Amount = Convert.ToInt64(order.TotalAmount*((100-store.Rate)/100));
+            p.Amount = Convert.ToInt64(order.SellerCommission);
             p.AmountPercentage = 100;
 
 
@@ -54,8 +55,30 @@ namespace IQBCore.IQBPay.BLL
 
 
            
-            AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request, "201709BB409adf95ae524bf7809e12d114180X39");
-            return response.Body;
+            AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request, store.AliPayAuthToke);
+            return response;
+        }
+
+        public AlipayFundTransToaccountTransferResponse TransferAmount(EAliPayApplication app,EUserInfo ui,string Amount)
+        {
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+             app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+
+            AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
+
+            AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
+            model.Amount = Amount;
+            model.OutBizNo = StringHelper.GenerateSubAccountTransNo();
+            model.PayeeType = "ALIPAY_LOGONID";
+            model.PayeeAccount = ui.AliPayAccount;
+            model.PayerShowName = "爱钱吧平台支付";
+            model.Remark = string.Format("爱钱吧提现");
+
+            request.SetBizModel(model);
+
+            AlipayFundTransToaccountTransferResponse response =  aliyapClient.Execute(request);
+
+            return response;
         }
 
         public EOrderInfo InitUnKnowOrderForAliPayNotice(HttpRequestBase Request)
@@ -97,6 +120,7 @@ namespace IQBCore.IQBPay.BLL
                 RateAmount = TotalAmount * (qrUser.Rate / 100),
                 TransDate = DateTime.Now,
                 SellerAliPayId = store.AliPayAccount,
+                SellerStoreId = store.ID,
                
                 SellerName = store.Name,
                 SellerChannel = store.Channel,

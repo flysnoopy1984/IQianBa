@@ -59,9 +59,9 @@ function InitFormData(data) {
         size: "small",
         onSwitchChange: function (event, state) {
             if (state == true) {
-                $(this).val("0");
-            } else {
                 $(this).val("1");
+            } else {
+                $(this).val("0");
             }
         }
     });

@@ -33,8 +33,9 @@
             <li>           
                <a href=@Url.Action("SubAccount", "AliPay", new { @TotalAmt = "1", orderNo = "2017092921001004530201479792" })>分账</a>
             </li>
+         
             <li>
-                <a href=@Url.Action("List", "Order", new { @TotalAmt = "1", orderNo = "2017092921001004530201479792" })>分账</a>
+                <a href=@Url.Action("Transfer", "AliPay")>转账到Jacky.Song</a>
             </li>
         </ul>
         <img src=@ViewData["imgSrc"] />

@@ -81,6 +81,8 @@ namespace IQBCore.IQBPay.BaseEnum
         Paid =1,
 
         Closed= 2,
+        
+        Exception =1,
     }
 
     public enum  OrderType
