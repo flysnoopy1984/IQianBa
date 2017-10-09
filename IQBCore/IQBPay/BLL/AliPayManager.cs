@@ -33,10 +33,11 @@ namespace IQBCore.IQBPay.BLL
 
 
             AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
+            
             Aop.Api.Domain.AlipayTradeOrderSettleModel model = new AlipayTradeOrderSettleModel();
 
             model.OutRequestNo = StringHelper.GenerateSubAccountTransNo();
-            model.TradeNo = order.OrderNo;
+            model.TradeNo = order.AliPayOrderNo;
 
             List<OpenApiRoyaltyDetailInfoPojo> paramList = new List<OpenApiRoyaltyDetailInfoPojo>();
 
@@ -44,17 +45,16 @@ namespace IQBCore.IQBPay.BLL
             p.TransOut = store.AliPayAccount;
             p.TransIn = receiveStore.AliPayAccount;
             p.Amount = Convert.ToInt64(order.SellerCommission);
+            if (p.Amount <= 0)
+                p.Amount = 1;
             p.AmountPercentage = 100;
 
 
             paramList.Add(p);
 
             model.RoyaltyParameters = paramList;
-
             request.SetBizModel(model);
 
-
-           
             AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request, store.AliPayAuthToke);
             return response;
         }
@@ -125,7 +125,8 @@ namespace IQBCore.IQBPay.BLL
                 SellerName = store.Name,
                 SellerChannel = store.Channel,
                 SellerRate = store.Rate,
-                SellerCommission = TotalAmount * (store.Rate / 100),
+                SellerCommission = TotalAmount*(store.Rate)/100,
+                
 
                 OrderType = BaseEnum.OrderType.Normal,
 
@@ -137,7 +138,7 @@ namespace IQBCore.IQBPay.BLL
         }
 
 
-        public string PayF2F(EAliPayApplication app, EQRUser qrUser, EStoreInfo storeInfo, float TotalAmount, out ResultEnum status)
+        public string PayF2F(EAliPayApplication app, EUserInfo AgentUi, EStoreInfo storeInfo, float TotalAmount, out ResultEnum status)
         {
             string result = "";
             string NotifyUrl = ConfigurationManager.AppSettings["Main_SiteUrl"]+ "AliPay/PayNotify";
@@ -150,7 +151,7 @@ namespace IQBCore.IQBPay.BLL
 
             _handler = new F2FPayHandler();
 
-            AlipayTradePrecreateContentBuilder builder = _handler.BuildPrecreateContent(app,storeInfo.AliPayAccount, TotalAmount.ToString());
+            AlipayTradePrecreateContentBuilder builder = _handler.BuildPrecreateContent(app, AgentUi,storeInfo.AliPayAccount, TotalAmount.ToString());
 
             AlipayF2FPrecreateResult precreateResult = serviceClient.tradePrecreate(builder, NotifyUrl);
 

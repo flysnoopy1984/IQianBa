@@ -53,8 +53,9 @@ namespace IQBPay.Controllers
 
 
             F2FPayHandler handler = new F2FPayHandler();
-
-            AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent(BaseController.App, sellerid, TotalAmt);
+            EUserInfo ui = new EUserInfo();
+            ui.Name = "Test";
+            AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent(BaseController.App,ui, sellerid, TotalAmt);
 
             AlipayF2FPrecreateResult precreateResult = serviceClient.tradePrecreate(builder);
 
@@ -206,13 +207,28 @@ namespace IQBPay.Controllers
                     if (order.AliPayTradeStatus == "TRADE_SUCCESS")
                     {
                         order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Paid;
+                        //分账
                         EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
-                        AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount);
-                        order.LogRemark += string.Format("[SubAccount] Code:{0};msg{1}; ##", res.Code, res.Msg);
-
+                        AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount); 
+                        if(res.Code== "10000")
+                            order.LogRemark += string.Format("[SubAccount] Code:{0};msg:{1}; ##", res.Code, res.Msg);
+                        else
+                        {
+                            order.LogRemark += string.Format("[SubAccount] SubCode:{0};Submsg:{1}; ##", res.SubCode, res.SubMsg);
+                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                        }
+                        //自动提款
                         EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
                         AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, ui,order.RealTotalAmount.ToString());
-                        order.LogRemark += string.Format("[Transfer] Code:{0};msg{1}", res2.Code, res2.Msg);
+                        
+                        if (res2.Code == "10000")
+                            order.LogRemark += string.Format("[Transfer] Code:{0};msg:{1}", res2.Code, res2.Msg);
+                        else
+                        {
+                            order.LogRemark += string.Format("[Transfer] SubCode:{0};Submsg:{1}", res2.SubCode, res2.SubMsg);
+                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                        }
+                        
                     }
                     else
                     {
@@ -482,7 +498,7 @@ namespace IQBPay.Controllers
                     AliPayManager payManager = new AliPayManager();
                     ResultEnum status;
                    
-                    string Res = payManager.PayF2F(BaseController.App, qrUser, store, Convert.ToSingle(Amount),out status);
+                    string Res = payManager.PayF2F(BaseController.App, ui, store, Convert.ToSingle(Amount),out status);
 
                     if (status == ResultEnum.SUCCESS)
                     {
@@ -540,10 +556,17 @@ namespace IQBPay.Controllers
 
         public ActionResult SubAccount()
         {
-            string orderNo = Request.QueryString["orderNo"];
-            long TotalAmt = Convert.ToInt64(Request.QueryString["TotalAmt"]);
-           // return Content(callSubAccount2());
-           return Content(callSubAccount(orderNo, "2088821092484390", TotalAmt, 100)); 
+            AlipayTradeOrderSettleResponse res = null;
+            using (AliPayContent db = new AliPayContent())
+            {
+                AliPayManager payManager = new AliPayManager();
+                EOrderInfo order = db.DBOrder.Where(o => o.OrderNo == "IQBO20171010010946k5fh5eb2").FirstOrDefault();
+                EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
+                res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount);
+              
+            }
+            return Content(res.Body);
+               
         }
 
         public ActionResult Transfer()
