@@ -560,7 +560,7 @@ namespace IQBPay.Controllers
             using (AliPayContent db = new AliPayContent())
             {
                 AliPayManager payManager = new AliPayManager();
-                EOrderInfo order = db.DBOrder.Where(o => o.OrderNo == "IQBO20171010010946k5fh5eb2").FirstOrDefault();
+                EOrderInfo order = db.DBOrder.Where(o => o.OrderNo == "IQBO20171010013310if531g75").FirstOrDefault();
                 EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
                 res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount);
               

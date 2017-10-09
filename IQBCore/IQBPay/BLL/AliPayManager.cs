@@ -45,9 +45,11 @@ namespace IQBCore.IQBPay.BLL
             p.TransOut = store.AliPayAccount;
             p.TransIn = receiveStore.AliPayAccount;
             p.Amount = Convert.ToInt64(order.SellerCommission);
-            if (p.Amount <= 0)
-                p.Amount = 1;
-            p.AmountPercentage = 100;
+            long a = 3;
+           // if (p.Amount <= 0)
+                p.Amount = a;
+           
+            p.AmountPercentage = Convert.ToInt64(100);
 
 
             paramList.Add(p);
