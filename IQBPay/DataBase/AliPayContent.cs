@@ -99,14 +99,23 @@ namespace IQBPay.DataBase
         #region QRUser
         public void UpdateQRUser(EQRInfo qr,EUserInfo ui)
         {
-            EQRUser qrUser = new EQRUser();
+            bool isNew = false;
             using (AliPayContent db = new AliPayContent())
             {
+                EQRUser qrUser = db.DBQRUser.Where(q => q.ID == ui.QRUserDefaultId && ui.OpenId == q.OpenId).FirstOrDefault();
+                if(qrUser == null)
+                {
+                    qrUser = new EQRUser();
+                    isNew = true;
+                }
                 qrUser.QRId = qr.ID;
                 qrUser.OpenId = ui.OpenId;
                 qrUser.UserName = ui.Name;
-                qrUser.Rate = qr.Rate; 
-                db.DBQRUser.Add(qrUser);
+                qrUser.Rate = qr.Rate;
+                qrUser.ReceiveStoreId = qr.ReceiveStoreId;
+
+                if (isNew)
+                    db.DBQRUser.Add(qrUser);
                 db.SaveChanges();
 
                 qrUser = QRManager.CreateUserUrlById(qrUser);

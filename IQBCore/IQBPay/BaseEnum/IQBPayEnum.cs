@@ -32,13 +32,19 @@ namespace IQBCore.IQBPay.BaseEnum
 
     }
 
+    /// <summary>
+    /// 0/100
+    /// </summary>
     public enum UserStatus
     {
         /// <summary>
-        /// 关注
+        /// 仅仅注册不能支付不能提现
         /// </summary>
-        Follow=0,
-        Register =1,
+        
+        JustRegister =0,
+
+
+        PPUser= 1,
 
 
     }

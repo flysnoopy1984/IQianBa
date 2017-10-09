@@ -2,7 +2,6 @@
 using IQBCore.IQBPay.BaseEnum;
 using IQBPay.DataBase;
 using IQBCore.IQBPay.Models.QR;
-using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.Store;
 using System;
 using System.Collections.Generic;

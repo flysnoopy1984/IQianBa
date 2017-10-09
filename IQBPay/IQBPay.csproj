@@ -223,6 +223,7 @@
     <Content Include="Content\Images\modal-close-hover.png" />
     <Content Include="Content\Images\modal-close.png" />
     <Content Include="Content\Images\noise.png" />
+    <Content Include="Content\Images\noPic.jpg" />
     <Content Include="Content\main.css" />
     <Content Include="Content\minimal.css" />
     <Content Include="Content\QR\2017092214101400009702.jpg" />
@@ -459,6 +460,8 @@
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="scripts\Component\IQBTable.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
+    <Content Include="scripts\Web\UserInfo.js" />
+    <Content Include="scripts\Web\UserList.js" />
     <Content Include="scripts\Web\App.js" />
     <Content Include="scripts\Web\Common.js" />
     <Content Include="scripts\Web\FormUtility.js" />
@@ -580,6 +583,8 @@
     <Content Include="Views\Main\Tools.cshtml" />
     <Content Include="Views\Order\List.cshtml" />
     <Content Include="Views\Order\Info.cshtml" />
+    <Content Include="Views\User\List.cshtml" />
+    <Content Include="Views\User\Info.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

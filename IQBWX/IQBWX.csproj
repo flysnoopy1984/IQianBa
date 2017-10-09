@@ -189,7 +189,7 @@
     <Content Include="Content\Script\ErrorMessage.js" />
     <Content Include="Content\Script\idangerous.swiper.min.js" />
     <Content Include="Content\Script\iqb.dropload.min.js" />
-    <Content Include="Content\Script\IQBPay\Auth_AR.js" />
+    <Content Include="Content\Script\IQBPay\Auth_Store.js" />
     <Content Include="Content\Script\MemberInfo.js" />
     <Content Include="Content\Script\ApplySuccess.js" />
     <Content Include="Content\Script\ApplyMember.js" />
@@ -341,7 +341,7 @@
     <Content Include="Views\HOME\IndexWxLogin.cshtml" />
     <Content Include="Views\HOME\WaitingScan.cshtml" />
     <Content Include="Views\HOME\WXLoginWAP.cshtml" />
-    <Content Include="Views\PP\Auth_AR.cshtml" />
+    <Content Include="Views\PP\Auth_Store.cshtml" />
     <Content Include="Views\PP\Pay.cshtml" />
     <Content Include="Views\PP\YunLong.cshtml" />
     <Content Include="Views\PP\Demo.cshtml" />

@@ -63,7 +63,10 @@ namespace IQBCore.IQBPay.Models.Store
 
         public string FromIQBAPP { get; set; }
 
-
+        /// <summary>
+        /// 是否收款账户
+        /// </summary>
+        public bool IsReceiveAccount { get; set; }
 
 
 

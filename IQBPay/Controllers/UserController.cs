@@ -2,13 +2,14 @@
 using IQBPay.Core;
 using IQBPay.DataBase;
 using IQBCore.IQBPay.Models.QR;
-using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity;
 
 namespace IQBPay.Controllers
 {
@@ -16,6 +17,16 @@ namespace IQBPay.Controllers
     {
         // GET: User
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult List()
+        {
+            return View();
+        }
+
+        public ActionResult Info()
         {
             return View();
         }
@@ -29,30 +40,32 @@ namespace IQBPay.Controllers
 
         public ActionResult Get()
         {
-           
-           
             string OpenId = this.GetOpenId(true);
           
-            RUserInfo result = null;
+       
             using (AliPayContent db = new AliPayContent())
             {
                 try
                 {
-      
-                    EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == OpenId).FirstOrDefault();
+                    EUserInfo result = db.DBUserInfo.Where(u => u.OpenId == OpenId).FirstOrDefault();
 
-                    if (ui == null)
+                    if (result == null)
                     {
-                        result = new RUserInfo();
+                        result = new EUserInfo();
                         result.QueryResult = false;
                         return Json(result);
                     }
-                    EQRUser qrUser = db.DBQRUser.Where(a => a.ID == ui.QRUserDefaultId).FirstOrDefault();
-                  
-                    result = new RUserInfo();
-                    result.InitFromChild(ui);
-                    result.Rate = qrUser.Rate;
-                    result.QRFilePath = qrUser.FilePath;
+                   
+                    if (result.QRUserDefaultId > 0)
+                    {
+                        EQRUser qrUser = db.DBQRUser.Where(a => a.ID == result.QRUserDefaultId).FirstOrDefault();
+                        if (qrUser != null)
+                        {
+                            result.Rate = qrUser.Rate;
+                            result.QRFilePath = qrUser.FilePath;
+
+                        }
+                    }
                     result.QueryResult = true;
                     return Json(result);
                 }
@@ -62,13 +75,80 @@ namespace IQBPay.Controllers
                     throw ex;
                 }
            
-            }
-          
-          
-           
+            } 
         }
 
-       
+        [HttpPost]
+        public ActionResult Query(int pageIndex = 0, int pageSize = IQBConfig.PageSize)
+        {
+            List<EUserInfo> result = new List<EUserInfo>();
+            IQueryable<EUserInfo> list = null;
+            try
+            {
+                string openId = Convert.ToString(Session["OpenId"]);
+
+                using (AliPayContent db = new AliPayContent())
+                {
+                    list = db.DBUserInfo.OrderByDescending(i => i.CreateDate);
+                 
+                    int totalCount = list.Count();
+                    if (pageIndex == 0)
+                    {
+                        result = list.Take(pageSize).ToList();
+
+                        if (result.Count > 0)
+                            result[0].TotalCount = totalCount;
+                    }
+                    else
+                        result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.log("Store Query Error:" + ex.Message);
+                throw ex;
+            }
+            return Json(result);
+        }
+
+        public ActionResult Save(EUserInfo ui)
+        {
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+
+                    ui.InitModify();
+
+                    DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
+                    entry.State = EntityState.Unchanged;
+
+
+                    entry.Property(t => t.Name).IsModified = true;
+                   // entry.Property(t => t.Rate).IsModified = true;
+                   
+                    entry.Property(t => t.AliPayAccount).IsModified = true;
+                    entry.Property(t => t.UserStatus).IsModified = true;
+
+                    entry.Property(t => t.MDate).IsModified = true;
+                    entry.Property(t => t.MTime).IsModified = true;
+                    entry.Property(t => t.ModifyDate).IsModified = true;
+
+                    db.SaveChanges();
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Content("Save Store Error" + ex.Message);
+            }
+            return Json("OK");
+        }
+
+
         public ActionResult Demo()
         {
            

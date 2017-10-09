@@ -34,25 +34,27 @@ namespace IQBPay.Controllers
             {
                 using (AliPayContent db = new AliPayContent(true))
                 {
-                    EQRInfo delqr = db.DBQRInfo.Where(a=>a.Channel == Channel.PPAuto).FirstOrDefault();
-                    if (delqr != null)
-                        db.DBQRInfo.Remove(delqr);
+                    if(IQBConfig.NeedDefaultQRModule)
+                    {
+                        EQRInfo delqr = db.DBQRInfo.Where(a=>a.Channel == Channel.PPAuto).FirstOrDefault();
+                        if (delqr != null)
+                            db.DBQRInfo.Remove(delqr);
 
-                    EQRInfo qr = new EQRInfo();
-                    qr.InitCreate();
-                    qr.InitModify();
-                    qr.Channel = Channel.PPAuto;
-                    qr.Type = QRType.ARAuth;
-                    qr.Rate = 5;
-                    qr.Name = "平台默认二维码";
+                        EQRInfo qr = new EQRInfo();
+                        qr.InitCreate();
+                        qr.InitModify();
+                        qr.Channel = Channel.PPAuto;
+                        qr.Type = QRType.ARAuth;
+                        qr.Rate = 5;
+                        qr.Name = "平台默认二维码";
 
-                    db.DBQRInfo.Add(qr);
-                    db.SaveChanges();
+                        db.DBQRInfo.Add(qr);
+                        db.SaveChanges();
 
-                    qr = QRManager.CreateMasterUrlById(qr);
-                    db.Entry(qr).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
-
+                        qr = QRManager.CreateMasterUrlById(qr);
+                        db.Entry(qr).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
                     EAliPayApplication delApp = db.DBAliPayApp.FirstOrDefault();
                     if (delApp != null)
                         db.DBAliPayApp.Remove(delApp);
@@ -103,7 +105,7 @@ namespace IQBPay.Controllers
         {
             if(act == "1")
             {
-                BaseController._App = null;
+                BaseController.CleanApp();
             }
             ViewBag.Auth_Store = BaseController.App.AuthUrl_Store;
             ViewBag.PublicKey = BaseController.App.Merchant_Public_key;
@@ -203,7 +205,7 @@ namespace IQBPay.Controllers
                     db.DBAliPayApp.Add(app);
                     db.SaveChanges();
                     //清楚系统 App Caceh
-                    _App = null;
+                    BaseController.CleanApp();
 
                 }
             }
@@ -235,10 +237,10 @@ namespace IQBPay.Controllers
                        
                         db.SaveChanges();
 
-                        
+
 
                         //清楚系统 App Caceh
-                        _App = null;
+                        BaseController.CleanApp();
                     }
                     else
                     {

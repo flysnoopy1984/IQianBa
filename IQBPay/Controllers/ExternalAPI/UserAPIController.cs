@@ -38,8 +38,13 @@ namespace IQBPay.Controllers.ExternalAPI
                                 {
                                     qr = db.DBQRInfo.Where(a => a.ID == ui.QRAuthId).FirstOrDefault();
                                     if (qr == null)
-                                        throw new Exception("没有找到对应的二维码,请联系平台！");
-
+                                        return "没有找到对应的二维码,请联系平台！";
+                                    if (qr.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
+                                        return "授权码已经失效";
+                                    if (qr.ReceiveStoreId == 0)
+                                        return "授权码错误，没有收款账户，请联系平台！";
+                                    
+                                   
                                     db.UpdateQRUser(qr, updateUser);
                                 }
                                 //登陆
@@ -53,27 +58,23 @@ namespace IQBPay.Controllers.ExternalAPI
                                 return "EXIST";
                             }
                             //通过QR模板获取QRUser
-                            qrUser = new EQRUser();
-
-                          
-                            qr = db.DBQRInfo.Where(a => a.Channel == IQBCore.IQBPay.BaseEnum.Channel.PPAuto).FirstOrDefault();
-
-                            if (qr == null)
-                                throw new Exception("没有找到对应的二维码,请联系平台！");
-
-                            qrUser.UserName = ui.Name;
-                            qrUser.QRId = qr.ID;
-                            qrUser.OpenId = ui.OpenId;
-                            qrUser.Rate = qr.Rate;
-                            db.DBQRUser.Add(qrUser);
-                            db.SaveChanges();
-
-                            qrUser = QRManager.CreateUserUrlById(qrUser);
-
-                            ui.QRUserDefaultId = qrUser.ID;
+                            if (IQBConfig.NeedDefaultQRModule)
+                            {
+                                qrUser = new EQRUser();
+                                qr = db.DBQRInfo.Where(a => a.Channel == IQBCore.IQBPay.BaseEnum.Channel.PPAuto).FirstOrDefault();
+                                if (qr == null)
+                                    throw new Exception("没有找到对应的二维码,请联系平台！");
+                                qrUser.UserName = ui.Name;
+                                qrUser.QRId = qr.ID;
+                                qrUser.OpenId = ui.OpenId;
+                                qrUser.Rate = qr.Rate;
+                                db.DBQRUser.Add(qrUser);
+                                db.SaveChanges();
+                                qrUser = QRManager.CreateUserUrlById(qrUser);
+                                ui.QRUserDefaultId = qrUser.ID;
+                            }
                             ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.NormalUser;
-                            ui.UserStatus = IQBCore.IQBPay.BaseEnum.UserStatus.Register;
-                            
+                            ui.UserStatus = IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister;
 
                             db.DBUserInfo.Add(ui);
                             db.SaveChanges();

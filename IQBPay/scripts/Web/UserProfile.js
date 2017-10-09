@@ -35,8 +35,14 @@ function InitFormData(data)
     $("#UserId").text(data.Id);
     $("#UserPhone").text("");
     $("#UserName").text(data.Name);
-    $("#Rate").text(data.Rate);
+    
 
-    $("#HeaderImg").attr("src",data.Headimgurl);
-    $("#QRImg").attr("src",data.QRFilePath);
+    $("#HeaderImg").attr("src", data.Headimgurl);
+    if (data.QRFilePath == "" || data.QRFilePath == null)
+        $("#QRImg").attr("src", "/Content/Images/noPic.jpg");
+    else
+    {
+        $("#Rate").text(data.Rate);
+        $("#QRImg").attr("src", data.QRFilePath);
+    }
 }

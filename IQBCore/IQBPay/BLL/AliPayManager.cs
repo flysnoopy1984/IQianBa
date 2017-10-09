@@ -45,7 +45,7 @@ namespace IQBCore.IQBPay.BLL
             return order;
         }
 
-        public EOrderInfo InitOrder(EQRUser qrUser,EQRInfo qr,EStoreInfo store, float TotalAmount)
+        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount)
         {
             EOrderInfo order = new EOrderInfo()
             {
@@ -55,8 +55,8 @@ namespace IQBCore.IQBPay.BLL
                 AgentName = qrUser.UserName,
                 AgentOpenId = qrUser.OpenId,
                 TotalAmount = TotalAmount,
-                Rate = qr.Rate,
-                RateAmount = TotalAmount * (qr.Rate / 100),
+                Rate = qrUser.Rate,
+                RateAmount = TotalAmount * (qrUser.Rate / 100),
                 TransDate = DateTime.Now,
                 SellerAliPayId = store.AliPayAccount,
                

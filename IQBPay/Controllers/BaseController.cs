@@ -8,14 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.Models.Store;
 
 namespace IQBPay.Controllers
 {
     public class BaseController : Controller
     {
-        public static ESysConfig _ESysConfig;
-        public static EAliPayApplication _App;
-        public IQBLog _Log;
+        private static ESysConfig _ESysConfig;
+        private static EAliPayApplication _App;
+        private static EStoreInfo _SubAccount;
+        private IQBLog _Log;
 
         public IQBLog Log
         {
@@ -25,9 +27,38 @@ namespace IQBPay.Controllers
                     _Log = new IQBLog();
                 return _Log;
             }
-
-
         }
+
+        public static void CleanApp()
+        {
+            _App = null;
+        }
+
+        public static void CleanSubAccount()
+        {
+            _App = null;
+        }
+
+        public static EStoreInfo SubAccount
+        {
+            get
+            {
+                if(_SubAccount == null)
+                {
+                    using (AliPayContent db = new AliPayContent())
+                    {
+                        _SubAccount = db.DBStoreInfo.Where(a => a.IsReceiveAccount == true).FirstOrDefault();
+                        if (_SubAccount == null)
+                        {
+                            throw new Exception("没有设置收款账户");
+                        }
+                    }  
+                }
+                return _SubAccount;
+            }
+        }
+
+        
 
         public static EAliPayApplication App
         {

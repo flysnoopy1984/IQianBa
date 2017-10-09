@@ -9,30 +9,32 @@
     {
         if (channel == 0 || channel == 1)
             $("#Channel").val(channel);
+
+        $("#QRStatus").bootstrapSwitch({
+            onText: "有效",
+            state: true,
+            offText: "失效",
+            onColor: "success",
+            offColor: "danger",
+            size: "small",
+            onSwitchChange: function (event, state) {
+                if (state == true) {
+                    $(this).val("0");
+                } else {
+                    $(this).val("1");
+                }
+            }
+        });
     }
 
-    $("#QRStatus").bootstrapSwitch({
-        onText: "有效",
-        state: true,
-        offText: "失效",
-        onColor: "success",
-        offColor: "danger",
-        size: "small",
-        onSwitchChange: function (event, state) {
-            if (state == true) {
-                $(this).val("0");
-            } else {
-                $(this).val("1");
-            }
-        }
-    });
+    
 });
 
 function Init(Id) {
     if (Id == null || Id == "") {
         Id = -1;
     }
-    $("#RecId").val(Id);
+   
 
     var url = "/QR/Get";
     $.ajax({
@@ -54,14 +56,38 @@ function Init(Id) {
 
 function InitFormData(data) {
 
+    $("#RecId").val(data.ID);
     $("#Name").val(data.Name);
     $("#Rate").val(data.Rate);
     $("#Remark").val(data.Remark);
     $("#Channel").val(data.Channel);
+    $("#QRStatus").val(data.RecordStatus);
 
     var filePath = data.FilePath;
     if(filePath!=null && filePath!="")
         $("#QRImg").attr("src", filePath);
+
+    var st;
+    if (data.RecordStatus = 0)
+        st = true;
+    else
+        st = false
+
+    $("#QRStatus").bootstrapSwitch({
+        onText: "有效",
+        state: st,
+        offText: "失效",
+        onColor: "success",
+        offColor: "danger",
+        size: "small",
+        onSwitchChange: function (event, state) {
+            if (state == true) {
+                $(this).val("0");
+            } else {
+                $(this).val("1");
+            }
+        }
+    });
 
 
 }
@@ -101,7 +127,8 @@ function Save() {
         success: function (data) {
             if (data.RunResult == "OK") {
                 alert("Save Done");
-                InitFormData(data);
+                //InitFormData(data);
+                window.location.href = "Authlist";
             }
             else {
                 alert(data.RunResult);

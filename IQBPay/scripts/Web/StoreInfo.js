@@ -26,7 +26,7 @@ function CheckForm() {
 
 function Init(Id) {
   
-    $("#RecId").val(Id);
+  
 
     var url = "/Store/Get";
     $.ajax({
@@ -74,12 +74,20 @@ function Init(Id) {
 
 function InitFormData(data)
 {
+    $("#RecId").val(data.ID);
     $("#Name").val(data.Name);
     $("#Rate").val(data.Rate);
     $("#OpenTime").val(data.OpenTime);
     $("#CloseTime").val(data.CloseTime);
     $("#Remark").val(data.Remark);
     $("#StoreStatus").val(data.RecordStatus);
+    $("#IsReceiveAccount").attr("checked",data.IsReceiveAccount)
+    var channel = data.Channel;
+    if(channel == 0)
+        $("#gpIsReceiveAccount").show();
+    else
+        $("#gpIsReceiveAccount").hide();
+
 }
 
 
@@ -95,7 +103,7 @@ function Save()
     var OpenTime = $("#OpenTime").val();
     var CloseTime = $("#CloseTime").val();
 
-
+    var IsReceiveAccount = $("#IsReceiveAccount").get(0).checked;
  
 
     if (!CheckForm()) return;
@@ -104,12 +112,13 @@ function Save()
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID, "Name": name, "Rate": Rate, "OpenTime": OpenTime, "CloseTime": CloseTime, "Remark": remake, "RecordStatus": StoreStatus },
+        data: { "ID": ID, "Name": name, "Rate": Rate, "OpenTime": OpenTime, "CloseTime": CloseTime, "Remark": remake, "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount },
         url: url,
         success: function (data) {
             if(data == "OK")
             {
                 alert("Save Done");
+                window.location = "list";
             }
             else
             {

@@ -25,6 +25,7 @@ using IQBCore.IQBWX.Models.OutParameter;
 using IQBCore.IQBPay;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.Order;
+using IQBCore.IQBPay.Models.User;
 
 namespace IQBPay.Controllers
 {
@@ -322,8 +323,8 @@ namespace IQBPay.Controllers
                         }
 
                     }
-                   
-                    return Content("授权成功");
+                    string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"]+"/PP/Auth_Store";
+                    return Redirect(url);
 
                 }
                 catch (Exception ex)
@@ -399,7 +400,8 @@ namespace IQBPay.Controllers
                 
                 AliPayManager payMag = new AliPayManager();
                 EQRUser qrUser = null;
-                EQRInfo qrInfo = null;
+                EUserInfo ui = null;
+             //   EQRInfo qrInfo = null;
                 long Id;
                 if (string.IsNullOrEmpty(qrUserId) || !long.TryParse(qrUserId, out Id))
                 {
@@ -412,9 +414,22 @@ namespace IQBPay.Controllers
                     qrUser = db.DBQRUser.Where(q => q.ID == Id).FirstOrDefault();
                     if (qrUser == null)
                     {
-                        ErrorUrl += "未获取对应二维码";
+                        ErrorUrl += "未找到对应的收款二维码";
                         return Redirect(ErrorUrl);
                     }
+                    //检验代理人
+                    ui = db.DBUserInfo.Where(u => u.OpenId == qrUser.OpenId).FirstOrDefault();
+                    if(ui == null)
+                    {
+                        ErrorUrl += "未找到收款二维码代理人";
+                        return Redirect(ErrorUrl);
+                    }
+                    if (ui.UserStatus == IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister)
+                    {
+                        ErrorUrl += "此收款二维码已被禁用";
+                        return Redirect(ErrorUrl);
+                    }
+                    /*
                     //校验授权二维码
                     qrInfo = db.DBQRInfo.Where(a => a.ID == qrUser.QRId).FirstOrDefault();
                     if (qrInfo == null)
@@ -428,9 +443,10 @@ namespace IQBPay.Controllers
                         ErrorUrl += "二维码对应的授权码已被禁用";
                         return Redirect(ErrorUrl);
                     }
+                    */
 
                     //获取并校验商户
-                    EStoreInfo store = db.DBStoreInfo.Where(a => a.ID == qrInfo.ReceiveStoreId).FirstOrDefault();
+                    EStoreInfo store = db.DBStoreInfo.Where(a => a.ID == qrUser.ReceiveStoreId).FirstOrDefault();
                     if(store ==null)
                     {
                         ErrorUrl += "没有找到对应的收款商户";
@@ -451,7 +467,6 @@ namespace IQBPay.Controllers
                     Random r = new Random();
                     int i = r.Next(0, list.Count-1);
                     EStoreInfo store = list[i];
-                    
                     */
                    
                     AliPayManager payManager = new AliPayManager();
@@ -462,7 +477,7 @@ namespace IQBPay.Controllers
                     if (status == ResultEnum.SUCCESS)
                     {
                         //创建初始化订单
-                        EOrderInfo order = payManager.InitOrder(qrUser, qrInfo, store,Convert.ToSingle(Amount));
+                        EOrderInfo order = payManager.InitOrder(qrUser, store,Convert.ToSingle(Amount));
                         db.DBOrder.Add(order);
                         db.SaveChanges();
 

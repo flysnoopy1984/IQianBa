@@ -92,20 +92,27 @@ namespace IQBPay.Controllers
         {
             try
             {
+               
                 using (AliPayContent db = new AliPayContent())
                 {
+                    EStoreInfo curReceiveStore = db.DBStoreInfo.Where(s => s.IsReceiveAccount == true).FirstOrDefault();
+                    if (curReceiveStore != null)
+                        curReceiveStore.IsReceiveAccount = false;
+
 
                     store.InitModify();
 
                     DbEntityEntry<EStoreInfo> entry = db.Entry<EStoreInfo>(store);
                     entry.State = EntityState.Unchanged;
 
+                   
                     entry.Property(t => t.Name).IsModified = true;
                     entry.Property(t => t.OpenTime).IsModified = true;
                     entry.Property(t => t.CloseTime).IsModified = true;
                     entry.Property(t => t.RecordStatus).IsModified = true;
                     entry.Property(t => t.Rate).IsModified = true;
                     entry.Property(t => t.Remark).IsModified = true;
+                    entry.Property(t => t.IsReceiveAccount).IsModified = true;
 
                     entry.Property(t => t.MDate).IsModified = true;
                     entry.Property(t => t.MTime).IsModified = true;
@@ -113,13 +120,18 @@ namespace IQBPay.Controllers
 
                     db.SaveChanges();
 
+                    if(store.IsReceiveAccount)
+                    {
+                        BaseController.CleanSubAccount();
+                    }
+
                 
                 }
             }
             catch(Exception ex)
             {
-              
-                Content("Save Store Error"+ex.Message);
+               
+               return Content("Save Store Error"+ex.Message);
             }
             return Json("OK");
         }

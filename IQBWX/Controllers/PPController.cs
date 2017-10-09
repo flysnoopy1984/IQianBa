@@ -41,5 +41,10 @@ namespace IQBWX.Controllers
             return View();
         }
 
+        public ActionResult Auth_Store()
+        {
+            return View();
+        }
+
     }
 }

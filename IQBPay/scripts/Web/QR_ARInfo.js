@@ -5,21 +5,7 @@
   
    Init(Id);
 
-    $("#QRStatus").bootstrapSwitch({
-        onText: "启用",
-        state: true,
-        offText: "禁用",
-        onColor: "success",
-        offColor: "danger",
-        size: "small",
-        onSwitchChange: function (event, state) {
-            if (state == true) {
-                $(this).val("0");
-            } else {
-                $(this).val("1");
-            }
-        }
-    });
+   
 });
 
 function Init(Id) {
@@ -36,6 +22,22 @@ function Init(Id) {
         success: function (data) {
 
             InitFormData(data);
+
+            $("#QRStatus").bootstrapSwitch({
+                onText: "启用",
+                state: true,
+                offText: "禁用",
+                onColor: "success",
+                offColor: "danger",
+                size: "small",
+                onSwitchChange: function (event, state) {
+                    if (state == true) {
+                        $(this).val("0");
+                    } else {
+                        $(this).val("1");
+                    }
+                }
+            });
         },
         error: function (xhr, type) {
 

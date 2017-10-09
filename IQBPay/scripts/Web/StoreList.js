@@ -54,6 +54,7 @@ function generateData(result)
         strCtrl += "<td>" + result[i].Name + "</td>";
         strCtrl += "<td>" + cn + "</td>";
         strCtrl += "<td>" + result[i].Rate + "</td>";
+        strCtrl += "<td>" + result[i].IsReceiveAccount + "</td>";
         strCtrl += "<td>" + result[i].AliPayAccount + "</td>";
         strCtrl += "<td>" + result[i].OpenTime + "</td>";
         strCtrl += "<td>" + result[i].CloseTime + "</td>";
