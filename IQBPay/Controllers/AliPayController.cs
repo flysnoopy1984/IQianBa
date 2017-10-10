@@ -207,15 +207,18 @@ namespace IQBPay.Controllers
                     if (order.AliPayTradeStatus == "TRADE_SUCCESS")
                     {
                         order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Paid;
-                        //分账
-                        EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
-                        AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount); 
-                        if(res.Code== "10000")
-                            order.LogRemark += string.Format("[SubAccount] Code:{0};msg:{1}; ##", res.Code, res.Msg);
-                        else
+                        if (order.SellerCommission > 0)
                         {
-                            order.LogRemark += string.Format("[SubAccount] SubCode:{0};Submsg:{1}; ##", res.SubCode, res.SubMsg);
-                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                            //分账
+                            EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
+                            AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount);
+                            if (res.Code == "10000")
+                                order.LogRemark += string.Format("[SubAccount] Code:{0};msg:{1}; ##", res.Code, res.Msg);
+                            else
+                            {
+                                order.LogRemark += string.Format("[SubAccount] SubCode:{0};Submsg:{1}; ##", res.SubCode, res.SubMsg);
+                                order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                            }
                         }
                         //自动提款
                         EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
@@ -560,7 +563,7 @@ namespace IQBPay.Controllers
             using (AliPayContent db = new AliPayContent())
             {
                 AliPayManager payManager = new AliPayManager();
-                EOrderInfo order = db.DBOrder.Where(o => o.OrderNo == "IQBO20171010013310if531g75").FirstOrDefault();
+                EOrderInfo order = db.DBOrder.Where(o => o.OrderNo == "IQBO20171010103417ex7gsgbd").FirstOrDefault();
                 EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
                 res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount);
               

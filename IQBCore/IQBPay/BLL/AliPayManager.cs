@@ -12,6 +12,7 @@ using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.System;
 using IQBCore.IQBPay.Models.User;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -33,29 +34,53 @@ namespace IQBCore.IQBPay.BLL
 
 
             AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
-            
+
+
+
+
+
+            /* 
             Aop.Api.Domain.AlipayTradeOrderSettleModel model = new AlipayTradeOrderSettleModel();
-
-            model.OutRequestNo = StringHelper.GenerateSubAccountTransNo();
+            model.OutRequestNo = ;
             model.TradeNo = order.AliPayOrderNo;
-
             List<OpenApiRoyaltyDetailInfoPojo> paramList = new List<OpenApiRoyaltyDetailInfoPojo>();
 
-            OpenApiRoyaltyDetailInfoPojo p = new OpenApiRoyaltyDetailInfoPojo();
-            p.TransOut = store.AliPayAccount;
-            p.TransIn = receiveStore.AliPayAccount;
-            p.Amount = Convert.ToInt64(order.SellerCommission);
-            long a = 3;
-           // if (p.Amount <= 0)
-                p.Amount = a;
-           
-            p.AmountPercentage = Convert.ToInt64(100);
+            OpenApiRoyaltyDetailInfoPojo p1 = new OpenApiRoyaltyDetailInfoPojo();
+            p1.TransOut = store.AliPayAccount;
+            p1.TransIn = receiveStore.AliPayAccount;
+            p1.Amount = 1;
+          //  p1.AmountPercentage = 100;
+            paramList.Add(p1);
+            */
 
 
-            paramList.Add(p);
+            /*  request.BizContent = "{" +
+              "\"out_request_no\":\""+ StringHelper.GenerateSubAccountTransNo() +"\"," +
+              "\"trade_no\":\"2017101021001004530224758805\"," +
+              "      \"royalty_parameters\":[{" +
+              "        \"trans_out\":\"2088821092484390\"," +
+              "\"trans_in\":\"2088721665327500\"," +
+              "\"amount\":1," +
+              "\"desc\":\"分账\"" +
+              "        }]," +
+              "\"operator_id\":\"\"" +
+              "  }";
+              */
 
-            model.RoyaltyParameters = paramList;
-            request.SetBizModel(model);
+            request.BizContent = "{" +
+            "\"out_request_no\":\"" + StringHelper.GenerateSubAccountTransNo() + "\"," +
+            "\"trade_no\":\""+order.AliPayOrderNo+"\"," +
+            "      \"royalty_parameters\":[{" +
+            "        \"trans_out\":\""+store.AliPayAccount+"\"," +
+            "\"trans_in\":\""+ receiveStore .AliPayAccount+ "\"," +
+            "\"amount\":"+order.SellerCommission+"," +
+            "\"desc\":\"分账\"" +
+            "        }]," +
+            "\"operator_id\":\"\"" +
+            "  }";
+
+            // model.RoyaltyParameters = paramList;
+            // request.SetBizModel(model);
 
             AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request, store.AliPayAuthToke);
             return response;
