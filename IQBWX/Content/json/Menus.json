@@ -1,49 +1,31 @@
 ﻿{
     "button": [
         {
-            "name": "成为会员",
-            "type": "view",
-            "url": "http://wx.iqianba.cn/Html5/applyMember"                 
+            "name": "收款二维码",
+            "type": "click",
+            "key": "pay_101"                 
         },
         {
-            "name": "全民秒贷",
+          "name": "用户中心",
           "sub_button": [
             {
               "type": "view",
-              "name": "全民秒贷书站",
-              "url": "http://wx.iqianba.cn/home/wxloginwap?entry=1"
+              "name": "收款账户设置",
+              "url": "http://wx.iqianba.cn/PP/AliPayAccount"
             },
             {
               "type": "view",
-              "name": "自适应版书站",
-              "url": "http://wx.iqianba.cn/home/wxloginwap?entry=2"
+              "name": "订单查询",
+              "url": "http://wx.iqianba.cn/PP/OrderQuery"
             },
             {
-              "type": "click",
-              "name": "我的赚钱二维码",
-              "key": "mn_202"
+              "type": "view",
+              "name": "提现记录",
+              "url": "http://wx.iqianba.cn/PP/Settlement"
             }
+
           ]
-        },       
-        {
-            "name": "会员中心",
-            "sub_button": [
-              {
-                "type": "view",
-                "name": "会员中心入口",
-                "url": "http://wx.iqianba.cn/Html5/MemberCenter"
-              },
-              {
-                "type": "view",
-                "name": "贷款超市",
-                "url": "http://wx.iqianba.cn/Html5/LoanMarket"
-              },
-              {
-                "type": "view",
-                "name": "最新口子",
-                "url": "http://wx.iqianba.cn/Info/Summery"
-              }
-            ]
-        }
+        }       
+      
     ]
  }

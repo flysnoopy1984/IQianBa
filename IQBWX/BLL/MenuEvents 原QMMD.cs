@@ -12,7 +12,6 @@ using IQBWX.Models.WX;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web;
 using WxPayAPI;
@@ -37,42 +36,44 @@ namespace IQBWX.BLL
       
         public void ClickHandler(WXMessage msg)
         {
-
-            string url = ConfigurationManager.AppSettings["Site_IQBPay"];
+            UserContent db = new UserContent();
             try
-            {
-                IQBCore.IQBPay.Models.QR.EQRUser payQRUser;
+            { 
                 string ke = msg.EventKey;
                 RedirectUrl = null;
-                using (AliPayContent db = new AliPayContent())
+              
+                if (!db.IsMember(msg.FromUserName))
                 {
-                    payQRUser = db.DBQRUser.Where(u => u.OpenId == msg.FromUserName).FirstOrDefault();
-                    if (payQRUser == null)
-                    {
-                        this.ResponseXml = msg.toText("您没有权限");
-                        return;
-                    }
+                    this.ResponseXml = msg.toText("仅限会员查看");
+                    return;
                 }
+           
+                log.log("Key:"+ke);
                 switch (ke)
                 {
-                    case "pay_101":
-                        string picUrl = url + payQRUser.FilePath;
-                        this.ResponseXml = msg.toPicText(picUrl);
+                    case "mn_201":
+
                         break;
+                    case "mn_202":
+                        EUserInfo ui = db.Get(msg.FromUserName);
+                        string picUrl = "http://wx.iqianba.cn/content/qrimg/bk_"+ui.UserId+".jpg";
+                        this.ResponseXml = msg.toPicText(picUrl);
                    
+                        break;                
+
                     default:
                         break;
 
                 }
             }
-            catch(Exception ex)
+           finally
             {
-                log.log("WX ClickHandler Error" + ex.Message);
-
-                this.ResponseXml = msg.toText("微信平台错误，请通知管理员");
+                db.Dispose(); 
             }
 
-          
+
+
+
         }
 
         private void mn_202()

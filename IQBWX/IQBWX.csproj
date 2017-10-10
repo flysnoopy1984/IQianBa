@@ -223,6 +223,7 @@
     <Compile Include="BLL\NT\Notification.cs" />
     <Compile Include="BLL\NT\OrderCreationNT.cs" />
     <Compile Include="BLL\NT\OrderPaidSuccessNT.cs" />
+    <Compile Include="BLL\NT\PPOrderPayNT.cs" />
     <Compile Include="BLL\NT\RegistrationNT.cs" />
     <Compile Include="BLL\PopPolicy.cs" />
     <Compile Include="BLL\Payment.cs" />
@@ -291,6 +292,7 @@
     <Compile Include="Models\WX\Template\BaseTemplate.cs" />
     <Compile Include="Models\WX\Template\OrderCreationTemplate.cs" />
     <Compile Include="Models\WX\Template\OrderPaidSuccessTemplate.cs" />
+    <Compile Include="Models\WX\Template\PPOrderPayTemplate.cs" />
     <Compile Include="Models\WX\Template\RegTemplate.cs" />
     <Compile Include="Models\WX\Template\TemplateData.cs" />
     <Compile Include="Models\WX\Template\TemplateField.cs" />
@@ -315,6 +317,7 @@
     <Content Include="Content\json\Test.json" />
     <Content Include="Content\json\Cities.json" />
     <Content Include="Content\json\SendMsg.json" />
+    <Content Include="Content\json\Menus - 复制.json" />
     <None Include="Properties\PublishProfiles\IQBWX.pubxml" />
     <Content Include="Views\Pay\Index.cshtml" />
     <Content Include="Views\Pay\Test.cshtml" />
@@ -345,6 +348,9 @@
     <Content Include="Views\PP\Pay.cshtml" />
     <Content Include="Views\PP\YunLong.cshtml" />
     <Content Include="Views\PP\Demo.cshtml" />
+    <Content Include="Views\PP\OrderQuery.cshtml" />
+    <Content Include="Views\PP\Settlement.cshtml" />
+    <Content Include="Views\PP\AliPayAccount.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,10 +1,12 @@
 ﻿using IQBCore.IQBPay.Models.QR;
 using IQBWX.BLL.ExternalWeb;
+using IQBWX.BLL.NT;
 using IQBWX.Common;
 using IQBWX.DataBase.IQBPay;
 using IQBWX.Models.Results;
 using IQBWX.Models.User;
 using IQBWX.Models.WX;
+using IQBWX.Models.WX.Template;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +32,21 @@ namespace IQBWX.Controllers
             return View();
         }
 
-        public ActionResult Demo()
+        public ActionResult Demo(string Id)
         {
-            return View();
+           
+            if (Id == "1")
+            {
+                string accessToken = this.getAccessToken(true);
+                IQBCore.IQBPay.Models.Order.EOrderInfo _ppOrder;
+                using (AliPayContent db = new AliPayContent())
+                {
+                    _ppOrder = db.DBOrderInfo.FirstOrDefault();
+                }
+                PPOrderPayNT notice = new PPOrderPayNT(accessToken, "orKUAw16WK0BmflDLiBYsR-Kh5bE", _ppOrder);
+                return Content(notice.Push());
+            }
+             return View();
         }
 
         public ActionResult Pay(string Id)
@@ -42,6 +56,18 @@ namespace IQBWX.Controllers
         }
 
         public ActionResult Auth_Store()
+        {
+            return View();
+        }
+        public ActionResult AliPayAccount()
+        {
+            return View();
+        }
+        public ActionResult OrderQuery()
+        {
+            return View();
+        }
+        public ActionResult Settlement()
         {
             return View();
         }

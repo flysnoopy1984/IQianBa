@@ -1,4 +1,4 @@
-﻿using IQBWX.Common;
+﻿using IQBCore.Common.Helper;
 using IQBWX.Controllers;
 using IQBWX.Models.User;
 using IQBWX.Models.WX.Template;
@@ -25,7 +25,7 @@ namespace IQBWX.BLL.NT
 
         protected abstract T SetData();
 
-        public void Push()
+        public string Push()
         {
             try
             {                       
@@ -34,15 +34,18 @@ namespace IQBWX.BLL.NT
             
                 var data = SetData();
                 template = JsonConvert.SerializeObject(data);
-                log.log("Push Template File: " + template);
-                string result = HttpHelper.RequestUrlSendMsg(strUrl, HttpHelper.HttpMethod.Post, template);
-                log.log("Push Result: " + result);
+            // log.log("Push Template File: " + template);
+                string result = HttpHelper.RequestUrlSendMsg(strUrl, HttpHelper.HttpMethod.Post,template, "application/json");
+             //   log.log("Push Result: " + result);
+
+                return result;
             }
             catch (Exception ex)
             {
                 log.log("Push Error: " + ex.Message);
                 log.log("Push Inner Error: " + ex.StackTrace);
             }
+            return "";
         }
 
       

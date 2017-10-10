@@ -348,7 +348,7 @@ namespace IQBPay.Controllers
                         }
                         else
                         {
-                            Content("授权失败："+response.Msg);
+                            return Content("授权失败："+response.Msg);
                         }
 
                     }
@@ -458,45 +458,41 @@ namespace IQBPay.Controllers
                         ErrorUrl += "此收款二维码已被禁用";
                         return Redirect(ErrorUrl);
                     }
-                    /*
-                    //校验授权二维码
-                    qrInfo = db.DBQRInfo.Where(a => a.ID == qrUser.QRId).FirstOrDefault();
-                    if (qrInfo == null)
-                    {
-                        ErrorUrl += "二维码对应的授权码不存";
-                        return Redirect(ErrorUrl);
-                    }
 
-                    if (qrInfo.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
-                    {
-                        ErrorUrl += "二维码对应的授权码已被禁用";
-                        return Redirect(ErrorUrl);
-                    }
-                    */
-
+                    EStoreInfo store = null;
                     //获取并校验商户
-                    EStoreInfo store = db.DBStoreInfo.Where(a => a.ID == qrUser.ReceiveStoreId).FirstOrDefault();
-                    if(store ==null)
+                    if (qrUser.ReceiveStoreId > 0)
                     {
-                        ErrorUrl += "没有找到对应的收款商户";
-                        return Redirect(ErrorUrl);
+                        store = db.DBStoreInfo.Where(a => a.ID == qrUser.ReceiveStoreId).FirstOrDefault();
+                        if (store == null)
+                        {
+                            ErrorUrl += "没有找到对应的收款商户";
+                            return Redirect(ErrorUrl);
+                        }
+                        if (store.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
+                        {
+                            ErrorUrl += "收款商户已下线";
+                            return Redirect(ErrorUrl);
+                        }
+                        if(store.IsReceiveAccount)
+                        {
+                            ErrorUrl += "支付的商户不能作为收款商户";
+                            return Redirect(ErrorUrl);
+                        }
                     }
-                    if(store.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
+                    else
                     {
-                        ErrorUrl += "收款商户已下线";
-                        return Redirect(ErrorUrl);
+                        List<EStoreInfo> list = db.DBStoreInfo.Where(a => a.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Normal && a.IsReceiveAccount == false).ToList();
+                        if (list.Count == 0)
+                        {
+                            ErrorUrl += "没有任何对应的支付商户，请联系平台";
+                            return Redirect(ErrorUrl);
+                        }
+                        Random r = new Random();
+                        int i = r.Next(0, list.Count - 1);
+                        store = list[i];
                     }
-                   /*
-                    List<EStoreInfo> list = db.DBStoreInfo.Where(a => a.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Normal).ToList();
-                    if (list.Count == 0)
-                    {
-                        ErrorUrl += "没有任何对应的支付商户，请联系平台";
-                        return Redirect(ErrorUrl);
-                    }
-                    Random r = new Random();
-                    int i = r.Next(0, list.Count-1);
-                    EStoreInfo store = list[i];
-                    */
+                   
                    
                     AliPayManager payManager = new AliPayManager();
                     ResultEnum status;

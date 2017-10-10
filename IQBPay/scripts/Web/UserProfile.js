@@ -42,7 +42,7 @@ function InitFormData(data)
         $("#QRImg").attr("src", "/Content/Images/noPic.jpg");
     else
     {
-        $("#Rate").text(data.Rate);
+        $("#Rate").text(data.Rate+"%");
         $("#QRImg").attr("src", data.QRFilePath);
     }
 }

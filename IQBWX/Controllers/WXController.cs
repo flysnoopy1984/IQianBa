@@ -224,7 +224,7 @@ namespace IQBWX.Controllers
                         result.OpenId = sso.OpenId;
                         result.ssoToken = ssoToken;
                         if(appId == "pp")
-                            result.ReturnUrl = ConfigurationManager.AppSettings["Site_IQBPay"];
+                            result.ReturnUrl = ConfigurationManager.AppSettings["Site_IQBPay_WebEntry"];
                         else
                             result.ReturnUrl = ConfigurationManager.AppSettings["Site_IQBBook"];
 

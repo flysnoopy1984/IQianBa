@@ -1,4 +1,5 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.System;
@@ -32,6 +33,8 @@ namespace IQBWX.DataBase.IQBPay
 
         public DbSet<EQRUser> DBQRUser { get; set; }
         public DbSet<EAliPayApplication> DBAliPayApp { get; set; }
+
+        public DbSet<EOrderInfo> DBOrderInfo { get; set; }
 
 
 

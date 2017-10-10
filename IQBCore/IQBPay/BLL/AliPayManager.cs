@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using System.Web;
 
 namespace IQBCore.IQBPay.BLL
-{
+{   
     public class AliPayManager
     {
         private F2FPayHandler _handler =null;
@@ -34,38 +34,7 @@ namespace IQBCore.IQBPay.BLL
 
 
             AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
-
-
-
-
-
-            /* 
-            Aop.Api.Domain.AlipayTradeOrderSettleModel model = new AlipayTradeOrderSettleModel();
-            model.OutRequestNo = ;
-            model.TradeNo = order.AliPayOrderNo;
-            List<OpenApiRoyaltyDetailInfoPojo> paramList = new List<OpenApiRoyaltyDetailInfoPojo>();
-
-            OpenApiRoyaltyDetailInfoPojo p1 = new OpenApiRoyaltyDetailInfoPojo();
-            p1.TransOut = store.AliPayAccount;
-            p1.TransIn = receiveStore.AliPayAccount;
-            p1.Amount = 1;
-          //  p1.AmountPercentage = 100;
-            paramList.Add(p1);
-            */
-
-
-            /*  request.BizContent = "{" +
-              "\"out_request_no\":\""+ StringHelper.GenerateSubAccountTransNo() +"\"," +
-              "\"trade_no\":\"2017101021001004530224758805\"," +
-              "      \"royalty_parameters\":[{" +
-              "        \"trans_out\":\"2088821092484390\"," +
-              "\"trans_in\":\"2088721665327500\"," +
-              "\"amount\":1," +
-              "\"desc\":\"分账\"" +
-              "        }]," +
-              "\"operator_id\":\"\"" +
-              "  }";
-              */
+            float commission = order.TotalAmount - order.SellerCommission;
 
             request.BizContent = "{" +
             "\"out_request_no\":\"" + StringHelper.GenerateSubAccountTransNo() + "\"," +
@@ -73,7 +42,7 @@ namespace IQBCore.IQBPay.BLL
             "      \"royalty_parameters\":[{" +
             "        \"trans_out\":\""+store.AliPayAccount+"\"," +
             "\"trans_in\":\""+ receiveStore .AliPayAccount+ "\"," +
-            "\"amount\":"+order.SellerCommission+"," +
+            "\"amount\":"+ commission + "," +
             "\"desc\":\"分账\"" +
             "        }]," +
             "\"operator_id\":\"\"" +
