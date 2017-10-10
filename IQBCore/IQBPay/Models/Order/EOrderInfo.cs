@@ -114,6 +114,8 @@ namespace IQBCore.IQBPay.Models.Order
         [MaxLength(255)]
         public string LogRemark { get; set; }
 
+        
+
         ///// <summary>
         ///// 平台实际收入
         ///// </summary>

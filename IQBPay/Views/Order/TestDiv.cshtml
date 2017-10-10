@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "TestDiv";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section SubMenu1{
+    订单管理
+}
+@section SubMenu2{
+    列表
+}
+<style type="text/css">
+
+    .tableRow {
+width: 1200px;
+height: 50px;
+}
+
+.Cell {
+float: left;
+width: 198px;
+height: 50px;
+border-width: 1px 0px 0px 1px;
+border-style: solid;
+}
+
+.CellRowEnd {
+float: left;
+width: 150px;
+height: 50px;
+border-width: 1px 1px 0px 1px;
+border-style: solid;
+}
+
+.CellLastRow {
+float: left;
+width: 198px;
+height: 50px;
+border-width: 1px 0px 1px 1px;
+border-style: solid;
+}
+
+.CellLastRowEnd {
+float: left;
+width: 150px;
+height: 50px;
+border-width: 1px 1px 1px 1px;
+border-style: solid;
+}
+</style>
+
+<div class="tableRow clearfix panel-heading"
+     data-toggle="collapse" data-parent="#accordion"
+     href="#collapseOne">
+    <div class="Cell"></div>
+    <div class="Cell"></div>
+    <div class="Cell"></div>
+    <div class="Cell"></div>
+    <div class="Cell"></div>
+    <div class="CellRowEnd"></div>
+</div>
+<div id="collapseOne"
+     class="col-xs-12 panel-collapse collapse collapseCom"></div>
+
+<div class="tableRow clearfix panel-heading"
+     data-toggle="collapse" data-parent="#accordion"
+     href="#collapseTwo">
+    <div class="Cell"></div>
+    <div class="Cell"></div>
+    <div class="Cell"></div>
+    <div class="Cell"></div>
+    <div class="Cell"></div>
+    <div class="CellRowEnd"></div>
+</div>
+<div id="collapseTwo"
+     class="col-xs-12 panel-collapse collapse collapseCom"></div>
+
+<div class="tableRow clearfix panel-heading"
+     data-toggle="collapse" data-parent="#accordion"
+     href="#collapseThree">
+    <div class="Cell"></div>
+    <div class="Cell"></div>
+    <div class="Cell"></div>
+    <div class="Cell"></div>
+    <div class="Cell"></div>
+    <div class="CellRowEnd"></div>
+</div>
+<div id="collapseThree"
+     class="col-xs-12 panel-collapse collapse collapseCom"></div>
+
+<div class="tableRow clearfix panel-heading"
+     data-toggle="collapse" data-parent="#accordion"
+     href="#collapseFour">
+    <div class="CellLastRow"></div>
+    <div class="CellLastRow"></div>
+    <div class="CellLastRow"></div>
+    <div class="CellLastRow"></div>
+    <div class="CellLastRow"></div>
+    <div class="CellLastRowEnd"></div>
+</div>
+

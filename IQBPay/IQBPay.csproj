@@ -171,6 +171,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.js" />
+    <Content Include="Content\Component\MyDivTable.css" />
     <Content Include="Content\Images\backgrounds\1.jpg" />
     <Content Include="Content\Images\backgrounds\2.jpg" />
     <Content Include="Content\Images\backgrounds\3.jpg" />
@@ -585,6 +586,7 @@
     <Content Include="Views\Order\Info.cshtml" />
     <Content Include="Views\User\List.cshtml" />
     <Content Include="Views\User\Info.cshtml" />
+    <Content Include="Views\Order\TestDiv.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

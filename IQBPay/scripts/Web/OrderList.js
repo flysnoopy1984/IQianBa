@@ -1,6 +1,14 @@
 ﻿$(document).ready(function () {
-    Query();
+  //  Query();
 });
+function MakeTable()
+{
+    var tabel = $("#DivTable");
+
+
+
+
+}
 
 function Query() {
 

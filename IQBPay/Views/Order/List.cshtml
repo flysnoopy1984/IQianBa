@@ -13,9 +13,10 @@
 <script src="~/scripts/Web/Common.js"></script>
 <script src="~/scripts/Component/IQBTable.js"></script>
 <script src="~/scripts/Web/OrderList.js"></script>
+<link href="~/Content/Component/MyDivTable.css" rel="stylesheet" />
 <div id="ListArea">
     <div id="Title" style="margin:0px;">
-        <span id="ListTitleName"></span>
+        <span id="ListTitleName">订单列表</span>
         <ul class="UlHorizontal" style="float:right">
             <li>
                 <button type="button" class="btn btn-primary" onclick="Query();">查询</button>
@@ -24,12 +25,70 @@
         </ul>
     </div>
     <div id="ListContent">
-     
-        <table id="tbData" class="table table-hover table-bordered TableOverflowHidden">
+        <div class="DivTable">
+            <div id="TableHeaderContainer">
+                <div class="TableHeaderDivLeft">1订单编号</div>
+                <div class="TableHeaderDivLeft">2订单编号</div>
+                <div class="TableHeaderDivLeft">3订单编号</div>
+                <div class="TableHeaderDivLeft">4订单编号</div>
+                <div class="TableHeaderDivLeft">5订单编号</div>
+                <div class="TableHeaderDivLeft">6订单编号</div>
+                <div class="TableHeaderDivLeft">7订单编号</div>
+                <div class="TableHeaderDivRight">8订单编号</div>
+            </div>
+            <div id="TableBodyContainer">
+                    <div class="tableRow">
+                        <div class="ColDivLeft">1asdasdas</div>
+                        <div class="ColDivLeft">2asdasdas</div>
+                        <div class="ColDivLeft">3asdasdas</div>
+                        <div class="ColDivLeft">4asdasdas</div>
+                        <div class="ColDivLeft">5asdasdas</div>
+                        <div class="ColDivLeft">6asdasdas</div>
+                        <div class="ColDivLeft">7asdasdas</div>
+                        <div class="ColDivRight">8asdasdas</div>
+                    </div>
+                    <div class="tableRow">
+                        <div class="ColDivLeft">1asdasdas</div>
+                        <div class="ColDivLeft">2asdasdas</div>
+                        <div class="ColDivLeft">3asdasdas</div>
+                        <div class="ColDivLeft">4asdasdas</div>
+                        <div class="ColDivLeft">5asdasdas</div>
+                        <div class="ColDivLeft">6asdasdas</div>
+                        <div class="ColDivLeft">7asdasdas</div>
+                        <div class="ColDivRight">8asdasdas</div>
+                    </div>
+                    <div class="tableRow">
+                        <div class="ColDivLeft">1asdasdas</div>
+                        <div class="ColDivLeft">2asdasdas</div>
+                        <div class="ColDivLeft">3asdasdas</div>
+                        <div class="ColDivLeft">4asdasdas</div>
+                        <div class="ColDivLeft">5asdasdas</div>
+                        <div class="ColDivLeft">6asdasdas</div>
+                        <div class="ColDivLeft">7asdasdas</div>
+                        <div class="ColDivRight">8asdasdas</div>
+                    </div>
+                    <div class="tableRow">
+                        <div class="ColDivLeft">1asdasdas</div>
+                        <div class="ColDivLeft">2asdasdas</div>
+                        <div class="ColDivLeft">3asdasdas</div>
+                        <div class="ColDivLeft">4asdasdas</div>
+                        <div class="ColDivLeft">5asdasdas</div>
+                        <div class="ColDivLeft">6asdasdas</div>
+                        <div class="ColDivLeft">7asdasdas</div>
+                        <div class="ColDivRight">8asdasdas</div>
+                    </div>
+
+                </div>
+       </div>
+
+   </div>
+</div>
+@*<table id="tbData" class="table table-hover table-bordered TableOverflowHidden">
             <thead class="cf">
                 <tr id="trHeader">
                     <th width="">订单编号</th>
                     <th width="">支付宝订单编号</th>
+                    <th width="">订单状态</th>
                     <th width="">总金额</th>
                     <th width="">扣点率</th>
                     <th width="">扣点金额</th>
@@ -40,12 +99,10 @@
                     <th width="">商户佣金点率</th>
                     <th width="">商户佣金</th>
                     <th width="">平台实际收入</th>
-                    <th width="">需打款金额</th>
-                    <th width="">已打款金额</th>
+                    <th width="">结算金额</th>
+                    <th width=""></th>
                     <th width=""> 操作</th>
                 </tr>
             </thead>
             <tbody id="trContainer"></tbody>
-        </table>
-    </div>
-</div>
+        </table>*@
