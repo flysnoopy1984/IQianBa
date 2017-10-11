@@ -13,7 +13,8 @@
 <script src="~/scripts/Web/Common.js"></script>
 <script src="~/scripts/Component/IQBTable.js"></script>
 <script src="~/scripts/Web/OrderList.js"></script>
-<link href="~/Content/Component/MyDivTable.css" rel="stylesheet" />
+<link href="~/Content/Style/Web/FixTableList.css" rel="stylesheet" />
+
 <div id="ListArea">
     <div id="Title" style="margin:0px;">
         <span id="ListTitleName">订单列表</span>
@@ -25,84 +26,128 @@
         </ul>
     </div>
     <div id="ListContent">
-        <div class="DivTable">
-            <div id="TableHeaderContainer">
-                <div class="TableHeaderDivLeft">1订单编号</div>
-                <div class="TableHeaderDivLeft">2订单编号</div>
-                <div class="TableHeaderDivLeft">3订单编号</div>
-                <div class="TableHeaderDivLeft">4订单编号</div>
-                <div class="TableHeaderDivLeft">5订单编号</div>
-                <div class="TableHeaderDivLeft">6订单编号</div>
-                <div class="TableHeaderDivLeft">7订单编号</div>
-                <div class="TableHeaderDivRight">8订单编号</div>
+        <div class="fix-header-table">
+            <div class="divH" id="divTableHeader">
+                <table id="TableHeader" class="table table-hover table-bordered TableOverflowHidden">
+                    <thead class="cf">
+                        <tr id="trHeader">
+                            <th style="width:200px;"> 操作</th>
+                            <th style='width:200px;'>订单编号</th>
+                            <th style="width:200px;">支付宝订单编号</th>
+                            <th style="width:200px;">订单状态</th>
+                            <th style="width:200px;">总金额</th>
+                            <th style="width:200px;">代理用户</th>
+                            <th style="width:200px;">代理扣点率</th>
+                            <th style="width:200px;">代理扣点金额</th>
+                            <th style="width:200px;">代理实际收入</th>
+                            <th style="width:200px;">商户名</th>
+                            <th style="width:200px;">商户类型</th>
+                            <th style="width:200px;">商户佣金点率</th>
+                            <th style="width:200px;">商户佣金</th>
+                            <th style="width:200px;">平台实际收入</th>
+                            <th style="width:200px;">结算编号</th>
+                            <th style="width:200px;">结算状态</th>
+                            <th style="width:200px;">结算金额</th>  
+                        </tr>
+                    </thead>
+                </table>
             </div>
-            <div id="TableBodyContainer">
-                    <div class="tableRow">
-                        <div class="ColDivLeft">1asdasdas</div>
-                        <div class="ColDivLeft">2asdasdas</div>
-                        <div class="ColDivLeft">3asdasdas</div>
-                        <div class="ColDivLeft">4asdasdas</div>
-                        <div class="ColDivLeft">5asdasdas</div>
-                        <div class="ColDivLeft">6asdasdas</div>
-                        <div class="ColDivLeft">7asdasdas</div>
-                        <div class="ColDivRight">8asdasdas</div>
-                    </div>
-                    <div class="tableRow">
-                        <div class="ColDivLeft">1asdasdas</div>
-                        <div class="ColDivLeft">2asdasdas</div>
-                        <div class="ColDivLeft">3asdasdas</div>
-                        <div class="ColDivLeft">4asdasdas</div>
-                        <div class="ColDivLeft">5asdasdas</div>
-                        <div class="ColDivLeft">6asdasdas</div>
-                        <div class="ColDivLeft">7asdasdas</div>
-                        <div class="ColDivRight">8asdasdas</div>
-                    </div>
-                    <div class="tableRow">
-                        <div class="ColDivLeft">1asdasdas</div>
-                        <div class="ColDivLeft">2asdasdas</div>
-                        <div class="ColDivLeft">3asdasdas</div>
-                        <div class="ColDivLeft">4asdasdas</div>
-                        <div class="ColDivLeft">5asdasdas</div>
-                        <div class="ColDivLeft">6asdasdas</div>
-                        <div class="ColDivLeft">7asdasdas</div>
-                        <div class="ColDivRight">8asdasdas</div>
-                    </div>
-                    <div class="tableRow">
-                        <div class="ColDivLeft">1asdasdas</div>
-                        <div class="ColDivLeft">2asdasdas</div>
-                        <div class="ColDivLeft">3asdasdas</div>
-                        <div class="ColDivLeft">4asdasdas</div>
-                        <div class="ColDivLeft">5asdasdas</div>
-                        <div class="ColDivLeft">6asdasdas</div>
-                        <div class="ColDivLeft">7asdasdas</div>
-                        <div class="ColDivRight">8asdasdas</div>
-                    </div>
+            <div class="divB" style="height: 100px;" >
+                 <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden">
+                     <tr>
+                        <td style="width:200px;">1aaaaaaa</td>
+                        <td style="width:200px;">2aaaaaaa</td>
+                         <td style="width:200px;">3aaaaaaa</td>
+                         <td style="width:200px;">a4aaaaaa</td>
+                         <td style="width:200px;">aa5aaaaa</td>
+                         <td style="width:200px;">aaa6aaaa</td>
+                         <td style="width:200px;">aaaa7aaa</td>
+                         <td style="width:200px;">aaaaa8aa</td>
+                         <td style="width:200px;">aaaaaa9a</td>
+                         <td style="width:200px;">aaaaaaa0</td>
+                         <td style="width:200px;">1aaaaaaa</td>
+                         <td style="width:200px;">a2aaaaaa</td>
+                         <td style="width:200px;">aa3aaaaa</td>
+                         <td style="width:200px;">aaa4aaaa</td>
+                         <td style="width:200px;">aaaa5aaa</td>
+                         <td style="width:200px;">aaaaa6aa</td>
+                     </tr>
+                     <tr>
+                         <td style="width:200px;">1aaaaaaa</td>
+                         <td style="width:200px;">2aaaaaaa</td>
+                         <td style="width:200px;">3aaaaaaa</td>
+                         <td style="width:200px;">a4aaaaaa</td>
+                         <td style="width:200px;">aa5aaaaa</td>
+                         <td style="width:200px;">aaa6aaaa</td>
+                         <td style="width:200px;">aaaa7aaa</td>
+                         <td style="width:200px;">aaaaa8aa</td>
+                         <td style="width:200px;">aaaaaa9a</td>
+                         <td style="width:200px;">aaaaaaa0</td>
+                         <td style="width:200px;">1aaaaaaa</td>
+                         <td style="width:200px;">a2aaaaaa</td>
+                         <td style="width:200px;">aa3aaaaa</td>
+                         <td style="width:200px;">aaa4aaaa</td>
+                         <td style="width:200px;">aaaa5aaa</td>
+                         <td style="width:200px;">aaaaa6aa</td>
+                     </tr>
+                     <tr>
+                         <td style="width:200px;">1aaaaaaa</td>
+                         <td style="width:200px;">2aaaaaaa</td>
+                         <td style="width:200px;">3aaaaaaa</td>
+                         <td style="width:200px;">a4aaaaaa</td>
+                         <td style="width:200px;">aa5aaaaa</td>
+                         <td style="width:200px;">aaa6aaaa</td>
+                         <td style="width:200px;">aaaa7aaa</td>
+                         <td style="width:200px;">aaaaa8aa</td>
+                         <td style="width:200px;">aaaaaa9a</td>
+                         <td style="width:200px;">aaaaaaa0</td>
+                         <td style="width:200px;">1aaaaaaa</td>
+                         <td style="width:200px;">a2aaaaaa</td>
+                         <td style="width:200px;">aa3aaaaa</td>
+                         <td style="width:200px;">aaa4aaaa</td>
+                         <td style="width:200px;">aaaa5aaa</td>
+                         <td style="width:200px;">aaaaa6aa</td>
+                     </tr>
+                     <tr>
+                         <td style="width:200px;">1aaaaaaa</td>
+                         <td style="width:200px;">2aaaaaaa</td>
+                         <td style="width:200px;">3aaaaaaa</td>
+                         <td style="width:200px;">a4aaaaaa</td>
+                         <td style="width:200px;">aa5aaaaa</td>
+                         <td style="width:200px;">aaa6aaaa</td>
+                         <td style="width:200px;">aaaa7aaa</td>
+                         <td style="width:200px;">aaaaa8aa</td>
+                         <td style="width:200px;">aaaaaa9a</td>
+                         <td style="width:200px;">aaaaaaa0</td>
+                         <td style="width:200px;">1aaaaaaa</td>
+                         <td style="width:200px;">a2aaaaaa</td>
+                         <td style="width:200px;">aa3aaaaa</td>
+                         <td style="width:200px;">aaa4aaaa</td>
+                         <td style="width:200px;">aaaa5aaa</td>
+                         <td style="width:200px;">aaaaa6aa</td>
+                     </tr>
+                     <tr>
+                         <td style="width:200px;">1aaaaaaa</td>
+                         <td style="width:200px;">2aaaaaaa</td>
+                         <td style="width:200px;">3aaaaaaa</td>
+                         <td style="width:200px;">a4aaaaaa</td>
+                         <td style="width:200px;">aa5aaaaa</td>
+                         <td style="width:200px;">aaa6aaaa</td>
+                         <td style="width:200px;">aaaa7aaa</td>
+                         <td style="width:200px;">aaaaa8aa</td>
+                         <td style="width:200px;">aaaaaa9a</td>
+                         <td style="width:200px;">aaaaaaa0</td>
+                         <td style="width:200px;">1aaaaaaa</td>
+                         <td style="width:200px;">a2aaaaaa</td>
+                         <td style="width:200px;">aa3aaaaa</td>
+                         <td style="width:200px;">aaa4aaaa</td>
+                         <td style="width:200px;">aaaa5aaa</td>
+                         <td style="width:200px;">aaaaa6aa</td>
+                     </tr>  
 
-                </div>
+                 </table>
+            </div>
        </div>
-
-   </div>
+    </div>
 </div>
-@*<table id="tbData" class="table table-hover table-bordered TableOverflowHidden">
-            <thead class="cf">
-                <tr id="trHeader">
-                    <th width="">订单编号</th>
-                    <th width="">支付宝订单编号</th>
-                    <th width="">订单状态</th>
-                    <th width="">总金额</th>
-                    <th width="">扣点率</th>
-                    <th width="">扣点金额</th>
-                    <th width="">代理用户</th>
-                    <th width="">代理实际收入</th>
-                    <th width="">收款商户名</th>
-                    <th width="">商户类型</th>
-                    <th width="">商户佣金点率</th>
-                    <th width="">商户佣金</th>
-                    <th width="">平台实际收入</th>
-                    <th width="">结算金额</th>
-                    <th width=""></th>
-                    <th width=""> 操作</th>
-                </tr>
-            </thead>
-            <tbody id="trContainer"></tbody>
-        </table>*@
+@**@

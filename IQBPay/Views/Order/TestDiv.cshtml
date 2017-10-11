@@ -11,92 +11,67 @@
     列表
 }
 <style type="text/css">
+.fix-header-table { overflow:auto; overflow-x:auto; overflow-y:hidden; position:relative; height:100%;}
+.fix-header-table table { border-collapse:collapse; table-layout:fixed; width:2200px; }
+.fix-header-table td { line-height:40px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding:0 5px; }
+.fix-header-table tr.trForTdWidth td { border-style:none; height:0; }
+.divH { background:#f2f2f2; }
+.divH td { text-align:center; font-weight:bold; }
+.divH td.sortable { cursor:pointer; }
+.divB { overflow-x:hidden; overflow-y:auto; }
+.divB td { border-bottom:#dedede 1px solid; }
 
-    .tableRow {
-width: 1200px;
-height: 50px;
-}
-
-.Cell {
-float: left;
-width: 198px;
-height: 50px;
-border-width: 1px 0px 0px 1px;
-border-style: solid;
-}
-
-.CellRowEnd {
-float: left;
-width: 150px;
-height: 50px;
-border-width: 1px 1px 0px 1px;
-border-style: solid;
-}
-
-.CellLastRow {
-float: left;
-width: 198px;
-height: 50px;
-border-width: 1px 0px 1px 1px;
-border-style: solid;
-}
-
-.CellLastRowEnd {
-float: left;
-width: 150px;
-height: 50px;
-border-width: 1px 1px 1px 1px;
-border-style: solid;
-}
+.fix-header-table .table-header td { line-height:16px; padding:0; }
+.fix-header-table .table-header td div { border-left:1px solid #D3D3D3; margin:12px 0; }
+.fix-header-table .table-header td:first-child div { border-left:none; }
+.fix-header-table tr.selected td { background-color:#eee; }
 </style>
 
-<div class="tableRow clearfix panel-heading"
-     data-toggle="collapse" data-parent="#accordion"
-     href="#collapseOne">
-    <div class="Cell"></div>
-    <div class="Cell"></div>
-    <div class="Cell"></div>
-    <div class="Cell"></div>
-    <div class="Cell"></div>
-    <div class="CellRowEnd"></div>
+<div id="Container" style="width:1200px;height:400px;border:1px red solid;">
+    <div id="testTable" class="fix-header-table" >
+        <div class="divH" id="header" >
+            aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadddddddddd
+        </div>
+        <div class="divB" id="body">报警人鞠女士向民警介绍事情经过。记者 张勇 摄
+　　华龙网10月10日23时34分讯（记者 张勇）钱物当面点清，离柜概不负责。这是不少商家标榜的交易原则。然而，让重庆市民鞠女士想不明白的是：今（10）日，她买的iPhone 6s Plus还没离柜呢，手机店的工作人员就表示概不退货。
+　　“警察，你们快点来，他们欺负我一个孕妇。”下午4时左右，鞠女士拨打110电话报警，称在沙坪坝区天陈路一手机店发生了冲突，紧急求助民警。闻讯之后，民警第一时间赶到了现场。
+　　在现场，民警发现，鞠女士与手机店工作人员并不像发生了什么肢体冲突。鞠女士也承认，她所谓的“欺负”仅仅表现在店家的态度上。
+　　“老公的旧手机使用5年了，我今天跟他来准备换一部新手机。”鞠女士告诉民警，大约半个小时以前，她与丈夫陈先生来到这家手机店购买iPhone 6s Plus。最开始，店里工作人员的态度还好，很快就帮他们选择了一部4588元的iPhone 6s Plus。然而，没过长时间，工作人员的解说就让鞠女士与陈先生两口子产生了别的想法。
+            报警人鞠女士向民警介绍事情经过。记者 张勇 摄
+            华龙网10月10日23时34分讯（记者 张勇）钱物当面点清，离柜概不负责。这是不少商家标榜的交易原则。然而，让重庆市民鞠女士想不明白的是：今（10）日，她买的iPhone 6s Plus还没离柜呢，手机店的工作人员就表示概不退货。
+            “警察，你们快点来，他们欺负我一个孕妇。”下午4时左右，鞠女士拨打110电话报警，称在沙坪坝区天陈路一手机店发生了冲突，紧急求助民警。闻讯之后，民警第一时间赶到了现场。
+            在现场，民警发现，鞠女士与手机店工作人员并不像发生了什么肢体冲突。鞠女士也承认，她所谓的“欺负”仅仅表现在店家的态度上。
+            “老公的旧手机使用5年了，我今天跟他来准备换一部新手机。”鞠女士告诉民警，大约半个小时以前，她与丈夫陈先生来到这家手机店购买iPhone 6s Plus。最开始，店里工作人员的态度还好，很快就帮他们选择了一部4588元的iPhone 6s Plus。然而，没过长时间，工作人员的解说就让鞠女士与陈先生两口子产生了别的想法。报警人鞠女士向民警介绍事情经过。记者 张勇 摄
+　　华龙网10月10日23时34分讯（记者 张勇）钱物当面点清，离柜概不负责。这是不少商家标榜的交易原则。然而，让重庆市民鞠女士想不明白的是：今（10）日，她买的iPhone 6s Plus还没离柜呢，手机店的工作人员就表示概不退货。
+　　“警察，你们快点来，他们欺负我一个孕妇。”下午4时左右，鞠女士拨打110电话报警，称在沙坪坝区天陈路一手机店发生了冲突，紧急求助民警。闻讯之后，民警第一时间赶到了现场。
+　　在现场，民警发现，鞠女士与手机店工作人员并不像发生了什么肢体冲突。鞠女士也承认，她所谓的“欺负”仅仅表现在店家的态度上。
+　　“老公的旧手机使用5年了，我今天跟他来准备换一部新手机。”鞠女士告诉民警，大约半个小时以前，她与丈夫陈先生来到这家手机店购买iPhone 6s Plus。最开始，店里工作人员的态度还好，很快就帮他们选择了一部4588元的iPhone 6s Plus。然而，没过长时间，工作人员的解说就让鞠女士与陈先生两口子产生了别的想法。
+            华龙网10月10日23时34分讯（记者 张勇）钱物当面点清，离柜概不负责。这是不少商家标榜的交易原则。然而，让重庆市民鞠女士想不明白的是：今（10）日，她买的iPhone 6s Plus还没离柜呢，手机店的工作人员就表示概不退货。
+            “警察，你们快点来，他们欺负我一个孕妇。”下午4时左右，鞠女士拨打110电话报警，称在沙坪坝区天陈路一手机店发生了冲突，紧急求助民警。闻讯之后，民警第一时间赶到了现场。
+            在现场，民警发现，鞠女士与手机店工作人员并不像发生了什么肢体冲突。鞠女士也承认，她所谓的“欺负”仅仅表现在店家的态度上。
+            “老公的旧手机使用5年了，我今天跟他来准备换一部新手机。”鞠女士告诉民警，大约半个小时以前，她与丈夫陈先生来到这家手机店购买iPhone 6s Plus。最开始，店里工作人员的态度还好，很快就帮他们选择了一部4588元的iPhone 6s Plus。然而，没过长时间，工作人员的解说就让鞠女士与陈先生两口子产生了别的想法。
+            报警人鞠女士向民警介绍事情经过。记者 张勇 摄
+            华龙网10月10日23时34分讯（记者 张勇）钱物当面点清，离柜概不负责。这是不少商家标榜的交易原则。然而，让重庆市民鞠女士想不明白的是：今（10）日，她买的iPhone 6s Plus还没离柜呢，手机店的工作人员就表示概不退货。
+            “警察，你们快点来，他们欺负我一个孕妇。”下午4时左右，鞠女士拨打110电话报警，称在沙坪坝区天陈路一手机店发生了冲突，紧急求助民警。闻讯之后，民警第一时间赶到了现场。
+            在现场，民警发现，鞠女士与手机店工作人员并不像发生了什么肢体冲突。鞠女士也承认，她所谓的“欺负”仅仅表现在店家的态度上。
+            “老公的旧手机使用5年了，我今天跟他来准备换一部新手机。”鞠女士告诉民警，大约半个小时以前，她与丈夫陈先生来到这家手机店购买iPhone 6s Plus。最开始，店里工作人员的态度还好，很快就帮他们选择了一部4588元的iPhone 6s Plus。然而，没过长时间，工作人员的解说就让鞠女士与陈先生两口子产生了别的想法。报警人鞠女士向民警介绍事情经过。记者 张勇 摄
+            华龙网10月10日23时34分讯（记者 张勇）钱物当面点清，离柜概不负责。这是不少商家标榜的交易原则。然而，让重庆市民鞠女士想不明白的是：今（10）日，她买的iPhone 6s Plus还没离柜呢，手机店的工作人员就表示概不退货。
+            “警察，你们快点来，他们欺负我一个孕妇。”下午4时左右，鞠女士拨打110电话报警，称在沙坪坝区天陈路一手机店发生了冲突，紧急求助民警。闻讯之后，民警第一时间赶到了现场。
+            在现场，民警发现，鞠女士与手机店工作人员并不像发生了什么肢体冲突。鞠女士也承认，她所谓的“欺负”仅仅表现在店家的态度上。
+            “老公的旧手机使用5年了，我今天跟他来准备换一部新手机。”鞠女士告诉民警，大约半个小时以前，她与丈夫陈先生来到这家手机店购买iPhone 6s Plus。最开始，店里工作人员的态度还好，很快就帮他们选择了一部4588元的iPhone 6s Plus。然而，没过长时间，工作人员的解说就让鞠女士与陈先生两口子产生了别的想法。
+            华龙网10月10日23时34分讯（记者 张勇）钱物当面点清，离柜概不负责。这是不少商家标榜的交易原则。然而，让重庆市民鞠女士想不明白的是：今（10）日，她买的iPhone 6s Plus还没离柜呢，手机店的工作人员就表示概不退货。
+            “警察，你们快点来，他们欺负我一个孕妇。”下午4时左右，鞠女士拨打110电话报警，称在沙坪坝区天陈路一手机店发生了冲突，紧急求助民警。闻讯之后，民警第一时间赶到了现场。
+            在现场，民警发现，鞠女士与手机店工作人员并不像发生了什么肢体冲突。鞠女士也承认，她所谓的“欺负”仅仅表现在店家的态度上。
+            “老公的旧手机使用5年了，我今天跟他来准备换一部新手机。”鞠女士告诉民警，大约半个小时以前，她与丈夫陈先生来到这家手机店购买iPhone 6s Plus。最开始，店里工作人员的态度还好，很快就帮他们选择了一部4588元的iPhone 6s Plus。然而，没过长时间，工作人员的解说就让鞠女士与陈先生两口子产生了别的想法。
+            报警人鞠女士向民警介绍事情经过。记者 张勇 摄
+            华龙网10月10日23时34分讯（记者 张勇）钱物当面点清，离柜概不负责。这是不少商家标榜的交易原则。然而，让重庆市民鞠女士想不明白的是：今（10）日，她买的iPhone 6s Plus还没离柜呢，手机店的工作人员就表示概不退货。
+            “警察，你们快点来，他们欺负我一个孕妇。”下午4时左右，鞠女士拨打110电话报警，称在沙坪坝区天陈路一手机店发生了冲突，紧急求助民警。闻讯之后，民警第一时间赶到了现场。
+            在现场，民警发现，鞠女士与手机店工作人员并不像发生了什么肢体冲突。鞠女士也承认，她所谓的“欺负”仅仅表现在店家的态度上。
+            “老公的旧手机使用5年了，我今天跟他来准备换一部新手机。”鞠女士告诉民警，大约半个小时以前，她与丈夫陈先生来到这家手机店购买iPhone 6s Plus。最开始，店里工作人员的态度还好，很快就帮他们选择了一部4588元的iPhone 6s Plus。然而，没过长时间，工作人员的解说就让鞠女士与陈先生两口子产生了别的想法。报警人鞠女士向民警介绍事情经过。记者 张勇 摄
+            华龙网10月10日23时34分讯（记者 张勇）钱物当面点清，离柜概不负责。这是不少商家标榜的交易原则。然而，让重庆市民鞠女士想不明白的是：今（10）日，她买的iPhone 6s Plus还没离柜呢，手机店的工作人员就表示概不退货。
+            “警察，你们快点来，他们欺负我一个孕妇。”下午4时左右，鞠女士拨打110电话报警，称在沙坪坝区天陈路一手机店发生了冲突，紧急求助民警。闻讯之后，民警第一时间赶到了现场。
+            在现场，民警发现，鞠女士与手机店工作人员并不像发生了什么肢体冲突。鞠女士也承认，她所谓的“欺负”仅仅表现在店家的态度上。
+            “老公的旧手机使用5年了，我今天跟他来准备换一部新手机。”鞠女士告诉民警，大约半个小时以前，她与丈夫陈先生来到这家手机店购买iPhone 6s Plus。最开始，店里工作人员的态度还好，很快就帮他们选择了一部4588元的iPhone 6s Plus。然而，没过长时间，工作人员的解说就让鞠女士与陈先生两口子产生了别的想法。
+        </div>
+    </div>
 </div>
-<div id="collapseOne"
-     class="col-xs-12 panel-collapse collapse collapseCom"></div>
-
-<div class="tableRow clearfix panel-heading"
-     data-toggle="collapse" data-parent="#accordion"
-     href="#collapseTwo">
-    <div class="Cell"></div>
-    <div class="Cell"></div>
-    <div class="Cell"></div>
-    <div class="Cell"></div>
-    <div class="Cell"></div>
-    <div class="CellRowEnd"></div>
-</div>
-<div id="collapseTwo"
-     class="col-xs-12 panel-collapse collapse collapseCom"></div>
-
-<div class="tableRow clearfix panel-heading"
-     data-toggle="collapse" data-parent="#accordion"
-     href="#collapseThree">
-    <div class="Cell"></div>
-    <div class="Cell"></div>
-    <div class="Cell"></div>
-    <div class="Cell"></div>
-    <div class="Cell"></div>
-    <div class="CellRowEnd"></div>
-</div>
-<div id="collapseThree"
-     class="col-xs-12 panel-collapse collapse collapseCom"></div>
-
-<div class="tableRow clearfix panel-heading"
-     data-toggle="collapse" data-parent="#accordion"
-     href="#collapseFour">
-    <div class="CellLastRow"></div>
-    <div class="CellLastRow"></div>
-    <div class="CellLastRow"></div>
-    <div class="CellLastRow"></div>
-    <div class="CellLastRow"></div>
-    <div class="CellLastRowEnd"></div>
-</div>
-
