@@ -220,10 +220,8 @@
     <Compile Include="BLL\ExternalWeb\ExtWebBook.cs" />
     <Compile Include="BLL\ExternalWeb\ExtWebPay.cs" />
     <Compile Include="BLL\MenuEvents.cs" />
-    <Compile Include="BLL\NT\Notification.cs" />
     <Compile Include="BLL\NT\OrderCreationNT.cs" />
     <Compile Include="BLL\NT\OrderPaidSuccessNT.cs" />
-    <Compile Include="BLL\NT\PPOrderPayNT.cs" />
     <Compile Include="BLL\NT\RegistrationNT.cs" />
     <Compile Include="BLL\PopPolicy.cs" />
     <Compile Include="BLL\Payment.cs" />
@@ -289,25 +287,14 @@
     <Compile Include="BLL\EPPayment.cs" />
     <Compile Include="Models\User\EUserSMSVerify.cs" />
     <Compile Include="Models\WX\ESSOLogin.cs" />
-    <Compile Include="Models\WX\Template\BaseTemplate.cs" />
     <Compile Include="Models\WX\Template\OrderCreationTemplate.cs" />
     <Compile Include="Models\WX\Template\OrderPaidSuccessTemplate.cs" />
-    <Compile Include="Models\WX\Template\PPOrderPayTemplate.cs" />
     <Compile Include="Models\WX\Template\RegTemplate.cs" />
-    <Compile Include="Models\WX\Template\TemplateData.cs" />
-    <Compile Include="Models\WX\Template\TemplateField.cs" />
     <Compile Include="Models\WX\WeiXinModel.cs" />
     <Compile Include="Models\WX\WXError.cs" />
     <Compile Include="Models\WX\WXParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebCore\WebGlobalAttribute.cs" />
-    <Compile Include="WxSDK\Config.cs" />
-    <Compile Include="WxSDK\Data.cs" />
-    <Compile Include="WxSDK\Exception.cs" />
-    <Compile Include="WxSDK\HttpService.cs" />
-    <Compile Include="WxSDK\JsApiPay.cs" />
-    <Compile Include="WxSDK\Log.cs" />
-    <Compile Include="WxSDK\WxPayApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

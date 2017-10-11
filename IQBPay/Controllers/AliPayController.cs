@@ -26,6 +26,8 @@ using IQBCore.IQBPay;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.User;
+using IQBCore.IQBWX.Models.WX.Template;
+using IQBCore.IQBPay.Models.AccountPayment;
 
 namespace IQBPay.Controllers
 {
@@ -168,6 +170,8 @@ namespace IQBPay.Controllers
             return View();
         }
 
+        
+
         public ActionResult PayNotify()
         {
             string orderNo = Request["out_trade_no"];
@@ -222,10 +226,26 @@ namespace IQBPay.Controllers
                         }
                         //自动提款
                         EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
-                        AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, ui,order.RealTotalAmount.ToString());
-                        
+                        string TransferId;
+                        AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, ui,order.RealTotalAmount.ToString(),out TransferId);
+
                         if (res2.Code == "10000")
+                        {
+                            //通知开始
+                            string accessToken = this.getAccessToken(true);
+                            PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
+                            notice.Push();
+                            //通知结束
+
+                            //转账记录开始
+                            ETransferAmount tranfer = ETransferAmount.Init(TransferId, order);
+                            db.DBTransferAmount.Add(tranfer);
+                           
+                            //转装记录结束
+
+
                             order.LogRemark += string.Format("[Transfer] Code:{0};msg:{1}", res2.Code, res2.Msg);
+                        }
                         else
                         {
                             order.LogRemark += string.Format("[Transfer] SubCode:{0};Submsg:{1}", res2.SubCode, res2.SubMsg);
@@ -396,6 +416,20 @@ namespace IQBPay.Controllers
            return Content(AliDemo.callQRImg());
         }
 
+        
+
+        public ActionResult Note()
+        {
+            string accessToken = this.getAccessToken(true);
+            IQBCore.IQBPay.Models.Order.EOrderInfo _ppOrder;
+            using (AliPayContent db = new AliPayContent())
+            {
+                _ppOrder = db.DBOrder.FirstOrDefault();
+            }
+            PPOrderPayNT notice = new PPOrderPayNT(accessToken, "orKUAw16WK0BmflDLiBYsR-Kh5bE", _ppOrder);
+            return Content(notice.Push());
+        }
+
         public ActionResult QRImgWX()
         {
             string res = "";
@@ -453,11 +487,17 @@ namespace IQBPay.Controllers
                         ErrorUrl += "未找到收款二维码代理人";
                         return Redirect(ErrorUrl);
                     }
+                    if (string.IsNullOrEmpty(ui.OpenId))
+                    {
+                        ErrorUrl += "收款二维码代理人微信号没有找到";
+                        return Redirect(ErrorUrl);
+                    }
                     if (ui.UserStatus == IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister)
                     {
                         ErrorUrl += "此收款二维码已被禁用";
                         return Redirect(ErrorUrl);
                     }
+                   
 
                     EStoreInfo store = null;
                     //获取并校验商户
@@ -573,7 +613,8 @@ namespace IQBPay.Controllers
             AliPayManager payManager = new AliPayManager();
             EUserInfo ui = new EUserInfo();
             ui.AliPayAccount = "song_fuwei@hotmail.com";
-            AlipayFundTransToaccountTransferResponse response =  payManager.TransferAmount(BaseController.App, ui,"1");
+            string tranferId;
+            AlipayFundTransToaccountTransferResponse response =  payManager.TransferAmount(BaseController.App, ui,"1",out tranferId);
             return Content(response.Body);
         }
 

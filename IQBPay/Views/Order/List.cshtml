@@ -26,7 +26,7 @@
         </ul>
     </div>
     <div id="ListContent">
-        <div class="fix-header-table">
+        <div class="fix-header-table" id="FixHeaderTable">
             <div class="divH" id="divTableHeader">
                 <table id="TableHeader" class="table table-hover table-bordered TableOverflowHidden">
                     <thead class="cf">
@@ -46,108 +46,107 @@
                             <th style="width:200px;">商户佣金</th>
                             <th style="width:200px;">平台实际收入</th>
                             <th style="width:200px;">结算编号</th>
-                            <th style="width:200px;">结算状态</th>
-                            <th style="width:200px;">结算金额</th>  
+                            <th style="width:200px;">结算金额</th>                            
                         </tr>
                     </thead>
                 </table>
             </div>
-            <div class="divB" style="height: 100px;" >
+            <div id ="divTableBody" class="divB" style="height: 300px;" >
                  <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden">
-                     <tr>
-                        <td style="width:200px;">1aaaaaaa</td>
-                        <td style="width:200px;">2aaaaaaa</td>
-                         <td style="width:200px;">3aaaaaaa</td>
-                         <td style="width:200px;">a4aaaaaa</td>
-                         <td style="width:200px;">aa5aaaaa</td>
-                         <td style="width:200px;">aaa6aaaa</td>
-                         <td style="width:200px;">aaaa7aaa</td>
-                         <td style="width:200px;">aaaaa8aa</td>
-                         <td style="width:200px;">aaaaaa9a</td>
-                         <td style="width:200px;">aaaaaaa0</td>
-                         <td style="width:200px;">1aaaaaaa</td>
-                         <td style="width:200px;">a2aaaaaa</td>
-                         <td style="width:200px;">aa3aaaaa</td>
-                         <td style="width:200px;">aaa4aaaa</td>
-                         <td style="width:200px;">aaaa5aaa</td>
-                         <td style="width:200px;">aaaaa6aa</td>
-                     </tr>
-                     <tr>
-                         <td style="width:200px;">1aaaaaaa</td>
-                         <td style="width:200px;">2aaaaaaa</td>
-                         <td style="width:200px;">3aaaaaaa</td>
-                         <td style="width:200px;">a4aaaaaa</td>
-                         <td style="width:200px;">aa5aaaaa</td>
-                         <td style="width:200px;">aaa6aaaa</td>
-                         <td style="width:200px;">aaaa7aaa</td>
-                         <td style="width:200px;">aaaaa8aa</td>
-                         <td style="width:200px;">aaaaaa9a</td>
-                         <td style="width:200px;">aaaaaaa0</td>
-                         <td style="width:200px;">1aaaaaaa</td>
-                         <td style="width:200px;">a2aaaaaa</td>
-                         <td style="width:200px;">aa3aaaaa</td>
-                         <td style="width:200px;">aaa4aaaa</td>
-                         <td style="width:200px;">aaaa5aaa</td>
-                         <td style="width:200px;">aaaaa6aa</td>
-                     </tr>
-                     <tr>
-                         <td style="width:200px;">1aaaaaaa</td>
-                         <td style="width:200px;">2aaaaaaa</td>
-                         <td style="width:200px;">3aaaaaaa</td>
-                         <td style="width:200px;">a4aaaaaa</td>
-                         <td style="width:200px;">aa5aaaaa</td>
-                         <td style="width:200px;">aaa6aaaa</td>
-                         <td style="width:200px;">aaaa7aaa</td>
-                         <td style="width:200px;">aaaaa8aa</td>
-                         <td style="width:200px;">aaaaaa9a</td>
-                         <td style="width:200px;">aaaaaaa0</td>
-                         <td style="width:200px;">1aaaaaaa</td>
-                         <td style="width:200px;">a2aaaaaa</td>
-                         <td style="width:200px;">aa3aaaaa</td>
-                         <td style="width:200px;">aaa4aaaa</td>
-                         <td style="width:200px;">aaaa5aaa</td>
-                         <td style="width:200px;">aaaaa6aa</td>
-                     </tr>
-                     <tr>
-                         <td style="width:200px;">1aaaaaaa</td>
-                         <td style="width:200px;">2aaaaaaa</td>
-                         <td style="width:200px;">3aaaaaaa</td>
-                         <td style="width:200px;">a4aaaaaa</td>
-                         <td style="width:200px;">aa5aaaaa</td>
-                         <td style="width:200px;">aaa6aaaa</td>
-                         <td style="width:200px;">aaaa7aaa</td>
-                         <td style="width:200px;">aaaaa8aa</td>
-                         <td style="width:200px;">aaaaaa9a</td>
-                         <td style="width:200px;">aaaaaaa0</td>
-                         <td style="width:200px;">1aaaaaaa</td>
-                         <td style="width:200px;">a2aaaaaa</td>
-                         <td style="width:200px;">aa3aaaaa</td>
-                         <td style="width:200px;">aaa4aaaa</td>
-                         <td style="width:200px;">aaaa5aaa</td>
-                         <td style="width:200px;">aaaaa6aa</td>
-                     </tr>
-                     <tr>
-                         <td style="width:200px;">1aaaaaaa</td>
-                         <td style="width:200px;">2aaaaaaa</td>
-                         <td style="width:200px;">3aaaaaaa</td>
-                         <td style="width:200px;">a4aaaaaa</td>
-                         <td style="width:200px;">aa5aaaaa</td>
-                         <td style="width:200px;">aaa6aaaa</td>
-                         <td style="width:200px;">aaaa7aaa</td>
-                         <td style="width:200px;">aaaaa8aa</td>
-                         <td style="width:200px;">aaaaaa9a</td>
-                         <td style="width:200px;">aaaaaaa0</td>
-                         <td style="width:200px;">1aaaaaaa</td>
-                         <td style="width:200px;">a2aaaaaa</td>
-                         <td style="width:200px;">aa3aaaaa</td>
-                         <td style="width:200px;">aaa4aaaa</td>
-                         <td style="width:200px;">aaaa5aaa</td>
-                         <td style="width:200px;">aaaaa6aa</td>
-                     </tr>  
+                    
 
                  </table>
             </div>
        </div>
     </div>
 </div>
-@**@
+@* <tr>
+       <td style="width:200px;">1aaaaaaa</td>
+       <td style="width:200px;">2aaaaaaa</td>
+        <td style="width:200px;">3aaaaaaa</td>
+        <td style="width:200px;">a4aaaaaa</td>
+        <td style="width:200px;">aa5aaaaa</td>
+        <td style="width:200px;">aaa6aaaa</td>
+        <td style="width:200px;">aaaa7aaa</td>
+        <td style="width:200px;">aaaaa8aa</td>
+        <td style="width:200px;">aaaaaa9a</td>
+        <td style="width:200px;">aaaaaaa0</td>
+        <td style="width:200px;">1aaaaaaa</td>
+        <td style="width:200px;">a2aaaaaa</td>
+        <td style="width:200px;">aa3aaaaa</td>
+        <td style="width:200px;">aaa4aaaa</td>
+        <td style="width:200px;">aaaa5aaa</td>
+        <td style="width:200px;">aaaaa6aa</td>
+    </tr>
+    <tr>
+        <td style="width:200px;">1aaaaaaa</td>
+        <td style="width:200px;">2aaaaaaa</td>
+        <td style="width:200px;">3aaaaaaa</td>
+        <td style="width:200px;">a4aaaaaa</td>
+        <td style="width:200px;">aa5aaaaa</td>
+        <td style="width:200px;">aaa6aaaa</td>
+        <td style="width:200px;">aaaa7aaa</td>
+        <td style="width:200px;">aaaaa8aa</td>
+        <td style="width:200px;">aaaaaa9a</td>
+        <td style="width:200px;">aaaaaaa0</td>
+        <td style="width:200px;">1aaaaaaa</td>
+        <td style="width:200px;">a2aaaaaa</td>
+        <td style="width:200px;">aa3aaaaa</td>
+        <td style="width:200px;">aaa4aaaa</td>
+        <td style="width:200px;">aaaa5aaa</td>
+        <td style="width:200px;">aaaaa6aa</td>
+    </tr>
+    <tr>
+        <td style="width:200px;">1aaaaaaa</td>
+        <td style="width:200px;">2aaaaaaa</td>
+        <td style="width:200px;">3aaaaaaa</td>
+        <td style="width:200px;">a4aaaaaa</td>
+        <td style="width:200px;">aa5aaaaa</td>
+        <td style="width:200px;">aaa6aaaa</td>
+        <td style="width:200px;">aaaa7aaa</td>
+        <td style="width:200px;">aaaaa8aa</td>
+        <td style="width:200px;">aaaaaa9a</td>
+        <td style="width:200px;">aaaaaaa0</td>
+        <td style="width:200px;">1aaaaaaa</td>
+        <td style="width:200px;">a2aaaaaa</td>
+        <td style="width:200px;">aa3aaaaa</td>
+        <td style="width:200px;">aaa4aaaa</td>
+        <td style="width:200px;">aaaa5aaa</td>
+        <td style="width:200px;">aaaaa6aa</td>
+    </tr>
+    <tr>
+        <td style="width:200px;">1aaaaaaa</td>
+        <td style="width:200px;">2aaaaaaa</td>
+        <td style="width:200px;">3aaaaaaa</td>
+        <td style="width:200px;">a4aaaaaa</td>
+        <td style="width:200px;">aa5aaaaa</td>
+        <td style="width:200px;">aaa6aaaa</td>
+        <td style="width:200px;">aaaa7aaa</td>
+        <td style="width:200px;">aaaaa8aa</td>
+        <td style="width:200px;">aaaaaa9a</td>
+        <td style="width:200px;">aaaaaaa0</td>
+        <td style="width:200px;">1aaaaaaa</td>
+        <td style="width:200px;">a2aaaaaa</td>
+        <td style="width:200px;">aa3aaaaa</td>
+        <td style="width:200px;">aaa4aaaa</td>
+        <td style="width:200px;">aaaa5aaa</td>
+        <td style="width:200px;">aaaaa6aa</td>
+    </tr>
+    <tr>
+        <td style="width:200px;">1aaaaaaa</td>
+        <td style="width:200px;">2aaaaaaa</td>
+        <td style="width:200px;">3aaaaaaa</td>
+        <td style="width:200px;">a4aaaaaa</td>
+        <td style="width:200px;">aa5aaaaa</td>
+        <td style="width:200px;">aaa6aaaa</td>
+        <td style="width:200px;">aaaa7aaa</td>
+        <td style="width:200px;">aaaaa8aa</td>
+        <td style="width:200px;">aaaaaa9a</td>
+        <td style="width:200px;">aaaaaaa0</td>
+        <td style="width:200px;">1aaaaaaa</td>
+        <td style="width:200px;">a2aaaaaa</td>
+        <td style="width:200px;">aa3aaaaa</td>
+        <td style="width:200px;">aaa4aaaa</td>
+        <td style="width:200px;">aaaa5aaa</td>
+        <td style="width:200px;">aaaaa6aa</td>
+    </tr>  *@

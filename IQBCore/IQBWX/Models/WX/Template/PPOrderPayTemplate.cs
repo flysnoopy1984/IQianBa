@@ -1,10 +1,10 @@
-﻿using QBCore.IQBWX.Models.WX;
+﻿using IQBCore.IQBWX.Models.WX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace IQBWX.Models.WX.Template
+namespace IQBCore.IQBWX.Models.WX.Template
 {
     public class PPOrderPayTemplate:BaseTemplate<PPOrderPayTemplate>
     {

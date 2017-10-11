@@ -1,11 +1,10 @@
-﻿using IQBWX.Models.WX.Template;
-using QBCore.IQBWX.Models.WX.Template;
+﻿using IQBCore.IQBWX.Models.WX.Template;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace IQBWX.BLL.NT
+namespace IQBCore.IQBWX.Models.WX.Template
 {
     public class PPOrderPayNT : Notification<PPOrderPayTemplate>
     {

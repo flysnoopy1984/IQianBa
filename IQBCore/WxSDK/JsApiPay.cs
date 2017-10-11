@@ -9,6 +9,9 @@ using System.Text;
 using System.Net;
 using System.Web.Security;
 using LitJson;
+
+
+
 using IQBCore.Common.Helper;
 
 namespace WxPayAPI
@@ -18,7 +21,7 @@ namespace WxPayAPI
         /// <summary>
         /// 保存页面对象，因为要在类的方法中使用Page的Request对象
         /// </summary>
-        private HttpContextBase Context { get; set; }
+        private HttpContextBase Context {get;set;}
 
         /// <summary>
         /// openid用于调用统一下单接口
@@ -63,7 +66,7 @@ namespace WxPayAPI
             {
                 //获取code码，以获取openid和access_token
                 string code = Context.Request.QueryString["code"];
-
+               
                 GetOpenidAndAccessTokenFromCode(code);
             }
             else
@@ -72,29 +75,29 @@ namespace WxPayAPI
                 string host = Context.Request.Url.Host;
                 string path = Context.Request.Path;
                 string redirect_uri = HttpUtility.UrlEncode("http://" + host + path);
-
+             
 
                 WxPayData data = new WxPayData();
                 data.SetValue("appid", WxPayConfig.APPID);
                 data.SetValue("redirect_uri", redirect_uri);
                 data.SetValue("response_type", "code");
-                if (IsForOpenId)
+                if(IsForOpenId)
                     data.SetValue("scope", "snsapi_base");
                 else
                     data.SetValue("scope", "snsapi_userinfo");
 
                 data.SetValue("state", "STATE" + "#wechat_redirect");
                 string url = "https://open.weixin.qq.com/connect/oauth2/authorize?" + data.ToUrl();
-
+              
 
                 try
                 {
                     //触发微信返回code码         
                     Context.Response.Redirect(url);//Redirect函数会抛出ThreadAbortException异常，不用处理这个异常
 
-
+                   
                 }
-                catch (System.Threading.ThreadAbortException ex)
+                catch(System.Threading.ThreadAbortException ex)
                 {
                 }
             }
@@ -105,13 +108,13 @@ namespace WxPayAPI
             WxPayData data = new WxPayData();
             data.SetValue("grant_type", "client_credential");
             data.SetValue("appid", WxPayConfig.APPID);
-            data.SetValue("secret", WxPayConfig.APPSECRET);
+            data.SetValue("secret", WxPayConfig.APPSECRET);           
             string url = "https://api.weixin.qq.com/cgi-bin/token?" + data.ToUrl();
-
+        
             string result = HttpService.Get(url);
             //请求url以获取数据
             JsonData jd = JsonMapper.ToObject(result);
-            return (string)jd["access_token"];
+            return  (string)jd["access_token"];          
         }
 
 
@@ -145,7 +148,7 @@ namespace WxPayAPI
 
                 //请求url以获取数据
                 string result = HttpService.Get(url);
-                //     log.log("GetOpenidAndAccessTokenFromCode result:" + result);
+           //     log.log("GetOpenidAndAccessTokenFromCode result:" + result);
                 //Log.Debug(this.GetType().ToString(), "GetOpenidAndAccessTokenFromCode response : " + result);
 
                 //保存access_token，用于收货地址获取
@@ -158,7 +161,7 @@ namespace WxPayAPI
                 Log.Debug(this.GetType().ToString(), "Get openid : " + openid);
                 Log.Debug(this.GetType().ToString(), "Get access_token : " + access_token);
                 */
-
+            
             }
             catch (Exception ex)
             {
@@ -198,7 +201,30 @@ namespace WxPayAPI
             return result;
         }
 
+        //public WxPayData GetUnifiedOrderResult(string Description)
+        //{
+        //    //统一下单
+        //    WxPayData data = new WxPayData();
+        //    data.SetValue("body", Description);
+        //    data.SetValue("attach", "test");
+        //    data.SetValue("out_trade_no", WxPayApi.GenerateOutTradeNo());
+        //    data.SetValue("total_fee", total_fee);
+        //    data.SetValue("time_start", DateTime.Now.ToString("yyyyMMddHHmmss"));
+        //    data.SetValue("time_expire", DateTime.Now.AddMinutes(10).ToString("yyyyMMddHHmmss"));
+        //    data.SetValue("goods_tag", "test");
+        //    data.SetValue("trade_type", "JSAPI");
+        //    data.SetValue("openid", openid);
 
+        //    WxPayData result = WxPayApi.UnifiedOrder(data);
+        //    if (!result.IsSet("appid") || !result.IsSet("prepay_id") || result.GetValue("prepay_id").ToString() == "")
+        //    {
+        //        Log.Error(this.GetType().ToString(), "UnifiedOrder response error!");
+        //        throw new WxPayException("UnifiedOrder response error!");
+        //    }
+
+        //    unifiedOrderResult = result;
+        //    return result;
+        //}
 
         /**
         *  
@@ -234,8 +260,8 @@ namespace WxPayAPI
             Log.Debug(this.GetType().ToString(), "Get jsApiParam : " + parameters);
             return parameters;
         }
-
-
+        
+     
         public WxPayData GetJsApiParameters2()
         {
             Log.Debug(this.GetType().ToString(), "JsApiPay::GetJsApiParam is processing...");
@@ -248,7 +274,7 @@ namespace WxPayAPI
             jsApiParam.SetValue("signType", "MD5");
             jsApiParam.SetValue("paySign", jsApiParam.MakeSign());
 
-
+           
             return jsApiParam;
         }
 
@@ -258,7 +284,7 @@ namespace WxPayAPI
 	    * @return string 共享收货地址js函数需要的参数，json格式可以直接做参数使用
 	    */
         public string GetEditAddressParameters()
-        {
+	    {
             string parameter = "";
             try
             {
@@ -270,11 +296,11 @@ namespace WxPayAPI
 
                 //构造需要用SHA1算法加密的数据
                 WxPayData signData = new WxPayData();
-                signData.SetValue("appid", WxPayConfig.APPID);
+                signData.SetValue("appid",WxPayConfig.APPID);
                 signData.SetValue("url", url);
-                signData.SetValue("timestamp", WxPayApi.GenerateTimeStamp());
-                signData.SetValue("noncestr", WxPayApi.GenerateNonceStr());
-                signData.SetValue("accesstoken", access_token);
+                signData.SetValue("timestamp",WxPayApi.GenerateTimeStamp());
+                signData.SetValue("noncestr",WxPayApi.GenerateNonceStr());
+                signData.SetValue("accesstoken",access_token);
                 string param = signData.ToUrl();
 
                 Log.Debug(this.GetType().ToString(), "SHA1 encrypt param : " + param);
@@ -284,12 +310,12 @@ namespace WxPayAPI
 
                 //获取收货地址js函数入口参数
                 WxPayData afterData = new WxPayData();
-                afterData.SetValue("appId", WxPayConfig.APPID);
-                afterData.SetValue("scope", "jsapi_address");
-                afterData.SetValue("signType", "sha1");
-                afterData.SetValue("addrSign", addrSign);
-                afterData.SetValue("timeStamp", signData.GetValue("timestamp"));
-                afterData.SetValue("nonceStr", signData.GetValue("noncestr"));
+                afterData.SetValue("appId",WxPayConfig.APPID);
+                afterData.SetValue("scope","jsapi_address");
+                afterData.SetValue("signType","sha1");
+                afterData.SetValue("addrSign",addrSign);
+                afterData.SetValue("timeStamp",signData.GetValue("timestamp"));
+                afterData.SetValue("nonceStr",signData.GetValue("noncestr"));
 
                 //转为json格式
                 parameter = afterData.ToJson();
@@ -302,6 +328,6 @@ namespace WxPayAPI
             }
 
             return parameter;
-        }
+	    }
     }
 }

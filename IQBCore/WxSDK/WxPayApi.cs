@@ -5,6 +5,7 @@ using System.Net;
 using System.IO;
 using System.Text;
 
+
 namespace WxPayAPI
 {
     public class WxPayApi
@@ -581,8 +582,10 @@ namespace WxPayAPI
         */
         public static string GenerateOutTradeNo()
         {
+           
             var ran = new Random();
             return string.Format("{0}{1}{2}", WxPayConfig.MCHID, DateTime.Now.ToString("yyyyMMddHHmmss"), ran.Next(999));
+            
         }
 
         /**
@@ -603,5 +606,7 @@ namespace WxPayAPI
         {
             return Guid.NewGuid().ToString().Replace("-", "");
         }
+
+     
     }
 }

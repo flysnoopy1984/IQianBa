@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.Store;
+using WxPayAPI;
 
 namespace IQBPay.Controllers
 {
@@ -123,6 +124,19 @@ namespace IQBPay.Controllers
             {
                 Session["UserRole"] = value;
             }
+        }
+
+        public string getAccessToken(Boolean isRefresh = false)
+        {
+            string accessToken = (string)Session["AccessToken"];
+
+
+            if (isRefresh || string.IsNullOrEmpty(accessToken))
+            {
+                accessToken = JsApiPay.GetAccessToken();
+            }
+            return accessToken;
+
         }
 
 

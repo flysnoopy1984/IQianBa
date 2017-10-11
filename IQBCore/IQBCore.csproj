@@ -46,8 +46,8 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -102,7 +102,7 @@
     <Compile Include="IQBPay\BLL\F2FPayHandler.cs" />
     <Compile Include="IQBPay\Models\InParameter\InF2F.cs" />
     <Compile Include="IQBPay\Models\Order\EOrderInfo.cs" />
-    <Compile Include="IQBPay\Models\Order\ESettlement.cs" />
+    <Compile Include="IQBPay\Models\AccountPayment\ETransferAmount.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashStore.cs" />
     <Compile Include="IQBPay\Models\QR\EQRInfo.cs" />
     <Compile Include="IQBPay\Models\QR\EQRUser.cs" />
@@ -112,14 +112,28 @@
     <Compile Include="IQBPay\Models\User\EUserInfo.cs" />
     <Compile Include="IQBWX\Models\InParameter\InQR.cs" />
     <Compile Include="IQBWX\Models\OutParameter\SSOQR.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\BaseTemplate.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\Notification.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\PPOrderPayNT.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\PPOrderPayTemplate.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\TemplateData.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\TemplateField.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BasePageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WxSDK\Config.cs" />
+    <Compile Include="WxSDK\Data.cs" />
+    <Compile Include="WxSDK\Exception.cs" />
+    <Compile Include="WxSDK\HttpService.cs" />
+    <Compile Include="WxSDK\JsApiPay.cs" />
+    <Compile Include="WxSDK\Log.cs" />
+    <Compile Include="WxSDK\WxPayApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="DataBase\" />
     <Folder Include="IQBPay\Models\Result\" />
+    <Folder Include="IQBWX\BLL\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

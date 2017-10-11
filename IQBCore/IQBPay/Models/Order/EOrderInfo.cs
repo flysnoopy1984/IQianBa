@@ -114,7 +114,11 @@ namespace IQBCore.IQBPay.Models.Order
         [MaxLength(255)]
         public string LogRemark { get; set; }
 
-        
+        [MaxLength(64)]
+        public string TransferId { get; set; }
+
+       
+        public float TransferAmount { get; set; }
 
         ///// <summary>
         ///// 平台实际收入

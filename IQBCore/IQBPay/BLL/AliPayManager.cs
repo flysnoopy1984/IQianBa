@@ -55,16 +55,17 @@ namespace IQBCore.IQBPay.BLL
             return response;
         }
 
-        public AlipayFundTransToaccountTransferResponse TransferAmount(EAliPayApplication app,EUserInfo ui,string Amount)
+        public AlipayFundTransToaccountTransferResponse TransferAmount(EAliPayApplication app,EUserInfo ui,string Amount,out string TransferId)
         {
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
              app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
 
             AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
 
+            TransferId = StringHelper.GenerateSubAccountTransNo();
             AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
             model.Amount = Amount;
-            model.OutBizNo = StringHelper.GenerateSubAccountTransNo();
+            model.OutBizNo = TransferId;
             model.PayeeType = "ALIPAY_LOGONID";
             model.PayeeAccount = ui.AliPayAccount;
             model.PayerShowName = "爱钱吧平台支付";

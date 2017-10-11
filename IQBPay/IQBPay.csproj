@@ -486,6 +486,7 @@
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\QRController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
+    <Compile Include="Controllers\TransferController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WapController.cs" />
     <Compile Include="Core\AliDemo.cs" />
@@ -500,14 +501,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="wxSDK\Config.cs" />
-    <Compile Include="wxSDK\Data.cs" />
-    <Compile Include="wxSDK\Exception.cs" />
-    <Compile Include="wxSDK\HttpService.cs" />
-    <Compile Include="wxSDK\JsApiPay.cs" />
-    <Compile Include="wxSDK\Log.cs" />
-    <Compile Include="wxSDK\Notify.cs" />
-    <Compile Include="wxSDK\WxPayApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -587,6 +580,7 @@
     <Content Include="Views\User\List.cshtml" />
     <Content Include="Views\User\Info.cshtml" />
     <Content Include="Views\Order\TestDiv.cshtml" />
+    <Content Include="Views\Transfer\Info_Win.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -9,9 +9,10 @@ using System.Text;
 using System.Net;
 using System.Web.Security;
 using LitJson;
-using IQBWX.Models.Product;
-using IQBWX.Common;
+
+
 using IQBWX.Controllers;
+using IQBCore.Common.Helper;
 
 namespace WxPayAPI
 {
@@ -200,30 +201,30 @@ namespace WxPayAPI
             return result;
         }
 
-        public WxPayData GetUnifiedOrderResult(EItemInfo itemInfo)
-        {
-            //统一下单
-            WxPayData data = new WxPayData();
-            data.SetValue("body", itemInfo.Description);
-            data.SetValue("attach", "test");
-            data.SetValue("out_trade_no", WxPayApi.GenerateOutTradeNo());
-            data.SetValue("total_fee", total_fee);
-            data.SetValue("time_start", DateTime.Now.ToString("yyyyMMddHHmmss"));
-            data.SetValue("time_expire", DateTime.Now.AddMinutes(10).ToString("yyyyMMddHHmmss"));
-            data.SetValue("goods_tag", "test");
-            data.SetValue("trade_type", "JSAPI");
-            data.SetValue("openid", openid);
+        //public WxPayData GetUnifiedOrderResult(string Description)
+        //{
+        //    //统一下单
+        //    WxPayData data = new WxPayData();
+        //    data.SetValue("body", Description);
+        //    data.SetValue("attach", "test");
+        //    data.SetValue("out_trade_no", WxPayApi.GenerateOutTradeNo());
+        //    data.SetValue("total_fee", total_fee);
+        //    data.SetValue("time_start", DateTime.Now.ToString("yyyyMMddHHmmss"));
+        //    data.SetValue("time_expire", DateTime.Now.AddMinutes(10).ToString("yyyyMMddHHmmss"));
+        //    data.SetValue("goods_tag", "test");
+        //    data.SetValue("trade_type", "JSAPI");
+        //    data.SetValue("openid", openid);
 
-            WxPayData result = WxPayApi.UnifiedOrder(data);
-            if (!result.IsSet("appid") || !result.IsSet("prepay_id") || result.GetValue("prepay_id").ToString() == "")
-            {
-                Log.Error(this.GetType().ToString(), "UnifiedOrder response error!");
-                throw new WxPayException("UnifiedOrder response error!");
-            }
+        //    WxPayData result = WxPayApi.UnifiedOrder(data);
+        //    if (!result.IsSet("appid") || !result.IsSet("prepay_id") || result.GetValue("prepay_id").ToString() == "")
+        //    {
+        //        Log.Error(this.GetType().ToString(), "UnifiedOrder response error!");
+        //        throw new WxPayException("UnifiedOrder response error!");
+        //    }
 
-            unifiedOrderResult = result;
-            return result;
-        }
+        //    unifiedOrderResult = result;
+        //    return result;
+        //}
 
         /**
         *  

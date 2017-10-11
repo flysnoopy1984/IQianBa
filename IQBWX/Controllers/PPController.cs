@@ -1,4 +1,5 @@
 ﻿using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBWX.Models.WX.Template;
 using IQBWX.BLL.ExternalWeb;
 using IQBWX.BLL.NT;
 using IQBWX.Common;
@@ -37,14 +38,7 @@ namespace IQBWX.Controllers
            
             if (Id == "1")
             {
-                string accessToken = this.getAccessToken(true);
-                IQBCore.IQBPay.Models.Order.EOrderInfo _ppOrder;
-                using (AliPayContent db = new AliPayContent())
-                {
-                    _ppOrder = db.DBOrderInfo.FirstOrDefault();
-                }
-                PPOrderPayNT notice = new PPOrderPayNT(accessToken, "orKUAw16WK0BmflDLiBYsR-Kh5bE", _ppOrder);
-                return Content(notice.Push());
+               
             }
              return View();
         }
@@ -69,7 +63,15 @@ namespace IQBWX.Controllers
         }
         public ActionResult Settlement()
         {
-            return View();
+            string accessToken = this.getAccessToken(true);
+            IQBCore.IQBPay.Models.Order.EOrderInfo _ppOrder;
+            using (AliPayContent db = new AliPayContent())
+            {
+                _ppOrder = db.DBOrderInfo.FirstOrDefault();
+            }
+            PPOrderPayNT notice = new PPOrderPayNT(accessToken, "orKUAw16WK0BmflDLiBYsR-Kh5bE", _ppOrder);
+            return Content(notice.Push());
+           
         }
 
     }

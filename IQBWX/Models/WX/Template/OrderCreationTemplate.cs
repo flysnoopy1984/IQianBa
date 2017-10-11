@@ -1,4 +1,5 @@
 ﻿using IQBWX.Models.Order;
+using IQBCore.IQBWX.Models.WX.Template;
 using System;
 using System.Collections.Generic;
 using System.Linq;

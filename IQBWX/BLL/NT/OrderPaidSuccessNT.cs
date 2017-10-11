@@ -2,11 +2,12 @@
 using IQBWX.Models.Order;
 using IQBWX.Models.Product;
 using IQBWX.Models.User;
-using IQBWX.Models.WX.Template;
+using IQBCore.IQBWX.Models.WX.Template;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using IQBWX.Models.WX.Template;
 
 namespace IQBWX.BLL.NT
 {

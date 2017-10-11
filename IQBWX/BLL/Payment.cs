@@ -29,7 +29,7 @@ namespace IQBWX.BLL
             try
             {
 
-                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult(item);
+                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult(item.Description);
                 WxPayData wxJsApiParam = jsApiPay.GetJsApiParameters2();
 
                 aOrder = new WxPayOrder()

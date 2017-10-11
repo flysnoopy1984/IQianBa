@@ -1,4 +1,5 @@
-﻿using IQBWX.Models.User;
+﻿using IQBCore.IQBWX.Models.WX.Template;
+using IQBWX.Models.User;
 using IQBWX.Models.WX.Template;
 using System;
 using System.Collections.Generic;
