@@ -217,10 +217,10 @@ namespace IQBPay.Controllers
                             EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
                             AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount);
                             if (res.Code == "10000")
-                                order.LogRemark += string.Format("[SubAccount] Code:{0};msg:{1}; ##", res.Code, res.Msg);
+                                order.LogRemark += string.Format("[SubAccount] Code:{0};msg:{1}; ", res.Code, res.Msg);
                             else
                             {
-                                order.LogRemark += string.Format("[SubAccount] SubCode:{0};Submsg:{1}; ##", res.SubCode, res.SubMsg);
+                                order.LogRemark += string.Format("[SubAccount] SubCode:{0};Submsg:{1}; ", res.SubCode, res.SubMsg);
                                 order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
                             }
                         }
@@ -239,6 +239,8 @@ namespace IQBPay.Controllers
 
                             //转账记录开始
                             ETransferAmount tranfer = ETransferAmount.Init(TransferId, order);
+                            tranfer.Buyer_AliPayId = order.BuyerAliPayId;
+                            tranfer.Buyer_AliPayLoginId  = order.BuyerAliPayLoginId;
                             db.DBTransferAmount.Add(tranfer);
                            
                             //转装记录结束
@@ -372,7 +374,7 @@ namespace IQBPay.Controllers
                         }
 
                     }
-                    string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"]+"/PP/Auth_Store";
+                    string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"]+"/PP/Auth_Store?Rate="+store.Rate;
                     return Redirect(url);
 
                 }
@@ -494,7 +496,12 @@ namespace IQBPay.Controllers
                     }
                     if (ui.UserStatus == IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister)
                     {
-                        ErrorUrl += "此收款二维码已被禁用";
+                        ErrorUrl += "代理被禁用";
+                        return Redirect(ErrorUrl);
+                    }
+                    if(string.IsNullOrEmpty(ui.AliPayAccount))
+                    {
+                        ErrorUrl += "代理没有设置支付宝账户";
                         return Redirect(ErrorUrl);
                     }
                    

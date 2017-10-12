@@ -15,18 +15,23 @@ using System.Web;
 
 namespace IQBPay.DataBase
 {
+    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class AliPayContent: DbContext
     {
+        public AliPayContent() : base("PPConnection")
+        {
+
+        }
+
         public AliPayContent(bool isInit=false) : base("PPConnection")
         {
             if(isInit)
                 Database.SetInitializer<AliPayContent>(new DropCreateDatabaseAlways<AliPayContent>());
             else
                 Database.SetInitializer<AliPayContent>(null);
-
-            //    Database.SetInitializer<AliPayContent>(new DropCreateDatabaseIfModelChanges<AliPayContent>());
-            // Database.SetInitializer<AliPayContent>(new CreateDatabaseIfNotExists<AliPayContent>());
         }
+
+
 
         public DbSet<EUserInfo> DBUserInfo { get; set; }
 
@@ -39,7 +44,7 @@ namespace IQBPay.DataBase
 
         public DbSet<EOrderInfo> DBOrder { get; set; }
 
-       public DbSet<ETransferAmount> DBTransferAmount { get; set; }
+        public DbSet<ETransferAmount> DBTransferAmount { get; set; }
 
 
 
@@ -125,7 +130,7 @@ namespace IQBPay.DataBase
                 DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
                 entry.State = EntityState.Unchanged;
                 ui.QRUserDefaultId = qrUser.ID;
-
+                ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
                 //取消授权
                 ui.QRAuthId = 0;
 

@@ -12,7 +12,7 @@
     <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
     <script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
     <script src="@Url.Scrpit("~/Content/Script/IQBPay/Auth_Store.js")"></script>
-    <title>授权</title>
+    <title>授权成功</title>
    
 </head>
 <body>
@@ -24,15 +24,15 @@
     <div class="yue mgz cen">
         <div class="z404 mg2" id="ImgContainer"> 
             <img align="absmiddle" src="~/Content/images/gongxishengji_02.jpg" />
-            <div class="z404_txt mg2 xi28 bai">授权成功</div>
+            <div class="z404_txt mg2 xi28 bai">恭喜！授权成功</div>
          </div>
-        @*<div id="Content">
-            <div class="yuec mg2 xi35">爱钱吧收款码授权</div>
-            <div class="yuex mg2 xi24">
+        <div id="Content">
+            <div class="yuec mg2 xi35" style="color:brown">您的佣金比例为：@ViewBag.Rate%</div>
+            @*<div class="yuex mg2 xi24">
                 收款码扣点率为：<span style="color:brown">@ViewBag.Rate%</span>
             </div>
-            <div class="yuex mg2 xi14">如果您不是第一次授权，您的收款码扣点率将重置为新的扣点率</div>
-        </div>*@
+            <div class="yuex mg2 xi14">如果您不是第一次授权，您的收款码扣点率将重置为新的扣点率</div>*@
+        </div>
     </div>
     @*<div class="yuecon1 mgz cen xi28 bai tm" style="width:90%" id="btnAuth"><a href=@ViewBag.AuthUrl>同意授权</a></div>*@
 </body>

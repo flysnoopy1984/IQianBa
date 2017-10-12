@@ -1,4 +1,5 @@
 ﻿using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBWX.Models.WX.Template;
 using IQBWX.BLL.ExternalWeb;
 using IQBWX.BLL.NT;
@@ -49,8 +50,9 @@ namespace IQBWX.Controllers
             return View();
         }
 
-        public ActionResult Auth_Store()
+        public ActionResult Auth_Store(string Rate)
         {
+            ViewBag.Rate = Rate;
             return View();
         }
         public ActionResult AliPayAccount()

@@ -1,0 +1,10 @@
+﻿.InfoContainer
+{
+   margin:40px;
+   
+}
+.InfoContainer .Title
+{
+    font-size:35px;
+    color:brown;
+}

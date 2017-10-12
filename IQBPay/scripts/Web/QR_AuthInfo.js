@@ -11,9 +11,9 @@
             $("#Channel").val(channel);
 
         $("#QRStatus").bootstrapSwitch({
-            onText: "有效",
+            onText: "未使用",
             state: true,
-            offText: "失效",
+            offText: "已使用",
             onColor: "success",
             offColor: "danger",
             size: "small",
@@ -68,15 +68,15 @@ function InitFormData(data) {
         $("#QRImg").attr("src", filePath);
 
     var st;
-    if (data.RecordStatus = 0)
+    if (data.RecordStatus == 0)
         st = true;
     else
         st = false
 
     $("#QRStatus").bootstrapSwitch({
-        onText: "有效",
+        onText: "未使用",
         state: st,
-        offText: "失效",
+        offText: "已使用",
         onColor: "success",
         offColor: "danger",
         size: "small",

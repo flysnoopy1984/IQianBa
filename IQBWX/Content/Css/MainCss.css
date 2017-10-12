@@ -232,7 +232,7 @@ div {word-wrap: break-word; }
     right:10px;
 }
 .AmtEdit Input {
-    width:200px;
+    width:400px;
     outline: none;
     background-color: #FFFFFF;
     background-image: none;
@@ -240,9 +240,9 @@ div {word-wrap: break-word; }
     border-radius: 4px;
     box-shadow: none !important;
     color: #FB9C31 !important;
-    font-size: 30px !important;
+    font-size: 45px !important;
     font-weight:bold;
-    height: 40px !important;
+    height: 60px !important;
     padding:4px;
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
    

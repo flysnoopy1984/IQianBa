@@ -1,4 +1,5 @@
-﻿using IQBCore.IQBPay.Models.Order;
+﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.Models.Order;
 using IQBPay.Core;
 using IQBPay.DataBase;
 using System;
@@ -11,6 +12,7 @@ namespace IQBPay.Controllers
 {
     public class OrderController : BaseController
     {
+
         // GET: Order
         public ActionResult Index()
         {
@@ -22,13 +24,14 @@ namespace IQBPay.Controllers
             return View();
               
         }
+
         public ActionResult TestDiv()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Query(int pageIndex = 0, int pageSize = IQBConfig.PageSize)
+        public ActionResult Query(OrderType type = OrderType.Normal,int pageIndex = 0, int pageSize = IQBConfig.PageSize)
         {
             List<EOrderInfo> result = new List<EOrderInfo>();
             try

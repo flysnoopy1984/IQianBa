@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "汇款管理列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+    单据管理
+}
+@section SubMenu2{
+    列表
+}
+<link href="~/Content/Style/Web/List.css" rel="stylesheet" />
+<script src="~/scripts/Web/Common.js"></script>
+<script src="~/scripts/Component/IQBTable.js"></script>
+<link href="~/Content/Style/Web/FixTableList.css" rel="stylesheet" />
+<script src="~/scripts/Web/TransferList.js"></script>
+
+<div id="ListArea">
+    <div id="Title" style="margin:0px;">
+        <span id="ListTitleName">汇款列表</span>
+        <ul class="UlHorizontal" style="float:right">
+            <li>
+                <button type="button" class="btn btn-primary" onclick="Query();">查询</button>
+            </li>
+
+        </ul>
+    </div>
+    <div id="ListContent">
+        <div class="fix-header-table" id="FixHeaderTable">
+            <div class="divH" id="divTableHeader">
+                <table id="TableHeader" class="table table-hover table-bordered TableOverflowHidden">
+                    <thead class="cf">
+                        <tr id="trHeader">
+                            <th style="width:200px;"> 操作</th>
+                            <th style='width:200px;'>汇款编号</th>
+                            <th style="width:200px;">汇款金额</th>
+                            <th style="width:200px;">汇款对象</th>
+                            <th style="width:200px;">汇款时间</th>
+                            <th style="width:200px;">对应的订单编号</th>
+                            <th style="width:200px;">实际买家</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div id="divTableBody" class="divB" style="height: 300px;">
+                <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden"></table>
+            </div>
+        </div>
+    </div>
+</div>

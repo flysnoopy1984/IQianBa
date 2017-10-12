@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
+using IQBCore.IQBPay.BaseEnum;
 
 namespace IQBPay.Controllers
 {
@@ -79,7 +80,7 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(int pageIndex = 0, int pageSize = IQBConfig.PageSize)
+        public ActionResult Query(UserRole role= UserRole.Agent, int pageIndex = 0, int pageSize = IQBConfig.PageSize)
         {
             List<EUserInfo> result = new List<EUserInfo>();
             IQueryable<EUserInfo> list = null;
@@ -89,8 +90,8 @@ namespace IQBPay.Controllers
 
                 using (AliPayContent db = new AliPayContent())
                 {
-                    list = db.DBUserInfo.OrderByDescending(i => i.CreateDate);
-                 
+                    list = db.DBUserInfo.Where(u=>u.UserRole == role).OrderByDescending(i => i.CreateDate);
+                    
                     int totalCount = list.Count();
                     if (pageIndex == 0)
                     {

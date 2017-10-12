@@ -311,12 +311,19 @@ ul.topnav ul li {
 {
 
 }
-
-/* IQB Pay Frame End */
-.WapPay
-{
-   
+/*Ðü¸¡¿ò*/
+.DivHovering{
+    background-color:antiquewhite;
+    position:absolute;
+    display:none;  
+    height:150px;
+    top:5px;
+    left:10px;
+    white-space:normal;
+    padding:8px;
 }
+/* IQB Pay Frame End */
+
 
 
 

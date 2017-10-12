@@ -16,19 +16,23 @@ namespace IQBCore.IQBPay.BaseEnum
     {
         
         /// <summary>
-        /// 普通用户，可以使用上级（包括平台）的二维码
+        /// 普通用户，就是进来看看
         /// </summary>
         NormalUser=1,
+
+        Agent = 2,
 
         /// <summary>
         /// 可以在平台二维码的基础上生成自己的二维码并发放
         /// </summary>
-        StoreVendor = 2,
+        StoreVendor = 3,
 
         /// <summary>
         /// 提供密钥,可使用自己的二维码
         /// </summary>
-        StoreMaster =3,
+        StoreMaster =99,
+
+        Administrator=100,
 
     }
 

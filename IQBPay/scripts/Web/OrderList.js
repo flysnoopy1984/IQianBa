@@ -3,9 +3,21 @@ $(document).ready(function () {
     Query(true);
 });
 
-function OpenWin(url)
-{
-    window.open(url, "_Blank", "");
+function ShowError(no) {
+
+
+    var obj = $("#divError" + no);
+    if (obj.is(":hidden"))
+    {
+        obj.css("position", "relative");
+        obj.show();
+    }
+    else
+    {
+        obj.css("position", "absolute");
+        obj.hide();
+    }
+  
 }
 
 function SetWidth()
@@ -36,7 +48,7 @@ function Query(NeedClearn) {
     var url = "/Order/Query";
     $.ajax({
         type: 'post',
-        data: "pageIndex=0",
+        data: "type=0&pageIndex=0",
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -103,7 +115,15 @@ function generateData(result) {
 
         //订单状态
         tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + OrderStatus + "</td>";
+        if (result[i].OrderStatus == -1)
+        {
+            
+            strCtrl += "<td style='" + tdWidth + "'><a href='javascript:ShowError("+i+")'>" + OrderStatus + "</a>";
+            strCtrl += "<div class='DivHovering' id=divError" + i + ">" + result[i].LogRemark + "</div>";
+            strCtrl +="</td>";
+        }
+        else
+            strCtrl += "<td style='" + tdWidth + "'>" + OrderStatus + "</td>";
 
         //总金额
         tdWidth = "width:" + $("#trHeader th").eq(4).css("width");

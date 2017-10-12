@@ -9,7 +9,7 @@ function Query() {
     var url = "/User/Query";
     $.ajax({
         type: 'post',
-        data: "pageIndex=0",
+        data: "role=2&pageIndex=0",
         url: url,
         success: function (data) {
             var arrLen = data.length;
