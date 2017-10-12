@@ -92,7 +92,7 @@ function generateData(result) {
         strCtrl = "";
         strCtrl += "<tr>";
 
-        strCtrl += "<td><a href=/Transfer/Info_Win?id=" + result[i].OrderNo + "  target='_blank' class='td'>结算信息</a>";
+        strCtrl += "<td><a href=/Transfer/Info_Win?id=" + result[i].OrderNo + "&type=1  target='_blank' class='td'>结算信息</a>";
         strCtrl += " <input type='hidden' value='" + result[i].FilePath + "'</td>";
         //订单编号
         tdWidth = "width:"+ $("#trHeader th").eq(1).css("width");
