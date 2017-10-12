@@ -24,8 +24,8 @@ namespace ConsoleApplication1
             try
             {
 
-                string st = IQBConstant.WXQR_IQBPAY_PREFIX + "3aa";
-                st = st.Substring(IQBConstant.WXQR_IQBPAY_PREFIX.Length);
+                float a = (float)Math.Round(1 * (2.5 / 100), 2, MidpointRounding.ToEven);
+                string st = a.ToString("0.00");
 
                 Console.WriteLine(string.Format("{0}", st));
 

@@ -34,7 +34,8 @@ namespace IQBCore.IQBPay.BLL
 
 
             AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
-            float commission = order.TotalAmount - order.SellerCommission;
+           
+            string commission = (order.TotalAmount - order.SellerCommission).ToString("0.00");
 
             request.BizContent = "{" +
             "\"out_request_no\":\"" + StringHelper.GenerateSubAccountTransNo() + "\"," +
@@ -114,17 +115,16 @@ namespace IQBCore.IQBPay.BLL
                 AgentOpenId = qrUser.OpenId,
                 TotalAmount = TotalAmount,
                 Rate = qrUser.Rate,
-                RateAmount = TotalAmount * (qrUser.Rate / 100),
+                RateAmount = (float)Math.Round(TotalAmount * (qrUser.Rate / 100), 2, MidpointRounding.ToEven),
                 TransDate = DateTime.Now,
+                TransDateStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 SellerAliPayId = store.AliPayAccount,
                 SellerStoreId = store.ID,
                
                 SellerName = store.Name,
                 SellerChannel = store.Channel,
                 SellerRate = store.Rate,
-                SellerCommission = TotalAmount*(store.Rate)/100,
-                
-
+                SellerCommission = (float)Math.Round(TotalAmount * (store.Rate)/100,2,MidpointRounding.ToEven),
                 OrderType = BaseEnum.OrderType.Normal,
 
             };

@@ -9,9 +9,48 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>订单记录</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/main.css" rel="stylesheet" />
+    <link href="~/Content/Style/Web/InfoWin.css" rel="stylesheet" />
+
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/scripts/Web/Common.js"></script>
+    <script src="~/scripts/Web/Info_Win_Order_Transfer.js"></script>
+
 </head>
 <body>
-    <div> 
+    <div class="InfoContainer" style="width:1000px;">
+
+        <table id="TransferTable" class="table table-hover table-bordered TableOverflowHidden">
+            <thead class="cf">
+                <tr id="trHeader">
+                    <th style='width:200px;'>汇款编号</th>
+                    <th style="width:200px;">汇款对象</th>
+                    <th style="width:200px;">汇款金额</th>
+                    <th style="width:200px;">汇款时间</th>
+                    <th style="width:200px;">对应的订单编号</th>
+                </tr>
+            </thead>
+            <tbody id="TransferContainer"></tbody>
+        </table>
+
+        <hr style="border:2px solid dodgerblue; width:100%;" />
+        <div class="Title">转账记录</div>
+
+        <table id="OrderTable" class="table table-hover table-bordered TableOverflowHidden">
+            <thead class="cf">
+                <tr id="trHeader">
+                    <th style='width:200px;'>订单编号</th>
+                    <th style="width:200px;">代理名</th>
+                    <th style="width:200px;">代理金额</th>
+                    <th style="width:200px;">订单时间</th>
+                    <th style="width:200px;">对应的转账编号</th>
+                </tr>
+            </thead>
+            <tbody id="OrderContainer"></tbody>
+        </table>
+
+        
     </div>
 </body>
 </html>

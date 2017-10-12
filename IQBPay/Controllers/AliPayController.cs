@@ -227,8 +227,8 @@ namespace IQBPay.Controllers
                         //自动提款
                         EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
                         string TransferId;
-                        AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, ui,order.RealTotalAmount.ToString(),out TransferId);
-
+                        AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, ui,order.RealTotalAmount.ToString("0.00"),out TransferId);
+                        
                         if (res2.Code == "10000")
                         {
                             //通知开始
@@ -242,7 +242,10 @@ namespace IQBPay.Controllers
                             tranfer.Buyer_AliPayId = order.BuyerAliPayId;
                             tranfer.Buyer_AliPayLoginId  = order.BuyerAliPayLoginId;
                             db.DBTransferAmount.Add(tranfer);
-                           
+
+                            order.TransferId = TransferId;
+                            order.TransferAmount = tranfer.TransferAmount;
+
                             //转装记录结束
 
 

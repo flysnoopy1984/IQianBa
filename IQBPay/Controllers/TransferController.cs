@@ -1,4 +1,6 @@
 ﻿using IQBCore.IQBPay.Models.AccountPayment;
+using IQBCore.IQBPay.Models.Order;
+using IQBCore.IQBPay.Models.Result;
 using IQBPay.Core;
 using IQBPay.DataBase;
 using System;
@@ -27,27 +29,51 @@ namespace IQBPay.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="type">1 Order, 2 Transfer</param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Query(int pageIndex = 0, int pageSize = IQBConfig.PageSize)
+        public ActionResult InfoWin(string Id,string type)
         {
-            List<ETransferAmount> result = new List<ETransferAmount>();
+            string openId = this.GetOpenId(true);
+           
+            EOrderInfo order;
+            ETransferAmount transfer;
+
+            ROrder_Transfer result = new ROrder_Transfer();
             try
             {
-                string openId = this.GetOpenId(true);
-
                 using (AliPayContent db = new AliPayContent())
                 {
-                    var list = db.DBTransferAmount.OrderByDescending(i => i.TransDate);
-                    int totalCount = list.Count();
-                    if (pageIndex == 0)
+                    if(type == "1")
                     {
-                        result = list.Take(pageSize).ToList();
-
-                        if (result.Count > 0)
-                            result[0].TotalCount = totalCount;
+                        order = db.DBOrder.Where(u => u.OrderNo == Id).FirstOrDefault();
+                        if(order!=null)
+                        {
+                            result.Order = order;
+                            result.TransferList = db.DBTransferAmount.Where(t => t.OrderNo == order.OrderNo).ToList();
+                            if (result.TransferList == null || result.TransferList.Count == 0)
+                                result.Result = -1;
+                        }
+                        else
+                            result.Result = -2;
                     }
-                    else
-                        result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+                    if(type =="2")
+                    {
+                        transfer = db.DBTransferAmount.Where(u => u.TransferId == Id).FirstOrDefault();
+                        if (transfer != null)
+                        {
+                            result.Transfer = transfer;
+                            result.OrderList = db.DBOrder.Where(t => t.TransferId == transfer.TransferId).ToList();
+                            if (result.OrderList == null || result.OrderList.Count == 0)
+                                result.Result = -1;
+                        }
+                        else
+                            result.Result = -2;
+                    }
                 }
 
             }

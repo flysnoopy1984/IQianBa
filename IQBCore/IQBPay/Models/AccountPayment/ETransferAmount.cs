@@ -24,6 +24,9 @@ namespace IQBCore.IQBPay.Models.AccountPayment
 
         public DateTime TransDate { get; set; }
 
+        [NotMapped]
+        public string TransDateStr { get; set; }
+
         [MaxLength(64)]
         public string OrderNo { get; set; }
 
@@ -49,6 +52,7 @@ namespace IQBCore.IQBPay.Models.AccountPayment
             obj.TransferId = TransferId;
             obj.TransferAmount = order.RealTotalAmount;
             obj.TransDate = DateTime.Now;
+            obj.TransDateStr = obj.TransDate.ToString("yyyy-MM-dd HH:mm");
             obj.OrderNo = order.OrderNo;
             obj.QRUserId = order.QRUserId;
             obj.AgentName = order.AgentName;

@@ -15,3 +15,33 @@
 {
     float:right;
 }
+
+#ListTitleName
+{
+    font-size:20px;
+    font-weight:bold;
+    color:brown;
+    font-family:'Microsoft YaHei';
+}
+
+.ListButtonRight {
+    float:right; 
+    margin-right:20px;
+}
+.ListCondition{
+    height:40px;
+   margin-top:10px;
+}
+
+.ConditionField{
+    display:inline-block !important;
+     width:150px;
+}
+
+.divNextButton
+{
+    margin-top:15px;
+    width:90%;
+    text-align:center;
+}
+

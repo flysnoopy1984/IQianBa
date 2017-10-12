@@ -19,10 +19,39 @@
 <div id="ListArea">
     <div id="Title" style="margin:0px;">
         <span id="ListTitleName">订单列表</span>
-        <ul class="UlHorizontal" style="float:right">
-            <li>
-              
-                <button type="button" class="btn btn-primary" onclick="Query();">查询</button>
+        <hr />
+        <div class="ListCondition">
+            <ul class="UlHorizontal">
+                <li>
+                    <div class="form-group">
+                       <label >代理人：</label>
+                       <input id="cAgentName" type="text" class="form-control ConditionField">
+                    </div>
+                </li>
+                <li>
+                    <label>日期：</label>
+                    <select id="cDateType" class="form-control ConditionField">
+                        <option value="1" selected>今天</option>
+                        <option value="2">本周</option>
+                        <option value="3">本月</option>
+                        <option value="99">全部</option>
+                    </select>
+                </li>
+                <li>
+                    <label>订单状态：</label>
+                    <select id="cOrderStatus" class="form-control ConditionField">
+                        <option value="1">支付</option>
+                        <option value="2">结算</option>
+                        <option value="-1">异常</option>
+                        <option value="99">全部</option>
+                    </select>
+                </li>
+            </ul>
+            
+        </div>
+        <ul class="UlHorizontal ListButtonRight" >
+            <li>             
+                <button type="button" class="btn btn-primary" onclick="btnSearch();">查询</button>
             </li>
         </ul>
     </div>
@@ -37,6 +66,7 @@
                             <th style="width:200px;">支付宝订单编号</th>
                             <th style="width:200px;">订单状态</th>
                             <th style="width:200px;">总金额</th>
+                            <th style="width:200px;">交易时间</th>
                             <th style="width:200px;">代理用户</th>
                             <th style="width:200px;">代理扣点率</th>
                             <th style="width:200px;">代理扣点金额</th>
@@ -45,20 +75,18 @@
                             <th style="width:200px;">商户类型</th>
                             <th style="width:200px;">商户佣金点率</th>
                             <th style="width:200px;">商户佣金</th>
-                            <th style="width:200px;">平台实际收入</th>
+                            <th style="width:200px;">平台实际盈利</th>
                             <th style="width:200px;">结算编号</th>
                             <th style="width:200px;">结算金额</th>                            
                         </tr>
                     </thead>
                 </table>
             </div>
-            <div id ="divTableBody" class="divB" style="height: 600px;" >
-                 <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden">
-                    
-
+            <div id ="divTableBody" class="divB" style="height: 500px;" >
+                 <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden">       
                  </table>
             </div>
        </div>
-       
+        <div class="divNextButton"><button type="button" class="btn btn-success" style="width:250px; height:60px;" onclick="Next();">下一页</button></div>
     </div>
 </div>

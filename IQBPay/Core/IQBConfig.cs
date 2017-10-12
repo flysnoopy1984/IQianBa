@@ -7,7 +7,7 @@ namespace IQBPay.Core
 {
     public class IQBConfig
     {
-        public const int PageSize = 100;
+        public const int PageSize = 80;
 
         /// <summary>
         /// 用户注册时是否直接给予默认QRUser

@@ -47,12 +47,17 @@ namespace IQBWX.Controllers
         public ActionResult Pay(string Id)
         {
             ViewBag.QRUserId = Id;
+            using (AliPayContent db = new AliPayContent())
+            {
+                IQBCore.IQBPay.Models.Order.EOrderInfo _ppOrder = db.DBOrderInfo.FirstOrDefault();
+            }
             return View();
         }
 
         public ActionResult Auth_Store(string Rate)
         {
             ViewBag.Rate = Rate;
+           
             return View();
         }
         public ActionResult AliPayAccount()

@@ -3,29 +3,6 @@ $(document).ready(function () {
     Query(true);
 });
 
-function OpenWin(url) {
-    window.open(url, "_Blank", "");
-}
-
-function SetWidth() {
-
-    var w = parseInt($("#TableHeader").css("width"));
-    var hTable = $("#trContainer").height();
-    var hDiv = $("#divTableBody").height();
-    if (hTable > hDiv) {
-
-        var scrollWidth = 17;
-        w += scrollWidth;
-
-        $("#divTableHeader").css("width", w);
-        $("#divTableBody").css("width", w);
-        $("#TableHeader").css("width", w - scrollWidth);
-    }
-    else {
-        $("#divTableHeader").css("width", w);
-        $("#divTableBody").css("width", w);
-    }
-}
 
 function Query(NeedClearn) {
 
@@ -56,7 +33,7 @@ function generateData(result) {
     var strCtrl = "";
     $.each(result, function (i) {
         var thWidth;
-        
+        var TransDate = result[i].TransDateStr;
 
         strCtrl = "";
         strCtrl += "<tr>";
@@ -74,7 +51,7 @@ function generateData(result) {
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].AgentName + "</td>";
 
         tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransDate + "</td>";
+        strCtrl += "<td style='" + tdWidth + "'>" + TransDate + "</td>";
 
         tdWidth = "width:" + $("#trHeader th").eq(5).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].OrderNo + "</td>";

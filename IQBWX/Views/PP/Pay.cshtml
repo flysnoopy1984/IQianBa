@@ -10,8 +10,10 @@
     <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
     <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
     <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
     <script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
     <script src="@Url.Scrpit("~/Content/Script/Pay.js")"></script>
+
     <title>支付界面</title>
 </head>
 <body>
@@ -19,7 +21,16 @@
         body {
             background: #ffffff;
         }
+
+       
+
+
     </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnPay").attr("disabled", false);
+        });
+    </script>
     <div class="mgz cen">
         @*<div class="z404 mg2" id="ImgContainer">
             <img align="absmiddle" src="~/Content/images/gongxishengji_02.jpg" />
@@ -37,6 +48,7 @@
         </div>
     </div>
     <input type="hidden" id="qrUserId" value="@ViewBag.QRUserId" />
-    <div class="yuecon1 mgz cen xi28 bai tm AlwaysBottom20" style="width:90%" id="btnPay"><a href="#" onclick="PayToAli();">支付</a></div>
+    <button type="button" class="mgz btn btn-primary AlwaysBottom20"  id="btnPay" style="width:90%" onclick="PayToAli();">支付</button>
+    @*<div class="yuecon1 mgz cen xi28 bai tm AlwaysBottom20" style="width:90%" id="btnPay"><a href="#" onclick="PayToAli();">支付</a></div>*@
 </body>
 </html>

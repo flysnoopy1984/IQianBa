@@ -464,6 +464,7 @@
     <Content Include="scripts\Component\FlyDiv.js" />
     <Content Include="scripts\Component\IQBTable.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
+    <Content Include="scripts\Web\Info_Win_Order_Transfer.js" />
     <Content Include="scripts\Web\TransferList.js" />
     <Content Include="scripts\Web\UserInfo.js" />
     <Content Include="scripts\Web\UserList.js" />

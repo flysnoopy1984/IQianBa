@@ -50,6 +50,8 @@ function Init(Id) {
 
 function InitFormData(data)
 {
+
+    $("#ReceiveStore").append("<option value='-1'>随机</option>");
     $(data.HashStoreList).each(function (i, r) {
 
         $("#ReceiveStore").append("<option value='" + r.Id + "'>" + r.Name + "</option>");

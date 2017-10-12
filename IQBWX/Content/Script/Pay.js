@@ -137,5 +137,6 @@ function PayToAli()
         alert("金额不能为空");
         return;
     }
+    $("#btnPay").attr("disabled", true);
     window.location = "http://ap.iqianba.cn/AliPay/F2FPay?qrUserId=1&Amount=" + amt;
 }

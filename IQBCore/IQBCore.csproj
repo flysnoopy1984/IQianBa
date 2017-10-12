@@ -106,6 +106,7 @@
     <Compile Include="IQBPay\Models\OutParameter\HashStore.cs" />
     <Compile Include="IQBPay\Models\QR\EQRInfo.cs" />
     <Compile Include="IQBPay\Models\QR\EQRUser.cs" />
+    <Compile Include="IQBPay\Models\Result\ROrder_Transfer.cs" />
     <Compile Include="IQBPay\Models\Store\EStoreInfo.cs" />
     <Compile Include="IQBPay\Models\System\EAliPayApplication.cs" />
     <Compile Include="IQBPay\Models\System\ESysConfig.cs" />
@@ -132,7 +133,6 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="DataBase\" />
-    <Folder Include="IQBPay\Models\Result\" />
     <Folder Include="IQBWX\BLL\" />
   </ItemGroup>
   <ItemGroup>

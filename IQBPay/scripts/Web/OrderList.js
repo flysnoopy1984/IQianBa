@@ -1,62 +1,48 @@
-﻿
+﻿var pageIndex = -1;
 $(document).ready(function () {
-    Query(true);
+    Query(true,pageIndex+1);
 });
 
-function ShowError(no) {
 
-
-    var obj = $("#divError" + no);
-    if (obj.is(":hidden"))
-    {
-        obj.css("position", "relative");
-        obj.show();
-    }
-    else
-    {
-        obj.css("position", "absolute");
-        obj.hide();
-    }
-  
-}
-
-function SetWidth()
+function InitCondition()
 {
    
-    var w = parseInt($("#TableHeader").css("width"));
-    var hTable = $("#trContainer").height();
-    var hDiv = $("#divTableBody").height();
-    if (hTable > hDiv)
-    {
-        
-        var scrollWidth = 17;
-        w += scrollWidth;
-
-        $("#divTableHeader").css("width", w);
-        $("#divTableBody").css("width", w);
-        $("#TableHeader").css("width", w - scrollWidth);
-    }
-    else
-    {
-        $("#divTableHeader").css("width", w);
-        $("#divTableBody").css("width", w);
-    }
 }
 
-function Query(NeedClearn) {
+function btnSearch()
+{
+    pageIndex = -1;
+    Query(true, pageIndex + 1);
+}
+
+function Next()
+{ 
+    Query(false, pageIndex + 1);
+}
+
+
+function Query(NeedClearn,_PageIndex) {
 
     var url = "/Order/Query";
     $.ajax({
         type: 'post',
-        data: "type=0&pageIndex=0",
+        data: "type=0&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;
-            if (NeedClearn)
+            if (NeedClearn) {   
                 $("#trContainer").empty();
+            }
+            pageIndex++;
             if (arrLen > 0) {
                 generateData(data);
                 SetWidth();
+               
+            }
+            else
+            {
+                pageIndex--;
+                alert("没有数据了");
             }
         },
         error: function (xhr, type) {
@@ -89,21 +75,24 @@ function generateData(result) {
                 break;   
         }
 
-        var Channel = result[i].Channel;
+        var Channel = result[i].SellerChannel;
         var strCannel ;
         if(Channel == 0)
             strCannel ="平台商户";
         else
             strCannel ="加盟商户";
 
-        var ppRealAmt = result[i].TotalAmount - result[i].SellerCommission - result[i].RateAmount;
-        if (Channel == 0)
-            ppRealAmt = result[i].TotalAmount - result[i].RateAmount;
+        var ppRealAmt = result[i].TotalAmount - result[i].RealTotalAmount;
+        if (Channel !=0)
+            ppRealAmt -= result[i].SellerCommission;
+        ppRealAmt = parseFloat(ppRealAmt.toFixed(2));
+
+        var TransDate = result[i].TransDateStr;
 
         strCtrl = "";
         strCtrl += "<tr>";
 
-        strCtrl += "<td><a href=/Transfer/Info_Win?id=" + result[i].TransferId + "  target='_blank' class='td'>结算信息</a>";
+        strCtrl += "<td><a href=/Transfer/Info_Win?id=" + result[i].OrderNo + "  target='_blank' class='td'>结算信息</a>";
         strCtrl += " <input type='hidden' value='" + result[i].FilePath + "'</td>";
         //订单编号
         tdWidth = "width:"+ $("#trHeader th").eq(1).css("width");
@@ -129,48 +118,52 @@ function generateData(result) {
         tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TotalAmount + "</td>";
 
-        //代理用户
+        //交易时间
         tdWidth = "width:" + $("#trHeader th").eq(5).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + TransDate + "</td>";
+
+        //代理用户
+        tdWidth = "width:" + $("#trHeader th").eq(6).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].AgentName + "</td>";
 
         //代理扣点率
-        tdWidth = "width:" + $("#trHeader th").eq(6).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(7).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].Rate + "</td>";
 
         //代理扣点金额
-        tdWidth = "width:" + $("#trHeader th").eq(7).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(8).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].RateAmount + "</td>";
 
         //代理实际收入
-        tdWidth = "width:" + $("#trHeader th").eq(8).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(9).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].RealTotalAmount + "</td>";
 
         //商户名
-        tdWidth = "width:" + $("#trHeader th").eq(9).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(10).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerName + "</td>";
 
         //商户类型
-        tdWidth = "width:" + $("#trHeader th").eq(10).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerChannel + "</td>";
+        tdWidth = "width:" + $("#trHeader th").eq(11).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + strCannel + "</td>";
 
         //商户佣金点率
-        tdWidth = "width:" + $("#trHeader th").eq(11).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(12).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerRate + "</td>";
 
         //商户佣金
-        tdWidth = "width:" + $("#trHeader th").eq(12).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(13).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerCommission + "</td>";
 
-        //平台实际收入
-        tdWidth = "width:" + $("#trHeader th").eq(13).css("width");
+        //平台实际盈利
+        tdWidth = "width:" + $("#trHeader th").eq(14).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + ppRealAmt + "</td>";
 
         //结算编号
-        tdWidth = "width:" + $("#trHeader th").eq(14).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(15).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferId + "</td>";
 
         //结算金额
-        tdWidth = "width:" + $("#trHeader th").eq(15).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(16).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferAmount + "</td>";
 
         strCtrl += "</tr>";
@@ -178,6 +171,18 @@ function generateData(result) {
         $("#trContainer").append(strCtrl);
 
     });
+}
+
+function ShowError(no) {
+    var obj = $("#divError" + no);
+    if (obj.is(":hidden")) {
+        obj.css("position", "relative");
+        obj.show();
+    }
+    else {
+        obj.css("position", "absolute");
+        obj.hide();
+    }
 }
 
 function ToInfo(action) {

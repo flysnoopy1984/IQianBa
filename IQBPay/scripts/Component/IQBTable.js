@@ -19,7 +19,22 @@ $(document).ready(function () {
     });
 });
 
-function CleanForm(tableId)
-{
+function SetWidth() {
 
+    var w = parseInt($("#TableHeader").css("width"));
+    var hTable = $("#trContainer").height();
+    var hDiv = $("#divTableBody").height();
+    if (hTable > hDiv) {
+
+        var scrollWidth = 17;
+        w += scrollWidth;
+
+        $("#divTableHeader").css("width", w);
+        $("#divTableBody").css("width", w);
+        $("#TableHeader").css("width", w - scrollWidth);
+    }
+    else {
+        $("#divTableHeader").css("width", w);
+        $("#divTableBody").css("width", w);
+    }
 }
