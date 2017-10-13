@@ -73,9 +73,9 @@ function generateData(result) {
         strCtrl += "<td>" + result.Transfer.OrderNo + "</td>";
 
         strCtrl += "</tr>";
-        $("#OrderContainer").append(strCtrl);
+        $("#TransferContainer").append(strCtrl);
 
-        $.each(result.TransferList, function (i) {
+        $.each(result.OrderList, function (i) {
             strCtrl = "";
             strCtrl += "<tr>";
 
@@ -87,7 +87,7 @@ function generateData(result) {
 
           
             strCtrl += "</tr>";
-            $("#TransferContainer").append(strCtrl);
+            $("#OrderContainer").append(strCtrl);
         });
         return;
     }

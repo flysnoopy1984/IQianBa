@@ -25,10 +25,12 @@ namespace IQBPay.Controllers
               
         }
 
-        public ActionResult TestDiv()
+        public ActionResult Info_Win()
         {
             return View();
         }
+
+
 
         [HttpPost]
         public ActionResult Query(OrderType type = OrderType.Normal,int pageIndex = 0, int pageSize = IQBConfig.PageSize)

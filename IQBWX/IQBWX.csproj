@@ -134,6 +134,7 @@
     <Content Include="Content\Config\PopPolicy.xml" />
     <Content Include="Content\Css\common.css" />
     <Content Include="Content\CatchSite\HJB\list.html" />
+    <Content Include="Content\Css\List.css" />
     <Content Include="Content\Css\MainCss.css" />
     <Content Include="Content\Css\idangerous.swiper.css" />
     <Content Include="Content\Css\PP.css" />
@@ -200,6 +201,7 @@
     <Content Include="Content\Script\MyChildren.js" />
     <Content Include="Content\Script\OutPay.js" />
     <Content Include="Content\Script\Pay.js" />
+    <Content Include="Content\Script\PPOrderList.js" />
     <Content Include="Content\Script\SSO.js" />
     <Content Include="Content\Script\Summery.js" />
     <Content Include="Content\Script\swiper-3.4.2.jquery.min.js" />
@@ -334,11 +336,11 @@
     <Content Include="Views\HOME\WXLoginWAP.cshtml" />
     <Content Include="Views\PP\Auth_Store.cshtml" />
     <Content Include="Views\PP\Pay.cshtml" />
-    <Content Include="Views\PP\YunLong.cshtml" />
     <Content Include="Views\PP\Demo.cshtml" />
     <Content Include="Views\PP\OrderQuery.cshtml" />
-    <Content Include="Views\PP\Settlement.cshtml" />
+    <Content Include="Views\PP\TransferList.cshtml" />
     <Content Include="Views\PP\AliPayAccount.cshtml" />
+    <Content Include="Views\PP\OrderList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

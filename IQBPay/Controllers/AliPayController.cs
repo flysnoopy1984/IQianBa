@@ -242,13 +242,11 @@ namespace IQBPay.Controllers
                             tranfer.Buyer_AliPayId = order.BuyerAliPayId;
                             tranfer.Buyer_AliPayLoginId  = order.BuyerAliPayLoginId;
                             db.DBTransferAmount.Add(tranfer);
-
+                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Closed;
                             order.TransferId = TransferId;
                             order.TransferAmount = tranfer.TransferAmount;
 
                             //转装记录结束
-
-
                             order.LogRemark += string.Format("[Transfer] Code:{0};msg:{1}", res2.Code, res2.Msg);
                         }
                         else
@@ -276,7 +274,6 @@ namespace IQBPay.Controllers
         }
         public ActionResult Auth()
         {
-           
             string authCode = Request["app_auth_code"];
             string appId = Request["app_id"];
             string Id = Request["Id"];
@@ -286,6 +283,7 @@ namespace IQBPay.Controllers
             Log.log("Auth Code:"+authCode);
             EAliPayApplication app = null;
             AlipayOpenAuthTokenAppResponse response = null;
+
             if (!string.IsNullOrEmpty(authCode))
             {
                 if (string.IsNullOrEmpty(Id) || !long.TryParse(Id, out qrId))
@@ -350,21 +348,18 @@ namespace IQBPay.Controllers
                                 store.InitCreate();
                                 store.InitModify();
                                 db.DBStoreInfo.Add(store);
-
                             }
                             else
                             {
                                 store.AliPayAccount = response.UserId;
                                 store.AliPayAuthAppId = response.AuthAppId;
                                 store.AliPayAuthToke = response.AppAuthToken;
-
                                 store.FromIQBAPP = app.AppId;
                                 store.OwnnerOpenId = qr.OwnnerOpenId;
                                 store.Channel = qr.Channel;
                                 store.Remark = qr.Remark;
                                 store.QRId = qr.ID;
                                 store.Rate = qr.Rate;
-
                             }
                             qr.InitModify();
                             qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
@@ -379,7 +374,6 @@ namespace IQBPay.Controllers
                     }
                     string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"]+"/PP/Auth_Store?Rate="+store.Rate;
                     return Redirect(url);
-
                 }
                 catch (Exception ex)
                 {

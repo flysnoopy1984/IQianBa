@@ -1,23 +1,33 @@
-﻿
+﻿var pageIndex = -1;
 $(document).ready(function () {
-    Query(true);
+    Query(true, pageIndex + 1);
 });
 
+function Next() {
+    Query(false, pageIndex + 1);
+}
 
-function Query(NeedClearn) {
+function Query(NeedClearn, _PageIndex) {
 
     var url = "/Transfer/Query";
     $.ajax({
         type: 'post',
-        data: "pageIndex=0",
+        data: "pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;
             if (NeedClearn)
                 $("#trContainer").empty();
+            pageIndex++;
+
             if (arrLen > 0) {
                 generateData(data);
                 SetWidth();
+            }
+            else
+            {
+                pageIndex--;
+                alert("没有数据了");
             }
         },
         error: function (xhr, type) {
@@ -38,7 +48,7 @@ function generateData(result) {
         strCtrl = "";
         strCtrl += "<tr>";
 
-        strCtrl += "<td><a href=/Transfer/Info_Win?id=" + result[i].TransferId + "&type=2  target='_blank' class='td'>订单信息</a>";
+        strCtrl += "<td><a href=/Order/Info_Win?id=" + result[i].TransferId + "&type=2  target='_blank' class='td'>订单信息</a>";
         strCtrl += " <input type='hidden' value='" + result[i].FilePath + "'</td>";
         //汇款编号
         tdWidth = "width:" + $("#trHeader th").eq(1).css("width");

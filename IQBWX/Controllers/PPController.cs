@@ -64,7 +64,7 @@ namespace IQBWX.Controllers
         {
             return View();
         }
-        public ActionResult OrderQuery()
+        public ActionResult OrderList()
         {
             return View();
         }
