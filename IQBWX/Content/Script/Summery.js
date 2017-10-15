@@ -14,7 +14,7 @@ function InitPagination()
 {
 
     $('#swiper-container').dropload({
-        scrollArea: window,
+       
         loadDownFn: function (me) {
            
             // 拼接HTML

@@ -7,11 +7,35 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Settlement</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+    <title>转账记录</title>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/List.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
+    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Scrpit("~/Content/Script/IQBPay/PPTransferList.js")"></script>
+
 </head>
 <body>
-    <div> 
+
+    <div class="ListTitle mgz2 xi20 hui">转账记录</div>
+
+    <table id="TableHeader" class="table large-only mgz2 ListTableTitle">
+        <tbody>
+            <tr class="text-right" id="trHeader">
+                <th style="width:30%;">转账单号</th>
+                <th style="width:15%;">转账时间</th>
+                <th style="width:15%;">转账金额</th>
+                <th style="width:30%;">转账账户</th>  
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="ListTableBody" id="ListTableBody">
+        <table class="table mgz2  large-only" id="trContainer"></table>
     </div>
+    <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%" onclick="Next();">下一页</button>
+    <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
 </body>
 </html>

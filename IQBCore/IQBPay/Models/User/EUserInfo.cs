@@ -55,6 +55,11 @@ namespace IQBCore.IQBPay.Models.User
 
         public DateTime LastLoginDate { get; set; }
 
+        /// <summary>
+        /// 是否自动转账
+        /// </summary>
+        public Boolean IsAutoTransfer { get; set; }
+
         [NotMapped]
         public string UserRoleName
         {

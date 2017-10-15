@@ -37,7 +37,6 @@ namespace IQBWX.BLL
       
         public void ClickHandler(WXMessage msg)
         {
-
             string url = ConfigurationManager.AppSettings["Site_IQBPay"];
             try
             {

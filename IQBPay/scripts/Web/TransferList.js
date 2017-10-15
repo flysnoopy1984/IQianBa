@@ -18,11 +18,12 @@ function Query(NeedClearn, _PageIndex) {
             var arrLen = data.length;
             if (NeedClearn)
                 $("#trContainer").empty();
-            pageIndex++;
+          
 
             if (arrLen > 0) {
                 generateData(data);
                 SetWidth();
+                pageIndex++;
             }
             else
             {

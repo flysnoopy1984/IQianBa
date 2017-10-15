@@ -458,7 +458,6 @@
     <Content Include="Content\Wap\Wap.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Migrations\命令.txt" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="scripts\Component\FlyDiv.js" />
@@ -589,6 +588,7 @@
     <Content Include="Views\Transfer\Info_Win.cshtml" />
     <Content Include="Views\Transfer\List.cshtml" />
     <Content Include="Views\Order\Info_Win.cshtml" />
+    <Content Include="Views\Transfer\DoTransfer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

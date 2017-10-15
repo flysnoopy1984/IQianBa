@@ -1,0 +1,28 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>我要提现</title>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="mgz cen">
+        <div class="yues mg2"><img id="TransferLogo" src="~/Content/images/yue_03.jpg" height="178" /></div>
+        <div class="mg2 xi21">我的余额(元)</div>
+        <div class="mg2 xi71">¥3400.8</div>
+        <div>详情</div>
+        <div id="DetailList">
+
+        </div>
+    </div>
+    <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnPay" style="width:90%" onclick="Transfer();">提现</button>
+</body>
+</html>

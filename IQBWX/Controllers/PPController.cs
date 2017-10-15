@@ -1,4 +1,6 @@
-﻿using IQBCore.IQBPay.Models.QR;
+﻿using IQBCore.IQBPay.Models.AccountPayment;
+using IQBCore.IQBPay.Models.Order;
+using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBWX.Models.WX.Template;
 using IQBWX.BLL.ExternalWeb;
@@ -64,10 +66,85 @@ namespace IQBWX.Controllers
         {
             return View();
         }
+
         public ActionResult OrderList()
+        {
+            string openId = this.GetOpenId(true);
+            ViewBag.OpenId = openId;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult OrderQuery()
+        {
+            int pageIndex = Convert.ToInt32(Request["Page"]);
+            int pageSize = Convert.ToInt32(Request["PageSize"]);
+            string OpenId = Request["OpenId"];
+
+            List<EOrderInfo> result = new List<EOrderInfo>();
+            using (AliPayContent db = new AliPayContent())
+            {
+               
+                var list = db.DBOrderInfo.Where(o=>o.AgentOpenId == OpenId).OrderByDescending(i => i.TransDate);
+                int totalCount = list.Count();
+
+                
+                if (pageIndex == 0)
+                {
+                    result = list.Take(pageSize).ToList();
+                    if (result.Count > 0)
+                        result[0].TotalCount = totalCount;
+                }
+                else
+                    result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+             
+
+            }
+            return Json(result);
+           
+        }
+
+        public ActionResult TransferList()
+        {
+            string openId = this.GetOpenId(true);
+            ViewBag.OpenId = openId;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult TransferQuery()
+        {
+            int pageIndex = Convert.ToInt32(Request["Page"]);
+            int pageSize = Convert.ToInt32(Request["PageSize"]);
+            string OpenId = Request["OpenId"];
+
+            List<ETransferAmount> result = new List<ETransferAmount>();
+            using (AliPayContent db = new AliPayContent())
+            {
+
+                var list = db.DBTransferAmount.Where(o => o.AgentOpenId == OpenId).OrderByDescending(i => i.TransDate);
+                int totalCount = list.Count();
+                if (pageIndex == 0)
+                {
+                    result = list.Take(pageSize).ToList();
+                    if (result.Count > 0)
+                        result[0].TotalCount = totalCount;
+                }
+                else
+                    result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+
+
+            }
+            return Json(result);
+
+        }
+
+        public ActionResult DoTransfer()
         {
             return View();
         }
+
+
         public ActionResult Settlement()
         {
             string accessToken = this.getAccessToken(true);

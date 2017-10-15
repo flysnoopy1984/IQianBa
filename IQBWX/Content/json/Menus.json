@@ -1,18 +1,9 @@
 ﻿{
     "button": [
-        {
-            "name": "收款二维码",
-            "type": "click",
-            "key": "pay_101"                 
-        },
-        {
+       {
           "name": "用户中心",
           "sub_button": [
-            {
-              "type": "view",
-              "name": "收款账户设置",
-              "url": "http://wx.iqianba.cn/PP/AliPayAccount"
-            },
+           
             {
               "type": "view",
               "name": "订单查询",
@@ -24,6 +15,16 @@
               "url": "http://wx.iqianba.cn/PP/Settlement"
             }
 
+          ]
+        },       
+        {
+          "name": "用户操作",
+          "sub_button": [
+            {
+              "type": "view",
+              "name": "收款账户设置",
+              "url": "http://wx.iqianba.cn/PP/AliPayAccount"
+            }
           ]
         }       
       

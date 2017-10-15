@@ -1,4 +1,5 @@
 ﻿using IQBCore.IQBPay.Models.Order;
+using IQBCore.IQBPay.Models.User;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,6 +33,12 @@ namespace IQBCore.IQBPay.Models.AccountPayment
 
         public long QRUserId { get; set; }
 
+        [MaxLength(100)]
+        public string AgentAliPayAccount { get; set; }
+
+        [MaxLength(32)]
+        public string AgentOpenId { get; set; }
+
         [MaxLength(40)]
         public string AgentName { get; set; }
 
@@ -46,7 +53,14 @@ namespace IQBCore.IQBPay.Models.AccountPayment
         [MaxLength(40)]
         public string Operator { get; set; }
 
-        public static ETransferAmount Init(string TransferId,EOrderInfo order)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="TransferId"></param>
+        /// <param name="TargetAccount">转到哪个账户</param>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        public static ETransferAmount Init(string TransferId,EUserInfo AgentUser,EOrderInfo order)
         {
             ETransferAmount obj = new ETransferAmount();
             obj.TransferId = TransferId;
@@ -56,6 +70,8 @@ namespace IQBCore.IQBPay.Models.AccountPayment
             obj.OrderNo = order.OrderNo;
             obj.QRUserId = order.QRUserId;
             obj.AgentName = order.AgentName;
+            obj.AgentOpenId = AgentUser.OpenId;
+            obj.AgentAliPayAccount = AgentUser.AliPayAccount;
             return obj;
         }
 

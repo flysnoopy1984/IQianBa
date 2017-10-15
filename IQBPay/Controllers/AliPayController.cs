@@ -238,7 +238,7 @@ namespace IQBPay.Controllers
                             //通知结束
 
                             //转账记录开始
-                            ETransferAmount tranfer = ETransferAmount.Init(TransferId, order);
+                            ETransferAmount tranfer = ETransferAmount.Init(TransferId, ui, order);
                             tranfer.Buyer_AliPayId = order.BuyerAliPayId;
                             tranfer.Buyer_AliPayLoginId  = order.BuyerAliPayLoginId;
                             db.DBTransferAmount.Add(tranfer);

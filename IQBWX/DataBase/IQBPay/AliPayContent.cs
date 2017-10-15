@@ -1,4 +1,5 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
@@ -38,7 +39,7 @@ namespace IQBWX.DataBase.IQBPay
         public DbSet<EOrderInfo> DBOrderInfo { get; set; }
 
 
-
+        public DbSet<ETransferAmount> DBTransferAmount { get; set; }
 
 
         #region User  
