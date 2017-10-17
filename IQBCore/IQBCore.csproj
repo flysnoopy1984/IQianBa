@@ -100,6 +100,7 @@
     <Compile Include="IQBPay\BLL\AliPayManager.cs" />
     <Compile Include="IQBPay\BaseEnum\IQBPayEnum.cs" />
     <Compile Include="IQBPay\BLL\F2FPayHandler.cs" />
+    <Compile Include="IQBPay\BLL\SMSManager.cs" />
     <Compile Include="IQBPay\Models\InParameter\InF2F.cs" />
     <Compile Include="IQBPay\Models\Order\EOrderInfo.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\ETransferAmount.cs" />

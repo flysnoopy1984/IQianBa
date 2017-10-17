@@ -124,8 +124,8 @@ background:url(../images/gerenziliao_03.jpg) no-repeat scroll right center trans
 .jzgdz{ height:52px;}
 /*余额*/
 .yue{ margin-top:88px;}
-.yuec{ height:120px; line-height:120px;}
-.yuex{ height:153px; line-height:83px;}
+.yuec{ height:60px; line-height:60px;}
+.yuex{ height:83px; line-height:83px;}
 .yuecon1{ height:65px; background:#668ff2; line-height:65px; border-radius:5px;}
 .tc{ width:486px; height:324px; background:#ffffff; position:fixed; left:50%; margin-left:-243px; top:50%; margin-top:-162px;border-radius:5px; z-index:9999991; display:none;}
 .mengban{ display:none; background:rgba(0,0,0,0.5); height:100%; position:fixed; z-index:9998; left:0; top:0; width:100%; z-index:9999990;}
@@ -219,41 +219,7 @@ div {word-wrap: break-word; }
 
 .zw120{ height:120px;}
 
-.AmtLabel {}
-.AmtEdit{display:inline-block;margin:10px;}
-.form-group {
-  font-family:"Open Sans", Arial, sans-serif!important;
-  overflow:hidden;
-}
-.AlwaysBottom20{
-    position:fixed;
-    bottom:10px;
-    left:10px;
-    right:10px;
-}
-.AmtEdit Input {
-    width:400px;
-    outline: none;
-    background-color: #FFFFFF;
-    background-image: none;
-    border: 1px solid;
-    border-radius: 4px;
-    box-shadow: none !important;
-    color: #FB9C31 !important;
-    font-size: 45px !important;
-    font-weight:bold;
-    height: 60px !important;
-    padding:4px;
-    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-   
-}
 
-.AmtEdit input:focus {
-  border-color: #66afe9;
-  outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
-}
 #TransferLogo
 {
 width:200px;

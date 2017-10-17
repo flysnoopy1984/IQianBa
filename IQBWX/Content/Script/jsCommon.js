@@ -40,3 +40,11 @@ function getUrlParam(name) {
     var r = window.location.search.substr(1).match(reg);  //匹配目标参数
     if (r != null) return unescape(r[2]); return null; //返回参数值
 }
+
+function checkPhone() {
+    var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+    if (!myreg.test($("#userPhone").val())) {
+        return false;
+    }
+    return true;
+}

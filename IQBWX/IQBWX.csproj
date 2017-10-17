@@ -193,6 +193,7 @@
     <Content Include="Content\Script\iqb.dropload.min.js" />
     <Content Include="Content\Script\IQBPay\Auth_Store.js" />
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
+    <Content Include="Content\Script\IQBPay\PPPay.js" />
     <Content Include="Content\Script\MemberInfo.js" />
     <Content Include="Content\Script\ApplySuccess.js" />
     <Content Include="Content\Script\ApplyMember.js" />

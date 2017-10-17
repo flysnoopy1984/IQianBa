@@ -43,16 +43,20 @@ namespace IQBWX.Controllers
             {
                
             }
+            else if(Id=="SMS")
+            {
+
+            }
              return View();
         }
 
         public ActionResult Pay(string Id)
         {
             ViewBag.QRUserId = Id;
-            using (AliPayContent db = new AliPayContent())
-            {
-                IQBCore.IQBPay.Models.Order.EOrderInfo _ppOrder = db.DBOrderInfo.FirstOrDefault();
-            }
+            //using (AliPayContent db = new AliPayContent())
+            //{
+            //    IQBCore.IQBPay.Models.Order.EOrderInfo _ppOrder = db.DBOrderInfo.FirstOrDefault();
+            //}
             return View();
         }
 
