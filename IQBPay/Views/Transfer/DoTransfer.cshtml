@@ -3,6 +3,46 @@
     ViewBag.Title = "DoTransfer";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>DoTransfer</h2>
-
+@section SubMenu1{
+    单据管理
+}
+@section SubMenu2{
+    打款
+}
+<link href="~/Content/Style/Web/DoTransfer.css" rel="stylesheet" />
+<div id="ListArea">
+    <ul class="UlHorizontal" style="margin-top:20px;">
+        <li>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">代理用户：</label>
+                <div class="col-sm-8">
+                    <input id="RateName" type="text" class="form-control">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="btnSearch();">查询</button>
+            </div>
+        </li>
+    </ul>
+    <div id="AgentArea">
+        <ul Id="AgentList">           
+          <li class="liHeader">
+              <div>用户名</div>
+              <div>余额</div>
+          </li>
+            <li class="liBody">
+                <div>ID#Jacky</div>
+                <div><a href="#">&yen 3929128</a> </div>
+            </li>
+            <li style="height:200px;">
+                <div style="height:100px;">aaaa</div>
+            </li>
+            <li class="liBody">
+                <div>ID#Jacky</div>
+                <div><a href="#">&yen 3929128</a> </div>
+            </li>
+            <li  class="liBody">
+                <div>ID#Jacky</div>
+                <div><a href="#">&yen 3929128</a> </div>
+            </li>
+        </ul>
+    </div>
+</div>

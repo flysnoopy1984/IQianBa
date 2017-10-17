@@ -171,6 +171,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.js" />
+    <Content Include="Content\Style\Web\DoTransfer.css" />
     <Content Include="Content\Style\Web\FixTableList.css" />
     <Content Include="Content\Images\backgrounds\1.jpg" />
     <Content Include="Content\Images\backgrounds\2.jpg" />

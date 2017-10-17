@@ -29,6 +29,11 @@ namespace IQBPay.Controllers
             return View();
         }
 
+        public ActionResult DoTransfer()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public ActionResult Query(int pageIndex = 0, int pageSize = IQBConfig.PageSize)

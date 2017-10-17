@@ -1,0 +1,54 @@
+﻿#AgentList
+{
+    width:70%;
+     display: block;
+    overflow: hidden;
+    white-space:nowrap; /*处理块元素中的空白符和换行*/
+    margin:0px auto;
+}
+#AgentList li
+{
+     list-style: none; 
+}
+#AgentList .liHeader
+{
+    background-color:rgba(251, 180, 76, 0.1);
+    height:50px;
+    line-height:50px;
+     color:rgba(251, 180, 76, 1.0);
+    font-size:20px;
+    font-family:'Microsoft YaHei',STXihei,MingLiu;
+    font-weight:bold;
+
+}
+
+#AgentList .liHeader div
+{
+    border:solid 1px #faebcc;
+    float:left;
+    width:50%;
+    text-align:center;
+}
+#AgentList .liBody
+{
+    height:45px;
+    line-height:45px;
+    color:#65C3DF;
+    font-size:20px;
+    font-family:'Microsoft YaHei',STXihei,MingLiu;
+}
+
+#AgentList .liBody div
+{
+    border:solid 1px #faebcc;
+    float:left;
+    width:50%;
+    text-align:center;
+}
+
+
+
+.threed{
+color: #fafafa;
+letter-spacing: 0;
+text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135 }

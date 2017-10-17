@@ -25,5 +25,10 @@ namespace IQBCore.IQBPay.BLL
             }
             return false;
         }
+
+        public Boolean PostAliSMS()
+        {
+            return true;
+        }
     }
 }
