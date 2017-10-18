@@ -1,5 +1,6 @@
 ﻿var pageIndex = -1;
 $(document).ready(function () {
+  
     Query(true,pageIndex+1);
 });
 
@@ -20,13 +21,29 @@ function Next()
     Query(false, pageIndex + 1);
 }
 
+function ShowProcess()
+{
+    $("#btnSearch").attr("disabled", true);
+    $("#divTableBody").hide();
+    $("#divProcess").show();
+}
+function CloseProcess()
+{
+    $("#btnSearch").attr("disabled", false);
+    $("#divTableBody").show();
+    $("#divProcess").hide();
+}
 
 function Query(NeedClearn,_PageIndex) {
 
     var url = "/Order/Query";
+    var OrderStatus = $("#cOrderStatus").val();
+   
+
+    ShowProcess();
     $.ajax({
         type: 'post',
-        data: "type=0&pageIndex=" + _PageIndex,
+        data: "OrderStatus=" + OrderStatus + "&OrderType=0&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -44,10 +61,12 @@ function Query(NeedClearn,_PageIndex) {
                 pageIndex--;
                 alert("没有数据了");
             }
+            CloseProcess();
         },
         error: function (xhr, type) {
 
             alert('Ajax error!');
+            CloseProcess();
 
         }
     });

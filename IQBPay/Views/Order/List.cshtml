@@ -51,12 +51,13 @@
         </div>
         <ul class="UlHorizontal ListButtonRight" >
             <li>             
-                <button type="button" class="btn btn-primary" onclick="btnSearch();">查询</button>
+                <button id="btnSearch" type="button" class="btn btn-primary" onclick="btnSearch();">查询</button>
             </li>
         </ul>
     </div>
     <div id="ListContent">
         <div class="fix-header-table" id="FixHeaderTable">
+
             <div class="divH" id="divTableHeader">
                 <table id="TableHeader" class="table table-hover table-bordered TableOverflowHidden">
                     <thead class="cf">
@@ -82,9 +83,14 @@
                     </thead>
                 </table>
             </div>
+
             <div id ="divTableBody" class="divB" style="height: 450px;" >
                  <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden">       
                  </table>
+            </div>
+
+            <div id="divProcess" style="height:450px;line-height:450px;text-align:center;display:none;">
+                数据加载中。。。
             </div>
        </div>
         <div class="divNextButton"><button type="button" class="btn btn-success" style="width:250px; height:60px;" onclick="Next();">下一页</button></div>

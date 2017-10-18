@@ -9,6 +9,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using IQBCore.Common.Constant;
 
 namespace IQBPay.Controllers
 {
@@ -51,7 +52,7 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(Channel Channel,int pageIndex = 0, int pageSize = IQBConfig.PageSize)
+        public ActionResult Query(Channel Channel,int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             List<EStoreInfo> result = new List<EStoreInfo>();
             IQueryable<EStoreInfo> list = null ;

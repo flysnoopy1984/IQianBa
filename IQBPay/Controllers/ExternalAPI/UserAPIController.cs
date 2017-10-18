@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Transactions;
 using System.Web.Http;
+using IQBCore.Common.Constant;
 
 namespace IQBPay.Controllers.ExternalAPI
 {
@@ -58,7 +59,7 @@ namespace IQBPay.Controllers.ExternalAPI
                                 return "EXIST";
                             }
                             //通过QR模板获取QRUser
-                            if (IQBConfig.NeedDefaultQRModule)
+                            if (IQBConstant.NeedDefaultQRModule)
                             {
                                 qrUser = new EQRUser();
                                 qr = db.DBQRInfo.Where(a => a.Channel == IQBCore.IQBPay.BaseEnum.Channel.PPAuto).FirstOrDefault();

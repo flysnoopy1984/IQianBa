@@ -87,12 +87,14 @@ namespace IQBCore.IQBPay.BaseEnum
         Closed= 2,
         
         Exception =-1,
+
+        ALL = 99,
     }
 
     public enum  OrderType
     {
-        Normal,
-        UnKnow,
+        Normal=0,
+        UnKnow=-1,
     }
 
 

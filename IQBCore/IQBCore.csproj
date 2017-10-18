@@ -102,12 +102,15 @@
     <Compile Include="IQBPay\BLL\F2FPayHandler.cs" />
     <Compile Include="IQBPay\BLL\SMSManager.cs" />
     <Compile Include="IQBPay\Models\InParameter\InF2F.cs" />
+    <Compile Include="IQBPay\Models\InParameter\InOrder.cs" />
+    <Compile Include="IQBPay\Models\InParameter\InOrderSum.cs" />
     <Compile Include="IQBPay\Models\Order\EOrderInfo.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\ETransferAmount.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashStore.cs" />
     <Compile Include="IQBPay\Models\QR\EQRInfo.cs" />
     <Compile Include="IQBPay\Models\QR\EQRUser.cs" />
     <Compile Include="IQBPay\Models\Result\ROrder_Transfer.cs" />
+    <Compile Include="IQBPay\Models\Result\RUser_OrderSum.cs" />
     <Compile Include="IQBPay\Models\Store\EStoreInfo.cs" />
     <Compile Include="IQBPay\Models\System\EAliPayApplication.cs" />
     <Compile Include="IQBPay\Models\System\ESysConfig.cs" />
@@ -121,6 +124,7 @@
     <Compile Include="IQBWX\Models\WX\Template\TemplateData.cs" />
     <Compile Include="IQBWX\Models\WX\Template\TemplateField.cs" />
     <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="Model\BaseInPage.cs" />
     <Compile Include="Model\BasePageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WxSDK\Config.cs" />

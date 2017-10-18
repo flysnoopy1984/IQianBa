@@ -164,9 +164,6 @@ namespace IQBPay.Controllers
         public ActionResult Index()
         {
 
-
-
-
             return View();
         }
 

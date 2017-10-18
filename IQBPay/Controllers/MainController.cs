@@ -12,6 +12,7 @@ using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using IQBCore.IQBPay;
+using IQBCore.Common.Constant;
 
 namespace IQBPay.Controllers
 {
@@ -34,7 +35,7 @@ namespace IQBPay.Controllers
             {
                 using (AliPayContent db = new AliPayContent(true))
                 {
-                    if(IQBConfig.NeedDefaultQRModule)
+                    if(IQBConstant.NeedDefaultQRModule)
                     {
                         EQRInfo delqr = db.DBQRInfo.Where(a=>a.Channel == Channel.PPAuto).FirstOrDefault();
                         if (delqr != null)
@@ -122,7 +123,7 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        public ActionResult AppQuery(int pageIndex = 0, int pageSize = IQBConfig.PageSize)
+        public ActionResult AppQuery(int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             //throw new Exception("Test Error");
           

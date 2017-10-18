@@ -1,4 +1,5 @@
-﻿using IQBCore.IQBPay.Models.AccountPayment;
+﻿using IQBCore.Common.Constant;
+using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.Result;
 using IQBPay.Core;
@@ -36,7 +37,7 @@ namespace IQBPay.Controllers
 
 
         [HttpPost]
-        public ActionResult Query(int pageIndex = 0, int pageSize = IQBConfig.PageSize)
+        public ActionResult Query(int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             List<ETransferAmount> result = new List<ETransferAmount>();
             try

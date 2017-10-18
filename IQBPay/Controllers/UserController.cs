@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using IQBCore.IQBPay.BaseEnum;
+using IQBCore.Common.Constant;
 
 namespace IQBPay.Controllers
 {
@@ -80,7 +81,7 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(UserRole role= UserRole.Agent, int pageIndex = 0, int pageSize = IQBConfig.PageSize)
+        public ActionResult Query(UserRole role= UserRole.Agent, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             List<EUserInfo> result = new List<EUserInfo>();
             IQueryable<EUserInfo> list = null;

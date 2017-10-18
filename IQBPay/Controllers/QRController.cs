@@ -11,6 +11,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.Common.Constant;
 
 namespace IQBPay.Controllers
 {
@@ -33,7 +34,7 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(QRType QRType, int pageIndex = 0, int pageSize = IQBConfig.PageSize)
+        public ActionResult Query(QRType QRType, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             List<EQRInfo> result = new List<EQRInfo>();
             try

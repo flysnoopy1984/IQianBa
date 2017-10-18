@@ -1,8 +1,10 @@
 ﻿#AgentList
 {
     width:70%;
-     display: block;
-    overflow: hidden;
+    height:500px;
+    display: block;
+    overflow-y:auto;
+    overflow-x:hidden;
     white-space:nowrap; /*处理块元素中的空白符和换行*/
     margin:0px auto;
 }

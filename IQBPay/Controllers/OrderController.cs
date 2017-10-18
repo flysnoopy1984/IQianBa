@@ -1,5 +1,7 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.IQBPay.Models.Order;
+using IQBCore.IQBPay.Models.Result;
 using IQBPay.Core;
 using IQBPay.DataBase;
 using System;
@@ -30,32 +32,92 @@ namespace IQBPay.Controllers
             return View();
         }
 
-
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Query(OrderType type = OrderType.Normal,int pageIndex = 0, int pageSize = IQBConfig.PageSize)
+        public ActionResult QuerySum(InOrderSum parameter)
         {
-            List<EOrderInfo> result = new List<EOrderInfo>();
+            string sqlFormat = @"select AgentName,AgentOpenId,SUM(RateAmount) as RemainAmount from orderinfo 
+                            where OrderStatus = 1 and OrderType=0 and AgentName='{0}'
+                            GROUP BY AgentName";
+            string sql;
+
+            List<RUser_OrderSum> result = new List<RUser_OrderSum>();
             try
             {
-                string openId = this.GetOpenId(true);
-
                 using (AliPayContent db = new AliPayContent())
                 {
-                    var list = db.DBOrder.OrderByDescending(i => i.TransDate);
-                    int totalCount = list.Count();
-                    if (pageIndex == 0)
+                    sql = string.Format(sqlFormat, parameter.AgentName);
+                    if (parameter.AgentName == "*")
                     {
-                        result = list.Take(pageSize).ToList();
+                        sql = @"select AgentName,AgentOpenId,SUM(RateAmount) as RemainAmount from orderinfo 
+                            where OrderStatus = 1 and OrderType=0
+                            GROUP BY AgentName";
+                    }
+                    var list = db.Database.SqlQuery<RUser_OrderSum>(sql).ToList();
+
+                    int totalCount = list.Count();
+                    if (parameter.PageIndex == 0)
+                    {
+                        result = list.Take(parameter.PageSize).ToList();
 
                         if (result.Count > 0)
                             result[0].TotalCount = totalCount;
                     }
                     else
-                        result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+                        result = list.Skip(parameter.PageIndex * parameter.PageSize).Take(parameter.PageSize).ToList();
                 }
-                
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
+            return Json(result);
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="Remark">OrderList.js调用</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Query(InOrder parameter)
+        {
+            List<EOrderInfo> result = new List<EOrderInfo>();
+            try
+            {
+                string openId = this.GetOpenId(true);
+               
+                using (AliPayContent db = new AliPayContent())
+                {
+                    var list = db.DBOrder.Where(o => o.OrderStatus == parameter.OrderStatus
+                                               && o.OrderType == parameter.OrderType)
+                                        .OrderByDescending(i => i.TransDate);
+                    if (parameter.OrderStatus == OrderStatus.ALL)
+                    {
+                        list = db.DBOrder.Where(o=>o.OrderType == parameter.OrderType)
+                                        .OrderByDescending(i => i.TransDate);
+
+                    }
+                    
+                    
+                    int totalCount = list.Count();
+                    if (parameter.PageIndex == 0)
+                    {
+                        result = list.Take(parameter.PageSize).ToList();
+
+                        if (result.Count > 0)
+                            result[0].TotalCount = totalCount;
+                    }
+                    else
+                        result = list.Skip(parameter.PageIndex * parameter.PageSize).Take(parameter.PageSize).ToList();
+                }
             }
             catch (Exception ex)
             {
