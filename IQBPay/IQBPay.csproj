@@ -465,6 +465,7 @@
     <Content Include="scripts\Component\IQBTable.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\Web\DoTransfer.js" />
+    <Content Include="scripts\Web\DoTransfer_OrderDetail.js" />
     <Content Include="scripts\Web\Info_Win_Order_Transfer.js" />
     <Content Include="scripts\Web\TransferList.js" />
     <Content Include="scripts\Web\UserInfo.js" />
@@ -590,6 +591,7 @@
     <Content Include="Views\Transfer\List.cshtml" />
     <Content Include="Views\Order\Info_Win.cshtml" />
     <Content Include="Views\Transfer\DoTransfer.cshtml" />
+    <Content Include="Views\Order\Info_DoTransferOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

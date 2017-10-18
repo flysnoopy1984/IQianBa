@@ -28,7 +28,7 @@
     overflow-x: hidden;
     overflow-y: auto;
 }
-
+/*
 #FixHeaderTable::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
@@ -52,6 +52,14 @@
 									   color-stop(0.72, rgb(73,125,189)),
 									   color-stop(0.86, rgb(28,58,148)));
 }
+*/
+.divNextButton
+{
+    margin-top:15px;
+    width:90%;
+    text-align:center;
+}
+
 
 
 

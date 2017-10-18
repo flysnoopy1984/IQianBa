@@ -3,7 +3,10 @@ var type = GetUrlParam("type");
 
 $(document).ready(function () {
 
-   
+    if (Id == null || Id == "" || Id == undefined) {
+        alert("未获取参数");
+        window.close();
+    }
     Query(Id,type);
 });
 

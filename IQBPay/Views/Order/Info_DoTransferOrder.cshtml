@@ -1,0 +1,51 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>转账订单详情</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/main.css" rel="stylesheet" />
+    <link href="~/Content/Style/Web/FixTableList.css" rel="stylesheet" />
+    <script src="~/scripts/Component/IQBTable.js"></script>
+    <link href="~/Content/Style/Web/InfoWin.css" rel="stylesheet" />
+
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/scripts/Web/Common.js"></script>
+    <script src="~/scripts/Web/DoTransfer_OrderDetail.js"></script>
+
+</head>
+<body>
+    <div class="InfoContainer" style="width:1000px;">
+        <div class="fix-header-table" id="FixHeaderTable">
+
+            <div class="divH" id="divTableHeader">
+                <table id="TableHeader" class="table table-hover table-bordered TableOverflowHidden">
+                    <thead class="cf">
+                        <tr id="trHeader">
+                            <th style="width:200px;">交易时间</th>
+                            <th style='width:200px;'>订单编号</th>
+                            <th style="width:200px;">总金额</th>
+                            <th style="width:200px;">代理实际收入</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div id="divTableBody" class="divB" style="height: 450px;">
+                <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden"></table>
+            </div>
+
+            <div id="divProcess" style="height:450px;line-height:450px;text-align:center;display:none;">
+                数据加载中。。。
+            </div>
+        </div>
+        <div class="divNextButton"><button type="button" class="btn btn-success" style="width:180px; height:40px;" onclick="Next();">下一页</button></div>
+    </div>
+</body>
+</html>

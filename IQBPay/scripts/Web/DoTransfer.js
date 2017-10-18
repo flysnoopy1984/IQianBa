@@ -12,7 +12,7 @@ function Query(NeedClearn,_PageIndex)
         success: function (data) {
             var arrLen = data.length;
             if (NeedClearn) {
-                $("#trContainer").empty();
+                $("#AgentList li").not(".liHeader").remove();
             }
 
             if (arrLen > 0) {
@@ -35,16 +35,21 @@ function Query(NeedClearn,_PageIndex)
     });
 }
 
-function generateData(data)
-{
-    strCtrl = "";
-    strCtrl += "<li class='liBody'>";
-    strCtrl += "<div>" + data[i].AgentName + "</div>";
-    strCtrl += "<div><a href='#'>&yen " + data[i].RemainAmount + "</a> </div>";
+function generateData(result)
+{ 
+    $.each(result, function (i) {
+        strCtrl = "";
+        strCtrl += "<li class='liBody'>";
+        strCtrl += "<div class='liBodyDivLeft'>" + result[i].AgentName + "</div>";
+        strCtrl += "<div class='liBodyDivLeft'><a href='#'>&yen " + result[i].RemainAmount + "</a> </div>";
+        strCtrl += "<div class='liBodyDivRight'>";
+        strCtrl += "<button type='button' class='btn btn-success' onclick='TransferToUser();'>打款</button>";
+        strCtrl += "<a href=/Order/Info_DoTransferOrder?AgentOpenId=" + result[i].AgentOpenId + " target='_blank' class='td'>详情</a>";
+        strCtrl +="</div>";
+        strCtrl += "</li>";
 
-    strCtrl += "</li>";
-
-
+        $("#AgentList").append(strCtrl);
+    });
 }
 
 function btnSearch()
@@ -67,4 +72,9 @@ function CloseProcess() {
     //$("#btnSearch").attr("disabled", false);
     //$("#divTableBody").show();
     //$("#divProcess").hide();
+}
+
+function ShowOrderDetail()
+{
+
 }

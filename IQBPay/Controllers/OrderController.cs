@@ -32,6 +32,10 @@ namespace IQBPay.Controllers
             return View();
         }
 
+         public ActionResult Info_DoTransferOrder()
+        {
+            return View();
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -97,7 +101,8 @@ namespace IQBPay.Controllers
                 using (AliPayContent db = new AliPayContent())
                 {
                     var list = db.DBOrder.Where(o => o.OrderStatus == parameter.OrderStatus
-                                               && o.OrderType == parameter.OrderType)
+                                               && o.OrderType == parameter.OrderType
+                                               && (string.IsNullOrEmpty(parameter.AgentName) || parameter.AgentName == o.AgentName))
                                         .OrderByDescending(i => i.TransDate);
                     if (parameter.OrderStatus == OrderStatus.ALL)
                     {
@@ -122,6 +127,47 @@ namespace IQBPay.Controllers
             catch (Exception ex)
             {
                 Log.log("Order Query Error:" + ex.Message);
+                return Content(ex.Message);
+            }
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult QueryForDoTransferOrder(InOrder parameter)
+        {
+            List<RUser_Order> result = new List<RUser_Order>();
+            string sqlFormat = @"select OrderNo,TransDateStr,TotalAmount,RealTotalAmount from orderinfo 
+                            where OrderStatus = 1 and OrderType=0 and AgentOpenId='{0}'";
+                           
+            string sql;
+
+            try
+            {
+              
+               
+                using (AliPayContent db = new AliPayContent())
+                {
+                    sql = string.Format(sqlFormat, parameter.AgentOpenId);
+
+                    var list = db.Database.SqlQuery<RUser_Order>(sql).ToList();
+
+
+
+                    int totalCount = list.Count();
+                    if (parameter.PageIndex == 0)
+                    {
+                        result = list.Take(parameter.PageSize).ToList();
+
+                        if (result.Count > 0)
+                            result[0].TotalCount = totalCount;
+                    }
+                    else
+                        result = list.Skip(parameter.PageIndex * parameter.PageSize).Take(parameter.PageSize).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.log("QueryForDoTransferOrder Error:" + ex.Message);
                 return Content(ex.Message);
             }
             return Json(result);

@@ -38,12 +38,12 @@ function Query(NeedClearn,_PageIndex) {
 
     var url = "/Order/Query";
     var OrderStatus = $("#cOrderStatus").val();
-   
-
+    var AgentName = $("#cAgentName").val();
     ShowProcess();
+    
     $.ajax({
         type: 'post',
-        data: "OrderStatus=" + OrderStatus + "&OrderType=0&pageIndex=" + _PageIndex,
+        data: "OrderStatus=" + OrderStatus + "&OrderType=0&AgentName="+AgentName+"&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -52,7 +52,9 @@ function Query(NeedClearn,_PageIndex) {
             }
            
             if (arrLen > 0) {
+                
                 generateData(data);
+                CloseProcess();//必须在计算宽度时关闭进度显示，不然将影响表格的呈现
                 SetWidth();
                 pageIndex++;
             }
@@ -60,8 +62,9 @@ function Query(NeedClearn,_PageIndex) {
             {
                 pageIndex--;
                 alert("没有数据了");
+                CloseProcess();
+
             }
-            CloseProcess();
         },
         error: function (xhr, type) {
 
@@ -112,7 +115,7 @@ function generateData(result) {
         strCtrl += "<tr>";
 
         strCtrl += "<td><a href=/Transfer/Info_Win?id=" + result[i].OrderNo + "&type=1  target='_blank' class='td'>结算信息</a>";
-        strCtrl += " <input type='hidden' value='" + result[i].FilePath + "'</td>";
+        strCtrl += "</td>";
         //订单编号
         tdWidth = "width:"+ $("#trHeader th").eq(1).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].OrderNo + "</td>";

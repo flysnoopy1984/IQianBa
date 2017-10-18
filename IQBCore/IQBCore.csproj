@@ -110,6 +110,7 @@
     <Compile Include="IQBPay\Models\QR\EQRInfo.cs" />
     <Compile Include="IQBPay\Models\QR\EQRUser.cs" />
     <Compile Include="IQBPay\Models\Result\ROrder_Transfer.cs" />
+    <Compile Include="IQBPay\Models\Result\RUser_Order.cs" />
     <Compile Include="IQBPay\Models\Result\RUser_OrderSum.cs" />
     <Compile Include="IQBPay\Models\Store\EStoreInfo.cs" />
     <Compile Include="IQBPay\Models\System\EAliPayApplication.cs" />

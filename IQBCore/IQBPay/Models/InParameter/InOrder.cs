@@ -12,6 +12,9 @@ namespace IQBCore.IQBPay.Models.InParameter
     {
         public OrderStatus OrderStatus { get; set; }
 
+        public string AgentName { get; set; }
+        public string AgentOpenId { get; set; }
+
         public OrderType OrderType { get; set; }
 
         public InOrder()

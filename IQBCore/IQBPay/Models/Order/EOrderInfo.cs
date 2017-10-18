@@ -92,7 +92,7 @@ namespace IQBCore.IQBPay.Models.Order
 
         public DateTime TransDate { get; set; }
 
-        [NotMapped]
+    
         public string TransDateStr { get; set; }
 
         public DateTime AliPayTransDate { get; set; }
