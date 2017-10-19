@@ -1,4 +1,5 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.Result;
@@ -14,7 +15,7 @@ namespace IQBPay.Controllers
 {
     public class OrderController : BaseController
     {
-
+        public string OpenId { get; set; }
         // GET: Order
         public ActionResult Index()
         {
@@ -36,6 +37,14 @@ namespace IQBPay.Controllers
         {
             return View();
         }
+
+        [IQBPayAuthorize]
+        public ActionResult MyList()
+        {
+            ViewBag.OpenId = this.GetUserSession().OpenId;
+            return View();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -102,8 +111,15 @@ namespace IQBPay.Controllers
                 {
                     var list = db.DBOrder.Where(o => o.OrderStatus == parameter.OrderStatus
                                                && o.OrderType == parameter.OrderType
-                                               && (string.IsNullOrEmpty(parameter.AgentName) || parameter.AgentName == o.AgentName))
+                                               && (string.IsNullOrEmpty(parameter.AgentName) || parameter.AgentName == o.AgentName)
+                                               
+                                               )
                                         .OrderByDescending(i => i.TransDate);
+                    if(parameter.DataType == ConditionDataType.Today)
+                    {
+                           
+                    }
+
                     if (parameter.OrderStatus == OrderStatus.ALL)
                     {
                         list = db.DBOrder.Where(o=>o.OrderType == parameter.OrderType)
@@ -143,21 +159,15 @@ namespace IQBPay.Controllers
 
             try
             {
-              
-               
                 using (AliPayContent db = new AliPayContent())
                 {
                     sql = string.Format(sqlFormat, parameter.AgentOpenId);
 
                     var list = db.Database.SqlQuery<RUser_Order>(sql).ToList();
-
-
-
                     int totalCount = list.Count();
                     if (parameter.PageIndex == 0)
                     {
                         result = list.Take(parameter.PageSize).ToList();
-
                         if (result.Count > 0)
                             result[0].TotalCount = totalCount;
                     }

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using IQBCore.Model;
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -9,7 +10,13 @@
     <link href="~/Content/Style/Frame1/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/Style/Frame1/loader-style.css" rel="stylesheet" />
     <link href="~/Content/main.css" rel="stylesheet" />
-
+    <script type="text/javascript">
+        function ExitWeb()
+        {
+            alert("退出登录！");
+            window.location.href = "/Main/Login?action=exit";
+        }
+    </script>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -43,105 +50,9 @@
         <div class="skin-part">
             <div id="tree-wrap">
                 <div class="side-bar">
-                    <ul class="topnav menu-left-nest">
-                        <li>
-                            <a href="#" style="border-left:0px solid!important;" class="title-menu-left">
-
-                                <span class="widget-menu"></span>
-                                <i data-toggle="tooltip" class="entypo-cog pull-right config-wrap"></i>
-
-                            </a>
-                        </li>
-                        <li>
-                            <a class="tooltip-tip ajax-load" href="#" title="订单管理">
-                                <i class="icon-feed"></i>
-                                <span>系统管理</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/Main/AppList" title="应用APP"><i class="icon icon-user"></i><span>应用APP</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="tooltip-tip ajax-load" href="#" title="二维码管理">
-                                <i class="icon-document-edit"></i>
-                                <span>二维码管理</span>
-                            </a>
-                            <ul>
-                                @*<li>
-                                    <a class="tooltip-tip2 ajax-load" href="/QR/ARDefaultInfo" title="平台默认授权码"><i class="icon icon-user"></i><span>平台默认授权码</span></a>
-                                </li>*@
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/QR/ARList" title="代理授权码"><i class="icon icon-user"></i><span>代理授权码</span></a>
-                                </li>
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/QR/AuthList" title="商户授权码"><i class="icon icon-user"></i><span>商户授权码</span></a>
-                                </li>
-                               
-                            </ul>
-                        </li> 
-                        <li>
-                            <a class="tooltip-tip ajax-load" href="#" title="Media">
-                                <i class="icon-camera"></i>
-                                <span>代理管理</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/User/List" title="代理列表"><i class="icon icon-user"></i><span>代理列表</span></a>
-                                </li>
-                            </ul>
-                        </li> 
-                        <li>
-                            <a class="tooltip-tip ajax-load" href="#" title="Media">
-                                <i class="icon-camera"></i>
-                                <span>商户管理</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/Store/List?Channel=0" title="平台商户"><i class="icon icon-user"></i><span>平台商户</span></a>
-                                </li>
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/Store/List?Channel=1" title="加盟商户"><i class="icon icon-user"></i><span>加盟商户</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="tooltip-tip ajax-load" href="#" title="单据管理">
-                                <i class="icon-feed"></i>
-                                <span>单据管理</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/Order/List" title="订单列表"><i class="icon icon-user"></i><span>订单列表</span></a>
-                                </li>  
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/Transfer/List" title="汇款列表"><i class="icon icon-user"></i><span>汇款列表</span></a>
-                                </li>  
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/Transfer/DoTransfer" title="汇款管理"><i class="icon icon-user"></i><span>汇款管理</span></a>
-                                </li>  
-                                  
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="tooltip-tip ajax-load" href="#" title="用户自助">
-                                <i class="icon-feed"></i>
-                                <span>用户自助</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/User/Profile" title="我的资料"><i class="icon icon-user"></i><span>我的资料</span></a>
-                                </li>
-                                <li>
-                                    <a class="tooltip-tip2 ajax-load" href="/Order/MyList" title="我的订单"><i class="icon icon-user"></i><span>我的订单</span></a>
-                                </li>
-                                @*<li>
-                                    <a class="tooltip-tip2 ajax-load" href="/QR/MyList" title="我的收款二维码"><i class="icon icon-user"></i><span>我的收款二维码</span></a>
-                                </li>*@
-                            </ul>
-                        </li>  
-                    </ul>
+                  @{
+                       Html.RenderAction("MenuList");
+                   }
                 </div>
             </div>
         </div>
@@ -153,12 +64,18 @@
         <div id="ulRightTopBar">
             <ul  class="UlHorizontal">
                 <li>
-                    <img class="img-profile" src="@Session["UserHeaderImg"]" />
-                    <span>Hi User 你好！</span>
+                    @{
+                        UserSession userSession = Session["UserSession"] as UserSession;
+                        if (userSession != null)
+                        {
+                            <img class="img-profile" src="@userSession.Headimgurl" />
+                            <span>Hi @userSession.Name 你好！</span>
+                        }
+                    }    
                 </li>
                 <li>
-                    <a>
-                        <span class="icon-gear"></span>&nbsp;&nbsp;Setting
+                    <a href="#" onclick="javascript:ExitWeb();">
+                        <span class="icon-gear"></span>&nbsp;&nbsp;退出
                     </a>
                 </li>
             </ul>

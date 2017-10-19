@@ -467,6 +467,7 @@
     <Content Include="scripts\Web\DoTransfer.js" />
     <Content Include="scripts\Web\DoTransfer_OrderDetail.js" />
     <Content Include="scripts\Web\Info_Win_Order_Transfer.js" />
+    <Content Include="scripts\Web\OrderMyList.js" />
     <Content Include="scripts\Web\TransferList.js" />
     <Content Include="scripts\Web\UserInfo.js" />
     <Content Include="scripts\Web\UserList.js" />
@@ -533,7 +534,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Main\Home.cshtml" />
     <Content Include="Views\User\Profile.cshtml" />
-    <Content Include="Views\Order\MyList.cshtml" />
     <Content Include="Views\AliPay\PP.cshtml" />
     <Content Include="Content\Style\Frame1\as\js\footable\css\fonts\footable %281%29.eot" />
     <Content Include="Content\Style\Frame1\as\js\footable\css\fonts\footable.eot" />
@@ -586,12 +586,14 @@
     <Content Include="Views\Order\Info.cshtml" />
     <Content Include="Views\User\List.cshtml" />
     <Content Include="Views\User\Info.cshtml" />
-    <Content Include="Views\Order\TestDiv.cshtml" />
     <Content Include="Views\Transfer\Info_Win.cshtml" />
     <Content Include="Views\Transfer\List.cshtml" />
     <Content Include="Views\Order\Info_Win.cshtml" />
     <Content Include="Views\Transfer\DoTransfer.cshtml" />
     <Content Include="Views\Order\Info_DoTransferOrder.cshtml" />
+    <Content Include="Views\Shared\MenuList.cshtml" />
+    <Content Include="Views\Order\MyList.cshtml" />
+    <Content Include="Views\Transfer\MyList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

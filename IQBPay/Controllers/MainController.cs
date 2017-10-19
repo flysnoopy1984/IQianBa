@@ -91,6 +91,18 @@ namespace IQBPay.Controllers
 
         public ActionResult Login()
         {
+
+           
+            string action = Request.QueryString["action"];
+            if(action == "exit")
+            {
+                base.ExitSession();
+            }
+            if (GetUserSession() != null)
+            {
+                return RedirectToAction("Profile", "User");
+            }
+
             string WXurl =  ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
             ViewData["WXUrl"] = WXurl+ "?logintype=pp";
             return View();
@@ -98,7 +110,7 @@ namespace IQBPay.Controllers
 
         public ActionResult WebEntry(string openId)
         {
-            SetOpenId(openId);
+            this.SetUserSession(openId);
             return RedirectToAction("Profile", "User");
         }
 

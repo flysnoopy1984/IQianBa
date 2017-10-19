@@ -12,6 +12,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using IQBCore.IQBPay.BaseEnum;
 using IQBCore.Common.Constant;
+using IQBCore.IQBPay.BLL;
 
 namespace IQBPay.Controllers
 {
@@ -23,20 +24,22 @@ namespace IQBPay.Controllers
             return View();
         }
 
+        [IQBPayAuthorize]
         public ActionResult List()
         {
             return View();
         }
 
+        [IQBPayAuthorize]
         public ActionResult Info()
         {
             return View();
         }
 
-        public ActionResult Profile()
+        [IQBPayAuthorize]
+        public new ActionResult Profile()
         {
-            string OpenId = this.GetOpenId(true);
-            UserHeaderImg = "http://wx.qlogo.cn/mmopen/v6XbW38nFORmMzMtm1VjI3WYE7onmicI6UheCgyKJZwPFWTRXSTZqVROYkdllKNGzF82uicVp1ZLPGM9dGKe0KbgE0NVPicWWg7/0";
+
             return View();
         }
 

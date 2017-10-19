@@ -91,6 +91,14 @@ namespace IQBCore.IQBPay.BaseEnum
         ALL = 99,
     }
 
+    public enum ConditionDataType
+    {
+        Today =1,
+        Week =2,
+        Month =3,
+        All = 99,
+    }
+
     public enum  OrderType
     {
         Normal=0,

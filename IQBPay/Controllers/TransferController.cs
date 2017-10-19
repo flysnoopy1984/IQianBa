@@ -35,6 +35,10 @@ namespace IQBPay.Controllers
             return View();
         }
 
+        public ActionResult MyList()
+        {
+            return View();
+        }
 
         [HttpPost]
         public ActionResult Query(int pageIndex = 0, int pageSize = IQBConstant.PageSize)

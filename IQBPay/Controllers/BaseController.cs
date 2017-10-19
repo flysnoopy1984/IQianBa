@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.Store;
 using WxPayAPI;
+using IQBCore.Model;
 
 namespace IQBPay.Controllers
 {
@@ -34,6 +35,8 @@ namespace IQBPay.Controllers
         {
             _App = null;
         }
+
+       
 
         public static void CleanSubAccount()
         {
@@ -87,10 +90,29 @@ namespace IQBPay.Controllers
             
         }
 
-        protected void SetOpenId(string openId)
+        protected void SetUserSession(string openId)
         {
-            Session["OpenId"] = openId;
-        } 
+            using (AliPayContent db = new AliPayContent())
+            {
+                string sql = string.Format("select OpenId,UserRole,Headimgurl,Name from userInfo where OpenId ='{0}'", openId);
+                UserSession userSession = db.Database.SqlQuery<UserSession>(sql).FirstOrDefault();
+                Session["UserSession"] = userSession;
+            }
+        }
+
+        protected UserSession GetUserSession()
+        {
+            UserSession userSession = Session["UserSession"] as UserSession;
+            return userSession;
+        }
+
+        public void ExitSession()
+        {
+            Session["UserSession"] = null;
+        }
+
+
+
         protected string GetOpenId(bool isTest = false)
         {
             if (isTest) return "orKUAw16WK0BmflDLiBYsR-Kh5bE";
@@ -102,29 +124,29 @@ namespace IQBPay.Controllers
             return openId;
         }
 
-        public string UserHeaderImg
-        {
-            get
-            {
-                return (string)Session["UserHeaderImg"];
-            }
-            set
-            {
-                Session["UserHeaderImg"] = value;
-            }
+        //public string UserHeaderImg
+        //{
+        //    get
+        //    {
+        //        return (string)Session["UserHeaderImg"];
+        //    }
+        //    set
+        //    {
+        //        Session["UserHeaderImg"] = value;
+        //    }
 
-        }
+        //}
 
-        public UserRole UserRole
-        {
-            get {
-                return (UserRole)Enum.Parse(typeof(UserRole),Convert.ToString(Session["UserRole"]));
-            }
-            set
-            {
-                Session["UserRole"] = value;
-            }
-        }
+        //public UserRole UserRole
+        //{
+        //    get {
+        //        return (UserRole)Enum.Parse(typeof(UserRole),Convert.ToString(Session["UserRole"]));
+        //    }
+        //    set
+        //    {
+        //        Session["UserRole"] = value;
+        //    }
+        //}
 
         public string getAccessToken(Boolean isRefresh = false)
         {
@@ -137,6 +159,18 @@ namespace IQBPay.Controllers
             }
             return accessToken;
 
+        }
+
+        public ActionResult MenuList()
+        {
+            UserSession userSession = GetUserSession();
+            if (userSession == null)
+            {
+                userSession = new UserSession();
+                userSession.UserRole = UserRole.NormalUser;
+            }
+            ViewBag.UserRole = Convert.ToInt32(userSession.UserRole);
+            return PartialView("MenuList");
         }
 
 

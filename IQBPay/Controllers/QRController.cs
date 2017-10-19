@@ -27,9 +27,6 @@ namespace IQBPay.Controllers
         public ActionResult ARList()
         {
             Session["OpenId"] = this.GetOpenId(true);
-
-
-         
             return View();
         }
 
