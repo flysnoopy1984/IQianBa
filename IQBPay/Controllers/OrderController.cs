@@ -119,6 +119,14 @@ namespace IQBPay.Controllers
                     {
                            
                     }
+                    else if(parameter.DataType == ConditionDataType.Week)
+                    {
+
+                    }
+                    else if (parameter.DataType == ConditionDataType.Month)
+                    {
+
+                    }
 
                     if (parameter.OrderStatus == OrderStatus.ALL)
                     {
