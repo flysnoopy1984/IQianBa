@@ -1,4 +1,5 @@
-﻿using IQBCore.IQBPay.BaseEnum;
+﻿using IQBCore.Common.Helper;
+using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.IQBPay.Models.Order;
@@ -7,6 +8,7 @@ using IQBPay.Core;
 using IQBPay.DataBase;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -105,37 +107,45 @@ namespace IQBPay.Controllers
             List<EOrderInfo> result = new List<EOrderInfo>();
             try
             {
-                string openId = this.GetOpenId(true);
+
                
                 using (AliPayContent db = new AliPayContent())
                 {
-                    var list = db.DBOrder.Where(o => o.OrderStatus == parameter.OrderStatus
-                                               && o.OrderType == parameter.OrderType
-                                               && (string.IsNullOrEmpty(parameter.AgentName) || parameter.AgentName == o.AgentName)
-                                               
-                                               )
-                                        .OrderByDescending(i => i.TransDate);
-                    if(parameter.DataType == ConditionDataType.Today)
+
+                    var list = db.DBOrder.Where(o=>o.OrderType == parameter.OrderType);
+                    if(!string.IsNullOrEmpty(parameter.AgentOpenId))
                     {
-                           
+                        list = list.Where(o => o.AgentOpenId == parameter.AgentOpenId);
+                    }
+                    if (!string.IsNullOrEmpty(parameter.AgentName))
+                    { 
+                        list=list.Where(o => o.AgentName == parameter.AgentName);
+                    }
+
+                    if(parameter.OrderStatus != OrderStatus.ALL)
+                    {
+                        list=list.Where(o => o.OrderStatus == parameter.OrderStatus);
+                    }
+
+                    if (parameter.DataType == ConditionDataType.Today)
+                    {
+                        list = list.Where(o => o.TransDate == DateTime.Today);
                     }
                     else if(parameter.DataType == ConditionDataType.Week)
                     {
+                        DateTime startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
+                        DateTime endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
+                        list = list.Where(o => o.TransDate >= startDate && o.TransDate<= endDate);
 
                     }
                     else if (parameter.DataType == ConditionDataType.Month)
                     {
-
+                        DateTime startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
+                        DateTime endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
+                        list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
                     }
 
-                    if (parameter.OrderStatus == OrderStatus.ALL)
-                    {
-                        list = db.DBOrder.Where(o=>o.OrderType == parameter.OrderType)
-                                        .OrderByDescending(i => i.TransDate);
-
-                    }
-                    
-                    
+                    list = list.OrderByDescending(i => i.TransDate);
                     int totalCount = list.Count();
                     if (parameter.PageIndex == 0)
                     {
@@ -151,7 +161,7 @@ namespace IQBPay.Controllers
             catch (Exception ex)
             {
                 Log.log("Order Query Error:" + ex.Message);
-                return Content(ex.Message);
+                throw ex;
             }
             return Json(result);
         }

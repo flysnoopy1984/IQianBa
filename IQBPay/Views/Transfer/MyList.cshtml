@@ -1,8 +1,70 @@
 ﻿
 @{
-    ViewBag.Title = "MyList";
+    ViewBag.Title = "我的汇款记录";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>MyList</h2>
+@section SubMenu1{
+    我的汇款记录
+}
+@section SubMenu2{
+    列表
+}
+<link href="~/Content/Style/Web/List.css" rel="stylesheet" />
+<link href="~/Content/Style/Web/FixTableList.css" rel="stylesheet" />
+<script src="~/scripts/Web/Common.js"></script>
+<script src="~/scripts/Component/IQBTable.js"></script>
+<script src="~/scripts/Web/TransferMyList.js"></script>
+<div id="ListArea">
+    <div id="Title" style="margin:0px;">
+        <span id="ListTitleName">我的汇款记录</span>
+        <hr />
+        <div class="ListCondition">
+            <ul class="UlHorizontal">
+                <li>
+                    <label>日期：</label>
+                    <select id="cDateType" class="form-control ConditionField">
+                        <option value="1" selected>今天</option>
+                        <option value="2">本周</option>
+                        <option value="3">本月</option>
+                        <option value="99">全部</option>
+                    </select>
+                </li>
+            </ul>
+
+        </div>
+        <ul class="UlHorizontal ListButtonRight">
+            <li>
+                <button id="btnSearch" type="button" class="btn btn-primary" onclick="btnSearch();">查询</button>
+            </li>
+        </ul>
+    </div>
+    <div id="ListContent">
+        <div class="fix-header-table" id="FixHeaderTable">
+            <div class="divH" id="divTableHeader">
+                <table id="TableHeader" class="table table-hover table-bordered TableOverflowHidden">
+                    <thead class="cf">
+                        <tr id="trHeader">
+                            <th style="width:150px;"> 操作</th>
+                            <th style='width:250px;'>汇款编号</th>
+                            <th style="width:200px;">汇款金额</th>
+                            <th style="width:200px;">汇款时间</th>
+                            <th style="width:200px;">对应的订单编号</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div id="divTableBody" class="divB" style="height: 450px;">
+                <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden"></table>
+            </div>
+            <div id="divProcess" style="height:450px;line-height:450px;text-align:center;display:none;">
+                数据加载中。。。
+            </div>
+        </div>
+        <div class="divNextButton" id="btnNext">
+            <button type="button" class="btn btn-success" style="width:250px; height:60px;" onclick="Next();">下一页</button>
+        </div>
+        <input id="OpenId" type="hidden" value="@ViewBag.OpenId" />
+    </div>
+</div>
 

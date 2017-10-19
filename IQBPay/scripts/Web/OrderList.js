@@ -1,7 +1,7 @@
 ﻿var pageIndex = -1;
 $(document).ready(function () {
   
-    Query(true,pageIndex+1);
+    //Query(true,pageIndex+1);
 });
 
 
@@ -19,6 +19,11 @@ function btnSearch()
 function Next()
 { 
     Query(false, pageIndex + 1);
+}
+
+function Query() {
+    pageIndex = -1;
+    Query(true, pageIndex + 1);
 }
 
 function ShowProcess()
@@ -39,17 +44,21 @@ function Query(NeedClearn,_PageIndex) {
     var url = "/Order/Query";
     var OrderStatus = $("#cOrderStatus").val();
     var AgentName = $("#cAgentName").val();
+    var DataType = $("#cDateType").val();
+
     ShowProcess();
+
+    if (NeedClearn) {
+        $("#trContainer").empty();
+    }
+
     
     $.ajax({
         type: 'post',
-        data: "OrderStatus=" + OrderStatus + "&OrderType=0&AgentName="+AgentName+"&pageIndex=" + _PageIndex,
+        data: "DataType=" + DataType + "&OrderStatus=" + OrderStatus + "&OrderType=0&AgentName=" + AgentName + "&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;
-            if (NeedClearn) {   
-                $("#trContainer").empty();
-            }
            
             if (arrLen > 0) {
                 
@@ -57,12 +66,14 @@ function Query(NeedClearn,_PageIndex) {
                 CloseProcess();//必须在计算宽度时关闭进度显示，不然将影响表格的呈现
                 SetWidth();
                 pageIndex++;
+                $("#btnNext").show();
             }
             else
             {
                 pageIndex--;
                 alert("没有数据了");
                 CloseProcess();
+                $("#btnNext").hide();
 
             }
         },
@@ -70,6 +81,7 @@ function Query(NeedClearn,_PageIndex) {
 
             alert('Ajax error!');
             CloseProcess();
+            $("#btnNext").hide();
 
         }
     });

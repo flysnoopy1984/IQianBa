@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Helper\UtilityHelper.cs" />
     <Compile Include="IQBPay\BLL\IQBPayAuthorizeAttribute .cs" />
     <Compile Include="Common\Constant\IQBConstant.cs" />
     <Compile Include="Common\Helper\HttpHelper.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="IQBPay\Models\InParameter\InF2F.cs" />
     <Compile Include="IQBPay\Models\InParameter\InOrder.cs" />
     <Compile Include="IQBPay\Models\InParameter\InOrderSum.cs" />
+    <Compile Include="IQBPay\Models\InParameter\InTransfer.cs" />
     <Compile Include="IQBPay\Models\Order\EOrderInfo.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\ETransferAmount.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashStore.cs" />

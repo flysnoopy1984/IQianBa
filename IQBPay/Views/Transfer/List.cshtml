@@ -18,9 +18,29 @@
 <div id="ListArea">
     <div id="Title" style="margin:0px;">
         <span id="ListTitleName">汇款列表</span>
+        <div class="ListCondition">
+            <ul class="UlHorizontal">
+                <li>
+                    <div class="form-group">
+                        <label>汇款对象：</label>
+                        <input id="cAgentName" type="text" class="form-control ConditionField">
+                    </div>
+                </li>
+                <li>
+                    <label>日期：</label>
+                    <select id="cDateType" class="form-control ConditionField">
+                        <option value="1" selected>今天</option>
+                        <option value="2">本周</option>
+                        <option value="3">本月</option>
+                        <option value="99">全部</option>
+                    </select>
+                </li>
+            </ul>
+
+        </div>
         <ul class="UlHorizontal" style="float:right">
             <li>
-                <button type="button" class="btn btn-primary" onclick="Query();">查询</button>
+                <button type="button" id="btnSearch" class="btn btn-primary" onclick="btnSearch();">查询</button>
             </li>
 
         </ul>
@@ -31,8 +51,8 @@
                 <table id="TableHeader" class="table table-hover table-bordered TableOverflowHidden">
                     <thead class="cf">
                         <tr id="trHeader">
-                            <th style="width:200px;"> 操作</th>
-                            <th style='width:200px;'>汇款编号</th>
+                            <th style="width:150px;"> 操作</th>
+                            <th style='width:250px;'>汇款编号</th>
                             <th style="width:200px;">汇款金额</th>
                             <th style="width:200px;">汇款对象</th>
                             <th style="width:200px;">汇款时间</th>
@@ -45,7 +65,10 @@
             <div id="divTableBody" class="divB" style="height: 450px;">
                 <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden"></table>
             </div>
+            <div id="divProcess" style="height:450px;line-height:450px;text-align:center;display:none;">
+                数据加载中。。。
+            </div>
         </div>
-        <div class="divNextButton"><button type="button" class="btn btn-success" style="width:250px; height:60px;" onclick="Next();">下一页</button></div>
+        <div class="divNextButton" id="btnNext"><button type="button" class="btn btn-success" style="width:250px; height:60px;" onclick="Next();">下一页</button></div>
     </div>
 </div>

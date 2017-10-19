@@ -469,6 +469,7 @@
     <Content Include="scripts\Web\Info_Win_Order_Transfer.js" />
     <Content Include="scripts\Web\OrderMyList.js" />
     <Content Include="scripts\Web\TransferList.js" />
+    <Content Include="scripts\Web\TransferMyList.js" />
     <Content Include="scripts\Web\UserInfo.js" />
     <Content Include="scripts\Web\UserList.js" />
     <Content Include="scripts\Web\App.js" />

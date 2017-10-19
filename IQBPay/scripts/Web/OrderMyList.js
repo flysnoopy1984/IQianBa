@@ -1,7 +1,7 @@
 ﻿var pageIndex = -1;
 $(document).ready(function () {
 
-   
+    
 });
 
 
@@ -22,6 +22,7 @@ function ShowProcess() {
     $("#btnSearch").attr("disabled", true);
     $("#divTableBody").hide();
     $("#divProcess").show();
+
 }
 function CloseProcess() {
     $("#btnSearch").attr("disabled", false);
@@ -34,12 +35,12 @@ function Query(NeedClearn, _PageIndex) {
     var url = "/Order/Query";
     var OrderStatus = $("#cOrderStatus").val();
     var AgentOpenId = $("#OpenId").val();
-
+    var DataType = $("#cDateType").val();
     ShowProcess();
 
     $.ajax({
         type: 'post',
-        data: "OrderStatus=" + OrderStatus + "&OrderType=0&AgentOpenId=" + AgentOpenId + "&pageIndex=" + _PageIndex,
+        data: "DataType=" + DataType + "&OrderStatus=" + OrderStatus + "&OrderType=0&AgentOpenId=" + AgentOpenId + "&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -48,16 +49,17 @@ function Query(NeedClearn, _PageIndex) {
             }
 
             if (arrLen > 0) {
-
                 generateData(data);
                 CloseProcess();//必须在计算宽度时关闭进度显示，不然将影响表格的呈现
                 SetWidth();
                 pageIndex++;
+                $("#btnNext").show();
             }
             else {
                 pageIndex--;
                 alert("没有数据了");
                 CloseProcess();
+                $("#btnNext").hide();
 
             }
         },
@@ -65,6 +67,7 @@ function Query(NeedClearn, _PageIndex) {
 
             alert('Ajax error!');
             CloseProcess();
+            $("#btnNext").hide();
 
         }
     });

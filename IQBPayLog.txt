@@ -1,3 +1,11 @@
 2017/10/5 18:26:40: User Get Error:未将对象引用设置到对象的实例。
 2017/10/5 22:22:48: Store Query Error:The property 'CreateDate' is not a String or Byte array. Length can only be configured for String and Byte array properties.
 2017/10/6 19:50:22: CreateMasterUrlById Error:未能解析此远程名称: 'wx.iqianba.cn'
+2017/10/19 20:51:51: Order Query Error:无法将类型为“System.Data.Entity.Infrastructure.DbQuery`1[IQBCore.IQBPay.Models.Order.EOrderInfo]”的对象强制转换为类型“System.Data.Entity.Core.Objects.ObjectQuery”。
+2017/10/19 20:53:25: Order Query Error:无法将类型为“System.Data.Entity.Infrastructure.DbQuery`1[IQBCore.IQBPay.Models.Order.EOrderInfo]”的对象强制转换为类型“System.Data.Entity.Core.Objects.ObjectQuery”。
+2017/10/19 20:53:39: Order Query Error:无法将类型为“System.Data.Entity.Infrastructure.DbQuery`1[IQBCore.IQBPay.Models.Order.EOrderInfo]”的对象强制转换为类型“System.Data.Entity.Core.Objects.ObjectQuery”。
+2017/10/19 23:39:59: Transfer Query Error:The method 'Skip' is only supported for sorted input in LINQ to Entities. The method 'OrderBy' must be called before the method 'Skip'.
+2017/10/19 23:40:49: Transfer Query Error:The method 'Skip' is only supported for sorted input in LINQ to Entities. The method 'OrderBy' must be called before the method 'Skip'.
+2017/10/19 23:41:39: Transfer Query Error:The method 'Skip' is only supported for sorted input in LINQ to Entities. The method 'OrderBy' must be called before the method 'Skip'.
+2017/10/20 0:10:36: Transfer Query Error:值不能为 null。
+参数名: source

@@ -1,20 +1,28 @@
 ﻿var pageIndex = -1;
 $(document).ready(function () {
-    //Query(true, pageIndex + 1);
+
+
 });
 
-function Next() {
-    Query(false, pageIndex + 1);
+
+function InitCondition() {
+
 }
+
 function btnSearch() {
     pageIndex = -1;
     Query(true, pageIndex + 1);
+}
+
+function Next() {
+    Query(false, pageIndex + 1);
 }
 
 function ShowProcess() {
     $("#btnSearch").attr("disabled", true);
     $("#divTableBody").hide();
     $("#divProcess").show();
+
 }
 function CloseProcess() {
     $("#btnSearch").attr("disabled", false);
@@ -22,39 +30,37 @@ function CloseProcess() {
     $("#divProcess").hide();
 }
 
-
 function Query(NeedClearn, _PageIndex) {
 
-    var AgentName = $("#cAgentName").val();
-    var DataType = $("#cDateType").val();
     var url = "/Transfer/Query";
-
+ 
+    var AgentOpenId = $("#OpenId").val();
+    var DataType = $("#cDateType").val();
     ShowProcess();
-
-    if (NeedClearn) {
-        $("#trContainer").empty();
-    }
 
     $.ajax({
         type: 'post',
-        data: "DataType=" + DataType + "&AgentName=" + AgentName + "&PageIndex=" + _PageIndex,
+        data: "DataType=" + DataType + "&AgentOpenId=" + AgentOpenId + "&PageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;
+            if (NeedClearn) {
+                $("#trContainer").empty();
+            }
 
             if (arrLen > 0) {
                 generateData(data);
-                CloseProcess();
+                CloseProcess();//必须在计算宽度时关闭进度显示，不然将影响表格的呈现
                 SetWidth();
                 pageIndex++;
                 $("#btnNext").show();
             }
-            else
-            {
+            else {
                 pageIndex--;
                 alert("没有数据了");
                 CloseProcess();
                 $("#btnNext").hide();
+
             }
         },
         error: function (xhr, type) {
@@ -87,18 +93,10 @@ function generateData(result) {
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferAmount + "</td>";
 
         tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].AgentName + "</td>";
-
-        tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + TransDate + "</td>";
 
-        tdWidth = "width:" + $("#trHeader th").eq(5).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].OrderNo + "</td>";
-
-        tdWidth = "width:" + $("#trHeader th").eq(6).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].Buyer_AliPayLoginId + "</td>";
-
-        
 
         strCtrl += "</tr>";
 
@@ -107,7 +105,3 @@ function generateData(result) {
     });
 }
 
-function ToInfo(action) {
-    window.location.href = "OrderInfo?do=" + action;
-    return;
-}

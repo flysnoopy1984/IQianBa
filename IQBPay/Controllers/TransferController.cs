@@ -1,5 +1,9 @@
 ﻿using IQBCore.Common.Constant;
+using IQBCore.Common.Helper;
+using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.AccountPayment;
+using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.Result;
 using IQBPay.Core;
@@ -35,32 +39,73 @@ namespace IQBPay.Controllers
             return View();
         }
 
+        [IQBPayAuthorize]
         public ActionResult MyList()
         {
+            ViewBag.OpenId = this.GetUserSession().OpenId;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Query(int pageIndex = 0, int pageSize = IQBConstant.PageSize)
+        public ActionResult Query(InTransfer parameter)
         {
             List<ETransferAmount> result = new List<ETransferAmount>();
             try
             {
-                string openId = this.GetOpenId(true);
-
                 using (AliPayContent db = new AliPayContent())
                 {
-                    var list = db.DBTransferAmount.OrderByDescending(i => i.TransDate);
-                    int totalCount = list.Count();
-                    if (pageIndex == 0)
+                    IQueryable<ETransferAmount> list = null;
+
+                    if (!string.IsNullOrEmpty(parameter.AgentName))
                     {
-                        result = list.Take(pageSize).ToList();
+                        list = db.DBTransferAmount.Where(o => o.AgentName == parameter.AgentName);
+                    }
+
+                    if (!string.IsNullOrEmpty(parameter.AgentOpenId))
+                    {
+                        if (list == null)
+                            list = db.DBTransferAmount.Where(o => o.AgentOpenId == parameter.AgentOpenId);
+                        else
+                            list = list.Where(o => o.AgentOpenId == parameter.AgentOpenId);
+                    }
+
+                    if (parameter.DataType == ConditionDataType.Today)
+                    {
+                        if(list ==null)
+                            list = db.DBTransferAmount.Where(o => o.TransDate == DateTime.Today);
+                        else
+                            list = list.Where(o => o.TransDate == DateTime.Today);
+                    }
+                    else if (parameter.DataType == ConditionDataType.Week)
+                    {
+                        DateTime startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
+                        DateTime endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
+                        if (list == null)
+                            list = db.DBTransferAmount.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+                        else
+                            list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+
+                    }
+                    else if (parameter.DataType == ConditionDataType.Month)
+                    {
+                        DateTime startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
+                        DateTime endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
+                        if (list == null)
+                            list = db.DBTransferAmount.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+                        else
+                            list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+                    }
+                    list = list.OrderByDescending(o => o.TransDate);
+                    int totalCount = list.Count();
+                    if (parameter.PageIndex == 0)
+                    {
+                        result = list.Take(parameter.PageSize).ToList();
 
                         if (result.Count > 0)
                             result[0].TotalCount = totalCount;
                     }
                     else
-                        result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+                        result = list.Skip(parameter.PageIndex * parameter.PageSize).Take(parameter.PageSize).ToList();
                 }
 
 
