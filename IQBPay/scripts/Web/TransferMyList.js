@@ -1,4 +1,5 @@
 ﻿var pageIndex = -1;
+var totalAmt = 0;
 $(document).ready(function () {
 
 
@@ -46,6 +47,7 @@ function Query(NeedClearn, _PageIndex) {
             var arrLen = data.length;
             if (NeedClearn) {
                 $("#trContainer").empty();
+                totalAmt = 0;
             }
 
             if (arrLen > 0) {
@@ -91,6 +93,7 @@ function generateData(result) {
 
         tdWidth = "width:" + $("#trHeader th").eq(2).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferAmount + "</td>";
+        totalAmt += parseFloat(result[i].TransferAmount);
 
         tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + TransDate + "</td>";
@@ -103,5 +106,6 @@ function generateData(result) {
         $("#trContainer").append(strCtrl);
 
     });
+    $("#RecordSum").text("【汇款总金额】：" + totalAmt.toFixed(2));
 }
 

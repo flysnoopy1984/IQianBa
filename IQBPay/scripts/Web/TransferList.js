@@ -1,4 +1,5 @@
 ﻿var pageIndex = -1;
+var totalAmt = 0;
 $(document).ready(function () {
     //Query(true, pageIndex + 1);
 });
@@ -33,6 +34,7 @@ function Query(NeedClearn, _PageIndex) {
 
     if (NeedClearn) {
         $("#trContainer").empty();
+        totalAmt = 0;
     }
 
     $.ajax({
@@ -69,6 +71,7 @@ function Query(NeedClearn, _PageIndex) {
 
 function generateData(result) {
 
+   
     var strCtrl = "";
     $.each(result, function (i) {
         var thWidth;
@@ -85,6 +88,7 @@ function generateData(result) {
 
         tdWidth = "width:" + $("#trHeader th").eq(2).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferAmount + "</td>";
+        totalAmt += parseFloat(result[i].TransferAmount);
 
         tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].AgentName + "</td>";
@@ -98,13 +102,13 @@ function generateData(result) {
         tdWidth = "width:" + $("#trHeader th").eq(6).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].Buyer_AliPayLoginId + "</td>";
 
-        
-
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);
 
     });
+
+    $("#RecordSum").text("【汇款总金额】：" + totalAmt.toFixed(2));
 }
 
 function ToInfo(action) {

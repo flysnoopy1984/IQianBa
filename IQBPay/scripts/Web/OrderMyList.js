@@ -1,4 +1,5 @@
 ﻿var pageIndex = -1;
+var totalAmt = 0, agentAmt = 0;
 $(document).ready(function () {
 
     
@@ -46,6 +47,8 @@ function Query(NeedClearn, _PageIndex) {
             var arrLen = data.length;
             if (NeedClearn) {
                 $("#trContainer").empty();
+                totalAmt = 0;
+                agentAmt = 0;
             }
 
             if (arrLen > 0) {
@@ -76,6 +79,8 @@ function Query(NeedClearn, _PageIndex) {
 function generateData(result) {
 
     var strCtrl = "";
+   
+
     $.each(result, function (i) {
         var thWidth;
         var OrderStatus = "";
@@ -124,6 +129,7 @@ function generateData(result) {
         //总金额
         tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TotalAmount + "</td>";
+        totalAmt += parseFloat(result[i].TotalAmount);
 
         //交易时间
         tdWidth = "width:" + $("#trHeader th").eq(5).css("width");
@@ -139,13 +145,15 @@ function generateData(result) {
         //代理实际收入
         tdWidth = "width:" + $("#trHeader th").eq(7).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].RealTotalAmount + "</td>";
-
+        agentAmt += parseFloat(result[i].RealTotalAmount);
      
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);
 
     });
+    //汇总信息
+    $("#RecordSum").text("【总金额】：" + totalAmt.toFixed(2) + "【代理金额】：" + agentAmt.toFixed(2));
 }
 
 function ShowError(no) {

@@ -1,9 +1,9 @@
 ﻿var pageIndex = -1;
+var totalAmt = 0, agentAmt = 0, storeAmt = 0, ppAmt = 0, transferAmt = 0;
 $(document).ready(function () {
   
     //Query(true,pageIndex+1);
 });
-
 
 function InitCondition()
 {
@@ -46,10 +46,17 @@ function Query(NeedClearn,_PageIndex) {
     var AgentName = $("#cAgentName").val();
     var DataType = $("#cDateType").val();
 
+    
+
     ShowProcess();
 
     if (NeedClearn) {
         $("#trContainer").empty();
+        totalAmt = 0;
+        agentAmt = 0;
+        storeAmt = 0;
+        ppAmt = 0;
+        transferAmt = 0;
     }
 
     
@@ -139,8 +146,7 @@ function generateData(result) {
         //订单状态
         tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
         if (result[i].OrderStatus == -1)
-        {
-            
+        { 
             strCtrl += "<td style='" + tdWidth + "'><a href='javascript:ShowError("+i+")'>" + OrderStatus + "</a>";
             strCtrl += "<div class='DivHovering' id=divError" + i + ">" + result[i].LogRemark + "</div>";
             strCtrl +="</td>";
@@ -151,6 +157,7 @@ function generateData(result) {
         //总金额
         tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TotalAmount + "</td>";
+        totalAmt += parseFloat(result[i].TotalAmount);
 
         //交易时间
         tdWidth = "width:" + $("#trHeader th").eq(5).css("width");
@@ -159,6 +166,7 @@ function generateData(result) {
         //代理用户
         tdWidth = "width:" + $("#trHeader th").eq(6).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].AgentName + "</td>";
+       
 
         //代理扣点率
         tdWidth = "width:" + $("#trHeader th").eq(7).css("width");
@@ -167,10 +175,11 @@ function generateData(result) {
         //代理扣点金额
         tdWidth = "width:" + $("#trHeader th").eq(8).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].RateAmount + "</td>";
-
+  
         //代理实际收入
         tdWidth = "width:" + $("#trHeader th").eq(9).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].RealTotalAmount + "</td>";
+        agentAmt += parseFloat(result[i].RealTotalAmount);
 
         //商户名
         tdWidth = "width:" + $("#trHeader th").eq(10).css("width");
@@ -187,10 +196,12 @@ function generateData(result) {
         //商户佣金
         tdWidth = "width:" + $("#trHeader th").eq(13).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerCommission + "</td>";
+        storeAmt += parseFloat(result[i].SellerCommission);
 
         //平台实际盈利
         tdWidth = "width:" + $("#trHeader th").eq(14).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + ppRealAmt + "</td>";
+        ppAmt += parseFloat(ppRealAmt);
 
         //结算编号
         tdWidth = "width:" + $("#trHeader th").eq(15).css("width");
@@ -199,12 +210,17 @@ function generateData(result) {
         //结算金额
         tdWidth = "width:" + $("#trHeader th").eq(16).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferAmount + "</td>";
+        transferAmt += parseFloat(result[i].TransferAmount);
 
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);
 
     });
+
+    //汇总信息
+    $("#RecordSum").text("【总金额】：" + totalAmt.toFixed(2) + "【代理金额】：" + agentAmt.toFixed(2) + "【商户金额】：" + storeAmt.toFixed(2) + "【平台收入】：" + ppAmt.toFixed(2));
+
 }
 
 function ShowError(no) {

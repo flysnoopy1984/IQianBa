@@ -595,6 +595,7 @@
     <Content Include="Views\Shared\MenuList.cshtml" />
     <Content Include="Views\Order\MyList.cshtml" />
     <Content Include="Views\Transfer\MyList.cshtml" />
+    <Content Include="Views\Store\StoreTransSum.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
