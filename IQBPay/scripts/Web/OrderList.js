@@ -3,11 +3,29 @@ var totalAmt = 0, agentAmt = 0, storeAmt = 0, ppAmt = 0, transferAmt = 0;
 $(document).ready(function () {
   
     //Query(true,pageIndex+1);
+    InitCondition();
 });
 
 function InitCondition()
 {
-   
+    $.ajax({
+        type: 'post',
+        url: '/Store/QueryKeyValue',
+        success: function (data) {
+            var arrLen = data.length;
+            $("#cStore").append("<option value=-1>全部</option>");
+            if (arrLen > 0) {
+                $(data).each(function (i) {
+
+                    $("#cStore").append("<option value='" + data[i].Id + "'>" + data[i].Name + "</option>");
+                });
+            }
+           
+        },
+        error: function (xhr, type) {
+            alert('Ajax error!');
+        }
+    });
 }
 
 function btnSearch()
@@ -45,8 +63,7 @@ function Query(NeedClearn,_PageIndex) {
     var OrderStatus = $("#cOrderStatus").val();
     var AgentName = $("#cAgentName").val();
     var DataType = $("#cDateType").val();
-
-    
+    var cStore = $("#cStore").val();
 
     ShowProcess();
 
@@ -59,16 +76,14 @@ function Query(NeedClearn,_PageIndex) {
         transferAmt = 0;
     }
 
-    
     $.ajax({
         type: 'post',
-        data: "DataType=" + DataType + "&OrderStatus=" + OrderStatus + "&OrderType=0&AgentName=" + AgentName + "&pageIndex=" + _PageIndex,
+        data: "StoreId=" + cStore + "&DataType=" + DataType + "&OrderStatus=" + OrderStatus + "&OrderType=0&AgentName=" + AgentName + "&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;
            
-            if (arrLen > 0) {
-                
+            if (arrLen > 0) {   
                 generateData(data);
                 CloseProcess();//必须在计算宽度时关闭进度显示，不然将影响表格的呈现
                 SetWidth();

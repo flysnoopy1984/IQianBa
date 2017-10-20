@@ -20,6 +20,8 @@ namespace IQBCore.IQBPay.Models.InParameter
 
         public OrderType OrderType { get; set; }
 
+        public string StoreId { get; set; }
+
         public InOrder()
         {
             DataType = ConditionDataType.Today;

@@ -105,6 +105,7 @@ namespace IQBPay.Controllers
         public ActionResult Query(InOrder parameter)
         {
             List<EOrderInfo> result = new List<EOrderInfo>();
+            int storeId = -1;
             try
             {
 
@@ -113,7 +114,17 @@ namespace IQBPay.Controllers
                 {
 
                     var list = db.DBOrder.Where(o=>o.OrderType == parameter.OrderType);
-                    if(!string.IsNullOrEmpty(parameter.AgentOpenId))
+
+                    if (!string.IsNullOrEmpty(parameter.StoreId))
+                    {
+                        if(parameter.StoreId !="-1")
+                        {
+                            storeId = Convert.ToInt32(parameter.StoreId);
+                            list = list.Where(o => o.SellerStoreId == storeId);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(parameter.AgentOpenId))
                     {
                         list = list.Where(o => o.AgentOpenId == parameter.AgentOpenId);
                     }

@@ -2,9 +2,7 @@
 var totalAmt = 0;
 $(document).ready(function () {
 
-
 });
-
 
 function InitCondition() {
 
@@ -23,8 +21,8 @@ function ShowProcess() {
     $("#btnSearch").attr("disabled", true);
     $("#divTableBody").hide();
     $("#divProcess").show();
-
 }
+
 function CloseProcess() {
     $("#btnSearch").attr("disabled", false);
     $("#divTableBody").show();
@@ -78,10 +76,10 @@ function Query(NeedClearn, _PageIndex) {
 function generateData(result) {
 
     var strCtrl = "";
+
     $.each(result, function (i) {
         var thWidth;
         var TransDate = result[i].TransDateStr;
-
         strCtrl = "";
         strCtrl += "<tr>";
 
@@ -104,8 +102,8 @@ function generateData(result) {
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);
-
     });
+
     $("#RecordSum").text("【汇款总金额】：" + totalAmt.toFixed(2));
 }
 

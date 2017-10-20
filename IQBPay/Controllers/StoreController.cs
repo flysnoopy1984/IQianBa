@@ -10,6 +10,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using IQBCore.Common.Constant;
+using IQBCore.IQBPay.Models.OutParameter;
 
 namespace IQBPay.Controllers
 {
@@ -48,6 +49,21 @@ namespace IQBPay.Controllers
                     result.RunResult = "OK";
                 }
             }
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult QueryKeyValue()
+        {
+            List<HashStore> result =null;
+
+            using (AliPayContent db = new AliPayContent())
+            {
+                result = db.Database.SqlQuery<HashStore>("select Id,Name from storeinfo").ToList();
+                if(result == null)
+                    result = new List<HashStore>();
+            }
+
             return Json(result);
         }
 
