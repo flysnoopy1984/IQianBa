@@ -3,6 +3,56 @@
     ViewBag.Title = "StoreTransSum";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>StoreTransSum</h2>
+@section SubMenu1{
+    报表
+}
+@section SubMenu2{
+    店铺交易情况
+}
+<link href="~/Content/Style/Web/ULList.css" rel="stylesheet" />
+<script src="~/scripts/Web/Report_Store.js"></script>
+<div id="ListArea">
+    <ul class="UlHorizontal" style="margin-top:20px;">
+        <li>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">商户：</label>
+                <div class="col-sm-8">
+                    <select id="cStore" class="form-control ConditionField"></select>
+                </div>
+            </div>
+        </li>
+        <li>
+            <label class="col-sm-3 control-label">日期：</label>
+            <div class="col-sm-8">
+                <select id="cDateType" class="form-control ConditionField">
+                    <option value="1" selected>今天</option>
+                    <option value="2">本周</option>
+                    <option value="3">本月</option>
+                    <option value="99">全部</option>
+                </select>
+           </div>
+        </li>
+        <li>
+            <div class="col-sm-8">
+                <button type="button" class="btn btn-primary" onclick="btnSearch();">查询</button>
+            </div>
+</li>
+    </ul>
+    <div id="AgentArea">
+        <ul Id="AgentList" style="width:1200px;">
+            <li class="liHeader">
+                <div class="liHeaderDivLeft" style="width:280px">商户</div>
+                <div class="liHeaderDivLeft" style="width:220px;">日营业额</div>
+                <div class="liHeaderDivLeft" style="width:220px">金额</div>
+                <div class="liHeaderDivLeft" style="width:220px">佣金点</div>
+                <div class="liHeaderDivRight" style="width:220px">操作</div>
+            </li>
+            @*<li class="liBody">
+                    <div>ID#Jacky</div>
+                    <div><a href="#">&yen 3929128</a> </div>
+                </li>*@
+        </ul>
+    </div>
+    <div class="divNextButton"><button type="button" class="btn btn-success" style="width:200px; height:40px;" onclick="Next();">下一页</button></div>
+</div>
 

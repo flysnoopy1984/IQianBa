@@ -88,7 +88,7 @@ namespace IQBPay.Controllers
             }
             catch (Exception ex)
             {
-                return Content(ex.Message);
+                throw ex;
             }
             return Json(result);
         }

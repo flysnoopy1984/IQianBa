@@ -106,6 +106,7 @@
     <Compile Include="IQBPay\Models\InParameter\InF2F.cs" />
     <Compile Include="IQBPay\Models\InParameter\InOrder.cs" />
     <Compile Include="IQBPay\Models\InParameter\InOrderSum.cs" />
+    <Compile Include="IQBPay\Models\InParameter\InStoreSum.cs" />
     <Compile Include="IQBPay\Models\InParameter\InTransfer.cs" />
     <Compile Include="IQBPay\Models\Order\EOrderInfo.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\ETransferAmount.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="IQBPay\Models\QR\EQRInfo.cs" />
     <Compile Include="IQBPay\Models\QR\EQRUser.cs" />
     <Compile Include="IQBPay\Models\Result\ROrder_Transfer.cs" />
+    <Compile Include="IQBPay\Models\Result\RStore_OrderSum.cs" />
     <Compile Include="IQBPay\Models\Result\RUser_Order.cs" />
     <Compile Include="IQBPay\Models\Result\RUser_OrderSum.cs" />
     <Compile Include="IQBPay\Models\Store\EStoreInfo.cs" />

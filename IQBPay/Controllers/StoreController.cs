@@ -11,6 +11,9 @@ using System.Web;
 using System.Web.Mvc;
 using IQBCore.Common.Constant;
 using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.IQBPay.Models.Result;
+using IQBCore.IQBPay.Models.InParameter;
+using IQBCore.Common.Helper;
 
 namespace IQBPay.Controllers
 {
@@ -18,6 +21,10 @@ namespace IQBPay.Controllers
     {
         // GET: Store
         public ActionResult Index()
+        {
+            return View();
+        }
+        public ActionResult StoreTransSum()
         {
             return View();
         }
@@ -64,6 +71,66 @@ namespace IQBPay.Controllers
                     result = new List<HashStore>();
             }
 
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult QuerySum(InStoreSum parameter)
+        {
+            string sql = @"select sum(o.TotalAmount) as TotalAmount,o.SellerStoreId,s.Name as StoreName,s.Rate,s.DayIncome from orderinfo as o
+                                inner join storeinfo as s on s.ID = o.SellerStoreId
+                                where 1=1";
+
+          
+
+            List<RStore_OrderSum> result = new List<RStore_OrderSum>();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    if(!string.IsNullOrEmpty(parameter.StoreId) && parameter.StoreId != "-1")
+                    {
+                        sql += " and o.SellerStoreId=" + parameter.StoreId;
+                    }
+                    if(parameter.DataType == ConditionDataType.Today)
+                    {
+                        sql += " and Date(o.TransDate) = '" + DateTime.Today.ToString("yyyy-MM-dd")+"'";
+                    }
+                    if (parameter.DataType == ConditionDataType.Week)
+                    {
+                        DateTime startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
+                        DateTime endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
+
+                        sql += " and o.TransDate between  '"+startDate.ToString("yyyy-MM-dd")+ "' and  '" + endDate.ToString("yyyy-MM-dd") + "'";
+                    }
+                    if (parameter.DataType == ConditionDataType.Month)
+                    {
+
+                        DateTime startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
+                        DateTime endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
+
+                        sql += " and o.TransDate between  '" + startDate.ToString("yyyy-MM-dd") + "' and  '" + endDate.ToString("yyyy-MM-dd") + "'";
+                    }
+
+
+                    var list = db.Database.SqlQuery<RStore_OrderSum>(sql).ToList();
+
+                    int totalCount = list.Count();
+                    if (parameter.PageIndex == 0)
+                    {
+                        result = list.Take(parameter.PageSize).ToList();
+
+                        if (result.Count > 0)
+                            result[0].TotalCount = totalCount;
+                    }
+                    else
+                        result = list.Skip(parameter.PageIndex * parameter.PageSize).Take(parameter.PageSize).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             return Json(result);
         }
 
@@ -129,6 +196,7 @@ namespace IQBPay.Controllers
                     entry.Property(t => t.RecordStatus).IsModified = true;
                     entry.Property(t => t.Rate).IsModified = true;
                     entry.Property(t => t.Remark).IsModified = true;
+                    entry.Property(t => t.DayIncome).IsModified = true;
                     entry.Property(t => t.IsReceiveAccount).IsModified = true;
 
                     entry.Property(t => t.MDate).IsModified = true;

@@ -102,6 +102,7 @@ function Save()
     var Rate = $("#Rate").val();
     var OpenTime = $("#OpenTime").val();
     var CloseTime = $("#CloseTime").val();
+    var DayIncome = $("#DayIncome").val();
 
     var IsReceiveAccount = $("#IsReceiveAccount").get(0).checked;
  
@@ -112,7 +113,7 @@ function Save()
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID, "Name": name, "Rate": Rate, "OpenTime": OpenTime, "CloseTime": CloseTime, "Remark": remake, "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount },
+        data: { "ID": ID,"DayIncome":DayIncome, "Name": name, "Rate": Rate, "OpenTime": OpenTime, "CloseTime": CloseTime, "Remark": remake, "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount },
         url: url,
         success: function (data) {
             if(data == "OK")

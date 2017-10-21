@@ -33,6 +33,11 @@ namespace IQBCore.IQBPay.Models.Store
         public long QRId { get; set; }
 
         public float Rate { get; set; }
+
+        /// <summary>
+        /// 每天的营业额度
+        /// </summary>
+        public float DayIncome { get; set; }
         /// <summary>
         /// 可能被禁用
         /// </summary>
