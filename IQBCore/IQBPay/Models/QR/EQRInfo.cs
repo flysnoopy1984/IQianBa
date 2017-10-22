@@ -25,6 +25,8 @@ namespace IQBCore.IQBPay.Models.QR
         /// </summary>
         public string OwnnerOpenId { get; set; }
 
+       
+
         /// <summary>
         /// 返点率0-100
         /// </summary>
@@ -56,6 +58,11 @@ namespace IQBCore.IQBPay.Models.QR
         
         [NotMapped()]
         public List<HashStore> HashStoreList { get; set; }
+
+      
+      
+
+        public int Level { get; set; }
 
 
     }

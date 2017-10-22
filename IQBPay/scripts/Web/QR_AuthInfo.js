@@ -62,6 +62,7 @@ function InitFormData(data) {
     $("#Remark").val(data.Remark);
     $("#Channel").val(data.Channel);
     $("#QRStatus").val(data.RecordStatus);
+    
 
     var filePath = data.FilePath;
     if(filePath!=null && filePath!="")
@@ -113,6 +114,7 @@ function Save() {
     var rate = $("#Rate").val();
     var remake = $("#Remark").val();
     var Channel = $("#Channel").val();
+    var level = $("#Level").val();
 
     var ID = $("#RecId").val();
 
