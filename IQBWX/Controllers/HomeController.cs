@@ -1,4 +1,5 @@
-﻿using IQBWX.BLL;
+﻿using IQBCore.IQBWX.BaseEnum;
+using IQBWX.BLL;
 using IQBWX.Common;
 using IQBWX.DataBase;
 using IQBWX.Models.JsonData;

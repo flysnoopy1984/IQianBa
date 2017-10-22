@@ -1,6 +1,8 @@
-﻿using IQBWX.BLL;
+﻿using IQBCore.Common.Helper;
+using IQBCore.IQBWX.BaseEnum;
+using IQBCore.IQBWX.Const;
+using IQBWX.BLL;
 using IQBWX.BLL.NT;
-using IQBWX.Common;
 using IQBWX.DataBase;
 using IQBWX.Models.JsonData;
 using IQBWX.Models.Order;
@@ -85,7 +87,7 @@ namespace IQBWX.Controllers
             {
                 string msg = Request.QueryString["msg"];
                 log.log("ApplySuccess msg:" + msg);
-                string selTc = Convert.ToString(Session[IQBConst.SessionSelTC]);
+                string selTc = Convert.ToString(Session[IQBWXConst.SessionSelTC]);
                 log.log("ApplySuccess selTc:" + selTc);
                 if (selTc == null || selTc == "")
                     return -1;
@@ -115,7 +117,7 @@ namespace IQBWX.Controllers
             }
             finally
             {
-                Session[IQBConst.SessionSelTC] = null;
+                Session[IQBWXConst.SessionSelTC] = null;
             }
             return 1;
         }
@@ -158,7 +160,7 @@ namespace IQBWX.Controllers
       
             try {
                 string openId = this.GetOpenId();
-                int selTc = Convert.ToInt32(Session[IQBConst.SessionSelTC]);
+                int selTc = Convert.ToInt32(Session[IQBWXConst.SessionSelTC]);
                 string accessToken = this.getAccessToken(true);
                 EMemberInfo mi = null;
                 EOrderLine order = null;
@@ -277,7 +279,7 @@ namespace IQBWX.Controllers
                     }
                     else
                     {
-                        Session[IQBConst.SessionUserId] = ui.UserId;
+                        Session[IQBWXConst.SessionUserId] = ui.UserId;
                         log.log("HasMemberOrCreateUserInfo UI.UserId:"+ui.UserId);
                         if (ui.IsMember)
                         {
@@ -292,7 +294,7 @@ namespace IQBWX.Controllers
                             return 0;
                      
                     }
-                    Session[IQBConst.SessionUserId] = ui.UserId;
+                    Session[IQBWXConst.SessionUserId] = ui.UserId;
                     log.log("HasMemberOrCreateUserInfo UserId:" + ui.UserId);
                 }
                 return 0;
@@ -447,7 +449,7 @@ namespace IQBWX.Controllers
                 }
                 data.HeaderImg = mi.headimgurl;
                 data.MemberType = mi.MemberType;
-                data.MemberTypeValue = IQBConst.GetMemberTypeValue(mi.MemberType);
+                data.MemberTypeValue = IQBWXConst.GetMemberTypeValue(mi.MemberType);
                 data.TotalIncome = mi.TotalIncome;
                 data.Balance = mi.Balance;
                 data.NickName = mi.nickname;

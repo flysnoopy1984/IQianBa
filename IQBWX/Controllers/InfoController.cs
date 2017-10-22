@@ -1,4 +1,5 @@
-﻿using IQBWX.Common;
+﻿using IQBCore.IQBWX.BaseEnum;
+using IQBWX.Common;
 using IQBWX.DataBase;
 using IQBWX.Models.Crawler;
 using IQBWX.Models.Results;

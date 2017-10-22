@@ -1,5 +1,7 @@
 ﻿using IQBCore.Common.Constant;
 using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBWX.BaseEnum;
+using IQBCore.IQBWX.Const;
 using IQBWX.BLL.ExternalWeb;
 using IQBWX.BLL.NT;
 using IQBWX.Common;
@@ -261,7 +263,7 @@ namespace IQBWX.BLL
                 ui.ParentOpenId = pui.openid;
 
             }
-            controller.Session[IQBConst.SessionToken] = accessToken;
+            controller.Session[IQBWXConst.SessionToken] = accessToken;
 
             db.InsertUserInfo(ui);
             return ui;
@@ -288,7 +290,7 @@ namespace IQBWX.BLL
                         if (pui != null)
                         {
                             
-                            accessToken = (string)controller.Session[IQBConst.SessionToken];
+                            accessToken = (string)controller.Session[IQBWXConst.SessionToken];
                             RegistrationNT notice = new RegistrationNT(ui, accessToken);
                             notice.Push();
                         }      

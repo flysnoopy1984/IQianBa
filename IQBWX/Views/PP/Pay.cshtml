@@ -12,7 +12,7 @@
     <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
     <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
     <script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
-    <script src="@Url.Scrpit("~/Content/Script/PPPay.js")"></script>
+    <script src="@Url.Scrpit("~/Content/Script/IQBPay/Pay.js")"></script>
 
 
     <title>支付界面</title>
@@ -28,14 +28,24 @@
         text-align:left;
         }
     </style>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#btnPay").attr("disabled", false);
-            $("#PayContent").hide();
-        });
-    </script>
+  
     <div class="mgz cen" id="PayArea">
         <div class="yuec mg2 xi35">爱钱吧支付界面</div>
+        <div id="VerifyArea">
+            <div class="TitleInfo mg2 xi20" style="color:#980C16">最近发现有商户在用户支付后不发货的情况。</br>为了保证您正常收到相应的商品，请先提交您的手机号码给平台，有任何问题可以根据短信提示，联系平台。</div>
+            <div>
+                <span style="margin-right:20px;">手机号码</span><input id="userPhone" class="VerifyInputPhone" type="text">
+            </div>
+            <div style="margin-top:20px;">
+                <span style="margin-right:20px; margin-left:20px;">验证码</span>
+                <input id="VerifyCode" class="VerifyInputCode" type="text">
+                <button type="button" class="mgz btn btn-success verifyButton" id="BnGetVerifyCode" onclick="GetVerifyCode()">获取验证码</button> 
+            </div>
+            <div class="cen" style="margin-top:20px;">
+                <button id="BnVerifyConfirm" style="display:none;" type="button" class="mgz btn btn-danger verifyOKButton" onclick="VerifyCodeConfirm()">OK</button>
+            </div>
+        </div>
+
         <div id="PayContent">        
             <div class="yuex mg2 xi20" style="color:cornflowerblue">请通过支付宝扫码支付</div>
             <div class="form-group">
@@ -49,18 +59,9 @@
             </div>
         </div>
 
-        <div id="VerifyArea">
-            <div class="TitleInfo mg2 xi20" style="color:#980C16">最近发现有商户在用户支付后不发货的情况。</br>为了保证您正常收到相应的商品，请先正确验证您的手机号码后再支付，请注意短信内容</div>
-            <div >
-                <span style="margin-right:20px;">手机号码</span><input id="VerifyCode" class="VerifyInput" type="text">
-            </div>
-            <div style="margin-top:20px;">
-                <span style="margin-right:20px; margin-left:20px;">验证码</span>
-                <input id="VerifyCode" class="VerifyInput" type="text" style="width:150px;">
-                <button type="button" class="mgz btn btn-success verifyButton" id="BnGetVerifyCode" onclick="">获取验证码</button>
-            </div>
-        </div>
+       
     </div>
+    <input type="hidden" id="OrderNo" value="@ViewBag.OrderNo" />
     <input type="hidden" id="qrUserId" value="@ViewBag.QRUserId" />
 </body>
 </html>

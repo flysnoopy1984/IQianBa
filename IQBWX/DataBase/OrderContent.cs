@@ -1,4 +1,5 @@
-﻿using IQBWX.Common;
+﻿using IQBCore.IQBWX.BaseEnum;
+using IQBWX.Common;
 using IQBWX.Models.Order;
 using IQBWX.Models.Product;
 using IQBWX.Models.User;
@@ -106,7 +107,7 @@ namespace IQBWX.DataBase
                     Qty = 1,
                     OrderId = orderId,
                     LineAmount = item.SalesPrice,
-                    PaymentState = Common.PaymentState.Paying
+                    PaymentState = IQBCore.IQBWX.BaseEnum.PaymentState.Paying
                 };
                 OrderInfo.Add(order);
                 return order;
@@ -141,7 +142,7 @@ namespace IQBWX.DataBase
                     Qty = 1,
                     OrderId = orderId,
                     LineAmount = diffAmt,
-                    PaymentState = Common.PaymentState.Paying
+                    PaymentState = IQBCore.IQBWX.BaseEnum.PaymentState.Paying
                 };
                 OrderInfo.Add(order);
                 return order;

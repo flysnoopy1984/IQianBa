@@ -2,6 +2,7 @@
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.SMS;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.System;
 using IQBCore.IQBPay.Models.User;
@@ -26,6 +27,8 @@ namespace IQBWX.DataBase.IQBPay
             //    Database.SetInitializer<AliPayContent>(new DropCreateDatabaseIfModelChanges<AliPayContent>());
             // Database.SetInitializer<AliPayContent>(new CreateDatabaseIfNotExists<AliPayContent>());
         }
+
+        public DbSet<ESMSVerification> DBSMSBuyerOrder { get; set; }
 
         public DbSet<EUserInfo> DBUserInfo { get; set; }
 

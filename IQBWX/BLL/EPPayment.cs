@@ -1,4 +1,4 @@
-﻿using IQBWX.Common;
+﻿using IQBCore.Common.Helper;
 using IQBWX.Models.JsonData;
 using IQBWX.Models.WX;
 using System;

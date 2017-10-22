@@ -37,13 +37,6 @@ namespace IQBWX.Common
             return s;
         }
 
-        public static string GetSSOToken()
-        {
-            DateTime dt = DateTime.Now;
-            string sd = dt.ToString("yyyyMMddhhmmss");
-            string r3 = GetRnd(3, false, true, true, false, "");
-
-            return sd+r3;
-        }
+        
     }
 }

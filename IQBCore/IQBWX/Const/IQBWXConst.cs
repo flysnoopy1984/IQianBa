@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace IQBWX.Common
+namespace IQBCore.IQBWX.Const
 {
-    public class IQBConst
+    public class IQBWXConst
     {
         public const string SessionOpenId = "OpenId";
         public const string SessionToken = "Token";

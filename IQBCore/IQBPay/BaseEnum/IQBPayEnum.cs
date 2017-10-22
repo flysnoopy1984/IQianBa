@@ -78,8 +78,12 @@ namespace IQBCore.IQBPay.BaseEnum
         Process = 2,
     }
 
+   
+
     public enum OrderStatus
     {
+        WaitingBuyerPay =-2,
+
         WaitingAliPayNotify =0,
 
         Paid =1,

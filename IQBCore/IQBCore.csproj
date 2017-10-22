@@ -92,7 +92,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Helper\ImgHelper.cs" />
     <Compile Include="Common\Helper\UtilityHelper.cs" />
+    <Compile Include="IQBPay\BaseEnum\SMSEnum.cs" />
     <Compile Include="IQBPay\BLL\IQBPayAuthorizeAttribute .cs" />
     <Compile Include="Common\Constant\IQBConstant.cs" />
     <Compile Include="Common\Helper\HttpHelper.cs" />
@@ -117,11 +119,15 @@
     <Compile Include="IQBPay\Models\Result\RStore_OrderSum.cs" />
     <Compile Include="IQBPay\Models\Result\RUser_Order.cs" />
     <Compile Include="IQBPay\Models\Result\RUser_OrderSum.cs" />
+    <Compile Include="IQBPay\Models\SMS\ESMSVerification.cs" />
     <Compile Include="IQBPay\Models\Store\EStoreInfo.cs" />
     <Compile Include="IQBPay\Models\System\EAliPayApplication.cs" />
     <Compile Include="IQBPay\Models\System\ESysConfig.cs" />
     <Compile Include="IQBPay\Models\User\EUserInfo.cs" />
+    <Compile Include="IQBWX\BaseEnum\IQBWxEnum.cs" />
+    <Compile Include="IQBWX\Const\IQBWXConst.cs" />
     <Compile Include="IQBWX\Models\InParameter\InQR.cs" />
+    <Compile Include="IQBWX\Models\OutParameter\OutSMS.cs" />
     <Compile Include="IQBWX\Models\OutParameter\SSOQR.cs" />
     <Compile Include="IQBWX\Models\WX\Template\BaseTemplate.cs" />
     <Compile Include="IQBWX\Models\WX\Template\Notification.cs" />

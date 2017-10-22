@@ -13,6 +13,7 @@ using System.Web.Mvc;
 using WxPayAPI;
 using System.Web.Routing;
 using IQBWX.WebCore;
+using IQBCore.IQBWX.Const;
 
 namespace IQBWX.Controllers
 {
@@ -28,7 +29,7 @@ namespace IQBWX.Controllers
 
         public string getAccessToken(Boolean isRefresh= false)
         {
-            string accessToken = (string)Session[IQBConst.SessionToken];
+            string accessToken = (string)Session[IQBWXConst.SessionToken];
            
             
             if (isRefresh || string.IsNullOrEmpty(accessToken))
@@ -81,7 +82,7 @@ namespace IQBWX.Controllers
 
         protected int GetUserId()
         {
-            object obj = Session[IQBWX.Common.IQBConst.SessionUserId];
+            object obj = Session[IQBWXConst.SessionUserId];
             int userId=0;
             if(obj ==null)
             {
@@ -91,13 +92,13 @@ namespace IQBWX.Controllers
                     if(!string.IsNullOrEmpty(openId))
                     { 
                         userId = db.GetUserId(this.GetOpenId());
-                        Session[IQBWX.Common.IQBConst.SessionUserId] = userId;
+                        Session[IQBWXConst.SessionUserId] = userId;
                     }
                 }
             }
             else
             {
-                userId = Convert.ToInt32(Session[IQBWX.Common.IQBConst.SessionUserId]);
+                userId = Convert.ToInt32(Session[IQBWXConst.SessionUserId]);
             }
             return userId;
         }
@@ -106,13 +107,13 @@ namespace IQBWX.Controllers
         protected string GetOpenId(bool isTest = false,bool IsforOpenId = true)
         {
             if (isTest) return "orKUAw16WK0BmflDLiBYsR-Kh5bE";
-            string openId = (string)Session[IQBConst.SessionOpenId];
+            string openId = (string)Session[IQBWXConst.SessionOpenId];
             if (string.IsNullOrEmpty(openId))
             {
                 JsApiPay jsApiPay = new JsApiPay(this.HttpContext);
                 jsApiPay.GetOpenidAndAccessToken(IsforOpenId);
                 openId = jsApiPay.openid;
-                Session[IQBConst.SessionOpenId] = openId;
+                Session[IQBWXConst.SessionOpenId] = openId;
             }
             return openId;
         }
@@ -128,8 +129,8 @@ namespace IQBWX.Controllers
             openId = jsApiPay.openid;
             acccess = jsApiPay.access_token;
 
-            Session[IQBConst.SessionOpenId] = openId;
-            Session[IQBConst.SessionToken] = acccess;
+            Session[IQBWXConst.SessionOpenId] = openId;
+            Session[IQBWXConst.SessionToken] = acccess;
 
             WXParameter.AccessToke = acccess;
             WXParameter.OpenId = openId;

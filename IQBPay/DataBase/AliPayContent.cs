@@ -2,6 +2,7 @@
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.SMS;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.System;
 using IQBCore.IQBPay.Models.User;
@@ -32,7 +33,7 @@ namespace IQBPay.DataBase
         }
 
 
-
+        public DbSet<ESMSVerification> DBSMSBuyerOrder { get; set; }
         public DbSet<EUserInfo> DBUserInfo { get; set; }
 
         public DbSet<EStoreInfo> DBStoreInfo { get; set; }

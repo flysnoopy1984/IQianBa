@@ -1,4 +1,6 @@
-﻿using IQBWX.BLL;
+﻿using IQBCore.IQBWX.BaseEnum;
+using IQBCore.IQBWX.Const;
+using IQBWX.BLL;
 using IQBWX.BLL.NT;
 using IQBWX.Common;
 using IQBWX.DataBase;
@@ -244,7 +246,7 @@ namespace IQBWX.Controllers
 
                 EItemInfo item = null;
                 int selTc = data.seltc;
-                Session[IQBConst.SessionSelTC] = selTc;
+                Session[IQBWXConst.SessionSelTC] = selTc;
                 openId = this.GetOpenId();
                 Payment payment = new Payment();
                 if (selTc == 1)

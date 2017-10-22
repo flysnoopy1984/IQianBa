@@ -26,19 +26,19 @@ namespace IQBWX.BLL.ExternalWeb
             switch(appId)
             {
                 case "pp":
-                    return GetExternalWeb(IQBWX.Common.ExternalWeb.Pay);
+                    return GetExternalWeb(IQBCore.IQBWX.BaseEnum.ExternalWeb.Pay);
                 default:
-                    return GetExternalWeb(IQBWX.Common.ExternalWeb.Book);
+                    return GetExternalWeb(IQBCore.IQBWX.BaseEnum.ExternalWeb.Book);
             }
         }
 
-        public static BaseExternalWeb GetExternalWeb(IQBWX.Common.ExternalWeb _ExternalWeb)
+        public static BaseExternalWeb GetExternalWeb(IQBCore.IQBWX.BaseEnum.ExternalWeb _ExternalWeb)
         {
             switch(_ExternalWeb)
             {
-                case Common.ExternalWeb.Book:
+                case IQBCore.IQBWX.BaseEnum.ExternalWeb.Book:
                     return new ExtWebBook();
-                case Common.ExternalWeb.Pay:
+                case IQBCore.IQBWX.BaseEnum.ExternalWeb.Pay:
                     return new ExtWebPay();
                 default:
                     throw new Exception("No ExternalWeb could be found!");

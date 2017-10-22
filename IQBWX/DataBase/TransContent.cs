@@ -101,7 +101,7 @@ namespace IQBWX.DataBase
             EARUserTrans ar = new EARUserTrans()
             {
                 Amount = incomeAmt,
-                ARTransType = Common.ARTransType.pop,
+                ARTransType = IQBCore.IQBWX.BaseEnum.ARTransType.pop,
                 FromOpenId = order.OpenId,
                 ChildLevel = level,
                 FromMemberType = mi.MemberType,

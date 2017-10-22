@@ -37,17 +37,31 @@ namespace IQBCore.Common.Helper
 
         public static string GenerateOrderNo()
         {
-            return "IQBO"+DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(8,true,true,false,false,"");
+            return "IQBO"+DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(2,true,true,false,false,"");
         }
 
         public static string GenerateTransferNo()
         {
-            return "IQBTO" + DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(8, true, true, false, false, "");
+            return "IQBTO" + DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(2, true, true, false, false, "");
         }
 
         public static string GenerateSubAccountTransNo()
         {
-            return "IQBSub"+DateTime.Now.ToString("SubyyyyMMddhhmmss") + GetRnd(8, true, true, false, false, "");
+            return "IQBSub"+DateTime.Now.ToString("SubyyyyMMddhhmmss") + GetRnd(2, true, true, false, false, "");
+        }
+
+        public static string GenerateVerifyCode()
+        {
+            return GetRnd(6, true, false, false, false, "");
+        }
+
+        public static string GetSSOToken()
+        {
+            DateTime dt = DateTime.Now;
+            string sd = dt.ToString("yyyyMMddhhmmss");
+            string r3 = GetRnd(3, false, true, true, false, "");
+
+            return sd + r3;
         }
     }
 }

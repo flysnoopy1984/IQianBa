@@ -1,4 +1,5 @@
-﻿using IQBWX.Common;
+﻿using IQBCore.IQBWX.BaseEnum;
+using IQBWX.Common;
 using IQBWX.Models.Product;
 using IQBWX.Models.User;
 using System;

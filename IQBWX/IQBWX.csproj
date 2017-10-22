@@ -193,7 +193,7 @@
     <Content Include="Content\Script\iqb.dropload.min.js" />
     <Content Include="Content\Script\IQBPay\Auth_Store.js" />
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
-    <Content Include="Content\Script\IQBPay\PPPay.js" />
+    <Content Include="Content\Script\IQBPay\Pay.js" />
     <Content Include="Content\Script\MemberInfo.js" />
     <Content Include="Content\Script\ApplySuccess.js" />
     <Content Include="Content\Script\ApplyMember.js" />
@@ -232,12 +232,8 @@
     <Compile Include="BLL\Payment.cs" />
     <Compile Include="BLL\SMS.cs" />
     <Compile Include="Common\HttpHelper.cs" />
-    <Compile Include="Common\ImgHelper.cs" />
-    <Compile Include="Common\IQBConst.cs" />
-    <Compile Include="Common\IQBEnum.cs" />
     <Compile Include="Common\IQBLog.cs" />
     <Compile Include="Common\IQBUrlHelper.cs" />
-    <Compile Include="Common\StringHelper.cs" />
     <Compile Include="Controllers\API\HJBController.cs" />
     <Compile Include="Controllers\API\InitController.cs" />
     <Compile Include="Controllers\API\SMSController.cs" />

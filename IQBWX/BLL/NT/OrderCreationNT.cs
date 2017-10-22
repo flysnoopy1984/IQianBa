@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using IQBWX.Models.WX.Template;
+using IQBCore.IQBWX.BaseEnum;
 
 namespace IQBWX.BLL.NT
 {

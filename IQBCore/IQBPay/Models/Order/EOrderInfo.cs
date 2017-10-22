@@ -38,6 +38,9 @@ namespace IQBCore.IQBPay.Models.Order
         [MaxLength(100)]
         public string BuyerAliPayLoginId { get; set; }
 
+        [MaxLength(20)]
+        public string BuyerMobilePhone { get; set; }
+
         [MaxLength(30)]
         public string SellerAliPayId { get; set; }
 

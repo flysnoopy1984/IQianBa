@@ -1,8 +1,9 @@
 ﻿using IQBCore.Common.Constant;
+using IQBCore.Common.Helper;
 using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Models.InParameter;
 using IQBCore.IQBWX.Models.OutParameter;
-using IQBWX.Common;
 using IQBWX.DataBase;
 using IQBWX.Models.JsonData;
 using IQBWX.Models.Results;

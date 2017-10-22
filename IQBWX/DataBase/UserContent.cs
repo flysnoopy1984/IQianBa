@@ -1,4 +1,6 @@
 ﻿using EntityFramework.Extensions;
+using IQBCore.IQBWX.BaseEnum;
+using IQBCore.IQBWX.Const;
 using IQBWX.Common;
 using IQBWX.Models.JsonData;
 using IQBWX.Models.Results;
@@ -341,7 +343,7 @@ namespace IQBWX.DataBase
             {
                 string s = obj.cNickName;                
                 obj.cNickName = s.Substring(0, 1) + "xxxxx" + s.Substring(s.Length - 1, 1);
-                obj.cMemberTypeValue = IQBConst.GetMemberTypeValue(obj.cMemberType);
+                obj.cMemberTypeValue = IQBWXConst.GetMemberTypeValue(obj.cMemberType);
             }
             return rlist;
          

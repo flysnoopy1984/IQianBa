@@ -1,11 +1,11 @@
-﻿using IQBCore.IQBPay.Models.AccountPayment;
+﻿using IQBCore.Common.Helper;
+using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBWX.Models.WX.Template;
 using IQBWX.BLL.ExternalWeb;
 using IQBWX.BLL.NT;
-using IQBWX.Common;
 using IQBWX.DataBase.IQBPay;
 using IQBWX.Models.Results;
 using IQBWX.Models.User;
@@ -53,10 +53,7 @@ namespace IQBWX.Controllers
         public ActionResult Pay(string Id)
         {
             ViewBag.QRUserId = Id;
-            //using (AliPayContent db = new AliPayContent())
-            //{
-            //    IQBCore.IQBPay.Models.Order.EOrderInfo _ppOrder = db.DBOrderInfo.FirstOrDefault();
-            //}
+        //    ViewBag.OrderNo = StringHelper.GenerateOrderNo();
             return View();
         }
 
