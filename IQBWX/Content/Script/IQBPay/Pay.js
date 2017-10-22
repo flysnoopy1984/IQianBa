@@ -1,4 +1,4 @@
-﻿const InitCount = 30;
+﻿const InitCount = 60;
 var countdown = InitCount;
 var SMSId = "";
 
@@ -7,8 +7,13 @@ function InitControls()
     $("#BnVerifyConfirm").hide();
     $("#PayContent").hide();
     $("#userPhone").attr("disabled", false);
+   
     $("#BnGetVerifyCode").attr("disabled", false);
+    $("#BnGetVerifyCode").text("获取验证码");
+    $("#BnGetVerifyCode").css("background", "#47a447");
+
     $("#VerifyArea").show();
+    $("#VerifyCode").val("");
 
     countdown = 0;
     SMSId = "";
@@ -34,6 +39,8 @@ function VerifyCodeConfirm()
             //验证成功
             if (result.SMSVerifyStatus == 3)
             {
+                alert("验证码成功，请开始支付");
+                $("#OrderNo").val(result.OrderNo);
                 $("#PayContent").show();
                 $("#VerifyArea").hide();
                 return;
@@ -73,12 +80,12 @@ function GetVerifyCode() {
         alert("错误,请先正确填写手机号码");
         return;
     }
-    //var OrderNo = $("#OrderNo").val();
-    //if (OrderNo == "" || OrderNo == null)
-    //{
-    //    alert("支付订单号码未生成，请联系站长！");
-    //    return;
-    //}
+    var OrderNo = $("#OrderNo").val();
+    if (OrderNo == "" || OrderNo == null)
+    {
+        alert("支付订单号码未生成，请联系站长！");
+        return;
+    }
     var phone = $("#userPhone");
     phone.attr("disabled", true);
 
@@ -86,7 +93,7 @@ function GetVerifyCode() {
     bn.attr("disabled", true);
     bn.css("background", "#DDDDDD");
 
-    var url = "/api/sms/SentSMS_IQBPay_BuyerOrder?mobilePhone=" + phone.val() + "&IntervalSec=" + InitCount;
+    var url = "/api/sms/SentSMS_IQBPay_BuyerOrder?OrderNo="+OrderNo+"&mobilePhone=" + phone.val() + "&IntervalSec=" + InitCount;
 
     $.ajax({
         type: "get",
@@ -97,6 +104,7 @@ function GetVerifyCode() {
             if (result.SMSVerifyStatus == 6)
             {
                 alert("短信系统发送失败，请联系平台！");
+                InitControls();
                 return;
             }
 
@@ -115,6 +123,7 @@ function GetVerifyCode() {
         error: function (xhr, type) {
 
             alert("短信系统错误，请联系平台！");
+            InitControls();
             return;
 
         }
@@ -124,8 +133,8 @@ function GetVerifyCode() {
 function settime(obj) {
     if (countdown == 0) {
         obj.attr("disabled", false);
-        obj.css("background", "#5581ea");
-        obj.addClass("bai");
+        obj.css("background", "#47a447");
+       // obj.addClass("bai");
         obj.text("获取验证码");
         countdown = InitCount;
 

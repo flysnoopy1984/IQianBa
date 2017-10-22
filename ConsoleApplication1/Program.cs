@@ -1,5 +1,7 @@
 ﻿using CatchWebContent;
 using IQBCore.Common.Constant;
+using IQBCore.IQBPay.BLL;
+using IQBCore.IQBPay.Models.InParameter;
 using IQBWX.Common;
 using IQBWX.DataBase;
 using IQBWX.Models.Order;
@@ -24,10 +26,13 @@ namespace ConsoleApplication1
             try
             {
 
-                float a = (float)Math.Round(1 * (2.5 / 100), 2, MidpointRounding.ToEven);
-                string st = a.ToString("0.00");
+                //SMSManager sms = new SMSManager();
+                //InSMS inSMS = new InSMS();
+                //inSMS.Init();
+                //inSMS.PhoneNumber = "13482710060";
+                //inSMS.Parameters = "212341,IQBSO320201019,http://b.iqianba.cn/";
 
-                Console.WriteLine(string.Format("{0}", st));
+                //sms.PostSMS(inSMS);
 
 
             }

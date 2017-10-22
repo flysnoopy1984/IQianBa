@@ -28,6 +28,7 @@ namespace IQBWX.DataBase.IQBPay
             // Database.SetInitializer<AliPayContent>(new CreateDatabaseIfNotExists<AliPayContent>());
         }
 
+        public DbSet<ESMSLog> DBSMSLog { get; set; }
         public DbSet<ESMSVerification> DBSMSBuyerOrder { get; set; }
 
         public DbSet<EUserInfo> DBUserInfo { get; set; }

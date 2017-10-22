@@ -1,5 +1,7 @@
 ﻿using IQBCore.Common.Helper;
 using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.BLL;
+using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.IQBPay.Models.SMS;
 using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Models.OutParameter;
@@ -34,7 +36,7 @@ namespace IQBWX.Controllers.API
                         VerifyStatus = UserSMSStatus.Sent,
                         SMSEvent = Convert.ToString(SMSEvent.NewMember)
                     };
-                    this.DoSMS();
+               //    this.DoSMS();
                     db.InsertEUserSMSVerify(uv);
                 }
             }
@@ -50,6 +52,7 @@ namespace IQBWX.Controllers.API
         /// </summary>
         /// <param name="mobilePhone"></param>
         /// <param name="SMSId"></param>
+        [HttpGet]
         public OutSMS IQBPay_ConfirmVerifyCode(string SMSId,string Code)
         {
            
@@ -81,6 +84,9 @@ namespace IQBWX.Controllers.API
                         else
                             OutSMS.SMSVerifyStatus = SMSVerifyStatus.Failure;
                     }
+                    OutSMS.OrderNo = sms.OrderNo;
+
+                    sms.SMSVerifyStatus = OutSMS.SMSVerifyStatus;
                     db.SaveChanges();
 
                 }
@@ -108,6 +114,8 @@ namespace IQBWX.Controllers.API
                     if (sms != null)
                     {
                         OutSMS.SmsID = sms.ID;
+                        OutSMS.OrderNo = sms.OrderNo;
+
                         TimeSpan nowtimespan = new TimeSpan(DateTime.Now.Ticks);
                         TimeSpan endtimespan = new TimeSpan(sms.SendDateTime.Ticks);
                         TimeSpan timespan = nowtimespan.Subtract(endtimespan).Duration();
@@ -121,6 +129,7 @@ namespace IQBWX.Controllers.API
                             OutSMS.RemainSec = CurSec;
                             return OutSMS;
                         }
+                       
                           
                     }
                     return OutSMS;
@@ -135,7 +144,7 @@ namespace IQBWX.Controllers.API
         }
 
         [HttpGet]
-        public OutSMS SentSMS_IQBPay_BuyerOrder(string mobilePhone, int IntervalSec)
+        public OutSMS SentSMS_IQBPay_BuyerOrder(string OrderNo,string mobilePhone, int IntervalSec)
         {
             OutSMS OutSMS = new OutSMS();
             try
@@ -145,7 +154,8 @@ namespace IQBWX.Controllers.API
                 if (OutSMS.RemainSec == -1)
                 {
                     string VerifyCode = StringHelper.GenerateVerifyCode();
-                    if (!this.DoSMS(VerifyCode))
+
+                    if (!this.DoSMS(mobilePhone, VerifyCode, OrderNo))
                     {
                         OutSMS.SMSVerifyStatus = SMSVerifyStatus.SentFailure;
                         return OutSMS;
@@ -157,6 +167,7 @@ namespace IQBWX.Controllers.API
                         {
                             VerifyCode = VerifyCode,
                             MobilePhone = mobilePhone,
+                            OrderNo = OrderNo,
                             SendDateTime = DateTime.Now,
                             SMSVerifyStatus = SMSVerifyStatus.Sent,
                             SMSEvent = SMSEvent.IQB_PayOrder,
@@ -184,9 +195,42 @@ namespace IQBWX.Controllers.API
             return OutSMS;
         }
 
-        private Boolean DoSMS(string VerifyCode)
+        private Boolean DoSMS(string phoneNumber,string VerifyCode,string OrderNo)
         {
-            return true;
+            Boolean result = true;
+            ESMSLog smsLog = new ESMSLog();
+            try
+            {
+
+                SMSManager sms = new SMSManager();
+                InSMS inSMS = new InSMS();
+                inSMS.Init();
+                inSMS.PhoneNumber = phoneNumber;
+                inSMS.Parameters = VerifyCode+","+ VerifyCode+",http://b.iqianba.cn/";
+
+                SMSResult_API51 Response = sms.PostSMS_API51(inSMS,ref smsLog);
+                if(Response.result == "0")
+                {
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                smsLog.Exception += "DoSMS Error:" + ex.Message;
+                result = false;
+            }
+            using (AliPayContent db = new AliPayContent())
+            {
+                smsLog.IsSuccess = result;
+                db.DBSMSLog.Add(smsLog);
+                db.SaveChanges();
+            }
+
+           return result;
         }
     }
 }

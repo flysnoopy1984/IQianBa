@@ -15,6 +15,8 @@ namespace IQBCore.IQBWX.Models.OutParameter
 
         public int RemainSec { get; set; }
 
+        public string OrderNo { get; set; }
+
       
 
     }

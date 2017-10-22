@@ -53,7 +53,7 @@ namespace IQBWX.Controllers
         public ActionResult Pay(string Id)
         {
             ViewBag.QRUserId = Id;
-        //    ViewBag.OrderNo = StringHelper.GenerateOrderNo();
+            ViewBag.OrderNo = StringHelper.GenerateOrderNo();
             return View();
         }
 
