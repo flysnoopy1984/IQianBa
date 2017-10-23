@@ -70,18 +70,10 @@ function generateData(result) {
         strCtrl = "";
         strCtrl += "<tr>";
 
-        tdWidth = "width:" + $("#trHeader th").eq(0).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferId + "</td>";
-
-        tdWidth = "width:" + $("#trHeader th").eq(1).css("width");
-        strCtrl += "<td>" + result[i].TransDateStr + "</td>";
-
-        tdWidth = "width:" + $("#trHeader th").eq(2).css("width");
-        strCtrl += "<td>" + result[i].TransferAmount + "</td>";
-
-        tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
-        strCtrl += "<td>" + result[i].AgentAliPayAccount + "</td>";
-
+        strCtrl += "<td style='width:50%'><ul><li style='color:brown'>" + result[i].TransferId + "</li>";
+        strCtrl += "<li>创建时间:" + result[i].TransDateStr + "</li></ul></td>";
+        strCtrl += "<td style='width:50%'><ul><li style='color:firebrick; font-weight:bold;'>" + result[i].TransferAmount + "</li>";
+        strCtrl += "<li>付款账户:" + result[i].AgentAliPayAccount + "</li></ul></td>";
         strCtrl += "</tr>";
 
 

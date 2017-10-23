@@ -74,9 +74,10 @@ namespace IQBPay.Controllers
                     }
                     var list = db.Database.SqlQuery<RUser_OrderSum>(sql).ToList();
 
-                    int totalCount = list.Count();
+                    
                     if (parameter.PageIndex == 0)
                     {
+                        int totalCount = list.Count();
                         result = list.Take(parameter.PageSize).ToList();
 
                         if (result.Count > 0)
@@ -157,9 +158,9 @@ namespace IQBPay.Controllers
                     }
 
                     list = list.OrderByDescending(i => i.TransDate);
-                    int totalCount = list.Count();
                     if (parameter.PageIndex == 0)
                     {
+                        int totalCount = list.Count();
                         result = list.Take(parameter.PageSize).ToList();
 
                         if (result.Count > 0)
@@ -193,9 +194,10 @@ namespace IQBPay.Controllers
                     sql = string.Format(sqlFormat, parameter.AgentOpenId);
 
                     var list = db.Database.SqlQuery<RUser_Order>(sql).ToList();
-                    int totalCount = list.Count();
+                   
                     if (parameter.PageIndex == 0)
                     {
+                        int totalCount = list.Count();
                         result = list.Take(parameter.PageSize).ToList();
                         if (result.Count > 0)
                             result[0].TotalCount = totalCount;

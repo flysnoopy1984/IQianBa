@@ -126,20 +126,24 @@ function generateData(result) {
         strCtrl = "";
         strCtrl += "<tr>";
 
-        tdWidth = "width:" + $("#trHeader th").eq(0).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].OrderNo + "</td>";
+      //tdWidth = "width:" + $("#trHeader th").eq(0).css("width");
+        strCtrl += "<td style='width:50%'><ul><li style='color:brown'>" + result[i].OrderNo + "</li>";
+        strCtrl += "<li>创建时间:" + result[i].TransDateStr + "</li>";
+        strCtrl += "<li style='color:gray; font-size:9px;'>订单状态:" + orderStatus + "</li></ul></td>";
+        strCtrl += "<td style='width:50%'><ul><li style='color:firebrick; font-weight:bold;'>" + result[i].TotalAmount + "</li>";
+        strCtrl += "<li>付款账户:"+result[i].BuyerAliPayLoginId+"</li></ul></td>";
 
-        tdWidth = "width:" + $("#trHeader th").eq(1).css("width");
-        strCtrl += "<td>" + result[i].TransDateStr + "</td>";
+        //tdWidth = "width:" + $("#trHeader th").eq(1).css("width");
+        //strCtrl += "<td>" + result[i].TransDateStr + "</td>";
 
-        tdWidth = "width:" + $("#trHeader th").eq(2).css("width");
-        strCtrl += "<td>" + result[i].BuyerAliPayLoginId + "</td>";
+        //tdWidth = "width:" + $("#trHeader th").eq(2).css("width");
+        //strCtrl += "<td>" + result[i].BuyerAliPayLoginId + "</td>";
 
-        tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
-        strCtrl += "<td>" + result[i].TotalAmount + "</td>";
+       // tdWidth = "width:" + $("#trHeader th").eq(1).css("width");
+       
 
-        tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
-        strCtrl += "<td>" + orderStatus + "</td>";
+        //tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
+        //strCtrl += "<td>" + orderStatus + "</td>";
 
         strCtrl += "</tr>";
       
