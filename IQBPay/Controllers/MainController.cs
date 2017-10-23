@@ -98,10 +98,10 @@ namespace IQBPay.Controllers
             {
                 base.ExitSession();
             }
-            if (GetUserSession() != null)
-            {
-                return RedirectToAction("Profile", "User");
-            }
+            //if (GetUserSession() != null)
+            //{
+            //    return RedirectToAction("Profile", "User");
+            //}
 
             string WXurl =  ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
             ViewData["WXUrl"] = WXurl+ "?logintype=pp";

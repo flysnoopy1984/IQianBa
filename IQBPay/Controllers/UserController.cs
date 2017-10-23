@@ -14,6 +14,7 @@ using IQBCore.IQBPay.BaseEnum;
 using IQBCore.Common.Constant;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.IQBPay.Models.Result;
 
 namespace IQBPay.Controllers
 {
@@ -43,35 +44,41 @@ namespace IQBPay.Controllers
 
             return View();
         }
-
-        public ActionResult Get()
+        public ActionResult GetProfile()
         {
-            string OpenId = this.GetOpenId(true);
-          
-       
+            int Id = this.GetUserSession().Id;
+            return Get(Id);
+        }
+
+
+        public ActionResult Get(int Id)
+        {
+            string sql = @"select ui.Id,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.MDate,ui.UserRole,ui.Headimgurl,ui.AliPayAccount,
+                           qruser.Rate,qruser.FilePath,qruser.ParentCommissionRate,
+                           pi.Name as ParentAgent
+                           from userinfo as ui 
+                           left join qrUser on qruser.ID = ui.QRUserDefaultId 
+                           left join UserInfo as pi on pi.OpenId = qruser.ParentOpenId                              
+                           where ui.Id = {0}
+                        ";
+
+            sql = string.Format(sql, Id);
+
             using (AliPayContent db = new AliPayContent())
             {
                 try
                 {
-                    EUserInfo result = db.DBUserInfo.Where(u => u.OpenId == OpenId).FirstOrDefault();
+                    RUserInfo result = db.Database.SqlQuery<RUserInfo>(sql).FirstOrDefault();
+                    
 
                     if (result == null)
                     {
-                        result = new EUserInfo();
+                        result = new RUserInfo();
                         result.QueryResult = false;
                         return Json(result);
                     }
                    
-                    if (result.QRUserDefaultId > 0)
-                    {
-                        EQRUser qrUser = db.DBQRUser.Where(a => a.ID == result.QRUserDefaultId).FirstOrDefault();
-                        if (qrUser != null)
-                        {
-                            result.Rate = qrUser.Rate;
-                            result.QRFilePath = qrUser.FilePath;
-
-                        }
-                    }
+                   
                     result.QueryResult = true;
                     return Json(result);
                 }
@@ -87,16 +94,22 @@ namespace IQBPay.Controllers
         [HttpPost]
         public ActionResult Query(UserRole role= UserRole.Agent, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
-            List<EUserInfo> result = new List<EUserInfo>();
-            IQueryable<EUserInfo> list = null;
+            List<RUserInfo> result = new List<RUserInfo>();
+            string sql = @"select ui.Id,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.AliPayAccount,qruser.Rate,qruser.ParentCommissionRate,pi.Name as ParentAgent
+                            from userinfo as ui 
+                            left join qrUser on qruser.ID = ui.QRUserDefaultId
+                            left join userinfo as pi on pi.OpenId = qruser.ParentOpenId
+                            where ui.UserRole =2
+                            ORDER BY ui.CreateDate desc";
+           // IQueryable<EUserInfo> list = null;
             try
             {
-                string openId = Convert.ToString(Session["OpenId"]);
 
                 using (AliPayContent db = new AliPayContent())
                 {
-                    list = db.DBUserInfo.Where(u=>u.UserRole == role).OrderByDescending(i => i.CreateDate);
-                    
+
+                    var list = db.Database.SqlQuery<RUserInfo>(sql);
+                 
                     int totalCount = list.Count();
                     if (pageIndex == 0)
                     {
@@ -147,7 +160,7 @@ namespace IQBPay.Controllers
 
 
                     entry.Property(t => t.Name).IsModified = true;
-                   // entry.Property(t => t.Rate).IsModified = true;
+                    entry.Property(t => t.IsAutoTransfer).IsModified = true;
                    
                     entry.Property(t => t.AliPayAccount).IsModified = true;
                     entry.Property(t => t.UserStatus).IsModified = true;
@@ -173,16 +186,14 @@ namespace IQBPay.Controllers
         public ActionResult Demo()
         {
            
-            EUserInfo ui = new EUserInfo();
-            ui.Headimgurl = "http://ssdakdla";
-            ui.QRAuthId = 13;
+  
 
            // string url = "http://ap.iqianba.cn/api/userapi/register/";
             string url = "http://localhost:24068/api/userapi/register/";
-            string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=Jacky&openId=orKUAw16WK0BmflDLiBYsR-Kh5bE&Headimgurl=http://wx.qlogo.cn/mmopen/v6XbW38nFORmMzMtm1VjI3WYE7onmicI6UheCgyKJZwPFWTRXSTZqVROYkdllKNGzF82uicVp1ZLPGM9dGKe0KbgE0NVPicWWg7/0";
-            string name = "22";
+            string data = @"QRAuthId=0&UserStatus=1&UserRole=1&Isadmin=false&name=Tome&openId=orKUAw16WK0BmflDLiBYsR-Kh5bE&Headimgurl=http://wx.qlogo.cn/mmopen/v6XbW38nFORmMzMtm1VjI3WYE7onmicI6UheCgyKJZwPFWTRXSTZqVROYkdllKNGzF82uicVp1ZLPGM9dGKe0KbgE0NVPicWWg7/0";
+          
            
-            data = string.Format(data, name, "orKUAw16WK0BmflDLiBYsR-Kh5bE");
+          //  data = string.Format(data, name, "orKUAw16WK0BmflDLiBYsR-Kh5bE");
           
             string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
             if(res.Contains("EXIST"))

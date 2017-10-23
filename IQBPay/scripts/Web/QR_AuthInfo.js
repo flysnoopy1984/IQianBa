@@ -1,6 +1,7 @@
-﻿$(document).ready(function () {
+﻿var Id = "";
+$(document).ready(function () {
 
-    var Id = GetUrlParam("id");
+    Id = GetUrlParam("id");
     var channel = GetUrlParam("c");
 
     if (Id != null && Id != "")
@@ -31,9 +32,7 @@
 });
 
 function Init(Id) {
-    if (Id == null || Id == "") {
-        Id = -1;
-    }
+   
    
 
     var url = "/QR/Get";
@@ -55,6 +54,9 @@ function Init(Id) {
 }
 
 function InitFormData(data) {
+
+    //if (Id == "" || Id == null)
+    //    Id = -1;
 
     $("#RecId").val(data.ID);
     $("#Name").val(data.Name);

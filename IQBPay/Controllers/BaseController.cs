@@ -94,7 +94,7 @@ namespace IQBPay.Controllers
         {
             using (AliPayContent db = new AliPayContent())
             {
-                string sql = string.Format("select OpenId,UserRole,Headimgurl,Name from userInfo where OpenId ='{0}'", openId);
+                string sql = string.Format("select Id,OpenId,UserRole,Headimgurl,Name from userInfo where OpenId ='{0}'", openId);
                 UserSession userSession = db.Database.SqlQuery<UserSession>(sql).FirstOrDefault();
                 Session["UserSession"] = userSession;
             }

@@ -9,3 +9,6 @@
 2017/10/19 23:41:39: Transfer Query Error:The method 'Skip' is only supported for sorted input in LINQ to Entities. The method 'OrderBy' must be called before the method 'Skip'.
 2017/10/20 0:10:36: Transfer Query Error:值不能为 null。
 参数名: source
+2017/10/23 22:40:16: Store Query Error:The entity or complex type 'IQBPay.DataBase.EUserInfo' cannot be constructed in a LINQ to Entities query.
+2017/10/23 22:54:28: Store Query Error:The data reader is incompatible with the specified 'IQBPay.DataBase.EUserInfo'. A member of the type, 'parentOpenId', does not have a corresponding column in the data reader with the same name.
+2017/10/23 23:45:23: User Get Error:The cast to value type 'System.Single' failed because the materialized value is null. Either the result type's generic parameter or the query must use a nullable type.

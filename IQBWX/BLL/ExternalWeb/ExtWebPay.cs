@@ -30,7 +30,7 @@ namespace IQBWX.BLL.ExternalWeb
                 if (name == null) name = "wx" + ui.UserId.ToString().PadLeft(7, '0');
                
                 data = string.Format(data, name, ui.openid, ui.headimgurl, QRAuthId);
-             //   log.log("regeisterWebMember Data: " + data);
+                log.log("regeisterWebMember Data: " + data);
                 string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
                 return res;
             }
@@ -45,7 +45,7 @@ namespace IQBWX.BLL.ExternalWeb
         public override RExternalWebResult WXInfo(EUserInfo ui, WXMessage msg)
         {
             string res = regeisterWebMember(ui).Trim().ToUpper();
-           // log.log("ExtWebPay WXInfo:" + res);
+            log.log("ExtWebPay WXInfo:" + res);
             RExternalWebResult result = new RExternalWebResult();
 
             if (res.Contains("OK"))

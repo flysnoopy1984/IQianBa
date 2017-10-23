@@ -6,7 +6,7 @@
 
 function Init() {
 
-    var url = "/User/Get";
+    var url = "/User/GetProfile";
     $.ajax({
         type: 'post',
         //data: "Id=" + Id,
@@ -36,8 +36,11 @@ function InitFormData(data)
     $("#UserPhone").text("");
     $("#UserName").text(data.Name);
     
+    if (data.Headimgurl == "" || data.Headimgurl == null)
+        $("#QRImg").attr("src", "/Content/Images/noPic.jpg");
+    else
+        $("#HeaderImg").attr("src", data.Headimgurl);
 
-    $("#HeaderImg").attr("src", data.Headimgurl);
     if (data.QRFilePath == "" || data.QRFilePath == null)
         $("#QRImg").attr("src", "/Content/Images/noPic.jpg");
     else

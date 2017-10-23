@@ -59,6 +59,7 @@ namespace IQBPay.Controllers
                             ParentCommissionRate = qr.ParentCommissionRate,
                             StoreName = st.Name,
                             Remark = qr.Remark,
+                            RecordStatus = qr.RecordStatus,
 
                         }
                     ); 
@@ -92,7 +93,7 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        public ActionResult Get(long Id)
+        public ActionResult Get(long Id,QRType qrType)
         {
             
             try
@@ -109,8 +110,11 @@ namespace IQBPay.Controllers
                     {
                         result = db.DBQRInfo.Where(a => a.ID == Id).FirstOrDefault();
                     }
-                    result.HashStoreList = db.Database.SqlQuery<HashStore>("select Id,Name from storeinfo").ToList();
-                    result.HashUserList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo").ToList();
+                    if (qrType == QRType.ARAuth)
+                    {
+                        result.HashStoreList = db.Database.SqlQuery<HashStore>("select Id,Name from storeinfo").ToList();
+                        result.HashUserList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo").ToList();
+                    }
                 }
                 return Json(result);
             }

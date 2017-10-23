@@ -38,7 +38,9 @@ function generateData(result) {
         strCtrl += "<td>" + result[i].Rate + "</td>";
         strCtrl += "<td>" + result[i].CDate + "</td>";
         strCtrl += "<td>" + result[i].AliPayAccount + "</td>";
-   
+        strCtrl += "<td>" + result[i].IsAutoTransfer + "</td>";
+        strCtrl += "<td>" + result[i].ParentAgent + "</td>";
+        strCtrl += "<td>" + result[i].ParentCommissionRate + "</td>";
 
         if (result[i].UserStatus == 1)
             strCtrl += "<td style='color:#4AC4BC;'><div class='noft-green-number'></div>启用</td>";

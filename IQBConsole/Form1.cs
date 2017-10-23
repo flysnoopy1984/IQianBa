@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WxPayAPI;
+
 
 namespace IQBConsole
 {
@@ -118,11 +118,11 @@ namespace IQBConsole
 
         private void bn_MemberList_Click(object sender, EventArgs e)
         {
-            string accessToken = JsApiPay.GetAccessToken();
-            string url = string.Format("https://api.weixin.qq.com/cgi-bin/user/get?access_token={0}",accessToken);
+            //string accessToken = JsApiPay.GetAccessToken();
+            //string url = string.Format("https://api.weixin.qq.com/cgi-bin/user/get?access_token={0}",accessToken);
 
-            string xml = HttpHelper.HttpGet(url);
-            tb_Result.Clear();
+            //string xml = HttpHelper.HttpGet(url);
+            //tb_Result.Clear();
             //tb_Result.Text = xml;
         }
     }

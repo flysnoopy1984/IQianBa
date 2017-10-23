@@ -9,6 +9,9 @@ namespace IQBCore.Model
 {
     public class UserSession
     {
+
+        public int Id { get; set; }
+
         public string OpenId { get; set; }
 
         public UserRole UserRole { get; set; }

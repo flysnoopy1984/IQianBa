@@ -105,12 +105,13 @@ namespace IQBPay.DataBase
         #endregion
 
         #region QRUser
-        public void UpdateQRUser(EQRInfo qr,EUserInfo ui)
+        public EQRUser UpdateQRUser(EQRInfo qr,EUserInfo ui)
         {
             bool isNew = false;
+            EQRUser qrUser = null;
             using (AliPayContent db = new AliPayContent())
             {
-                EQRUser qrUser = db.DBQRUser.Where(q => q.ID == ui.QRUserDefaultId && ui.OpenId == q.OpenId).FirstOrDefault();
+                 qrUser = db.DBQRUser.Where(q => q.ID == ui.QRUserDefaultId && ui.OpenId == q.OpenId).FirstOrDefault();
                 if(qrUser == null)
                 {
                     qrUser = new EQRUser();
@@ -121,7 +122,10 @@ namespace IQBPay.DataBase
                 qrUser.UserName = ui.Name;
                 qrUser.Rate = qr.Rate;
                 qrUser.ReceiveStoreId = qr.ReceiveStoreId;
+                qrUser.ParentOpenId = qr.ParentOpenId;
+                qrUser.ParentCommissionRate = qr.ParentCommissionRate;
               
+
 
                 if (isNew)
                     db.DBQRUser.Add(qrUser);
@@ -129,17 +133,19 @@ namespace IQBPay.DataBase
 
                 qrUser = QRManager.CreateUserUrlById(qrUser);
                 db.Entry(qrUser).State = System.Data.Entity.EntityState.Modified;
-
+/*
                 DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
                 entry.State = EntityState.Unchanged;
                 ui.QRUserDefaultId = qrUser.ID;
                 ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
                 //取消授权
                 ui.QRAuthId = 0;
-
-                entry.Property(t => t.QRUserDefaultId).IsModified = true;     
+                
+                entry.Property(t => t.QRUserDefaultId).IsModified = true; 
+ */ 
                 db.SaveChanges();
             }
+            return qrUser;
 
         }
         #endregion

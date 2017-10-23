@@ -10,23 +10,123 @@ using System.Net.Http;
 using System.Transactions;
 using System.Web.Http;
 using IQBCore.Common.Constant;
+using IQBCore.Common.Helper;
 
 namespace IQBPay.Controllers.ExternalAPI
 {
     public class UserAPIController : ApiController
     {
+       
         [HttpPost]
         public string Register([FromBody]EUserInfo ui)
         {
             EUserInfo updateUser = null;
             EQRInfo qr = null;
             EQRUser qrUser = null;
+            Boolean isExist=true;
+            bool hasParent = false;
             try
             {
              
                 if (ui != null)
                 {
-                    using (TransactionScope sc = new TransactionScope())
+                    //检查是否授权
+                    if (ui.QRAuthId > 0)
+                    {
+                        using (TransactionScope sc = new TransactionScope())
+                        {
+                            using (AliPayContent db = new AliPayContent())
+                            {
+                                try
+                                {
+                                    //检查用户是否已经注册
+                                    updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
+                                    //没有注册
+                                    if (updateUser == null)
+                                    {
+                                        //新建代理用户
+                                        ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
+                                        ui.UserStatus = IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister;
+                                        db.DBUserInfo.Add(ui);
+                                        isExist = false;
+                                        updateUser = ui;
+                                    }
+                                    qr = db.DBQRInfo.Where(a => a.ID == ui.QRAuthId).FirstOrDefault();
+                                    qrUser = db.UpdateQRUser(qr, updateUser);
+                                    if(qrUser == null)
+                                    {
+                                        return "授权码无法给用户授权,请联系平台！";
+                                    }
+                                    qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
+                                    ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
+                                    ui.QRAuthId = 0;
+                                    ui.QRUserDefaultId = qrUser.ID;
+
+                                    //用户返回后，给微信提示做判断
+                                    hasParent = !string.IsNullOrEmpty(qrUser.ParentOpenId);
+                                      
+                                    db.SaveChanges();
+                                }
+                                catch(Exception ex)
+                                {
+                                    IQBLog _log = new IQBLog();
+                                    _log.log("Register Error "+ex.Message);
+                                    return "授权出现错误,请联系平台！";
+                                }
+
+                            }
+                            sc.Complete();
+                        }
+                    }
+                    else
+                    {
+                        using (AliPayContent db = new AliPayContent())
+                        {
+                            updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
+                            if (updateUser == null)
+                            {
+                                ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.NormalUser;
+                                ui.UserStatus = IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister;
+
+                                db.DBUserInfo.Add(ui);
+                                db.SaveChanges();
+                                isExist = false;
+                            }
+                            else
+                            {
+                                updateUser.InitModify();
+                                db.SaveChanges();
+                                
+                            }
+                        }
+                           
+                    }
+/********************************************************************************************************************************************/
+                  
+                }
+                else
+                    return "参数传入失败！";
+            }
+            catch(Exception ex)
+            {
+                return ex.Message;
+            }
+
+            if (!isExist)
+            {
+                if (hasParent) return "ParentOK";
+                return "OK";
+            }
+            else
+            {
+                if (hasParent) return "ParentEXIST";
+                return "EXIST";
+            }
+        }
+    }
+}
+/*
+   using (TransactionScope sc = new TransactionScope())
                     {
                         using (AliPayContent db = new AliPayContent())
                         {
@@ -83,15 +183,5 @@ namespace IQBPay.Controllers.ExternalAPI
                        
                         sc.Complete();
                     }
-                }
-                else
-                    return "参数传入失败！";
-            }
-            catch(Exception ex)
-            {
-                return ex.Message;
-            }
-            return "OK";
-        }
-    }
-}
+     
+     */

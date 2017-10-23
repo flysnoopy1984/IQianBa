@@ -82,7 +82,8 @@
             </ul>
         </li>
     }
-   
+   @if (ViewBag.UserRole > 1)
+   {
     <li>
         <a class="tooltip-tip ajax-load" href="#" title="用户自助">
             <i class="icon-feed"></i>
@@ -101,4 +102,5 @@
          
         </ul>
     </li>
+   }
 </ul>

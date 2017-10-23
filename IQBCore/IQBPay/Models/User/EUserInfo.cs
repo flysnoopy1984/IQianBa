@@ -60,35 +60,6 @@ namespace IQBCore.IQBPay.Models.User
         /// </summary>
         public Boolean IsAutoTransfer { get; set; }
 
-        [NotMapped]
-        public string UserRoleName
-        {
-            get
-            {
-                switch (this.UserRole)
-                {
-                    case IQBPay.BaseEnum.UserRole.NormalUser:
-                        return "普通用户";
-                    case IQBPay.BaseEnum.UserRole.StoreMaster:
-                        return "高级商户";
-                    case IQBPay.BaseEnum.UserRole.StoreVendor:
-                        return "商户";
-
-                }
-                return "";
-
-            }
-        }
-
-        [NotMapped]
-        public bool QueryResult { get; set; }
-
-        [NotMapped]
-        public float Rate { get; set; }
-
-        [NotMapped]
-        public string QRFilePath { get; set; }
-
        
 
 

@@ -9,6 +9,8 @@
     }
 
     $('#Rate').attr("disabled", true);
+    $('#ParentAgent').attr("disabled", true);
+    $('#ParentCommissionRate').attr("disabled", true);
     Init(Id);
 
    
@@ -41,6 +43,11 @@ function InitFormData(data) {
 
     $("#Name").val(data.Name);
     $("#Rate").val(data.Rate);
+    $("#ParentAgent").val(data.ParentAgent);
+    $("#ParentCommissionRate").val(data.ParentCommissionRate);
+
+    $("#IsAutoTransfer").attr("checked", data.IsAutoTransfer);
+
     $("#AliPayAccount").val(data.AliPayAccount);
     $("#UserStatus").val(data.UserStatus);
 
@@ -82,10 +89,11 @@ function Save() {
 
     var UserStatus = $("#UserStatus").val();
     var name = $("#Name").val();
-    var rate = $("#Rate").val();
+   
     var AliPayAccount = $("#AliPayAccount").val();
     var ID = $("#RecId").val();
    
+    var IsAutoTransfer = $("#IsAutoTransfer").get(0).checked;
 
     if (!CheckForm()) return;
 
@@ -93,7 +101,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "Id": ID, "Name": name, "Rate": rate, "AliPayAccount": AliPayAccount, "UserStatus": UserStatus},
+        data: { "Id": ID, "Name": name, "IsAutoTransfer":IsAutoTransfer,"AliPayAccount": AliPayAccount, "UserStatus": UserStatus},
         url: url,
         success: function (data) {
             if (data == "OK") {
