@@ -29,12 +29,22 @@ function Query() {
 function generateData(result) {
     var strCtrl = "";
     $.each(result, function (i) {
+        var storeName = result[i].StoreName;
+        if (storeName == null)
+            storeName = "随机";
+
+        var parentName = result[i].ParentName;
+        if (parentName == null)
+            parentName = "无";
 
         strCtrl = "";
         strCtrl += "<tr>";
       //  strCtrl += "<td>" + result[i].ID + "</td>";
         strCtrl += "<td>" + result[i].Name + "</td>";
         strCtrl += "<td>" + result[i].Rate + "</td>";
+        strCtrl += "<td>" + parentName + "</td>";
+        strCtrl += "<td>" + result[i].ParentCommissionRate + "</td>";
+        strCtrl += "<td>" + storeName + "</td>";
         strCtrl += "<td>" + result[i].Remark + "</td>";
 
         if (result[i].RecordStatus == 0)

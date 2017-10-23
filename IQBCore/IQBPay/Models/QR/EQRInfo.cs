@@ -25,7 +25,13 @@ namespace IQBCore.IQBPay.Models.QR
         /// </summary>
         public string OwnnerOpenId { get; set; }
 
-       
+        /// <summary>
+        /// 2级授权码用
+        /// </summary>
+        public string ParentOpenId { get; set; }
+
+
+        public float ParentCommissionRate { get; set; }
 
         /// <summary>
         /// 返点率0-100
@@ -55,12 +61,12 @@ namespace IQBCore.IQBPay.Models.QR
         public string FilePath { get; set; }
 
         public int ReceiveStoreId { get; set; }
-        
+
         [NotMapped()]
         public List<HashStore> HashStoreList { get; set; }
 
-      
-      
+        [NotMapped()]
+        public List<HashUser> HashUserList { get; set; }
 
         public int Level { get; set; }
 

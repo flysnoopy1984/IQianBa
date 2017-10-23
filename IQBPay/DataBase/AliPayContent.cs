@@ -121,6 +121,7 @@ namespace IQBPay.DataBase
                 qrUser.UserName = ui.Name;
                 qrUser.Rate = qr.Rate;
                 qrUser.ReceiveStoreId = qr.ReceiveStoreId;
+              
 
                 if (isNew)
                     db.DBQRUser.Add(qrUser);

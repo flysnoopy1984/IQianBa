@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Mvc;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.Common.Constant;
+using IQBCore.IQBPay.Models.Result;
 
 namespace IQBPay.Controllers
 {
@@ -33,14 +34,35 @@ namespace IQBPay.Controllers
         [HttpPost]
         public ActionResult Query(QRType QRType, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
-            List<EQRInfo> result = new List<EQRInfo>();
+            List<RQRInfo> result = new List<RQRInfo>();
             try
             {
                 string openId = this.GetOpenId(true);
 
                 using (AliPayContent db = new AliPayContent())
                 {
-                    var list = db.DBQRInfo.Where(i => i.OwnnerOpenId == openId && i.Type == QRType).OrderByDescending(i => i.CreateDate);
+                    var list =
+                    (
+                        from qr in db.DBQRInfo
+                        join st in db.DBStoreInfo on qr.ReceiveStoreId equals st.ID into joinedQRST 
+                        from st in joinedQRST.DefaultIfEmpty()
+                        join pi in db.DBUserInfo.DefaultIfEmpty() on qr.ParentOpenId  equals pi.OpenId into joinQRUser
+                        from pi in joinQRUser.DefaultIfEmpty()
+                        where qr.Type== QRType
+                        select new RQRInfo
+                        {
+                            ID = qr.ID,
+                            FilePath = qr.FilePath,
+                            Name = qr.Name,
+                            Rate = qr.Rate,
+                            ParentName =pi.Name,
+                            ParentCommissionRate = qr.ParentCommissionRate,
+                            StoreName = st.Name,
+                            Remark = qr.Remark,
+
+                        }
+                    ); 
+                    //  db.DBQRInfo.Where(i => i.Type == QRType).OrderByDescending(i => i.CreateDate);
                     int totalCount = list.Count();
                     if (pageIndex == 0)
                     {
@@ -72,23 +94,30 @@ namespace IQBPay.Controllers
 
         public ActionResult Get(long Id)
         {
-            EQRInfo result = null;
-            using (AliPayContent db = new AliPayContent())
+            
+            try
             {
-                if (Id == -1)
+                EQRInfo result = null;
+                using (AliPayContent db = new AliPayContent())
                 {
-                    result = new EQRInfo();
-                    result.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal;
+                    if (Id == -1)
+                    {
+                        result = new EQRInfo();
+                        result.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal;
+                    }
+                    else
+                    {
+                        result = db.DBQRInfo.Where(a => a.ID == Id).FirstOrDefault();
+                    }
+                    result.HashStoreList = db.Database.SqlQuery<HashStore>("select Id,Name from storeinfo").ToList();
+                    result.HashUserList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo").ToList();
                 }
-                else
-                {
-                    result = db.DBQRInfo.Where(a => a.ID == Id).FirstOrDefault();
-                }
-                result.HashStoreList = db.Database.SqlQuery<HashStore>("select Id,Name from storeinfo").ToList();
+                return Json(result);
             }
-
-
-            return Json(result);
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -116,6 +145,8 @@ namespace IQBPay.Controllers
                         entry.Property(t => t.Rate).IsModified = true;
                         entry.Property(t => t.ReceiveStoreId).IsModified = true;
                         entry.Property(t => t.Remark).IsModified = true;
+                        entry.Property(t => t.ParentOpenId).IsModified = true;
+                        entry.Property(t => t.ParentCommissionRate).IsModified = true;
                         entry.Property(t => t.RecordStatus).IsModified = true;
 
                         entry.Property(t => t.MDate).IsModified = true;
@@ -125,10 +156,12 @@ namespace IQBPay.Controllers
                     }
                     else
                     {
-                        
-                        qr.OwnnerOpenId = this.GetOpenId(true);
+
+                        qr.OwnnerOpenId = this.GetUserSession().OpenId;
                         qr.Channel = Channel.PP;
                         qr.Type = QRType.ARAuth;
+                       
+                     
                         db.DBQRInfo.Add(qr);
                         db.SaveChanges();      
                                          
@@ -282,35 +315,5 @@ namespace IQBPay.Controllers
 
     }
 
-    #region
-    /*
-                              using (AliPayContent db = new AliPayContent())
-                              {
-                                  IQueryable<RQRInfo> list = db.DBQRInfo.Where(i => i.OwnnerOpenId == openId).OrderByDescending(i => i.CreateDate)
-                                      .Join(db.DBStoreInfo, a => a.StoreId, b => b.ID,
-                                      (a, b) => new RQRInfo()
-                                      {
-                                          StoreId = b.ID,
-                                          StoreName = b.Name,
-                                          OwnnerOpenId = a.OwnnerOpenId,
-                                          ID = a.ID,
-                                          CDate=a.CDate,
-                                          CreateDate =a.CreateDate,
-                                          MDate=a.MDate,
-                                          ModifyDate =a.ModifyDate,
-                                          CreateUser=a.CreateUser,
-                                          CTime = a.CTime,
-                                          FilePath= a.FilePath,
-                                          ModifyUser =a.ModifyUser,
-                                          MTime =a.MTime,
-                                          Name=a.Name,
-                                          Rate =a.Rate,
-                                          RecordStatus = a.RecordStatus,
-                                          Remark = a.Remark,
-                                          TotalCount = a.TotalCount,
 
-
-                                      });
-              */
-    #endregion
 }

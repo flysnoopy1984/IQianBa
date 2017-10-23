@@ -11,7 +11,7 @@ namespace IQBCore.IQBPay.Models.InParameter
         public string PhoneNumber { get; set; }
 
         /// <summary>
-        /// 
+        /// //您的验证码为:{1}.您的订单编号为:{2}.请在支付后到以下地址进行收款确认:{3}。
         /// </summary>
         public string Parameters{get;set;}
 

@@ -206,7 +206,7 @@ namespace IQBWX.Controllers.API
                 InSMS inSMS = new InSMS();
                 inSMS.Init();
                 inSMS.PhoneNumber = phoneNumber;
-                inSMS.Parameters = VerifyCode+","+ VerifyCode+",http://b.iqianba.cn/";
+                inSMS.Parameters = VerifyCode+","+ OrderNo + ",http://b.iqianba.cn/";
 
                 SMSResult_API51 Response = sms.PostSMS_API51(inSMS,ref smsLog);
                 if(Response.result == "0")

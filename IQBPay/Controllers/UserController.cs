@@ -13,6 +13,7 @@ using System.Data.Entity;
 using IQBCore.IQBPay.BaseEnum;
 using IQBCore.Common.Constant;
 using IQBCore.IQBPay.BLL;
+using IQBCore.IQBPay.Models.OutParameter;
 
 namespace IQBPay.Controllers
 {
@@ -114,6 +115,21 @@ namespace IQBPay.Controllers
                 Log.log("Store Query Error:" + ex.Message);
                 throw ex;
             }
+            return Json(result);
+        }
+
+      
+        public ActionResult QueryKeyValue()
+        {
+            List<HashUser> result = null;
+
+            using (AliPayContent db = new AliPayContent())
+            {
+                result = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo").ToList();
+                if (result == null)
+                    result = new List<HashUser>();
+            }
+
             return Json(result);
         }
 

@@ -10,6 +10,7 @@ namespace IQBPay.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            //AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(IQBPay.DataBase.AliPayContent context)

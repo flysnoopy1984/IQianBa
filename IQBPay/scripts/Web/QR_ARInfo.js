@@ -50,21 +50,31 @@ function Init(Id) {
 
 function InitFormData(data)
 {
-
+    $("#ReceiveStore").empty();
     $("#ReceiveStore").append("<option value='-1'>随机</option>");
     $(data.HashStoreList).each(function (i, r) {
-
         $("#ReceiveStore").append("<option value='" + r.Id + "'>" + r.Name + "</option>");
+    });
+
+    $("#ParentOpenId").empty();
+    $("#ParentOpenId").append("<option value=''>无</option>");
+    $(data.HashUserList).each(function (i, r) {
+        $("#ParentOpenId").append("<option value='" + r.OpenId + "'>" + r.Name + "</option>");
     });
 
     $("#Name").val(data.Name);
     $("#Rate").val(data.Rate);
+    $("#Level").val(data.Level);
     $("#Remark").val(data.Remark);
 
     //var filePath =  data.FilePath;
     $("#QRImg").attr("src", data.TargetUrl);
   
     $("#ReceiveStore").val(data.ReceiveStoreId);
+
+    $("#ParentCommissionRate").val(data.ParentCommissionRate);
+
+    $("#ParentOpenId").val(data.ParentOpenId);
 }
 
 function CheckForm() {
@@ -90,6 +100,9 @@ function Save() {
     var remake = $("#Remark").val();
     var ID = $("#RecId").val();
     var storeId = $("#ReceiveStore").val();
+   //var Level = $("#Level").val();
+    var ParentCommissionRate = $("#ParentCommissionRate").val();
+    var ParentOpenId = $("#ParentOpenId").val();
 
     if (!CheckForm()) return;
 
@@ -97,13 +110,15 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID, "Name": name, "Rate": rate, "Remark": remake, "RecordStatus": QRStatus, "ReceiveStoreId": storeId },
+        data: { "ID": ID, "Name": name, "ParentOpenId":ParentOpenId,"ParentCommissionRate": ParentCommissionRate, "Rate": rate, "Remark": remake, "RecordStatus": QRStatus, "ReceiveStoreId": storeId },
         url: url,
         success: function (data) {
             if (data.RunResult == "OK") {
 
                 alert("Save Done");
-                InitFormData(data);
+                window.location.href = "ARlist";
+
+               // InitFormData(data);
             }
             else {
                 alert(data.RunResult);
