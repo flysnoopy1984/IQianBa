@@ -19,18 +19,37 @@
 </head>
 <body>
 
-    <div class="ListTitle mgz2 xi20 hui">订单记录</div>
-     
+    <div class="ListTitle mgz2 xi20 hui">订单记录
+       
+    </div>
+
+    <div class="ListTitle_Condition1 mgz2">
+        <label>日期：</label>
+        <select id="cDateType" style="font-size:16px;" onchange="DateChanged()">
+            <option value="1" selected>今天</option>
+            <option value="2">本周</option>
+            <option value="3">本月</option>
+            <option value="99">全部</option>
+        </select>
+    </div>
+ 
     <table id="TableHeader" class="table large-only mgz2 ListTableTitle">
         <tbody>
             <tr class="text-right" id="trHeader">
                 <th style="width:50%;">订单编号</th>
-                <th style="width:50%;">订单金额</th>
+                <th style="width:50%;">代理应得金额</th>
+            </tr>
+            <tr>
+                <td colspan="2" id="RecordSum" class="RecordSum">
+                代理应得总金额：<span id="RealTotalAmountSum"></span>
+                </td>
+              
             </tr>
         </tbody>
     </table>
 
     <div class="ListTableBody" id="ListTableBody">
+        <div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>
         <table class="table mgz2  large-only" id="trContainer">
          
         </table>

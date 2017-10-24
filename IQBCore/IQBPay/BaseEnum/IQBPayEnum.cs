@@ -78,7 +78,11 @@ namespace IQBCore.IQBPay.BaseEnum
         Process = 2,
     }
 
-   
+    public enum AgentCommissionStatus
+    {
+        Paid =1,
+        Closed =2,
+    }
 
     public enum OrderStatus
     {

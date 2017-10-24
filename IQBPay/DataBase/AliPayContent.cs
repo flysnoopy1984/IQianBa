@@ -32,6 +32,8 @@ namespace IQBPay.DataBase
                 Database.SetInitializer<AliPayContent>(null);
         }
 
+        public DbSet<EAgentCommission> DBAgentCommission { get; set; }
+
         public DbSet<ESMSLog> DBSMSLog { get; set; }
 
         public DbSet<ESMSVerification> DBSMSBuyerOrder { get; set; }

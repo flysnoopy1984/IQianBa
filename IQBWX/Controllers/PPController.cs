@@ -1,7 +1,9 @@
 ﻿using IQBCore.Common.Helper;
+using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBWX.Models.WX.Template;
 using IQBWX.BLL.ExternalWeb;
@@ -75,31 +77,72 @@ namespace IQBWX.Controllers
             return View();
         }
 
+
         [HttpPost]
         public ActionResult OrderQuery()
         {
             int pageIndex = Convert.ToInt32(Request["Page"]);
             int pageSize = Convert.ToInt32(Request["PageSize"]);
             string OpenId = Request["OpenId"];
-
-            List<EOrderInfo> result = new List<EOrderInfo>();
-            using (AliPayContent db = new AliPayContent())
+            ConditionDataType DateType =(ConditionDataType)Enum.Parse(typeof(ConditionDataType),Request["DateType"]);
+            List<ROrderInfo> result = new List<ROrderInfo>();
+            try
             {
-               
-                var list = db.DBOrderInfo.Where(o=>o.AgentOpenId == OpenId).OrderByDescending(i => i.TransDate);
-                int totalCount = list.Count();
-
                 
-                if (pageIndex == 0)
+                using (AliPayContent db = new AliPayContent())
                 {
-                    result = list.Take(pageSize).ToList();
-                    if (result.Count > 0)
-                        result[0].TotalCount = totalCount;
-                }
-                else
-                    result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
-             
+                    var list = db.DBOrderInfo.Where(o => o.AgentOpenId == OpenId).Select(o=>new ROrderInfo {
+                        ID = o.ID,
+                        OrderNo = o.OrderNo,
+                        TransDateStr = o.TransDateStr,
+                        OrderStatus = o.OrderStatus,
+                        TotalAmount = o.TotalAmount,
+                        RealTotalAmount = o.RealTotalAmount,
+                        BuyerAliPayLoginId = o.BuyerAliPayLoginId,
+                        TransDate = o.TransDate,
+                    });
 
+                    if (DateType != ConditionDataType.All)
+                    {
+                        if (DateType == ConditionDataType.Today)
+                        {
+                            list = list.Where(o => o.TransDate == DateTime.Today);
+                        }
+                        else if (DateType == ConditionDataType.Week)
+                        {
+                            DateTime startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
+                            DateTime endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
+                            list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+
+                        }
+                        else if (DateType == ConditionDataType.Month)
+                        {
+                            DateTime startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
+                            DateTime endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
+                            list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+                        }
+                    }
+                    list = list.Where(o => o.OrderStatus == OrderStatus.Paid);
+                    list = list.OrderByDescending(i => i.TransDate);
+
+                    if (pageIndex == 0)
+                    {
+                        int totalCount = list.Count();
+                        result = list.Take(pageSize).ToList();
+                        if (result.Count > 0)
+                        {
+                            result[0].TotalCount = totalCount;
+                         //   result[0].TotalAmountSum = list.Sum(o => o.TotalAmount);
+                            result[0].RealTotalAmountSum = list.Sum(o => o.RealTotalAmount);
+                        }
+                    }
+                    else
+                        result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
             }
             return Json(result);
            
@@ -118,30 +161,93 @@ namespace IQBWX.Controllers
             int pageIndex = Convert.ToInt32(Request["Page"]);
             int pageSize = Convert.ToInt32(Request["PageSize"]);
             string OpenId = Request["OpenId"];
+            ConditionDataType DateType = (ConditionDataType)Enum.Parse(typeof(ConditionDataType), Request["DateType"]);
 
-            List<ETransferAmount> result = new List<ETransferAmount>();
-            using (AliPayContent db = new AliPayContent())
+            List<RTransferAmount> result = new List<RTransferAmount>();
+            try
             {
-
-                var list = db.DBTransferAmount.Where(o => o.AgentOpenId == OpenId).OrderByDescending(i => i.TransDate);
-                int totalCount = list.Count();
-                if (pageIndex == 0)
+                using (AliPayContent db = new AliPayContent())
                 {
-                    result = list.Take(pageSize).ToList();
-                    if (result.Count > 0)
-                        result[0].TotalCount = totalCount;
+
+                    var list = db.DBTransferAmount.Where(o => o.AgentOpenId == OpenId).Select(s => new RTransferAmount
+                    {
+                        ID = s.ID,
+                        TransferId = s.TransferId,
+                        TransDateStr = s.TransDateStr,
+                        TransferAmount = s.TransferAmount,
+                        AgentAliPayAccount = s.AgentAliPayAccount,
+                        TransDate = s.TransDate,
+
+                    });
+
+                    if (DateType != ConditionDataType.All)
+                    {
+                        if (DateType == ConditionDataType.Today)
+                        {
+                            list = list.Where(o => o.TransDate == DateTime.Today);
+                        }
+                        else if (DateType == ConditionDataType.Week)
+                        {
+                            DateTime startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
+                            DateTime endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
+                            list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+
+                        }
+                        else if (DateType == ConditionDataType.Month)
+                        {
+                            DateTime startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
+                            DateTime endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
+                            list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+                        }
+                    }
+
+                    list = list.OrderByDescending(i => i.TransDate);
+
+                    if (pageIndex == 0)
+                    {
+
+                        result = list.Take(pageSize).ToList();
+                        if (result.Count > 0)
+                        {
+                            result[0].TotalCount = list.Count();
+                            result[0].TotalAmountSum = list.Sum(s => s.TransferAmount);
+                        }
+                    }
+                    else
+                        result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
                 }
-                else
-                    result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
-
-
             }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
+
             return Json(result);
 
         }
 
         public ActionResult DoTransfer()
         {
+            string openId = this.GetOpenId(true);
+
+            RDoTransfer result = new RDoTransfer();
+
+            using (AliPayContent db = new AliPayContent())
+            {
+
+               var list =  db.DBOrderInfo.Where(s => s.OrderStatus == OrderStatus.Paid
+                                             && s.OrderType == OrderType.Normal
+                                             && s.AgentOpenId == openId);
+
+                result.MyRemainAmount = list.Sum(s => s.RealTotalAmount);
+
+                list = db.DBOrderInfo.Where(s => s.OrderStatus == OrderStatus.Paid
+                                            && s.OrderType == OrderType.Normal
+                                            && s.AgentOpenId == openId);
+
+
+            }
             return View();
         }
 

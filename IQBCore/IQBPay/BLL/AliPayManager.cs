@@ -120,7 +120,7 @@ namespace IQBCore.IQBPay.BLL
                 TransDateStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 SellerAliPayId = store.AliPayAccount,
                 SellerStoreId = store.ID,
-               
+                
                 SellerName = store.Name,
                 SellerChannel = store.Channel,
                 SellerRate = store.Rate,
@@ -129,6 +129,11 @@ namespace IQBCore.IQBPay.BLL
 
             };
             order.RealTotalAmount = order.TotalAmount - order.RateAmount;
+
+            if(!string.IsNullOrEmpty(qrUser.ParentOpenId))
+            {
+
+            }
 
             return order;
            

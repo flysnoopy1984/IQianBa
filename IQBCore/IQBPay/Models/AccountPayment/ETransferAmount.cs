@@ -25,7 +25,6 @@ namespace IQBCore.IQBPay.Models.AccountPayment
 
         public DateTime TransDate { get; set; }
 
-        [NotMapped]
         public string TransDateStr { get; set; }
 
         [MaxLength(64)]

@@ -187,6 +187,7 @@ namespace IQBPay.Controllers
                         db.SaveChanges();
                         return View();
                     }
+
                     if (order.OrderStatus != IQBCore.IQBPay.BaseEnum.OrderStatus.WaitingAliPayNotify)
                         return View();
 
@@ -223,35 +224,37 @@ namespace IQBPay.Controllers
                         }
                         //自动提款
                         EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
-                        string TransferId;
-                        AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, ui,order.RealTotalAmount.ToString("0.00"),out TransferId);
-                        
-                        if (res2.Code == "10000")
+                        if(ui.IsAutoTransfer)
                         {
-                            //通知开始
-                            string accessToken = this.getAccessToken(true);
-                            PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
-                            notice.Push();
-                            //通知结束
+                            string TransferId;
+                            AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, ui, order.RealTotalAmount.ToString("0.00"), out TransferId);
 
-                            //转账记录开始
-                            ETransferAmount tranfer = ETransferAmount.Init(TransferId, ui, order);
-                            tranfer.Buyer_AliPayId = order.BuyerAliPayId;
-                            tranfer.Buyer_AliPayLoginId  = order.BuyerAliPayLoginId;
-                            db.DBTransferAmount.Add(tranfer);
-                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Closed;
-                            order.TransferId = TransferId;
-                            order.TransferAmount = tranfer.TransferAmount;
+                            if (res2.Code == "10000")
+                            {
+                                //通知开始
+                                string accessToken = this.getAccessToken(true);
+                                PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
+                                notice.Push();
+                                //通知结束
 
-                            //转装记录结束
-                            order.LogRemark += string.Format("[Transfer] Code:{0};msg:{1}", res2.Code, res2.Msg);
-                        }
-                        else
-                        {
-                            order.LogRemark += string.Format("[Transfer] SubCode:{0};Submsg:{1}", res2.SubCode, res2.SubMsg);
-                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
-                        }
-                        
+                                //转账记录开始
+                                ETransferAmount tranfer = ETransferAmount.Init(TransferId, ui, order);
+                                tranfer.Buyer_AliPayId = order.BuyerAliPayId;
+                                tranfer.Buyer_AliPayLoginId = order.BuyerAliPayLoginId;
+                                db.DBTransferAmount.Add(tranfer);
+                                order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Closed;
+                                order.TransferId = TransferId;
+                                order.TransferAmount = tranfer.TransferAmount;
+
+                                //转装记录结束
+                                order.LogRemark += string.Format("[Transfer] Code:{0};msg:{1}", res2.Code, res2.Msg);
+                            }
+                            else
+                            {
+                                order.LogRemark += string.Format("[Transfer] SubCode:{0};Submsg:{1}", res2.SubCode, res2.SubMsg);
+                                order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                            }
+                        }  
                     }
                     else
                     {

@@ -110,7 +110,6 @@ namespace IQBPay.Controllers
             try
             {
 
-               
                 using (AliPayContent db = new AliPayContent())
                 {
 

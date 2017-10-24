@@ -126,10 +126,6 @@ namespace IQBCore.IQBPay.Models.Order
        
         public float TransferAmount { get; set; }
 
-        ///// <summary>
-        ///// 平台实际收入
-        ///// </summary>
-        //[NotMapped()]
-        //public float PPRealAmount { get; set; }
+
     }
 }

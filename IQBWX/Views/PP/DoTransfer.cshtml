@@ -11,17 +11,25 @@
     <title>我要提现</title>
     <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
     <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
-
+    <link href="@Url.Scrpit("~/Content/Css/ULList.css")" rel="stylesheet" />
 </head>
-<body>
+<body style="background-color:#F7F7F7;">
     <div class="mgz cen">
-        <div class="yues mg2"><img id="TransferLogo" src="~/Content/images/yue_03.jpg" height="178" /></div>
+        <div class="yues mg2"><img id="TransferLogo" src="~/Content/images/yue_03.jpg"  /></div>
         <div class="mg2 xi21">我的余额(元)</div>
         <div class="mg2 xi71">¥3400.8</div>
-        <div>详情</div>
-        <div id="DetailList">
-
-        </div>
+      
+        <ul class="ULList">
+            <li>
+                <div class="liHeaderDivLeft">我的订单总金额</div>
+                <div class="liHeaderDivRight">代理订单总金额</div>
+            </li>
+            <li>
+                <div class="liBodyDivLeft">&yen 12010291</div>
+                <div class="liBodyDivRight">&yen 21212</div>
+            </li>
+        </ul>
+        
     </div>
     <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnPay" style="width:90%" onclick="Transfer();">提现</button>
 </body>

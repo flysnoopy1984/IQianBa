@@ -6,12 +6,6 @@ var swiper;
 var url = site + "/PP/TransferQuery";
 var OpenId;
 
-
-function Next() {
-
-    Query(pageIndex + 1);
-}
-
 $(document).ready(function () {
 
     $("#btnNext").attr("disabled", false);
@@ -20,16 +14,31 @@ $(document).ready(function () {
 
 });
 
+function Next() {
+
+    Query(pageIndex + 1);
+}
+
+function DateChanged() {
+    //  alert($("#cDateType").val());
+    $("#Process").show();
+    $("#trContainer").empty();
+    $("#trContainer").hide();
+    pageIndex = -1;
+    $("#btnNext").attr("disabled", false);
+    Query(pageIndex + 1);
+}
+
 function Query(_pageIndex) {
 
     var PageSize = 10;
     if (_pageIndex == 0)
         PageSize = 20;
 
-
+    var cDateType = $("#cDateType").val();
     $.ajax({
         type: 'post',
-        data: "Page=" + _pageIndex + "&PageSize=" + PageSize + "&OpenId=" + OpenId,
+        data: "DateType=" + cDateType + "&Page=" + _pageIndex + "&PageSize=" + PageSize + "&OpenId=" + OpenId,
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -53,6 +62,9 @@ function Query(_pageIndex) {
 
         }
     });
+
+    $("#trContainer").show();
+    $("#Process").hide();
 }
 
 
@@ -61,7 +73,8 @@ function generateData(result) {
 
 
     $.each(result, function (i) {
-        if (pageIndex == 0 && i == 0) {
+        if (pageIndex == -1 && i == 0) {
+            $("#TotalAmountSum").text(result[i].TotalAmountSum);
             pageCount = result[i].TotalCount;
         }
         var thWidth;

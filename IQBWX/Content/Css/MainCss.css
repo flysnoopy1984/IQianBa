@@ -2,7 +2,7 @@
 @charset "utf-8";
 *{ -webkit-tap-highlight-color:rgba(0, 0, 0, 0);}/*取消链接点击的时候变蓝*/
 *:focus{outline:none;}
-input,select,textarea{ line-height:normal;-webkit-appearance:none;}
+/*input,  ,textarea{ line-height:normal;-webkit-appearance:none;}*/
 input,select,textarea{FONT-FAMILY:'Microsoft YaHei'; font-size:24px;}
 body {margin:0px;font-size:24px;background: #f2f2f2; color: #2b2b2b;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;FONT-FAMILY:'Microsoft YaHei';}
 a {	text-decoration: none;	color: #2b2b2b;}
@@ -185,7 +185,8 @@ display: inline-block;
 position: relative;
 }
 
-.regular-radio:checked + label:after {
+.regular-radio:checked + label:after 
+{
 content:' ';
 width:286px;
 height:180px;
@@ -216,14 +217,12 @@ left:0px;
 #swiper-container{ width:640px; height:100%;}
 .tableBreakWord {table-layout:fixed;word-break: break-all; width:100%;}
 div {word-wrap: break-word; }
-
 .zw120{ height:120px;}
 
 
 #TransferLogo
 {
-width:200px;
-height:120px;
+
 }
 
 
