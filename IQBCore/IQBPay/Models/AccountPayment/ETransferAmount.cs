@@ -61,6 +61,12 @@ namespace IQBCore.IQBPay.Models.AccountPayment
         /// <returns></returns>
         public static ETransferAmount Init(string TransferId,EUserInfo AgentUser,EOrderInfo order)
         {
+            ETransferAmount obj = ETransferAmount.Init(TransferId, AgentUser.OpenId, AgentUser.AliPayAccount, order);
+            return obj;
+        }
+
+        public static ETransferAmount Init(string TransferId, string OpenId,string AliPayAccount,EOrderInfo order)
+        {
             ETransferAmount obj = new ETransferAmount();
             obj.TransferId = TransferId;
             obj.TransferAmount = order.RealTotalAmount;
@@ -69,8 +75,8 @@ namespace IQBCore.IQBPay.Models.AccountPayment
             obj.OrderNo = order.OrderNo;
             obj.QRUserId = order.QRUserId;
             obj.AgentName = order.AgentName;
-            obj.AgentOpenId = AgentUser.OpenId;
-            obj.AgentAliPayAccount = AgentUser.AliPayAccount;
+            obj.AgentOpenId = OpenId;
+            obj.AgentAliPayAccount = AliPayAccount;
             return obj;
         }
 

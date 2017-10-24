@@ -15,6 +15,10 @@ namespace IQBCore.IQBPay.Models.Result
         
         public float RemainAmount { get; set; }
 
+        public float CommissionAmount { get; set; }
+
+        public string AliPayAccount { get; set; }
+
         [NotMapped()]
         public int TotalCount;
     }

@@ -193,6 +193,7 @@
     <Content Include="Content\Script\idangerous.swiper.min.js" />
     <Content Include="Content\Script\iqb.dropload.min.js" />
     <Content Include="Content\Script\IQBPay\Auth_Store.js" />
+    <Content Include="Content\Script\IQBPay\DoTransfer.js" />
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
     <Content Include="Content\Script\IQBPay\Pay.js" />
     <Content Include="Content\Script\MemberInfo.js" />

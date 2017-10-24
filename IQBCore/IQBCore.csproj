@@ -106,6 +106,8 @@
     <Compile Include="IQBPay\BLL\F2FPayHandler.cs" />
     <Compile Include="IQBPay\BLL\SMSManager.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\EAgentCommission.cs" />
+    <Compile Include="IQBPay\Models\AccountPayment\EPreTransfer.cs" />
+    <Compile Include="IQBPay\Models\InParameter\InDoTransfer.cs" />
     <Compile Include="IQBPay\Models\InParameter\InF2F.cs" />
     <Compile Include="IQBPay\Models\InParameter\InOrder.cs" />
     <Compile Include="IQBPay\Models\InParameter\InOrderSum.cs" />
@@ -116,8 +118,10 @@
     <Compile Include="IQBPay\Models\AccountPayment\ETransferAmount.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashStore.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashUser.cs" />
+    <Compile Include="IQBPay\Models\OutParameter\OutDoTransfer.cs" />
     <Compile Include="IQBPay\Models\QR\EQRInfo.cs" />
     <Compile Include="IQBPay\Models\QR\EQRUser.cs" />
+    <Compile Include="IQBPay\Models\Result\RAgentCommission.cs" />
     <Compile Include="IQBPay\Models\Result\RDoTransfer.cs" />
     <Compile Include="IQBPay\Models\Result\ROrderInfo.cs" />
     <Compile Include="IQBPay\Models\Result\ROrder_Transfer.cs" />
@@ -159,6 +163,7 @@
     <Compile Include="WxSDK\WxPayApi.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="IQBPay\Models\Lock\" />
     <Folder Include="IQBWX\BLL\" />
   </ItemGroup>
   <ItemGroup>

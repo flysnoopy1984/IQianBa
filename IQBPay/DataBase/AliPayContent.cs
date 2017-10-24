@@ -2,6 +2,7 @@
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.SMS;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.System;
@@ -111,6 +112,7 @@ namespace IQBPay.DataBase
         {
             bool isNew = false;
             EQRUser qrUser = null;
+            RUserInfo pi = null;
             using (AliPayContent db = new AliPayContent())
             {
                  qrUser = db.DBQRUser.Where(q => q.ID == ui.QRUserDefaultId && ui.OpenId == q.OpenId).FirstOrDefault();
@@ -127,7 +129,17 @@ namespace IQBPay.DataBase
                 qrUser.ParentOpenId = qr.ParentOpenId;
                 qrUser.ParentCommissionRate = qr.ParentCommissionRate;
               
-
+                if(!string.IsNullOrEmpty(qr.ParentOpenId))
+                {
+                    pi = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).Select(o=>new RUserInfo {
+                        Name = o.Name
+                    }).FirstOrDefault();
+                    if(pi == null)
+                    {
+                        throw new Exception("没有找到上级代理");
+                    }
+                    qrUser.ParentName = pi.Name;
+                }
 
                 if (isNew)
                     db.DBQRUser.Add(qrUser);

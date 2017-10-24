@@ -23,7 +23,7 @@ namespace IQBCore.IQBPay.Models.AccountPayment
 
         public float CommissionRate { get; set; }
 
-        public float CommissionAmount{ get;set;}
+        public float CommissionAmount { get;set;}
 
         [MaxLength(32)]
         public string ParentOpenId { get; set; }

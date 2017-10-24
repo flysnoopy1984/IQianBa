@@ -133,7 +133,7 @@ namespace IQBWX.Controllers
                         {
                             result[0].TotalCount = totalCount;
                          //   result[0].TotalAmountSum = list.Sum(o => o.TotalAmount);
-                            result[0].RealTotalAmountSum = list.Sum(o => o.RealTotalAmount);
+                            result[0].RealTotalAmountSum = list.ToList().Sum(o => o.RealTotalAmount);
                         }
                     }
                     else
@@ -210,7 +210,7 @@ namespace IQBWX.Controllers
                         if (result.Count > 0)
                         {
                             result[0].TotalCount = list.Count();
-                            result[0].TotalAmountSum = list.Sum(s => s.TransferAmount);
+                            result[0].TotalAmountSum = list.ToList().Sum(s => s.TransferAmount);
                         }
                     }
                     else
@@ -236,19 +236,30 @@ namespace IQBWX.Controllers
             using (AliPayContent db = new AliPayContent())
             {
 
-               var list =  db.DBOrderInfo.Where(s => s.OrderStatus == OrderStatus.Paid
+               var order =  db.DBOrderInfo.Where(s => s.OrderStatus == OrderStatus.Paid
                                              && s.OrderType == OrderType.Normal
                                              && s.AgentOpenId == openId);
 
-                result.MyRemainAmount = list.Sum(s => s.RealTotalAmount);
+                result.MyOrderTotalAmount = order.ToList().Sum(s => s.RealTotalAmount);
+               
 
-                list = db.DBOrderInfo.Where(s => s.OrderStatus == OrderStatus.Paid
-                                            && s.OrderType == OrderType.Normal
-                                            && s.AgentOpenId == openId);
+                var agentcomm = db.DBAgentCommission.Where(s => s.AgentCommissionStatus == AgentCommissionStatus.Paid
+                                            && s.ParentOpenId == openId);
 
+                result.MyAgentOrderTotalAmount = agentcomm.ToList().Sum(s =>s.CommissionAmount);
+
+                result.MyRemainAmount = result.MyOrderTotalAmount + result.MyAgentOrderTotalAmount;
+
+                var ui = db.DBUserInfo.Where(u => u.OpenId == openId).Select(a => new RUserInfo()
+                {
+                    AliPayAccount = a.AliPayAccount,
+                }).FirstOrDefault();
+
+                result.AliPayAccount = ui.AliPayAccount;
+                result.OpenId = openId;
 
             }
-            return View();
+            return View(result);
         }
 
 

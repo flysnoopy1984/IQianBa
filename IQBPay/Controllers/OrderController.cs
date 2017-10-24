@@ -55,9 +55,11 @@ namespace IQBPay.Controllers
         [HttpPost]
         public ActionResult QuerySum(InOrderSum parameter)
         {
-            string sqlFormat = @"select AgentName,AgentOpenId,SUM(RateAmount) as RemainAmount from orderinfo 
-                            where OrderStatus = 1 and OrderType=0 and AgentName='{0}'
-                            GROUP BY AgentName";
+            string sqlFormat = @"select AgentName,AgentOpenId,SUM(RealTotalAmount) as RemainAmount,ui.AliPayAccount from orderinfo 
+                                join userinfo as ui on ui.OpenId = orderinfo.AgentOpenId
+                                where OrderStatus = 1 and OrderType=0 and AgentName='{0}'
+                                GROUP BY AgentName
+";
             string sql;
 
             List<RUser_OrderSum> result = new List<RUser_OrderSum>();
@@ -65,15 +67,28 @@ namespace IQBPay.Controllers
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    sql = string.Format(sqlFormat, parameter.AgentName);
-                    if (parameter.AgentName == "*")
+                    
+                    if (string.IsNullOrEmpty(parameter.AgentName))
                     {
-                        sql = @"select AgentName,AgentOpenId,SUM(RateAmount) as RemainAmount from orderinfo 
-                            where OrderStatus = 1 and OrderType=0
-                            GROUP BY AgentName";
+                        sql = @"select AgentName,AgentOpenId,SUM(RealTotalAmount) as RemainAmount,ui.AliPayAccount from orderinfo 
+                                join userinfo as ui on ui.OpenId = orderinfo.AgentOpenId
+                                where OrderStatus = 1 and OrderType=0 
+                                GROUP BY AgentName
+                                ";
                     }
-                    var list = db.Database.SqlQuery<RUser_OrderSum>(sql).ToList();
+                    else
+                        sql = string.Format(sqlFormat, parameter.AgentName);
 
+                    List<RUser_OrderSum> list = db.Database.SqlQuery<RUser_OrderSum>(sql).ToList();
+                    foreach(RUser_OrderSum obj in list)
+                    {
+                        var comm = db.DBAgentCommission.Where(s => s.AgentCommissionStatus == AgentCommissionStatus.Paid && s.ParentOpenId == obj.AgentOpenId)
+                                    .Select(a => new RAgentCommission()
+                                    {
+                                        CommissionAmount = a.CommissionAmount,
+                                    }).ToList().Sum(a => a.CommissionAmount);
+                        obj.CommissionAmount = comm;
+                    }
                     
                     if (parameter.PageIndex == 0)
                     {

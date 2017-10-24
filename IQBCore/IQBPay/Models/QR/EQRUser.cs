@@ -17,8 +17,12 @@ namespace IQBCore.IQBPay.Models.QR
         [MaxLength(32)]
         public string OpenId { get; set; }
 
-        [MaxLength(32)]
+        [MaxLength(40)]
         public string ParentOpenId { get; set; }
+
+        [MaxLength(32)]
+
+        public string ParentName { get; set; }
 
         public float ParentCommissionRate { get; set; }
 

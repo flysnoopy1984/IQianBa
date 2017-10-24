@@ -2,9 +2,9 @@
 
 function Query(NeedClearn,_PageIndex)
 {
-    var url = "/Order/QuerySum"
+    var url = "/Order/QuerySum";
     var agentName = $.trim($("#AgentName").val());
-    if (agentName == "" || agentName == null) return;
+  
     $.ajax({
         type: 'post',
         data: "AgentName=" + agentName + "&pageIndex=" + _PageIndex,
@@ -35,15 +35,52 @@ function Query(NeedClearn,_PageIndex)
     });
 }
 
+function TransferToUser(obj,orderAmt,CommAmt,account,openId)
+{
+ 
+    if (account == "" || account == null)
+    {
+        alert("用户没有设置提款账号，无法打款！");
+        return;
+    }
+    if (orderAmt + CommAmt == 0)
+        alert("没有可转金额");
+
+    var url = "/API/TransferAPI/TransferToAgent";
+    $.ajax({
+        type: 'post',
+        data: "OpenId=" + openId + "&AliPayAccount=" + account + "&OrderAmount=" + orderAmt+"&CommissionAmount="+CommAmt,
+        url: url,
+        success: function (data) {
+            if (data.IsSuccess) {
+                alert("转账成功！");
+                $(obj).parent().prev().find("a").text(0);
+                $(obj).parent().prev().prev().find("a").text(0);
+            }
+            else
+                alert(data.ErrorMsg);
+        },
+        error: function (xhr, type) {
+
+            alert('Ajax error!');
+           
+
+        }
+    });
+
+}
+
 function generateData(result)
 { 
     $.each(result, function (i) {
         strCtrl = "";
         strCtrl += "<li class='liBody'>";
         strCtrl += "<div class='liBodyDivLeft'>" + result[i].AgentName + "</div>";
-        strCtrl += "<div class='liBodyDivLeft'><a href='#'>&yen " + result[i].RemainAmount + "</a> </div>";
+        strCtrl += "<div class='liBodyDivLeft'>" + result[i].AliPayAccount + "</div>";
+        strCtrl += "<div class='liBodyDivLeft'>&yen <a href='#'>" + result[i].RemainAmount + "</a> </div>";
+        strCtrl += "<div class='liBodyDivLeft'>&yen <a href='#'>" + result[i].CommissionAmount + "</a> </div>";
         strCtrl += "<div class='liBodyDivRight'>";
-        strCtrl += "<button type='button' class='btn btn-success' onclick='TransferToUser();'>打款</button>";
+        strCtrl += "<button type='button' class='btn btn-success' onclick=TransferToUser(this,'" + result[i].RemainAmount + "','" + result[i].CommissionAmount +"','" + result[i].AliPayAccount + "','" + result[i].AgentOpenId + "');>打款</button>";
         strCtrl += "<a href=/Order/Info_DoTransferOrder?AgentOpenId=" + result[i].AgentOpenId + " target='_blank' class='td'>详情</a>";
         strCtrl +="</div>";
         strCtrl += "</li>";

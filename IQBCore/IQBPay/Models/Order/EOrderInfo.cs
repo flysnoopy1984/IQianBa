@@ -126,6 +126,6 @@ namespace IQBCore.IQBPay.Models.Order
        
         public float TransferAmount { get; set; }
 
-
+      
     }
 }

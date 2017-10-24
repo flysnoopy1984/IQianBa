@@ -7,6 +7,7 @@ using Com.Alipay.Business;
 using Com.Alipay.Domain;
 using Com.Alipay.Model;
 using IQBCore.Common.Helper;
+using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
@@ -56,8 +57,9 @@ namespace IQBCore.IQBPay.BLL
             return response;
         }
 
-        public AlipayFundTransToaccountTransferResponse TransferAmount(EAliPayApplication app,EUserInfo ui,string Amount,out string TransferId)
+        public AlipayFundTransToaccountTransferResponse TransferAmount(EAliPayApplication app,string toAliPayAccount,string Amount,out string TransferId)
         {
+          
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
              app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
 
@@ -68,7 +70,7 @@ namespace IQBCore.IQBPay.BLL
             model.Amount = Amount;
             model.OutBizNo = TransferId;
             model.PayeeType = "ALIPAY_LOGONID";
-            model.PayeeAccount = ui.AliPayAccount;
+            model.PayeeAccount = toAliPayAccount;
             model.PayerShowName = "爱钱吧平台支付";
             model.Remark = string.Format("爱钱吧提现");
 
@@ -103,7 +105,23 @@ namespace IQBCore.IQBPay.BLL
             order.AliPayTransDate =Convert.ToDateTime(Request["gmt_create"]);
             return order;
         }
+        public EAgentCommission InitAgentCommission(EOrderInfo order, EQRUser qrUser)
+        {
+            EAgentCommission comm = new EAgentCommission
+            {
+                OrderNo = order.OrderNo,
+                AgentCommissionStatus = BaseEnum.AgentCommissionStatus.Open,
+                ParentOpenId = qrUser.ParentOpenId,
+                ChildOpenId = qrUser.OpenId,
+                CommissionAmount = (qrUser.ParentCommissionRate/100)*order.TotalAmount,
+                Level = 2,
+                CommissionRate = qrUser.ParentCommissionRate,
+                ChildName = qrUser.UserName,
+                ParentName = qrUser.ParentName,
 
+            };
+            return comm;
+        }
         public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount)
         {
             EOrderInfo order = new EOrderInfo()
@@ -130,10 +148,7 @@ namespace IQBCore.IQBPay.BLL
             };
             order.RealTotalAmount = order.TotalAmount - order.RateAmount;
 
-            if(!string.IsNullOrEmpty(qrUser.ParentOpenId))
-            {
-
-            }
+         
 
             return order;
            

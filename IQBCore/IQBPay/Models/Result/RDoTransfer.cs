@@ -13,8 +13,13 @@ namespace IQBCore.IQBPay.Models.Result
         /// </summary>
         public float MyRemainAmount { get; set; }
 
+
         public float MyOrderTotalAmount { get; set; }
 
         public float MyAgentOrderTotalAmount { get; set; }
+
+        public string OpenId { get; set; }
+
+        public string AliPayAccount { get; set; }
     }
 }

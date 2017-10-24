@@ -28,6 +28,7 @@ using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.User;
 using IQBCore.IQBWX.Models.WX.Template;
 using IQBCore.IQBPay.Models.AccountPayment;
+using IQBCore.IQBPay.BaseEnum;
 
 namespace IQBPay.Controllers
 {
@@ -178,13 +179,14 @@ namespace IQBPay.Controllers
             {
                 using (AliPayContent db = new AliPayContent())
                 {
+                    EAgentCommission comm = null;
                     EOrderInfo order = db.DBOrder.Where(o => o.OrderNo == orderNo).FirstOrDefault();
 
                     if (order == null)
                     {
-                        order = payManager.InitUnKnowOrderForAliPayNotice(Request);
-                        db.DBOrder.Add(order);
-                        db.SaveChanges();
+                        //order = payManager.InitUnKnowOrderForAliPayNotice(Request);
+                        //db.DBOrder.Add(order);
+                        //db.SaveChanges();
                         return View();
                     }
 
@@ -209,6 +211,13 @@ namespace IQBPay.Controllers
                     if (order.AliPayTradeStatus == "TRADE_SUCCESS")
                     {
                         order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Paid;
+                        //上级代理佣金
+                        comm = db.DBAgentCommission.Where(a => a.OrderNo == order.OrderNo && a.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
+                        if(comm!=null)
+                        {
+                            comm.AgentCommissionStatus = AgentCommissionStatus.Paid;
+                        }
+                        //店铺佣金
                         if (order.SellerCommission > 0)
                         {
                             //分账
@@ -227,7 +236,7 @@ namespace IQBPay.Controllers
                         if(ui.IsAutoTransfer)
                         {
                             string TransferId;
-                            AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, ui, order.RealTotalAmount.ToString("0.00"), out TransferId);
+                            AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, ui.AliPayAccount, order.RealTotalAmount.ToString("0.00"), out TransferId);
 
                             if (res2.Code == "10000")
                             {
@@ -545,9 +554,18 @@ namespace IQBPay.Controllers
 
                     if (status == ResultEnum.SUCCESS)
                     {
+
                         //创建初始化订单
                         EOrderInfo order = payManager.InitOrder(qrUser, store,Convert.ToSingle(Amount));
                         db.DBOrder.Add(order);
+                       
+                        //是否有上级代理
+                        if(!string.IsNullOrEmpty(qrUser.ParentOpenId))
+                        {
+                            EAgentCommission comm =  payMag.InitAgentCommission(order, qrUser);
+                            db.DBAgentCommission.Add(comm);
+                         
+                        }
                         db.SaveChanges();
 
                         return Redirect(Res);
@@ -618,8 +636,9 @@ namespace IQBPay.Controllers
             EUserInfo ui = new EUserInfo();
             ui.AliPayAccount = "song_fuwei@hotmail.com";
             string tranferId;
-            AlipayFundTransToaccountTransferResponse response =  payManager.TransferAmount(BaseController.App, ui,"1",out tranferId);
-            return Content(response.Body);
+            //  AlipayFundTransToaccountTransferResponse response =  payManager.TransferAmount(BaseController.App, ui,"1",out tranferId);
+            //return Content(response.Body);
+            return View();
         }
 
 
