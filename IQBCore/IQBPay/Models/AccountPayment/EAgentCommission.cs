@@ -40,8 +40,10 @@ namespace IQBCore.IQBPay.Models.AccountPayment
         public AgentCommissionStatus AgentCommissionStatus { get; set; }
 
 
-        public DateTime TransDate;
+        public DateTime TransDate { get; set; }
 
+        [MaxLength(20)]
+        public string TransDateStr { get; set; }
 
 
     }

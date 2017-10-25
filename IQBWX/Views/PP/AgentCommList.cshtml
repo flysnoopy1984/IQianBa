@@ -13,7 +13,7 @@
     <link href="@Url.Scrpit("~/Content/Css/List.css")" rel="stylesheet" />
     <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
     <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
-
+    <script src="@Url.Scrpit("~/Content/Script/IQBPay/AgentCommList.js")"></script>
 </head>
 <body>
     <div class="ListTitle mgz2 xi20 hui">
@@ -22,12 +22,31 @@
     <div class="ListTitle_Condition1 mgz2">
         <label>日期：</label>
         <select id="cDateType" style="font-size:16px;" onchange="DateChanged()">
-            <option value="1">今天</option>
+            <option value="1" selected>今天</option>
             <option value="2">本周</option>
             <option value="3">本月</option>
-            <option value="99" selected>全部</option>
+            <option value="99">全部</option>
         </select>
     </div>
+    <table id="TableHeader" class="table large-only mgz2 ListTableTitle">
+        <tbody>
+            <tr class="text-right" id="trHeader">
+                <th style="width:50%;">代理名称</th>
+                <th style="width:50%;">佣金金额</th>
+            </tr>
+            <tr>
+                <td colspan="2" id="RecordSum" class="RecordSum">
+                    佣金金额总计：<span id="TotalCommAmount"></span>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+    <div class="ListTableBody" id="ListTableBody">
+        <div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>
+        <table class="table mgz2  large-only" id="trContainer"></table>
+    </div>
+    <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%" onclick="Next();">下一页</button>
 
     <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
 </body>

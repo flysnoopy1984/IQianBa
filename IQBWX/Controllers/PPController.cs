@@ -15,6 +15,8 @@ using IQBWX.Models.WX;
 using IQBWX.Models.WX.Template;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -77,6 +79,93 @@ namespace IQBWX.Controllers
             return View();
         }
 
+        public ActionResult TransferList()
+        {
+            string openId = this.GetOpenId(true);
+            ViewBag.OpenId = openId;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AgentCommQuery()
+        {
+            int pageIndex = Convert.ToInt32(Request["Page"]);
+            int pageSize = Convert.ToInt32(Request["PageSize"]);
+            string OpenId = Request["OpenId"];
+            ConditionDataType DateType = (ConditionDataType)Enum.Parse(typeof(ConditionDataType), Request["DateType"]);
+
+            List<RAgentCommission> result = new List<RAgentCommission>(); 
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+
+                    var list = db.DBAgentCommission.Where(o => o.ParentOpenId== OpenId).Select(s => new RAgentCommission
+                    {
+                        ID = s.ID,
+                        ChildName = s.ChildName,
+                        CommissionAmount = s.CommissionAmount,
+                        OrderNo = s.OrderNo,
+                        TransDate = s.TransDate,
+                        AgentCommissionStatus = s.AgentCommissionStatus,
+                        CommissionRate = s.CommissionRate,
+                        TransDateStr = s.TransDateStr,
+
+                    });
+
+                   
+
+                    if (DateType != ConditionDataType.All)
+                    {
+                        DateTime startDate = DateTime.Today;
+                        DateTime endDate = DateTime.Today.AddDays(1);
+
+                        if (DateType == ConditionDataType.Today)
+                        {
+                            startDate = DateTime.Today;
+                            endDate = DateTime.Today.AddDays(1);
+                           
+                        }
+                        else if (DateType == ConditionDataType.Week)
+                        {
+                            startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
+                            endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
+                            
+
+                        }
+                        else if (DateType == ConditionDataType.Month)
+                        {
+                            startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
+                            endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
+                           
+                        }
+                        list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+                    }
+
+                    list = list.OrderByDescending(i => i.TransDate);
+
+                    if (pageIndex == 0)
+                    {
+
+                        result = list.Take(pageSize).ToList();
+                        if (result.Count > 0)
+                        {
+                          
+                            result[0].TotalCommAmount = list.ToList().Sum(s => s.CommissionAmount);
+                        }
+                    }
+                    else
+                        result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+            return Json(result);
+        }
 
         [HttpPost]
         public ActionResult OrderQuery()
@@ -85,6 +174,7 @@ namespace IQBWX.Controllers
             int pageSize = Convert.ToInt32(Request["PageSize"]);
             string OpenId = Request["OpenId"];
             ConditionDataType DateType =(ConditionDataType)Enum.Parse(typeof(ConditionDataType),Request["DateType"]);
+            OrderStatus OrderStatus = (OrderStatus)Enum.Parse(typeof(OrderStatus), Request["OrderStatus"]);
             List<ROrderInfo> result = new List<ROrderInfo>();
             try
             {
@@ -100,27 +190,39 @@ namespace IQBWX.Controllers
                         RealTotalAmount = o.RealTotalAmount,
                         BuyerAliPayLoginId = o.BuyerAliPayLoginId,
                         TransDate = o.TransDate,
+                     
                     });
+
+                    if (OrderStatus != OrderStatus.ALL)
+                    {
+                        list = list.Where(o => o.OrderStatus == OrderStatus);
+                    }
 
                     if (DateType != ConditionDataType.All)
                     {
+                        DateTime startDate = DateTime.Today;
+                        DateTime endDate = DateTime.Today.AddDays(1);
+
                         if (DateType == ConditionDataType.Today)
                         {
-                            list = list.Where(o => o.TransDate == DateTime.Today);
+                            startDate = DateTime.Today;
+                            endDate = DateTime.Today.AddDays(1);
+
                         }
                         else if (DateType == ConditionDataType.Week)
                         {
-                            DateTime startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
-                            DateTime endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
-                            list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+                            startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
+                            endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
+
 
                         }
                         else if (DateType == ConditionDataType.Month)
                         {
-                            DateTime startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
-                            DateTime endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
-                            list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+                            startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
+                            endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
+
                         }
+                        list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
                     }
                     list = list.Where(o => o.OrderStatus == OrderStatus.Paid);
                     list = list.OrderByDescending(i => i.TransDate);
@@ -146,13 +248,6 @@ namespace IQBWX.Controllers
             }
             return Json(result);
            
-        }
-
-        public ActionResult TransferList()
-        {
-            string openId = this.GetOpenId(true);
-            ViewBag.OpenId = openId;
-            return View();
         }
 
         [HttpPost]
@@ -182,23 +277,29 @@ namespace IQBWX.Controllers
 
                     if (DateType != ConditionDataType.All)
                     {
+                        DateTime startDate = DateTime.Today;
+                        DateTime endDate = DateTime.Today.AddDays(1);
+
                         if (DateType == ConditionDataType.Today)
                         {
-                            list = list.Where(o => o.TransDate == DateTime.Today);
+                            startDate = DateTime.Today;
+                            endDate = DateTime.Today.AddDays(1);
+
                         }
                         else if (DateType == ConditionDataType.Week)
                         {
-                            DateTime startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
-                            DateTime endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
-                            list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+                            startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
+                            endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
+
 
                         }
                         else if (DateType == ConditionDataType.Month)
                         {
-                            DateTime startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
-                            DateTime endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
-                            list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+                            startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
+                            endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
+
                         }
+                        list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
                     }
 
                     list = list.OrderByDescending(i => i.TransDate);

@@ -94,8 +94,8 @@ namespace IQBCore.IQBPay.Models.Order
 
 
         public DateTime TransDate { get; set; }
-
     
+        [MaxLength(20)]
         public string TransDateStr { get; set; }
 
         public DateTime AliPayTransDate { get; set; }

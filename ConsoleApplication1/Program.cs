@@ -1,7 +1,11 @@
 ﻿using CatchWebContent;
 using IQBCore.Common.Constant;
 using IQBCore.IQBPay.BLL;
+using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.InParameter;
+using IQBCore.IQBPay.Models.Order;
+using IQBCore.IQBPay.Models.QR;
+using IQBPay.DataBase;
 using IQBWX.Common;
 using IQBWX.DataBase;
 using IQBWX.Models.Order;
@@ -26,16 +30,26 @@ namespace ConsoleApplication1
             try
             {
 
-                //SMSManager sms = new SMSManager();
-                //InSMS inSMS = new InSMS();
-                //inSMS.Init();
-                //inSMS.PhoneNumber = "13482710060";
-                //inSMS.Parameters = "212341,IQBSO320201019,http://b.iqianba.cn/";
+                using (AliPayContent db = new AliPayContent())
+                {
+                    AliPayManager pay = new AliPayManager();
+                    EOrderInfo order = db.DBOrder.FirstOrDefault();
+                    EQRUser qrUser = db.DBQRUser.Where(s => s.ID ==3).FirstOrDefault();
+                    for(int i=1;i<44;i++)
+                    { 
+                        EAgentCommission obj = pay.InitAgentCommission(order, qrUser);
+                        if (i % 2 == 0)
+                            obj.AgentCommissionStatus = IQBCore.IQBPay.BaseEnum.AgentCommissionStatus.Paid;
+                        else
+                            obj.AgentCommissionStatus = IQBCore.IQBPay.BaseEnum.AgentCommissionStatus.Open;
+                        db.DBAgentCommission.Add(obj);
+                  
+                    }
+                    db.SaveChanges();
+                }
 
-                //sms.PostSMS(inSMS);
 
-
-            }
+           }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);

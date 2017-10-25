@@ -153,21 +153,27 @@ namespace IQBPay.Controllers
                         list=list.Where(o => o.OrderStatus == parameter.OrderStatus);
                     }
 
-                    if (parameter.DataType == ConditionDataType.Today)
+                    if (parameter.DataType != ConditionDataType.All)
                     {
-                        list = list.Where(o => o.TransDate == DateTime.Today);
-                    }
-                    else if(parameter.DataType == ConditionDataType.Week)
-                    {
-                        DateTime startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
-                        DateTime endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
-                        list = list.Where(o => o.TransDate >= startDate && o.TransDate<= endDate);
+                        DateTime startDate = DateTime.Today;
+                        DateTime endDate = DateTime.Today.AddDays(1);
 
-                    }
-                    else if (parameter.DataType == ConditionDataType.Month)
-                    {
-                        DateTime startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
-                        DateTime endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
+                        if (parameter.DataType == ConditionDataType.Today)
+                        {
+                            startDate = DateTime.Today;
+                            endDate = DateTime.Today.AddDays(1);
+                        }
+                        else if (parameter.DataType == ConditionDataType.Week)
+                        {
+                            startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
+                            endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
+                        }
+                        else if (parameter.DataType == ConditionDataType.Month)
+                        {
+                            startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
+                            endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
+
+                        }
                         list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
                     }
 

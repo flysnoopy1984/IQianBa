@@ -31,6 +31,12 @@
             <option value="3">本月</option>
             <option value="99" selected>全部</option>
         </select>
+        <label>订单状态：</label>
+        <select id="cOrderStatus" style="font-size:16px;" onchange="DateChanged()">
+            <option value="1">未结算</option>
+            <option value="2">已结算</option>
+            <option value="99" selected>全部</option> 
+        </select>
     </div>
  
     <table id="TableHeader" class="table large-only mgz2 ListTableTitle">

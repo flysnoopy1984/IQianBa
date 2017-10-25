@@ -25,6 +25,7 @@ namespace IQBCore.IQBPay.Models.AccountPayment
 
         public DateTime TransDate { get; set; }
 
+        [MaxLength(20)]
         public string TransDateStr { get; set; }
 
         [MaxLength(64)]

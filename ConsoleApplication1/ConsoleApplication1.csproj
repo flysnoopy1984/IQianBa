@@ -95,6 +95,10 @@
       <Project>{079669b1-7659-41c1-b5d6-fa7f634fab3a}</Project>
       <Name>IQBCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IQBPay\IQBPay.csproj">
+      <Project>{7e6d5001-c117-4953-b10e-cb9de9d9f1ba}</Project>
+      <Name>IQBPay</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IQBWX\IQBWX.csproj">
       <Project>{c4f07794-dc78-4e75-9b06-159b1272f93e}</Project>
       <Name>IQBWX</Name>

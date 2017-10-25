@@ -119,6 +119,7 @@ namespace IQBCore.IQBPay.BLL
                 ChildName = qrUser.UserName,
                 ParentName = qrUser.ParentName,
                 TransDate = DateTime.Now,
+                TransDateStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
 
             };
             return comm;

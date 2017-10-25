@@ -37,10 +37,11 @@ function Query(_pageIndex) {
     if (_pageIndex == 0)
         PageSize = 20;
     var cDateType = $("#cDateType").val();
+    var cOrderStatus = $("#cOrderStatus").val();
 
     $.ajax({
         type: 'post',
-        data: "DateType=" + cDateType + "&Page=" + _pageIndex + "&PageSize=" + PageSize + "&OpenId=" + OpenId,
+        data: "OrderStatus=" + cOrderStatus + "&DateType=" + cDateType + "&Page=" + _pageIndex + "&PageSize=" + PageSize + "&OpenId=" + OpenId,
         url: url,
         success: function (data) {
             var arrLen = data.length;

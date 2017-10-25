@@ -71,10 +71,12 @@ namespace IQBPay.Controllers
 
                     if (parameter.DataType == ConditionDataType.Today)
                     {
-                        if(list ==null)
-                            list = db.DBTransferAmount.Where(o => o.TransDate == DateTime.Today);
+                        DateTime startDate = DateTime.Today;
+                        DateTime endDate = DateTime.Today.AddDays(1);
+                        if (list ==null)
+                            list = db.DBTransferAmount.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
                         else
-                            list = list.Where(o => o.TransDate == DateTime.Today);
+                            list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
                     }
                     else if (parameter.DataType == ConditionDataType.Week)
                     {
