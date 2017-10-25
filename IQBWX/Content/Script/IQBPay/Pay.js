@@ -80,12 +80,12 @@ function GetVerifyCode() {
         alert("错误,请先正确填写手机号码");
         return;
     }
-    var OrderNo = $("#OrderNo").val();
-    if (OrderNo == "" || OrderNo == null)
-    {
-        alert("支付订单号码未生成，请联系站长！");
-        return;
-    }
+    //var OrderNo = $("#OrderNo").val();
+    //if (OrderNo == "" || OrderNo == null)
+    //{
+    //    alert("支付订单号码未生成，请联系站长！");
+    //    return;
+    //}
     var phone = $("#userPhone");
     phone.attr("disabled", true);
 
@@ -93,7 +93,7 @@ function GetVerifyCode() {
     bn.attr("disabled", true);
     bn.css("background", "#DDDDDD");
 
-    var url = "/api/sms/SentSMS_IQBPay_BuyerOrder?OrderNo="+OrderNo+"&mobilePhone=" + phone.val() + "&IntervalSec=" + InitCount;
+    var url = "/api/sms/SentSMS_IQBPay_BuyerOrder?ReceiveNo=" + ReceiveNo + "&mobilePhone=" + phone.val() + "&IntervalSec=" + InitCount;
 
     $.ajax({
         type: "get",
@@ -162,5 +162,5 @@ function PayToAli() {
     }
     $("#btnPay").attr("disabled", true);
     
-    window.location = "http://ap.iqianba.cn/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt;
+    window.location = "http://ap.iqianba.cn/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&ReceiveNo=" + ReceiveNo;
 }

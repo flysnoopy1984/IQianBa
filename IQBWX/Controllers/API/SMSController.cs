@@ -48,7 +48,7 @@ namespace IQBWX.Controllers.API
         }
 
         /// <summary>
-        /// 5分钟有效
+        /// 5分钟有效 验证用户输入的验证码
         /// </summary>
         /// <param name="mobilePhone"></param>
         /// <param name="SMSId"></param>
@@ -97,7 +97,12 @@ namespace IQBWX.Controllers.API
             return OutSMS;
         }
 
-       
+       /// <summary>
+       /// 获取验证码间隔时间
+       /// </summary>
+       /// <param name="mobilePhone"></param>
+       /// <param name="IntervalSec"></param>
+       /// <returns></returns>
         public OutSMS IQBPay_GetVerifyingSec(string mobilePhone, int IntervalSec)
         {
             OutSMS OutSMS = new OutSMS();
@@ -144,7 +149,7 @@ namespace IQBWX.Controllers.API
         }
 
         [HttpGet]
-        public OutSMS SentSMS_IQBPay_BuyerOrder(string OrderNo,string mobilePhone, int IntervalSec)
+        public OutSMS SentSMS_IQBPay_BuyerOrder(string ReceiveNo,string mobilePhone, int IntervalSec)
         {
             OutSMS OutSMS = new OutSMS();
             try
@@ -155,7 +160,7 @@ namespace IQBWX.Controllers.API
                 {
                     string VerifyCode = StringHelper.GenerateVerifyCode();
 
-                    if (!this.DoSMS(mobilePhone, VerifyCode, OrderNo))
+                    if (!this.DoSMS(mobilePhone, VerifyCode, ReceiveNo))
                     {
                         OutSMS.SMSVerifyStatus = SMSVerifyStatus.SentFailure;
                         return OutSMS;
@@ -167,7 +172,7 @@ namespace IQBWX.Controllers.API
                         {
                             VerifyCode = VerifyCode,
                             MobilePhone = mobilePhone,
-                            OrderNo = OrderNo,
+                            ReceiveNo = ReceiveNo,
                             SendDateTime = DateTime.Now,
                             SMSVerifyStatus = SMSVerifyStatus.Sent,
                             SMSEvent = SMSEvent.IQB_PayOrder,
@@ -195,7 +200,7 @@ namespace IQBWX.Controllers.API
             return OutSMS;
         }
 
-        private Boolean DoSMS(string phoneNumber,string VerifyCode,string OrderNo)
+        private Boolean DoSMS(string phoneNumber,string VerifyCode,string ReceiveNo)
         {
             Boolean result = true;
             ESMSLog smsLog = new ESMSLog();
@@ -206,7 +211,7 @@ namespace IQBWX.Controllers.API
                 InSMS inSMS = new InSMS();
                 inSMS.Init();
                 inSMS.PhoneNumber = phoneNumber;
-                inSMS.Parameters = VerifyCode+","+ OrderNo + ",http://b.iqianba.cn/";
+                inSMS.Parameters = VerifyCode+","+ ReceiveNo + ",http://b.iqianba.cn/";
 
                 SMSResult_API51 Response = sms.PostSMS_API51(inSMS,ref smsLog);
                 if(Response.result == "0")

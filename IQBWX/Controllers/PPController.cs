@@ -50,7 +50,7 @@ namespace IQBWX.Controllers
         public ActionResult Pay(string Id)
         {
             ViewBag.QRUserId = Id;
-            ViewBag.OrderNo = StringHelper.GenerateOrderNo();
+            ViewBag.ReceiveNo = StringHelper.GenerateReceiveNo();
             return View();
         }
 

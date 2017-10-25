@@ -55,6 +55,11 @@ namespace IQBCore.Common.Helper
             return GetRnd(6, true, false, false, false, "");
         }
 
+        public static string GenerateReceiveNo()
+        {
+            return GetRnd(6, true, false, false, false, "");
+        }
+
         public static string GetSSOToken()
         {
             DateTime dt = DateTime.Now;

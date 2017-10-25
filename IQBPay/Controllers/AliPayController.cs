@@ -463,7 +463,7 @@ namespace IQBPay.Controllers
         /// <param name="Id">QRUserId</param>
         /// <param name="Amount"></param>
         /// <returns></returns>   
-        public ActionResult F2FPay(string qrUserId, string Amount)
+        public ActionResult F2FPay(string qrUserId, string Amount,string ReceiveNo)
         {
             string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?code=2001&ErrorMsg=";
             try
@@ -556,7 +556,7 @@ namespace IQBPay.Controllers
                     {
 
                         //创建初始化订单
-                        EOrderInfo order = payManager.InitOrder(qrUser, store,Convert.ToSingle(Amount));
+                        EOrderInfo order = payManager.InitOrder(qrUser, store,Convert.ToSingle(Amount), ReceiveNo);
                         db.DBOrder.Add(order);
                        
                         //是否有上级代理

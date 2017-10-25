@@ -126,6 +126,10 @@ namespace IQBCore.IQBPay.Models.Order
        
         public float TransferAmount { get; set; }
 
-      
+        [MaxLength(10)]
+        public string ReceiveNo { get; set; }
+
+
+
     }
 }

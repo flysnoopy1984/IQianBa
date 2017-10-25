@@ -22,6 +22,9 @@ namespace IQBCore.IQBPay.Models.SMS
         [MaxLength(10)]
         public string VerifyCode { get; set; }
 
+        [MaxLength(10)]
+        public string ReceiveNo { get; set; }
+
         [MaxLength(20)]
         public string MobilePhone { get; set; }
 

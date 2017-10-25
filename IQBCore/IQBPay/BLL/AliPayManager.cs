@@ -124,7 +124,7 @@ namespace IQBCore.IQBPay.BLL
             };
             return comm;
         }
-        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount)
+        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount,string ReceiveNo="")
         {
             EOrderInfo order = new EOrderInfo()
             {
@@ -140,12 +140,14 @@ namespace IQBCore.IQBPay.BLL
                 TransDateStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 SellerAliPayId = store.AliPayAccount,
                 SellerStoreId = store.ID,
-                
+
                 SellerName = store.Name,
                 SellerChannel = store.Channel,
                 SellerRate = store.Rate,
-                SellerCommission = (float)Math.Round(TotalAmount * (store.Rate)/100,2,MidpointRounding.ToEven),
+                SellerCommission = (float)Math.Round(TotalAmount * (store.Rate) / 100, 2, MidpointRounding.ToEven),
                 OrderType = BaseEnum.OrderType.Normal,
+
+                ReceiveNo = ReceiveNo,
 
             };
             order.RealTotalAmount = order.TotalAmount - order.RateAmount;
