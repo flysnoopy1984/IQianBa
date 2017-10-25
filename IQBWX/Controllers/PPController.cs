@@ -31,13 +31,6 @@ namespace IQBWX.Controllers
             _Log = new IQBLog();
         }
 
-
-       
-        public ActionResult YunLong()
-        {
-            return View();
-        }
-
         public ActionResult Demo(string Id)
         {
            
@@ -67,6 +60,13 @@ namespace IQBWX.Controllers
         }
         public ActionResult AliPayAccount()
         {
+            return View();
+        }
+
+        public ActionResult AgentCommList()
+        {
+            string openId = this.GetOpenId(true);
+            ViewBag.OpenId = openId;
             return View();
         }
 

@@ -8,7 +8,7 @@
     if (orderAmt + CommAmt == 0)
         alert("没有可转金额");
 
-    //  var url = "http://ap.iqianba.cn/API/TransferAPI/TransferToAgent";
+     // var url = "http://localhost:24068/API/TransferAPI/TransferToAgent";
     var url = "http://ap.iqianba.cn/API/TransferAPI/TransferToAgent";
     $.ajax({
         type: 'post',
@@ -17,8 +17,9 @@
         success: function (data) {
             if (data.IsSuccess) {
                 alert("转账成功！");
-                $(obj).parent().prev().find("a").text(0);
-                $(obj).parent().prev().prev().find("a").text(0);
+                $("#MyRemainAmount").text("");
+                $("#MyOrderTotalAmount").text("");
+                $("#MyAgentOrderTotalAmount").text("");
             }
             else
                 alert(data.ErrorMsg);

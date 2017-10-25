@@ -192,6 +192,7 @@
     <Content Include="Content\Script\ErrorMessage.js" />
     <Content Include="Content\Script\idangerous.swiper.min.js" />
     <Content Include="Content\Script\iqb.dropload.min.js" />
+    <Content Include="Content\Script\IQBPay\AgentCommList.js" />
     <Content Include="Content\Script\IQBPay\Auth_Store.js" />
     <Content Include="Content\Script\IQBPay\DoTransfer.js" />
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
@@ -341,6 +342,7 @@
     <Content Include="Views\PP\AliPayAccount.cshtml" />
     <Content Include="Views\PP\OrderList.cshtml" />
     <Content Include="Views\PP\DoTransfer.cshtml" />
+    <Content Include="Views\PP\AgentCommList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

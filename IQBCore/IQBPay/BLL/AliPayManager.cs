@@ -118,6 +118,7 @@ namespace IQBCore.IQBPay.BLL
                 CommissionRate = qrUser.ParentCommissionRate,
                 ChildName = qrUser.UserName,
                 ParentName = qrUser.ParentName,
+                TransDate = DateTime.Now,
 
             };
             return comm;

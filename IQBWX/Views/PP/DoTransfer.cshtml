@@ -20,7 +20,7 @@
     <div class="mgz cen">
         <div class="yues mg2"><img id="TransferLogo" src="~/Content/images/yue_03.jpg"  /></div>
         <div class="mg2 xi21">我的余额(元)</div>
-        <div class="mg2 xi71">¥ @Model.MyOrderTotalAmount</div>
+        <div class="mg2 xi71">¥ <span id="MyRemainAmount">@Model.MyRemainAmount</span></div>
       
         <ul class="ULList">
             <li>
@@ -28,8 +28,8 @@
                 <div class="liHeaderDivRight">未结代理佣金余额</div>
             </li>
             <li>
-                <div class="liBodyDivLeft">&yen @Model.MyOrderTotalAmount</div>
-                <div class="liBodyDivRight">&yen @Model.MyAgentOrderTotalAmount</div>
+                <div class="liBodyDivLeft">&yen <span id="MyOrderTotalAmount">@Model.MyOrderTotalAmount</span></div>
+                <div class="liBodyDivRight">&yen <span id="MyAgentOrderTotalAmount">@Model.MyAgentOrderTotalAmount</span></div>
             </li>
         </ul> 
     </div>
