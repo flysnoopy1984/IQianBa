@@ -104,6 +104,7 @@
     <Compile Include="IQBPay\BLL\AliPayManager.cs" />
     <Compile Include="IQBPay\BaseEnum\IQBPayEnum.cs" />
     <Compile Include="IQBPay\BLL\F2FPayHandler.cs" />
+    <Compile Include="IQBPay\BLL\IQBPayAuthorize_AdminAttribute.cs" />
     <Compile Include="IQBPay\BLL\SMSManager.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\EAgentCommission.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\EPreTransfer.cs" />

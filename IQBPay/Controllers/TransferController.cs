@@ -23,17 +23,17 @@ namespace IQBPay.Controllers
         {
             return View();
         }
-
+        [IQBPayAuthorize]
         public ActionResult Info_Win()
         {
             return View();
         }
-
+        [IQBPayAuthorize_Admin]
         public ActionResult List()
         {
             return View();
         }
-
+        [IQBPayAuthorize_Admin]
         public ActionResult DoTransfer()
         {
             return View();
@@ -129,7 +129,7 @@ namespace IQBPay.Controllers
         [HttpPost]
         public ActionResult InfoWin(string Id,string type)
         {
-            string openId = this.GetOpenId(true);
+         
            
             EOrderInfo order;
             ETransferAmount transfer;

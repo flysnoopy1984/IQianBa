@@ -26,7 +26,7 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        [IQBPayAuthorize]
+        [IQBPayAuthorize_Admin]
         public ActionResult List()
         {
             return View();

@@ -14,6 +14,7 @@ using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.Common.Helper;
+using IQBCore.IQBPay.BLL;
 
 namespace IQBPay.Controllers
 {
@@ -24,15 +25,17 @@ namespace IQBPay.Controllers
         {
             return View();
         }
+
+        [IQBPayAuthorize_Admin]
         public ActionResult StoreTransSum()
         {
             return View();
         }
 
+        [IQBPayAuthorize_Admin]
         public ActionResult List()
         {
-            Session["OpenId"] = this.GetOpenId(true) ;
-
+           
         
             return View();
         }
@@ -221,7 +224,7 @@ namespace IQBPay.Controllers
             return Json("OK");
         }
 
-
+        [IQBPayAuthorize_Admin]
         public ActionResult Info()
         {
             return View();

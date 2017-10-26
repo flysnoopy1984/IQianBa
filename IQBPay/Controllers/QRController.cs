@@ -13,6 +13,7 @@ using System.Web.Mvc;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.Common.Constant;
 using IQBCore.IQBPay.Models.Result;
+using IQBCore.IQBPay.BLL;
 
 namespace IQBPay.Controllers
 {
@@ -25,9 +26,10 @@ namespace IQBPay.Controllers
         }
 
         #region ARList
+        [IQBPayAuthorize_Admin]
         public ActionResult ARList()
         {
-            Session["OpenId"] = this.GetOpenId(true);
+          
             return View();
         }
 
@@ -37,7 +39,7 @@ namespace IQBPay.Controllers
             List<RQRInfo> result = new List<RQRInfo>();
             try
             {
-                string openId = this.GetOpenId(true);
+               //string openId = this.GetOpenId(true);
 
                 using (AliPayContent db = new AliPayContent())
                 {
@@ -88,6 +90,7 @@ namespace IQBPay.Controllers
         #endregion
 
         #region ARInfo
+        [IQBPayAuthorize_Admin]
         public ActionResult ARInfo()
         {
             return View();
@@ -134,7 +137,7 @@ namespace IQBPay.Controllers
            
             try
             {
-                qr.OwnnerOpenId = this.GetOpenId(true);
+                qr.OwnnerOpenId = base.GetUserSession().OpenId;
                 qr.RunResult = "OK";
                 using (AliPayContent db = new AliPayContent())
                 {
@@ -189,7 +192,7 @@ namespace IQBPay.Controllers
         #endregion
 
         #region ARDefaultInfo
-
+        [IQBPayAuthorize_Admin]
         public ActionResult ARDefaultInfo()
         {
             return View();
@@ -243,10 +246,10 @@ namespace IQBPay.Controllers
         #endregion
 
         #region AuthList
+        [IQBPayAuthorize_Admin]
         public ActionResult AuthList()
         {
-            Session["OpenId"] = this.GetOpenId(true);
-
+         
 
 
             return View();
@@ -255,11 +258,10 @@ namespace IQBPay.Controllers
         #endregion
 
         #region AuthInfo
+        [IQBPayAuthorize_Admin]
         public ActionResult AuthInfo()
         {
-            Session["OpenId"] = this.GetOpenId(true);
-
-
+          
 
             return View();
         }
@@ -269,7 +271,7 @@ namespace IQBPay.Controllers
 
             try
             {
-                qr.OwnnerOpenId = this.GetOpenId(true);
+                qr.OwnnerOpenId = this.GetUserSession().OpenId;
                 qr.RunResult = "OK";
                 using (AliPayContent db = new AliPayContent())
                 {
@@ -294,7 +296,7 @@ namespace IQBPay.Controllers
                     else
                     {
 
-                        qr.OwnnerOpenId = this.GetOpenId(true);
+                        qr.OwnnerOpenId = this.GetUserSession().OpenId;
                      
                         qr.Type = QRType.StoreAuth;
                         db.DBQRInfo.Add(qr);

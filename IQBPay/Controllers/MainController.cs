@@ -13,6 +13,7 @@ using System.Web;
 using System.Web.Mvc;
 using IQBCore.IQBPay;
 using IQBCore.Common.Constant;
+using IQBCore.IQBPay.BLL;
 
 namespace IQBPay.Controllers
 {
@@ -29,6 +30,7 @@ namespace IQBPay.Controllers
             return View();
         }
 
+        [IQBPayAuthorize_Admin]
         public ActionResult Init()
         {
             try
@@ -98,10 +100,7 @@ namespace IQBPay.Controllers
             {
                 base.ExitSession();
             }
-            //if (GetUserSession() != null)
-            //{
-            //    return RedirectToAction("Profile", "User");
-            //}
+          
 
             string WXurl =  ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
             ViewData["WXUrl"] = WXurl+ "?logintype=pp";
@@ -114,6 +113,7 @@ namespace IQBPay.Controllers
             return RedirectToAction("Profile", "User");
         }
 
+        [IQBPayAuthorize_Admin]
         public ActionResult Tools(string act)
         {
             if(act == "1")
@@ -129,12 +129,12 @@ namespace IQBPay.Controllers
         
 
         #region AppList
-
+        [IQBPayAuthorize_Admin]
         public ActionResult AppList()
         {
             return View();
         }
-
+        [IQBPayAuthorize_Admin]
         public ActionResult AppQuery(int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             //throw new Exception("Test Error");
@@ -171,6 +171,7 @@ namespace IQBPay.Controllers
         #endregion
 
         #region AppInfo
+        [IQBPayAuthorize_Admin]
         public ActionResult AppInfo()
         {
             return View();

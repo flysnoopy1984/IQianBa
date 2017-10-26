@@ -85,12 +85,13 @@ namespace IQBPay.Controllers.ExternalAPI
                             updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
                             if (updateUser == null)
                             {
-                                ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.NormalUser;
-                                ui.UserStatus = IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister;
+                                //ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.NormalUser;
+                                //ui.UserStatus = IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister;
 
-                                db.DBUserInfo.Add(ui);
-                                db.SaveChanges();
-                                isExist = false;
+                                //db.DBUserInfo.Add(ui);
+                                //db.SaveChanges();
+                                //isExist = false;
+                                return "新用户暂时无法注册";
                             }
                             else
                             {

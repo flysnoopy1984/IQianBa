@@ -19,6 +19,7 @@ namespace IQBPay.Controllers
             return View();
         }
 
+       
         public ActionResult Pay()
         {
             return View();

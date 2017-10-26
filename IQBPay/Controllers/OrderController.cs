@@ -24,18 +24,21 @@ namespace IQBPay.Controllers
             return View();
         }
 
+        [IQBPayAuthorize_Admin]
         public ActionResult List()
         {
             return View();
               
         }
 
+        [IQBPayAuthorize]
         public ActionResult Info_Win()
         {
             return View();
         }
 
-         public ActionResult Info_DoTransferOrder()
+        [IQBPayAuthorize]
+        public ActionResult Info_DoTransferOrder()
         {
             return View();
         }
