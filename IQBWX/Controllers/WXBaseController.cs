@@ -14,6 +14,7 @@ using WxPayAPI;
 using System.Web.Routing;
 using IQBWX.WebCore;
 using IQBCore.IQBWX.Const;
+using IQBWX.DataBase.IQBPay;
 
 namespace IQBWX.Controllers
 {
@@ -25,6 +26,25 @@ namespace IQBWX.Controllers
         public WXBaseController()
         {
             
+        }
+
+        public string CheckPPUserRole(string openId)
+        {
+         
+
+            using (AliPayContent db = new AliPayContent())
+            {
+                IQBCore.IQBPay.Models.User.EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == openId).FirstOrDefault();
+                if (ui == null)
+                {
+                    return "此功能已关闭";
+                }
+                if(ui.UserRole < IQBCore.IQBPay.BaseEnum.UserRole.Agent)
+                {
+                    return "您没有权限";
+                }
+            }
+            return "OK";
         }
 
         public string getAccessToken(Boolean isRefresh= false)

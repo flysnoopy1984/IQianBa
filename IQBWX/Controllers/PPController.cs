@@ -5,6 +5,7 @@ using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.Store;
+using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Models.WX.Template;
 using IQBWX.BLL.ExternalWeb;
 using IQBWX.BLL.NT;
@@ -67,21 +68,32 @@ namespace IQBWX.Controllers
 
         public ActionResult AgentCommList()
         {
-            string openId = this.GetOpenId(true);
+         
+            string openId = this.GetOpenId();
+            string msg = this.CheckPPUserRole(openId);
+            if(msg != "OK")
+                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
+
             ViewBag.OpenId = openId;
             return View();
         }
 
         public ActionResult OrderList()
         {
-            string openId = this.GetOpenId(true);
+            string openId = this.GetOpenId();
+            string msg = this.CheckPPUserRole(openId);
+            if (msg != "OK")
+                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
             ViewBag.OpenId = openId;
             return View();
         }
 
         public ActionResult TransferList()
         {
-            string openId = this.GetOpenId(true);
+            string openId = this.GetOpenId();
+            string msg = this.CheckPPUserRole(openId);
+            if (msg != "OK")
+                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
             ViewBag.OpenId = openId;
             return View();
         }
@@ -330,7 +342,10 @@ namespace IQBWX.Controllers
 
         public ActionResult DoTransfer()
         {
-            string openId = this.GetOpenId(true);
+            string openId = this.GetOpenId();
+            string msg = this.CheckPPUserRole(openId);
+            if (msg != "OK")
+                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
 
             RDoTransfer result = new RDoTransfer();
 

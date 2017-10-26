@@ -141,7 +141,7 @@ namespace IQBWX.Controllers
             IQBLog log = new IQBLog();
           
             string entry = Request.QueryString["entry"]; 
-            string openId = this.GetOpenId(true);
+            string openId = this.GetOpenId();
             log.log("WXLoginWAP entry:" + entry);
             log.log("WXLoginWAP openId:" + openId);
             if (entry=="1")

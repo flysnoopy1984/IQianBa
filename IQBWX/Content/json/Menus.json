@@ -7,12 +7,17 @@
             {
               "type": "view",
               "name": "订单查询",
-              "url": "http://wx.iqianba.cn/PP/OrderQuery"
+              "url": "http://wx.iqianba.cn/PP/OrderList"
             },
             {
               "type": "view",
               "name": "提现记录",
-              "url": "http://wx.iqianba.cn/PP/Settlement"
+              "url": "http://wx.iqianba.cn/PP/TransferList"
+            },
+            {
+              "type": "view",
+              "name": "下级返佣",
+              "url": "http://wx.iqianba.cn/PP/AgentCommList"
             }
 
           ]
@@ -24,6 +29,11 @@
               "type": "view",
               "name": "收款账户设置",
               "url": "http://wx.iqianba.cn/PP/AliPayAccount"
+            },
+             {
+              "type": "view",
+              "name": "我要提现",
+              "url": "http://wx.iqianba.cn/PP/DoTransfer"
             }
           ]
         }       
