@@ -1,13 +1,20 @@
 ﻿.ULList
 {
+    position:fixed;
+    left:27px;
     width:90%;
     height:500px;
     display: block;
     overflow-y:auto;
+
     overflow-x:hidden;
     white-space:nowrap; /*处理块元素中的空白符和换行*/
     margin:0px auto;
-    margin-top:50px;
+    margin-top:150px;
+}
+body
+{
+    background-color:white;
 }
 .ULList li
 {
@@ -33,16 +40,16 @@
 
 .liHeaderDivLeft
 {
-    border:solid 1px #faebcc;
+    border:solid 1px #000000;
     float:left;
-    width:27%;
+    width:35%;
     height:80px;
     line-height:80px;
     text-align:center;
 }
 .liHeaderDivRight
 {
-    border:solid 1px #faebcc;
+    border:solid 1px #000000;
     height:80px;
     line-height:80px;
     text-align:center;
@@ -60,9 +67,9 @@
 
 .liBodyDivLeft
 {
-    border:solid 1px #faebcc;
+    border:solid 1px #000000;
     float:left;
-    width:27%;
+    width:35%;
     height:80px;
     line-height:80px;
     text-align:center;
@@ -72,7 +79,7 @@
 
 .liBodyDivRight
 {
-    border:solid 1px #faebcc;
+    border:solid 1px #000000;
     height:80px;
     line-height:80px;
     text-align:center;
@@ -98,10 +105,23 @@
     position:fixed; 
     top:0px;
     left:0px;
-    right:0px;
+
     height:50px;
     line-height:50px;
     /*background:#f2f2f2;*/ 
     text-indent:27px;
+    margin-left:auto;
+    margin-right:auto;
+}
+.ListTitle_Condition1
+{
+    position:fixed; 
+    top:50px;
+    margin-left:auto;
+    margin-right:auto;
+    text-indent:27px;
+}
+.ConfirmButton{
+    width:100px !important; height:60px; margin-bottom:20px !important;
 }
 

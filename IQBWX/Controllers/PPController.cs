@@ -66,6 +66,11 @@ namespace IQBWX.Controllers
             return View();
         }
 
+        public ActionResult ReceiveOrder()
+        {
+            return View();
+        }
+
         public ActionResult AgentCommList()
         {
          
@@ -352,17 +357,17 @@ namespace IQBWX.Controllers
             using (AliPayContent db = new AliPayContent())
             {
 
-               var order =  db.DBOrderInfo.Where(s => s.OrderStatus == OrderStatus.Paid
+                var order = db.DBOrderInfo.Where(s => s.OrderStatus == OrderStatus.Paid
                                              && s.OrderType == OrderType.Normal
                                              && s.AgentOpenId == openId);
 
                 result.MyOrderTotalAmount = order.ToList().Sum(s => s.RealTotalAmount);
-               
+
 
                 var agentcomm = db.DBAgentCommission.Where(s => s.AgentCommissionStatus == AgentCommissionStatus.Paid
                                             && s.ParentOpenId == openId);
 
-                result.MyAgentOrderTotalAmount = agentcomm.ToList().Sum(s =>s.CommissionAmount);
+                result.MyAgentOrderTotalAmount = agentcomm.ToList().Sum(s => s.CommissionAmount);
 
                 result.MyRemainAmount = result.MyOrderTotalAmount + result.MyAgentOrderTotalAmount;
 
@@ -378,6 +383,24 @@ namespace IQBWX.Controllers
             return View(result);
         }
 
+        [HttpPost]
+        public ActionResult OrderReceive()
+        {
+            string receiveNo = this.Request["ReceiveNo"];
+            List<ROrder_Receive> list = new List<ROrder_Receive>();
+
+            using (AliPayContent db = new AliPayContent())
+            {
+                list = db.DBOrderInfo.Where(o => o.ReceiveNo == receiveNo).Select(a => new ROrder_Receive
+                {
+                    Amount = a.TotalAmount,
+                    OrderNo = a.OrderNo,
+                    TransDateStr = a.TransDateStr
+                }).ToList();
+            }
+            return Json(list);
+        }
+
 
         public ActionResult Settlement()
         {
@@ -389,8 +412,10 @@ namespace IQBWX.Controllers
             }
             PPOrderPayNT notice = new PPOrderPayNT(accessToken, "orKUAw16WK0BmflDLiBYsR-Kh5bE", _ppOrder);
             return Content(notice.Push());
-           
+
         }
+
+       
 
     }
 }

@@ -125,6 +125,7 @@
     <Compile Include="IQBPay\Models\Result\RAgentCommission.cs" />
     <Compile Include="IQBPay\Models\Result\RDoTransfer.cs" />
     <Compile Include="IQBPay\Models\Result\ROrderInfo.cs" />
+    <Compile Include="IQBPay\Models\Result\ROrder_Receive.cs" />
     <Compile Include="IQBPay\Models\Result\ROrder_Transfer.cs" />
     <Compile Include="IQBPay\Models\Result\RStore_OrderSum.cs" />
     <Compile Include="IQBPay\Models\Result\RQRInfo.cs" />

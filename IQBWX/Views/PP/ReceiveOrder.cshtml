@@ -13,21 +13,32 @@
     <link href="@Url.Scrpit("~/Content/Css/ReceiveOrder.css")" rel="stylesheet" />
     <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
     <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+
 </head>
 <body>
-    <div class="ListTitle mgz2 xi20 hui">收货确认</div>
+    <div class="ListTitle xi20 hui">收货确认</div>
+    <div class="ListTitle_Condition1">
+        <label>收款码：</label>
+        <div style="display:inline;">
+            <input id="ReceiveNo" type="text" class="EditInput" style="width:200px;">
+            <button type="button" class="btn btn-primary ConfirmButton" id="btnQuery" onclick="Query();">查询</button>
+        </div>
+    </div>
+
     <ul class="ULList">
         <li>
             <div class="liHeaderDivLeft">收货订号</div>
             <div class="liHeaderDivLeft">交易时间</div>
-            <div class="liHeaderDivLeft">金额</div>
-            <div class="liHeaderDivLeft"><button type="button" class="mgz btn btn-primary" id="btnPay" onclick="PayToAli();">确认</button></div>
+            <div class="liHeaderDivRight">金额</div>
         </li>
         <li>
+            <div>查询中。。。</div>
+        </li>
+        @*<li>
             <div class="liBodyDivLeft">aaaaaaaaaaaaaaa</div>
             <div class="liBodyDivLeft">ccccccccccccccc</div>
             <div class="liBodyDivRight">bbbbbbbbbbbbbbbbbbbbb</div>
-        </li>
+        </li>*@
     </ul> 
 </body>
 </html>
