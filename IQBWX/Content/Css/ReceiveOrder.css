@@ -1,0 +1,107 @@
+﻿.ULList
+{
+    width:90%;
+    height:500px;
+    display: block;
+    overflow-y:auto;
+    overflow-x:hidden;
+    white-space:nowrap; /*处理块元素中的空白符和换行*/
+    margin:0px auto;
+    margin-top:50px;
+}
+.ULList li
+{
+     list-style: none; 
+}
+.ULList .liHeader
+{
+    background-color:rgba(251, 180, 76, 0.1);
+    height:50px;
+    line-height:50px;
+    color:rgba(251, 180, 76, 1.0);
+    font-size:20px;
+    font-family:'Microsoft YaHei',STXihei,MingLiu;
+    font-weight:bold;
+
+}
+.ULList li div
+{
+    padding-left:2px;
+    padding-right:2px;
+    overflow:hidden;
+}
+
+.liHeaderDivLeft
+{
+    border:solid 1px #faebcc;
+    float:left;
+    width:27%;
+    height:80px;
+    line-height:80px;
+    text-align:center;
+}
+.liHeaderDivRight
+{
+    border:solid 1px #faebcc;
+    height:80px;
+    line-height:80px;
+    text-align:center;
+}
+
+
+.ULList .liBody
+{
+    height:45px;
+    line-height:45px;
+    color:#65C3DF;
+    font-size:18px;
+    font-family:'Microsoft YaHei',STXihei,MingLiu;
+}
+
+.liBodyDivLeft
+{
+    border:solid 1px #faebcc;
+    float:left;
+    width:27%;
+    height:80px;
+    line-height:80px;
+    text-align:center;
+    color:brown;
+   
+}
+
+.liBodyDivRight
+{
+    border:solid 1px #faebcc;
+    height:80px;
+    line-height:80px;
+    text-align:center;
+    color:crimson;
+     overflow-x:hidden;
+    padding-left:2px;
+    padding-right:2px;
+   
+}
+
+.liBodyDivRight a
+{
+    padding:10px;
+}
+
+.divNextButton
+{
+    margin-top:15px;
+    width:90%;
+    text-align:center;
+}
+.ListTitle{
+    position:fixed; 
+    top:0px;
+    left:0px;
+    right:0px;
+    height:50px;
+    line-height:50px;
+    /*background:#f2f2f2;*/ 
+    text-indent:27px;
+}
+

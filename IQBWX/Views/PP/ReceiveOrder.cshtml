@@ -1,0 +1,33 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>收货确认</title>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/ReceiveOrder.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
+    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+</head>
+<body>
+    <div class="ListTitle mgz2 xi20 hui">收货确认</div>
+    <ul class="ULList">
+        <li>
+            <div class="liHeaderDivLeft">收货订号</div>
+            <div class="liHeaderDivLeft">交易时间</div>
+            <div class="liHeaderDivLeft">金额</div>
+            <div class="liHeaderDivLeft"><button type="button" class="mgz btn btn-primary" id="btnPay" onclick="PayToAli();">确认</button></div>
+        </li>
+        <li>
+            <div class="liBodyDivLeft">aaaaaaaaaaaaaaa</div>
+            <div class="liBodyDivLeft">ccccccccccccccc</div>
+            <div class="liBodyDivRight">bbbbbbbbbbbbbbbbbbbbb</div>
+        </li>
+    </ul> 
+</body>
+</html>

@@ -138,7 +138,8 @@
     <Content Include="Content\Css\MainCss.css" />
     <Content Include="Content\Css\idangerous.swiper.css" />
     <Content Include="Content\Css\PP.css" />
-    <Content Include="Content\Css\ULList.css" />
+    <Content Include="Content\Css\DoTransfer.css" />
+    <Content Include="Content\Css\ReceiveOrder.css" />
     <Content Include="Content\Css\WebCss.css" />
     <Content Include="Content\images\404_02.jpg" />
     <Content Include="Content\images\daikuanchaoshi_03.jpg" />
@@ -343,6 +344,7 @@
     <Content Include="Views\PP\OrderList.cshtml" />
     <Content Include="Views\PP\DoTransfer.cshtml" />
     <Content Include="Views\PP\AgentCommList.cshtml" />
+    <Content Include="Views\PP\ReceiveOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
