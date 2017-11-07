@@ -1,8 +1,8 @@
 ﻿.ULList
 {
     position:fixed;
-    left:27px;
-    width:90%;
+    left:10px;
+    width:95%;
     height:500px;
     display: block;
     overflow-y:auto;
@@ -15,6 +15,7 @@
 body
 {
     background-color:white;
+    font-size:14px!important;
 }
 .ULList li
 {
@@ -43,15 +44,15 @@ body
     border:solid 1px #000000;
     float:left;
     width:35%;
-    height:80px;
-    line-height:80px;
+    height:40px;
+    line-height:40px;
     text-align:center;
 }
 .liHeaderDivRight
 {
     border:solid 1px #000000;
-    height:80px;
-    line-height:80px;
+    height:40px;
+    line-height:40px;
     text-align:center;
 }
 
@@ -70,8 +71,8 @@ body
     border:solid 1px #000000;
     float:left;
     width:35%;
-    height:80px;
-    line-height:80px;
+    height:40px;
+    line-height:40px;
     text-align:center;
     color:brown;
    
@@ -80,11 +81,11 @@ body
 .liBodyDivRight
 {
     border:solid 1px #000000;
-    height:80px;
-    line-height:80px;
+    height:40px;
+    line-height:40px;
     text-align:center;
     color:crimson;
-     overflow-x:hidden;
+    
     padding-left:2px;
     padding-right:2px;
    
@@ -109,7 +110,7 @@ body
     height:50px;
     line-height:50px;
     /*background:#f2f2f2;*/ 
-    text-indent:27px;
+    text-indent:10px;
     margin-left:auto;
     margin-right:auto;
 }
@@ -119,9 +120,9 @@ body
     top:50px;
     margin-left:auto;
     margin-right:auto;
-    text-indent:27px;
+    text-indent:10px;
 }
 .ConfirmButton{
-    width:100px !important; height:60px; margin-bottom:20px !important;
+    width:70px !important; height:60px!important; margin-bottom:10px !important;
 }
 

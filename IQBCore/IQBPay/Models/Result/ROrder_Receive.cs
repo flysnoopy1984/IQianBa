@@ -11,6 +11,7 @@ namespace IQBCore.IQBPay.Models.Result
         public string OrderNo { get; set; }
         public string TransDateStr { get; set; }
 
+        
         public float Amount { get; set; }
     }
 }
