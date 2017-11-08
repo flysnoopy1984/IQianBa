@@ -128,7 +128,10 @@ function generateData(result) {
                 break;
             case -1:
                 OrderStatus = "异常";
-                break;   
+                break;
+            case -2:
+                OrderStatus = "等待用户确认";
+                break;
         }
 
         var Channel = result[i].SellerChannel;

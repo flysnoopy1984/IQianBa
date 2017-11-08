@@ -95,6 +95,9 @@ function generateData(result) {
             case -1:
                 orderStatus = "异常";
                 break;
+            case -2:
+                OrderStatus = "等待用户确认";
+                break;
         }
         strCtrl = "";
         strCtrl += "<tr>";

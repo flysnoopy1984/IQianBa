@@ -22,16 +22,18 @@
         <label>收款码：</label>
         <div style="display:inline;">
             <input id="ReceiveNo" type="text" class="EditInput" style="font-size:30px!important;width:34%; height:50px!important;">
-            <button type="button" class="btn btn-primary ConfirmButton" id="btnQuery" onclick="Query();">查询</button>
+            <button type="button" class="btn btn-primary QueryButton" id="btnQuery" onclick="Query();">查询</button>
         </div>
     </div>
 
     <ul class="ULList" id="ROList">
-        <li>
-            <div class="liHeaderDivLeft">收货订号</div>
-            <div class="liHeaderDivLeft">交易时间</div>
-            <div class="liHeaderDivRight">金额</div>
-        </li>
+        @*<li>
+            <div >收货订号:</div>
+            <div >收货订号:</div>
+            <div >收货订号:</div>
+            <button type="button" class="btn btn-success ConfirmButton" id="btnConfrimRO" onclick="ConfrimRO();">确认收款</button>
+            <hr /> 
+        </li>*@
         <li id="ROProcess" style="display:none;">
             <div>查询中,请稍等...</div>
         </li>

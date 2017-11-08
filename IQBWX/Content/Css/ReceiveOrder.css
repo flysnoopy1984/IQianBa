@@ -122,7 +122,11 @@ body
     margin-right:auto;
     text-indent:10px;
 }
-.ConfirmButton{
+.QueryButton{
     width:70px !important; height:60px!important; margin-bottom:10px !important;
+}
+.ConfirmButton{
+    width:100%!important; height:40px!important; margin-left:auto!important;margin-right:auto!important; margin-top:10px;
+
 }
 

@@ -87,7 +87,10 @@ namespace IQBCore.IQBPay.BaseEnum
 
     public enum OrderStatus
     {
-        WaitingBuyerPay =-2,
+        /// <summary>
+        /// 等待用户确认是否收到款
+        /// </summary>
+        WaitingBuyerConfirm =-2,
 
         WaitingAliPayNotify =0,
 

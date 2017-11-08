@@ -14,10 +14,12 @@ using IQBWX.Models.Results;
 using IQBWX.Models.User;
 using IQBWX.Models.WX;
 using IQBWX.Models.WX.Template;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.SqlServer;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -393,12 +395,42 @@ namespace IQBWX.Controllers
             {
                 list = db.DBOrderInfo.Where(o => o.ReceiveNo == receiveNo).Select(a => new ROrder_Receive
                 {
+                    OrderStatus = a.OrderStatus,
                     Amount = a.TotalAmount,
                     OrderNo = a.OrderNo,
                     TransDateStr = a.TransDateStr
                 }).ToList();
             }
             return Json(list);
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmRO()
+        {
+            string OrderNo = this.Request["OrderNo"];
+            ROrder_Receive result = new ROrder_Receive();
+            string sql = "update orderinfo set OrderStatus = {0} where OrderNo=@OrderNo";
+            sql = string.Format(sql, Convert.ToInt32(OrderStatus.Paid));
+
+            var p_OrderNo = new MySqlParameter("@OrderNo", OrderNo);
+
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    int r = db.Database.ExecuteSqlCommand(sql, p_OrderNo);
+                    if(r>0)
+                        result.RunResult = "OK";
+                    else
+                        result.RunResult = "更新错误，请联系代理!";
+
+                }
+            }
+            catch(Exception ex)
+            {
+                result.RunResult = "更新错误，请联系代理!";
+            }
+            return Json(result);
         }
 
 
