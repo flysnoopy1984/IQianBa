@@ -133,9 +133,9 @@ namespace IQBWX.Models.WX
             return xml;
         }
 
-        public string toPicText(string picUrl)
+        public string toPicText(string picUrl,string url,string desc = "点击获取酷炫二维码标记")
         {            
-
+            
             string xml = @"<xml>
                 <ToUserName><![CDATA[{0}]]></ToUserName>
                 <FromUserName><![CDATA[{1}]]></FromUserName>
@@ -144,14 +144,14 @@ namespace IQBWX.Models.WX
                 <ArticleCount>1</ArticleCount>
                 <Articles>
                 <item>
-                <Title><![CDATA[我的二维码]]></Title> 
-                <Description><![CDATA[点击详情获取酷炫二维码标记]]></Description>
+                <Title><![CDATA[收款二维码]]></Title> 
+                <Description><![CDATA[{4}]]></Description>
                 <PicUrl><![CDATA[{2}]]></PicUrl>
                 <Url><![CDATA[{3}]]></Url>
                 </item>
                 </Articles>
                 </xml>";
-            xml = string.Format(xml, this.FromUserName, this.ToUserName, picUrl,"http://wx.iqianba.cn/html5/MemberQR");
+            xml = string.Format(xml, this.FromUserName, this.ToUserName, picUrl, url, desc);
             return xml;
         }
 

@@ -194,6 +194,7 @@
     <Content Include="Content\Script\idangerous.swiper.min.js" />
     <Content Include="Content\Script\iqb.dropload.min.js" />
     <Content Include="Content\Script\IQBPay\AgentCommList.js" />
+    <Content Include="Content\Script\IQBPay\AliPayAccount.js" />
     <Content Include="Content\Script\IQBPay\Auth_Store.js" />
     <Content Include="Content\Script\IQBPay\DoTransfer.js" />
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />

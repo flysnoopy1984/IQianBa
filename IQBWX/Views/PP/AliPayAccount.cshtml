@@ -8,10 +8,31 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
+    <script src="@Url.Scrpit("~/Content/Script/IQBPay/AliPayAccount.js")"></script>
     <title>AliPayAccount</title>
+    <style type="text/css">
+        body
+        {
+            background-color:white;
+        }
+        .ModifyButton{
+            width:90%; 
+        }
+       
+    </style>
 </head>
 <body>
-    <div> 
+    <div class="mgz cen" style="line-height:100px;"> 
+        <div>支付宝账号设置</div>
+        <div>
+            <input id="AliPayAccount" class="EditInput" type="text" style="font-size:16px!important;" value="@ViewBag.AliPayAccount" />
+        </div>
+        <button type="button" class="mgz btn btn-success ModifyButton" id="btnModify" onclick="ClickModify();">修改</button>
+        <button type="button" class="mgz btn btn-danger" id="btnSubmit" style="width:90%;" onclick="UpdateAccount();">确定提交</button>
     </div>
+    <input type="hidden" id="AgentUserRecId" value="@ViewBag.ID" />
 </body>
 </html>

@@ -5,6 +5,7 @@ var SMSId = "";
 function InitControls()
 {
     $("#BnVerifyConfirm").hide();
+    //支付区域
     $("#PayContent").hide();
     $("#userPhone").attr("disabled", false);
    
@@ -12,6 +13,7 @@ function InitControls()
     $("#BnGetVerifyCode").text("获取验证码");
     $("#BnGetVerifyCode").css("background", "#47a447");
 
+    //短信验证区域
     $("#VerifyArea").show();
     $("#VerifyCode").val("");
 
@@ -19,6 +21,7 @@ function InitControls()
     SMSId = "";
 
 }
+
 $(document).ready(function () { 
   
     InitControls();
@@ -86,6 +89,7 @@ function GetVerifyCode() {
     //    alert("支付订单号码未生成，请联系站长！");
     //    return;
     //}
+    var ReceiveNo = $("#ReceiveNo").val();
     var phone = $("#userPhone");
     phone.attr("disabled", true);
 

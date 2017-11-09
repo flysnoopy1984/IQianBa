@@ -17,7 +17,9 @@ using IQBWX.Models.WX.Template;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.SqlServer;
 using System.Data.SqlClient;
 using System.Linq;
@@ -63,8 +65,61 @@ namespace IQBWX.Controllers
            
             return View();
         }
+
+        [HttpPost]
+        public ActionResult  UpdateAliPayAccount()
+        {
+            string Id = Request["ID"];
+            string AliPayAccount = Request["AliPayAccount"];
+            IQBCore.IQBPay.Models.User.EUserInfo ui = new IQBCore.IQBPay.Models.User.EUserInfo();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    ui.Id = Convert.ToInt32(Id);
+                    ui.AliPayAccount = AliPayAccount;
+
+                    DbEntityEntry<IQBCore.IQBPay.Models.User.EUserInfo> entry = db.Entry<IQBCore.IQBPay.Models.User.EUserInfo>(ui);
+                    entry.State = EntityState.Unchanged;
+
+                    entry.Property(t => t.AliPayAccount).IsModified = true;
+
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                Content(ex.Message);
+            }
+         
+
+           return Content("OK");
+
+        }
+
         public ActionResult AliPayAccount()
         {
+            string openId = this.GetOpenId(true);
+            RUserInfo ui = null;
+            if (!string.IsNullOrEmpty(openId))
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    ui= db.DBUserInfo.Where(u => u.OpenId == openId).Select(a => new RUserInfo()
+                    {
+                        AliPayAccount = a.AliPayAccount,
+                        Id = a.Id, 
+                       
+                    }).FirstOrDefault();
+                }
+            }
+            if(ui!=null)
+            {
+                ViewBag.ID = ui.Id;
+                ViewBag.AliPayAccount = ui.AliPayAccount;
+
+            }
+
             return View();
         }
 

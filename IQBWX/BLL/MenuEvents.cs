@@ -50,7 +50,7 @@ namespace IQBWX.BLL
                     payQRUser = db.DBQRUser.Where(u => u.OpenId == msg.FromUserName).FirstOrDefault();
                     if (payQRUser == null)
                     {
-                        this.ResponseXml = msg.toText("您没有权限");
+                        this.ResponseXml = msg.toText("网站已经关闭");
                         return;
                     }
                 }
@@ -58,7 +58,9 @@ namespace IQBWX.BLL
                 {
                     case "pay_101":
                         string picUrl = url + payQRUser.FilePath;
-                        this.ResponseXml = msg.toPicText(picUrl);
+                        string GoUrl = url+"/Wap/MyReceiveQR?FilePath="+ payQRUser.FilePath;
+                        string desc = "此二维码扣点率：" + payQRUser.Rate;
+                        this.ResponseXml = msg.toPicText(picUrl, GoUrl, desc);
                         break;
                    
                     default:

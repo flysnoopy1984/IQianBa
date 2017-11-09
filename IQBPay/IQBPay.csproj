@@ -567,7 +567,6 @@
     <Content Include="Content\Style\Frame1\font\weathericons-regular-webfont.woff" />
     <Content Include="Views\Store\Info.cshtml" />
     <Content Include="Views\Store\List.cshtml" />
-    <Content Include="Views\Wap\Pay.cshtml" />
     <Content Include="Views\Wap\Index.cshtml" />
     <Content Include="Views\QR\ARList.cshtml" />
     <Content Include="Views\QR\ARInfo.cshtml" />
@@ -576,7 +575,6 @@
     <Content Include="Views\Main\AppInfo.cshtml" />
     <Content Include="Views\QR\My.cshtml" />
     <Content Include="Views\QR\MyList.cshtml" />
-    <Content Include="Views\Wap\Auth_AR.cshtml" />
     <Content Include="Views\QR\ARDefaultInfo.cshtml" />
     <Content Include="Views\User\Demo.cshtml" />
     <Content Include="Views\Main\WebEntry.cshtml" />
@@ -598,6 +596,7 @@
     <Content Include="Views\Order\MyList.cshtml" />
     <Content Include="Views\Transfer\MyList.cshtml" />
     <Content Include="Views\Store\StoreTransSum.cshtml" />
+    <Content Include="Views\Wap\MyReceiveQR.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

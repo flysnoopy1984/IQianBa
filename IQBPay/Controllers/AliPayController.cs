@@ -266,7 +266,7 @@ namespace IQBPay.Controllers
                         }  
                         else
                         {
-                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.WaitingBuyerPay;
+                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.WaitingBuyerConfirm;
                         }
                     }
                     else

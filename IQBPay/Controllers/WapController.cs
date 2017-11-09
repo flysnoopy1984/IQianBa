@@ -19,33 +19,25 @@ namespace IQBPay.Controllers
             return View();
         }
 
-       
-        public ActionResult Pay()
+        public ActionResult MyReceiveQR()
         {
+            string FilePath = Request.QueryString["FilePath"];
+            if (string.IsNullOrEmpty(FilePath))
+                ViewBag.ImgSrc = "/Content/Images/noPic.jpg";
+            else
+            {
+                ViewBag.ImgSrc = FilePath;
+            }
             return View();
         }
 
-      
         public ActionResult Auth_Store(string Id)
         {
           
             EAliPayApplication app = null;
           
             app = BaseController.App;
-            /*
-            using (AliPayContent db = new AliPayContent())
-            {
-                qr = db.QR_GetById(QRId, Core.BaseEnum.QRType.StoreAuth);
-                if (qr == null)
-                    return Content("授权码不存在！");
-                else if (qr.RecordStatus == Core.BaseEnum.RecordStatus.Blocked)
-                    return Content("授权码已被使用");
-
-                
-                if (app == null)
-                    return Content("平台配置错误，请联系站长");  
-            }
-          */
+           
             return Redirect(app.AuthUrl_Store + "&Id=" + Id); 
             //return Content("OK");
 

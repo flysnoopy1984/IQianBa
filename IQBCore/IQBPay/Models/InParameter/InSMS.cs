@@ -28,7 +28,7 @@ namespace IQBCore.IQBPay.Models.InParameter
         public void Init()
         {
            
-            this.Sign = "泰习服务平台";
+            this.Sign = "玉杰投资服务";
             //   this.Tpl_id = "49551"; //您的验证码为:{1}.您的订单编号为:{2}.请在支付后到以下地址进行收款确认:{3}。
             this.Tpl_id = "50959";//您的验证码为:{1}.您的收款确认码为:{2}.，请在支付后到以下地址用收款确认码进行收款确认:{3}。
 

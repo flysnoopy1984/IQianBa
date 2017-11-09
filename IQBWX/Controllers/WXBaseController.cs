@@ -37,7 +37,7 @@ namespace IQBWX.Controllers
                 IQBCore.IQBPay.Models.User.EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == openId).FirstOrDefault();
                 if (ui == null)
                 {
-                    return "此功能已关闭";
+                    return "网站已经关闭";
                 }
                 if(ui.UserRole < IQBCore.IQBPay.BaseEnum.UserRole.Agent)
                 {

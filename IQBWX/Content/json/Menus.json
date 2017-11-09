@@ -1,39 +1,44 @@
 ﻿{
     "button": [
        {
-          "name": "用户中心",
+          "name": "单据中心",
           "sub_button": [
            
             {
               "type": "view",
-              "name": "订单查询",
+              "name": "销售单查询",
               "url": "http://wx.iqianba.cn/PP/OrderList"
             },
             {
               "type": "view",
-              "name": "提现记录",
+              "name": "提现单记录",
               "url": "http://wx.iqianba.cn/PP/TransferList"
             },
             {
               "type": "view",
-              "name": "下级返佣",
+              "name": "下级返佣单",
               "url": "http://wx.iqianba.cn/PP/AgentCommList"
             }
 
           ]
         },       
         {
-          "name": "用户操作",
+          "name": "用户中心",
           "sub_button": [
             {
               "type": "view",
               "name": "收款账户设置",
               "url": "http://wx.iqianba.cn/PP/AliPayAccount"
             },
-             {
+            {
               "type": "view",
               "name": "我要提现",
               "url": "http://wx.iqianba.cn/PP/DoTransfer"
+            },
+            {
+              "type": "click",
+              "name": "收款二维码",
+              "key": "pay_101"
             }
           ]
         }       

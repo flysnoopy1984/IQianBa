@@ -4,7 +4,7 @@
             height:80px; 
 
           display: inline-block;
-          padding: 6px 12px;
+          padding: 6px 6px;
           margin-bottom: 0;
           font-size: 22px;
           font-weight: normal;
@@ -151,7 +151,7 @@ fieldset[disabled] .btn-success.active {
 
 .AmtLabel {
     display:inline-block;
-    height:100px;
+    height:20px;
     line-height:20px;  
     vertical-align: middle;
 }
@@ -167,7 +167,7 @@ fieldset[disabled] .btn-success.active {
     right:10px;
 }
 .EditInput {
-    width:350px;
+    width:85%;
     outline: none;
     background-color: #FFFFFF;
     background-image: none;
