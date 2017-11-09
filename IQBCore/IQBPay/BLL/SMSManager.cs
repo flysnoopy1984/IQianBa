@@ -88,7 +88,7 @@ namespace IQBCore.IQBPay.BLL
             }
             catch (Exception ex)
             {
-                smsLog.Exception = "SMSManager Post:" + ex.Message;
+                smsLog.Exception += "SMSManager Post:" + ex.Message;
                 throw ex;
             }
           

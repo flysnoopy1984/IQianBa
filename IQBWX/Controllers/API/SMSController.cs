@@ -226,6 +226,7 @@ namespace IQBWX.Controllers.API
             catch (Exception ex)
             {
                 smsLog.Exception += "DoSMS Error:" + ex.Message;
+                smsLog.Exception += "DoSMS Inner Error:" + ex.InnerException.Message;
                 result = false;
             }
             using (AliPayContent db = new AliPayContent())
