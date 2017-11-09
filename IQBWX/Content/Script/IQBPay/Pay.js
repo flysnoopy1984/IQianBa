@@ -19,7 +19,9 @@ function InitControls()
 
     countdown = 0;
     SMSId = "";
-
+    //$("#BnVerifyConfirm").show();
+    //////支付区域
+    //$("#PayContent").show();
 }
 
 $(document).ready(function () { 
