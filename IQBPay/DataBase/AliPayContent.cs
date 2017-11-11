@@ -17,7 +17,7 @@ using System.Web;
 
 namespace IQBPay.DataBase
 {
-    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
+    //[DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class AliPayContent: DbContext
     {
         public AliPayContent() : base("PPConnection")

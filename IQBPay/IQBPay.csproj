@@ -506,7 +506,6 @@
     <Compile Include="Core\QRManager.cs" />
     <Compile Include="DataBase\AliPayContent.cs" />
     <Compile Include="Controllers\ExternalAPI\UserAPIController.cs" />
-    <Compile Include="DataBase\WXContent.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

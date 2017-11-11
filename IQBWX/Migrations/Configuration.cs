@@ -1,18 +1,18 @@
-namespace IQBPay.Migrations
+namespace IQBWX.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<IQBPay.DataBase.AliPayContent>
+    internal sealed class Configuration : DbMigrationsConfiguration<IQBWX.DataBase.InitContent>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(IQBPay.DataBase.AliPayContent context)
+        protected override void Seed(IQBWX.DataBase.InitContent context)
         {
             //  This method will be called after migrating to the latest version.
 

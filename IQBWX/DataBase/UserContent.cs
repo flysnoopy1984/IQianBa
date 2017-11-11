@@ -24,8 +24,8 @@ namespace IQBWX.DataBase
     {
         public UserContent() : base("MainDBConnection")
         {
-             this.Configuration.AutoDetectChangesEnabled = true;
-            ChangeTracker.DetectChanges();
+            // this.Configuration.AutoDetectChangesEnabled = true;
+            //ChangeTracker.DetectChanges();
             //Database.SetInitializer<UserContent>(new CreateDatabaseIfNotExists<UserContent>());
         }
 

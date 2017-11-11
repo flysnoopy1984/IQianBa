@@ -40,16 +40,19 @@ namespace IQBWX.Controllers
 
         public ActionResult Demo(string Id)
         {
-           
-            if (Id == "1")
-            {
-               
+            try
+            { 
+                using (DataBase.UserContent db = new DataBase.UserContent())
+                {
+                    db.Get("aaa");
+                }
             }
-            else if(Id=="SMS")
+            catch(Exception ex)
             {
+                throw ex;
+            }
 
-            }
-             return View();
+            return View();
         }
 
         public ActionResult Pay(string Id)
@@ -142,7 +145,7 @@ namespace IQBWX.Controllers
 
         public ActionResult OrderList()
         {
-            string openId = this.GetOpenId();
+            string openId = this.GetOpenId(true);
             string msg = this.CheckPPUserRole(openId);
             if (msg != "OK")
                 return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });

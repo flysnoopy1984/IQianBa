@@ -265,6 +265,7 @@
     </Compile>
     <Compile Include="Handler\CometAsyncHandler.cs" />
     <Compile Include="Handler\CometResult.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Config\EPoPCommissionConfigration.cs" />
     <Compile Include="Models\Crawler\EInfoDetail.cs" />

@@ -17,7 +17,7 @@ namespace IQBWX.DataBase
         public DbSet<EOrderLine> OrderInfo { get; set; }
         public OrderContent() : base("MainDBConnection")
         {
-
+           
         }
         public void ForInit()
         {

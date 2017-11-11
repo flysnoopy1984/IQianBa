@@ -16,6 +16,7 @@ namespace IQBWX.DataBase
     {
         public InitContent() : base("MainDBConnection")
         {
+            
         }
         public DbSet<EItemInfo> ItemInfo { get; set; }
 
@@ -33,19 +34,7 @@ namespace IQBWX.DataBase
 
         public DbSet<EOrderLine> OrderInfo { get; set; }
 
-        public void ForInit()
-        {
-            Database.SetInitializer(new CreateDatabaseIfNotExists<UserContent>());
-            //     ARTransDbSet.FirstOrDefault<EARUserTrans>(t => t.TransId ==1);
-            // APTransDbSet.FirstOrDefault<EAPUserTrans>(t => t.TransId == 1);
-
-            using (var context = new UserContent())
-            {
-                context.Database.Initialize(true);
-               int a= context.UserCount();
-                a++;
-            }
-        }
+       
     }
 
 
