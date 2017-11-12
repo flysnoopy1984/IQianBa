@@ -470,7 +470,7 @@ namespace IQBWX.Controllers
             string sql = "update orderinfo set OrderStatus = {0} where OrderNo=@OrderNo";
             sql = string.Format(sql, Convert.ToInt32(OrderStatus.Paid));
 
-            var p_OrderNo = new MySqlParameter("@OrderNo", OrderNo);
+            var p_OrderNo = new SqlParameter("@OrderNo", OrderNo);
 
             try
             {
