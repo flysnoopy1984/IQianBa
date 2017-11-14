@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Helper\ImgHelper.cs" />
+    <Compile Include="Common\Helper\IQBUrlHelper.cs" />
     <Compile Include="Common\Helper\UtilityHelper.cs" />
     <Compile Include="IQBPay\BaseEnum\SMSEnum.cs" />
     <Compile Include="IQBPay\BLL\IQBPayAuthorizeAttribute .cs" />

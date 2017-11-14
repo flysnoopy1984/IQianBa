@@ -129,7 +129,7 @@ namespace IQBPay.Controllers
         
 
         #region AppList
-        [IQBPayAuthorize_Admin]
+        //[IQBPayAuthorize_Admin]
         public ActionResult AppList()
         {
             return View();

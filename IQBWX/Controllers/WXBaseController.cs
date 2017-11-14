@@ -86,9 +86,7 @@ namespace IQBWX.Controllers
         {
            
             Boolean WebMaintain = Convert.ToBoolean(ConfigurationManager.AppSettings["WebMaintain"]);
-            return string.Format(CodeUrlFormat,
-                                             ConfigurationManager.AppSettings["WXAppId"],
-                                             reUrl);
+            return string.Format(CodeUrlFormat, ConfigurationManager.AppSettings["WXAppId"],reUrl);
 
         }
 

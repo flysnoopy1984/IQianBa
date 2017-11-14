@@ -239,7 +239,6 @@
     <Compile Include="BLL\SMS.cs" />
     <Compile Include="Common\HttpHelper.cs" />
     <Compile Include="Common\IQBLog.cs" />
-    <Compile Include="Common\IQBUrlHelper.cs" />
     <Compile Include="Controllers\API\HJBController.cs" />
     <Compile Include="Controllers\API\InitController.cs" />
     <Compile Include="Controllers\API\SMSController.cs" />
