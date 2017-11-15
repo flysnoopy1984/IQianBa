@@ -55,7 +55,7 @@ namespace IQBPay.Controllers.ExternalAPI
                                     qrUser = db.UpdateQRUser(qr, updateUser);
                                     if(qrUser == null)
                                     {
-                                        return "授权码无法给用户授权,请联系平台！";
+                                        return "授权码失效，无法给用户授权,请联系平台！";
                                     }
                                     qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
                                     ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
@@ -83,6 +83,7 @@ namespace IQBPay.Controllers.ExternalAPI
                         using (AliPayContent db = new AliPayContent())
                         {
                             updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
+                            //新用户注册
                             if (updateUser == null)
                             {
                                 //ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.NormalUser;
@@ -91,8 +92,9 @@ namespace IQBPay.Controllers.ExternalAPI
                                 //db.DBUserInfo.Add(ui);
                                 //db.SaveChanges();
                                 //isExist = false;
-                                return "新用户暂时无法注册";
+                                return "网站已经关闭，请联系管理员";
                             }
+                            //用户登录
                             else
                             {
                                 updateUser.InitModify();

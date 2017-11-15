@@ -142,9 +142,10 @@ namespace IQBPay.DataBase
                 }
 
                 if (isNew)
+                {
                     db.DBQRUser.Add(qrUser);
-                db.SaveChanges();
-
+                    db.SaveChanges();
+                }
                 qrUser = QRManager.CreateUserUrlById(qrUser);
                 db.Entry(qrUser).State = System.Data.Entity.EntityState.Modified;
 /*
