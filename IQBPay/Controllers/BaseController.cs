@@ -16,7 +16,7 @@ namespace IQBPay.Controllers
 {
     public class BaseController : Controller
     {
-        private static ESysConfig _ESysConfig;
+    
         private static EAliPayApplication _App;
         private static EStoreInfo _SubAccount;
         private IQBLog _Log;

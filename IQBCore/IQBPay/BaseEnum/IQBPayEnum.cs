@@ -9,6 +9,12 @@ namespace IQBCore.IQBPay.BaseEnum
     {
     }
 
+    public enum PayWebStatus
+    {
+        Running,
+        Stop,
+    }
+
     /// <summary>
     /// 表明用户是普通用户还是管理员
     /// </summary>

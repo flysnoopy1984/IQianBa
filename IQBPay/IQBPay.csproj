@@ -569,7 +569,7 @@
     <Content Include="Views\Wap\Index.cshtml" />
     <Content Include="Views\QR\ARList.cshtml" />
     <Content Include="Views\QR\ARInfo.cshtml" />
-    <Content Include="Views\Main\SysConfig.cshtml" />
+    <Content Include="Views\Main\GlobalConfig.cshtml" />
     <Content Include="Views\Main\AppList.cshtml" />
     <Content Include="Views\Main\AppInfo.cshtml" />
     <Content Include="Views\QR\My.cshtml" />

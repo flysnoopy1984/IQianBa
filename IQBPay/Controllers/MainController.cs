@@ -30,6 +30,12 @@ namespace IQBPay.Controllers
             return View();
         }
 
+      //  [IQBPayAuthorize_Admin]
+        public ActionResult GlobalConfig()
+        {
+            return View();
+        }
+
         [IQBPayAuthorize_Admin]
         public ActionResult Init()
         {
@@ -94,7 +100,6 @@ namespace IQBPay.Controllers
         public ActionResult Login()
         {
 
-           
             string action = Request.QueryString["action"];
             if(action == "exit")
             {
