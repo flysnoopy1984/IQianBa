@@ -64,6 +64,7 @@ namespace IQBPay.Controllers
                         db.Entry(qr).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
                     }
+                    //AliPay Application
                     EAliPayApplication delApp = db.DBAliPayApp.FirstOrDefault();
                     if (delApp != null)
                         db.DBAliPayApp.Remove(delApp);
@@ -84,6 +85,8 @@ namespace IQBPay.Controllers
                     app.InitModify();
                     app.InitCreate();
                     db.DBAliPayApp.Add(app);
+
+                    //
 
                     db.SaveChanges();
                 }
