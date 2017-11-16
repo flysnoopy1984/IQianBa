@@ -20,6 +20,13 @@ namespace IQBCore.IQBPay.Models.System
        
         public PayWebStatus WebStatus { get; set; }
 
+        [MaxLength(500)]
+        public string Note { get; set; }
 
+        public void Init()
+        {
+            WebStatus = PayWebStatus.Running;
+            Note = "";
+        }
     }
 }

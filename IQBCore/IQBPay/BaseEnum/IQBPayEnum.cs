@@ -11,8 +11,8 @@ namespace IQBCore.IQBPay.BaseEnum
 
     public enum PayWebStatus
     {
-        Running,
-        Stop,
+        Running = 0,
+        Stop = -1,
     }
 
     /// <summary>

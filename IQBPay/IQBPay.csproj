@@ -466,6 +466,7 @@
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\Web\DoTransfer.js" />
     <Content Include="scripts\Web\DoTransfer_OrderDetail.js" />
+    <Content Include="scripts\Web\GlobalConfig.js" />
     <Content Include="scripts\Web\Info_Win_Order_Transfer.js" />
     <Content Include="scripts\Web\OrderMyList.js" />
     <Content Include="scripts\Web\Report_Store.js" />
@@ -493,6 +494,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AliPayController.cs" />
     <Compile Include="Controllers\ExternalAPI\TransferAPIController.cs" />
+    <Compile Include="Controllers\GlobalController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\QRController.cs" />
@@ -612,6 +614,7 @@
     <Folder Include="Content\QR\AuthStore\" />
     <Folder Include="Content\Style\Frame1\as\js\wizard\build\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Global\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IQBCore\IQBCore.csproj">
