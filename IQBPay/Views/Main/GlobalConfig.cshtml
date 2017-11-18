@@ -13,14 +13,14 @@
 <link href="@Url.Scrpit("~/Content/Style/Web/Info.css")" rel="stylesheet" />
 <script src="@Url.Scrpit("~/scripts/Web/GlobalConfig.js")"></script>
 <div id="InfoArea">
-    <div id="Title" class="alert alert-info BarTitle">
-        <span class="entypo-info-circled"></span>
+    <div id="Title" class="alert alert-info BarTitle" style="line-height:30px;">
         <strong>查看或编辑信息</strong>
+        <button type="button" class="btn btn-success" onclick="Save();" style="float:right">保存</button>
     </div>
     <div id="EditArea">
         <input type="hidden" id="storeId" />
         <div class="form-group">
-            <label class="col-sm-3 control-label">网站状态</label>
+            <label class="col-sm-3 control-label" style="text-align:center">网站状态</label>
             <div class="col-sm-6">
                 <select id="WebStatus">
                     <option value="0">运行</option>
@@ -28,10 +28,18 @@
                 </select>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label" style="text-align:center">关闭信息</label>
+            <div class="col-sm-6">
+                <textarea id="Note" type="text" class="form-control" style="height:100px!important;">
+                    
+                </textarea>
+              
+            </div>
+        </div>
     </div>
-    <div class="ButtonList">
-        <button type="button" class="btn btn-success" onclick="Save();">保存</button>
-    </div>
+  
     <input type="hidden" id="RecId" />
 </div>
 

@@ -14,8 +14,8 @@ namespace IQBCore.IQBPay.Models.System
     public class EGlobalConfig:BaseModel
     {
         [Key]
-        [MaxLength(20)]
-        public string ID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
 
        
         public PayWebStatus WebStatus { get; set; }
