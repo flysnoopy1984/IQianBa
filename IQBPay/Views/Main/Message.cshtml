@@ -1,0 +1,51 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MainMessage</title>
+    <link href="@Url.Scrpit("~/Content/main.css")" rel="stylesheet" />
+    <style type="text/css">
+        body{
+             background-image:url('../../Content/Images/backgrounds/messageBK.png');
+             background-size:cover;
+           
+             background-repeat:no-repeat;
+        }
+        .webcenter{
+            margin:0 auto;
+            width:400px;
+            height:900px;
+            line-height:900px;
+            text-align:center;
+
+        }
+        .ImgDiv{
+            font-size:30px;
+            color:wheat;
+            font-family:'Microsoft YaHei';
+        }
+        .ImgDiv div {
+            height:100px;
+             
+        }
+    </style>
+    <script type="text/javascript">
+
+    </script>
+</head>
+<body>
+    <div class="webcenter">
+        <div class="ImgDiv">
+            <div>抱歉！系统正在维护升级中！</div>
+            <div>@IQBPay.Controllers.BaseController.GlobalConfig.Note</div>
+        </div>
+       
+    </div>
+</body>
+</html>

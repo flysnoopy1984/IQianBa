@@ -241,6 +241,7 @@
     <Compile Include="Common\IQBLog.cs" />
     <Compile Include="Controllers\API\HJBController.cs" />
     <Compile Include="Controllers\API\InitController.cs" />
+    <Compile Include="Controllers\API\OutDataController.cs" />
     <Compile Include="Controllers\API\SMSController.cs" />
     <Compile Include="Controllers\Html5Controller.cs" />
     <Compile Include="Controllers\InfoController.cs" />

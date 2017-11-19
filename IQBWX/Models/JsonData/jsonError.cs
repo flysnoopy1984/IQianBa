@@ -41,13 +41,13 @@ namespace IQBWX.Models.JsonData
             switch (code)
             {
                 case Errorcode.IncorrectVerifyCode:
-                    obj.errorMsg = "验证码错误";
+                    obj.errorMsg = "出错啦！验证码错误";
                     break;
                 case Errorcode.NotMember:
                     obj.errorMsg = "只有会员才能查看！";                     
                     break;
                 case Errorcode.SystemMaintain:
-                    obj.errorMsg = "系统维护中，请一会再来哦";
+                    obj.errorMsg = errorMsg;
                     break;
                 case Errorcode.OpenIdNotFound:
                     obj.errorMsg = "OpenId 未获取，请联系QQ";

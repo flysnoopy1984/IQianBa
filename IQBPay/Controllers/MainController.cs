@@ -14,6 +14,8 @@ using System.Web.Mvc;
 using IQBCore.IQBPay;
 using IQBCore.Common.Constant;
 using IQBCore.IQBPay.BLL;
+using System.Data.Entity;
+using IQBCore.Common.Helper;
 
 namespace IQBPay.Controllers
 {
@@ -30,9 +32,64 @@ namespace IQBPay.Controllers
             return View();
         }
 
-      //  [IQBPayAuthorize_Admin]
+        #region Global Config  
+        //  [IQBPayAuthorize_Admin]
         public ActionResult GlobalConfig()
         {
+            return View();
+        }
+
+        public ActionResult GlobalGetOrCreate()
+        {
+            EGlobalConfig obj = null;
+            using (AliPayContent db = new AliPayContent())
+            {
+                obj = db.DBGlobalConfig.FirstOrDefault();
+                if (obj == null)
+                {
+                    obj = new EGlobalConfig();
+                    obj.Init();
+                    db.DBGlobalConfig.Add(obj);
+                    db.SaveChanges();
+                }
+            }
+            return Json(obj);
+        }
+
+        public ActionResult GlobalSave(EGlobalConfig obj)
+        {
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    DbEntityEntry<EGlobalConfig> entry = db.Entry<EGlobalConfig>(obj);
+                    entry.State = EntityState.Unchanged;
+
+                    entry.Property(t => t.Note).IsModified = true;
+                    entry.Property(t => t.WebStatus).IsModified = true;
+                    db.SaveChanges();
+
+                    BaseController.GlobalConfig = obj;
+
+                    //WX客户端
+                    string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
+                    url += "/API/OutData/RefreshGlobelConfig";
+                    HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, "");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content("Save Error" + ex.Message);
+            }
+            return Content("OK");
+        }
+
+        #endregion
+
+        public ActionResult Message()
+        {
+        
             return View();
         }
 
@@ -107,6 +164,11 @@ namespace IQBPay.Controllers
             if(action == "exit")
             {
                 base.ExitSession();
+            }
+
+            if(BaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
+            {
+               return RedirectToAction("Message", "Main");
             }
           
 

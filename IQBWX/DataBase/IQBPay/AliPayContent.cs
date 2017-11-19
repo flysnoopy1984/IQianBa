@@ -47,6 +47,9 @@ namespace IQBWX.DataBase.IQBPay
         public DbSet<ETransferAmount> DBTransferAmount { get; set; }
 
 
+        public DbSet<EGlobalConfig> DBGlobalConfig { get; set; }
+
+
         #region User  
         public Boolean IsExistUser(string openId)
         {

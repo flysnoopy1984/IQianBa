@@ -5,7 +5,7 @@
 
 function Init()
 {
-    var url = "/Global/GetOrCreate";
+    var url = "/Main/GlobalGetOrCreate";
 
     $.ajax({
         type: 'post',
@@ -30,7 +30,7 @@ function Init()
 
 function Save()
 {
-    var url = "/Global/Save";
+    var url = "/Main/GlobalSave";
 
     var ID = $("#RecId").val();
 

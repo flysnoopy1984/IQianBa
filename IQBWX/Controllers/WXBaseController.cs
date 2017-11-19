@@ -15,6 +15,7 @@ using System.Web.Routing;
 using IQBWX.WebCore;
 using IQBCore.IQBWX.Const;
 using IQBWX.DataBase.IQBPay;
+using IQBCore.IQBPay.Models.System;
 
 namespace IQBWX.Controllers
 {
@@ -23,9 +24,38 @@ namespace IQBWX.Controllers
     {
         protected string CodeUrlFormat = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
         List<string> filterUrl;
+
+        private static EGlobalConfig _GlobelConfig;
+
         public WXBaseController()
         {
             
+        }
+
+        public static EGlobalConfig GlobalConfig
+        {
+            get
+            {
+                if (_GlobelConfig == null)
+                {
+                    using (AliPayContent db = new AliPayContent())
+                    {
+                        _GlobelConfig = db.DBGlobalConfig.FirstOrDefault();
+                        if (_GlobelConfig == null)
+                        {
+                            _GlobelConfig = new EGlobalConfig();
+                            _GlobelConfig.Init();
+                            db.DBGlobalConfig.Add(_GlobelConfig);
+                            db.SaveChanges();
+                        }
+                    }
+                }
+                return _GlobelConfig;
+            }
+            set
+            {
+                _GlobelConfig = value;
+            }
         }
 
         public string CheckPPUserRole(string openId)

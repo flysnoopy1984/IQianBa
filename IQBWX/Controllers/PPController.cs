@@ -57,6 +57,10 @@ namespace IQBWX.Controllers
 
         public ActionResult Pay(string Id)
         {
+            if(WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
+            {
+                return RedirectToAction("ErrorMessage", "Home",new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
+            }
             ViewBag.QRUserId = Id;
             ViewBag.ReceiveNo = StringHelper.GenerateReceiveNo();
             return View();
@@ -128,6 +132,10 @@ namespace IQBWX.Controllers
 
         public ActionResult ReceiveOrder()
         {
+            if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
+            }
             return View();
         }
 
@@ -411,6 +419,11 @@ namespace IQBWX.Controllers
             string msg = this.CheckPPUserRole(openId);
             if (msg != "OK")
                 return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
+
+            if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
+            }
 
             RDoTransfer result = new RDoTransfer();
 

@@ -19,6 +19,7 @@ namespace IQBPay.Controllers
     
         private static EAliPayApplication _App;
         private static EStoreInfo _SubAccount;
+        private static EGlobalConfig _GlobelConfig;
         private IQBLog _Log;
 
         public IQBLog Log
@@ -62,7 +63,32 @@ namespace IQBPay.Controllers
             }
         }
 
-        
+        public static EGlobalConfig GlobalConfig
+        {
+            get
+            {
+                if (_GlobelConfig == null)
+                {
+                    using (AliPayContent db = new AliPayContent())
+                    {
+                        _GlobelConfig = db.DBGlobalConfig.FirstOrDefault();
+                        if (_GlobelConfig == null)
+                        {
+                            _GlobelConfig = new EGlobalConfig();
+                            _GlobelConfig.Init();
+                            db.DBGlobalConfig.Add(_GlobelConfig);
+                            db.SaveChanges();
+                        }
+                    }
+                }
+                return _GlobelConfig;
+            }
+            set
+            {
+                _GlobelConfig = value;
+            }
+        }
+
 
         public static EAliPayApplication App
         {

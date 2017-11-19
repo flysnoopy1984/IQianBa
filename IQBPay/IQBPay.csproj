@@ -171,6 +171,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.js" />
+    <Content Include="Content\Images\404_02.png" />
+    <Content Include="Content\Images\backgrounds\bg4.jpg" />
+    <Content Include="Content\Images\800_01.png" />
+    <Content Include="Content\Images\backgrounds\messageBK.png" />
     <Content Include="Content\Style\Web\ULList.css" />
     <Content Include="Content\Style\Web\FixTableList.css" />
     <Content Include="Content\Images\backgrounds\1.jpg" />
@@ -494,7 +498,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AliPayController.cs" />
     <Compile Include="Controllers\ExternalAPI\TransferAPIController.cs" />
-    <Compile Include="Controllers\GlobalController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\QRController.cs" />
@@ -598,6 +601,7 @@
     <Content Include="Views\Transfer\MyList.cshtml" />
     <Content Include="Views\Store\StoreTransSum.cshtml" />
     <Content Include="Views\Wap\MyReceiveQR.cshtml" />
+    <Content Include="Views\Main\Message.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
