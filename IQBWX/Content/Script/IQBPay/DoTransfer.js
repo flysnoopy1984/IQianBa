@@ -9,7 +9,7 @@
         alert("没有可转金额");
 
      // var url = "http://localhost:24068/API/TransferAPI/TransferToAgent";
-    var url = "http://ap.iqianba.cn/API/TransferAPI/TransferToAgent";
+    var url = payUrl+"/API/TransferAPI/TransferToAgent";
     $.ajax({
         type: 'post',
         data: "OpenId=" + openId + "&AliPayAccount=" + account + "&OrderAmount=" + orderAmt + "&CommissionAmount=" + CommAmt,

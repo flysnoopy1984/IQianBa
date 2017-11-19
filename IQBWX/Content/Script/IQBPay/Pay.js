@@ -168,5 +168,5 @@ function PayToAli() {
     }
     $("#btnPay").attr("disabled", true);
     
-    window.location = "http://ap.iqianba.cn/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&ReceiveNo=" + ReceiveNo;
+    window.location = payUrl+"/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&ReceiveNo=" + ReceiveNo;
 }

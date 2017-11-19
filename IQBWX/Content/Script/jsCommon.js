@@ -1,4 +1,7 @@
-﻿function StringFormat() {
+﻿var wxUrl = "http://wx.yujiept.cn";
+var payUrl = "http://pp.yujiept.cn";
+
+function StringFormat() {
     if (arguments.length == 0)
         return null;
     var str = arguments[0];
