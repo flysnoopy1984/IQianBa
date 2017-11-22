@@ -57,7 +57,8 @@ namespace IQBWX.Controllers
             try
             {
                 string echostr = Request.QueryString["echostr"];
-               
+                log.log("Message - echostr:" + echostr);
+
                 if (string.IsNullOrEmpty(echostr))
                 {
                    

@@ -157,6 +157,7 @@
     <Compile Include="Model\BasePageModel.cs" />
     <Compile Include="Model\UserSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WxSDK\IQBConfig - 复制.cs" />
     <Compile Include="WxSDK\Config.cs" />
     <Compile Include="WxSDK\Data.cs" />
     <Compile Include="WxSDK\Exception.cs" />

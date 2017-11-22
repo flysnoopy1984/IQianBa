@@ -166,7 +166,7 @@ namespace IQBCore.IQBPay.BLL
             /*
             IAlipayTradeService serviceClient = F2FBiz.CreateClientInstance(AliPayConfig.serverUrl, AliPayConfig.appId, AliPayConfig.merchant_private_key, AliPayConfig.version,
                            AliPayConfig.sign_type, AliPayConfig.alipay_public_key, AliPayConfig.charset);
-                           */
+          */
             IAlipayTradeService serviceClient = F2FBiz.CreateClientInstance(app.ServerUrl, app.AppId, app.Merchant_Private_Key, app.Version,
                                        app.SignType, app.Merchant_Public_key, app.Charset);
 

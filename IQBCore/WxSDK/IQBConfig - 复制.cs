@@ -7,7 +7,7 @@ namespace WxPayAPI
     /**
     * 	配置账号信息
     */
-    public class WxPayConfig
+    public class IQBWxPayConfig
     {
         //=======【基本信息设置】=====================================
         /* 微信公众号信息配置
@@ -16,11 +16,11 @@ namespace WxPayAPI
         * KEY：商户支付密钥，参考开户邮件设置（必须配置）
         * APPSECRET：公众帐号secert（仅JSAPI支付的时候需要配置）
         */
-        public const string APPID = "wxcc6a60fdad3ef777";
+        public const string APPID = "wx041fa0b86badb080";
         public const string MCHID = "1440325302";
         public const string KEY = "y58ohva8wsmw6dtshg5ccvkp9khan39g";
-        public const string APPSECRET = "cdaa5cd17593259b442f6036fbc4733d";
-        public const string WXID = "yujiepingtai";
+        public const string APPSECRET = "6e0c4d24a13dc3faaf6460963a18a8d8";
+        public const string WXID = "yishouzixunfuwu";
         public const string ServerIp = "106.14.149.112";
 
         //=======【证书路径设置】===================================== 

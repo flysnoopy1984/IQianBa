@@ -1,5 +1,5 @@
-﻿var wxUrl = "http://wx.yujiept.cn";
-var payUrl = "http://pp.yujiept.cn";
+﻿var wxUrl = "http://wx.iqianba.cn";
+var payUrl = "http://pp.iqianba.cn";
 
 function StringFormat() {
     if (arguments.length == 0)
