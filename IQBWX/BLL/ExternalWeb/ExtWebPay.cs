@@ -5,8 +5,9 @@ using System.Web;
 using IQBWX.Models.Results;
 using IQBWX.Models.User;
 using IQBWX.Models.WX;
-using IQBWX.Common;
+
 using System.Configuration;
+using IQBCore.Common.Helper;
 
 namespace IQBWX.BLL.ExternalWeb
 {
@@ -30,7 +31,7 @@ namespace IQBWX.BLL.ExternalWeb
                 if (name == null) name = "wx" + ui.UserId.ToString().PadLeft(7, '0');
                
                 data = string.Format(data, name, ui.openid, ui.headimgurl, QRAuthId);
-                log.log("regeisterWebMember Data: " + data);
+              //  log.log("regeisterWebMember Data: " + data);
                 string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
                 return res;
             }
@@ -62,7 +63,7 @@ namespace IQBWX.BLL.ExternalWeb
             }
             else
             {
-                result.WXMessage += "您第一次访问爱钱吧-支付平台，但系统未注册成功，请发联系公众平台，非常抱歉！/n";
+                //result.WXMessage += "系统已关闭，请联系公众平台！/n";
                 result.WXMessage += res;
                 result.Status = -1;
                 return result;

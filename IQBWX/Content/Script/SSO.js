@@ -11,8 +11,8 @@ $(document).ready(function () {
     var appId = getUrlParam("logintype");
     if (appId == null)
     {
-        //1 指向book.iqianba.cn
-        appId = "1";
+        //指向平台
+        appId = "pp";
     }
   
     $("#imgQR").attr('src', '/Content/images/qrloading.gif');
@@ -41,7 +41,19 @@ function waitingScan(ssoToken,appId)
           
             if (result != "")
             {
-                
+                if (result.ErrorMsg == "timeout")
+                {
+                    alert("超时，请重新扫描");
+                    window.location.reload();
+                    return;
+
+                }
+                if (result.ErrorMsg == "close")
+                {
+                    alert("系统关闭");
+                    window.location.href = result.ReturnUrl;
+                    return;
+                }
                 window.location.href = result.ReturnUrl + "?openId=" + result.OpenId;
                 return;
                

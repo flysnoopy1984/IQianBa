@@ -28,5 +28,7 @@ namespace IQBCore.IQBPay.Models.System
             WebStatus = PayWebStatus.Running;
             Note = "";
         }
+
+        public Boolean AllowRegister { get; set; }
     }
 }

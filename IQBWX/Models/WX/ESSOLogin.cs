@@ -24,6 +24,8 @@ namespace IQBWX.Models.WX
 
         public LoginStatus LoginStatus { get; set; }
 
+       
+
         public DateTime CreatedDate { get; set; }
 
         [MaxLength(20)]

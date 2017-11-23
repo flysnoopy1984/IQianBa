@@ -80,28 +80,42 @@ namespace IQBPay.Controllers.ExternalAPI
                     }
                     else
                     {
-                        using (AliPayContent db = new AliPayContent())
+                        try
                         {
-                            updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
-                            //新用户注册
-                            if (updateUser == null)
+                            using (AliPayContent db = new AliPayContent())
                             {
-                                //ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.NormalUser;
-                                //ui.UserStatus = IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister;
+                                updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
+                                //新用户注册
+                                if (updateUser == null)
+                                {
+                                    if (BaseController.GlobalConfig.AllowRegister)
+                                    {
 
-                                //db.DBUserInfo.Add(ui);
-                                //db.SaveChanges();
-                                //isExist = false;
-                                return "网站已经关闭，请联系管理员";
-                            }
-                            //用户登录
-                            else
-                            {
-                                updateUser.InitModify();
-                                db.SaveChanges();
-                                
+                                        ui.InitRegiser();
+
+                                        db.DBUserInfo.Add(ui);
+                                        db.SaveChanges();
+                                        isExist = false;
+                                    }
+                                    else
+                                        return "网站已经关闭，请联系管理员";
+                                }
+                                //用户登录
+                                else
+                                {
+                                    updateUser.InitModify();
+                                    db.SaveChanges();
+
+                                }
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            IQBLog _log = new IQBLog();
+                            _log.log("Register Error " + ex.Message);
+                            return "登陆错误,请联系平台！";
+                        }
+                       
                            
                     }
 /********************************************************************************************************************************************/

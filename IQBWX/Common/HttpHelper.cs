@@ -89,7 +89,7 @@ namespace IQBWX.Common
                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;
                 //直到request.GetResponse()程序才开始向目标网页发送Post请求
                 Stream responseStream = response.GetResponseStream();
-                StreamReader sr = new StreamReader(responseStream, Encoding.Default);
+                StreamReader sr = new StreamReader(responseStream, Encoding.UTF8);
                 //返回结果网页（html）代码
                 string content = sr.ReadToEnd();
                 return content;

@@ -66,7 +66,7 @@ namespace IQBCore.Common.Helper
             return JsonConvert.DeserializeObject<T>(result);
         }
 
-        public static string RequestUrlSendMsg(string url, HttpMethod method, string JSONData, String ContentType = "text/html",string charset="utf-8")
+        public static string RequestUrlSendMsg(string url, HttpMethod method, string JSONData, String ContentType = "text/html",string charset= "UTF-8")
         {
             byte[] bytes = Encoding.UTF8.GetBytes(JSONData);
             // 设置参数
@@ -76,9 +76,10 @@ namespace IQBCore.Common.Helper
             request.AllowAutoRedirect = true;
             request.Method = method.ToString();
             request.ContentType = ContentType;
-            
+
+           // request.Headers.Add("Content-Type", ContentType);
             request.Headers.Add("charset", charset);
-            request.Headers.Add("CharacterEncoding", charset);
+            //request.Headers.Add("CharacterEncoding", charset);
             Stream reqstream = request.GetRequestStream();
             reqstream.Write(bytes, 0, bytes.Length);
             //声明一个HttpWebRequest请求  

@@ -607,7 +607,7 @@ namespace IQBPay.Controllers
         public ActionResult PP()
         {
             IQBLog Log = new IQBLog();
-            Log.log("PP to https://qr.alipay.com/stx04233mlnkwff4e7sble7");
+        
             return Redirect("https://qr.alipay.com/stx04233mlnkwff4e7sble7");
         }
 

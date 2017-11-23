@@ -266,7 +266,7 @@ namespace IQBWX.Controllers
                 
                 using (AliPayContent db = new AliPayContent())
                 {
-                    var list = db.DBOrderInfo.Where(o => o.AgentOpenId == OpenId).Select(o=>new ROrderInfo {
+                    var list = db.DBOrder.Where(o => o.AgentOpenId == OpenId).Select(o=>new ROrderInfo {
                         ID = o.ID,
                         OrderNo = o.OrderNo,
                         TransDateStr = o.TransDateStr,
@@ -430,7 +430,7 @@ namespace IQBWX.Controllers
             using (AliPayContent db = new AliPayContent())
             {
 
-                var order = db.DBOrderInfo.Where(s => s.OrderStatus == OrderStatus.Paid
+                var order = db.DBOrder.Where(s => s.OrderStatus == OrderStatus.Paid
                                              && s.OrderType == OrderType.Normal
                                              && s.AgentOpenId == openId);
 
@@ -464,7 +464,7 @@ namespace IQBWX.Controllers
 
             using (AliPayContent db = new AliPayContent())
             {
-                list = db.DBOrderInfo.Where(o => o.ReceiveNo == receiveNo).Select(a => new ROrder_Receive
+                list = db.DBOrder.Where(o => o.ReceiveNo == receiveNo).Select(a => new ROrder_Receive
                 {
                     OrderStatus = a.OrderStatus,
                     Amount = a.TotalAmount,
@@ -511,7 +511,7 @@ namespace IQBWX.Controllers
             IQBCore.IQBPay.Models.Order.EOrderInfo _ppOrder;
             using (AliPayContent db = new AliPayContent())
             {
-                _ppOrder = db.DBOrderInfo.FirstOrDefault();
+                _ppOrder = db.DBOrder.FirstOrDefault();
             }
             PPOrderPayNT notice = new PPOrderPayNT(accessToken, "orKUAw16WK0BmflDLiBYsR-Kh5bE", _ppOrder);
             return Content(notice.Push());

@@ -17,21 +17,24 @@ namespace IQBWX.DataBase.IQBPay
     //[DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class AliPayContent : DbContext
     {
+        public AliPayContent() : base("PPConnection")
+        {
+
+        }
+
         public AliPayContent(bool isInit = false) : base("PPConnection")
         {
             if (isInit)
                 Database.SetInitializer<AliPayContent>(new DropCreateDatabaseAlways<AliPayContent>());
             else
                 Database.SetInitializer<AliPayContent>(null);
-
-            //    Database.SetInitializer<AliPayContent>(new DropCreateDatabaseIfModelChanges<AliPayContent>());
-            // Database.SetInitializer<AliPayContent>(new CreateDatabaseIfNotExists<AliPayContent>());
         }
 
         public DbSet<EAgentCommission> DBAgentCommission { get; set; }
-        public DbSet<ESMSLog> DBSMSLog { get; set; }
-        public DbSet<ESMSVerification> DBSMSBuyerOrder { get; set; }
 
+        public DbSet<ESMSLog> DBSMSLog { get; set; }
+
+        public DbSet<ESMSVerification> DBSMSBuyerOrder { get; set; }
         public DbSet<EUserInfo> DBUserInfo { get; set; }
 
         public DbSet<EStoreInfo> DBStoreInfo { get; set; }
@@ -41,14 +44,11 @@ namespace IQBWX.DataBase.IQBPay
         public DbSet<EQRUser> DBQRUser { get; set; }
         public DbSet<EAliPayApplication> DBAliPayApp { get; set; }
 
-        public DbSet<EOrderInfo> DBOrderInfo { get; set; }
-
+        public DbSet<EOrderInfo> DBOrder { get; set; }
 
         public DbSet<ETransferAmount> DBTransferAmount { get; set; }
 
-
         public DbSet<EGlobalConfig> DBGlobalConfig { get; set; }
-
 
         #region User  
         public Boolean IsExistUser(string openId)
@@ -100,8 +100,8 @@ namespace IQBWX.DataBase.IQBPay
         }
         #endregion
 
-        #region APP
+      
 
-        #endregion
+     
     }
 }

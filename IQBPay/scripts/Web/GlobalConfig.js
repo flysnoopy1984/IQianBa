@@ -16,6 +16,8 @@ function Init()
             $("#WebStatus").find("option:selected").attr("selected", false);
            
             $("#WebStatus").find("option[value='" + data.WebStatus + "']").attr("selected", true);
+
+            $("#AllowRegister").find("option[value='" + data.AllowRegister + "']").attr("selected", true);
           
             $("#RecId").val(data.ID);
           
@@ -35,12 +37,15 @@ function Save()
     var ID = $("#RecId").val();
 
     var WebStatus = $("#WebStatus").val();
+
+    var AllowRegister = $("#AllowRegister").val();
+
     var Note = $("#Note").val();
    
     $.ajax({
         type: 'post',
         url: url,
-        data: "ID=" + ID+"&WebStatus="+WebStatus+"&Note="+Note,
+        data: "ID=" + ID + "&WebStatus=" + WebStatus + "&Note=" + Note + "&AllowRegister=" + AllowRegister,
         success: function (data) {
 
             if(data == "OK")

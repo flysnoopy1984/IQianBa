@@ -4,6 +4,7 @@ using IQBWX.Models.Product;
 using IQBWX.Models.Results;
 using IQBWX.Models.Transcation;
 using IQBWX.Models.User;
+using IQBWX.Models.WX;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -34,7 +35,9 @@ namespace IQBWX.DataBase
 
         public DbSet<EOrderLine> OrderInfo { get; set; }
 
-       
+        public DbSet<ESSOLogin> SSOLoginDB { get; set; }
+
+
     }
 
 

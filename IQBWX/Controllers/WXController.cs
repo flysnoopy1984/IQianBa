@@ -208,19 +208,29 @@ namespace IQBWX.Controllers
             ESSOLogin sso = null;
             bool IsLogin = false;
             RSSOResult result =new RSSOResult();
-  
+            result.ErrorMsg = "";
+
             while (!IsLogin)
             {
+                
                 using (WXContent db = new WXContent())
                 {
+                  
+
                     sso = db.FindSSOForScaned(ssoToken);
                     if(sso!=null)
                     {
-                       
+                        if (!WXBaseController.GlobalConfig.AllowRegister)
+                        {
+                            result.ErrorMsg = "close";
+                            result.ReturnUrl = ConfigurationManager.AppSettings["Site_IQBPay"];
+                            return result;
+                        }
+
                         sso.IsValidate = false;
                         sso.LoginStatus = LoginStatus.Login;
                         db.SaveChanges();
-                       
+                        
                         result.AppId = appId;
                         result.OpenId = sso.OpenId;
                         result.ssoToken = ssoToken;
@@ -239,12 +249,10 @@ namespace IQBWX.Controllers
                 ts = endTime - beginTime;
                 if(ts.Seconds>120)
                 {
-                    // return "timeout";
                     result.ErrorMsg = "timeout";
                 }
             }
             if (IsLogin)
-
                 return result;
             return null;
 

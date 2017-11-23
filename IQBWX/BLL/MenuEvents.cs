@@ -222,9 +222,10 @@ namespace IQBWX.BLL
                     BaseExternalWeb exWeb = BaseExternalWeb.GetExternalWeb(sso.AppId);
                  
                     RExternalWebResult result = exWeb.WXInfo(ui,msg);
-                    log.log("WXScanLogin result.Status:" + result.Status);
+
+                    //log.log("WXScanLogin result.Status:" + result.Status);
                     //用openId注册web,如果已经注册,将不注册。
-                    if (result.Status == -1) return true;
+                   
 
                     if (sso != null)
                     {
@@ -234,6 +235,12 @@ namespace IQBWX.BLL
                         sso.IsValidate = true;
 
                         db.SaveChanges();
+
+                        //if (result.Status == -1)
+                        //{
+                        //    this.ResponseXml = msg.toText(result.WXMessage);
+                        //    return true;
+                        //}
 
                         this.ResponseXml += msg.toText(result.WXMessage);
                         return true;

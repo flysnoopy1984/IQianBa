@@ -67,6 +67,8 @@ namespace IQBPay.Controllers
 
                     entry.Property(t => t.Note).IsModified = true;
                     entry.Property(t => t.WebStatus).IsModified = true;
+                    entry.Property(t => t.AllowRegister).IsModified = true;
+
                     db.SaveChanges();
 
                     BaseController.GlobalConfig = obj;

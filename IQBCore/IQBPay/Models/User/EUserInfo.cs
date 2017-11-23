@@ -60,6 +60,14 @@ namespace IQBCore.IQBPay.Models.User
         /// </summary>
         public Boolean IsAutoTransfer { get; set; }
 
+        public void InitRegiser()
+        {
+            this.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.NormalUser;
+            this.UserStatus = IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister;
+            this.RegisterDate = DateTime.Now;
+            this.LastLoginDate = DateTime.Now;
+        }
+
        
 
 
