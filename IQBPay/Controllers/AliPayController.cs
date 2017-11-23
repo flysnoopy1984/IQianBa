@@ -381,6 +381,7 @@ namespace IQBPay.Controllers
                         }
                         else
                         {
+                            Log.log("response Code"+ response.Code);
                             return Content("授权失败："+response.Msg);
                         }
 

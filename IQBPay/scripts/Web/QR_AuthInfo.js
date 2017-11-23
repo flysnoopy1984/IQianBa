@@ -38,7 +38,7 @@ function Init(Id) {
     var url = "/QR/Get";
     $.ajax({
         type: 'post',
-        data: "Id=" + Id,
+        data: "Id=" + Id+"&qrType=2",
         url: url,
         success: function (data) {
 

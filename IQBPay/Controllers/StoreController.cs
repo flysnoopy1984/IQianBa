@@ -144,7 +144,7 @@ namespace IQBPay.Controllers
             IQueryable<EStoreInfo> list = null ;
             try
             {
-                string openId = Convert.ToString(Session["OpenId"]);
+                string openId = this.GetUserSession().OpenId;
 
                 using (AliPayContent db = new AliPayContent())
                 {

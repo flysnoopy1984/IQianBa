@@ -1,6 +1,6 @@
-﻿
+﻿var Channel
 $(document).ready(function () {
-    var Channel = GetUrlParam("Channel");
+    Channel = GetUrlParam("Channel");
     if (Channel == null || Channel == undefined)
         Channel = -1;
     else
@@ -10,10 +10,10 @@ $(document).ready(function () {
         else if(Channel == 1)
             $("#ListTitleName").text("加盟商户列表");
     }
-        Query(Channel);
+        Query();
     });
 
-function Query(Channel) {
+function Query() {
 
     var url = "/Store/Query";
     $.ajax({
