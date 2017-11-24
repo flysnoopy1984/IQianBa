@@ -472,12 +472,12 @@ namespace IQBPay.Controllers
         /// <param name="Id">QRUserId</param>
         /// <param name="Amount"></param>
         /// <returns></returns>   
-        public ActionResult F2FPay(string qrUserId, string Amount,string ReceiveNo)
+        public ActionResult F2FPay(string qrUserId, string Amount)
         {
             string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?code=2001&ErrorMsg=";
             try
             {
-                
+               // base.Log.log(string.Format("start F2FPay:qrUserId {0} Amount{1} ReceiveNo:{2}",qrUserId,Amount,));
                 AliPayManager payMag = new AliPayManager();
                 EQRUser qrUser = null;
                 EUserInfo ui = null;
@@ -560,12 +560,12 @@ namespace IQBPay.Controllers
                     ResultEnum status;
                    
                     string Res = payManager.PayF2F(BaseController.App, ui, store, Convert.ToSingle(Amount),out status);
-
+                    base.Log.log("支付PayF2F：" + Res);
                     if (status == ResultEnum.SUCCESS)
                     {
 
                         //创建初始化订单
-                        EOrderInfo order = payManager.InitOrder(qrUser, store,Convert.ToSingle(Amount), ReceiveNo);
+                        EOrderInfo order = payManager.InitOrder(qrUser, store,Convert.ToSingle(Amount));
                         db.DBOrder.Add(order);
                        
                         //是否有上级代理
@@ -589,7 +589,10 @@ namespace IQBPay.Controllers
             }
             catch(Exception ex)
             {
-                ErrorUrl += ex.Message;
+                
+                base.Log.log("支付失败：" + ex.InnerException.Message);
+                base.Log.log("支付失败：" + ex.Message);
+                ErrorUrl += "支付失败："+ex.Message;
                 return Redirect(ErrorUrl);
             }
 

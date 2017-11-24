@@ -140,6 +140,7 @@
     <Compile Include="IQBPay\Models\Store\EStoreInfo.cs" />
     <Compile Include="IQBPay\Models\System\EAliPayApplication.cs" />
     <Compile Include="IQBPay\Models\System\EGlobalConfig.cs" />
+    <Compile Include="IQBPay\Models\User\EBuyerInfo.cs" />
     <Compile Include="IQBPay\Models\User\EUserInfo.cs" />
     <Compile Include="IQBWX\BaseEnum\IQBWxEnum.cs" />
     <Compile Include="IQBWX\Const\IQBWXConst.cs" />

@@ -14,13 +14,13 @@ function InitControls()
     $("#BnGetVerifyCode").css("background", "#47a447");
 
     //短信验证区域
-    $("#VerifyArea").show();
+    $("#VerifyArea").hide();
     $("#VerifyCode").val("");
 
     countdown = 0;
     SMSId = "";
-    //$("#BnVerifyConfirm").show();
-    //////支付区域
+    //$("#VerifyArea").hide();
+    //支付区域
     //$("#PayContent").show();
 }
 
@@ -28,6 +28,40 @@ $(document).ready(function () {
   
     InitControls();
 });
+
+function ConfirmPhone() {
+
+    var phone = $("#userPhone").val();
+
+    var url = "/pp/CheckPhoneIsExist";
+    $.ajax({
+        type: "post",
+        data: "phone=" + phone,
+        url: url,
+        success: function (result)
+        {
+            if (result.HasPhone) {
+                $("#PayContent").show();
+                $("#userPhone").attr("disabled", true);
+                $("#bnConfirmPhone").hide();
+
+                $("#VerifyArea").hide();
+            }
+            else {
+                $("#VerifyArea").show();
+                $("#bnConfirmPhone").hide();
+            }
+            
+        },
+        error: function (xhr, type) {
+
+            alert("系统错误，请联系平台！");
+            return;
+
+        }
+    });
+}
+
 
 function VerifyCodeConfirm()
 {
@@ -48,11 +82,14 @@ function VerifyCodeConfirm()
                 $("#OrderNo").val(result.OrderNo);
                 $("#PayContent").show();
                 $("#VerifyArea").hide();
+                $("#userPhone").attr("disabled", true);
+
                 return;
             }
             if (result.SMSVerifyStatus == 5)
             {
                 alert("验证码已失效，请重新验证");
+                $("#bnConfirmPhone").hide();
                 InitControls();
                 return;
             }
@@ -169,9 +206,16 @@ function PayToAli() {
     $("#btnPay").attr("disabled", true);
     if (qrUserId == null || qrUserId == "")
     {
-        alert("未获取代理商家ID，系统错误，请联系商家");
+        alert("未获取代理商家ID，请重新扫描后再尝试或联系代理商家");
         return;
     }
+    var phone = $("#userPhone").val();
+    if (phone == null || phone == "") {
+        alert("手机号未获取，请重新扫描验证！");
+        return;
+    }
+
+    var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&Phone=" + phone;
     
-    window.location = payUrl+"/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&ReceiveNo=" + ReceiveNo;
+    window.location = url;
 }

@@ -32,11 +32,13 @@
   
     <div class="mgz cen" id="PayArea">
         <div class="yuec mg2 xi35" style="margin-top:20px;">服务界面</div>
+        <div class="TitleInfo mg2 xi30" style="color:#980C16">为避免人才两空，请先验证手机。</br>平台将在您支付成功后，发送确认收款码至您手机，请注意短信消息。</div>
+        <div>
+            <span class="FieldLabel">手机号码</span>
+            <input id="userPhone" class="VerifyInputPhone" type="text">
+            <button type="button" class="mgz btn btn-success verifyButton" id="bnConfirmPhone" onclick="ConfirmPhone()">确定</button> 
+        </div>
         <div id="VerifyArea">
-            <div class="TitleInfo mg2 xi20" style="color:#980C16">最近发现有商户在用户支付后不发货的情况。</br>为了保证您正常收到相应的商品，请先提交您的手机号码给平台，有任何问题可以根据短信提示，联系平台。</div>
-            <div>
-                <span class="FieldLabel">手机号码</span><input id="userPhone" class="VerifyInputPhone" type="text">
-            </div>
             <div style="margin-top:20px;">
                 <span  class="FieldLabel">验证码</span>
                 <input id="VerifyCode" class="VerifyInputCode" type="text">
@@ -51,8 +53,8 @@
             <div class="yuex mg2 xi20" style="color:cornflowerblue">请通过支付宝扫码支付</div>
             <div class="form-group">
                 <label class="FieldLabel">输入金额</label>
-                <div class="AmtEdit mgz">
-                    <input id="TotalAmout" class="EditInput" type="text" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")'>
+                <div class="mgz">
+                    <input id="TotalAmout" class="PayEditInput" type="text" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")'>
                 </div>
             </div>
             <div id="buttonArea">

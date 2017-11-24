@@ -50,6 +50,8 @@ namespace IQBWX.DataBase.IQBPay
 
         public DbSet<EGlobalConfig> DBGlobalConfig { get; set; }
 
+        public DbSet<EBuyerInfo> DBBuyerInfo { get; set; }
+
         #region User  
         public Boolean IsExistUser(string openId)
         {

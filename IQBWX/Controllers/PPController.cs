@@ -5,6 +5,7 @@ using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.Store;
+using IQBCore.IQBPay.Models.User;
 using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Models.WX.Template;
 using IQBWX.BLL.ExternalWeb;
@@ -518,7 +519,29 @@ namespace IQBWX.Controllers
 
         }
 
-       
+        #region Pay
+        [HttpPost]
+        public ActionResult CheckPhoneIsExist(string phone)
+        {
+            EBuyerInfo buyer = null;
+            using (AliPayContent db = new AliPayContent())
+            {
+                buyer = db.DBBuyerInfo.Where(b => b.PhoneNumber == phone).FirstOrDefault();
+                if(buyer == null)
+                {
+                    buyer = new EBuyerInfo();
+                    buyer.HasPhone = false;
+                }
+                else
+                {
+                    buyer.HasPhone = true;
+                }
+            }
+            if (buyer == null)
+                buyer = new EBuyerInfo();
+            return Json(buyer);
+        }
+        #endregion
 
     }
 }

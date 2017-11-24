@@ -63,7 +63,7 @@ namespace IQBPay.Controllers
                         ";
 
             sql = string.Format(sql, Id);
-            base.Log.log(sql);
+           // base.Log.log(sql);
 
             using (AliPayContent db = new AliPayContent())
             {
