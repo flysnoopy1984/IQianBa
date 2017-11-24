@@ -222,13 +222,17 @@ namespace IQBPay.Controllers
                         {
                             //分账
                             EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
-                            AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount);
-                            if (res.Code == "10000")
-                                order.LogRemark += string.Format("[SubAccount] Code:{0};msg:{1}; ", res.Code, res.Msg);
-                            else
+                            EStoreInfo subStore = BaseController.SubAccount;
+                            if (store.ID != subStore.ID)
                             {
-                                order.LogRemark += string.Format("[SubAccount] SubCode:{0};Submsg:{1}; ", res.SubCode, res.SubMsg);
-                                order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                                AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, subStore);
+                                if (res.Code == "10000")
+                                    order.LogRemark += string.Format("[SubAccount] Code:{0};msg:{1}; ", res.Code, res.Msg);
+                                else
+                                {
+                                    order.LogRemark += string.Format("[SubAccount] SubCode:{0};Submsg:{1}; ", res.SubCode, res.SubMsg);
+                                    order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                                }
                             }
                         }
                         //自动提款
@@ -608,8 +612,8 @@ namespace IQBPay.Controllers
         public ActionResult PP()
         {
             IQBLog Log = new IQBLog();
-        
-            return Redirect("https://qr.alipay.com/stx04233mlnkwff4e7sble7");
+            return View();
+          //  return Redirect("https://qr.alipay.com/stx04233mlnkwff4e7sble7");
         }
 
         public ActionResult TestUrl()

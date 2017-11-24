@@ -204,5 +204,42 @@ namespace IQBCore.IQBPay.BLL
             }
             return result;
         }
+
+        public static List<Com.Alipay.Model.GoodsInfo> GetGoodsList(string TotalAmt)
+        {
+
+            List<Com.Alipay.Model.GoodsInfo> list = new List<Com.Alipay.Model.GoodsInfo>();
+            Random r = new Random();
+            int n = r.Next(1, 5);
+            Com.Alipay.Model.GoodsInfo good = new Com.Alipay.Model.GoodsInfo();
+            switch (n)
+            {
+                case 1:
+                    good.goods_id = "冰种天然-碧玉尊翡翠手镯";
+                    good.goods_name = "冰种天然-碧玉尊翡翠手镯";
+                    break;
+                case 2:
+                    good.goods_id = "巴西天然钛晶HD-141";
+                    good.goods_name = "巴西天然钛晶HD-141";
+                    break;
+                case 3:
+                    good.goods_id = "野兽派 小算盘18K金钻石项链";
+                    good.goods_name = "野兽派 小算盘18K金钻石项链";
+                    break;
+                case 4:
+                    good.goods_id = "钻石裸钻GIA30-50-70";
+                    good.goods_name = "钻石裸钻GIA30-50-70";
+                    break;
+                case 5:
+                    good.goods_id = "飘花冰糯种玉镯子";
+                    good.goods_name = "飘花冰糯种玉镯子";
+                    break;
+            }
+            good.price = TotalAmt;
+            good.quantity = "1";
+
+            list.Add(good);
+            return list;
+        }
     }
 }

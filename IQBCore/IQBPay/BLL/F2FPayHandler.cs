@@ -50,25 +50,25 @@ namespace IQBCore.IQBPay.BLL
             //不参与优惠计算的金额
             //builder.undiscountable_amount = "";
             //订单名称
-            builder.subject = "爱钱吧#"+ AgentUi.Name+"收银台";
+            builder.subject = "#"+app.AppName+"-"+ AgentUi.Name+"收银台";
             //自定义超时时间
           //  builder.timeout_express = "5m";
             //订单描述
-            builder.body = "爱钱吧商品";
+            builder.body = "#" + app.AppName + "-商品";
             //门店编号，很重要的参数，可以用作之后的营销
-           // builder.store_id = "test store id";
+            // builder.store_id = "test store id";
             //操作员编号，很重要的参数，可以用作之后的营销
-           // builder.operator_id = "test";
+            // builder.operator_id = "test";
 
             //传入商品信息详情
-            List<GoodsInfo> gList = new List<GoodsInfo>();
-            GoodsInfo goods = new GoodsInfo();
-            goods.goods_id = "爱钱吧商品";
-            goods.goods_name = "爱钱吧商品";
-            
-            goods.price = TotalAmt;
-            goods.quantity = "1";
-            gList.Add(goods);
+            //List<GoodsInfo> gList = new List<GoodsInfo>();
+            //GoodsInfo goods = new GoodsInfo();
+            //goods.goods_id = "爱钱吧商品";
+            //goods.goods_name = "爱钱吧商品";
+            //goods.price = TotalAmt;
+            //goods.quantity = "1";
+            //gList.Add(goods);
+            List<GoodsInfo> gList = AliPayManager.GetGoodsList(TotalAmt);
             builder.goods_detail = gList;
 
             //系统商接入可以填此参数用作返佣
@@ -136,5 +136,7 @@ namespace IQBCore.IQBPay.BLL
             string decodedString = decoder.decode(new QRCodeBitmapImage(myBitmap));
             return decodedString;
         }
+
+
     }
 }
