@@ -123,12 +123,12 @@ namespace IQBWX.Models.WX
         public string toText(string content)
         {
             string xml = @"<xml>
-                                    <ToUserName><![CDATA[{0}]]></ToUserName>
-                                    <FromUserName><![CDATA[{1}]]></FromUserName>
-                                    <CreateTime>{2}</CreateTime>
-                                    <MsgType><![CDATA[{3}]]></MsgType>
-                                    <Content><![CDATA[{4}]]></Content>
-                                    </xml>";
+                                <ToUserName><![CDATA[{0}]]></ToUserName>
+                                <FromUserName><![CDATA[{1}]]></FromUserName>
+                                <CreateTime>{2}</CreateTime>
+                                <MsgType><![CDATA[{3}]]></MsgType>
+                                <Content><![CDATA[{4}]]></Content>
+                            </xml>";
             xml = string.Format(xml, this.FromUserName, this.ToUserName, 12345678, "text", content);
             return xml;
         }

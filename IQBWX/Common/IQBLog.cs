@@ -41,7 +41,11 @@ namespace IQBWX.Common
                     fileStream = fileInfo.Open(FileMode.Append, FileAccess.Write);
                     writer = new StreamWriter(fileStream);
                 }
-                writer.WriteLine(DateTime.Now + ": " + info);
+               
+
+            }
+            catch
+            {
 
             }
             finally

@@ -11,20 +11,27 @@ using System.Transactions;
 using System.Web.Http;
 using IQBCore.Common.Constant;
 using IQBCore.Common.Helper;
+using System.Text;
 
 namespace IQBPay.Controllers.ExternalAPI
 {
     public class UserAPIController : ApiController
     {
-       
+        public HttpResponseMessage FormatReturn(string result)
+        {
+            HttpResponseMessage responseMessage = new HttpResponseMessage { Content = new StringContent(result, Encoding.GetEncoding("UTF-8"), "text/plain") };
+  
+            return responseMessage;
+        }
         [HttpPost]
-        public string Register([FromBody]EUserInfo ui)
+        public HttpResponseMessage  Register([FromBody]EUserInfo ui)
         {
             EUserInfo updateUser = null;
             EQRInfo qr = null;
             EQRUser qrUser = null;
             Boolean isExist=true;
             bool hasParent = false;
+          
             try
             {
              
@@ -45,8 +52,7 @@ namespace IQBPay.Controllers.ExternalAPI
                                     if (updateUser == null)
                                     {
                                         //新建代理用户
-                                        ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
-                                        ui.UserStatus = IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister;
+                                        ui.InitRegiser();
                                         db.DBUserInfo.Add(ui);
                                         isExist = false;
                                         updateUser = ui;
@@ -55,7 +61,7 @@ namespace IQBPay.Controllers.ExternalAPI
                                     qrUser = db.UpdateQRUser(qr, updateUser);
                                     if(qrUser == null)
                                     {
-                                        return "授权码失效，无法给用户授权,请联系平台！";
+                                        return FormatReturn("授权码失效，无法给用户授权,请联系平台！");
                                     }
                                     qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
                                     ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
@@ -71,7 +77,7 @@ namespace IQBPay.Controllers.ExternalAPI
                                 {
                                     IQBLog _log = new IQBLog();
                                     _log.log("Register Error "+ex.Message);
-                                    return "授权出现错误,请联系平台！";
+                                    return FormatReturn("授权出现错误,请联系平台！");
                                 }
 
                             }
@@ -98,7 +104,7 @@ namespace IQBPay.Controllers.ExternalAPI
                                         isExist = false;
                                     }
                                     else
-                                        return "网站已经关闭，请联系管理员";
+                                        return FormatReturn("网站已经关闭，请联系管理员");
                                 }
                                 //用户登录
                                 else
@@ -113,7 +119,7 @@ namespace IQBPay.Controllers.ExternalAPI
                         {
                             IQBLog _log = new IQBLog();
                             _log.log("Register Error " + ex.Message);
-                            return "登陆错误,请联系平台！";
+                            return FormatReturn("登陆错误,请联系平台！");
                         }
                        
                            
@@ -122,22 +128,23 @@ namespace IQBPay.Controllers.ExternalAPI
                   
                 }
                 else
-                    return "参数传入失败！";
+                    return FormatReturn("参数传入失败！");
             }
             catch(Exception ex)
             {
-                return ex.Message;
+                return FormatReturn(ex.Message);
             }
 
             if (!isExist)
             {
-                if (hasParent) return "ParentOK";
-                return "OK";
+                if (hasParent) return FormatReturn("ParentOK");
+                return FormatReturn("OK");
             }
             else
             {
-                if (hasParent) return "ParentEXIST";
-                return "EXIST";
+                if (hasParent) return FormatReturn("ParentEXIST");
+                return FormatReturn("EXIST");
+            
             }
         }
     }

@@ -190,12 +190,15 @@ namespace IQBPay.Controllers
 
            // string url = "http://ap.iqianba.cn/api/userapi/register/";
             string url = "http://localhost:24068/api/userapi/register/";
-            string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=Jacky&openId=o3nwE0qI_cOkirmh_qbGGG-5G6B0&Headimgurl=http://wx.qlogo.cn/mmopen/hzVGicX27IG18yibKNnHfBojH4SpCPGNEvyOUZE8jxOw2ZnYcHzAkm7yHk0oKoCA2zqtyib09sxDzX5GOubMfyOraSMren2GUSw/0&QRAuthId=0";
-            //"application/x-www-form-urlencoded"
+            string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=Jacky&QRAuthId=0&openId=o3nwE0qI_cOkirmh_qbGGG-5G6B0&Headimgurl=http://wx.qlogo.cn/mmopen/hzVGicX27IG18yibKNnHfBojH4SpCPGNEvyOUZE8jxOw2ZnYcHzAkm7yHk0oKoCA2zqtyib09sxDzX5GOubMfyOraSMren2GUSw/0";
+            //""
             string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
-            if (res.Contains("EXIST"))
+            if (res == "EXIST")
             {
-                int a = 1;
+                if (res.StartsWith("EXIST"))
+                {
+                    int a = 1;
+                }
             }
             return Content(res);
          

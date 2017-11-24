@@ -115,7 +115,7 @@ namespace IQBPay.DataBase
             RUserInfo pi = null;
             using (AliPayContent db = new AliPayContent())
             {
-                 qrUser = db.DBQRUser.Where(q => q.ID == ui.QRUserDefaultId && ui.OpenId == q.OpenId).FirstOrDefault();
+                qrUser = db.DBQRUser.Where(q=>ui.OpenId == q.OpenId).FirstOrDefault();
                 if(qrUser == null)
                 {
                     qrUser = new EQRUser();

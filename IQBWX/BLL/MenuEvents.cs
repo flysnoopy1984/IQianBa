@@ -106,9 +106,9 @@ namespace IQBWX.BLL
 
             if (string.IsNullOrEmpty(qrId) || !long.TryParse(qrId, out Id))
             {
-                log.log("Auth_AR 没有 Id");
+               // log.log("Auth_AR 没有 Id");
                 mText = "【传入的Id值不正确】无法授权，请联系平台";
-                
+                ResponseXml = msg.toText(mText);
                 return;
             }
             using (AliPayContent db = new AliPayContent())
@@ -116,17 +116,20 @@ namespace IQBWX.BLL
                 qr = db.QR_GetById(Id, IQBCore.IQBPay.BaseEnum.QRType.ARAuth);
                 if (qr == null)
                 {
-                    mText = msg.toText("【授权码不存在】无法授权，请联系平台！");
+                    ResponseXml = msg.toText("【授权码不存在】无法授权，请联系平台！");
+                     
                     return;
                 }
                 if (qr.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
                 {
-                    mText = msg.toText("【授权码已经失效】无法授权，请联系平台！");
+                    ResponseXml = msg.toText("【授权码已经失效】无法授权，请联系平台！");
+                    
                     return;
                 }
                 if (qr.ReceiveStoreId == 0)
                 {
-                    mText = msg.toText("【授权码没有收款账户】无法授权，请联系平台！");
+                    ResponseXml = msg.toText("【授权码没有收款账户】无法授权，请联系平台！");
+                    
                     return;
                 }
             }
@@ -192,7 +195,7 @@ namespace IQBWX.BLL
                 string ssoToken = null;
                 EUserInfo ui =null ,pui = null;
 
-                log.log("WXScanLogin ssoToken:" + msg.EventKey);
+              //  log.log("WXScanLogin ssoToken:" + msg.EventKey);
 
                 if (msg.Event == "scan")
                     ssoToken = msg.EventKey;

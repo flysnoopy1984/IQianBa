@@ -57,7 +57,7 @@ namespace IQBWX.Controllers
             try
             {
                 string echostr = Request.QueryString["echostr"];
-                log.log("Message - echostr:" + echostr);
+                //log.log("Message - echostr:" + echostr);
 
                 if (string.IsNullOrEmpty(echostr))
                 {
@@ -93,7 +93,7 @@ namespace IQBWX.Controllers
                         default:
                         break;
                     }
-                  //  log.log("Message: " + menuEvent. ResponseXml);
+                    log.log("Message: " + menuEvent. ResponseXml);
                     if (menuEvent.ResponseXml != null)
                         return Content(menuEvent.ResponseXml);
 

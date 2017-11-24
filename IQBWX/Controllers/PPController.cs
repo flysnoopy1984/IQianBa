@@ -106,7 +106,7 @@ namespace IQBWX.Controllers
 
         public ActionResult AliPayAccount()
         {
-            string openId = this.GetOpenId(true);
+            string openId = this.GetOpenId();
             RUserInfo ui = null;
             if (!string.IsNullOrEmpty(openId))
             {
@@ -153,7 +153,7 @@ namespace IQBWX.Controllers
 
         public ActionResult OrderList()
         {
-            string openId = this.GetOpenId(true);
+            string openId = this.GetOpenId();
             string msg = this.CheckPPUserRole(openId);
             if (msg != "OK")
                 return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });

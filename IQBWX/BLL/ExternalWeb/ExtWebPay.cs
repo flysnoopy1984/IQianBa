@@ -25,13 +25,13 @@ namespace IQBWX.BLL.ExternalWeb
             try
             {
                 string url = ConfigurationManager.AppSettings["Site_IQBPay_Register"];
-                string data = "UserStatus=1&UserRole=1&Isadmin=false&name={0}&openId={1}&Headimgurl={2}&QRAuthId={3}";
+                string data = "UserStatus=1&UserRole=1&Isadmin=false&name={0}&openId={1}&QRAuthId={3}&Headimgurl={2}";
                 string name = ui.nickname;
                 if (name == null) name = ui.UserName;
                 if (name == null) name = "wx" + ui.UserId.ToString().PadLeft(7, '0');
                
                 data = string.Format(data, name, ui.openid, ui.headimgurl, QRAuthId);
-              //  log.log("regeisterWebMember Data: " + data);
+                log.log("regeisterWebMember Data: " + data);
                 string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
                 return res;
             }
