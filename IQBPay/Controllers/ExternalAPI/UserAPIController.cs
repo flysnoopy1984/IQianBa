@@ -52,10 +52,12 @@ namespace IQBPay.Controllers.ExternalAPI
                                     if (updateUser == null)
                                     {
                                         //新建代理用户
-                                        ui.InitRegiser();
-                                        db.DBUserInfo.Add(ui);
+                                        updateUser = new EUserInfo();
+                                        updateUser.InitRegiser();
+                                        updateUser.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
+                                        db.DBUserInfo.Add(updateUser);
                                         isExist = false;
-                                        updateUser = ui;
+                                       
                                     }
                                     qr = db.DBQRInfo.Where(a => a.ID == ui.QRAuthId).FirstOrDefault();
                                     qrUser = db.UpdateQRUser(qr, updateUser);
@@ -64,9 +66,9 @@ namespace IQBPay.Controllers.ExternalAPI
                                         return FormatReturn("授权码失效，无法给用户授权,请联系平台！");
                                     }
                                     qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
-                                    ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
-                                    ui.QRAuthId = 0;
-                                    ui.QRUserDefaultId = qrUser.ID;
+                                   
+                                    updateUser.QRAuthId = 0;
+                                    updateUser.QRUserDefaultId = qrUser.ID;
 
                                     //用户返回后，给微信提示做判断
                                     hasParent = !string.IsNullOrEmpty(qrUser.ParentOpenId);

@@ -42,6 +42,9 @@ namespace IQBCore.IQBPay.Models.Result
         public UserRole UserRole { get; set; }
 
        
+
+
+
         public string UserRoleName
         {
             get

@@ -536,11 +536,11 @@ namespace IQBPay.Controllers
                             ErrorUrl += "收款商户已下线";
                             return Redirect(ErrorUrl);
                         }
-                        if(store.IsReceiveAccount)
-                        {
-                            ErrorUrl += "支付的商户不能作为收款商户";
-                            return Redirect(ErrorUrl);
-                        }
+                        //if(store.IsReceiveAccount)
+                        //{
+                        //    ErrorUrl += "支付的商户不能作为收款商户";
+                        //    return Redirect(ErrorUrl);
+                        //}
                     }
                     else
                     {

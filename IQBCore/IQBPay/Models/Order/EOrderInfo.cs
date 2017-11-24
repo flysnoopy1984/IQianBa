@@ -14,7 +14,11 @@ namespace IQBCore.IQBPay.Models.Order
     [Table("OrderInfo")]
     public class EOrderInfo
     {
-
+        public EOrderInfo()
+        {
+            AliPayTransDate = DateTime.MaxValue;
+            TransDate = DateTime.MaxValue;
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }

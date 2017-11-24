@@ -53,8 +53,8 @@ namespace IQBPay.Controllers
 
         public ActionResult Get(int Id)
         {
-            string sql = @"select ui.Id,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.MDate,ui.UserRole,ui.Headimgurl,ui.AliPayAccount,
-                           qruser.Rate,qruser.FilePath,qruser.ParentCommissionRate,
+            string sql = @"select ui.Id,ui.Name,ui.UserStatus,ui.IsAutoTransfer,ui.CDate,ui.MDate,ui.UserRole,ui.Headimgurl,ui.AliPayAccount,
+                           qruser.Rate,qruser.FilePath as QRFilePath,qruser.ParentCommissionRate,
                            pi.Name as ParentAgent
                            from userinfo as ui 
                            left join qrUser on qruser.ID = ui.QRUserDefaultId 
@@ -63,6 +63,7 @@ namespace IQBPay.Controllers
                         ";
 
             sql = string.Format(sql, Id);
+            base.Log.log(sql);
 
             using (AliPayContent db = new AliPayContent())
             {
@@ -95,11 +96,11 @@ namespace IQBPay.Controllers
         public ActionResult Query(UserRole role= UserRole.Agent, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             List<RUserInfo> result = new List<RUserInfo>();
-            string sql = @"select ui.Id,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.AliPayAccount,qruser.Rate,qruser.ParentCommissionRate,pi.Name as ParentAgent
+            string sql = @"select ui.Id,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.AliPayAccount,ui.UserStatus,qruser.Rate,qruser.ParentCommissionRate,pi.Name as ParentAgent
                             from userinfo as ui 
                             left join qrUser on qruser.ID = ui.QRUserDefaultId
                             left join userinfo as pi on pi.OpenId = qruser.ParentOpenId
-                            where ui.UserRole =2
+                         
                             ORDER BY ui.CreateDate desc";
            // IQueryable<EUserInfo> list = null;
             try
@@ -190,7 +191,7 @@ namespace IQBPay.Controllers
 
            // string url = "http://ap.iqianba.cn/api/userapi/register/";
             string url = "http://localhost:24068/api/userapi/register/";
-            string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=Jacky&QRAuthId=0&openId=o3nwE0qI_cOkirmh_qbGGG-5G6B0&Headimgurl=http://wx.qlogo.cn/mmopen/hzVGicX27IG18yibKNnHfBojH4SpCPGNEvyOUZE8jxOw2ZnYcHzAkm7yHk0oKoCA2zqtyib09sxDzX5GOubMfyOraSMren2GUSw/0";
+            string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=Jacky&QRAuthId=6&openId=o3nwE0qI_cOkirmh_qbGGG-5G6B0&Headimgurl=http://wx.qlogo.cn/mmopen/hzVGicX27IG18yibKNnHfBojH4SpCPGNEvyOUZE8jxOw2ZnYcHzAkm7yHk0oKoCA2zqtyib09sxDzX5GOubMfyOraSMren2GUSw/0";
             //""
             string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
             if (res == "EXIST")

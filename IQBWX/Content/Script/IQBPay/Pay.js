@@ -58,8 +58,8 @@ function VerifyCodeConfirm()
             }
 
             if (result.SMSVerifyStatus == 4) {
-                alert("验证码不正确，请重新验证");
-                InitControls();
+                alert("验证码不正确，请输入【验证码】！非收款码！");
+               // InitControls();
                 return;
             }
 
@@ -167,6 +167,11 @@ function PayToAli() {
         return;
     }
     $("#btnPay").attr("disabled", true);
+    if (qrUserId == null || qrUserId == "")
+    {
+        alert("未获取代理商家ID，系统错误，请联系商家");
+        return;
+    }
     
     window.location = payUrl+"/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&ReceiveNo=" + ReceiveNo;
 }

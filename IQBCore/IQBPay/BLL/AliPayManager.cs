@@ -148,6 +148,7 @@ namespace IQBCore.IQBPay.BLL
                 OrderType = BaseEnum.OrderType.Normal,
 
                 ReceiveNo = ReceiveNo,
+                
 
             };
             order.RealTotalAmount = order.TotalAmount - order.RateAmount;
