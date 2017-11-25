@@ -154,7 +154,7 @@ namespace IQBWX.Controllers
 
         protected string GetOpenId(bool isTest = false,bool IsforOpenId = true)
         {
-            if (isTest) return "orKUAw16WK0BmflDLiBYsR-Kh5bE";
+            if (isTest) return "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
             string openId = (string)Session[IQBWXConst.SessionOpenId];
             if (string.IsNullOrEmpty(openId))
             {

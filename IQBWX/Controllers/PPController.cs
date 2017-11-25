@@ -416,7 +416,7 @@ namespace IQBWX.Controllers
 
         public ActionResult DoTransfer()
         {
-            string openId = this.GetOpenId();
+            string openId = this.GetOpenId(true);
             string msg = this.CheckPPUserRole(openId);
             if (msg != "OK")
                 return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
@@ -479,26 +479,86 @@ namespace IQBWX.Controllers
         [HttpPost]
         public ActionResult ConfirmRO()
         {
-            string OrderNo = this.Request["OrderNo"];
             ROrder_Receive result = new ROrder_Receive();
-            string sql = "update orderinfo set OrderStatus = {0} where OrderNo=@OrderNo";
-            sql = string.Format(sql, Convert.ToInt32(OrderStatus.Paid));
+          
+            string OrderNo = this.Request["OrderNo"];
+            if(string.IsNullOrEmpty(OrderNo))
+            {
+                result.RunResult = "订单参数未获取，请联系平台服务商";
+                return Json(result);
+            }
+            #region Old Method
+            //
 
-            var p_OrderNo = new SqlParameter("@OrderNo", OrderNo);
+            //string sql = "update orderinfo set OrderStatus = {0} where OrderNo=@OrderNo";
+            //sql = string.Format(sql, Convert.ToInt32(OrderStatus.Paid));
+
+            //var p_OrderNo = new SqlParameter("@OrderNo", OrderNo);
+
+            //try
+            //{
+            //    using (AliPayContent db = new AliPayContent())
+            //    {
+            //        int r = db.Database.ExecuteSqlCommand(sql, p_OrderNo);
+            //        if (r > 0)
+            //        {
+            //            result.RunResult = "OK";
+            //        }
+            //        else
+            //            result.RunResult = "更新错误，请联系代理!";
+
+            //    }
+            //}
+            //catch(Exception ex)
+            //{
+            //    result.RunResult = "更新错误，请联系代理!";
+            //}
+            #endregion
 
             try
             {
+                string sql = "update orderinfo set OrderStatus = {0} where OrderNo=@OrderNo";
+                sql = string.Format(sql, Convert.ToInt32(OrderStatus.Paid));
+
+                var p_OrderNo = new SqlParameter("@OrderNo", OrderNo);
+
                 using (AliPayContent db = new AliPayContent())
                 {
-                    int r = db.Database.ExecuteSqlCommand(sql, p_OrderNo);
-                    if(r>0)
-                        result.RunResult = "OK";
-                    else
-                        result.RunResult = "更新错误，请联系代理!";
+                    result = db.DBOrder.Where(o => o.OrderNo == OrderNo).Select(o => new ROrder_Receive
+                    {
+                        OrderStatus = o.OrderStatus,
 
+                    }).FirstOrDefault();
+                    if (result == null)
+                    {
+                        result.RunResult = "订单未获取，请联系平台服务商";
+                        return Json(result);
+                    }
+                    if (result.OrderStatus == OrderStatus.WaitingBuyerConfirm)
+                    {
+                        try
+                        {
+                            int r = db.Database.ExecuteSqlCommand(sql, p_OrderNo);
+                            if (r > 0)
+                            {
+                                result.RunResult = "OK";
+                            }
+                            else
+                                result.RunResult = "更新错误，请联系代理!";
+                        }
+                        catch (Exception ex)
+                        {
+                            result.RunResult = "更新错误，请联系代理!" + ex.Message;
+                        }
+
+                    }
+                    else
+                    {
+                        result.RunResult = "已收货确认";
+                    }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result.RunResult = "更新错误，请联系代理!";
             }

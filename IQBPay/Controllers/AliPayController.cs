@@ -210,6 +210,10 @@ namespace IQBPay.Controllers
                     order.AliPayTransDate = Convert.ToDateTime(Request["gmt_create"]);
                     if (order.AliPayTradeStatus == "TRADE_SUCCESS")
                     {
+                        //短信通知买家收款码开始
+
+                        //短信通知买家收款码结束
+
                         order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Paid;
                         //上级代理佣金
                         comm = db.DBAgentCommission.Where(a => a.OrderNo == order.OrderNo && a.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
@@ -244,11 +248,11 @@ namespace IQBPay.Controllers
 
                             if (res2.Code == "10000")
                             {
-                                //通知开始
+                                //微信通知代理开始
                                 string accessToken = this.getAccessToken(true);
                                 PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
                                 notice.Push();
-                                //通知结束
+                                //微信通知代理通知结束
 
                                 //转账记录开始
                                 ETransferAmount tranfer = ETransferAmount.Init(TransferId, ui, order);
@@ -472,7 +476,7 @@ namespace IQBPay.Controllers
         /// <param name="Id">QRUserId</param>
         /// <param name="Amount"></param>
         /// <returns></returns>   
-        public ActionResult F2FPay(string qrUserId, string Amount)
+        public ActionResult F2FPay(string qrUserId, string Amount,string Phone)
         {
             string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?code=2001&ErrorMsg=";
             try
@@ -575,6 +579,12 @@ namespace IQBPay.Controllers
                             db.DBAgentCommission.Add(comm);
                          
                         }
+
+                        EBuyerInfo buyInfo = new EBuyerInfo();
+                        buyInfo.LastTransDate = DateTime.Now;
+                        buyInfo.PhoneNumber = Phone;
+                        db.DBBuyerInfo.Add(buyInfo);
+
                         db.SaveChanges();
 
                         return Redirect(Res);
@@ -590,7 +600,7 @@ namespace IQBPay.Controllers
             catch(Exception ex)
             {
                 
-                base.Log.log("支付失败：" + ex.InnerException.Message);
+             
                 base.Log.log("支付失败：" + ex.Message);
                 ErrorUrl += "支付失败："+ex.Message;
                 return Redirect(ErrorUrl);

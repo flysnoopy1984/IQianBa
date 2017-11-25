@@ -124,7 +124,7 @@ namespace IQBCore.IQBPay.BLL
             };
             return comm;
         }
-        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount,string ReceiveNo="")
+        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount,string Phone = "")
         {
             EOrderInfo order = new EOrderInfo()
             {
@@ -147,7 +147,9 @@ namespace IQBCore.IQBPay.BLL
                 SellerCommission = (float)Math.Round(TotalAmount * (store.Rate) / 100, 2, MidpointRounding.ToEven),
                 OrderType = BaseEnum.OrderType.Normal,
 
-                ReceiveNo = ReceiveNo,
+                BuyerMobilePhone = Phone,
+
+                ReceiveNo = StringHelper.GenerateReceiveNo(),
                 
 
             };
