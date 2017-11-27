@@ -15,6 +15,7 @@ using IQBCore.Common.Constant;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.Result;
+using IQBCore.IQBPay.Models.InParameter;
 
 namespace IQBPay.Controllers
 {
@@ -54,11 +55,13 @@ namespace IQBPay.Controllers
         public ActionResult Get(int Id)
         {
             string sql = @"select ui.Id,ui.Name,ui.UserStatus,ui.IsAutoTransfer,ui.CDate,ui.MDate,ui.UserRole,ui.Headimgurl,ui.AliPayAccount,
-                           qruser.Rate,qruser.FilePath as QRFilePath,qruser.ParentCommissionRate,
-                           pi.Name as ParentAgent
+                           qruser.ID as qrUserId,QRUser.Rate,qruser.FilePath as QRFilePath,qruser.ParentCommissionRate,
+                           pi.parentOpenId as ParentAgentOpenId,pi.Name as ParentAgent,
+                           si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
                            from userinfo as ui 
                            left join qrUser on qruser.ID = ui.QRUserDefaultId 
-                           left join UserInfo as pi on pi.OpenId = qruser.ParentOpenId                              
+                           left join UserInfo as pi on pi.OpenId = qruser.ParentOpenId  
+                           left join StoreInfo as si on si.ID = qruser.ReceiveStoreId                                
                            where ui.Id = {0}
                         ";
 
@@ -78,8 +81,9 @@ namespace IQBPay.Controllers
                         result.QueryResult = false;
                         return Json(result);
                     }
-                   
-                   
+                    result.StoreList = db.Database.SqlQuery<HashStore>("select Id,Name,Rate from storeinfo where storeinfo.IsReceiveAccount = 'false'").ToList();
+                    result.ParentAgentList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo").ToList();
+
                     result.QueryResult = true;
                     return Json(result);
                 }
@@ -96,11 +100,14 @@ namespace IQBPay.Controllers
         public ActionResult Query(UserRole role= UserRole.Agent, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             List<RUserInfo> result = new List<RUserInfo>();
-            string sql = @"select ui.Id,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.AliPayAccount,ui.UserStatus,qruser.Rate,qruser.ParentCommissionRate,pi.Name as ParentAgent
+
+            string sql = @"select ui.Id,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.AliPayAccount,ui.UserStatus,qruser.Rate,qruser.ParentCommissionRate,
+	                        pi.parentOpenId as ParentAgentOpenId,pi.Name as ParentAgent,
+	                        si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
                             from userinfo as ui 
                             left join qrUser on qruser.ID = ui.QRUserDefaultId
                             left join userinfo as pi on pi.OpenId = qruser.ParentOpenId
-                         
+							left join StoreInfo as si on si.ID = qruser.ReceiveStoreId
                             ORDER BY ui.CreateDate desc";
            // IQueryable<EUserInfo> list = null;
             try
@@ -145,6 +152,53 @@ namespace IQBPay.Controllers
             }
 
             return Json(result);
+        }
+
+        public ActionResult SaveUserAgent(InUserAgent InUA)
+        {
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+
+                    EUserInfo ui = new EUserInfo();
+                    ui.Id = InUA.ID;
+                    ui.IsAutoTransfer = InUA.IsAutoTransfer;
+                    ui.AliPayAccount = InUA.AliPayAccount;
+                    ui.UserStatus = InUA.UserStatus;
+
+                    DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
+                    entry.State = EntityState.Unchanged;
+                    entry.Property(t => t.AliPayAccount).IsModified = true;
+                    entry.Property(t => t.IsAutoTransfer).IsModified = true;
+                    entry.Property(t => t.UserStatus).IsModified = true;
+
+                    EQRUser qrUser = new EQRUser();
+                    qrUser.ID = InUA.QrUserId;
+                    qrUser.ParentOpenId  = InUA.ParentOpenId;
+                    qrUser.ParentCommissionRate  = InUA.ParentCommissionRate;
+                    qrUser.ReceiveStoreId = InUA.StoreId;
+
+
+                    DbEntityEntry<EQRUser> qrEntry = db.Entry<EQRUser>(qrUser);
+                    qrEntry.State = EntityState.Unchanged;
+                    qrEntry.Property(t => t.ParentOpenId).IsModified = true;
+                    qrEntry.Property(t => t.ParentCommissionRate).IsModified = true;
+                    qrEntry.Property(t => t.ReceiveStoreId).IsModified = true;
+
+
+
+                    db.SaveChanges();
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Content("Save Store Error" + ex.Message);
+            }
+            return Json("OK");
         }
 
         public ActionResult Save(EUserInfo ui)

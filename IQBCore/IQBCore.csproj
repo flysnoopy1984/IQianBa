@@ -116,6 +116,7 @@
     <Compile Include="IQBPay\Models\InParameter\InSMS.cs" />
     <Compile Include="IQBPay\Models\InParameter\InStoreSum.cs" />
     <Compile Include="IQBPay\Models\InParameter\InTransfer.cs" />
+    <Compile Include="IQBPay\Models\InParameter\InUserAgent.cs" />
     <Compile Include="IQBPay\Models\Order\EOrderInfo.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\ETransferAmount.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashStore.cs" />

@@ -1,4 +1,7 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.IQBPay.Models.Store;
+using IQBCore.IQBPay.Models.User;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -39,7 +42,19 @@ namespace IQBCore.IQBPay.Models.Result
 
         public string ParentAgent { get; set; }
 
+        public string ParentAgentOpenId { get; set; }
+
         public UserRole UserRole { get; set; }
+
+        public int? StoreId { get; set; }
+        public string StoreName { get; set; }
+        public float? StoreRate { get; set; }
+
+        public List<HashStore> StoreList { get; set; }
+
+        public List<HashUser> ParentAgentList { get; set; }
+
+        public long QRUserId { get; set; }
 
        
 

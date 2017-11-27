@@ -310,7 +310,7 @@ namespace IQBWX.Controllers
                         }
                         list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
                     }
-                    list = list.Where(o => o.OrderStatus == OrderStatus.Paid);
+                    //list = list.Where(o => o.OrderStatus == OrderStatus.Paid);
                     list = list.OrderByDescending(i => i.TransDate);
 
                     if (pageIndex == 0)
@@ -416,7 +416,7 @@ namespace IQBWX.Controllers
 
         public ActionResult DoTransfer()
         {
-            string openId = this.GetOpenId(true);
+            string openId = this.GetOpenId();
             string msg = this.CheckPPUserRole(openId);
             if (msg != "OK")
                 return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });

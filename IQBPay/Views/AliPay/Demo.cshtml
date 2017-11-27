@@ -9,6 +9,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Demo</title>
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
       
         function Go(url)
@@ -17,6 +18,40 @@
             var OrderNo = $("#OrderNo").val();
             var url = url + "?TotalAmt=" + 1 + "&orderNo=201709290433312gbadd9d";
             window.location = url;
+        }
+
+        function Transfer(orderAmt, CommAmt, account, openId) {
+
+            if (account == "" || account == null) {
+                alert("用户没有设置提款账号，无法打款！");
+                return;
+            }
+            if (orderAmt + CommAmt == 0)
+                alert("没有可转金额");
+
+            // var url = "http://localhost:24068/API/TransferAPI/TransferToAgent";
+            var url = "/API/TransferAPI/TransferToAgent";
+            $.ajax({
+                type: 'post',
+                data: "OpenId=" + openId + "&AliPayAccount=" + account + "&OrderAmount=" + orderAmt + "&CommissionAmount=" + CommAmt,
+                url: url,
+                success: function (data) {
+                    if (data.IsSuccess) {
+                        alert("转账成功！");
+                        $("#MyRemainAmount").text("");
+                        $("#MyOrderTotalAmount").text("");
+                        $("#MyAgentOrderTotalAmount").text("");
+                    }
+                    else
+                        alert(data.ErrorMsg);
+                },
+                error: function (xhr, type) {
+
+                    alert('Ajax error!');
+
+
+                }
+            });
         }
     </script>
 </head>
@@ -29,7 +64,10 @@
             <li><a href=@Url.Action("QueryToken", "AliPay")>QueryToken</a></li> 
             <li><a href=@Url.Action("QRImg","AliPay")>QRImg</a></li>
             <li><a href=@Url.Action("QRImgWX","AliPay")>QRImg_WX</a></li>
+
             <li><a href="/AliPay/F2FPay?qrUserId=5&Amount=1&ReceiveNo=123">F2F</a></li> 
+            @*<li><a href="/API/TransferAPI/TransferToAgent?OpenId=o3nwE0qI_cOkirmh_qbGGG-5G6B0&AliPayAccount=song_fuwei@hotmail.com&OrderAmount=1.95&CommissionAmount=0">Transfer</a></li>*@ 
+            <input type="button" onclick="Transfer('1.95', '0', 'song_fuwei@hotmail.com', 'o3nwE0qI_cOkirmh_qbGGG-5G6B0')" value="转账" />
             <li>           
                <a href=@Url.Action("SubAccount", "AliPay")>分账</a>
             </li>

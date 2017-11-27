@@ -1,4 +1,7 @@
-﻿$(document).ready(function () {
+﻿var gStoreList;
+var gParentAgentList;
+
+$(document).ready(function () {
 
     var Id = GetUrlParam("id");
 
@@ -8,17 +11,36 @@
         return;
     }
 
-    $('#Rate').attr("disabled", true);
-    $('#ParentAgent').attr("disabled", true);
-    $('#ParentCommissionRate').attr("disabled", true);
+    $('#StoreRate').attr("disabled", true);
+
+    $('#Name').attr("disabled", true);
+    //$('#ParentCommissionRate').attr("disabled", true);
     Init(Id);
 
-   
 });
 
 function Init(Id) {
    
     $("#RecId").val(Id);
+
+    $('#selStore').on('change', function () {
+        var selVal = $('#selStore').val();
+        if (selVal == "-1")
+        {
+            $('#StoreRate').val("");
+        }
+        else
+        {
+            $(gStoreList).each(function (i, r) {
+                if(r.Id == selVal)
+                {
+                    $('#StoreRate').val(r.Rate);
+                }
+            });
+        }
+       
+
+    });
 
     var url = "/User/Get";
     $.ajax({
@@ -26,7 +48,8 @@ function Init(Id) {
         data: "Id=" + Id,
         url: url,
         success: function (data) {
-
+            gStoreList = data.StoreList;
+            gParentAgentList = data.ParentAgentList;
             InitFormData(data);
         },
         error: function (xhr, type) {
@@ -40,13 +63,38 @@ function Init(Id) {
 
 function InitFormData(data) {
  
-
+    $("#QrUserId").val(data.QRUserId);
     $("#Name").val(data.Name);
     $("#Rate").val(data.Rate);
-    $("#ParentAgent").val(data.ParentAgent);
+
+    //$("#ParentAgent").val(data.ParentAgent);
     $("#ParentCommissionRate").val(data.ParentCommissionRate);
 
     $("#IsAutoTransfer").attr("checked", data.IsAutoTransfer);
+
+    //$("#StoreId").val(data.StoreId);
+    $("#StoreRate").val(data.StoreRate);
+    //$("#StoreName").val(data.StoreName);
+
+    $("#selStore").empty();
+    $("#selStore").append("<option value='-1'>随机</option>");
+    $(data.StoreList).each(function (i, r) {
+        if (data.StoreId == r.Id)
+            $("#selStore").append("<option value='" + r.Id + "' selected>" + r.Name + "</option>");
+        else
+            $("#selStore").append("<option value='" + r.Id + "'>" + r.Name + "</option>");
+    });
+
+
+    $("#selParentAgent").empty();
+    $("#selParentAgent").append("<option value=''>无</option>");
+    $(data.ParentAgentList).each(function (i, r) {
+        if (data.ParentAgentOpenId == r.OpenId)
+            $("#selParentAgent").append("<option value='" + r.OpenId + "' selected>" + r.Name + "</option>");
+        else
+            $("#selParentAgent").append("<option value='" + r.OpenId + "'>" + r.Name + "</option>");
+    });
+
 
     $("#AliPayAccount").val(data.AliPayAccount);
     $("#UserStatus").val(data.UserStatus);
@@ -86,22 +134,24 @@ function CheckForm() {
 
 function Save() {
     
-
-    var UserStatus = $("#UserStatus").val();
-    var name = $("#Name").val();
-   
-    var AliPayAccount = $("#AliPayAccount").val();
     var ID = $("#RecId").val();
-   
     var IsAutoTransfer = $("#IsAutoTransfer").get(0).checked;
+    var AliPayAccount = $("#AliPayAccount").val();
+    var UserStatus = $("#UserStatus").val();
+   
+    var ParentOpenId = $("#selParentAgent").val();
+    var ParentCommissionRate = $("#ParentCommissionRate").val();
+    var StoreId = $("#selStore").val();
+
+    var qrUserId = $("#QrUserId").val();
 
     if (!CheckForm()) return;
 
-    var url = "/User/Save";
+    var url = "/User/SaveUserAgent";
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "Id": ID, "Name": name, "IsAutoTransfer":IsAutoTransfer,"AliPayAccount": AliPayAccount, "UserStatus": UserStatus},
+        data: { "Id": ID, "IsAutoTransfer": IsAutoTransfer, "AliPayAccount": AliPayAccount, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
         url: url,
         success: function (data) {
             if (data == "OK") {

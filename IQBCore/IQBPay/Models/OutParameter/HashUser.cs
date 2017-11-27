@@ -11,5 +11,7 @@ namespace IQBCore.IQBPay.Models.OutParameter
         public string OpenId { get; set; }
 
         public string Name { get; set; }
+
+        public float Rate { get; set; }
     }
 }

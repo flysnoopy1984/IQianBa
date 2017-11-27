@@ -41,6 +41,12 @@ function generateData(result) {
         strCtrl += "<td>" + result[i].IsAutoTransfer + "</td>";
         strCtrl += "<td>" + result[i].ParentAgent + "</td>";
         strCtrl += "<td>" + result[i].ParentCommissionRate + "</td>";
+        if (result[i].StoreName == "" || result[i].StoreName == null)
+        {
+            result[i].StoreName = "随机";
+        }
+       
+       strCtrl += "<td>" + result[i].StoreName + "</td>";
 
         if (result[i].UserStatus == 1)
             strCtrl += "<td style='color:#4AC4BC;'><div class='noft-green-number'></div>启用</td>";

@@ -71,8 +71,8 @@ namespace IQBCore.IQBPay.BLL
             model.OutBizNo = TransferId;
             model.PayeeType = "ALIPAY_LOGONID";
             model.PayeeAccount = toAliPayAccount;
-            model.PayerShowName = "爱钱吧平台支付";
-            model.Remark = string.Format("爱钱吧提现");
+            model.PayerShowName = "玉杰平台支付";
+            model.Remark = string.Format("玉杰服务提现");
 
             request.SetBizModel(model);
 

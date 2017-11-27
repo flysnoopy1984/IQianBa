@@ -26,57 +26,82 @@
     </div>
     <div id="EditArea">
         <input type="hidden" id="storeId" />
+
         <div class="form-group">
             <label class="col-sm-3 control-label">用户名</label>
             <div class="col-sm-6">
-                <input id="Name" type="text" class="form-control NeedFill">
+                <input id="Name" type="text" class="form-control NeedFill" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-3 control-label">扣点率</label>
             <div class="col-sm-6">
-                <input id="Rate" type="text" class="form-control">
+                <input id="Rate" type="text" class="form-control" />
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label">提现账户(重要)</label>
             <div class="col-sm-6">
-                <input id="AliPayAccount" type="text" class="form-control">
+                <input id="AliPayAccount" type="text" class="form-control" />
             </div>
         </div>
+
         <div class="form-group">
             <label class="col-sm-3 control-label">是否自动打款</label>
             <div class="col-sm-6">
-                <input id="IsAutoTransfer" style="width:30px;" type="checkbox" class="form-control">
+                <input id="IsAutoTransfer" style="width:30px;" type="checkbox" class="form-control" />
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label">上级代理</label>
             <div class="col-sm-6">
-                <input id="ParentAgent" type="text" class="form-control">
+                <select id="selParentAgent" class="form-control">
+                   
+                </select>
+                @*<input id="ParentAgentId" type="hidden" />
+                <input id="ParentAgent" type="text" class="form-control" />*@
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label">上级代理返点率</label>
             <div class="col-sm-6">
-                <input id="ParentCommissionRate" type="text" class="form-control">
+                <input id="ParentCommissionRate" type="text" class="form-control" />
             </div>
         </div>
 
+        <div class="form-group">
+            <label class="col-sm-3 control-label">收款商户</label>
+            <div class="col-sm-6">
+                <select id="selStore" class="form-control">
+                    
+                </select>
+                @*<input id="StoreId" type="hidden">
+                <input id="StoreName" type="text" class="form-control" />*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">收款商户点率</label>
+            <div class="col-sm-6">
+                <input id="StoreRate" type="text" class="form-control" />
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label">用户状态</label>
-            <div class="switch col-sm-6" data-on="success" data-off="warning">
+            <div class="switch col-sm-6" data-on="success" data-off="warning" />
                 <input type="checkbox" id="UserStatus">
             </div>
-        </div>
+
     </div>
+   
 
     <div class="ButtonList">
         <button type="button" class="btn btn-success" onclick="Save();">保存</button>
     </div>
     <input type="hidden" id="RecId" />
+    <input type="hidden" id="QrUserId" />
 </div>
