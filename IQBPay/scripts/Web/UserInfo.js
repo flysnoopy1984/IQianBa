@@ -140,6 +140,7 @@ function Save() {
     var UserStatus = $("#UserStatus").val();
    
     var ParentOpenId = $("#selParentAgent").val();
+    var ParentName = $("#selParentAgent").find("option:selected").text();
     var ParentCommissionRate = $("#ParentCommissionRate").val();
     var StoreId = $("#selStore").val();
 
@@ -151,7 +152,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "Id": ID, "IsAutoTransfer": IsAutoTransfer, "AliPayAccount": AliPayAccount, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
+        data: { "Id": ID, "IsAutoTransfer": IsAutoTransfer, "AliPayAccount": AliPayAccount, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName":ParentName,"ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
         url: url,
         success: function (data) {
             if (data == "OK") {

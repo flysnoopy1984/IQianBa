@@ -18,6 +18,8 @@ namespace IQBCore.IQBPay.Models.InParameter
 
         public string ParentOpenId { get; set; }
 
+        public string ParentName { get; set; }
+
         public float ParentCommissionRate { get; set; }
 
         public int StoreId { get; set; }

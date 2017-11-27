@@ -56,12 +56,11 @@ namespace IQBPay.Controllers
         {
             string sql = @"select ui.Id,ui.Name,ui.UserStatus,ui.IsAutoTransfer,ui.CDate,ui.MDate,ui.UserRole,ui.Headimgurl,ui.AliPayAccount,
                            qruser.ID as qrUserId,QRUser.Rate,qruser.FilePath as QRFilePath,qruser.ParentCommissionRate,
-                           pi.parentOpenId as ParentAgentOpenId,pi.Name as ParentAgent,
+                           qrUser.parentOpenId as ParentAgentOpenId,qrUser.ParentName as ParentAgent,
                            si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
                            from userinfo as ui 
-                           left join qrUser on qruser.ID = ui.QRUserDefaultId 
-                           left join UserInfo as pi on pi.OpenId = qruser.ParentOpenId  
-                           left join StoreInfo as si on si.ID = qruser.ReceiveStoreId                                
+                           left join qrUser on qruser.ID = ui.QRUserDefaultId  
+                           left join StoreInfo as si on si.ID = qruser.ReceiveStoreId                  
                            where ui.Id = {0}
                         ";
 
@@ -102,13 +101,13 @@ namespace IQBPay.Controllers
             List<RUserInfo> result = new List<RUserInfo>();
 
             string sql = @"select ui.Id,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.AliPayAccount,ui.UserStatus,qruser.Rate,qruser.ParentCommissionRate,
-	                        pi.parentOpenId as ParentAgentOpenId,pi.Name as ParentAgent,
-	                        si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
-                            from userinfo as ui 
-                            left join qrUser on qruser.ID = ui.QRUserDefaultId
-                            left join userinfo as pi on pi.OpenId = qruser.ParentOpenId
-							left join StoreInfo as si on si.ID = qruser.ReceiveStoreId
-                            ORDER BY ui.CreateDate desc";
+	                    qruser.parentOpenId as ParentAgentOpenId,qruser.ParentName as ParentAgent,
+	                    si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
+                        from userinfo as ui 
+                        left join qrUser on qruser.ID = ui.QRUserDefaultId
+		                left join StoreInfo as si on si.ID = qruser.ReceiveStoreId
+                        ORDER BY ui.CreateDate desc";
+
            // IQueryable<EUserInfo> list = null;
             try
             {
@@ -175,6 +174,7 @@ namespace IQBPay.Controllers
 
                     EQRUser qrUser = new EQRUser();
                     qrUser.ID = InUA.QrUserId;
+                    qrUser.ParentName = InUA.ParentName;
                     qrUser.ParentOpenId  = InUA.ParentOpenId;
                     qrUser.ParentCommissionRate  = InUA.ParentCommissionRate;
                     qrUser.ReceiveStoreId = InUA.StoreId;
@@ -182,6 +182,7 @@ namespace IQBPay.Controllers
 
                     DbEntityEntry<EQRUser> qrEntry = db.Entry<EQRUser>(qrUser);
                     qrEntry.State = EntityState.Unchanged;
+                    qrEntry.Property(t => t.ParentName).IsModified = true;
                     qrEntry.Property(t => t.ParentOpenId).IsModified = true;
                     qrEntry.Property(t => t.ParentCommissionRate).IsModified = true;
                     qrEntry.Property(t => t.ReceiveStoreId).IsModified = true;
