@@ -1,8 +1,10 @@
-﻿using IQBCore.IQBPay.Models.InParameter;
+﻿using IQBCore.Common.Helper;
+using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.IQBPay.Models.SMS;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -93,11 +95,16 @@ namespace IQBCore.IQBPay.BLL
             }
           
         }
-
-      
-           
-    
-
+        public void PostSMS_API51(InSMS inSMS)
+        {
+            string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
+            url += "API/SMS/DoSMS";
+            string data = "PhoneNumber="+inSMS.PhoneNumber;
+            data += "&Tpl_id=" + inSMS.Tpl_id;
+            data += "&Sign=" + inSMS.Sign;
+            data += "&Parameters=" + inSMS.Parameters;
+            HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+        }
 
         public static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
         {

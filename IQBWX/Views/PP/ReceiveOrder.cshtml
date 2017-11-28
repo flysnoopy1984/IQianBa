@@ -17,21 +17,20 @@
   
 </head>
 <body>
-    <div class="ListTitle xi20 hui">收货确认</div>
-    <div class="ListTitle_Condition1">
+    <div class="CC title">收货确认</div>
+    <div class="CC">
         <label>收款码：</label>
         <div style="display:inline;">
-            <input id="ReceiveNo" type="text" class="EditInput" style="font-size:30px!important;width:34%; height:50px!important;">
+            <input id="ReceiveNo" type="text" class="EditInput" style="font-size:30px!important;width:80%; height:50px!important;">   
+        </div>
+        <div style="margin-top:10px;text-align:center;">
             <button type="button" class="btn btn-primary QueryButton" id="btnQuery" onclick="Query();">查询</button>
         </div>
     </div>
-
     <ul class="ULList" id="ROList">
-       
         <li id="ROProcess" style="display:none;">
             <div>查询中,请稍等...</div>
         </li>
-        
     </ul> 
 </body>
 </html>

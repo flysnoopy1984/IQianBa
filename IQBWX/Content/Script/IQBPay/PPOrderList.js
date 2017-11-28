@@ -96,16 +96,16 @@ function generateData(result) {
                 orderStatus = "异常";
                 break;
             case -2:
-                OrderStatus = "等待用户确认";
+                orderStatus = "等待用户确认";
                 break;
         }
         strCtrl = "";
         strCtrl += "<tr>";
 
       //tdWidth = "width:" + $("#trHeader th").eq(0).css("width");
-        strCtrl += "<td style='width:50%'><ul><li style='color:brown'>" + result[i].OrderNo + "</li>";
+        strCtrl += "<td style='width:50%'><ul><li style='color:cadetblue'>" + result[i].OrderNo + "</li>";
         strCtrl += "<li>创建时间:" + result[i].TransDateStr + "</li>";
-        strCtrl += "<li style='color:gray; font-size:12px;'>订单状态:" + orderStatus + "</li></ul></td>";
+        strCtrl += "<li style='color:brown; font-size:14px;'>订单状态:" + orderStatus + "</li></ul></td>";
         strCtrl += "<td style='width:50%'><ul><li style='color:firebrick; font-weight:bold;'>" + result[i].RealTotalAmount + "</li>";
         strCtrl += "<li>订单总额:" + result[i].TotalAmount + "</li>";
         strCtrl += "<li>付款账户:" + result[i].BuyerAliPayLoginId + "</li></ul></td>";

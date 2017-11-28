@@ -10,12 +10,14 @@
     overflow-x:hidden;
     white-space:nowrap; /*处理块元素中的空白符和换行*/
     margin:0px auto;
-    margin-top:150px;
+   
 }
 body
 {
     background-color:white;
     font-size:14px!important;
+    padding-left:10px;
+    padding-top:10px;
 }
 .ULList li
 {
@@ -102,28 +104,20 @@ body
     width:90%;
     text-align:center;
 }
-.ListTitle{
-    position:fixed; 
-    top:0px;
-    left:0px;
+.title{
+   margin-top:5px !important;
+    margin-bottom:15px !important;
+    font-size:20px;
+    color:gray;
+}
+.CC{
+    margin:0 auto;
+    width:480px;
+}
 
-    height:50px;
-    line-height:50px;
-    /*background:#f2f2f2;*/ 
-    text-indent:10px;
-    margin-left:auto;
-    margin-right:auto;
-}
-.ListTitle_Condition1
-{
-    position:fixed; 
-    top:50px;
-    margin-left:auto;
-    margin-right:auto;
-    text-indent:10px;
-}
 .QueryButton{
-    width:70px !important; height:60px!important; margin-bottom:10px !important;
+    
+    width:90% !important; height:60px!important; margin-bottom:10px !important;
 }
 .ConfirmButton{
     width:100%!important; height:40px!important; margin-left:auto!important;margin-right:auto!important; margin-top:10px;

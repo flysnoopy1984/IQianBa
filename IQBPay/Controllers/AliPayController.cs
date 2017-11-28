@@ -29,6 +29,8 @@ using IQBCore.IQBPay.Models.User;
 using IQBCore.IQBWX.Models.WX.Template;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.Models.InParameter;
+using IQBCore.IQBWX.BaseEnum;
 
 namespace IQBPay.Controllers
 {
@@ -210,7 +212,27 @@ namespace IQBPay.Controllers
                     order.AliPayTransDate = Convert.ToDateTime(Request["gmt_create"]);
                     if (order.AliPayTradeStatus == "TRADE_SUCCESS")
                     {
+                        base.Log.log("BuyerMobilePhone" + order.BuyerMobilePhone);
                         //短信通知买家收款码开始
+                        if(!string.IsNullOrEmpty(order.BuyerMobilePhone))
+                        {
+                            try
+                            {
+                                InSMS inSMS = new InSMS();
+                                inSMS.Init();
+                                inSMS.PhoneNumber = order.BuyerMobilePhone;
+                                inSMS.Parameters = order.ReceiveNo;
+                                inSMS.Tpl_id = Convert.ToInt32(SMSTemplate.ReceiveConfirm).ToString();
+
+                                SMSManager smsMgr = new SMSManager();
+                                smsMgr.PostSMS_API51(inSMS);
+                            }
+                            catch(Exception ex)
+                            {
+                                base.Log.log(string.Format("手机号{1}--收货确认短信发送失败{0}" + ex.Message,order.BuyerMobilePhone));
+
+                            }
+                        }
 
                         //短信通知买家收款码结束
 
@@ -569,7 +591,7 @@ namespace IQBPay.Controllers
                     {
 
                         //创建初始化订单
-                        EOrderInfo order = payManager.InitOrder(qrUser, store,Convert.ToSingle(Amount));
+                        EOrderInfo order = payManager.InitOrder(qrUser, store,Convert.ToSingle(Amount),Phone);
                         db.DBOrder.Add(order);
                        
                         //是否有上级代理
@@ -577,8 +599,8 @@ namespace IQBPay.Controllers
                         {
                             EAgentCommission comm =  payMag.InitAgentCommission(order, qrUser);
                             db.DBAgentCommission.Add(comm);
-                         
                         }
+                        //买家信息记录
 
                         EBuyerInfo buyInfo = new EBuyerInfo();
                         buyInfo.LastTransDate = DateTime.Now;

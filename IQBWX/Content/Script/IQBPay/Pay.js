@@ -128,7 +128,7 @@ function GetVerifyCode() {
     //    alert("支付订单号码未生成，请联系站长！");
     //    return;
     //}
-    var ReceiveNo = $("#ReceiveNo").val();
+  //  var ReceiveNo = $("#ReceiveNo").val();
     var phone = $("#userPhone");
     phone.attr("disabled", true);
 
@@ -136,7 +136,7 @@ function GetVerifyCode() {
     bn.attr("disabled", true);
     bn.css("background", "#DDDDDD");
 
-    var url = "/api/sms/SentSMS_IQBPay_BuyerOrder?ReceiveNo=" + ReceiveNo + "&mobilePhone=" + phone.val() + "&IntervalSec=" + InitCount;
+    var url = "/api/sms/SentSMS_IQBPay_BuyerOrder?mobilePhone=" + phone.val() + "&IntervalSec=" + InitCount;
 
     $.ajax({
         type: "get",

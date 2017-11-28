@@ -155,6 +155,10 @@ namespace IQBPay.Controllers
                     {
                         list=list.Where(o => o.OrderStatus == parameter.OrderStatus);
                     }
+                    else
+                    {
+                        list = list.Where(o => o.OrderStatus != OrderStatus.WaitingAliPayNotify);
+                    }
 
                     if (parameter.DataType != ConditionDataType.All)
                     {

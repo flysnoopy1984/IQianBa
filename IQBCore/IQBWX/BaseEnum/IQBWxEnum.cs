@@ -63,4 +63,12 @@ namespace IQBCore.IQBWX.BaseEnum
         Book = 1,
         Pay = 2,
     }
+
+    public enum SMSTemplate
+    {
+        //验证码：您的验证码为:{1}. 支付成功后。为保证商家发货给您，请注意确认短信。
+        VerifyCode = 60627,
+        //收款确认：您已支付成功，您的收款确认码为：{1}。若代理商家已打款，请到以下地址进行收款确认：http://b.iqianba.cn/。
+        ReceiveConfirm = 60977,
+    }
 }

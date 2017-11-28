@@ -63,7 +63,7 @@ namespace IQBWX.Controllers
                 return RedirectToAction("ErrorMessage", "Home",new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
             }
             ViewBag.QRUserId = Id;
-            ViewBag.ReceiveNo = StringHelper.GenerateReceiveNo();
+           // ViewBag.ReceiveNo = StringHelper.GenerateReceiveNo();
             return View();
         }
 
@@ -154,7 +154,7 @@ namespace IQBWX.Controllers
 
         public ActionResult OrderList()
         {
-            string openId = this.GetOpenId();
+            string openId = this.GetOpenId(true);
             string msg = this.CheckPPUserRole(openId);
             if (msg != "OK")
                 return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
@@ -283,6 +283,8 @@ namespace IQBWX.Controllers
                     {
                         list = list.Where(o => o.OrderStatus == OrderStatus);
                     }
+                    else
+                        list = list.Where(o => o.OrderStatus != OrderStatus.WaitingAliPayNotify);
 
                     if (DateType != ConditionDataType.All)
                     {
@@ -465,7 +467,7 @@ namespace IQBWX.Controllers
 
             using (AliPayContent db = new AliPayContent())
             {
-                list = db.DBOrder.Where(o => o.ReceiveNo == receiveNo).Select(a => new ROrder_Receive
+                list = db.DBOrder.Where(o => o.ReceiveNo == receiveNo && o.OrderStatus == OrderStatus.WaitingBuyerConfirm).Select(a => new ROrder_Receive
                 {
                     OrderStatus = a.OrderStatus,
                     Amount = a.TotalAmount,

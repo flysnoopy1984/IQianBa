@@ -149,7 +149,7 @@ namespace IQBWX.Controllers.API
         }
 
         [HttpGet]
-        public OutSMS SentSMS_IQBPay_BuyerOrder(string ReceiveNo,string mobilePhone, int IntervalSec)
+        public OutSMS SentSMS_IQBPay_BuyerOrder(string mobilePhone, int IntervalSec)
         {
             OutSMS OutSMS = new OutSMS();
             try
@@ -160,7 +160,13 @@ namespace IQBWX.Controllers.API
                 {
                     string VerifyCode = StringHelper.GenerateVerifyCode();
 
-                    if (!this.DoSMS(mobilePhone, VerifyCode, ReceiveNo))
+                    InSMS inSMS = new InSMS();
+                    inSMS.Init();
+                    inSMS.Tpl_id = Convert.ToInt32(SMSTemplate.VerifyCode).ToString();
+                    inSMS.PhoneNumber = mobilePhone;
+                    inSMS.Parameters = VerifyCode;
+
+                    if (!this.DoSMS(inSMS))
                     {
                         OutSMS.SMSVerifyStatus = SMSVerifyStatus.SentFailure;
                         return OutSMS;
@@ -172,7 +178,7 @@ namespace IQBWX.Controllers.API
                         {
                             VerifyCode = VerifyCode,
                             MobilePhone = mobilePhone,
-                            ReceiveNo = ReceiveNo,
+                          
                             SendDateTime = DateTime.Now,
                             SMSVerifyStatus = SMSVerifyStatus.Sent,
                             SMSEvent = SMSEvent.IQB_PayOrder,
@@ -200,7 +206,8 @@ namespace IQBWX.Controllers.API
             return OutSMS;
         }
 
-        private Boolean DoSMS(string phoneNumber,string VerifyCode,string ReceiveNo)
+        [HttpPost]
+        public Boolean DoSMS([FromBody]InSMS inSMS)
         {
             Boolean result = true;
             ESMSLog smsLog = new ESMSLog();
@@ -208,10 +215,6 @@ namespace IQBWX.Controllers.API
             {
 
                 SMSManager sms = new SMSManager();
-                InSMS inSMS = new InSMS();
-                inSMS.Init();
-                inSMS.PhoneNumber = phoneNumber;
-                inSMS.Parameters = VerifyCode+","+ ReceiveNo + ",http://b.iqianba.cn/";
 
                 SMSResult_API51 Response = sms.PostSMS_API51(inSMS,ref smsLog);
                 if(Response.result == "0")

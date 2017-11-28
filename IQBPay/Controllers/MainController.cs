@@ -76,7 +76,7 @@ namespace IQBPay.Controllers
                     //WX客户端
                     string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
                     url += "/API/OutData/RefreshGlobelConfig";
-                    HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, "");
+                    HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, "", "application/x-www-form-urlencoded");
 
                 }
             }
