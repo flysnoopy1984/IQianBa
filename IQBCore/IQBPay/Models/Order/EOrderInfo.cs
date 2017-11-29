@@ -39,8 +39,17 @@ namespace IQBCore.IQBPay.Models.Order
         [MaxLength(16)]
         public string BuyerAliPayId { get; set; }
 
+        /// <summary>
+        /// 支付宝回调函数的登陆Id,带**
+        /// </summary>
         [MaxLength(100)]
         public string BuyerAliPayLoginId { get; set; }
+
+        /// <summary>
+        /// 用户输入的收款账户
+        /// </summary>
+        [MaxLength(100)]
+        public string BuyerAliPayAccount { get; set; }
 
         [MaxLength(20)]
         public string BuyerMobilePhone { get; set; }

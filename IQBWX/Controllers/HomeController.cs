@@ -49,7 +49,16 @@ namespace IQBWX.Controllers
 
             return View();
 
-        }      
+        }  
+        
+        public ActionResult Demo()
+        {
+            string url = "http://localhost:34484/";
+            url += "API/OutData/RefreshGlobelConfig";
+            HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, "", "application/x-www-form-urlencoded");
+
+            return View();
+        }
         public ActionResult Message()
         {
             IQBLog log = new IQBLog();

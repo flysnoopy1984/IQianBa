@@ -99,6 +99,7 @@ function InitFormData(data) {
     $("#AliPayAccount").val(data.AliPayAccount);
     $("#UserStatus").val(data.UserStatus);
 
+    $("#selUserRole").val(data.UserRole);
     var st;
     if (data.UserStatus == 0)
         st = false;
@@ -145,6 +146,7 @@ function Save() {
     var StoreId = $("#selStore").val();
 
     var qrUserId = $("#QrUserId").val();
+    var UserRole = $("#selUserRole").val();
 
     if (!CheckForm()) return;
 
@@ -152,7 +154,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "Id": ID, "IsAutoTransfer": IsAutoTransfer, "AliPayAccount": AliPayAccount, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName":ParentName,"ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
+        data: { "Id": ID, "IsAutoTransfer": IsAutoTransfer, "AliPayAccount": AliPayAccount,"UserRole":UserRole, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName":ParentName,"ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
         url: url,
         success: function (data) {
             if (data == "OK") {

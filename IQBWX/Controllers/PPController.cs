@@ -67,6 +67,17 @@ namespace IQBWX.Controllers
             return View();
         }
 
+        public ActionResult Pay2(string Id)
+        {
+            if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
+            }
+            ViewBag.QRUserId = Id;
+            // ViewBag.ReceiveNo = StringHelper.GenerateReceiveNo();
+            return View();
+        }
+
         public ActionResult Auth_Store(string Rate)
         {
             ViewBag.Rate = Rate;

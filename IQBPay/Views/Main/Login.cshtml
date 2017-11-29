@@ -15,18 +15,42 @@
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <script src="@Url.Scrpit("~/scripts/jquery-1.10.2.min.js")"></script>
     <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+    <link href="~/Content/Component/jquery-confirm.css" rel="stylesheet" />
+    <script src="~/scripts/Component/jquery-confirm.js"></script>
+
+
+
     <title>Login</title>
    
     <script type="text/javascript">
         $(document).ready(function () {
             var action = GetUrlParam("action");
+           
             if(action == "sessionlost")
             {
-                alert("Session 失效，重新登陆！");
+                $.alert({
+                    theme: 'dark',
+                    title: '错误',
+                    content: 'Session 失效，重新登陆！'
+                });
+               
             }
             if(action == "notAdmin")
             {
-                alert("权限不足！");
+                $.alert({
+                    theme: 'dark',
+                    title: '错误',
+                    content: '权限不足！'
+                });
+               
+            }
+            if (action == "noRegister") {
+                $.alert({
+                    theme: 'dark',
+                    title: '错误',
+                    content: '网站已经关闭！'
+                });
+              
             }
         });
 

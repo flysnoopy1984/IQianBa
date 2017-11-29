@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IQBCore.Common.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -12,6 +13,8 @@ namespace IQBWX.Controllers.API
         public void RefreshGlobelConfig()
         {
             WXBaseController.GlobalConfig = null;
+            IQBLog log = new IQBLog();
+            log.log("RefreshGlobelConfig");
         }
     }
 }

@@ -16,6 +16,7 @@ using IQBCore.Common.Constant;
 using IQBCore.IQBPay.BLL;
 using System.Data.Entity;
 using IQBCore.Common.Helper;
+using IQBCore.IQBPay.Models.User;
 
 namespace IQBPay.Controllers
 {
@@ -75,7 +76,7 @@ namespace IQBPay.Controllers
 
                     //WX客户端
                     string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
-                    url += "/API/OutData/RefreshGlobelConfig";
+                    url += "API/OutData/RefreshGlobelConfig";
                     HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, "", "application/x-www-form-urlencoded");
 
                 }
@@ -181,7 +182,20 @@ namespace IQBPay.Controllers
 
         public ActionResult WebEntry(string openId)
         {
+
+            using (AliPayContent db = new AliPayContent())
+            {
+                EUserInfo ui =   db.DBUserInfo.Where(u => u.OpenId == openId).FirstOrDefault();
+                if(ui == null)
+                {
+                   return Redirect("/Main/Login?action="+ ExistAction.noRegister.ToString());
+                }
+                    
+
+                
+            }
             this.SetUserSession(openId);
+
             return RedirectToAction("Profile", "User");
         }
 

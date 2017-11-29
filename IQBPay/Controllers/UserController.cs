@@ -54,7 +54,7 @@ namespace IQBPay.Controllers
 
         public ActionResult Get(int Id)
         {
-            string sql = @"select ui.Id,ui.Name,ui.UserStatus,ui.IsAutoTransfer,ui.CDate,ui.MDate,ui.UserRole,ui.Headimgurl,ui.AliPayAccount,
+            string sql = @"select ui.Id,ui.Name,ui.UserStatus,ui.UserRole,ui.IsAutoTransfer,ui.CDate,ui.MDate,ui.UserRole,ui.Headimgurl,ui.AliPayAccount,
                            qruser.ID as qrUserId,QRUser.Rate,qruser.FilePath as QRFilePath,qruser.ParentCommissionRate,
                            qrUser.parentOpenId as ParentAgentOpenId,qrUser.ParentName as ParentAgent,
                            si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
@@ -165,12 +165,14 @@ namespace IQBPay.Controllers
                     ui.IsAutoTransfer = InUA.IsAutoTransfer;
                     ui.AliPayAccount = InUA.AliPayAccount;
                     ui.UserStatus = InUA.UserStatus;
+                    ui.UserRole = InUA.UserRole;
 
                     DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
                     entry.State = EntityState.Unchanged;
                     entry.Property(t => t.AliPayAccount).IsModified = true;
                     entry.Property(t => t.IsAutoTransfer).IsModified = true;
                     entry.Property(t => t.UserStatus).IsModified = true;
+                    entry.Property(t => t.UserRole).IsModified = true;
 
                     EQRUser qrUser = new EQRUser();
                     qrUser.ID = InUA.QrUserId;
@@ -220,7 +222,7 @@ namespace IQBPay.Controllers
                    
                     entry.Property(t => t.AliPayAccount).IsModified = true;
                     entry.Property(t => t.UserStatus).IsModified = true;
-
+                    entry.Property(t => t.UserRole).IsModified = true;
                     entry.Property(t => t.MDate).IsModified = true;
                     entry.Property(t => t.MTime).IsModified = true;
                     entry.Property(t => t.ModifyDate).IsModified = true;
@@ -241,12 +243,12 @@ namespace IQBPay.Controllers
 
         public ActionResult Demo()
         {
-           
-  
 
+
+            /*
            // string url = "http://ap.iqianba.cn/api/userapi/register/";
             string url = "http://localhost:24068/api/userapi/register/";
-            string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=Jacky&QRAuthId=6&openId=o3nwE0qI_cOkirmh_qbGGG-5G6B0&Headimgurl=http://wx.qlogo.cn/mmopen/hzVGicX27IG18yibKNnHfBojH4SpCPGNEvyOUZE8jxOw2ZnYcHzAkm7yHk0oKoCA2zqtyib09sxDzX5GOubMfyOraSMren2GUSw/0";
+            string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=平台服务客服&openId=o3nwE0jrONff65oS-_W96ErKcaa0&QRAuthId=10&Headimgurl=http://wx.qlogo.cn/mmopen/6bFpEa5VMGgc8Aoj6Ro2sTK4icFibQrEpLBQCiaGey6gWzBJnZZ44ic9JEUC2zxxRbx9bKC1COuXlwjZ8tMsC1wZtSHrW19qicl0N/0";
             //""
             string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
             if (res == "EXIST")
@@ -256,7 +258,12 @@ namespace IQBPay.Controllers
                     int a = 1;
                 }
             }
+           
+
             return Content(res);
+            */
+            return RedirectToAction("WebEntry", "Main", new { openId = "aaa" });
+            return View();
          
         }
     }

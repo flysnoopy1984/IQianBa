@@ -26,6 +26,8 @@ namespace IQBCore.IQBPay.Models.InParameter
 
         public UserStatus UserStatus { get; set; }
 
+        public UserRole UserRole { get; set; }
+
         public int QrUserId { get; set; }
 
 

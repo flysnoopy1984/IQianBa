@@ -8,7 +8,7 @@
     二维码
 }
 @section SubMenu2{
-    收款二维码列表
+    代理授权码
 }
 
 <link href="@Url.Scrpit("~/Content/Style/Web/List.css")" rel="stylesheet" />
@@ -16,7 +16,7 @@
 <script src="@Url.Scrpit("~/scripts/Web/QR_ARList.js")"></script>
 <div id="ListArea">
     <div id="Title" style="margin:0px;">
-        收款二维码列表
+        代理授权码
         <ul class="UlHorizontal" style="float:right">
             <li>
                 <button type="button" class="btn btn-warning" onclick="ToInfo(1);">新增</button>
@@ -32,11 +32,11 @@
             <thead class="cf">
                 <tr id="trHeader">  
                     <th width="150px;">二维码 
-                    <th width="150px">点率(0-100)</th>
+                    <th width="100px">点率(0-100)</th>
                     <th width="150px">上级代理</th>
-                    <th width="200px">上级代理抽成点率(0-100)</th>
+                    <th width="150px">上级代理抽成点率</th>
                     <th width="200px">收款商户</th>
-                    <th>备注</th>
+                    <th width="150px">备注</th>
                     <th width="100px;">状态</th>
                     <th width="100px;"> 操作</th>
                 </tr>

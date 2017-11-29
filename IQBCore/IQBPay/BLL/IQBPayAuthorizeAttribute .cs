@@ -1,4 +1,5 @@
-﻿using IQBCore.Model;
+﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace IQBCore.IQBPay.BLL
             //When user has not login yet
             if (loginUser == null || string.IsNullOrEmpty(loginUser.OpenId))
             {
-                var redirectUrl = "/Main/Login?RedirectPath=" + filterContext.HttpContext.Request.Url+"&action=sessionlost";
+                var redirectUrl = "/Main/Login?RedirectPath=" + filterContext.HttpContext.Request.Url+"&action="+ ExistAction.sessionlost.ToString();
                 filterContext.Result = new RedirectResult(redirectUrl);
                 return;
             }

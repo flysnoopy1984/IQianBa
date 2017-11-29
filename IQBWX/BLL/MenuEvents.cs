@@ -139,7 +139,7 @@ namespace IQBWX.BLL
             string result = exWeb.regeisterWebMember(ui, qr.ID);
             if (result.StartsWith("OK"))
             {
-                mText += "欢迎注册爱钱吧平台！\n";
+                mText += "欢迎注册服务平台！\n";
                 mText += string.Format("你当前收款码的扣点率为【{0}%】", qr.Rate);
             }
             else if(result.StartsWith("ParentOK"))
@@ -149,7 +149,7 @@ namespace IQBWX.BLL
                 {
                     pUser = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).FirstOrDefault();
                 }
-                mText += "欢迎注册爱钱吧平台！\n";
+                mText += "欢迎注册服务平台！\n";
                 mText += string.Format("你当前收款码的扣点率为【{0}%】\n 您的上级代理为:{1}", qr.Rate, pUser.Name);
             }
             else if (result.StartsWith("EXIST"))
@@ -232,7 +232,7 @@ namespace IQBWX.BLL
 
                     if (sso != null)
                     {
-                        log.log("WXScanLogin AppId:" + sso.AppId);
+                      //  log.log("WXScanLogin AppId:" + sso.AppId);
                         sso.OpenId = msg.FromUserName;
                         sso.LoginStatus = LoginStatus.QRScaned;
                         sso.IsValidate = true;

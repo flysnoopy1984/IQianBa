@@ -134,6 +134,7 @@
     <Content Include="Content\Config\PopPolicy.xml" />
     <Content Include="Content\Css\common.css" />
     <Content Include="Content\CatchSite\HJB\list.html" />
+    <Content Include="Content\Css\Component\jquery-confirm.css" />
     <Content Include="Content\Css\List.css" />
     <Content Include="Content\Css\MainCss.css" />
     <Content Include="Content\Css\idangerous.swiper.css" />
@@ -188,6 +189,7 @@
     <Content Include="Content\QRImg\bk_test.jpg" />
     <Content Include="Content\Script\CashOut.js" />
     <Content Include="Content\Script\CommissionDetail.js" />
+    <Content Include="Content\Script\Component\jquery-confirm.js" />
     <Content Include="Content\Script\Detail.js" />
     <Content Include="Content\Script\dropload.js" />
     <Content Include="Content\Script\ErrorMessage.js" />
@@ -197,6 +199,7 @@
     <Content Include="Content\Script\IQBPay\AliPayAccount.js" />
     <Content Include="Content\Script\IQBPay\Auth_Store.js" />
     <Content Include="Content\Script\IQBPay\DoTransfer.js" />
+    <Content Include="Content\Script\IQBPay\Pay2.js" />
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
     <Content Include="Content\Script\IQBPay\Pay.js" />
     <Content Include="Content\Script\IQBPay\ReceiveOrder.js" />
@@ -348,6 +351,8 @@
     <Content Include="Views\PP\DoTransfer.cshtml" />
     <Content Include="Views\PP\AgentCommList.cshtml" />
     <Content Include="Views\PP\ReceiveOrder.cshtml" />
+    <Content Include="Views\PP\Pay2.cshtml" />
+    <Content Include="Views\HOME\Demo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

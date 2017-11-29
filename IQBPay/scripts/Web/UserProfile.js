@@ -46,5 +46,6 @@ function InitFormData(data)
     else
         $("#QRImg").attr("src", data.QRFilePath);
 
-    $("#Rate").text(data.Rate + "%");
+    if (data.Rate != null && data.Rate != "")
+        $("#Rate").text(data.Rate + "%");
 }

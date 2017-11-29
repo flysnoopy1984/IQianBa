@@ -23,6 +23,8 @@ namespace IQBCore.IQBPay.Models.Result
 
         public UserStatus UserStatus { get; set; }
 
+        public UserRole UserRole { get; set; }
+
         public Boolean IsAutoTransfer { get; set; }
 
         public int TotalCount { get; set; }
@@ -44,7 +46,7 @@ namespace IQBCore.IQBPay.Models.Result
 
         public string ParentAgentOpenId { get; set; }
 
-        public UserRole UserRole { get; set; }
+       
 
         public int? StoreId { get; set; }
         public string StoreName { get; set; }
@@ -54,7 +56,7 @@ namespace IQBCore.IQBPay.Models.Result
 
         public List<HashUser> ParentAgentList { get; set; }
 
-        public long QRUserId { get; set; }
+        public long? QRUserId { get; set; }
 
        
 

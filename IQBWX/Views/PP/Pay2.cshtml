@@ -13,11 +13,10 @@
     <script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
     <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
     <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
-    <link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
-    <script src="~/Content/Script/Component/jquery-confirm.js"></script>
-    <script src="@Url.Scrpit("~/Content/Script/IQBPay/Pay.js")"></script>
 
-    <title>支付界面2</title>
+    <script src="@Url.Scrpit("~/Content/Script/IQBPay/Pay2.js")"></script>
+
+    <title>支付界面</title>
 </head>
 <body>
     <style>
@@ -34,14 +33,22 @@
 
     <div class="mgz cen" id="PayArea">
         <div class="yuec mg2 xi35" style="margin-top:20px;">服务界面</div>
-        <div class="TitleInfo mg2 xi30" style="color:#980C16">请填入您的收款支付宝账户，非常重要！！！当支付成功后，您将立即受到款项。</br>如因账户输入错误导致未收到款，责任由您本人承担</div>
+        <div class="TitleInfo mg2 xi30" style="color:#980C16">为避免人才两空，请先验证手机。</br>平台将在您支付成功后，发送确认收款码至您手机，请注意短信消息。</div>
         <div>
-            <span class="FieldLabel">收款支付宝账号</span>
-            <input id="AliPayAccount" class="AliPayAccount" type="text">
-            <button type="button" class="mgz btn btn-success verifyButton" id="bnConfirmAliPayAccount" onclick="ConfirmAliPayAccount()">确定</button>
-            <button type="button" class="mgz btn btn-danger verifyButton" id="bnModifyAliPayAccount" onclick="ModifyAliPayAccount()">修改</button>
+            <span class="FieldLabel">手机号码</span>
+            <input id="userPhone" class="VerifyInputPhone" type="text">
+            <button type="button" class="mgz btn btn-success verifyButton" id="bnConfirmPhone" onclick="ConfirmPhone()">确定</button>
         </div>
-
+        <div id="VerifyArea">
+            <div style="margin-top:20px;">
+                <span class="FieldLabel">验证码</span>
+                <input id="VerifyCode" class="VerifyInputCode" type="text">
+                <button type="button" class="mgz btn btn-success verifyButton" id="BnGetVerifyCode" onclick="GetVerifyCode()">获取验证码</button>
+            </div>
+            <div class="cen" style="margin-top:20px;">
+                <button id="BnVerifyConfirm" style="display:none;" type="button" class="mgz btn btn-danger verifyOKButton" onclick="VerifyCodeConfirm()">OK</button>
+            </div>
+        </div>
 
         <div id="PayContent">
             <div class="yuex mg2 xi20" style="color:cornflowerblue">请通过支付宝扫码支付</div>

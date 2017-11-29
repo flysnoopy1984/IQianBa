@@ -214,25 +214,26 @@ namespace IQBPay.Controllers
                     {
                         base.Log.log("BuyerMobilePhone" + order.BuyerMobilePhone);
                         //短信通知买家收款码开始
-                        if(!string.IsNullOrEmpty(order.BuyerMobilePhone))
-                        {
-                            try
-                            {
-                                InSMS inSMS = new InSMS();
-                                inSMS.Init();
-                                inSMS.PhoneNumber = order.BuyerMobilePhone;
-                                inSMS.Parameters = order.ReceiveNo;
-                                inSMS.Tpl_id = Convert.ToInt32(SMSTemplate.ReceiveConfirm).ToString();
 
-                                SMSManager smsMgr = new SMSManager();
-                                smsMgr.PostSMS_API51(inSMS);
-                            }
-                            catch(Exception ex)
-                            {
-                                base.Log.log(string.Format("手机号{1}--收货确认短信发送失败{0}" + ex.Message,order.BuyerMobilePhone));
+                        //if(!string.IsNullOrEmpty(order.BuyerMobilePhone))
+                        //{
+                        //    try
+                        //    {
+                        //        InSMS inSMS = new InSMS();
+                        //        inSMS.Init();
+                        //        inSMS.PhoneNumber = order.BuyerMobilePhone;
+                        //        inSMS.Parameters = order.ReceiveNo;
+                        //        inSMS.Tpl_id = Convert.ToInt32(SMSTemplate.ReceiveConfirm).ToString();
 
-                            }
-                        }
+                        //        SMSManager smsMgr = new SMSManager();
+                        //        smsMgr.PostSMS_API51(inSMS);
+                        //    }
+                        //    catch(Exception ex)
+                        //    {
+                        //        base.Log.log(string.Format("手机号{1}--收货确认短信发送失败{0}" + ex.Message,order.BuyerMobilePhone));
+
+                        //    }
+                        //}
 
                         //短信通知买家收款码结束
 
@@ -498,7 +499,7 @@ namespace IQBPay.Controllers
         /// <param name="Id">QRUserId</param>
         /// <param name="Amount"></param>
         /// <returns></returns>   
-        public ActionResult F2FPay(string qrUserId, string Amount,string Phone)
+        public ActionResult F2FPay(string qrUserId, string Amount,string AliPayAccount)
         {
             string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?code=2001&ErrorMsg=";
             try
@@ -591,7 +592,7 @@ namespace IQBPay.Controllers
                     {
 
                         //创建初始化订单
-                        EOrderInfo order = payManager.InitOrder(qrUser, store,Convert.ToSingle(Amount),Phone);
+                        EOrderInfo order = payManager.InitOrder(qrUser, store,Convert.ToSingle(Amount), AliPayAccount);
                         db.DBOrder.Add(order);
                        
                         //是否有上级代理
@@ -601,12 +602,12 @@ namespace IQBPay.Controllers
                             db.DBAgentCommission.Add(comm);
                         }
                         //买家信息记录
-
+                        /*
                         EBuyerInfo buyInfo = new EBuyerInfo();
                         buyInfo.LastTransDate = DateTime.Now;
                         buyInfo.PhoneNumber = Phone;
                         db.DBBuyerInfo.Add(buyInfo);
-
+                        */
                         db.SaveChanges();
 
                         return Redirect(Res);

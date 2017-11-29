@@ -22,10 +22,13 @@ namespace IQBCore.IQBPay.BaseEnum
     {
         
         /// <summary>
-        /// 普通用户，就是进来看看
+        /// 过客，就是进来看看
         /// </summary>
         NormalUser=1,
 
+        /// <summary>
+        /// 代理用户
+        /// </summary>
         Agent = 2,
 
         /// <summary>
@@ -38,6 +41,9 @@ namespace IQBCore.IQBPay.BaseEnum
         /// </summary>
         StoreMaster =99,
 
+        /// <summary>
+        /// 超级管理员
+        /// </summary>
         Administrator=100,
 
     }
@@ -121,6 +127,13 @@ namespace IQBCore.IQBPay.BaseEnum
     {
         Normal=0,
         UnKnow=-1,
+    }
+
+    public enum ExistAction
+    {
+        sessionlost,
+        notAdmin,
+        noRegister,
     }
 
 

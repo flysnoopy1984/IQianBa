@@ -51,7 +51,7 @@ namespace IQBWX.BLL.ExternalWeb
 
             if (res.Contains("OK"))
             {
-                result.WXMessage += string.Format("亲爱的{0}，您已成功加入爱钱吧-支付平台！", ui.nickname);
+                result.WXMessage += string.Format("亲爱的{0}，欢迎您成功加入玉杰服务平台！", ui.nickname);
                 result.Status = 1;
                 return result;
             }

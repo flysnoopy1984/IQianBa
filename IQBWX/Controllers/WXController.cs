@@ -76,7 +76,7 @@ namespace IQBWX.Controllers
                     }
                 }
 
-                log.log("getQR"+jsonStr);
+             //   log.log("getQR"+jsonStr);
 
                 //post请求得到返回数据（这里是封装过的，就是普通的java post请求）
                 String response = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, jsonStr);
@@ -220,12 +220,12 @@ namespace IQBWX.Controllers
                     sso = db.FindSSOForScaned(ssoToken);
                     if(sso!=null)
                     {
-                        if (!WXBaseController.GlobalConfig.AllowRegister)
-                        {
-                            result.ErrorMsg = "close";
-                            result.ReturnUrl = ConfigurationManager.AppSettings["Site_IQBPay"];
-                            return result;
-                        }
+                        //if (!WXBaseController.GlobalConfig.AllowRegister)
+                        //{
+                        //    result.ErrorMsg = "close";
+                        //    result.ReturnUrl = ConfigurationManager.AppSettings["Site_IQBPay"];
+                        //    return result;
+                        //}
 
                         sso.IsValidate = false;
                         sso.LoginStatus = LoginStatus.Login;

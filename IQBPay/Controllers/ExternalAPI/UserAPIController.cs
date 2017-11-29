@@ -54,6 +54,10 @@ namespace IQBPay.Controllers.ExternalAPI
                                         //新建代理用户
                                         updateUser = new EUserInfo();
                                         updateUser.InitRegiser();
+                                        updateUser.OpenId = ui.OpenId;
+                                        updateUser.Name = ui.Name;
+                                        updateUser.Headimgurl = ui.Headimgurl;
+                                        
                                         updateUser.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
                                         db.DBUserInfo.Add(updateUser);
                                         isExist = false;
@@ -100,7 +104,7 @@ namespace IQBPay.Controllers.ExternalAPI
                                     {
 
                                         ui.InitRegiser();
-
+                                      
                                         db.DBUserInfo.Add(ui);
                                         db.SaveChanges();
                                         isExist = false;

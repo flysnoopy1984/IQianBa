@@ -171,6 +171,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.js" />
+    <Content Include="Content\Component\jquery-confirm.css" />
     <Content Include="Content\Images\404_02.png" />
     <Content Include="Content\Images\backgrounds\bg4.jpg" />
     <Content Include="Content\Images\800_01.png" />
@@ -467,6 +468,7 @@
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="scripts\Component\FlyDiv.js" />
     <Content Include="scripts\Component\IQBTable.js" />
+    <Content Include="scripts\Component\jquery-confirm.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\Web\DoTransfer.js" />
     <Content Include="scripts\Web\DoTransfer_OrderDetail.js" />
