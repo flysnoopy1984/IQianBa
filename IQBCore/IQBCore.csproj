@@ -96,7 +96,6 @@
     <Compile Include="Common\Helper\IQBUrlHelper.cs" />
     <Compile Include="Common\Helper\UtilityHelper.cs" />
     <Compile Include="IQBPay\BaseEnum\SMSEnum.cs" />
-    <Compile Include="IQBPay\BLL\IQBPayAuthorizeAttribute .cs" />
     <Compile Include="Common\Constant\IQBConstant.cs" />
     <Compile Include="Common\Helper\HttpHelper.cs" />
     <Compile Include="Common\Helper\IQBLog.cs" />
@@ -105,7 +104,6 @@
     <Compile Include="IQBPay\BLL\AliPayManager.cs" />
     <Compile Include="IQBPay\BaseEnum\IQBPayEnum.cs" />
     <Compile Include="IQBPay\BLL\F2FPayHandler.cs" />
-    <Compile Include="IQBPay\BLL\IQBPayAuthorize_AdminAttribute.cs" />
     <Compile Include="IQBPay\BLL\SMSManager.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\EAgentCommission.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\EPreTransfer.cs" />

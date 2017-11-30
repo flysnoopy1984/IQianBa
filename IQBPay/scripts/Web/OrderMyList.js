@@ -37,11 +37,12 @@ function Query(NeedClearn, _PageIndex) {
     var OrderStatus = $("#cOrderStatus").val();
     var AgentOpenId = $("#OpenId").val();
     var DataType = $("#cDateType").val();
+    var OrderNo = $("#OrderNo").val();
     ShowProcess();
 
     $.ajax({
         type: 'post',
-        data: "DataType=" + DataType + "&OrderStatus=" + OrderStatus + "&OrderType=0&AgentOpenId=" + AgentOpenId + "&pageIndex=" + _PageIndex,
+        data: "OrderNo="+OrderNo+"&DataType=" + DataType + "&OrderStatus=" + OrderStatus + "&OrderType=0&AgentOpenId=" + AgentOpenId + "&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;

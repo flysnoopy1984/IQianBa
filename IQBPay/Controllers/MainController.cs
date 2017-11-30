@@ -190,9 +190,7 @@ namespace IQBPay.Controllers
                 {
                    return Redirect("/Main/Login?action="+ ExistAction.noRegister.ToString());
                 }
-                    
 
-                
             }
             this.SetUserSession(openId);
 

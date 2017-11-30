@@ -19,7 +19,7 @@
 
 
 <div id="ListArea">
-    <div id="Title" style="margin:0px;">
+    <div id="Title" style="margin:0px; height:200px;">
         <span id="ListTitleName">订单列表</span>
         <hr />
         <div class="ListCondition">
@@ -55,7 +55,19 @@
                     </select>
                 </li>
             </ul>
-            
+            <ul class="UlHorizontal">
+                <li>
+                    <div class="form-group">
+                        <label>支付宝订单号：</label>
+                        <input id="AliPayOrderNo" type="text" class="form-control ConditionField" style="width:300px;">
+                    </div>
+                </li>
+                <li>
+                    <label>网站订单号：</label>
+                    <input id="OrderNo" type="text" class="form-control ConditionField" style="width:300px;">
+                </li>
+               
+            </ul>
         </div>
         <ul class="UlHorizontal ListButtonRight" >
             <li>             

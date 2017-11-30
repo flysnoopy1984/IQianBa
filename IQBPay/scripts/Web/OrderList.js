@@ -64,6 +64,8 @@ function Query(NeedClearn,_PageIndex) {
     var AgentName = $("#cAgentName").val();
     var DataType = $("#cDateType").val();
     var cStore = $("#cStore").val();
+    var AliPayOrderNo = $("#AliPayOrderNo").val();
+    var OrderNo = $("#OrderNo").val();
 
     ShowProcess();
 
@@ -78,7 +80,7 @@ function Query(NeedClearn,_PageIndex) {
 
     $.ajax({
         type: 'post',
-        data: "StoreId=" + cStore + "&DataType=" + DataType + "&OrderStatus=" + OrderStatus + "&OrderType=0&AgentName=" + AgentName + "&pageIndex=" + _PageIndex,
+        data: "StoreId=" + cStore + "&OrderNo=" + OrderNo + "&AliPayOrderNo=" + AliPayOrderNo + "&DataType=" + DataType + "&OrderStatus=" + OrderStatus + "&OrderType=0&AgentName=" + AgentName + "&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;

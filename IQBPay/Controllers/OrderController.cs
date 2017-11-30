@@ -142,6 +142,16 @@ namespace IQBPay.Controllers
                         }
                     }
 
+                    if (!string.IsNullOrEmpty(parameter.OrderNo))
+                    {
+                        list = list.Where(o => o.OrderNo == parameter.OrderNo);
+                    }
+
+                    if (!string.IsNullOrEmpty(parameter.AliPayOrderNo))
+                    {
+                        list = list.Where(o => o.OrderNo == parameter.AliPayOrderNo);
+                    }
+
                     if (!string.IsNullOrEmpty(parameter.AgentOpenId))
                     {
                         list = list.Where(o => o.AgentOpenId == parameter.AgentOpenId);

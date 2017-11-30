@@ -22,6 +22,10 @@ namespace IQBCore.IQBPay.Models.InParameter
 
         public string StoreId { get; set; }
 
+        public string OrderNo { get; set; }
+
+        public string AliPayOrderNo { get; set; }
+
         public InOrder()
         {
             DataType = ConditionDataType.Today;
