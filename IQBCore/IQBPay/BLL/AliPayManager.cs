@@ -7,12 +7,14 @@ using Com.Alipay.Business;
 using Com.Alipay.Domain;
 using Com.Alipay.Model;
 using IQBCore.Common.Helper;
+using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.System;
 using IQBCore.IQBPay.Models.User;
+using IQBCore.IQBWX.Models.WX.Template;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -43,7 +45,7 @@ namespace IQBCore.IQBPay.BLL
             "\"trade_no\":\""+order.AliPayOrderNo+"\"," +
             "      \"royalty_parameters\":[{" +
             "        \"trans_out\":\""+store.AliPayAccount+"\"," +
-            "\"trans_in\":\""+ receiveStore .AliPayAccount+ "\"," +
+            "\"trans_in\":\""+ receiveStore.AliPayAccount+ "\"," +
             "\"amount\":"+ commission + "," +
             "\"desc\":\"分账\"" +
             "        }]," +
@@ -57,7 +59,69 @@ namespace IQBCore.IQBPay.BLL
             return response;
         }
 
-        public AlipayFundTransToaccountTransferResponse TransferAmount(EAliPayApplication app,string toAliPayAccount,string Amount,out string TransferId)
+        public ETransferAmount TransferHandler(TransferTarget target,EAliPayApplication app, EUserInfo ui,ref EOrderInfo order, string accessToken)
+        {
+            string TransferId ="";
+            ETransferAmount transfer = null;
+            AlipayFundTransToaccountTransferResponse res = null;
+            string AliPayAccount = null;
+            float TransferAmount = 0;
+            switch(target)
+            {
+                case TransferTarget.Agent:
+                    AliPayAccount = ui.AliPayAccount;
+                    TransferAmount = order.RateAmount;
+                    break;
+                case TransferTarget.ParentAgent:
+                    AliPayAccount = ui.AliPayAccount;
+                    TransferAmount = order.ParentCommissionAmount;
+                    break;
+                case TransferTarget.User:
+                    AliPayAccount = order.BuyerAliPayAccount;
+                    TransferAmount = order.BuyerTransferAmount;
+                    break;
+            }
+
+            res = DoTransferAmount(target, app, AliPayAccount, TransferAmount.ToString("0.00"), out TransferId);
+
+            transfer = ETransferAmount.Init(target, TransferId, TransferAmount, AliPayAccount, order,ui);
+
+            if (res.Code == "10000")
+            {
+                //微信通知代理开始
+                //try
+                //{
+                //    if(!string.IsNullOrEmpty(accessToken))
+                //    {
+                //        PPOrderPayNT notice = new PPOrderPayNT(accessToken, order.AgentOpenId, order);
+                //        notice.Push();
+                //    }
+                  
+                //}
+                //catch
+                //{
+
+                //}
+                //微信通知代理通知结束
+
+                //转账记录开始
+                transfer.TransferStatus = TransferStatus.Success;
+                transfer.Log += string.Format("[Transfer to {2}] Code:{0};msg:{1}", res.Code, res.Msg, target.ToString());
+
+               
+            }
+            else
+            {
+                transfer.TransferStatus = TransferStatus.Failure;
+                transfer.Log += string.Format("[Transfer to {2}] SubCode:{0};Submsg:{1}", res.SubCode, res.SubMsg, target.ToString());
+
+               
+                order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+            }
+            return transfer;
+        }
+
+        public AlipayFundTransToaccountTransferResponse DoTransferAmount(TransferTarget target,EAliPayApplication app,string toAliPayAccount,string Amount,out string TransferId)
         {
           
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
@@ -65,7 +129,7 @@ namespace IQBCore.IQBPay.BLL
 
             AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
 
-            TransferId = StringHelper.GenerateSubAccountTransNo();
+            TransferId = StringHelper.GenerateTransferNo(target);
             AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
             model.Amount = Amount;
             model.OutBizNo = TransferId;
@@ -102,7 +166,7 @@ namespace IQBCore.IQBPay.BLL
 
             order.OrderType = BaseEnum.OrderType.UnKnow;
             order.OrderStatus = BaseEnum.OrderStatus.Paid;
-            order.AliPayTransDate =Convert.ToDateTime(Request["gmt_create"]);
+            //order.AliPayTransDate =Convert.ToDateTime(Request["gmt_create"]);
             return order;
         }
         public EAgentCommission InitAgentCommission(EOrderInfo order, EQRUser qrUser)
@@ -147,14 +211,18 @@ namespace IQBCore.IQBPay.BLL
                 SellerCommission = (float)Math.Round(TotalAmount * (store.Rate) / 100, 2, MidpointRounding.ToEven),
                 OrderType = BaseEnum.OrderType.Normal,
 
+                BuyerMarketRate = qrUser.MarketRate,
+                BuyerTransferAmount = (float)Math.Round(TotalAmount * (100-qrUser.MarketRate) / 100, 2, MidpointRounding.ToEven),
                 BuyerAliPayAccount = AliPayAccount,
 
-                ReceiveNo = StringHelper.GenerateReceiveNo(),
+                //ReceiveNo = StringHelper.GenerateReceiveNo(),
                 
 
             };
-            order.RealTotalAmount = order.TotalAmount - order.RateAmount;
-
+            //代理
+          //  order.RealTotalAmount = order.TotalAmount - order.RateAmount;
+            //上级代理
+            
          
 
             return order;

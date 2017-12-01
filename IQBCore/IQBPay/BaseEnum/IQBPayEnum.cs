@@ -136,5 +136,20 @@ namespace IQBCore.IQBPay.BaseEnum
         noRegister,
     }
 
+    public enum TransferTarget
+    {
+        User =0,
+        Agent =1,
+        ParentAgent=2,
+    }
+
+    public enum TransferStatus
+    {
+        Open =0 ,
+        Success = 1,
+        Failure= -1,
+
+    }
+
 
 }

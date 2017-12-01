@@ -14,6 +14,26 @@ namespace IQBCore.IQBPay.Models.Result
     {
         public float TotalAmountSum { get; set; }
 
+        /// <summary>
+        /// 代理总计
+        /// </summary>
         public float RealTotalAmountSum { get; set; }
+
+        /// <summary>
+        /// 用户转账总计
+        /// </summary>
+        public float BuyerTransferSum { get; set; }
+
+        /// <summary>
+        /// 商家佣金
+        /// </summary>
+        public float StoreAmountSum { get; set; }
+
+        /// <summary>
+        /// 上级代理
+        /// </summary>
+        public float ParentAmountSum { get; set; }
+
+        public float PPIncome { get; set; }
     }
 }

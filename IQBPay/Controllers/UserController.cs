@@ -47,15 +47,23 @@ namespace IQBPay.Controllers
         }
         public ActionResult GetProfile()
         {
-            int Id = this.GetUserSession().Id;
-            return Get(Id);
+            try
+            {
+                int Id = this.GetUserSession().Id;
+                return Get(Id);
+            }
+            catch
+            {
+                return Redirect("/Main/Login?action=" + ExistAction.sessionlost.ToString());
+            }
+            
         }
 
 
         public ActionResult Get(int Id)
         {
             string sql = @"select ui.Id,ui.Name,ui.UserStatus,ui.UserRole,ui.IsAutoTransfer,ui.CDate,ui.MDate,ui.UserRole,ui.Headimgurl,ui.AliPayAccount,
-                           qruser.ID as qrUserId,QRUser.Rate,qruser.FilePath as QRFilePath,qruser.ParentCommissionRate,
+                           qruser.MarketRate,qruser.ID as qrUserId,QRUser.Rate,qruser.FilePath as QRFilePath,qruser.ParentCommissionRate,
                            qrUser.parentOpenId as ParentAgentOpenId,qrUser.ParentName as ParentAgent,
                            si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
                            from userinfo as ui 
@@ -180,6 +188,7 @@ namespace IQBPay.Controllers
                     qrUser.ParentOpenId  = InUA.ParentOpenId;
                     qrUser.ParentCommissionRate  = InUA.ParentCommissionRate;
                     qrUser.ReceiveStoreId = InUA.StoreId;
+                    qrUser.MarketRate = InUA.MarketRate;
 
 
                     DbEntityEntry<EQRUser> qrEntry = db.Entry<EQRUser>(qrUser);
@@ -188,6 +197,7 @@ namespace IQBPay.Controllers
                     qrEntry.Property(t => t.ParentOpenId).IsModified = true;
                     qrEntry.Property(t => t.ParentCommissionRate).IsModified = true;
                     qrEntry.Property(t => t.ReceiveStoreId).IsModified = true;
+                    qrEntry.Property(t => t.MarketRate).IsModified = true;
 
 
 

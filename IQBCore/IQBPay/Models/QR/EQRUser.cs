@@ -36,6 +36,11 @@ namespace IQBCore.IQBPay.Models.QR
         /// </summary>
         public float Rate { get; set; }
 
+        /// <summary>
+        /// 市场扣点，用户支付后，默认扣除这些点率
+        /// </summary>
+        public float MarketRate { get; set; }
+
         [MaxLength(128)]
         public string TargetUrl { get; set; }
 

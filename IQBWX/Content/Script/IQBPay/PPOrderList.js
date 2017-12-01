@@ -106,7 +106,7 @@ function generateData(result) {
         strCtrl += "<td style='width:50%'><ul><li style='color:cadetblue'>" + result[i].OrderNo + "</li>";
         strCtrl += "<li>创建时间:" + result[i].TransDateStr + "</li>";
         strCtrl += "<li style='color:brown; font-size:14px;'>订单状态:" + orderStatus + "</li></ul></td>";
-        strCtrl += "<td style='width:50%'><ul><li style='color:firebrick; font-weight:bold;'>" + result[i].RealTotalAmount + "</li>";
+        strCtrl += "<td style='width:50%'><ul><li style='color:firebrick; font-weight:bold;'>" + result[i].RateAmount + "</li>";
         strCtrl += "<li>订单总额:" + result[i].TotalAmount + "</li>";
         strCtrl += "<li>付款账户:" + result[i].BuyerAliPayLoginId + "</li></ul></td>";
 

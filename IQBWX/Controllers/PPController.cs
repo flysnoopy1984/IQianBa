@@ -175,7 +175,7 @@ namespace IQBWX.Controllers
 
         public ActionResult TransferList()
         {
-            string openId = this.GetOpenId();
+            string openId = this.GetOpenId(true);
             string msg = this.CheckPPUserRole(openId);
             if (msg != "OK")
                 return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
@@ -284,7 +284,7 @@ namespace IQBWX.Controllers
                         TransDateStr = o.TransDateStr,
                         OrderStatus = o.OrderStatus,
                         TotalAmount = o.TotalAmount,
-                        RealTotalAmount = o.RealTotalAmount,
+                        RateAmount = o.RateAmount,
                         BuyerAliPayLoginId = o.BuyerAliPayLoginId,
                         TransDate = o.TransDate,
                      
@@ -334,7 +334,7 @@ namespace IQBWX.Controllers
                         {
                             result[0].TotalCount = totalCount;
                          //   result[0].TotalAmountSum = list.Sum(o => o.TotalAmount);
-                            result[0].RealTotalAmountSum = list.ToList().Sum(o => o.RealTotalAmount);
+                            result[0].RealTotalAmountSum = list.ToList().Sum(o => o.RateAmount);
                         }
                     }
                     else
@@ -356,22 +356,23 @@ namespace IQBWX.Controllers
             int pageSize = Convert.ToInt32(Request["PageSize"]);
             string OpenId = Request["OpenId"];
             ConditionDataType DateType = (ConditionDataType)Enum.Parse(typeof(ConditionDataType), Request["DateType"]);
-
+            
             List<RTransferAmount> result = new List<RTransferAmount>();
             try
             {
                 using (AliPayContent db = new AliPayContent())
                 {
 
+                    IQBCore.IQBPay.Models.User.EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == OpenId).FirstOrDefault();
                     var list = db.DBTransferAmount.Where(o => o.AgentOpenId == OpenId).Select(s => new RTransferAmount
                     {
                         ID = s.ID,
                         TransferId = s.TransferId,
                         TransDateStr = s.TransDateStr,
                         TransferAmount = s.TransferAmount,
-                        AgentAliPayAccount = s.AgentAliPayAccount,
+                        TargetAccount = s.TargetAccount,
                         TransDate = s.TransDate,
-
+                        AliPayAccount = ui.AliPayAccount,
                     });
 
                     if (DateType != ConditionDataType.All)
@@ -398,7 +399,7 @@ namespace IQBWX.Controllers
                             endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
 
                         }
-                        list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+                        list = list.Where(o => o.TransDate >= startDate && o.TransDate < endDate);
                     }
 
                     list = list.OrderByDescending(i => i.TransDate);
@@ -441,51 +442,55 @@ namespace IQBWX.Controllers
 
             RDoTransfer result = new RDoTransfer();
 
-            using (AliPayContent db = new AliPayContent())
-            {
+            //using (AliPayContent db = new AliPayContent())
+            //{
 
-                var order = db.DBOrder.Where(s => s.OrderStatus == OrderStatus.Paid
-                                             && s.OrderType == OrderType.Normal
-                                             && s.AgentOpenId == openId);
+            //    var order = db.DBOrder.Where(s => s.OrderStatus == OrderStatus.Paid
+            //                                 && s.OrderType == OrderType.Normal
+            //                                 && s.AgentOpenId == openId);
 
-                result.MyOrderTotalAmount = order.ToList().Sum(s => s.RealTotalAmount);
+            //    result.MyOrderTotalAmount = order.ToList().Sum(s => s.RateAmount);
 
 
-                var agentcomm = db.DBAgentCommission.Where(s => s.AgentCommissionStatus == AgentCommissionStatus.Paid
-                                            && s.ParentOpenId == openId);
+            //    var agentcomm = db.DBAgentCommission.Where(s => s.AgentCommissionStatus == AgentCommissionStatus.Paid
+            //                                && s.ParentOpenId == openId);
 
-                result.MyAgentOrderTotalAmount = agentcomm.ToList().Sum(s => s.CommissionAmount);
+            //    result.MyAgentOrderTotalAmount = agentcomm.ToList().Sum(s => s.CommissionAmount);
 
-                result.MyRemainAmount = result.MyOrderTotalAmount + result.MyAgentOrderTotalAmount;
+            //    result.MyRemainAmount = result.MyOrderTotalAmount + result.MyAgentOrderTotalAmount;
 
-                var ui = db.DBUserInfo.Where(u => u.OpenId == openId).Select(a => new RUserInfo()
-                {
-                    AliPayAccount = a.AliPayAccount,
-                }).FirstOrDefault();
+            //    var ui = db.DBUserInfo.Where(u => u.OpenId == openId).Select(a => new RUserInfo()
+            //    {
+            //        AliPayAccount = a.AliPayAccount,
+            //    }).FirstOrDefault();
 
-                result.AliPayAccount = ui.AliPayAccount;
-                result.OpenId = openId;
+            //    result.AliPayAccount = ui.AliPayAccount;
+            //    result.OpenId = openId;
 
-            }
+            //}
             return View(result);
         }
 
-        [HttpPost]
+        /// <summary>
+        /// 没有收款码了
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost] 
         public ActionResult OrderReceive()
         {
             string receiveNo = this.Request["ReceiveNo"];
             List<ROrder_Receive> list = new List<ROrder_Receive>();
 
-            using (AliPayContent db = new AliPayContent())
-            {
-                list = db.DBOrder.Where(o => o.ReceiveNo == receiveNo && o.OrderStatus == OrderStatus.WaitingBuyerConfirm).Select(a => new ROrder_Receive
-                {
-                    OrderStatus = a.OrderStatus,
-                    Amount = a.TotalAmount,
-                    OrderNo = a.OrderNo,
-                    TransDateStr = a.TransDateStr
-                }).ToList();
-            }
+            //using (AliPayContent db = new AliPayContent())
+            //{
+            //    list = db.DBOrder.Where(o => o.ReceiveNo == receiveNo && o.OrderStatus == OrderStatus.WaitingBuyerConfirm).Select(a => new ROrder_Receive
+            //    {
+            //        OrderStatus = a.OrderStatus,
+            //        Amount = a.TotalAmount,
+            //        OrderNo = a.OrderNo,
+            //        TransDateStr = a.TransDateStr
+            //    }).ToList();
+            //}
             return Json(list);
         }
 

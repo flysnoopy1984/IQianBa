@@ -17,7 +17,7 @@ namespace IQBCore.IQBWX.Models.WX.Template
                                          ppOrder.AliPayOrderNo,
                                          ppOrder.BuyerAliPayAccount,
                                          ppOrder.Rate,
-                                         ppOrder.RealTotalAmount);
+                                         ppOrder.RateAmount);
             var data = new
             {
                 first = new TemplateField() { value = first,color= "#EB6B13" },

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IQBCore.IQBPay.BaseEnum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -40,14 +41,27 @@ namespace IQBCore.Common.Helper
             return "YJO" + DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(2,true,true,false,false,"");
         }
 
-        public static string GenerateTransferNo()
+        public static string GenerateTransferNo(TransferTarget target)
         {
-            return "YJTO" + DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(2, true, true, false, false, "");
+            string pix = "YJTO";
+            switch(target)
+            {
+                case TransferTarget.Agent:
+                    pix = "YJTOA";
+                    break;
+                case TransferTarget.ParentAgent:
+                    pix = "YJTOPA";
+                    break;
+                case TransferTarget.User:
+                    pix = "YJTOU";
+                    break;
+            }
+            return pix + DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(2, true, true, false, false, "");
         }
 
         public static string GenerateSubAccountTransNo()
         {
-            return "YJSub" + DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(2, true, true, false, false, "");
+            return "YJSub" + DateTime.Now.ToString("yyyyMMddhhmm") + GetRnd(2, true, true, false, false, "");
         }
 
         public static string GenerateVerifyCode()

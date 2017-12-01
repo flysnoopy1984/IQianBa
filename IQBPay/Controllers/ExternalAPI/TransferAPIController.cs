@@ -1,4 +1,5 @@
 ﻿using Aop.Api.Response;
+using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.InParameter;
@@ -27,61 +28,76 @@ namespace IQBPay.Controllers.ExternalAPI
             float CommAmt =0 ;
             AliPayManager payManager = new AliPayManager();
             OutDoTransfer result = new OutDoTransfer();
-            result.IsSuccess = true;
+            //result.IsSuccess = true;
 
-            using (AliPayContent db = new AliPayContent())
-            {
-                List<ROrderInfo> orderlist = db.DBOrder.Where(s => s.OrderType == IQBCore.IQBPay.BaseEnum.OrderType.Normal
-                                  && s.OrderStatus == IQBCore.IQBPay.BaseEnum.OrderStatus.Paid
-                                  && s.AgentOpenId == transfer.OpenId).Select(o=>new ROrderInfo {
-                                      RealTotalAmount = o.RealTotalAmount,
+            //AlipayFundTransToaccountTransferResponse res2 = payManager.DoTransferAmount(TransferTarget.Agent, BaseController.App, transfer.AliPayAccount, transfer.OrderAmount.ToString("0.00"), out TransferId);
+            //if (res2.Code == "10000")
+            //{
+            //    return result;
+            //}
+            //else
+            //{
+            //    result.ErrorMsg = string.Format("转账失败，代码;{0},原因{1}，请联系管理员。", res2.Code, res2.Msg);
+            //    result.IsSuccess = false;
+            //    return result;
 
-                                  }).ToList();
+            //}
+            /*
+                        using (AliPayContent db = new AliPayContent())
+                        {
+                            List<ROrderInfo> orderlist = db.DBOrder.Where(s => s.OrderType == IQBCore.IQBPay.BaseEnum.OrderType.Normal
+                                              && s.OrderStatus == IQBCore.IQBPay.BaseEnum.OrderStatus.Paid
+                                              && s.AgentOpenId == transfer.OpenId).Select(o=>new ROrderInfo {
+                                                  RealTotalAmount = o.RealTotalAmount,
 
-                OrderAmt = orderlist.Sum(a => a.RealTotalAmount);
-                if(OrderAmt != transfer.OrderAmount)
-                {
-                    result.ErrorMsg = "订单总金额不等于提交的总金额，刷新页面，重新提交！";
-                    result.IsSuccess = false;
-                    return result;
-                }
-               
+                                              }).ToList();
 
-                if (transfer.CommissionAmount>0)
-                {
-                    List<RAgentCommission> commlist = db.DBAgentCommission.Where(s => s.ParentOpenId == transfer.OpenId
-                                                                              && s.AgentCommissionStatus == IQBCore.IQBPay.BaseEnum.AgentCommissionStatus.Paid)
-                                                     .Select(a => new RAgentCommission
-                                                     {
-                                                         CommissionAmount = a.CommissionAmount,
-                                                     }).ToList();
-                    CommAmt = commlist.Sum(a => a.CommissionAmount);
-
-                    if (CommAmt != transfer.CommissionAmount)
-                    {
-                        result.ErrorMsg = "佣金总金额不等于提交的总金额，刷新页面，重新提交！";
-                        result.IsSuccess = false;
-                        return result;
-                    }
-                }
-
-                float transferTotalAmt = transfer.OrderAmount + transfer.CommissionAmount;
-
-                AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, transfer.AliPayAccount, transferTotalAmt.ToString("0.00"), out TransferId);
-                if (res2.Code == "10000")
-                {
-                    return result;
-                }
-                else
-                {
-                    result.ErrorMsg = string.Format("转账失败，代码;{0},原因{1}，请联系管理员。", res2.Code, res2.Msg);
-                    result.IsSuccess = false;
-                    return result;
-
-                }
+                            OrderAmt = orderlist.Sum(a => a.RealTotalAmount);
+                            if(OrderAmt != transfer.OrderAmount)
+                            {
+                                result.ErrorMsg = "订单总金额不等于提交的总金额，刷新页面，重新提交！";
+                                result.IsSuccess = false;
+                                return result;
+                            }
 
 
-            }
+                            if (transfer.CommissionAmount>0)
+                            {
+                                List<RAgentCommission> commlist = db.DBAgentCommission.Where(s => s.ParentOpenId == transfer.OpenId
+                                                                                          && s.AgentCommissionStatus == IQBCore.IQBPay.BaseEnum.AgentCommissionStatus.Paid)
+                                                                 .Select(a => new RAgentCommission
+                                                                 {
+                                                                     CommissionAmount = a.CommissionAmount,
+                                                                 }).ToList();
+                                CommAmt = commlist.Sum(a => a.CommissionAmount);
+
+                                if (CommAmt != transfer.CommissionAmount)
+                                {
+                                    result.ErrorMsg = "佣金总金额不等于提交的总金额，刷新页面，重新提交！";
+                                    result.IsSuccess = false;
+                                    return result;
+                                }
+                            }
+
+                            float transferTotalAmt = transfer.OrderAmount + transfer.CommissionAmount;
+
+
+                            AlipayFundTransToaccountTransferResponse res2 = payManager.DoTransferAmount(TransferTarget.Agent,BaseController.App, transfer.AliPayAccount, transferTotalAmt.ToString("0.00"), out TransferId);
+                            if (res2.Code == "10000")
+                            {
+                                return result;
+                            }
+                            else
+                            {
+                                result.ErrorMsg = string.Format("转账失败，代码;{0},原因{1}，请联系管理员。", res2.Code, res2.Msg);
+                                result.IsSuccess = false;
+                                return result;
+
+                            }
+                            */
+
+            return result;
+            
 
             //AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, transfer.AliPayAccount, transfer.Amount.ToString("0.00"), out TransferId);
             //if (res2.Code == "10000")

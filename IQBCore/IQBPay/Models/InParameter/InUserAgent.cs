@@ -30,6 +30,8 @@ namespace IQBCore.IQBPay.Models.InParameter
 
         public int QrUserId { get; set; }
 
+        public float MarketRate { get; set; }
+
 
     }
 

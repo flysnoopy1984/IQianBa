@@ -58,7 +58,10 @@ namespace IQBCore.IQBPay.Models.Result
 
         public long? QRUserId { get; set; }
 
-       
+        public float MarketRate { get; set; }
+
+
+
 
 
 

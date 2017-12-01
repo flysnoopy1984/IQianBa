@@ -25,6 +25,9 @@ namespace IQBCore.IQBPay.Models.AccountPayment
 
         public float CommissionAmount { get;set;}
 
+        [MaxLength(100)]
+        public string ParentAliPayAccount { get; set; }
+
         [MaxLength(32)]
         public string ParentOpenId { get; set; }
 

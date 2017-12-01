@@ -117,6 +117,7 @@ function generateData(result) {
     $.each(result, function (i) {
         var thWidth;
         var OrderStatus = "";
+        
         switch (result[i].OrderStatus)
         {
             case 0:
@@ -143,28 +144,23 @@ function generateData(result) {
         else
             strCannel ="加盟商户";
 
-        var ppRealAmt = result[i].TotalAmount - result[i].RealTotalAmount;
-        if (Channel !=0)
-            ppRealAmt -= result[i].SellerCommission;
-        ppRealAmt = parseFloat(ppRealAmt.toFixed(2));
+        var ppRealAmt = result[i].TotalAmount - result[i].RateAmount - result[i].ParentCommissionAmount - result[i].SellerCommission - result[i].BuyerTransferAmount;
+
+       //var ppRealAmt = parseFloat(ppRealAmt.toFixed(2));
 
         var TransDate = result[i].TransDateStr;
 
         strCtrl = "";
         strCtrl += "<tr>";
 
-        strCtrl += "<td><a href=/Transfer/Info_Win?id=" + result[i].OrderNo + "&type=1  target='_blank' class='td'>结算信息</a>";
+        strCtrl += "<td><a href=/Transfer/Info_Win?id=" + result[i].OrderNo + "&type=1  target='_blank' class='td'>转账信息</a>";
         strCtrl += "</td>";
         //订单编号
         tdWidth = "width:"+ $("#trHeader th").eq(1).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].OrderNo + "</td>";
 
-        //支付宝订单编号
-        tdWidth = "width:" + $("#trHeader th").eq(2).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].AliPayOrderNo + "</td>";
-
         //订单状态
-        tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(2).css("width");
         if (result[i].OrderStatus == -1)
         { 
             strCtrl += "<td style='" + tdWidth + "'><a href='javascript:ShowError("+i+")'>" + OrderStatus + "</a>";
@@ -174,72 +170,89 @@ function generateData(result) {
         else
             strCtrl += "<td style='" + tdWidth + "'>" + OrderStatus + "</td>";
 
+        //平台盈利
+        tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + ppRealAmt + "</td>";
+       // ppAmt += parseFloat(ppRealAmt);
+
         //总金额
         tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TotalAmount + "</td>";
-        totalAmt += parseFloat(result[i].TotalAmount);
+        //totalAmt += parseFloat(result[i].TotalAmount);
 
-        //交易时间
+        //代理金额
         tdWidth = "width:" + $("#trHeader th").eq(5).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + TransDate + "</td>";
-
-        //代理用户
-        tdWidth = "width:" + $("#trHeader th").eq(6).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].AgentName + "</td>";
-       
-
-        //代理扣点率
-        tdWidth = "width:" + $("#trHeader th").eq(7).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].Rate + "</td>";
-
-        //代理扣点金额
-        tdWidth = "width:" + $("#trHeader th").eq(8).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].RateAmount + "</td>";
-  
-        //代理实际收入
-        tdWidth = "width:" + $("#trHeader th").eq(9).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].RealTotalAmount + "</td>";
-        agentAmt += parseFloat(result[i].RealTotalAmount);
+      //  agentAmt += parseFloat(result[i].RateAmount);
 
-        //商户名
-        tdWidth = "width:" + $("#trHeader th").eq(10).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerName + "</td>";
-
-        //商户类型
-        tdWidth = "width:" + $("#trHeader th").eq(11).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + strCannel + "</td>";
-
-        //商户佣金点率
-        tdWidth = "width:" + $("#trHeader th").eq(12).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerRate + "</td>";
+        //上级金额
+        tdWidth = "width:" + $("#trHeader th").eq(6).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].ParentCommissionAmount + "</td>";
 
         //商户佣金
-        tdWidth = "width:" + $("#trHeader th").eq(13).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(7).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerCommission + "</td>";
         storeAmt += parseFloat(result[i].SellerCommission);
 
-        //平台实际盈利
+        //买家转账
+        tdWidth = "width:" + $("#trHeader th").eq(8).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].BuyerTransferAmount + "</td>";
+
+        //代理用户
+        tdWidth = "width:" + $("#trHeader th").eq(9).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].AgentName + "</td>";
+
+
+        //代理扣点率
+        tdWidth = "width:" + $("#trHeader th").eq(10).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].Rate + "</td>";
+
+   
+        //商户名
+        tdWidth = "width:" + $("#trHeader th").eq(11).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerName + "</td>";
+
+        //商户类型
+        tdWidth = "width:" + $("#trHeader th").eq(12).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + strCannel + "</td>";
+
+        //商户佣金点率
+        tdWidth = "width:" + $("#trHeader th").eq(13).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerRate + "</td>";
+
+        //交易时间
         tdWidth = "width:" + $("#trHeader th").eq(14).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + ppRealAmt + "</td>";
-        ppAmt += parseFloat(ppRealAmt);
+        strCtrl += "<td style='" + tdWidth + "'>" + TransDate + "</td>";
 
-        //结算编号
+        //支付宝订单编号
         tdWidth = "width:" + $("#trHeader th").eq(15).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferId + "</td>";
-
-        //结算金额
-        tdWidth = "width:" + $("#trHeader th").eq(16).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferAmount + "</td>";
-        transferAmt += parseFloat(result[i].TransferAmount);
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].AliPayOrderNo + "</td>";
 
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);
 
+      
+        
+        if(i==0)
+        {
+            $("#RecordSum").text("【总金额】：" + result[i].TotalAmountSum.toFixed(2) + "【代理金额】：" + result[i].RealTotalAmountSum.toFixed(2) + "【商户金额】：" + result[i].StoreAmountSum.toFixed(2) + "【买家打款】：" + result[i].BuyerTransferSum.toFixed(2) + "【平台收入】：" + result[i].PPIncome.toFixed(2));
+        }
+
+        ////结算编号
+        //tdWidth = "width:" + $("#trHeader th").eq(15).css("width");
+        //strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferId + "</td>";
+
+        ////结算金额
+        //tdWidth = "width:" + $("#trHeader th").eq(16).css("width");
+        //strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferAmount + "</td>";
+        //transferAmt += parseFloat(result[i].TransferAmount);
+
+      
     });
 
     //汇总信息
-    $("#RecordSum").text("【总金额】：" + totalAmt.toFixed(2) + "【代理金额】：" + agentAmt.toFixed(2) + "【商户金额】：" + storeAmt.toFixed(2) + "【平台收入】：" + ppAmt.toFixed(2));
+    
 
 }
 

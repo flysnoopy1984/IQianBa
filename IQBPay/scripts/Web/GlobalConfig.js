@@ -20,6 +20,8 @@ function Init()
             $("#AllowRegister").find("option[value='" + data.AllowRegister + "']").attr("selected", true);
           
             $("#RecId").val(data.ID);
+
+            $("#MarketRate").val(data.MarketRate);
           
             $("#Note").val(data.Note);
 
@@ -41,11 +43,13 @@ function Save()
     var AllowRegister = $("#AllowRegister").val();
 
     var Note = $("#Note").val();
+
+    var MarketRate = $("#MarketRate").val();
    
     $.ajax({
         type: 'post',
         url: url,
-        data: "ID=" + ID + "&WebStatus=" + WebStatus + "&Note=" + Note + "&AllowRegister=" + AllowRegister,
+        data: "ID=" + ID + "&MarketRate="+MarketRate+"&WebStatus=" + WebStatus + "&Note=" + Note + "&AllowRegister=" + AllowRegister,
         success: function (data) {
 
             if(data == "OK")

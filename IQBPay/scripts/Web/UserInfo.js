@@ -100,6 +100,8 @@ function InitFormData(data) {
     $("#UserStatus").val(data.UserStatus);
 
     $("#selUserRole").val(data.UserRole);
+
+    $("#MarketRate").val(data.MarketRate);
     var st;
     if (data.UserStatus == 0)
         st = false;
@@ -148,13 +150,15 @@ function Save() {
     var qrUserId = $("#QrUserId").val();
     var UserRole = $("#selUserRole").val();
 
+    var MarketRate = $("#MarketRate").val();
+
     if (!CheckForm()) return;
 
     var url = "/User/SaveUserAgent";
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "Id": ID, "IsAutoTransfer": IsAutoTransfer, "AliPayAccount": AliPayAccount,"UserRole":UserRole, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName":ParentName,"ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
+        data: { "Id": ID, "MarketRate":MarketRate,"IsAutoTransfer": IsAutoTransfer, "AliPayAccount": AliPayAccount,"UserRole":UserRole, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName":ParentName,"ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
         url: url,
         success: function (data) {
             if (data == "OK") {

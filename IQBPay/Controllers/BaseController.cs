@@ -11,6 +11,7 @@ using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.Store;
 using WxPayAPI;
 using IQBCore.Model;
+using System.Configuration;
 
 namespace IQBPay.Controllers
 {
@@ -22,6 +23,8 @@ namespace IQBPay.Controllers
         private static EGlobalConfig _GlobelConfig;
         private IQBLog _Log;
 
+
+       
         public IQBLog Log
         {
             get
@@ -199,6 +202,13 @@ namespace IQBPay.Controllers
             return PartialView("MenuList");
         }
 
-
+        public Boolean IsTestMode
+        {
+            get
+            {
+                return Convert.ToBoolean(ConfigurationManager.AppSettings["TestModel"]);
+            }
+        }
+       
     }
 }

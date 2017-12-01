@@ -133,7 +133,12 @@ namespace IQBPay.Controllers
            
             EOrderInfo order;
             ETransferAmount transfer;
-
+            string openId = null;
+            if (this.GetUserSession().UserRole != UserRole.Administrator)
+            {
+                openId = this.GetUserSession().OpenId;
+            }
+         
             ROrder_Transfer result = new ROrder_Transfer();
             try
             {
@@ -145,7 +150,12 @@ namespace IQBPay.Controllers
                         if(order!=null)
                         {
                             result.Order = order;
-                            result.TransferList = db.DBTransferAmount.Where(t => t.OrderNo == order.OrderNo).ToList();
+                            var list = db.DBTransferAmount.Where(t => t.OrderNo == order.OrderNo);
+                            if(!string.IsNullOrEmpty(openId))
+                            {
+                                list = list.Where(t => t.AgentOpenId == openId);
+                            }
+                            result.TransferList = list.ToList();
                             if (result.TransferList == null || result.TransferList.Count == 0)
                                 result.Result = -1;
                         }
@@ -154,16 +164,16 @@ namespace IQBPay.Controllers
                     }
                     if(type =="2")
                     {
-                        transfer = db.DBTransferAmount.Where(u => u.TransferId == Id).FirstOrDefault();
-                        if (transfer != null)
-                        {
-                            result.Transfer = transfer;
-                            result.OrderList = db.DBOrder.Where(t => t.TransferId == transfer.TransferId).ToList();
-                            if (result.OrderList == null || result.OrderList.Count == 0)
-                                result.Result = -1;
-                        }
-                        else
-                            result.Result = -2;
+                        //transfer = db.DBTransferAmount.Where(u => u.TransferId == Id).FirstOrDefault();
+                        //if (transfer != null)
+                        //{
+                        //    result.Transfer = transfer;
+                        //    result.OrderList = db.DBOrder.Where(t => t.TransferId == transfer.TransferId).ToList();
+                        //    if (result.OrderList == null || result.OrderList.Count == 0)
+                        //        result.Result = -1;
+                        //}
+                        //else
+                        //    result.Result = -2;
                     }
                 }
 

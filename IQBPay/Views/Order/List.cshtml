@@ -48,8 +48,8 @@
                 <li>
                     <label>订单状态：</label>
                     <select id="cOrderStatus" class="form-control ConditionField">
-                        <option value="1">支付</option>
-                        <option value="2">结算</option>
+                        <option value="1">用户已支付</option>
+                        <option value="2" selected>代理已结算</option>
                         <option value="-1">异常</option>
                         <option value="99">全部</option>
                     </select>
@@ -82,22 +82,21 @@
                     <thead class="cf">
                         <tr id="trHeader">
                             <th style="width:150px;"> 操作</th>
-                            <th style="width:200px;">订单编号</th>
-                            <th style="width:250px;">支付宝订单编号</th>
-                            <th style="width:200px;">订单状态</th>
-                            <th style="width:150px;">总金额</th>
-                            <th style="width:200px;">交易时间</th>
-                            <th style="width:200px;">代理用户</th>
-                            <th style="width:200px;">代理扣点率</th>
-                            <th style="width:200px;">代理扣点金额</th>
-                            <th style="width:200px;">代理实际收入</th>
-                            <th style="width:200px;">商户名</th>
-                            <th style="width:200px;">商户类型</th>
-                            <th style="width:200px;">商户佣金点率</th>
-                            <th style="width:200px;">商户佣金</th>
-                            <th style="width:200px;">平台实际盈利</th>
-                            <th style="width:200px;">结算编号</th>
-                            <th style="width:200px;">结算金额</th>                            
+                            <th style="width:200px;">订单编号</th> 
+                            <th style="width:120px;">订单状态</th>
+                            <th style="width:100px;">平台盈利</th>
+                            <th style="width:100px;">总金额</th>
+                            <th style="width:100px;">代理金额</th>
+                            <th style="width:100px">上级金额</th>
+                            <th style="width:100px;">商户佣金</th>
+                            <th style="width:100px;">买家打款</th>
+                            <th style="width:120px;">代理用户</th>
+                            <th style="width:100px;">代理扣点率</th>
+                            <th style="width:120px;">商户名</th>
+                            <th style="width:100px;">商户类型</th>
+                            <th style="width:100px;">商户佣金点率</th>
+                            <th style="width:150px;">交易时间</th>
+                            <th style="width:250px;">支付宝订单编号</th>                           
                         </tr>
                         <tr>
                             <td colspan="17" class="RecordSum" id="RecordSum"></td>  

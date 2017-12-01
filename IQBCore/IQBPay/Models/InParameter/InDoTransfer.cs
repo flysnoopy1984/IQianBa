@@ -19,6 +19,8 @@ namespace IQBCore.IQBPay.Models.InParameter
 
         public float CommissionAmount { get; set; }
 
+        public string accessToken { get; set; }
+
 
 
     }

@@ -15,7 +15,7 @@
 
     <script src="@Url.Scrpit("~/scripts/jquery-1.10.2.min.js")"></script>
     <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
-    <script src="@Url.Scrpit("~/scripts/Web/Info_Win_Order_Transfer.js")"></script>
+    <script src="@Url.Scrpit("~/scripts/Web/OrderViewTransfer.js")"></script>
     
 </head>
 <body>
@@ -24,11 +24,11 @@
         <table id="OrderTable" class="table table-hover table-bordered TableOverflowHidden">
             <thead class="cf">
                 <tr id="trHeader">
-                    <th style='width:20%;'>订单编号</th>
-                    <th style="width:20%;">代理名</th>
-                    <th style="width:20%;">代理金额</th>
-                    <th style="width:20%;">订单时间</th>
-                    <th style="width:20%;">对应的转账编号</th>
+                    <th style='width:25%;'>订单编号</th>
+                    <th style="width:25%;">代理名</th>
+                    <th style="width:25%;">代理金额</th>
+                    <th style="width:25%;">订单时间</th>
+                  
                 </tr>
             </thead>
             <tbody id="OrderContainer">
@@ -41,11 +41,11 @@
         <table id="TransferTable" class="table table-hover table-bordered TableOverflowHidden">
             <thead class="cf">
                 <tr id="trHeader">
-                    <th style='width:20%;'>汇款编号</th>
-                    <th style="width:20%;">汇款对象</th>
-                    <th style="width:20%;">汇款金额</th>
-                    <th style="width:20%;">汇款时间</th>
-                    <th style="width:20%;">对应的订单编号</th>
+                    <th style='width:25%;'>汇款编号</th>
+                    <th style="width:25%;">汇款方向</th>
+                    <th style="width:25%;">汇款金额</th>
+                    <th style="width:25%;">汇款时间</th>
+               
                 </tr>
             </thead>
             <tbody id="TransferContainer">

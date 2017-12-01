@@ -7,6 +7,7 @@ using IQBCore.IQBPay.Models.SMS;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.System;
 using IQBCore.IQBPay.Models.User;
+using IQBPay.Controllers;
 using IQBPay.Core;
 using System;
 using System.Collections.Generic;
@@ -122,6 +123,7 @@ namespace IQBPay.DataBase
                 {
                     qrUser = new EQRUser();
                     isNew = true;
+                    qrUser.MarketRate = BaseController.GlobalConfig.MarketRate;
                 }
                 qrUser.QRId = qr.ID;
                 qrUser.OpenId = ui.OpenId;
@@ -130,6 +132,7 @@ namespace IQBPay.DataBase
                 qrUser.ReceiveStoreId = qr.ReceiveStoreId;
                 qrUser.ParentOpenId = qr.ParentOpenId;
                 qrUser.ParentCommissionRate = qr.ParentCommissionRate;
+                
               
                 if(!string.IsNullOrEmpty(qr.ParentOpenId))
                 {

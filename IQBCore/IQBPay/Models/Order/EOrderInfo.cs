@@ -16,7 +16,7 @@ namespace IQBCore.IQBPay.Models.Order
     {
         public EOrderInfo()
         {
-            AliPayTransDate = DateTime.MaxValue;
+            //AliPayTransDate = DateTime.MaxValue;
             TransDate = DateTime.MaxValue;
         }
         [Key]
@@ -53,6 +53,16 @@ namespace IQBCore.IQBPay.Models.Order
 
         [MaxLength(20)]
         public string BuyerMobilePhone { get; set; }
+
+        /// <summary>
+        /// 用户默认返回市场率
+        /// </summary>
+        public float BuyerMarketRate { get; set; }
+
+        /// <summary>
+        /// 支付给用户的金额
+        /// </summary>
+        public float BuyerTransferAmount { get; set; }
 
         [MaxLength(30)]
         public string SellerAliPayId { get; set; }
@@ -111,7 +121,7 @@ namespace IQBCore.IQBPay.Models.Order
         [MaxLength(20)]
         public string TransDateStr { get; set; }
 
-        public DateTime AliPayTransDate { get; set; }
+     //   public DateTime AliPayTransDate { get; set; }
 
         public OrderType OrderType { get; set; }
 
@@ -133,14 +143,19 @@ namespace IQBCore.IQBPay.Models.Order
         [MaxLength(255)]
         public string LogRemark { get; set; }
 
-        [MaxLength(64)]
-        public string TransferId { get; set; }
+        //[MaxLength(64)]
+        //public string TransferId { get; set; }
 
        
-        public float TransferAmount { get; set; }
+        //public float TransferAmount { get; set; }
 
-        [MaxLength(10)]
-        public string ReceiveNo { get; set; }
+        [MaxLength(32)]
+        public string ParentOpenId { get; set; }
+
+        public float ParentCommissionAmount { get; set; }
+
+        //[MaxLength(10)]
+        //public string ReceiveNo { get; set; }
 
 
 

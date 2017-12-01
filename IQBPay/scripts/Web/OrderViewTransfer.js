@@ -44,18 +44,32 @@ function generateData(result) {
 
         strCtrl += "<td>" + result.Order.OrderNo + "</td>";
         strCtrl += "<td>" + result.Order.AgentName + "</td>";
-        strCtrl += "<td>" + result.Order.RealTotalAmount + "</td>";
+        strCtrl += "<td>" + result.Order.RateAmount + "</td>";
         strCtrl += "<td>" + result.Order.TransDateStr + "</td>";
         strCtrl += "<td>" + result.Order.TransferId + "</td>";
         strCtrl += "</tr>";
         $("#OrderContainer").append(strCtrl);
 
         $.each(result.TransferList, function (i) {
+            var target = "";
+            switch(result.TransferList[i].TransferTarget)
+            {
+                case 0:
+                    target = "用户打款";
+                    break;
+                case 1:
+                    target = "代理转账";
+                    break;
+                case 2:
+                    target = "上级代理佣金";
+                    break;
+            }
+
             strCtrl = "";
             strCtrl += "<tr>";
 
             strCtrl += "<td>" + result.TransferList[i].TransferId + "</td>";
-            strCtrl += "<td>" + result.TransferList[i].AgentName + "</td>";
+            strCtrl += "<td>" + target + "</td>";
             strCtrl += "<td>" + result.TransferList[i].TransferAmount + "</td>";
             strCtrl += "<td>" + result.TransferList[i].TransDateStr + "</td>";
             strCtrl += "<td>" + result.TransferList[i].OrderNo + "</td>";

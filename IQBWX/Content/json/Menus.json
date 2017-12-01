@@ -31,11 +31,6 @@
               "url": "http://wx.iqianba.cn/PP/AliPayAccount"
             },
             {
-              "type": "view",
-              "name": "我要提现",
-              "url": "http://wx.iqianba.cn/PP/DoTransfer"
-            },
-            {
               "type": "click",
               "name": "收款二维码",
               "key": "pay_101"

@@ -12,5 +12,7 @@ namespace IQBCore.IQBPay.Models.Result
     public class RTransferAmount: ETransferAmount
     {
         public float TotalAmountSum { get; set; }
+
+        public string AliPayAccount { get; set; }
     }
 }

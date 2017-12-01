@@ -144,20 +144,18 @@ function generateData(result) {
         tdWidth = "width:" + $("#trHeader th").eq(6).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].Rate + "</td>";
 
-    
-
         //代理实际收入
         tdWidth = "width:" + $("#trHeader th").eq(7).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].RealTotalAmount + "</td>";
-        agentAmt += parseFloat(result[i].RealTotalAmount);
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].RateAmount + "</td>";
+       // agentAmt += parseFloat(result[i].RateAmount);
      
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);
 
     });
-    //汇总信息
-    $("#RecordSum").text("【总金额】：" + totalAmt.toFixed(2) + "【代理金额】：" + agentAmt.toFixed(2));
+    ////汇总信息
+    //$("#RecordSum").text("【总金额】：" + totalAmt.toFixed(2) + "【代理金额】：" + agentAmt.toFixed(2));
 }
 
 function ShowError(no) {

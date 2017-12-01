@@ -473,7 +473,7 @@
     <Content Include="scripts\Web\DoTransfer.js" />
     <Content Include="scripts\Web\DoTransfer_OrderDetail.js" />
     <Content Include="scripts\Web\GlobalConfig.js" />
-    <Content Include="scripts\Web\Info_Win_Order_Transfer.js" />
+    <Content Include="scripts\Web\OrderViewTransfer.js" />
     <Content Include="scripts\Web\OrderMyList.js" />
     <Content Include="scripts\Web\Report_Store.js" />
     <Content Include="scripts\Web\TransferList.js" />

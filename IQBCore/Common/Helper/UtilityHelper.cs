@@ -17,6 +17,7 @@ namespace IQBCore.Common.Helper
         /// <returns></returns>
         public static DateTime GetTimeStartByType(string TimeType, DateTime now)
         {
+            now = DateTime.Parse(now.ToString("yyyy-MM-dd"));
             switch (TimeType)
             {
                 case "Week":
@@ -41,21 +42,30 @@ namespace IQBCore.Common.Helper
         /// <returns></returns>
         public static DateTime GetTimeEndByType(string TimeType, DateTime now)
         {
+            now = DateTime.Parse(now.ToString("yyyy-MM-dd"));
+            DateTime result;
             switch (TimeType)
             {
                 case "Week":
-                    return now.AddDays(7 - (int)now.DayOfWeek);
+                    result =  now.AddDays(7 - (int)now.DayOfWeek);
+                    break;
                 case "Month":
-                    return now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
+                    result  =  now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
+                    break;
                 case "Season":
                     var time = now.AddMonths((3 - ((now.Month - 1) % 3) - 1));
-                    return time.AddMonths(1).AddDays(-time.AddMonths(1).Day + 1).AddDays(-1);
+                    result = time.AddMonths(1).AddDays(-time.AddMonths(1).Day + 1).AddDays(-1);
+                    break;
                 case "Year":
                     var time2 = now.AddYears(1);
-                    return time2.AddDays(-time2.DayOfYear);
+                    result= time2.AddDays(-time2.DayOfYear);
+                    break;
                 default:
-                    return now;
+                    result = now;
+                    break;
+
             }
+            return result.AddDays(1);
         }
         #endregion
     }

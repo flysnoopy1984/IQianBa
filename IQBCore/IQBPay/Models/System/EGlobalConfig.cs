@@ -30,5 +30,10 @@ namespace IQBCore.IQBPay.Models.System
         }
 
         public Boolean AllowRegister { get; set; }
+
+        /// <summary>
+        /// 市场价花呗扣点率
+        /// </summary>
+        public float MarketRate { get; set; }
     }
 }

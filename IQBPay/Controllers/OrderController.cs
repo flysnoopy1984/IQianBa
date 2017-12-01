@@ -123,7 +123,7 @@ namespace IQBPay.Controllers
         [HttpPost]
         public ActionResult Query(InOrder parameter)
         {
-            List<EOrderInfo> result = new List<EOrderInfo>();
+            List<ROrderInfo> result = new List<ROrderInfo>();
             int storeId = -1;
             try
             {
@@ -131,7 +131,27 @@ namespace IQBPay.Controllers
                 using (AliPayContent db = new AliPayContent())
                 {
 
-                    var list = db.DBOrder.Where(o=>o.OrderType == parameter.OrderType);
+                    var list = db.DBOrder.Where(o=>o.OrderType == parameter.OrderType).Select(o=>new ROrderInfo {
+
+                        ID = o.ID,
+                        OrderNo = o.OrderNo,
+                        TransDateStr = o.TransDateStr,
+                        OrderStatus = o.OrderStatus,
+                        TotalAmount = o.TotalAmount,
+                        RateAmount = o.RateAmount,
+                        ParentCommissionAmount = o.ParentCommissionAmount,
+                        SellerCommission = o.SellerCommission,
+                        BuyerTransferAmount = o.BuyerTransferAmount,
+                        AgentName= o.AgentName,
+                        Rate = o.Rate,
+                        SellerName = o.SellerName,
+                        SellerChannel = o.SellerChannel,
+                        AliPayOrderNo = o.AliPayOrderNo,
+                        BuyerAliPayLoginId = o.BuyerAliPayLoginId,
+                        TransDate = o.TransDate,
+                        AgentOpenId = o.AgentOpenId,
+                        
+                    });
 
                     if (!string.IsNullOrEmpty(parameter.StoreId))
                     {
@@ -201,7 +221,16 @@ namespace IQBPay.Controllers
                         result = list.Take(parameter.PageSize).ToList();
 
                         if (result.Count > 0)
+                        {
                             result[0].TotalCount = totalCount;
+                            result[0].RealTotalAmountSum = list.ToList().Sum(o => o.RateAmount);
+                            result[0].ParentAmountSum = list.ToList().Sum(o => o.ParentCommissionAmount);
+                            result[0].BuyerTransferSum = list.ToList().Sum(o => o.BuyerTransferAmount);
+                            result[0].StoreAmountSum = list.ToList().Sum(o => o.SellerCommission);
+                            result[0].TotalAmountSum = list.ToList().Sum(o => o.TotalAmount);
+
+                            result[0].PPIncome = result[0].TotalAmountSum - result[0].RealTotalAmountSum - result[0].ParentAmountSum - result[0].BuyerTransferSum - result[0].StoreAmountSum;
+                        }
                     }
                     else
                         result = list.Skip(parameter.PageIndex * parameter.PageSize).Take(parameter.PageSize).ToList();

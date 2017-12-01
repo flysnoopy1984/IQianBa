@@ -1,4 +1,5 @@
-﻿using IQBCore.IQBPay.Models.Order;
+﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.User;
 using System;
 using System.Collections.Generic;
@@ -33,8 +34,8 @@ namespace IQBCore.IQBPay.Models.AccountPayment
 
         public long QRUserId { get; set; }
 
-        [MaxLength(100)]
-        public string AgentAliPayAccount { get; set; }
+        //[MaxLength(100)]
+        //public string AgentAliPayAccount { get; set; }
 
         [MaxLength(32)]
         public string AgentOpenId { get; set; }
@@ -42,42 +43,49 @@ namespace IQBCore.IQBPay.Models.AccountPayment
         [MaxLength(40)]
         public string AgentName { get; set; }
 
-        [MaxLength(16)]
-        public string Buyer_AliPayId { get; set; }
+        //[MaxLength(16)]
+        //public string Buyer_AliPayId { get; set; }
+
+        //[MaxLength(100)]
+        //public string Buyer_AliPayLoginId { get; set; }
+
+        //public Boolean IsAutoTransfer { get; set; }
+
+        //[MaxLength(40)]
+        //public string Operator { get; set; }
+
+        public TransferTarget TransferTarget { get; set; }
 
         [MaxLength(100)]
-        public string Buyer_AliPayLoginId { get; set; }
+        public string TargetAccount { get; set; }
 
-        public Boolean IsAutoTransfer { get; set; }
+        public TransferStatus TransferStatus { get; set; }
 
-        [MaxLength(40)]
-        public string Operator { get; set; }
+        [MaxLength(255)]
+        public string Log { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="TransferId"></param>
-        /// <param name="TargetAccount">转到哪个账户</param>
-        /// <param name="order"></param>
-        /// <returns></returns>
-        public static ETransferAmount Init(string TransferId,EUserInfo AgentUser,EOrderInfo order)
-        {
-            ETransferAmount obj = ETransferAmount.Init(TransferId, AgentUser.OpenId, AgentUser.AliPayAccount, order);
-            return obj;
-        }
 
-        public static ETransferAmount Init(string TransferId, string OpenId,string AliPayAccount,EOrderInfo order)
+        public static ETransferAmount Init(TransferTarget target, string TransferId, float TransferAmount, string AliPayAccount, EOrderInfo order, EUserInfo ui = null)
         {
             ETransferAmount obj = new ETransferAmount();
             obj.TransferId = TransferId;
-            obj.TransferAmount = order.RealTotalAmount;
+            obj.TransferAmount = TransferAmount;
             obj.TransDate = DateTime.Now;
             obj.TransDateStr = obj.TransDate.ToString("yyyy-MM-dd HH:mm");
             obj.OrderNo = order.OrderNo;
             obj.QRUserId = order.QRUserId;
-            obj.AgentName = order.AgentName;
-            obj.AgentOpenId = OpenId;
-            obj.AgentAliPayAccount = AliPayAccount;
+            obj.TransferStatus = TransferStatus.Open;
+            obj.Log = "";
+            if (ui != null)
+            {
+                if (target == TransferTarget.Agent || target == TransferTarget.ParentAgent)
+                {
+                    obj.AgentOpenId = ui.OpenId;
+                    obj.AgentName = ui.Name;
+                }
+            }
+           
+            obj.TransferTarget = target;
             return obj;
         }
 
