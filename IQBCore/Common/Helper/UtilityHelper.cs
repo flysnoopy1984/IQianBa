@@ -21,7 +21,17 @@ namespace IQBCore.Common.Helper
             switch (TimeType)
             {
                 case "Week":
-                    return now.AddDays(-(int)now.DayOfWeek + 1);
+                    int weeknow = Convert.ToInt32(now.DayOfWeek);
+
+                    //因为是以星期一为第一天，所以要判断weeknow等于0时，要向前推6天。  
+                    weeknow = (weeknow == 0 ? (7 - 1) : (weeknow - 1));
+                    int daydiff = (-1) * weeknow;
+
+                    //本周第一天  
+                    string FirstDay = now.AddDays(daydiff).ToString("yyyy-MM-dd");
+                    return Convert.ToDateTime(FirstDay);
+
+                
                 case "Month":
                     return now.AddDays(-now.Day + 1);
                 case "Season":
@@ -47,8 +57,16 @@ namespace IQBCore.Common.Helper
             switch (TimeType)
             {
                 case "Week":
-                    result =  now.AddDays(7 - (int)now.DayOfWeek);
+                    //星期天为最后一天  
+                    int weeknow = Convert.ToInt32(now.DayOfWeek);
+                    weeknow = (weeknow == 0 ? 7 : weeknow);
+                    int daydiff = (7 - weeknow);
+
+                    //本周最后一天  
+                    string LastDay = now.AddDays(daydiff).ToString("yyyy-MM-dd");
+                    result = Convert.ToDateTime(LastDay);
                     break;
+                
                 case "Month":
                     result  =  now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
                     break;

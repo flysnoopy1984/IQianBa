@@ -1,5 +1,6 @@
 ﻿using CatchWebContent;
 using IQBCore.Common.Constant;
+using IQBCore.Common.Helper;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.InParameter;
@@ -31,15 +32,13 @@ namespace ConsoleApplication1
             try
             {
 
-                InSMS inSMS = new InSMS();
-                inSMS.Init();
-                inSMS.PhoneNumber = "13482710060";
-                inSMS.Parameters ="231aa";
-                inSMS.Tpl_id = Convert.ToInt32(SMSTemplate.ReceiveConfirm).ToString();
+                Console.WriteLine(UtilityHelper.GetTimeStartByType("Week", DateTime.Now));
+                Console.WriteLine(UtilityHelper.GetTimeEndByType("Week", DateTime.Now));
 
-                SMSManager smsMgr = new SMSManager();
-                smsMgr.PostSMS_API51(inSMS);
+                Console.WriteLine(UtilityHelper.GetTimeStartByType("Month", DateTime.Now));
 
+                Console.WriteLine(UtilityHelper.GetTimeEndByType("Month", DateTime.Now));
+                Console.Read();
 
             }
             catch(Exception ex)

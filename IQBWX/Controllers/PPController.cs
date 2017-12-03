@@ -175,7 +175,7 @@ namespace IQBWX.Controllers
 
         public ActionResult TransferList()
         {
-            string openId = this.GetOpenId(true);
+            string openId = this.GetOpenId();
             string msg = this.CheckPPUserRole(openId);
             if (msg != "OK")
                 return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });

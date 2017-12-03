@@ -27,14 +27,14 @@ function ConfirmAliPayAccount() {
 
     $.confirm({
         title: '请谨慎确认!',
-        content: '收款支付宝账户：【' + AliPayAccount + "】！！",
+        content: '如收款码输入有误，您将无法收到款项!',
         buttons: {
             confirm: {
 
                 btnClass: 'btn-blue',
                 text: '确定',
                 action: function () {
-                    $.alert('收款账户' + AliPayAccount);
+                    $.alert('收款账户[' + AliPayAccount+"]，若填错可修改");
                     $("#AliPayAccount").attr("disabled", true);
                     $("#bnModifyAliPayAccount").show();
                     $("#bnConfirmAliPayAccount").hide();

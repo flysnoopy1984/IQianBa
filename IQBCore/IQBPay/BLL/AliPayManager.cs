@@ -59,7 +59,17 @@ namespace IQBCore.IQBPay.BLL
             return response;
         }
 
-        public ETransferAmount TransferHandler(TransferTarget target,EAliPayApplication app, EUserInfo ui,ref EOrderInfo order, string accessToken)
+        /// <summary>
+        /// 转账
+        /// </summary>
+        /// <param name="target">转帐方向</param>
+        /// <param name="app">支付宝App</param>
+        /// <param name="ui">转账对象</param>
+        /// <param name="order">根据订单获取转账金额</param>
+        /// <param name="accessToken"></param>
+        /// <param name="GlobalConfig">获取是否微信转账配置</param>
+        /// <returns></returns>
+        public ETransferAmount TransferHandler(TransferTarget target,EAliPayApplication app, EUserInfo ui,ref EOrderInfo order, string accessToken,EGlobalConfig GlobalConfig)
         {
             string TransferId ="";
             ETransferAmount transfer = null;
@@ -89,19 +99,26 @@ namespace IQBCore.IQBPay.BLL
             if (res.Code == "10000")
             {
                 //微信通知代理开始
-                //try
-                //{
-                //    if(!string.IsNullOrEmpty(accessToken))
-                //    {
-                //        PPOrderPayNT notice = new PPOrderPayNT(accessToken, order.AgentOpenId, order);
-                //        notice.Push();
-                //    }
-                  
-                //}
-                //catch
-                //{
+                try
+                {
+                    if (GlobalConfig.IsWXNotice_AgentTransfer)
+                    {
+                        if (!string.IsNullOrEmpty(accessToken))
+                        {
+                            if (target == TransferTarget.Agent)
+                            {
 
-                //}
+                                PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
+                                notice.Push();
+                            }
+                        }
+                    }
+                  
+                }
+                catch
+                {
+
+                }
                 //微信通知代理通知结束
 
                 //转账记录开始

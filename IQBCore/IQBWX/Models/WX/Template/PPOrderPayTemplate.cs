@@ -12,7 +12,7 @@ namespace IQBCore.IQBWX.Models.WX.Template
 
         public PPOrderPayTemplate GenerateData(string toUserOpenId, IQBCore.IQBPay.Models.Order.EOrderInfo ppOrder)
         {
-            string first = string.Format("有用户扫描了您的收款二维码");
+            string first = string.Format("用户扫描了您的收款二维码");
             string remark = string.Format("支付宝流水号：{0} \n买家账号：{1}\n二维码扣点率：{2}%\n实际收款：{3}",
                                          ppOrder.AliPayOrderNo,
                                          ppOrder.BuyerAliPayAccount,
@@ -29,7 +29,7 @@ namespace IQBCore.IQBWX.Models.WX.Template
                 remark = new TemplateField { value = remark, color = "#007ACC" },
             };
 
-            PPOrderPayTemplate obj = base.InitObject(toUserOpenId, "", "m6qNTQKBPx7vrk2oRdlfalvwBF_4XFfQ0eIftyY0cKI");
+            PPOrderPayTemplate obj = base.InitObject(toUserOpenId, "", "ONG5RehDackEUk6VAHpGbPumTDv8S8XHkEywRTxL77Y");
             obj.data = data;
             return obj;
 

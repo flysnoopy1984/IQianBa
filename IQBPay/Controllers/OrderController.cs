@@ -76,7 +76,7 @@ namespace IQBPay.Controllers
                         sql = @"select AgentName,AgentOpenId,SUM(RealTotalAmount) as RemainAmount,ui.AliPayAccount from orderinfo 
                                 join userinfo as ui on ui.OpenId = orderinfo.AgentOpenId
                                 where OrderStatus = 1 and OrderType=0 
-                                GROUP BY AgentName
+                                GROUP BY AgentOpenId
                                 ";
                     }
                     else

@@ -164,16 +164,16 @@ namespace IQBPay.Controllers
                     }
                     if(type =="2")
                     {
-                        //transfer = db.DBTransferAmount.Where(u => u.TransferId == Id).FirstOrDefault();
-                        //if (transfer != null)
-                        //{
-                        //    result.Transfer = transfer;
-                        //    result.OrderList = db.DBOrder.Where(t => t.TransferId == transfer.TransferId).ToList();
-                        //    if (result.OrderList == null || result.OrderList.Count == 0)
-                        //        result.Result = -1;
-                        //}
-                        //else
-                        //    result.Result = -2;
+                        transfer = db.DBTransferAmount.Where(u => u.TransferId == Id).FirstOrDefault();
+                        if (transfer != null)
+                        {
+                            result.Transfer = transfer;
+                            result.OrderList = db.DBOrder.Where(t => t.OrderNo == transfer.OrderNo).ToList();
+                            if (result.OrderList == null || result.OrderList.Count == 0)
+                                result.Result = -1;
+                        }
+                        else
+                            result.Result = -2;
                     }
                 }
 

@@ -172,7 +172,7 @@ function generateData(result) {
 
         //平台盈利
         tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + ppRealAmt + "</td>";
+        strCtrl += "<td style='" + tdWidth + "'>" + ppRealAmt.toFixed(2) + "</td>";
        // ppAmt += parseFloat(ppRealAmt);
 
         //总金额

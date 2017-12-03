@@ -35,5 +35,10 @@ namespace IQBCore.IQBPay.Models.System
         /// 市场价花呗扣点率
         /// </summary>
         public float MarketRate { get; set; }
+
+        /// <summary>
+        /// 转账后微信通知
+        /// </summary>
+        public Boolean IsWXNotice_AgentTransfer { get; set; }
     }
 }

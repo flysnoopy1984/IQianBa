@@ -46,7 +46,7 @@ function generateData(result) {
         strCtrl += "<td>" + result.Order.AgentName + "</td>";
         strCtrl += "<td>" + result.Order.RateAmount + "</td>";
         strCtrl += "<td>" + result.Order.TransDateStr + "</td>";
-        strCtrl += "<td>" + result.Order.TransferId + "</td>";
+        //strCtrl += "<td>" + result.Order.TransferId + "</td>";
         strCtrl += "</tr>";
         $("#OrderContainer").append(strCtrl);
 
@@ -67,12 +67,11 @@ function generateData(result) {
 
             strCtrl = "";
             strCtrl += "<tr>";
-
             strCtrl += "<td>" + result.TransferList[i].TransferId + "</td>";
             strCtrl += "<td>" + target + "</td>";
             strCtrl += "<td>" + result.TransferList[i].TransferAmount + "</td>";
             strCtrl += "<td>" + result.TransferList[i].TransDateStr + "</td>";
-            strCtrl += "<td>" + result.TransferList[i].OrderNo + "</td>";
+            strCtrl += "<td>" + result.TransferList[i].TargetAccount + "</td>";
             strCtrl += "</tr>";
             $("#TransferContainer").append(strCtrl);
         });
@@ -82,13 +81,11 @@ function generateData(result) {
     {
         strCtrl = "";
         strCtrl += "<tr>";
-
         strCtrl += "<td>" + result.Transfer.TransferId + "</td>";
         strCtrl += "<td>" + result.Transfer.AgentName + "</td>";
         strCtrl += "<td>" + result.Transfer.TransferAmount + "</td>";
         strCtrl += "<td>" + result.Transfer.TransDateStr + "</td>";
-        strCtrl += "<td>" + result.Transfer.OrderNo + "</td>";
-
+        strCtrl += "<td>" + result.Transfer.TargetAccount + "</td>";
         strCtrl += "</tr>";
         $("#TransferContainer").append(strCtrl);
 
@@ -100,7 +97,7 @@ function generateData(result) {
             strCtrl += "<td>" + result.OrderList[i].AgentName + "</td>";
             strCtrl += "<td>" + result.OrderList[i].RealTotalAmount + "</td>";
             strCtrl += "<td>" + result.OrderList[i].TransDateStr + "</td>";
-            strCtrl += "<td>" + result.OrderList[i].TransferId + "</td>";
+          
 
           
             strCtrl += "</tr>";

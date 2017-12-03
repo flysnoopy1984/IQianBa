@@ -266,7 +266,7 @@ namespace IQBPay.Controllers
                         string accessToken = this.getAccessToken(true);
                         //代理打款
                         EUserInfo agentUI = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
-                        tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.App, agentUI,ref order, accessToken);
+                        tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.App, agentUI,ref order, accessToken,BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
 
 
@@ -282,7 +282,7 @@ namespace IQBPay.Controllers
                             parentUi.OpenId = agentComm.ParentOpenId;
                             parentUi.Name = agentComm.ParentName;
 
-                            tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.App, parentUi, ref order, accessToken);
+                            tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.App, parentUi, ref order, accessToken,BaseController.GlobalConfig);
                             db.DBTransferAmount.Add(tranfer);
 
                             agentComm.AgentCommissionStatus = AgentCommissionStatus.Paid;
@@ -291,7 +291,7 @@ namespace IQBPay.Controllers
 
                         //用户打款
                     
-                        tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App,null, ref order, accessToken);
+                        tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App,null, ref order, accessToken, BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
 
                         order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Closed;
@@ -508,11 +508,24 @@ namespace IQBPay.Controllers
         {
             string accessToken = this.getAccessToken(true);
             IQBCore.IQBPay.Models.Order.EOrderInfo _ppOrder;
+            PPOrderPayNT notice = null;
             using (AliPayContent db = new AliPayContent())
             {
                 _ppOrder = db.DBOrder.FirstOrDefault();
             }
-            PPOrderPayNT notice = new PPOrderPayNT(accessToken, "orKUAw16WK0BmflDLiBYsR-Kh5bE", _ppOrder);
+            try
+            {
+                if (!string.IsNullOrEmpty(accessToken))
+                {
+                    notice = new PPOrderPayNT(accessToken, "o3nwE0qI_cOkirmh_qbGGG-5G6B0", _ppOrder);
+                    notice.Push();
+                }
+
+            }
+            catch
+            {
+
+            }
             return Content(notice.Push());
         }
 

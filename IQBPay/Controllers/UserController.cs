@@ -189,7 +189,7 @@ namespace IQBPay.Controllers
                     qrUser.ParentCommissionRate  = InUA.ParentCommissionRate;
                     qrUser.ReceiveStoreId = InUA.StoreId;
                     qrUser.MarketRate = InUA.MarketRate;
-
+                    qrUser.Rate = InUA.Rate;
 
                     DbEntityEntry<EQRUser> qrEntry = db.Entry<EQRUser>(qrUser);
                     qrEntry.State = EntityState.Unchanged;
@@ -198,7 +198,7 @@ namespace IQBPay.Controllers
                     qrEntry.Property(t => t.ParentCommissionRate).IsModified = true;
                     qrEntry.Property(t => t.ReceiveStoreId).IsModified = true;
                     qrEntry.Property(t => t.MarketRate).IsModified = true;
-
+                    qrEntry.Property(t => t.Rate).IsModified = true;
 
 
                     db.SaveChanges();

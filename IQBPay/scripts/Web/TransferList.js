@@ -77,6 +77,20 @@ function generateData(result) {
         var thWidth;
         var TransDate = result[i].TransDateStr;
 
+        var target = "";
+        switch (result[i].TransferTarget) {
+            case 0:
+                target = "用户打款";
+                break;
+            case 1:
+                target = "代理转账";
+                break;
+            case 2:
+                target = "上级代理佣金";
+                break;
+        }
+
+
         strCtrl = "";
         strCtrl += "<tr>";
 
@@ -91,7 +105,7 @@ function generateData(result) {
         totalAmt += parseFloat(result[i].TransferAmount);
 
         tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].AgentName + "</td>";
+        strCtrl += "<td style='" + tdWidth + "'>" + target + "</td>";
 
         tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + TransDate + "</td>";
@@ -100,7 +114,7 @@ function generateData(result) {
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].OrderNo + "</td>";
 
         tdWidth = "width:" + $("#trHeader th").eq(6).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].Buyer_AliPayLoginId + "</td>";
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].TargetAccount + "</td>";
 
         strCtrl += "</tr>";
 
@@ -108,7 +122,7 @@ function generateData(result) {
 
     });
 
-    $("#RecordSum").text("【汇款总金额】：" + totalAmt.toFixed(2));
+ //   $("#RecordSum").text("【汇款总金额】：" + totalAmt.toFixed(2));
 }
 
 function ToInfo(action) {

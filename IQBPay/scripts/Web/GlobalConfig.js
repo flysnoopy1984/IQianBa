@@ -18,6 +18,8 @@ function Init()
             $("#WebStatus").find("option[value='" + data.WebStatus + "']").attr("selected", true);
 
             $("#AllowRegister").find("option[value='" + data.AllowRegister + "']").attr("selected", true);
+
+            $("#IsWXNotice_AgentTransfer").find("option[value='" + data.IsWXNotice_AgentTransfer + "']").attr("selected", true);
           
             $("#RecId").val(data.ID);
 
@@ -42,6 +44,8 @@ function Save()
 
     var AllowRegister = $("#AllowRegister").val();
 
+    var IsWXNotice_AgentTransfer = $("#IsWXNotice_AgentTransfer").val();
+
     var Note = $("#Note").val();
 
     var MarketRate = $("#MarketRate").val();
@@ -49,7 +53,7 @@ function Save()
     $.ajax({
         type: 'post',
         url: url,
-        data: "ID=" + ID + "&MarketRate="+MarketRate+"&WebStatus=" + WebStatus + "&Note=" + Note + "&AllowRegister=" + AllowRegister,
+        data: "ID=" + ID + "&IsWXNotice_AgentTransfer="+IsWXNotice_AgentTransfer+"&MarketRate="+MarketRate+"&WebStatus=" + WebStatus + "&Note=" + Note + "&AllowRegister=" + AllowRegister,
         success: function (data) {
 
             if(data == "OK")

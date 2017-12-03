@@ -151,6 +151,7 @@ function Save() {
     var UserRole = $("#selUserRole").val();
 
     var MarketRate = $("#MarketRate").val();
+    var Rate = $("#Rate").val();
 
     if (!CheckForm()) return;
 
@@ -158,7 +159,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "Id": ID, "MarketRate":MarketRate,"IsAutoTransfer": IsAutoTransfer, "AliPayAccount": AliPayAccount,"UserRole":UserRole, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName":ParentName,"ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
+        data: { "Id": ID,"Rate":Rate,"MarketRate":MarketRate,"IsAutoTransfer": IsAutoTransfer, "AliPayAccount": AliPayAccount,"UserRole":UserRole, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName":ParentName,"ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
         url: url,
         success: function (data) {
             if (data == "OK") {

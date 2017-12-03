@@ -75,6 +75,7 @@ namespace IQBCore.IQBPay.Models.AccountPayment
             obj.OrderNo = order.OrderNo;
             obj.QRUserId = order.QRUserId;
             obj.TransferStatus = TransferStatus.Open;
+            obj.TargetAccount = AliPayAccount;
             obj.Log = "";
             if (ui != null)
             {
