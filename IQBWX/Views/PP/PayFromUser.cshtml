@@ -1,0 +1,64 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+
+    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
+    <link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
+    <script src="~/Content/Script/Component/jquery-confirm.js"></script>
+    <script src="@Url.Scrpit("~/Content/Script/IQBPay/Pay.js")"></script>
+
+    <title>统一支付界面</title>
+</head>
+<body>
+    <style>
+        body {
+            background: #ffffff;
+        }
+
+        .TitleInfo {
+            height: 180px;
+            width: 95%;
+            text-align: left;
+        }
+    </style>
+
+    <div class="mgz cen" id="PayArea">
+        <div class="yuec mg2 xi35" style="margin-top:20px;">玉杰服务统一支付界面</div>
+        <div class="mg2 xi30" style="color:#F97600">请仔细填写您的支付宝收款账户！</div>
+        <div>
+            <span class="FieldLabel">支付宝账号</span>
+            <input id="AliPayAccount" class="AliPayAccount" type="text">
+            <button type="button" class="mgz btn btn-success verifyButton" id="bnConfirmAliPayAccount" onclick="ConfirmAliPayAccount()">确定</button>
+            <button type="button" class="mgz btn btn-danger verifyButton" id="bnModifyAliPayAccount" onclick="ModifyAliPayAccount()">修改</button>
+        </div>
+
+
+        <div id="PayContent">
+            <div class="yuex mg2 xi20" style="color:cornflowerblue">请通过支付宝扫码支付</div>
+            <div class="form-group">
+                <label class="FieldLabel">输入金额</label>
+                <div class="mgz">
+                    <input id="TotalAmout" class="PayEditInput" type="text" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")' />
+                </div>
+            </div>
+            <div id="buttonArea">
+                <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnPay" style="width:90%; height:100px;" onclick="PayToAli();">支付</button>
+            </div>
+        </div>
+
+
+    </div>
+    @*<input type="hidden" id="ReceiveNo" value="@ViewBag.ReceiveNo" />*@
+    <input type="hidden" id="qrUserId" value="@ViewBag.QRUserId" />
+</body>
+</html>

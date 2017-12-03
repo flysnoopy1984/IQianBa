@@ -44,7 +44,11 @@ function InitFormData(data)
     if (data.QRFilePath == "" || data.QRFilePath == null)
         $("#QRImg").attr("src", "/Content/Images/noPic.jpg");
     else
-        $("#QRImg").attr("src", data.QRFilePath);
+    {
+        $("#QRImg").attr("src", data.OrigQRFilePath);
+       
+    }
+        
 
     if (data.Rate != null && data.Rate != "")
         $("#Rate").text(data.Rate + "%");

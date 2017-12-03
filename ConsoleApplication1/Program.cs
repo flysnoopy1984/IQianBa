@@ -7,6 +7,7 @@ using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBWX.BaseEnum;
+using IQBPay.Core;
 using IQBPay.DataBase;
 using IQBWX.Common;
 using IQBWX.DataBase;
@@ -32,12 +33,14 @@ namespace ConsoleApplication1
             try
             {
 
-                Console.WriteLine(UtilityHelper.GetTimeStartByType("Week", DateTime.Now));
-                Console.WriteLine(UtilityHelper.GetTimeEndByType("Week", DateTime.Now));
+                EQRUser qrUser = new EQRUser();
+                using (AliPayContent db = new AliPayContent())
+                {
+                    qrUser = db.DBQRUser.Where(a => a.ID == 12).FirstOrDefault();
+                    QRManager.CreateUserUrlById(qrUser);
+                }
+                   
 
-                Console.WriteLine(UtilityHelper.GetTimeStartByType("Month", DateTime.Now));
-
-                Console.WriteLine(UtilityHelper.GetTimeEndByType("Month", DateTime.Now));
                 Console.Read();
 
             }

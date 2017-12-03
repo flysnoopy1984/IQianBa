@@ -24,8 +24,8 @@ namespace IQBCore.Common.Helper
             ArrayList loca = new ArrayList();
             int x = 0;
             int y = 0;
-            x = MainImg.Width / 2 - waterimg.Width / 2;
-            y = MainImg.Height / 2 - 110;
+            x = MainImg.Width / 2 - waterimg.Width / 2-90;
+            y = MainImg.Height / 2 - 260;
             loca.Add(x);
             loca.Add(y);
 

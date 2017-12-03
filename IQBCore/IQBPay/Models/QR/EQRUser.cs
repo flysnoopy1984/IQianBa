@@ -47,6 +47,9 @@ namespace IQBCore.IQBPay.Models.QR
         [MaxLength(128)]
         public string FilePath { get; set; }
 
+        [MaxLength(128)]
+        public string OrigQRFilePath { get; set; }
+
 
         public int ReceiveStoreId { get; set; }
 

@@ -353,6 +353,7 @@
     <Content Include="Views\PP\ReceiveOrder.cshtml" />
     <Content Include="Views\PP\Pay2.cshtml" />
     <Content Include="Views\HOME\Demo.cshtml" />
+    <Content Include="Views\PP\PayFromUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

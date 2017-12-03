@@ -37,6 +37,8 @@ namespace IQBCore.IQBPay.Models.Result
 
         public string QRFilePath { get; set; }
 
+        public string OrigQRFilePath { get; set; }
+
         [DefaultValue(0)]
         public float? Rate { get; set; }
 

@@ -56,6 +56,11 @@ namespace IQBWX.Controllers
             return View();
         }
 
+        public ActionResult PayFromUser()
+        {
+            return View();
+        }
+
         public ActionResult Pay(string Id)
         {
             if(WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)

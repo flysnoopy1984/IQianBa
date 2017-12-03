@@ -98,26 +98,30 @@ namespace IQBCore.IQBPay.BLL
 
             if (res.Code == "10000")
             {
+                IQBLog log = new IQBLog();
                 //微信通知代理开始
                 try
                 {
+                 
                     if (GlobalConfig.IsWXNotice_AgentTransfer)
                     {
+                     
                         if (!string.IsNullOrEmpty(accessToken))
                         {
                             if (target == TransferTarget.Agent)
                             {
-
+                              
                                 PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
+                             
                                 notice.Push();
                             }
                         }
                     }
                   
                 }
-                catch
+                catch(Exception ex)
                 {
-
+                    log.log("TransferHandler WX note Error:"+ex.Message);
                 }
                 //微信通知代理通知结束
 
@@ -132,7 +136,7 @@ namespace IQBCore.IQBPay.BLL
                 transfer.TransferStatus = TransferStatus.Failure;
                 transfer.Log += string.Format("[Transfer to {2}] SubCode:{0};Submsg:{1}", res.SubCode, res.SubMsg, target.ToString());
 
-               
+                order.LogRemark += "【转账错误】--目标：" + target + "转账单号:"+ TransferId;
                 order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
             }
             return transfer;
@@ -152,8 +156,8 @@ namespace IQBCore.IQBPay.BLL
             model.OutBizNo = TransferId;
             model.PayeeType = "ALIPAY_LOGONID";
             model.PayeeAccount = toAliPayAccount;
-            model.PayerShowName = "玉杰平台支付";
-            model.Remark = string.Format("玉杰服务提现");
+            model.PayerShowName = "平台支付";
+            model.Remark = string.Format("转账");
 
             request.SetBizModel(model);
 

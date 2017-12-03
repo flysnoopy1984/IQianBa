@@ -176,6 +176,16 @@
     <Content Include="Content\Images\backgrounds\bg4.jpg" />
     <Content Include="Content\Images\800_01.png" />
     <Content Include="Content\Images\backgrounds\messageBK.png" />
+    <Content Include="Content\QR\AliPay_F2F\2017100814512800005466.jpg" />
+    <Content Include="Content\QR\AliPay_F2F\2017100814573600001004.jpg" />
+    <Content Include="Content\QR\AliPay_F2F\2017100814590200005346.jpg" />
+    <Content Include="Content\QR\AliPay_F2F\201710081505210000634.jpg" />
+    <Content Include="Content\QR\AliPay_F2F\2017112414512500001451.jpg" />
+    <Content Include="Content\QR\AliPay_F2F\201711241454510000630.jpg" />
+    <Content Include="Content\QR\AliPay_F2F\2017112415042200004855.jpg" />
+    <Content Include="Content\QR\AliPay_F2F\2017112415062000001535.jpg" />
+    <Content Include="Content\QR\AliPay_F2F\2017112416070300008970.jpg" />
+    <Content Include="Content\QR\BK\ARUserBK1.jpg" />
     <Content Include="Content\Style\Web\ULList.css" />
     <Content Include="Content\Style\Web\FixTableList.css" />
     <Content Include="Content\Images\backgrounds\1.jpg" />
@@ -233,7 +243,6 @@
     <Content Include="Content\Images\noPic.jpg" />
     <Content Include="Content\main.css" />
     <Content Include="Content\minimal.css" />
-    <Content Include="Content\QR\2017092214101400009702.jpg" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\Style\Frame1\as\app.js" />
     <Content Include="Content\Style\Frame1\as\bootstrap.js" />
@@ -608,6 +617,7 @@
     <Content Include="Views\Wap\MyReceiveQR.cshtml" />
     <Content Include="Views\Main\Message.cshtml" />
     <Content Include="Views\Test\Login.cshtml" />
+    <Content Include="Views\AliPay\QRUserImg.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -179,7 +179,7 @@ namespace IQBPay.Controllers
             AliPayManager payManager = new AliPayManager();
             ETransferAmount tranfer = null;
             EAgentCommission agentComm = null;
-           
+            int TransferError = 0 ;
 
             try
             {
@@ -266,12 +266,18 @@ namespace IQBPay.Controllers
                         string accessToken = this.getAccessToken(true);
                         //代理打款
                         EUserInfo agentUI = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
+                       /* Log.log("PayNotify -- accessToken:" + accessToken);
+                        Log.log("PayNotify -- BaseController.GlobalConfig:" + BaseController.GlobalConfig.IsWXNotice_AgentTransfer);
+                        Log.log("PayNotify -- agentUI OpenId:" + agentUI.OpenId);
+                        */
                         tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.App, agentUI,ref order, accessToken,BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
-
+                        if(tranfer.TransferStatus != TransferStatus.Success)
+                            TransferError++;
+                  
 
                         //上级代理佣金
-                        if(!string.IsNullOrEmpty(order.ParentOpenId))
+                        if (!string.IsNullOrEmpty(order.ParentOpenId))
                         {
 
                             agentComm = db.DBAgentCommission.Where(c => c.OrderNo == order.OrderNo && c.ParentOpenId == order.ParentOpenId && c.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
@@ -282,19 +288,27 @@ namespace IQBPay.Controllers
                             parentUi.OpenId = agentComm.ParentOpenId;
                             parentUi.Name = agentComm.ParentName;
 
-                            tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.App, parentUi, ref order, accessToken,BaseController.GlobalConfig);
+                            tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.App, parentUi, ref order, null,BaseController.GlobalConfig);
                             db.DBTransferAmount.Add(tranfer);
-
-                            agentComm.AgentCommissionStatus = AgentCommissionStatus.Paid;
+                            
+                            if(tranfer.TransferStatus == TransferStatus.Success)
+                                agentComm.AgentCommissionStatus = AgentCommissionStatus.Paid;
+                            else
+                                TransferError++;
                         }
 
 
                         //用户打款
                     
-                        tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App,null, ref order, accessToken, BaseController.GlobalConfig);
+                        tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App,null, ref order, null, BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
 
-                        order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Closed;
+                        if(tranfer.TransferStatus != TransferStatus.Success)
+                            TransferError++;
+                        if(TransferError>0)
+                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                        else
+                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Closed;
                      
                       
 
@@ -502,7 +516,16 @@ namespace IQBPay.Controllers
            return Content(AliDemo.callQRImg());
         }
 
-        
+         public ActionResult QRUserImg()
+        {
+            EQRUser qrUser = new EQRUser();
+            using (AliPayContent db = new AliPayContent())
+            {
+                qrUser = db.DBQRUser.Where(a => a.ID == 12).FirstOrDefault();
+              ViewBag.FP =   QRManager.CreateUserUrlById(qrUser).FilePath;
+            }
+            return View();
+        }
 
         public ActionResult Note()
         {

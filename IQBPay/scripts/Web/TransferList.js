@@ -90,6 +90,19 @@ function generateData(result) {
                 break;
         }
 
+        var transferStatus = "";
+        switch (result[i].TransferStatus) {
+            case 0:
+                transferStatus = "未汇款";
+                break;
+            case 1:
+                transferStatus = "汇款成功";
+                break;
+            case -1:
+                transferStatus = "汇款失败";
+                break;
+        }
+
 
         strCtrl = "";
         strCtrl += "<tr>";
@@ -100,21 +113,33 @@ function generateData(result) {
         tdWidth = "width:" + $("#trHeader th").eq(1).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferId + "</td>";
 
+        //汇款状态
         tdWidth = "width:" + $("#trHeader th").eq(2).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferAmount + "</td>";
-        totalAmt += parseFloat(result[i].TransferAmount);
+        strCtrl += "<td style='" + tdWidth + "'>" + transferStatus + "</td>";
 
         tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + target + "</td>";
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferAmount + "</td>";
+        totalAmt += parseFloat(result[i].TransferAmount);
 
         tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + TransDate + "</td>";
 
         tdWidth = "width:" + $("#trHeader th").eq(5).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].OrderNo + "</td>";
+        strCtrl += "<td style='" + tdWidth + "'>" + target + "</td>";
 
         tdWidth = "width:" + $("#trHeader th").eq(6).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].OrderNo + "</td>";
+
+        tdWidth = "width:" + $("#trHeader th").eq(7).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TargetAccount + "</td>";
+
+        tdWidth = "width:" + $("#trHeader th").eq(8).css("width");
+
+        strCtrl += "<td style='" + tdWidth + "'><a href='javascript:ShowError(" + i + ")'>日志</a>";
+        strCtrl += "<div class='DivHovering' id=divError" + i + ">" + result[i].Log + "</div>";
+        strCtrl += "</td>";
+
+        //strCtrl += "<td style='" + tdWidth + "'>" + result[i].Log + "</td>";
 
         strCtrl += "</tr>";
 
@@ -123,6 +148,18 @@ function generateData(result) {
     });
 
  //   $("#RecordSum").text("【汇款总金额】：" + totalAmt.toFixed(2));
+}
+
+function ShowError(no) {
+    var obj = $("#divError" + no);
+    if (obj.is(":hidden")) {
+        obj.css("position", "relative");
+        obj.show();
+    }
+    else {
+        obj.css("position", "absolute");
+        obj.hide();
+    }
 }
 
 function ToInfo(action) {

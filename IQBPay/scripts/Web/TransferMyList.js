@@ -80,6 +80,20 @@ function generateData(result) {
     $.each(result, function (i) {
         var thWidth;
         var TransDate = result[i].TransDateStr;
+
+        var transferStatus = "";
+        switch (result[i].TransferStatus) {
+            case 0:
+                transferStatus = "未汇款";
+                break;
+            case 1:
+                transferStatus = "汇款成功";
+                break;
+            case -1:
+                transferStatus = "汇款失败";
+                break;
+        }
+
         strCtrl = "";
         strCtrl += "<tr>";
 
@@ -89,14 +103,33 @@ function generateData(result) {
         tdWidth = "width:" + $("#trHeader th").eq(1).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferId + "</td>";
 
+        //汇款状态
         tdWidth = "width:" + $("#trHeader th").eq(2).css("width");
+        if (result[i].TransferStatus == -1)
+        {
+            strCtrl += "<td style='" + tdWidth + "'><a href='javascript:ShowError(" + i + ")'>" + transferStatus + "</a>";
+            strCtrl += "<div class='DivHovering' id=divError" + i + ">" + result[i].Log + "</div>";
+            strCtrl += "</td>";
+        }
+        else
+        {
+            strCtrl += "<td style='" + tdWidth + "'>" + transferStatus + "</td>";
+        }
+      
+       
+      //  totalAmt += parseFloat(result[i].TransferAmount);
+
+        //汇款金额
+        tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].TransferAmount + "</td>";
         totalAmt += parseFloat(result[i].TransferAmount);
 
-        tdWidth = "width:" + $("#trHeader th").eq(3).css("width");
+        //汇款时间
+        tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + TransDate + "</td>";
 
-        tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
+        //订单
+        tdWidth = "width:" + $("#trHeader th").eq(5).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].OrderNo + "</td>";
 
         strCtrl += "</tr>";
@@ -104,6 +137,18 @@ function generateData(result) {
         $("#trContainer").append(strCtrl);
     });
 
-    $("#RecordSum").text("【汇款总金额】：" + totalAmt.toFixed(2));
+  //  $("#RecordSum").text("【汇款总金额】：" + totalAmt.toFixed(2));
+}
+
+function ShowError(no) {
+    var obj = $("#divError" + no);
+    if (obj.is(":hidden")) {
+        obj.css("position", "relative");
+        obj.show();
+    }
+    else {
+        obj.css("position", "absolute");
+        obj.hide();
+    }
 }
 

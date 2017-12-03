@@ -20,26 +20,45 @@ namespace IQBPay.Core
     {
         
         /// <summary>
-        /// 普通用户扫码进入后生成二维码
+        /// 收款二维码
         /// </summary>
         public static EQRUser CreateUserUrlById(EQRUser qrUser)
         {
             try
             { 
-            string site = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
-            string url = site + "PP/Pay?Id=" + qrUser.ID;
+                 string site = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
+                 string url = site + "PP/Pay?Id=" + qrUser.ID;
 
-            string filePath = ConfigurationManager.AppSettings["QR_ARUser_FP"];
-            string filename = "QRARU" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()
-            + ".jpg";
+                 string filePath = ConfigurationManager.AppSettings["QR_ARUser_FP"];
+                 string filename = "QRARU" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()
+                 + ".jpg";
 
-            filePath += filename;
-            qrUser.FilePath = filePath;
-            qrUser.TargetUrl = url;
+                 filePath += filename;
 
-            //Create QR
-            filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
-            QRManager.CreateQR(url, filePath);
+                qrUser.OrigQRFilePath = filePath;
+                //Create QR
+                filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
+                 Bitmap qrImg = QRManager.CreateQR(url, filePath);
+                
+
+                //BK
+                //+ "ARUserBK1.jpg";
+                string bkAdree = HttpContext.Current.Server.MapPath("/Content/QR/BK/ARUserBK1.jpg");
+                Bitmap bkImg = new Bitmap(bkAdree);
+                Bitmap finImg = ImgHelper.ImageWatermark(bkImg, qrImg);
+
+                filePath = ConfigurationManager.AppSettings["QR_ARUser_FP"];
+                filename = "BK_" + filename;
+                filePath += filename;
+
+                finImg.Save(HttpContext.Current.Server.MapPath(filePath));
+                finImg.Dispose();
+                bkImg.Dispose();
+
+
+                qrUser.FilePath = filePath;
+                qrUser.TargetUrl = url;
+
             }
             catch(Exception ex)
             {
@@ -133,11 +152,18 @@ namespace IQBPay.Core
             return qr;
         }
 
-        public static bool CreateQR(string Url,string FilePath)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Url"></param>
+        /// <param name="FilePath"></param>
+        /// <returns></returns>
+        public static Bitmap CreateQR(string Url,string FilePath)
         {
+            Bitmap bt = null;
             try
             { 
-                Bitmap bt;
+               
          
                 string enCodeString = Url;
                 QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
@@ -146,8 +172,9 @@ namespace IQBPay.Core
                 qrCodeEncoder.QRCodeScale = 3;
                 qrCodeEncoder.QRCodeVersion = 0;
                 bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
-           
-           
+
+              
+
                 bt.Save(FilePath);
             }
             catch(Exception ex)
@@ -159,7 +186,7 @@ namespace IQBPay.Core
             }
 
 
-            return true;
+            return bt;
 
         }
 

@@ -223,10 +223,12 @@ namespace IQBWX.Controllers
             string openId = WXParameter.OpenId;
             string access_token = WXParameter.AccessToke;
             IQBLog log = new IQBLog();
+
+            openId = "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
             try
             {
            
-                if (!string.IsNullOrEmpty(openId) && !string.IsNullOrEmpty(access_token))
+           /*     if (!string.IsNullOrEmpty(openId) && !string.IsNullOrEmpty(access_token))
                 {
                     string url_userInfo = string.Format("https://api.weixin.qq.com/sns/userinfo?access_token={0}&openid={1}&lang=zh_CN", access_token, openId);
                     WXUserInfo wxUser = HttpHelper.Get<WXUserInfo>(url_userInfo,true);
@@ -242,7 +244,7 @@ namespace IQBWX.Controllers
                         return View();
                     
                 }
-              
+             */ 
             }
             catch (Exception ex)
             {
