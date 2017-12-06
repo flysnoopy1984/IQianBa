@@ -13,8 +13,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            var a = "shanghai";
-            alert(a.substr(3));
+            //var a = "shanghai";
+            //alert(a.substr(3));
 
         })
         function Go(url)
@@ -63,7 +63,8 @@
 <body>
     <div> 
         <ul>
-            <li><a href=@Url.Action("Pay","AliPay")>Payment</a></li>
+            <li><a href=@Url.Action("Pay", "AliPay", new { amount = 14388 })>手机Pay</a></li>
+            <li><a href=@Url.Action("PCPay", "AliPay", new { amount = 14388 })>PC Pay</a></li>
             <li><a href=@Url.Action("AuthToISV", "AliPay")>AuthToUser</a></li>
             <li><a href=@Url.Action("GetAuthToken", "AliPay")>GetAuthToken</a></li>
             <li><a href=@Url.Action("QueryToken", "AliPay")>QueryToken</a></li> 

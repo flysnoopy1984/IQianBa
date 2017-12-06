@@ -19,14 +19,17 @@
 
 
 <div id="InfoArea">
+    <input type="hidden" id="storeId" />
+    <input type="hidden" id="RecId" />
+    <input type="hidden" id="QrUserId" />
     <div id="Title" class="alert alert-info BarTitle">
         <span class="entypo-info-circled"></span>
         <strong>查看或编辑信息</strong>
 
     </div>
+   
+    
     <div id="EditArea">
-        <input type="hidden" id="storeId" />
-
         <div class="form-group">
             <label class="col-sm-3 control-label">用户名</label>
             <div class="col-sm-6">
@@ -57,11 +60,9 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">上级代理</label>
             <div class="col-sm-6">
-                <select id="selParentAgent" class="form-control">
-                   
-                </select>
+                <select id="selParentAgent" class="form-control"></select>
                 @*<input id="ParentAgentId" type="hidden" />
-                <input id="ParentAgent" type="text" class="form-control" />*@
+                    <input id="ParentAgent" type="text" class="form-control" />*@
             </div>
         </div>
 
@@ -75,11 +76,9 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">收款商户</label>
             <div class="col-sm-6">
-                <select id="selStore" class="form-control">
-                    
-                </select>
+                <select id="selStore" class="form-control"></select>
                 @*<input id="StoreId" type="hidden">
-                <input id="StoreName" type="text" class="form-control" />*@
+                    <input id="StoreName" type="text" class="form-control" />*@
             </div>
         </div>
 
@@ -112,15 +111,16 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">用户状态</label>
             <div class="switch col-sm-6" data-on="success" data-off="warning" />
-                <input type="checkbox" id="UserStatus">
-            </div>
+            <input type="checkbox" id="UserStatus" />
+        </div>
 
     </div>
-   
-
+    
     <div class="ButtonList">
         <button type="button" class="btn btn-success" onclick="Save();">保存</button>
     </div>
-    <input type="hidden" id="RecId" />
-    <input type="hidden" id="QrUserId" />
+    <div>
+        <img id="QRShow" src="" />
+    </div>
+   
 </div>

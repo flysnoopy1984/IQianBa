@@ -176,6 +176,7 @@
     <Content Include="Content\Images\backgrounds\bg4.jpg" />
     <Content Include="Content\Images\800_01.png" />
     <Content Include="Content\Images\backgrounds\messageBK.png" />
+    <Content Include="Content\Images\Tool\CouPonQRCode.png" />
     <Content Include="Content\QR\AliPay_F2F\2017100814512800005466.jpg" />
     <Content Include="Content\QR\AliPay_F2F\2017100814573600001004.jpg" />
     <Content Include="Content\QR\AliPay_F2F\2017100814590200005346.jpg" />
@@ -618,6 +619,8 @@
     <Content Include="Views\Main\Message.cshtml" />
     <Content Include="Views\Test\Login.cshtml" />
     <Content Include="Views\AliPay\QRUserImg.cshtml" />
+    <Content Include="Views\Test\Tool_RPay.cshtml" />
+    <Content Include="Views\Test\JF.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -632,6 +635,7 @@
     <Folder Include="Content\QR\ARMaster\" />
     <Folder Include="Content\QR\ARUser\" />
     <Folder Include="Content\QR\AuthStore\" />
+    <Folder Include="Content\QR\Tools\" />
     <Folder Include="Content\Style\Frame1\as\js\wizard\build\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Global\" />

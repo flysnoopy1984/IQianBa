@@ -2,6 +2,7 @@
 using Aop.Api.Domain;
 using Aop.Api.Request;
 using Aop.Api.Response;
+using IQBCore.Common.Helper;
 using IQBCore.IQBPay.Models.System;
 using IQBPay.Controllers;
 using System;
@@ -68,26 +69,71 @@ namespace IQBPay.Core
             return response.Body;
         }
 
-        public static string callAliPay_Wap()
+        public static string callAliPay_Wap(string amt)
         {
-            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", AppID,
-               privateKey, "json", "1.0", "RSA2", publicKey2, "UTF-8", false);
+            EAliPayApplication app = BaseController.App;
+            IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+                       app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
 
+            
             AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
-            model.Body = "至尊宝";
-            model.Subject = "爱钱吧币";
-            model.TotalAmount = "0.01";
-            model.OutTradeNo = "IQB20170921";
+            model.Body = "服务费";
+            model.Subject = "服务费";
+            model.TotalAmount = amt;
+            model.OutTradeNo = StringHelper.GenerateOrderNo();
             model.ProductCode = "QUICK_WAP_PAY";
+            model.GoodsType = "1";
+            
+            // model.EnablePayChannels = "pcredit";
             //  model.SellerId = "2088821092484390";
-            model.AuthToken = "201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39";
+            // model.AuthToken = "201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39";
 
             AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
+            
+
+            request.SetBizModel(model);
+
+            AlipayTradeWapPayResponse response = alipayClient.pageExecute(request);
+           
+            string ret = response.Body;
+                return ret;
+        }
+
+        public static string callAliPay_PC(string amt)
+        {
+            EAliPayApplication app = BaseController.App;
+            IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+                       app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
+
+
+            AlipayTradePayModel model = new AlipayTradePayModel();
+            string orderNo = StringHelper.GenerateOrderNo();
+
+            model.Body = "原版书册";
+            model.Subject = "原版书册";
+            model.TotalAmount = amt;
+            model.OutTradeNo = orderNo;
+            model.ProductCode = "FAST_INSTANT_TRADE_PAY";
+            
+           // model.ExtendParams = new ExtendParams();
+            //model.ExtendParams.HbFqNum = "6";
+            //model.ExtendParams.HbFqSellerPercent = "100";
+            //model.ExtendParams.SysServiceProviderId = "";
+          
+
+
+
+
+            // model.EnablePayChannels = "pcredit";
+            //  model.SellerId = "2088821092484390";
+            // model.AuthToken = "201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39";
+
+            AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
 
 
             request.SetBizModel(model);
 
-            AlipayTradeWapPayResponse response = aliyapClient.Execute(request, "201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39", "201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39");
+            AlipayTradePagePayResponse response = alipayClient.pageExecute(request);
 
             string ret = response.Body;
             return ret;

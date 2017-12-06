@@ -500,7 +500,8 @@ namespace IQBPay.Controllers
 
         public ActionResult Pay()
         {
-            return Content(AliDemo.callAliPay_Wap());
+            string amt = Request.QueryString["amount"];
+            return Content(AliDemo.callAliPay_Wap(amt));
         }
 
         public ActionResult Demo()
@@ -786,6 +787,14 @@ namespace IQBPay.Controllers
             //return Content(response.Body);
             return View();
         }
+
+        public ActionResult PCPay()
+        {
+
+            string amt = Request.QueryString["amount"];
+            return Content(AliDemo.callAliPay_PC(amt));
+        }
+
 
 
     }

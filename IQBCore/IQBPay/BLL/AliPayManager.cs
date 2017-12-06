@@ -13,6 +13,7 @@ using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.System;
+using IQBCore.IQBPay.Models.Tool;
 using IQBCore.IQBPay.Models.User;
 using IQBCore.IQBWX.Models.WX.Template;
 using Newtonsoft.Json;
@@ -250,6 +251,47 @@ namespace IQBCore.IQBPay.BLL
            
         }
 
+        public string PayF2F_ForR(EAliPayApplication app, string SellerId,string amount, ETool_QR qr,out ResultEnum status)
+        {
+            string result = "";
+
+            IAlipayTradeService serviceClient = F2FBiz.CreateClientInstance(app.ServerUrl, app.AppId, app.Merchant_Private_Key, app.Version,
+                                     app.SignType, app.Merchant_Public_key, app.Charset);
+
+            _handler = new F2FPayHandler();
+
+            AlipayTradePrecreateContentBuilder builder = _handler.BuildPrecreateContent_ForR(app,"", amount);
+
+            AlipayF2FPrecreateResult precreateResult = serviceClient.tradePrecreate(builder);
+
+            status = precreateResult.Status;
+
+            switch (precreateResult.Status)
+            {
+                case ResultEnum.SUCCESS:
+                    result = _handler.CreateQR_ForR(precreateResult,qr);
+                   
+                    break;
+                case ResultEnum.FAILED:
+                    result = precreateResult.response.Body;
+
+                    break;
+
+                case ResultEnum.UNKNOWN:
+                    if (precreateResult.response == null)
+                    {
+                        result = "配置或网络异常，请检查后重试";
+                    }
+                    else
+                    {
+                        result = "系统异常，请更新外部订单后重新发起请求";
+                    }
+
+                    break;
+            }
+         
+            return result;
+        }
 
         public string PayF2F(EAliPayApplication app, EUserInfo AgentUi, EStoreInfo storeInfo, float TotalAmount, out ResultEnum status)
         {
@@ -327,11 +369,36 @@ namespace IQBCore.IQBPay.BLL
                     good.goods_name = "飘花冰糯种玉镯子";
                     break;
             }
+           
             good.price = TotalAmt;
             good.quantity = "1";
 
             list.Add(good);
             return list;
+        }
+
+        public string SHPay(EAliPayApplication app)
+        {
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+            app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+
+            AlipayEbppBillAddRequest request = new AlipayEbppBillAddRequest();
+            request.MerchantOrderNo = "IQB201203031234567";
+            request.OrderType = "JF";
+            request.SubOrderType = "WATER";
+            request.ChargeInst = "BJCEB";
+            request.BillKey = "3388102012376451";
+            request.OwnerName = "织绫";
+            request.PayAmount = "23.45";
+            request.ServiceAmount = "8";
+            request.BillDate = "201703";
+            request.Mobile = "15987838584";
+            request.TrafficLocation = "浙江,杭徽高速";
+            request.TrafficRegulations = "窜红灯";
+            request.BankBillNo = "20130916";
+          //  request.ExtendField = "{"key1":"value1","key2":"value2","key3":"value3","key4":"value4"}";
+            AlipayEbppBillAddResponse response = aliyapClient.Execute(request);
+            return response.Code;
         }
     }
 }

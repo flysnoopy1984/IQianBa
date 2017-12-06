@@ -6,6 +6,7 @@ using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.SMS;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.System;
+using IQBCore.IQBPay.Models.Tool;
 using IQBCore.IQBPay.Models.User;
 using IQBPay.Controllers;
 using IQBPay.Core;
@@ -55,6 +56,8 @@ namespace IQBPay.DataBase
         public DbSet<EGlobalConfig> DBGlobalConfig { get; set; }
 
         public DbSet<EBuyerInfo> DBBuyerInfo { get; set; }
+
+        public DbSet<ETool_QR> DBTool_QR { get; set; }
 
         #region User  
         public Boolean IsExistUser(string openId)

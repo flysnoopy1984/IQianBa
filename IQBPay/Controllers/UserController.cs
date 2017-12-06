@@ -88,7 +88,7 @@ namespace IQBPay.Controllers
                         result.QueryResult = false;
                         return Json(result);
                     }
-                    result.StoreList = db.Database.SqlQuery<HashStore>("select Id,Name,Rate from storeinfo where storeinfo.IsReceiveAccount = 'false'").ToList();
+                    result.StoreList = db.Database.SqlQuery<HashStore>("select Id,Name,Rate from storeinfo").ToList();
                     result.ParentAgentList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo").ToList();
 
                     result.QueryResult = true;

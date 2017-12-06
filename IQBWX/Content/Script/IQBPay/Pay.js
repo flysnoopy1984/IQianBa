@@ -34,7 +34,7 @@ function ConfirmAliPayAccount() {
                 btnClass: 'btn-blue',
                 text: '确定',
                 action: function () {
-                    $.alert('收款账户[' + AliPayAccount+"]，若填错可修改");
+                   
                     $("#AliPayAccount").attr("disabled", true);
                     $("#bnModifyAliPayAccount").show();
                     $("#bnConfirmAliPayAccount").hide();

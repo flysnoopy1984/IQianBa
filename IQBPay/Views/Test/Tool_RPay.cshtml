@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "Tool_RPay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+   Tools
+}
+@section SubMenu2{
+    刷单
+}
+<link href="@Url.Scrpit("~/Content/Style/Web/Info.css")" rel="stylesheet" />
+<link href="@Url.Scrpit("~/Content/Style/Web/List.css")" rel="stylesheet" />
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var url = "/Test/GetRPayQR";
+        var strCtrl = "";
+
+        $.ajax({
+            type: 'post',
+            data: "",
+            url: url,
+            success: function (data) {
+                var arrLen = data.length;
+
+                $("#trContainer").empty();
+                if (arrLen > 0) {
+                    $.each(data, function (i) {
+                        strCtrl = "";
+                        strCtrl += "<tr>";
+                        strCtrl += "<td>" + data[i].Id + "</td>";
+                        strCtrl += "<td>" + data[i].CouponAmt + "</td>";
+                        strCtrl += "<td>" + data[i].InputAmt + "</td>";
+                        strCtrl += "<td>" + data[i].OrderAmt + "</td>";
+                        strCtrl += "<td><img src='" + data[i].FilePath + "' /></td>";
+                        strCtrl += "</tr>";
+
+                        $("#trContainer").append(strCtrl);
+                    });
+                }
+            },
+            error: function (xhr, type) {
+
+                alert('Ajax error!');
+
+            }
+        });
+
+    });
+
+    function CreateQR()
+    {
+        var couponAmt = parseFloat($("#couponAmt").val()).toFixed(2);
+        var inputAmt = parseFloat($("#PayAmount").val()).toFixed(2);
+
+        var Amount = parseFloat(parseFloat(couponAmt) + parseFloat(inputAmt)).toFixed(2);
+     
+
+        var url = "/Test/CreateRPayQR";
+        $.ajax({
+            type: 'post',
+            data: "Amount=" + Amount + "&couponAmt=" + couponAmt + "&inputAmt=" + inputAmt,
+            url: url,
+            success: function (data) {
+
+                //alert(data);
+                $("#QRImg").attr("src", data.FilePath);
+                $("#trContainer")
+                var strCtrl = "";
+                strCtrl += "<tr>";
+                strCtrl += "<td>" + data.Id + "</td>";
+                strCtrl += "<td>" + data.CouponAmt + "</td>";
+                strCtrl += "<td>" + data.InputAmt + "</td>";
+                strCtrl += "<td>" + data.OrderAmt + "</td>";
+                strCtrl += "<td><img src='" + data.FilePath + "' /></td>";
+                strCtrl += "</tr>";
+                $("#trContainer").append(strCtrl);
+            },
+            error: function (xhr, type) {
+
+                alert(xhr.responseText);
+
+            }
+        });
+    }
+   
+</script>
+<div id="InfoArea">
+    <div id="Title" class="alert alert-info BarTitle">
+        <span class="entypo-info-circled"></span>
+        <strong>查看或编辑信息</strong>
+    </div>
+    <div id="EditArea" style="width:1100px !important;">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">当前活动二维码</label>
+            <img src="~/Content/Images/Tool/CouPonQRCode.png" />
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">当前优惠券</label>
+            <div class="col-sm-6">
+                <input id="couponAmt" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">支付金额</label>
+            <div class="col-sm-6">
+                <input id="PayAmount" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">二维码</label>
+            <img id="QRImg" src="~/Content/Images/noPic.jpg" />
+         </div>
+   </div>
+    <div class="ButtonList">
+        <button type="button" class="btn btn-warning" onclick="CreateQR()">创建</button>
+    </div>
+    <div id="ListContent">
+        <table id="tbData" style="width:100%;" class="table table-hover table-bordered TableOverflowHidden">
+            <thead class="cf">
+                <tr id="trHeader">
+                    <th>ID</th>
+                    <th>优惠券金额</th>
+                    <th>输入金额</th>
+                    <th>订单金额</th>
+                    <th>二维码</th>
+                </tr>
+            </thead>
+            <tbody id="trContainer">
+
+            </tbody>
+        </table>
+    </div>
+
+ 
+</div>
+

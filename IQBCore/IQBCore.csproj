@@ -139,6 +139,8 @@
     <Compile Include="IQBPay\Models\Store\EStoreInfo.cs" />
     <Compile Include="IQBPay\Models\System\EAliPayApplication.cs" />
     <Compile Include="IQBPay\Models\System\EGlobalConfig.cs" />
+    <Compile Include="IQBPay\Models\Tool\ETool_PayOrder.cs" />
+    <Compile Include="IQBPay\Models\Tool\ETool_QR.cs" />
     <Compile Include="IQBPay\Models\User\EBuyerInfo.cs" />
     <Compile Include="IQBPay\Models\User\EUserInfo.cs" />
     <Compile Include="IQBWX\BaseEnum\IQBWxEnum.cs" />
@@ -167,7 +169,6 @@
     <Compile Include="WxSDK\WxPayApi.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="IQBPay\Models\Lock\" />
     <Folder Include="IQBWX\BLL\" />
   </ItemGroup>
   <ItemGroup>

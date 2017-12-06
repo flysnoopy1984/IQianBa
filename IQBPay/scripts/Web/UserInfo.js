@@ -101,6 +101,8 @@ function InitFormData(data) {
 
     $("#selUserRole").val(data.UserRole);
 
+    $("#QRShow").attr("src", data.OrigQRFilePath);
+
     $("#MarketRate").val(data.MarketRate);
     var st;
     if (data.UserStatus == 0)

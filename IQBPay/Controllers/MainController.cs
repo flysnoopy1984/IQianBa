@@ -17,6 +17,7 @@ using IQBCore.IQBPay.BLL;
 using System.Data.Entity;
 using IQBCore.Common.Helper;
 using IQBCore.IQBPay.Models.User;
+using Com.Alipay.Model;
 
 namespace IQBPay.Controllers
 {
@@ -39,6 +40,9 @@ namespace IQBPay.Controllers
         {
             return View();
         }
+
+
+      
 
         public ActionResult GlobalGetOrCreate()
         {
