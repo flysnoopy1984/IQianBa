@@ -33,7 +33,7 @@ namespace IQBWX.BLL.ExternalWeb
 
             if (res == "OK")
             {
-                result.WXMessage+= string.Format("亲爱的{0}，已为您注册为爱钱吧会员！", ui.nickname);
+                result.WXMessage+= string.Format("亲爱的{0}，已为您注册为会员！", ui.nickname);
                 result.Status = 1;
                 return result;
             }

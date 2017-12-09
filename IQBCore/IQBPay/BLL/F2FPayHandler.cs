@@ -128,7 +128,7 @@ namespace IQBCore.IQBPay.BLL
             List<GoodsInfo> gList = AliPayManager.GetGoodsList(TotalAmt);
             builder.goods_detail = gList;
 
-            builder.body = "#玉杰服务费商品";
+            builder.body = "#玉杰商品";
 
             //系统商接入可以填此参数用作返佣
             //    ExtendParams exParam = new ExtendParams();

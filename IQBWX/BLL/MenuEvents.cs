@@ -343,7 +343,7 @@ namespace IQBWX.BLL
                             notice.Push();
                         }      
 
-                        this.ResponseXml = msg.toText(string.Format("欢迎来到爱钱吧,亲爱的{0}",ui.nickname));
+                        this.ResponseXml = msg.toText(string.Format("欢迎,亲爱的{0}",ui.nickname));
                             
                     }
                     else

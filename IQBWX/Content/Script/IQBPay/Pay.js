@@ -12,9 +12,24 @@ function InitControls() {
   
 }
 
+function ShowPayArea()
+{
+    $("#AliPayAccount").attr("disabled", true);
+    $("#bnModifyAliPayAccount").show();
+    $("#bnConfirmAliPayAccount").hide();
+    $("#PayContent").show();
+}
+
 $(document).ready(function () {
 
     InitControls();
+    var account = getCookie("YJ_AliPayAccount");
+    if (account != null)
+    {
+        $("#AliPayAccount").val(account);
+        ShowPayArea();
+    }
+   
 });
 
 function ModifyAliPayAccount() {
@@ -35,10 +50,7 @@ function ConfirmAliPayAccount() {
                 text: '确定',
                 action: function () {
                    
-                    $("#AliPayAccount").attr("disabled", true);
-                    $("#bnModifyAliPayAccount").show();
-                    $("#bnConfirmAliPayAccount").hide();
-                    $("#PayContent").show();
+                    ShowPayArea();
                 }
 
             },
@@ -56,6 +68,8 @@ function ConfirmAliPayAccount() {
 
 
 function PayToAli() {
+
+ 
     var amt = $("#TotalAmout").val();
     var qrUserId = $("#qrUserId").val();
     if (amt == null || amt == "" || amt == 0) {
@@ -75,5 +89,10 @@ function PayToAli() {
 
     var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&AliPayAccount=" + AliPayAccount;
 
+    setCookie("YJ_AliPayAccount", AliPayAccount, 3);
+    
+
     window.location = url;
+
+   
 }

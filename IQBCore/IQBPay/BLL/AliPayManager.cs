@@ -372,7 +372,7 @@ namespace IQBCore.IQBPay.BLL
            
             good.price = TotalAmt;
             good.quantity = "1";
-
+            good.goods_category = "消费-服饰美容";
             list.Add(good);
             return list;
         }
