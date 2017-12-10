@@ -12,6 +12,7 @@ using LitJson;
 using IQBCore.WxSDK;
 using System.Security.Cryptography;
 using System.Text;
+using IQBCore.Common.Helper;
 
 namespace IQBPay.Controllers
 {
@@ -48,7 +49,7 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetJSSDK()
+        public ActionResult GetJSSDK(string AuthUrl)
         {
             string AccessToken = this.getAccessToken(true);
             string url = string.Format("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type=jsapi",AccessToken);
@@ -63,17 +64,15 @@ namespace IQBPay.Controllers
             wxSign.timestamp = WxPayApi.GenerateTimeStamp();
             wxSign.AppId = WxPayConfig.APPID;
             wxSign.nonceStr = WxPayApi.GenerateNonceStr();
+            wxSign.jsapi_ticket = ticket;
 
             string sign = "jsapi_ticket={0}&noncestr={1}&timestamp={2}&url={3}";
-            sign = string.Format(sign, ticket, wxSign.nonceStr, wxSign.timestamp, "http://pp.iqianba.cn/Wap/UserVerification");
+          
+            sign = string.Format(sign, ticket, wxSign.nonceStr, wxSign.timestamp, AuthUrl);
 
-            SHA1 sha1 = new SHA1CryptoServiceProvider();
-            byte[] bytes_sha1_in = UTF8Encoding.Default.GetBytes(sign);
-            byte[] bytes_sha1_out = sha1.ComputeHash(bytes_sha1_in);
-            string str_sha1_out = BitConverter.ToString(bytes_sha1_out);
-            //str_sha1_out = str_sha1_out.Replace("-", "");
 
-            wxSign.signature = str_sha1_out;
+
+            wxSign.signature = UtilityHelper.DoSHA1(sign, Encoding.Default).ToLower();
 
             return Json(wxSign);
 

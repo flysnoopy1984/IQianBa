@@ -2,10 +2,11 @@
 
   
     var url = "/Wap/GetJSSDK";
+    var AuthUrl = window.location.href;
 
     $.ajax({
         type: 'post',
-        data: "",
+        data: "AuthUrl="+AuthUrl,
         url: url,
         success: function (data) {
             WXSet(data);
@@ -58,6 +59,8 @@ function UploadImage()
    
 }
 
+
+
 function WXSet(data)
 {
     wx.config({
@@ -74,6 +77,10 @@ function WXSet(data)
 
         jsApiList: ['chooseImage','uploadImage', 'getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 
+    });
+
+    wx.error(function (res) {
+        alert("error" + res.errMsg);
     });
 
 

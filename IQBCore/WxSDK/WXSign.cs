@@ -15,5 +15,7 @@ namespace IQBCore.WxSDK
 
         public string signature { get; set; }
 
+        public string jsapi_ticket { get; set; }
+
     }
 }
