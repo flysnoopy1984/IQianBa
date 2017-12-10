@@ -88,7 +88,7 @@ namespace IQBCore.IQBPay.BLL
                     TransferAmount = order.ParentCommissionAmount;
                     break;
                 case TransferTarget.User:
-                    AliPayAccount = order.BuyerAliPayAccount;
+                    AliPayAccount = order.BuyerAliPayId;
                     TransferAmount = order.BuyerTransferAmount;
                     break;
             }
@@ -155,7 +155,10 @@ namespace IQBCore.IQBPay.BLL
             AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
             model.Amount = Amount;
             model.OutBizNo = TransferId;
-            model.PayeeType = "ALIPAY_LOGONID";
+            if(target == TransferTarget.User)
+                model.PayeeType = "ALIPAY_USERID";
+            else
+                model.PayeeType = "ALIPAY_LOGONID";
             model.PayeeAccount = toAliPayAccount;
             model.PayerShowName = "平台支付";
             model.Remark = string.Format("转账");

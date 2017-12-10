@@ -1,22 +1,53 @@
-﻿
+﻿var pageIndex = -1;
+
 $(document).ready(function () {
 
-    Query();
+    Query(true,pageIndex + 1);
 });
 
-function Query() {
+function Next() {
+
+    Query(false, pageIndex + 1);
+}
+
+function Prev() {
+   
+    pageIndex--;
+    if (pageIndex < 0)
+    {
+        alert("已经第一页了");
+        pageIndex = 0;
+        return;
+
+    }
+    Query(false, pageIndex);
+}
+
+function Query(NeedClearn,_PageIndex) {
+
+  
 
     var url = "/User/Query";
     $.ajax({
         type: 'post',
-        data: "role=2&pageIndex=0",
+        data: "role=2&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;
+          
+            if (NeedClearn) {
+                $("#trContainer").empty();
+            }
 
-            $("#trContainer").empty();
             if (arrLen > 0) {
+                pageIndex++;
                 generateData(data);
+            }
+            else {
+                pageIndex--;
+                alert("没有数据了");
+              
+
             }
         },
         error: function (xhr, type) {

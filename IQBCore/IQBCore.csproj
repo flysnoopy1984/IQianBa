@@ -167,6 +167,7 @@
     <Compile Include="WxSDK\JsApiPay.cs" />
     <Compile Include="WxSDK\Log.cs" />
     <Compile Include="WxSDK\WxPayApi.cs" />
+    <Compile Include="WxSDK\WXSign.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="IQBWX\BLL\" />

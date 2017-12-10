@@ -65,6 +65,29 @@ namespace IQBCore.IQBPay.BaseEnum
 
     }
 
+    public enum UserVerifyStatus
+    {
+        /// <summary>
+        /// 仅扫描了二维码
+        /// </summary>
+        Scaned = 0,
+
+        /// <summary>
+        /// 提交审核单
+        /// </summary>
+        Submit =1,
+
+        /// <summary>
+        /// 审核驳回
+        /// </summary>
+        Refused = -1,
+
+        /// <summary>
+        /// 审核通过
+        /// </summary>
+        Pass =100
+    }
+
     public enum QRType
     {
         AR =1,

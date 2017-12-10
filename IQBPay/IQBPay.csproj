@@ -503,6 +503,7 @@
     <Content Include="scripts\Web\StoreList.js" />
     <Content Include="scripts\Web\SysConfig.js" />
     <Content Include="scripts\Web\UserProfile.js" />
+    <Content Include="scripts\Web\UserVerification.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -513,6 +514,7 @@
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\QRController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TransferController.cs" />
@@ -621,6 +623,8 @@
     <Content Include="Views\AliPay\QRUserImg.cshtml" />
     <Content Include="Views\Test\Tool_RPay.cshtml" />
     <Content Include="Views\Test\JF.cshtml" />
+    <Content Include="Views\Report\OverView.cshtml" />
+    <Content Include="Views\Wap\UserVerification.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

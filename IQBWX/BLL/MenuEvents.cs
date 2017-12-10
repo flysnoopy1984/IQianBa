@@ -166,6 +166,10 @@ namespace IQBWX.BLL
 
                 mText += string.Format("你当前收款码的扣点率为\n【{0}%】\n 您的上级代理为:{1}", qr.Rate,pUser.Name);
             }
+            else if (result.StartsWith("NeedVerification"))
+            {
+                mText += string.Format("关系您关注平台，请先验证身份\n{0}","<a href=''>进入身份验证</a>");
+            }
             else
             {
                 mText += result;

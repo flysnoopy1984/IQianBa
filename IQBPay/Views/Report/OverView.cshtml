@@ -1,21 +1,19 @@
 ﻿
 @{
-    ViewBag.Title = "订单列表";
+    ViewBag.Title = "OverView";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section SubMenu1{
-<a href="/Order/List" title="单据管理"> 单据管理</a>
-   
+    报表
 }
 @section SubMenu2{
-    列表
+    综合报表
 }
-<link href="@Url.Scrpit("~/Content/Style/Web/List.css")" rel="stylesheet" />
 
+<link href="@Url.Scrpit("~/Content/Style/Web/List.css")" rel="stylesheet" />
 <link href="@Url.Scrpit("~/Content/Style/Web/FixTableList.css")" rel="stylesheet" />
 <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
 <script src="@Url.Scrpit("~/scripts/Component/IQBTable.js")"></script>
-<script src="@Url.Scrpit("~/scripts/Web/OrderList.js")"></script>
 
 
 <div id="ListArea">
@@ -26,15 +24,13 @@
             <ul class="UlHorizontal">
                 <li>
                     <div class="form-group">
-                       <label >代理人：</label>
-                       <input id="cAgentName" type="text" class="form-control ConditionField">
+                        <label>代理人：</label>
+                        <input id="cAgentName" type="text" class="form-control ConditionField">
                     </div>
                 </li>
                 <li>
                     <label>商户：</label>
-                    <select id="cStore" class="form-control ConditionField">
-                      
-                    </select>
+                    <select id="cStore" class="form-control ConditionField"></select>
                 </li>
                 <li>
                     <label>日期：</label>
@@ -66,11 +62,11 @@
                     <label>网站订单号：</label>
                     <input id="OrderNo" type="text" class="form-control ConditionField" style="width:300px;">
                 </li>
-               
+
             </ul>
         </div>
-        <ul class="UlHorizontal ListButtonRight" >
-            <li>             
+        <ul class="UlHorizontal ListButtonRight">
+            <li>
                 <button id="btnSearch" type="button" class="btn btn-primary" onclick="btnSearch();">查询</button>
             </li>
         </ul>
@@ -82,7 +78,7 @@
                     <thead class="cf">
                         <tr id="trHeader">
                             <th style="width:150px;"> 操作</th>
-                            <th style="width:200px;">订单编号</th> 
+                            <th style="width:200px;">订单编号</th>
                             <th style="width:120px;">订单状态</th>
                             <th style="width:100px;">平台盈利</th>
                             <th style="width:100px;">总金额</th>
@@ -96,24 +92,23 @@
                             <th style="width:100px;">商户类型</th>
                             <th style="width:100px;">商户佣金点率</th>
                             <th style="width:150px;">交易时间</th>
-                            <th style="width:250px;">支付宝订单编号</th>                           
+                            <th style="width:250px;">支付宝订单编号</th>
                         </tr>
                         <tr>
-                            <td colspan="17" class="RecordSum" id="RecordSum"></td>  
+                            <td colspan="17" class="RecordSum" id="RecordSum"></td>
                         </tr>
                     </thead>
                 </table>
             </div>
 
-            <div id ="divTableBody" class="divB" style="height: 450px;" >
-                 <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden">       
-                 </table>
+            <div id="divTableBody" class="divB" style="height: 450px;">
+                <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden"></table>
             </div>
 
             <div id="divProcess" style="height:450px;line-height:450px;text-align:center;display:none;">
                 数据加载中。。。
             </div>
-       </div>
-        <div class="divNextButton" id="btnNext"><button type="button" class="btn btn-success" style="width:250px; height:60px;" onclick="Next();">加载更多</button></div>
+        </div>
+        <div class="divNextButton" id="btnNext"><button type="button" class="btn btn-success" style="width:250px; height:60px;" onclick="Next();">下一页</button></div>
     </div>
 </div>

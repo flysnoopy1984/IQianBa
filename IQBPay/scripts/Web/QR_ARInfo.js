@@ -64,6 +64,8 @@ function InitFormData(data)
 
     $("#ParentOpenId").val(data.ParentOpenId);
 
+    $("#NeedVerification").attr("checked", data.NeedVerification)
+
     var st;
     if (data.RecordStatus == 0)
         st = true;
@@ -116,13 +118,15 @@ function Save() {
     var ParentCommissionRate = $("#ParentCommissionRate").val();
     var ParentOpenId = $("#ParentOpenId").val();
 
+    var NeedVerification = $("#NeedVerification").get(0).checked;
+
     if (!CheckForm()) return;
 
     var url = "/QR/SaveAR";
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID, "Name": name, "ParentOpenId":ParentOpenId,"ParentCommissionRate": ParentCommissionRate, "Rate": rate, "Remark": remake, "RecordStatus": QRStatus, "ReceiveStoreId": storeId },
+        data: { "ID": ID, "NeedVerification":NeedVerification,"Name": name, "ParentOpenId":ParentOpenId,"ParentCommissionRate": ParentCommissionRate, "Rate": rate, "Remark": remake, "RecordStatus": QRStatus, "ReceiveStoreId": storeId },
         url: url,
         success: function (data) {
             if (data.RunResult == "OK") {

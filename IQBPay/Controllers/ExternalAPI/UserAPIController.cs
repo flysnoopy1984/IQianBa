@@ -46,6 +46,9 @@ namespace IQBPay.Controllers.ExternalAPI
                             {
                                 try
                                 {
+                                    //获取授权二维码
+                                    qr = db.DBQRInfo.Where(a => a.ID == ui.QRAuthId).FirstOrDefault();
+
                                     //检查用户是否已经注册
                                     updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
                                     //没有注册
@@ -61,9 +64,12 @@ namespace IQBPay.Controllers.ExternalAPI
                                         updateUser.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
                                         db.DBUserInfo.Add(updateUser);
                                         isExist = false;
-                                       
+                                        if(qr.NeedVerification)
+                                        {
+                                            return FormatReturn("NeedVerification");
+                                        }
                                     }
-                                    qr = db.DBQRInfo.Where(a => a.ID == ui.QRAuthId).FirstOrDefault();
+                                   
                                     qrUser = db.UpdateQRUser(qr, updateUser);
                                     if(qrUser == null)
                                     {

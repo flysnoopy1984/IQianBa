@@ -1,14 +1,14 @@
 ﻿
 function InitControls() {
 
-    $("#BnVerifyConfirm").hide();
-    //支付区域
-    $("#PayContent").hide();
+    //$("#BnVerifyConfirm").hide();
+    ////支付区域
+    //$("#PayContent").hide();
 
-    $("#AliPayAccount").attr("disabled", false);
+    //$("#AliPayAccount").attr("disabled", false);
 
-    $("#bnModifyAliPayAccount").hide();
-    $("#bnConfirmAliPayAccount").show();
+    //$("#bnModifyAliPayAccount").hide();
+    //$("#bnConfirmAliPayAccount").show();
   
 }
 
@@ -22,13 +22,13 @@ function ShowPayArea()
 
 $(document).ready(function () {
 
-    InitControls();
-    var account = getCookie("YJ_AliPayAccount");
-    if (account != null)
-    {
-        $("#AliPayAccount").val(account);
-        ShowPayArea();
-    }
+    //InitControls();
+    //var account = getCookie("YJ_AliPayAccount");
+    //if (account != null)
+    //{
+    //    $("#AliPayAccount").val(account);
+    //    ShowPayArea();
+    //}
    
 });
 
@@ -81,15 +81,16 @@ function PayToAli() {
         alert("未获取代理商家ID，请重新扫描后再尝试或联系代理商家");
         return;
     }
-    var AliPayAccount = $("#AliPayAccount").val();
-    if (AliPayAccount == null || AliPayAccount == "") {
-        alert("收款账号请准确填写！");
-        return;
-    }
+    //var AliPayAccount = $("#AliPayAccount").val();
+    //if (AliPayAccount == null || AliPayAccount == "") {
+    //    alert("收款账号请准确填写！");
+    //    return;
+    //}
 
-    var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&AliPayAccount=" + AliPayAccount;
+  //  var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&AliPayAccount=" + AliPayAccount;
 
-    setCookie("YJ_AliPayAccount", AliPayAccount, 3);
+    var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt;
+  //  setCookie("YJ_AliPayAccount", AliPayAccount, 3);
     
 
     window.location = url;

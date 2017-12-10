@@ -21,7 +21,7 @@ namespace WxPayAPI
         public const string KEY = "y58ohva8wsmw6dtshg5ccvkp9khan39g";
         public const string APPSECRET = "cdaa5cd17593259b442f6036fbc4733d";
         public const string WXID = "yujiepingtai";
-        public const string ServerIp = "106.14.149.112";
+        public const string ServerIp = "47.100.26.96";
 
         //=======【证书路径设置】===================================== 
         /* 证书路径,注意应该填写绝对路径（仅退款、撤销订单时需要）

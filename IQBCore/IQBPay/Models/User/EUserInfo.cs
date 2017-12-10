@@ -10,12 +10,12 @@ using System.Web;
 namespace IQBCore.IQBPay.Models.User
 {
     [Table("UserInfo")]
-    public class EUserInfo:BasePageModel
+    public class EUserInfo : BasePageModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-     
+
         [MaxLength(32)]
         public string parentOpenId { get; set; }
 
@@ -60,10 +60,18 @@ namespace IQBCore.IQBPay.Models.User
         /// </summary>
         public Boolean IsAutoTransfer { get; set; }
 
+        /// <summary>
+        /// 身份验证审核
+        /// </summary>
+        public UserVerifyStatus UserVerifyStatus  { get;set;}
+
+
+
         public void InitRegiser()
         {
             this.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.NormalUser;
             this.UserStatus = IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister;
+            this.UserVerifyStatus = UserVerifyStatus.Scaned;
             this.RegisterDate = DateTime.Now;
             this.LastLoginDate = DateTime.Now;
         }

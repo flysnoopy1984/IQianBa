@@ -155,6 +155,7 @@ namespace IQBPay.Controllers
                         entry.Property(t => t.ParentOpenId).IsModified = true;
                         entry.Property(t => t.ParentCommissionRate).IsModified = true;
                         entry.Property(t => t.RecordStatus).IsModified = true;
+                        entry.Property(t => t.NeedVerification).IsModified = true;
 
                         entry.Property(t => t.MDate).IsModified = true;
                         entry.Property(t => t.MTime).IsModified = true;
