@@ -176,6 +176,7 @@
     <Content Include="Content\Images\backgrounds\bg4.jpg" />
     <Content Include="Content\Images\800_01.png" />
     <Content Include="Content\Images\backgrounds\messageBK.png" />
+    <Content Include="Content\Images\cancel.png" />
     <Content Include="Content\Images\Tool\CouPonQRCode.png" />
     <Content Include="Content\QR\AliPay_F2F\2017100814512800005466.jpg" />
     <Content Include="Content\QR\AliPay_F2F\2017100814573600001004.jpg" />
@@ -483,6 +484,7 @@
     <Content Include="scripts\Component\Upload\jquery.fileupload.js" />
     <Content Include="scripts\Component\Upload\jquery.iframe-transport.js" />
     <Content Include="scripts\Component\Upload\jquery.ui.widget.js" />
+    <Content Include="scripts\Component\Validform_v5.3.2_min.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\Web\DoTransfer.js" />
     <Content Include="scripts\Web\DoTransfer_OrderDetail.js" />

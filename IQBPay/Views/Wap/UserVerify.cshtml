@@ -11,27 +11,52 @@
     <title>UserVerify</title>
     <script src="~/scripts/jquery-1.10.2.min.js"></script>
     <script src="@Url.Scrpit("~/scripts/Web/UserVerify.js")"></script>
- 
+
+    <script src="~/scripts/Component/Validform_v5.3.2_min.js"></script>
     <script src="~/scripts/Component/Upload/jquery.ui.widget.js"></script>
     <script src="~/scripts/Component/Upload/jquery.iframe-transport.js"></script>
     <script src="~/scripts/Component/Upload/jquery.fileupload.js"></script>
+    <link href="@Url.Scrpit("~/Content/Style/Frame1/bootstrap.css")" rel="stylesheet" />
     <link href="~/Content/main.css" rel="stylesheet" />
     <link href="~/Content/Style/Web/WapInfo.css" rel="stylesheet" />
    
 
 </head>
 <body>
-    <div class="Title">
-        找熟人（代理申请）
-    </div>
-    <div class="InfoBody">
-      
-        <label for="fileupload">+选择上传您的身份证正面</label>
-        <input id="fileupload" type="file" name="file">
-        <div id="progress" style="border:solid 1px red; width:600px;">
-           <div class="ProcessBar" style="width: 100%;">0%</div> 
+    <div class="BodyContainer">
+        <div class="Title">
+            找熟人花呗平台（代理申请）
         </div>
-        <img id="uploadImg" />
+        <div class="InfoBody">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">姓名：</label>
+                <div class="col-sm-6">
+                    <input id="Name" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">手机：</label>
+                <div class="col-sm-6">
+                    <input id="Name" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">身份证（正面）：</label>
+                <div class="col-sm-6">
+                    <label id="lb_IdCardFile1" for="IdCardFile1" class="labelChoose">+ 选择上传您的身份证正面</label>
+                    <input id="IdCardFile1" type="file" name="file">
+                    <div id="progress" class="ProcessBarContainer">
+                        <div class="ProcessBar" style="width: 0%;">
+                            <div class="ProcessCancel" id="cancel_IdCardFile1"></div>
+                        </div>
+                    </div>
+                    <img id="uploadImg" />
+                </div>
+               
+            </div>
+         </div>
     </div>
 </body>
 </html>

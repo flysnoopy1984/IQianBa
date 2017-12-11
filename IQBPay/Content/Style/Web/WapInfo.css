@@ -1,14 +1,58 @@
-﻿body
+﻿
+.BodyContainer
 {
-    padding:20px;
-    
+     padding:10px;
+     width:600px;
+   
+}
+.form-control
+{
+    font-size:16px !important;
+    height:44px !important;
+}
+.form-group
+{
+    clear:both;
+    overflow:hidden;
+    margin-top:20px;
+    margin-bottom:40px;
+}
+.labelChoose
+{
+    border:dashed 1px #0094ff;
+    height:40px;
+    line-height:40px;
+
+    width:100%;
+}
+.ProcessCancel{
+    width:25px;
+    height:25px;
+    background-image:url("../../Images/cancel.png");
+    position:absolute;
+    top:40%;
+    left:90%;
+    z-index:999;
+
+
+}
+
+.ProcessBarContainer {  
+   border:solid 1px #0094ff;
+   height: 81px;  
+   width:100%;
+  position:relative;
 } 
 
 .ProcessBar {  
-    height: 18px;  
-    background: green;  
+    height: 80px;  
+    background: #a2f67f;  
     text-align:center;
+    line-height:80px;
+    
+ 
 }  
+
  .Title
  {
      font-family:"黑体";
