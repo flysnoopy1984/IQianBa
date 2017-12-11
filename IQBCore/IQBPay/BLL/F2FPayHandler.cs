@@ -77,12 +77,12 @@ namespace IQBCore.IQBPay.BLL
             builder.goods_detail = gList;
 
             //系统商接入可以填此参数用作返佣
-            ExtendParams exParam = new ExtendParams();
-            exParam.sys_service_provider_id = app.AppId;
-            
-            builder.extend_params = exParam;
+            //ExtendParams exParam = new ExtendParams();
+            //exParam.sys_service_provider_id = app.AppId;
 
-            
+            //builder.extend_params = exParam;
+
+
 
             return builder;
 

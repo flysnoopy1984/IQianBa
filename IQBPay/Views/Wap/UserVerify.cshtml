@@ -1,0 +1,37 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UserVerify</title>
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
+    <script src="@Url.Scrpit("~/scripts/Web/UserVerify.js")"></script>
+ 
+    <script src="~/scripts/Component/Upload/jquery.ui.widget.js"></script>
+    <script src="~/scripts/Component/Upload/jquery.iframe-transport.js"></script>
+    <script src="~/scripts/Component/Upload/jquery.fileupload.js"></script>
+    <link href="~/Content/main.css" rel="stylesheet" />
+    <link href="~/Content/Style/Web/WapInfo.css" rel="stylesheet" />
+   
+
+</head>
+<body>
+    <div class="Title">
+        找熟人（代理申请）
+    </div>
+    <div class="InfoBody">
+      
+        <label for="fileupload">+选择上传您的身份证正面</label>
+        <input id="fileupload" type="file" name="file">
+        <div id="progress" style="border:solid 1px red; width:600px;">
+           <div class="ProcessBar" style="width: 100%;">0%</div> 
+        </div>
+        <img id="uploadImg" />
+    </div>
+</body>
+</html>

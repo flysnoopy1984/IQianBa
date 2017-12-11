@@ -13,6 +13,8 @@ using IQBCore.WxSDK;
 using System.Security.Cryptography;
 using System.Text;
 using IQBCore.Common.Helper;
+using System.IO;
+using IQBCore.IQBPay.Models.OutParameter;
 
 namespace IQBPay.Controllers
 {
@@ -48,40 +50,62 @@ namespace IQBPay.Controllers
 
         }
 
-        [HttpPost]
-        public ActionResult GetJSSDK(string AuthUrl)
-        {
-            string AccessToken = this.getAccessToken(true);
-            string url = string.Format("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type=jsapi",AccessToken);
-
-            string result = HttpService.Get(url);
-            //请求url以获取数据
-            JsonData jd = JsonMapper.ToObject(result);
-
-           string ticket =  (string)jd["ticket"];
-
-            WXSign wxSign = new WXSign();
-            wxSign.timestamp = WxPayApi.GenerateTimeStamp();
-            wxSign.AppId = WxPayConfig.APPID;
-            wxSign.nonceStr = WxPayApi.GenerateNonceStr();
-            wxSign.jsapi_ticket = ticket;
-
-            string sign = "jsapi_ticket={0}&noncestr={1}&timestamp={2}&url={3}";
-          
-            sign = string.Format(sign, ticket, wxSign.nonceStr, wxSign.timestamp, AuthUrl);
-
-
-
-            wxSign.signature = UtilityHelper.DoSHA1(sign, Encoding.Default).ToLower();
-
-            return Json(wxSign);
-
-          
-        }
-
-        public ActionResult UserVerification()
+        public ActionResult UserVerify()
         {
             return View();
         }
+
+
+        [HttpPost]
+        public ActionResult UploadVerifyFile()
+        {
+            HttpPostedFileBase file0 = Request.Files[0];
+            Stream stream;
+            UploadObj UploadObj = new UploadObj();
+
+            int size = file0.ContentLength / 1024; //文件大小KB
+
+            if (size>20480)
+            {
+                return Content("超过20M");
+            }
+
+            byte[] fileByte = new byte[2];//contentLength，这里我们只读取文件长度的前两位用于判断就好了，这样速度比较快，剩下的也用不到。
+            stream = file0.InputStream;
+            stream.Read(fileByte, 0, 2);//contentLength，还是取前两位
+                                        //  Stream stream;
+            string fileFlag = "";
+            if (fileByte != null || fileByte.Length<= 0)//图片数据是否为空
+            {
+                fileFlag = fileByte[0].ToString()+fileByte[1].ToString();
+            }
+            string[] fileTypeStr = { "255216", "7173", "6677", "13780" };//对应的图片格式jpg,gif,bmp,png
+            if (fileTypeStr.Contains(fileFlag))
+            {
+              
+                string path = "/Content/UploadFile/AgentVerify";
+              
+                string fullpath = path;
+                if (!Directory.Exists(Server.MapPath(fullpath)))
+                {
+                    Directory.CreateDirectory(Server.MapPath(fullpath));
+                }
+                fullpath += "/"+file0.FileName;
+
+                file0.SaveAs(Server.MapPath(fullpath));
+
+                UploadObj.ImgSrc = fullpath;
+            }
+            else
+            {
+                return Content("上传错误");
+            }
+
+            stream.Close();
+
+            return Json(UploadObj);
+        }
+
+
     }
 }

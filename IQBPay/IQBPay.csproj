@@ -470,6 +470,7 @@
     <Content Include="Content\Style\Web\InfoWin.css" />
     <Content Include="Content\Style\Web\List.css" />
     <Content Include="Content\Style\Web\User.css" />
+    <Content Include="Content\Style\Web\WapInfo.css" />
     <Content Include="Content\Wap\bg.jpg" />
     <Content Include="Content\Wap\Wap.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -479,6 +480,9 @@
     <Content Include="scripts\Component\FlyDiv.js" />
     <Content Include="scripts\Component\IQBTable.js" />
     <Content Include="scripts\Component\jquery-confirm.js" />
+    <Content Include="scripts\Component\Upload\jquery.fileupload.js" />
+    <Content Include="scripts\Component\Upload\jquery.iframe-transport.js" />
+    <Content Include="scripts\Component\Upload\jquery.ui.widget.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\Web\DoTransfer.js" />
     <Content Include="scripts\Web\DoTransfer_OrderDetail.js" />
@@ -503,7 +507,7 @@
     <Content Include="scripts\Web\StoreList.js" />
     <Content Include="scripts\Web\SysConfig.js" />
     <Content Include="scripts\Web\UserProfile.js" />
-    <Content Include="scripts\Web\UserVerification.js" />
+    <Content Include="scripts\Web\UserVerify.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -624,7 +628,7 @@
     <Content Include="Views\Test\Tool_RPay.cshtml" />
     <Content Include="Views\Test\JF.cshtml" />
     <Content Include="Views\Report\OverView.cshtml" />
-    <Content Include="Views\Wap\UserVerification.cshtml" />
+    <Content Include="Views\Wap\UserVerify.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -641,6 +645,7 @@
     <Folder Include="Content\QR\AuthStore\" />
     <Folder Include="Content\QR\Tools\" />
     <Folder Include="Content\Style\Frame1\as\js\wizard\build\" />
+    <Folder Include="Content\UploadFile\AgentVerify\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Global\" />
   </ItemGroup>

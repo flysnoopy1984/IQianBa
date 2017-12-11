@@ -202,7 +202,7 @@ namespace IQBCore.IQBPay.BLL
                 AgentCommissionStatus = BaseEnum.AgentCommissionStatus.Open,
                 ParentOpenId = qrUser.ParentOpenId,
                 ChildOpenId = qrUser.OpenId,
-                CommissionAmount = (qrUser.ParentCommissionRate/100)*order.TotalAmount,
+                CommissionAmount = (float)Math.Round((qrUser.ParentCommissionRate / 100) * order.TotalAmount, 2, MidpointRounding.ToEven),
                 Level = 2,
                 CommissionRate = qrUser.ParentCommissionRate,
                 ChildName = qrUser.UserName,

@@ -8,6 +8,7 @@ using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.User;
 using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Models.WX.Template;
+using IQBCore.WxSDK;
 using IQBWX.BLL.ExternalWeb;
 using IQBWX.BLL.NT;
 using IQBWX.DataBase.IQBPay;
@@ -15,6 +16,7 @@ using IQBWX.Models.Results;
 using IQBWX.Models.User;
 using IQBWX.Models.WX;
 using IQBWX.Models.WX.Template;
+using LitJson;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.SqlServer;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using WxPayAPI;
@@ -623,6 +626,42 @@ namespace IQBWX.Controllers
             if (buyer == null)
                 buyer = new EBuyerInfo();
             return Json(buyer);
+        }
+        #endregion
+
+        #region 代理身份验证
+        [HttpPost]
+        public ActionResult GetJSSDK(string AuthUrl)
+        {
+            string AccessToken = this.getAccessToken(true);
+            string url = string.Format("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type=jsapi", AccessToken);
+
+            string result = HttpService.Get(url);
+            //请求url以获取数据
+            JsonData jd = JsonMapper.ToObject(result);
+
+            string ticket = (string)jd["ticket"];
+
+            WXSign wxSign = new WXSign();
+            wxSign.timestamp = WxPayApi.GenerateTimeStamp();
+            wxSign.AppId = WxPayConfig.APPID;
+            wxSign.nonceStr = WxPayApi.GenerateNonceStr();
+            wxSign.jsapi_ticket = ticket;
+
+            string sign = "jsapi_ticket={0}&noncestr={1}&timestamp={2}&url={3}";
+
+            sign = string.Format(sign, ticket, wxSign.nonceStr, wxSign.timestamp, AuthUrl);
+
+            wxSign.signature = UtilityHelper.DoSHA1(sign, Encoding.Default).ToLower();
+
+            return Json(wxSign);
+
+
+        }
+
+        public ActionResult UserVerification()
+        {
+            return View();
         }
         #endregion
 

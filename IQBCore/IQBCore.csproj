@@ -120,6 +120,7 @@
     <Compile Include="IQBPay\Models\OutParameter\HashStore.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashUser.cs" />
     <Compile Include="IQBPay\Models\OutParameter\OutDoTransfer.cs" />
+    <Compile Include="IQBPay\Models\OutParameter\UploadObj.cs" />
     <Compile Include="IQBPay\Models\QR\EQRInfo.cs" />
     <Compile Include="IQBPay\Models\QR\EQRUser.cs" />
     <Compile Include="IQBPay\Models\Result\RAgentCommission.cs" />

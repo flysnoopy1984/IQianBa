@@ -203,6 +203,7 @@
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
     <Content Include="Content\Script\IQBPay\Pay.js" />
     <Content Include="Content\Script\IQBPay\ReceiveOrder.js" />
+    <Content Include="Content\Script\IQBPay\UserVerification.js" />
     <Content Include="Content\Script\jsCookie.js" />
     <Content Include="Content\Script\MemberInfo.js" />
     <Content Include="Content\Script\ApplySuccess.js" />
@@ -355,6 +356,7 @@
     <Content Include="Views\PP\Pay2.cshtml" />
     <Content Include="Views\HOME\Demo.cshtml" />
     <Content Include="Views\PP\PayFromUser.cshtml" />
+    <Content Include="Views\PP\UserVerification.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

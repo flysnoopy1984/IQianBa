@@ -284,6 +284,7 @@ namespace IQBPay.Controllers
 
                             EUserInfo parentUi = new EUserInfo();
                             parentUi.AliPayAccount = agentComm.ParentAliPayAccount;
+
                             //用户转账函数赋值
                             parentUi.OpenId = agentComm.ParentOpenId;
                             parentUi.Name = agentComm.ParentName;
