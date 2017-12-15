@@ -2,7 +2,7 @@
 .BodyContainer
 {
      padding:10px;
-     width:600px;
+   
    
 }
 .form-control
@@ -58,4 +58,8 @@
      font-family:"黑体";
      font-size:20px;
      font-weight:bold;
+ }
+ .Foot
+ {
+
  }

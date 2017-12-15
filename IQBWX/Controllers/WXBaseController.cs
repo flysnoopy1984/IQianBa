@@ -16,6 +16,7 @@ using IQBWX.WebCore;
 using IQBCore.IQBWX.Const;
 using IQBWX.DataBase.IQBPay;
 using IQBCore.IQBPay.Models.System;
+using IQBCore.Model;
 
 namespace IQBWX.Controllers
 {
@@ -57,6 +58,7 @@ namespace IQBWX.Controllers
                 _GlobelConfig = value;
             }
         }
+
 
         public string CheckPPUserRole(string openId)
         {
@@ -152,9 +154,53 @@ namespace IQBWX.Controllers
         }
 
 
+        public UserSession UserSession
+        {
+            get
+            {
+                UserSession userSession = Session["UserSession"] as UserSession;
+                if(userSession ==null)
+                {
+                    userSession = new UserSession();
+                    string openId = this.GetOpenId(true);
+                   
+                    using (AliPayContent db = new AliPayContent())
+                    {
+                        IQBCore.IQBPay.Models.User.EUserInfo ui =   db.DBUserInfo.Where(u => u.OpenId == openId).FirstOrDefault();
+                        if (ui != null)
+                        {
+                            userSession.InitFromUser(ui);
+
+                            Session["UserSession"] = userSession;
+                        }
+                    }
+                }
+                return userSession;
+            }
+        }
+
+        public void InitProfilePage()
+        {
+            ViewBag.Headimgurl = UserSession.Headimgurl;
+            ViewBag.ShowName = UserSession.Name + "收银台";
+            ViewBag.OpenId = UserSession.OpenId;
+           
+            if (UserSession.UserRole == IQBCore.IQBPay.BaseEnum.UserRole.DiamondAgent)
+            {
+                ViewBag.UserRoleImg = "/Content/images/zs_blueBK.png";
+            }
+            else
+            {
+                ViewBag.UserRoleImg = "/Content/images/grzx_03.jpg";
+            }
+
+        }
+
         protected string GetOpenId(bool isTest = false,bool IsforOpenId = true)
         {
+          //  if (isTest) return "o3nwE0m12mke3-VhWic-UAX7Oh_0";
             if (isTest) return "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
+
             string openId = (string)Session[IQBWXConst.SessionOpenId];
             if (string.IsNullOrEmpty(openId))
             {

@@ -150,6 +150,7 @@ namespace IQBPay.Controllers
                         BuyerAliPayLoginId = o.BuyerAliPayLoginId,
                         TransDate = o.TransDate,
                         AgentOpenId = o.AgentOpenId,
+                        LogRemark = o.LogRemark,
                         
                     });
 

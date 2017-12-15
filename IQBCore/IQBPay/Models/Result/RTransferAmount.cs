@@ -14,5 +14,9 @@ namespace IQBCore.IQBPay.Models.Result
         public float TotalAmountSum { get; set; }
 
         public string AliPayAccount { get; set; }
+
+        public string TodayTransferAmt { get; set; }
+
+        public string TotalTransferAmt { get; set; }
     }
 }

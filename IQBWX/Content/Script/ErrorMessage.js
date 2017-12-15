@@ -17,7 +17,7 @@
     }
   
 
-    if (errorCode == "2000") {
+    if (errorCode == "2000" || errorCode == "2002") {
         $("#btnContainer").hide();
     }
   

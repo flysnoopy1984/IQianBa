@@ -16,6 +16,8 @@
 <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
 <script src="@Url.Scrpit("~/scripts/Component/IQBTable.js")"></script>
 <script src="@Url.Scrpit("~/scripts/Web/OrderList.js")"></script>
+<link href="~/Content/Component/jquery-confirm.css" rel="stylesheet" />
+<script src="~/scripts/Component/jquery-confirm.js"></script>
 
 
 <div id="ListArea">
@@ -49,9 +51,9 @@
                     <label>订单状态：</label>
                     <select id="cOrderStatus" class="form-control ConditionField">
                         <option value="1">用户已支付</option>
-                        <option value="2" selected>代理已结算</option>
+                        <option value="2">代理已结算</option>
                         <option value="-1">异常</option>
-                        <option value="99">全部</option>
+                        <option value="99" selected>全部</option>
                     </select>
                 </li>
             </ul>
@@ -82,7 +84,7 @@
                     <thead class="cf">
                         <tr id="trHeader">
                             <th style="width:150px;"> 操作</th>
-                            <th style="width:200px;">订单编号</th> 
+                            <th style="width:150px;">交易时间</th>
                             <th style="width:120px;">订单状态</th>
                             <th style="width:100px;">平台盈利</th>
                             <th style="width:100px;">总金额</th>
@@ -95,7 +97,7 @@
                             <th style="width:120px;">商户名</th>
                             <th style="width:100px;">商户类型</th>
                             <th style="width:100px;">商户佣金点率</th>
-                            <th style="width:150px;">交易时间</th>
+                            <th style="width:200px;">订单编号</th> 
                             <th style="width:250px;">支付宝订单编号</th>                           
                         </tr>
                         <tr>

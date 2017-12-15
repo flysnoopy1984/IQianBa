@@ -1,55 +1,52 @@
 ﻿
 @{
-    Layout = null;
+    ViewBag.Title = "转账列表";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<!DOCTYPE html>
+<script src="@Url.Scrpit("~/Content/Script/IQBPay/PPTransferList.js")"></script>
+<style type="text/css">
+    .grzxcon2 ul li {
+        width: 49.5%;
+    }
+</style>
 
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
-    <title>转账记录</title>
-    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
-    <link href="@Url.Scrpit("~/Content/Css/List.css")" rel="stylesheet" />
-    <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
-    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
-    <script src="@Url.Scrpit("~/Content/Script/IQBPay/PPTransferList.js")"></script>
+<div class="grzxcon2 mgz xi30 bai cen">
+    <ul>
+        <li><span class="xi15">今日转账</span><div id="TodayTransferAmt"></div></li>
+        <li><span class="xi15">累计转账</span><div id="TotalTransferAmt"></div></li>
+    </ul>
+</div>
+@*<div class="ListTitle mgz2 xi20 hui">转账记录</div>*@
 
-</head>
-<body>
+<div class="ListTitle_Condition1 mgz2">
+    <label>日期：</label>
+    <select id="cDateType" style="font-size:16px;" onchange="DateChanged()">
+        <option value="1">今天</option>
+        <option value="2">本周</option>
+        <option value="3">本月</option>
+        <option value="99" selected>全部</option>
+    </select>
+</div>
 
-    <div class="ListTitle mgz2 xi20 hui">转账记录</div>
-
-    <div class="ListTitle_Condition1 mgz2">
-        <label>日期：</label>
-        <select id="cDateType" style="font-size:16px;" onchange="DateChanged()">
-            <option value="1">今天</option>
-            <option value="2">本周</option>
-            <option value="3">本月</option>
-            <option value="99" selected>全部</option>
-        </select>
-    </div>
-
-    <table id="TableHeader" class="table large-only mgz2 ListTableTitle">
-        <tbody>
-            <tr class="text-right" id="trHeader">
-                <th style="width:50%;">转账单号</th>
-                <th style="width:50%;">转账金额</th>
-            </tr>
-            <tr>
+<table id="TableHeader" class="table large-only mgz2 ListTableTitle">
+    <tbody>
+        <tr class="text-right" id="trHeader">
+            <th style="width:50%;">转账单号</th>
+            <th style="width:50%;">转账金额</th>
+        </tr>
+        @*<tr>
                 <td colspan="2" id="RecordSum" class="RecordSum">
                     转账总金额：<span id="TotalAmountSum"></span>
                 </td>
-            </tr>
-        </tbody>
-    </table>
+            </tr>*@
+    </tbody>
+</table>
 
-    <div class="ListTableBody" id="ListTableBody">
-        <div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>
-        <table class="table mgz2  large-only" id="trContainer"></table>
-    </div>
-    <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%" onclick="Next();">下一页</button>
-    <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
-</body>
-</html>
+<div class="ListTableBody" id="ListTableBody">
+    <div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>
+    <table class="table mgz2  large-only" id="trContainer"></table>
+</div>
+<button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%" onclick="Next();">加载更多</button>
+<input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
+

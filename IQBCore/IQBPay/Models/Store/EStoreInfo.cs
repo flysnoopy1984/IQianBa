@@ -11,7 +11,7 @@ using System.Web;
 namespace IQBCore.IQBPay.Models.Store
 {
     [Table("StoreInfo")]
-    public class EStoreInfo:BasePageModel
+    public class EStoreInfo : BasePageModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -35,13 +35,13 @@ namespace IQBCore.IQBPay.Models.Store
         public float Rate { get; set; }
 
         /// <summary>
-        /// 每天的营业额度
+        /// 每天的营业额度(限额)
         /// </summary>
         public float DayIncome { get; set; }
         /// <summary>
         /// 可能被禁用
         /// </summary>
-        public RecordStatus RecordStatus{ get; set; }
+        public RecordStatus RecordStatus { get; set; }
 
         [MaxLength(28)]
         /// <summary>
@@ -55,7 +55,7 @@ namespace IQBCore.IQBPay.Models.Store
         [MaxLength(32)]
         public string AliPayAuthAppId { get; set; }
 
-       
+
         public Channel Channel { get; set; }
 
         [DefaultValue("")]
@@ -74,7 +74,7 @@ namespace IQBCore.IQBPay.Models.Store
         public bool IsReceiveAccount { get; set; }
 
 
-
+        public float MaxLimitAmount{get;set;}
 
 
     }

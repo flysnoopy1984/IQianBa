@@ -73,10 +73,14 @@ function generateData(result) {
 
     $.each(result, function (i) {
         if (pageIndex == -1 && i == 0) {
-            pageCount = result[i].TotalCount;
-            $("#TotalCommAmount").text(result[i].TotalCommAmount);
+          //  pageCount = result[i].TotalCount;
+            $("#TodayCommAmt").text(result[i].TodayCommAmt);
+            $("#TotalCommAmt").text(result[i].TotalCommAmt);
+            if (result[i].ID == 0)
+                return true;
         }
-      
+       
+
         var orderStatus;
         switch (result[i].AgentCommissionStatus) {
             case 2:
@@ -96,7 +100,7 @@ function generateData(result) {
         strCtrl += "<td style='width:50%'><ul><li style='color:brown'>" + result[i].ChildName + "</li>";
         strCtrl += "<li>代理订单编号:" + result[i].OrderNo + "</li>";
         strCtrl += "<li style='color:gray; font-size:12px;'>佣金结算状态:" + orderStatus + "</li></ul></td>";
-        strCtrl += "<td style='width:50%'><ul><li style='color:firebrick; font-weight:bold;'>" + result[i].CommissionAmount + "</li>";
+        strCtrl += "<td style='width:50%'><ul><li style='color:firebrick; font-weight:bold;'>" + result[i].CommissionAmount + " &yen</li>";
         strCtrl += "<li>代理佣金点率:" + result[i].CommissionRate + "</li>";
         strCtrl += "<li>交易时间:" + result[i].TransDateStr + "</li></ul></td>";
 

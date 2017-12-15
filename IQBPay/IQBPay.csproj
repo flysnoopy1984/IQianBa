@@ -640,7 +640,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="BLL\" />
     <Folder Include="Content\Images\Frame1\credit\" />
     <Folder Include="Content\QR\ARMaster\" />
     <Folder Include="Content\QR\ARUser\" />

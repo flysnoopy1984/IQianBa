@@ -74,8 +74,11 @@ function generateData(result) {
 
     $.each(result, function (i) {
         if (pageIndex == -1 && i == 0) {
-            $("#TotalAmountSum").text(result[i].TotalAmountSum);
-            pageCount = result[i].TotalCount;
+            $("#TodayTransferAmt").text(result[i].TodayTransferAmt);
+            $("#TotalTransferAmt").text(result[i].TotalTransferAmt);
+            //   pageCount = result[i].TotalCount;
+            if (result[i].ID == 0)
+                return true;
         }
         var thWidth;
 
@@ -85,7 +88,7 @@ function generateData(result) {
 
         strCtrl += "<td style='width:50%'><ul><li style='color:brown'>" + result[i].TransferId + "</li>";
         strCtrl += "<li>创建时间:" + result[i].TransDateStr + "</li></ul></td>";
-        strCtrl += "<td style='width:50%'><ul><li style='color:firebrick; font-weight:bold;'>" + result[i].TransferAmount + "</li>";
+        strCtrl += "<td style='width:50%'><ul><li style='color:firebrick; font-weight:bold;'>" + result[i].TransferAmount + " &yen</li>";
         strCtrl += "<li>收款账户:" + result[i].AliPayAccount + "</li></ul></td>";
         strCtrl += "</tr>";
 

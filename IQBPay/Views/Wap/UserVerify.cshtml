@@ -18,14 +18,15 @@
     <script src="~/scripts/Component/Upload/jquery.fileupload.js"></script>
     <link href="@Url.Scrpit("~/Content/Style/Frame1/bootstrap.css")" rel="stylesheet" />
     <link href="~/Content/main.css" rel="stylesheet" />
-    <link href="~/Content/Style/Web/WapInfo.css" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Style/Web/WapInfo.css")" rel="stylesheet" />
+ 
    
 
 </head>
 <body>
     <div class="BodyContainer">
         <div class="Title">
-            找熟人花呗平台（代理申请）
+            【找熟人】花呗平台（代理申请）
         </div>
         <div class="InfoBody">
             <div class="form-group">
@@ -38,7 +39,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">手机：</label>
                 <div class="col-sm-6">
-                    <input id="Name" type="text" class="form-control">
+                    <input id="Phone" type="text" class="form-control">
                 </div>
             </div>
 
@@ -47,16 +48,46 @@
                 <div class="col-sm-6">
                     <label id="lb_IdCardFile1" for="IdCardFile1" class="labelChoose">+ 选择上传您的身份证正面</label>
                     <input id="IdCardFile1" type="file" name="file">
-                    <div id="progress" class="ProcessBarContainer">
-                        <div class="ProcessBar" style="width: 0%;">
+                    <div id="Progress1" class="ProcessBarContainer">
+                        <div id="ProcessBar1" class="ProcessBar" style="width: 0%;">
                             <div class="ProcessCancel" id="cancel_IdCardFile1"></div>
                         </div>
                     </div>
-                    <img id="uploadImg" />
+                    <img id="uploadImg1" />
+                </div> 
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">身份证（反面）：</label>
+                <div class="col-sm-6">
+                    <label id="lb_IdCardFile2" for="IdCardFile2" class="labelChoose">+ 选择上传您的身份证反面</label>
+                    <input id="IdCardFile2" type="file" name="file">
+                    <div id="Progress2" class="ProcessBarContainer">
+                        <div id="ProcessBar2" class="ProcessBar" style="width: 0%;">
+                            <div class="ProcessCancel" id="cancel_IdCardFile2"></div>
+                        </div>
+                    </div>
+                    <img id="uploadImg2" />
                 </div>
-               
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">手持身份证：</label>
+                <div class="col-sm-6">
+                    <label id="lb_IdCardFile3" for="IdCardFile3" class="labelChoose">+ 选择上传您的手持身份证</label>
+                    <input id="IdCardFile3" type="file" name="file">
+                    <div id="Progress3" class="ProcessBarContainer">
+                        <div id="ProcessBar3" class="ProcessBar" style="width: 0%;">
+                            <div class="ProcessCancel" id="cancel_IdCardFile3"></div>
+                        </div>
+                    </div>
+                    <img id="uploadImg3" />
+                </div>
             </div>
          </div>
+        <div class="Foot">
+            <button type="button" class="btn btn-primary AlwaysBottom20" id="btnPay" style="width:100%; height:60px;" onclick="Submit();">提交到平台</button>
+        </div>
     </div>
 </body>
 </html>

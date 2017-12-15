@@ -134,7 +134,9 @@
     <Content Include="Content\Config\PopPolicy.xml" />
     <Content Include="Content\Css\common.css" />
     <Content Include="Content\CatchSite\HJB\list.html" />
+    <Content Include="Content\Css\Component\Mybootstrap.css" />
     <Content Include="Content\Css\Component\jquery-confirm.css" />
+    <Content Include="Content\Css\Info.css" />
     <Content Include="Content\Css\List.css" />
     <Content Include="Content\Css\MainCss.css" />
     <Content Include="Content\Css\idangerous.swiper.css" />
@@ -151,6 +153,7 @@
     <Content Include="Content\images\daikuanchaoshi_16.jpg" />
     <Content Include="Content\images\daikuanchaoshi_20.jpg" />
     <Content Include="Content\images\daikuankouzi_06.jpg" />
+    <Content Include="Content\images\error.png" />
     <Content Include="Content\images\gerenziliao_03.jpg" />
     <Content Include="Content\images\gongxishengji_02.jpg" />
     <Content Include="Content\images\goumaihuiyuan2_03.jpg" />
@@ -185,11 +188,14 @@
     <Content Include="Content\images\wxLoginBK.jpg" />
     <Content Include="Content\images\WXQR.jpg" />
     <Content Include="Content\images\yue_03.jpg" />
+    <Content Include="Content\images\zs_blueBK.png" />
     <Content Include="Content\QRImg\BK\QRBK.jpg" />
     <Content Include="Content\QRImg\bk_test.jpg" />
     <Content Include="Content\Script\CashOut.js" />
     <Content Include="Content\Script\CommissionDetail.js" />
     <Content Include="Content\Script\Component\jquery-confirm.js" />
+    <Content Include="Content\Script\Component\jquery.mobile-1.4.5.min.js" />
+    <Content Include="Content\Script\Component\Validform_v5.3.2_min.js" />
     <Content Include="Content\Script\Detail.js" />
     <Content Include="Content\Script\dropload.js" />
     <Content Include="Content\Script\ErrorMessage.js" />
@@ -203,6 +209,7 @@
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
     <Content Include="Content\Script\IQBPay\Pay.js" />
     <Content Include="Content\Script\IQBPay\ReceiveOrder.js" />
+    <Content Include="Content\Script\IQBPay\StoreList.js" />
     <Content Include="Content\Script\IQBPay\UserVerification.js" />
     <Content Include="Content\Script\jsCookie.js" />
     <Content Include="Content\Script\MemberInfo.js" />
@@ -242,6 +249,7 @@
     <Compile Include="BLL\PopPolicy.cs" />
     <Compile Include="BLL\Payment.cs" />
     <Compile Include="BLL\SMS.cs" />
+    <Compile Include="BLL\WXAuthorizeAttribute.cs" />
     <Compile Include="Common\HttpHelper.cs" />
     <Compile Include="Common\IQBLog.cs" />
     <Compile Include="Controllers\API\HJBController.cs" />
@@ -357,6 +365,11 @@
     <Content Include="Views\HOME\Demo.cshtml" />
     <Content Include="Views\PP\PayFromUser.cshtml" />
     <Content Include="Views\PP\UserVerification.cshtml" />
+    <Content Include="Views\Shared\_MainLayout.cshtml" />
+    <Content Include="Views\PP\LeagueStoreList.cshtml" />
+    <Content Include="Views\PP\OrderList - 复制.cshtml" />
+    <Content Include="Views\PP\StoreList.cshtml" />
+    <Content Include="Views\PP\StoreInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

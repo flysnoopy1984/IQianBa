@@ -31,10 +31,12 @@ namespace IQBCore.IQBPay.BaseEnum
         /// </summary>
         Agent = 2,
 
+        DiamondAgent = 3,
+
         /// <summary>
-        /// 可以在平台二维码的基础上生成自己的二维码并发放
+        /// 可以对接自己的商户码，且有代理功能
         /// </summary>
-        StoreVendor = 3,
+        StoreVendor = 10,
 
         /// <summary>
         /// 提供密钥,可使用自己的二维码
@@ -115,8 +117,17 @@ namespace IQBCore.IQBPay.BaseEnum
 
     public enum AgentCommissionStatus
     {
+        /// <summary>
+        /// 下单后的状态
+        /// </summary>
         Open=2,
+        /// <summary>
+        /// 暂时不用
+        /// </summary>
         Paid =3,
+        /// <summary>
+        /// 已转账给上级代理
+        /// </summary>
         Closed =4,
     }
 

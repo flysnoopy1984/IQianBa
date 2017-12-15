@@ -40,5 +40,7 @@ namespace IQBCore.IQBPay.Models.System
         /// 转账后微信通知
         /// </summary>
         public Boolean IsWXNotice_AgentTransfer { get; set; }
+
+
     }
 }

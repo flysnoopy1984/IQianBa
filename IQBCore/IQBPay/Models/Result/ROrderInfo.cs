@@ -20,6 +20,21 @@ namespace IQBCore.IQBPay.Models.Result
         public float RealTotalAmountSum { get; set; }
 
         /// <summary>
+        /// 代理今日订单
+        /// </summary>
+        public string AgentTodayOrderCount { get; set; }
+
+        /// <summary>
+        /// 代理今日收益
+        /// </summary>
+        public string AgentTodayIncome { get; set; }
+
+        /// <summary>
+        /// 代理总收益
+        /// </summary>
+        public string AgentTotalIncome { get; set; }
+
+        /// <summary>
         /// 用户转账总计
         /// </summary>
         public float BuyerTransferSum { get; set; }
@@ -35,5 +50,7 @@ namespace IQBCore.IQBPay.Models.Result
         public float ParentAmountSum { get; set; }
 
         public float PPIncome { get; set; }
+
+
     }
 }

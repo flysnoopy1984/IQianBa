@@ -6,6 +6,15 @@ $(document).ready(function () {
     InitCondition();
 });
 
+function AdvAlert(result) {
+
+    $.alert({
+        theme: 'dark',
+        title: '异常',
+        content: result,
+    });
+}
+
 function InitCondition()
 {
     $.ajax({
@@ -158,16 +167,17 @@ function generateData(result) {
 
         strCtrl += "<td><a href=/Transfer/Info_Win?id=" + result[i].OrderNo + "&type=1  target='_blank' class='td'>转账信息</a>";
         strCtrl += "</td>";
-        //订单编号
-        tdWidth = "width:"+ $("#trHeader th").eq(1).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].OrderNo + "</td>";
+      
+        //交易时间
+        tdWidth = "width:" + $("#trHeader th").eq(1).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + TransDate + "</td>";
 
         //订单状态
         tdWidth = "width:" + $("#trHeader th").eq(2).css("width");
         if (result[i].OrderStatus == -1)
         { 
-            strCtrl += "<td style='" + tdWidth + "'><a href='javascript:ShowError("+i+")'>" + OrderStatus + "</a>";
-            strCtrl += "<div class='DivHovering' id=divError" + i + ">" + result[i].LogRemark + "</div>";
+            strCtrl += "<td style='" + tdWidth + "'><a href=\"javascript:AdvAlert('" + result[i].LogRemark + "')\">" + OrderStatus + "</a>";
+            //strCtrl += "<div class='DivHovering' id=divError" + i + ">" + result[i].LogRemark + "</div>";
             strCtrl +="</td>";
         }
         else
@@ -223,9 +233,12 @@ function generateData(result) {
         tdWidth = "width:" + $("#trHeader th").eq(13).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerRate + "</td>";
 
-        //交易时间
+      
+
+
+        //订单编号
         tdWidth = "width:" + $("#trHeader th").eq(14).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + TransDate + "</td>";
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].OrderNo + "</td>";
 
         //支付宝订单编号
         tdWidth = "width:" + $("#trHeader th").eq(15).css("width");

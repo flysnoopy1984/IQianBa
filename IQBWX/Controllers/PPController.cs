@@ -9,6 +9,7 @@ using IQBCore.IQBPay.Models.User;
 using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Models.WX.Template;
 using IQBCore.WxSDK;
+using IQBWX.BLL;
 using IQBWX.BLL.ExternalWeb;
 using IQBWX.BLL.NT;
 using IQBWX.DataBase.IQBPay;
@@ -161,33 +162,42 @@ namespace IQBWX.Controllers
 
         public ActionResult AgentCommList()
         {
-         
-            string openId = this.GetOpenId();
-            string msg = this.CheckPPUserRole(openId);
-            if(msg != "OK")
-                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
 
-            ViewBag.OpenId = openId;
+            if (UserSession.UserRole < UserRole.Agent)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+            //if (msg != "OK")
+            //    return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
+            InitProfilePage();
             return View();
         }
 
         public ActionResult OrderList()
         {
-            string openId = this.GetOpenId();
-            string msg = this.CheckPPUserRole(openId);
-            if (msg != "OK")
-                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
-            ViewBag.OpenId = openId;
+            /*    string openId = this.GetOpenId();
+                string msg = this.CheckPPUserRole(openId);
+                */
+            if (UserSession.UserRole < UserRole.Agent)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+            //if (msg != "OK")
+            //    return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
+            InitProfilePage();
+           
             return View();
         }
 
         public ActionResult TransferList()
         {
-            string openId = this.GetOpenId();
-            string msg = this.CheckPPUserRole(openId);
-            if (msg != "OK")
-                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
-            ViewBag.OpenId = openId;
+            if (UserSession.UserRole < UserRole.Agent)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+            //if (msg != "OK")
+            //    return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
+            InitProfilePage();
             return View();
         }
 
@@ -253,11 +263,19 @@ namespace IQBWX.Controllers
                     {
 
                         result = list.Take(pageSize).ToList();
-                        if (result.Count > 0)
+                        if (result.Count <= 0)
                         {
-                          
-                            result[0].TotalCommAmount = list.ToList().Sum(s => s.CommissionAmount);
+                            result.Add(new RAgentCommission());
+                            //result[0].TotalCommAmount = list.ToList().Sum(s => s.CommissionAmount);
                         }
+                        DateTime startDate = DateTime.Today;
+                        DateTime endDate = DateTime.Today.AddDays(1);
+
+                        var TodayComm = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.TransDate >= startDate && o.TransDate <= endDate).ToList().Sum(o => o.CommissionAmount).ToString("0.00");
+                        result[0].TodayCommAmt = TodayComm;
+
+                        result[0].TotalCommAmt = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId).ToList().Sum(o => o.CommissionAmount).ToString("0.00");
+
                     }
                     else
                         result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
@@ -336,14 +354,25 @@ namespace IQBWX.Controllers
 
                     if (pageIndex == 0)
                     {
+                        DateTime startDate = DateTime.Today;
+                        DateTime endDate = DateTime.Today.AddDays(1);
+
                         int totalCount = list.Count();
                         result = list.Take(pageSize).ToList();
                         if (result.Count > 0)
                         {
-                            result[0].TotalCount = totalCount;
-                         //   result[0].TotalAmountSum = list.Sum(o => o.TotalAmount);
-                            result[0].RealTotalAmountSum = list.ToList().Sum(o => o.RateAmount);
+                          //  result[0].TotalCount = totalCount;
+
                         }
+                        else
+                            result.Add(new ROrderInfo());
+
+                        var TodayOrder = db.DBOrder.Where(o => o.AgentOpenId == OpenId && o.OrderStatus == OrderStatus.Closed && o.TransDate >= startDate && o.TransDate <= endDate);
+                        result[0].AgentTodayOrderCount = TodayOrder.Count().ToString();
+                        result[0].AgentTodayIncome = TodayOrder.ToList().Sum(o => o.RateAmount).ToString("0.00");
+
+                        var allOrder = db.DBOrder.Where(o => o.AgentOpenId == OpenId && o.OrderStatus == OrderStatus.Closed);
+                        result[0].AgentTotalIncome = allOrder.ToList().Sum(o => o.RateAmount).ToString("0.00");
                     }
                     else
                         result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
@@ -372,7 +401,7 @@ namespace IQBWX.Controllers
                 {
 
                     IQBCore.IQBPay.Models.User.EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == OpenId).FirstOrDefault();
-                    var list = db.DBTransferAmount.Where(o => o.AgentOpenId == OpenId).Select(s => new RTransferAmount
+                    var list = db.DBTransferAmount.Where(o => o.AgentOpenId == OpenId && o.TransferStatus == TransferStatus.Success).Select(s => new RTransferAmount
                     {
                         ID = s.ID,
                         TransferId = s.TransferId,
@@ -414,13 +443,26 @@ namespace IQBWX.Controllers
 
                     if (pageIndex == 0)
                     {
-
+                       
                         result = list.Take(pageSize).ToList();
                         if (result.Count > 0)
                         {
-                            result[0].TotalCount = list.Count();
-                            result[0].TotalAmountSum = list.ToList().Sum(s => s.TransferAmount);
+                          //  result[0].TotalCount = list.Count();
+                           
                         }
+                        else
+                        {
+                            result.Add(new RTransferAmount());
+                        }
+
+                        DateTime startDate = DateTime.Today;
+                        DateTime endDate = DateTime.Today.AddDays(1);
+
+                        var TodayTransfer = db.DBTransferAmount.Where(o => o.AgentOpenId == OpenId && o.TransferStatus == TransferStatus.Success && o.TransDate >= startDate && o.TransDate < endDate);
+                        result[0].TodayTransferAmt = TodayTransfer.ToList().Sum(s => s.TransferAmount).ToString("0.00");
+
+                        result[0].TotalTransferAmt = db.DBTransferAmount.Where(o => o.AgentOpenId == OpenId && o.TransferStatus == TransferStatus.Success).ToList().Sum(s => s.TransferAmount).ToString("0.00");
+
                     }
                     else
                         result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
@@ -662,6 +704,55 @@ namespace IQBWX.Controllers
         public ActionResult UserVerification()
         {
             return View();
+        }
+        #endregion
+
+        #region 加盟商户
+        public ActionResult StoreList()
+        {
+            if(UserSession.UserRole < UserRole.StoreVendor)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+            InitProfilePage();
+
+            return View();
+        }
+
+        public ActionResult StoreQuery()
+        {
+            int pageIndex = Convert.ToInt32(Request["Page"]);
+            int pageSize = Convert.ToInt32(Request["PageSize"]);
+
+            using (AliPayContent db = new AliPayContent())
+            {
+
+                var list = db.DBStoreInfo.Select(s => new RStoreInfo()
+                {
+                    Name = s.Name,
+                    Rate = s.Rate,
+                    IsAuth = !string.IsNullOrEmpty(s.AliPayAccount),
+                    DayIncome = s.DayIncome,
+                    MaxLimitAmount = s.MaxLimitAmount,
+                    CDate = s.CDate,
+                    CTime = s.CTime,
+                    CreateDate = s.CreateDate
+                });
+
+                if (UserSession.UserRole != UserRole.Administrator)
+                    list = list.Where(o => o.OwnnerOpenId == UserSession.OpenId);
+
+                list = list.OrderByDescending(o => o.CreateDate);
+
+                List<RStoreInfo> result = new List<RStoreInfo>();
+
+                if (pageIndex == 0)
+                    result = list.Take(pageSize).ToList();
+                else
+                    result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+
+                return Json(result);
+            }
         }
         #endregion
 

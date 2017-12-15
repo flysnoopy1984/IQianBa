@@ -216,6 +216,7 @@ namespace IQBPay.Controllers
                   //  order.AliPayTransDate = Convert.ToDateTime(Request["gmt_create"]);
                     if (order.AliPayTradeStatus == "TRADE_SUCCESS")
                     {
+                        Log.log("PayNotify 1");
 
                         #region 短信通知收款码
                         //短信通知买家收款码开始
@@ -248,10 +249,21 @@ namespace IQBPay.Controllers
                         //店铺佣金
                         if (order.SellerCommission > 0)
                         {
+                            Log.log("PayNotify 开始分账");
                             //分账
                             EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
-                            EStoreInfo subStore = BaseController.SubAccount;
-                            if (store.ID != subStore.ID)
+                            EStoreInfo subStore =null;
+                            try
+                            {
+                                subStore = BaseController.SubAccount;
+                            }
+                            catch (Exception ex)
+                            {
+                                order.LogRemark += ex.Message;
+                                order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+
+                            }
+                            if (store.IsReceiveAccount==false && subStore!=null)
                             {
                                 AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, subStore);
                                 if (res.Code == "10000")
@@ -262,19 +274,21 @@ namespace IQBPay.Controllers
                                     order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
                                 }
                             }
+                            Log.log("PayNotify 分账结束");
                         }
                         string accessToken = this.getAccessToken(true);
                         //代理打款
                         EUserInfo agentUI = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
-                       /* Log.log("PayNotify -- accessToken:" + accessToken);
-                        Log.log("PayNotify -- BaseController.GlobalConfig:" + BaseController.GlobalConfig.IsWXNotice_AgentTransfer);
-                        Log.log("PayNotify -- agentUI OpenId:" + agentUI.OpenId);
-                        */
+                        /* Log.log("PayNotify -- accessToken:" + accessToken);
+                         Log.log("PayNotify -- BaseController.GlobalConfig:" + BaseController.GlobalConfig.IsWXNotice_AgentTransfer);
+                         Log.log("PayNotify -- agentUI OpenId:" + agentUI.OpenId);
+                         */
+                        Log.log("PayNotify 开始转账给代理");
                         tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.App, agentUI,ref order, accessToken,BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
                         if(tranfer.TransferStatus != TransferStatus.Success)
                             TransferError++;
-                  
+                        Log.log("PayNotify 转账给代理结束");
 
                         //上级代理佣金
                         if (!string.IsNullOrEmpty(order.ParentOpenId))
@@ -293,14 +307,14 @@ namespace IQBPay.Controllers
                             db.DBTransferAmount.Add(tranfer);
                             
                             if(tranfer.TransferStatus == TransferStatus.Success)
-                                agentComm.AgentCommissionStatus = AgentCommissionStatus.Paid;
+                                agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
                             else
                                 TransferError++;
                         }
 
 
                         //用户打款
-                    
+                        Log.log("PayNotify 开始用户打款");
                         tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App,null, ref order, null, BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
 
@@ -310,8 +324,8 @@ namespace IQBPay.Controllers
                             order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
                         else
                             order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Closed;
-                     
-                      
+
+                        Log.log("PayNotify 结束用户打款");
 
                         #region 自动提款(老逻辑)
 

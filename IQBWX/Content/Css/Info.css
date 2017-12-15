@@ -1,0 +1,130 @@
+﻿
+
+.InfoBody
+{
+    padding:20px;
+    font-size: 14px;
+    font-family: 'MicroSoft YaHei';
+}
+.form-control
+{
+    font-size:16px !important;
+    height:24px !important;
+}
+
+.form-group
+{
+    clear:both;
+    overflow:hidden;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+.labelChoose
+{
+    border:dashed 1px #0094ff;
+    height:40px;
+    line-height:40px;
+    width:100%;
+}
+.ProcessCancel{
+    width:25px;
+    height:25px;
+    background-image:url("../../Images/cancel.png");
+    position:absolute;
+    top:40%;
+    left:90%;
+    z-index:999;
+
+
+}
+
+.ProcessBarContainer {  
+   border:solid 1px #0094ff;
+   height: 81px;  
+   width:100%;
+  position:relative;
+} 
+
+.ProcessBar {  
+    height: 80px;  
+    background: #a2f67f;  
+    text-align:center;
+    line-height:80px;
+    
+ 
+}  
+
+ .Title
+ {
+     font-family:"黑体";
+     font-size:20px;
+     font-weight:bold;
+ }
+
+ .label-top
+ {
+     margin-bottom:10px;
+     display:block;
+ }
+ .ValidformLabel{
+     font-size:22px;
+ }
+
+ .form-control {
+  display: block;
+  width: 95%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.form-control:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+/*==========以下部分是Validform必须的===========*/
+.Validform_checktip{
+	/*margin-left:8px;*/
+	line-height:22px;
+	height:22px;
+	overflow:hidden;
+	color:#999;
+	font-size:16px;
+}
+.Validform_right{
+	color:#71b83d;
+	/*padding-left:20px;*/
+	background:url(../images/right.png) no-repeat left center;
+}
+.Validform_wrong{
+	color:red;
+	padding-left:20px;
+	white-space:nowrap;
+	background:url(../images/error.png) no-repeat left center;
+}
+.Validform_loading{
+	padding-left:20px;
+	background:url(../images/onLoad.gif) no-repeat left center;
+}
+.Validform_error{
+	background-color:#ffe7e7;
+}
+#Validform_msg{color:#7d8289; font: 12px/1.5 tahoma, arial, \5b8b\4f53, sans-serif; width:280px; -webkit-box-shadow:2px 2px 3px #aaa; -moz-box-shadow:2px 2px 3px #aaa; background:#fff; position:absolute; top:0px; right:50px; z-index:99999; display:none;filter: progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color='#999999');}
+#Validform_msg .iframe{position:absolute; left:0px; top:-1px; z-index:-1;}
+#Validform_msg .Validform_title{line-height:25px; height:25px; text-align:left; font-weight:bold; padding:0 8px; color:#fff; position:relative; background-color:#000;}
+#Validform_msg a.Validform_close:link,#Validform_msg a.Validform_close:visited{line-height:22px; position:absolute; right:8px; top:0px; color:#fff; text-decoration:none;}
+#Validform_msg a.Validform_close:hover{color:#cc0;}
+#Validform_msg .Validform_info{padding:8px;border:1px solid #000; border-top:none; text-align:left;}

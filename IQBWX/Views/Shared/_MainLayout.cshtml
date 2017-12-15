@@ -1,0 +1,31 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+    <title></title>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/List.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
+    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+    
+</head>
+<body>
+    <div class="grzxcon1 mgz">
+        <div class="grzxcon1l f"><img align="absmiddle" src="@ViewBag.Headimgurl" width="130" height="130" /></div>
+        <div class="grzxcon1r f bai">
+            <div class="grzxcon1rs mg2">找熟人套现平台</div>
+            <div class="grzxcon1rx mg2 xi21"><img align="absmiddle" src="@ViewBag.UserRoleImg" />@ViewBag.ShowName</div>
+        </div>
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>

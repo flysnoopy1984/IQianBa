@@ -77,7 +77,7 @@ a img{text-decoration: none;margin: 0px;padding: 0px;border:none;}
 .grzxcon1rs{ height:42px; line-height:42px; padding-top:24px;}
 .grzxcon1rx{ height:50px; line-height:50px;}
 .grzxcon2{ background:#4a78e6;}
-.grzxcon2 ul li{ float:left; height:87px; line-height:87px; width:319px; border-right:1px solid #3c6ce0;}
+.grzxcon2 ul li{ float:left; height:87px; width:33%; border-right:1px solid #3c6ce0; overflow-y:hidden;}
 .grzxcon3{ background:#fff;}
 .grzxcon3 ul li{ float:left; width:319px; border-right:1px solid #f7f7f7; padding-top:30px; height:147px; line-height:50px; border-bottom:1px solid #f7f7f7;}
 .footer{ height:97px;}

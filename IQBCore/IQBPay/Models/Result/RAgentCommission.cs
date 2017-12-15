@@ -12,5 +12,11 @@ namespace IQBCore.IQBPay.Models.Result
     public class RAgentCommission: EAgentCommission
     {
         public float TotalCommAmount;
+
+        public string TotalCommAmt { get; set; }
+
+        public string TodayCommAmt { get; set; }
+
+        
     }
 }

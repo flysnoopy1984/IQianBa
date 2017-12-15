@@ -77,10 +77,10 @@ namespace IQBCore.IQBPay.BLL
             builder.goods_detail = gList;
 
             //系统商接入可以填此参数用作返佣
-            //ExtendParams exParam = new ExtendParams();
-            //exParam.sys_service_provider_id = app.AppId;
+            ExtendParams exParam = new ExtendParams();
+            exParam.sys_service_provider_id = app.AppId;
 
-            //builder.extend_params = exParam;
+            builder.extend_params = exParam;
 
 
 
@@ -131,10 +131,10 @@ namespace IQBCore.IQBPay.BLL
             builder.body = "#玉杰商品";
 
             //系统商接入可以填此参数用作返佣
-            //    ExtendParams exParam = new ExtendParams();
-            //   exParam.sys_service_provider_id = app.AppId;
+            ExtendParams exParam = new ExtendParams();
+            exParam.sys_service_provider_id = app.AppId;
 
-            //     builder.extend_params = exParam;
+            builder.extend_params = exParam;
 
 
 

@@ -55,6 +55,8 @@ namespace IQBCore.IQBPay.BLL
 
             // model.RoyaltyParameters = paramList;
             // request.SetBizModel(model);
+            IQBLog log = new IQBLog();
+            log.log(request.BizContent);
 
             AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request, store.AliPayAuthToke);
             return response;
@@ -137,7 +139,7 @@ namespace IQBCore.IQBPay.BLL
                 transfer.TransferStatus = TransferStatus.Failure;
                 transfer.Log += string.Format("[Transfer to {2}] SubCode:{0};Submsg:{1}", res.SubCode, res.SubMsg, target.ToString());
 
-                order.LogRemark += "【转账错误】--目标：" + target + "转账单号:"+ TransferId;
+                order.LogRemark += "【转账错误】目标：" + target + "; 转账单号:"+ TransferId;
                 order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
             }
             return transfer;

@@ -207,7 +207,7 @@ table th[class*="col-"] {
 
 .ListTitle{
     position:fixed; 
-    top:0px;
+    top:200px;
     left:0px;
     right:0px;
     height:50px;
@@ -218,7 +218,7 @@ table th[class*="col-"] {
 
 .ListTitle_Condition1{
     position:fixed; 
-    top:0px;
+    top:290px;
     left:250px;
     right:0px;
     height:50px;
@@ -227,7 +227,7 @@ table th[class*="col-"] {
 
 .ListTableTitle{
     position:fixed; 
-    top:54px;
+    top:334px;
     left:0px;
     right:0px;
     height:30px;
@@ -245,10 +245,12 @@ table th[class*="col-"] {
     font-size:20px;
     color:crimson;
 }
-
+.ListTableBody_noFixed{
+     overflow-y:auto;
+}
 .ListTableBody{
     position:fixed; 
-    top:150px;
+    top:375px;
     bottom:100px;
     left:0px;
     right:0px;
@@ -268,6 +270,10 @@ table th[class*="col-"] {
     line-height:200px;
     text-align:center;
 }
+.GoToInfoButton{
+    padding-top:30px !important;
+}
+
 
 
 #swiper-container{

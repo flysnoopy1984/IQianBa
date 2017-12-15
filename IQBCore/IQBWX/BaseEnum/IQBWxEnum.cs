@@ -21,10 +21,13 @@ namespace IQBCore.IQBWX.BaseEnum
     {
         IncorrectVerifyCode = 1001,
         NotMember = 1002,
-        SystemMaintain = 9999,
         OpenIdNotFound = 1003,
+        
+        SystemMaintain = 9999,
+        
         NormalErrorNoButton = 2000,
         AliPay_PayError = 2001,
+        NotAuthorized = 2002,
 
     }
 
