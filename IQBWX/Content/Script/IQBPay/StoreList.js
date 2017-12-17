@@ -33,14 +33,12 @@ function ToListPage()
 function ToInfoPage(i) {
     $("#PageList").hide();
     $("#PageInfo").show();
-    i = i - 1;
-    alert(i);
+  
+    i--;
     $("#Name").val(QueryData[i].Name);
     $("#Rate").val(QueryData[i].Rate);
     $("#MaxLimitAmount").val(QueryData[i].MaxLimitAmount);
     $("#DayIncome").val(QueryData[i].DayIncome);
-
-
 }
 
 

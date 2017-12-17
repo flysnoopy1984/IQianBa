@@ -53,6 +53,11 @@ namespace IQBCore.IQBPay.Models.QR
 
         public int ReceiveStoreId { get; set; }
 
+        /// <summary>
+        /// 是否当前收款码
+        /// </summary>
+        public bool IsCurrent { get; set; }
+
 
 
 

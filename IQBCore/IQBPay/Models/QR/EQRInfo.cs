@@ -76,6 +76,21 @@ namespace IQBCore.IQBPay.Models.QR
         /// </summary>
         public Boolean NeedVerification { get; set; }
 
+        public void InitByStore(EStoreInfo si)
+        {
+            this.NeedVerification = false;
+            this.InitCreate();
+            this.InitModify();
+            this.Level = 1;
+            this.OwnnerOpenId = si.OwnnerOpenId;
+            this.Rate = si.Rate;
+            this.RecordStatus = RecordStatus.Normal;
+            this.Channel = si.Channel;
+            this.Type = QRType.StoreAuth;
+
+
+        }
+
 
     }
 }

@@ -119,6 +119,7 @@
     <Compile Include="IQBPay\Models\AccountPayment\ETransferAmount.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashStore.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashUser.cs" />
+    <Compile Include="IQBPay\Models\OutParameter\OutAPIResult.cs" />
     <Compile Include="IQBPay\Models\OutParameter\OutDoTransfer.cs" />
     <Compile Include="IQBPay\Models\OutParameter\UploadObj.cs" />
     <Compile Include="IQBPay\Models\QR\EQRInfo.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="IQBPay\Models\Result\ROrderInfo.cs" />
     <Compile Include="IQBPay\Models\Result\ROrder_Receive.cs" />
     <Compile Include="IQBPay\Models\Result\ROrder_Transfer.cs" />
+    <Compile Include="IQBPay\Models\Result\RQRUser.cs" />
     <Compile Include="IQBPay\Models\Result\RStoreInfo.cs" />
     <Compile Include="IQBPay\Models\Result\RStore_OrderSum.cs" />
     <Compile Include="IQBPay\Models\Result\RQRInfo.cs" />

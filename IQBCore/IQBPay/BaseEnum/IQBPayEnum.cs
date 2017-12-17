@@ -185,5 +185,12 @@ namespace IQBCore.IQBPay.BaseEnum
 
     }
 
+    public enum StoreAuthStatus
+    {
+        NoAuth =0,
+        Audit =1,
+        Authed = 100
+    }
+
 
 }

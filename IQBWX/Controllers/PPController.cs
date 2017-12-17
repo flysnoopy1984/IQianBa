@@ -705,12 +705,84 @@ namespace IQBWX.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 代理收款二维码调整
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Agent_QR_AR_Adjust()
+        {
+            if (UserSession.UserRole < UserRole.Agent)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+            //if (msg != "OK")
+            //    return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
+            InitProfilePage();
+
+            return View();
+        }
+
+       [HttpPost]
+        public ActionResult Agent_QR_AR_Add(EQRUser qrUser)
+        {
+            
+            return View();
+        }
+
+        public ActionResult Agent_QR_ARList()
+        {
+            if (UserSession.UserRole < UserRole.Agent)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+            InitProfilePage();
+
+          
+            return View();
+        }
+
+        public ActionResult Agent_QR_ARListQuery()
+        {
+            int pageIndex = Convert.ToInt32(Request["Page"]);
+            int pageSize = Convert.ToInt32(Request["PageSize"]);
+
+            using (AliPayContent db = new AliPayContent())
+            {
+
+                var list = db.DBQRUser.Where(u=>u.OpenId == UserSession.OpenId).Select(s => new RQRUser()
+                {
+                    QRId = s.QRId,
+                    Rate = s.Rate,
+                    MarketRate = s.MarketRate,
+                    ParentOpenId = s.ParentOpenId,
+                    ParentName = s.ParentName,
+                    ParentCommissionRate = s.ParentCommissionRate,
+                    FilePath = s.FilePath,
+                    ID = s.ID,
+                });
+
+               
+                list = list.OrderByDescending(o => o.ID);
+
+                List<RQRUser> result = new List<RQRUser>();
+
+                if (pageIndex == 0)
+                    result = list.Take(pageSize).ToList();
+                else
+                    result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+
+                return Json(result);
+            }
+
+            
+        }
         #endregion
 
         #region 加盟商户
         public ActionResult StoreList()
         {
-            if(UserSession.UserRole < UserRole.StoreVendor)
+            if(UserSession.UserRole < UserRole.Administrator)
             {
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
@@ -753,6 +825,19 @@ namespace IQBWX.Controllers
 
                 return Json(result);
             }
+        }
+
+        public ActionResult StoreAdd()
+        {
+            if (UserSession.UserRole < UserRole.Administrator)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+            InitProfilePage();
+
+          
+
+            return View();
         }
         #endregion
 

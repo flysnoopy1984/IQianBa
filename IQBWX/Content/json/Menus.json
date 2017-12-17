@@ -21,22 +21,36 @@
             }
 
           ]
-        },       
-        {
-          "name": "用户中心",
+        },
+      {
+        "name": "用户中心",
+        "sub_button": [
+          {
+            "type": "view",
+            "name": "收款账户设置",
+            "url": "http://wx.iqianba.cn/PP/AliPayAccount"
+          },
+          {
+            "type": "click",
+            "name": "收款二维码",
+            "key": "pay_101"
+          }
+        ]
+      },
+      {
+          "name": "商户中心",
           "sub_button": [
             {
               "type": "view",
-              "name": "收款账户设置",
-              "url": "http://wx.iqianba.cn/PP/AliPayAccount"
+              "name": "商户入驻",
+              "url": "http://wx.iqianba.cn/PP/StoreAdd"
             },
             {
-              "type": "click",
-              "name": "收款二维码",
+              "type": "view",
+              "name": "商户列表",
               "key": "pay_101"
             }
           ]
-        }       
-      
+        }               
     ]
  }

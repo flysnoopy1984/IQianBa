@@ -516,6 +516,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AliPayController.cs" />
+    <Compile Include="Controllers\ExternalAPI\StoreAPIController.cs" />
     <Compile Include="Controllers\ExternalAPI\TransferAPIController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\OrderController.cs" />

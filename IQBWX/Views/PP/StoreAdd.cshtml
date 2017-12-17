@@ -1,35 +1,24 @@
 ﻿
 @{
-    ViewBag.Title = "商户列表";
+    ViewBag.Title = "StoreAdd";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-
 <script src="~/Content/Script/Component/Validform_v5.3.2_min.js"></script>
-
-<script src="@Url.Scrpit("~/Content/Script/IQBPay/StoreList.js")"></script>
-
-
+<script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
+<script src="@Url.Scrpit("~/Content/Script/IQBPay/StoreAdd.js")"></script>
+<link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
+<script src="~/Content/Script/Component/jquery-confirm.js"></script>
 <link href="@Url.Scrpit("~/Content/Css/Info.css")" rel="stylesheet" />
 
-
-<div id="PageList">
-    <div class="grzxcon2 mgz xi30 bai cen">商户列表</div>
-    <div class="ListTableBody_noFixed" id="ListTableBody">
-        <div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>
-        <table class="table mgz2  large-only" id="trContainer"></table>
-    </div>
-    <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%" onclick="Next();">加载更多</button>
-</div>
-
 <div id="PageInfo" class="PageInfo">
-    <div class="grzxcon2 mgz xi30 bai"><a href="javascript:ToListPage();"><<返回列表</a></div>
+    <div class="grzxcon2 mgz xi30 bai">商户入驻</div>
     <div class="InfoBody">
         <div class="form-group">
             <label class="label-top">店铺名称</label>
             <div class="col-sm-6">
-                <input id="Name" type="text" class="form-control" datatype="s" nullmsg="请填写店铺名称" sucmsg="OK">   
+                <input id="Name" type="text" class="form-control" datatype="s" nullmsg="请填写店铺名称" sucmsg="OK">
             </div>
-          <div class="Validform_checktip"></div>
+            <div class="Validform_checktip"></div>
         </div>
         <div class="form-group">
             <label class="label-top">返佣点数-（只能填入0.5-1的数字）</label>
@@ -50,15 +39,16 @@
         <div class="form-group">
             <label class="label-top">每日限额(不填代表无限额)</label>
             <div class="col-sm-6">
-                <input id="DayIncome" type="text" class="form-control" datatype ="empty|n"  sucmsg="OK">
+                <input id="DayIncome" type="text" class="form-control" datatype="empty|n" sucmsg="OK">
             </div>
             <div class="Validform_checktip"></div>
         </div>
 
-        <div class="form-group">
-            <label class="label-top">没有授权</label>
+        <div id="buttonArea" style="margin-bottom:50px;">
+            <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnJoinPT" style="width:95%; height:60px;" onclick="JoinPT();">入驻平台</button>
+           
         </div>
-
     </div>
     <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
 </div>
+

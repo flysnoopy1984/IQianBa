@@ -76,6 +76,6 @@ namespace IQBCore.IQBPay.Models.Store
 
         public float MaxLimitAmount{get;set;}
 
-
+        public StoreAuthStatus StoreAuthStatus { get; set; }
     }
 }

@@ -202,6 +202,8 @@
     <Content Include="Content\Script\idangerous.swiper.min.js" />
     <Content Include="Content\Script\iqb.dropload.min.js" />
     <Content Include="Content\Script\IQBPay\AgentCommList.js" />
+    <Content Include="Content\Script\IQBPay\Agent_QR_ARList.js" />
+    <Content Include="Content\Script\IQBPay\Agent_QR_AR_Adjust.js" />
     <Content Include="Content\Script\IQBPay\AliPayAccount.js" />
     <Content Include="Content\Script\IQBPay\Auth_Store.js" />
     <Content Include="Content\Script\IQBPay\DoTransfer.js" />
@@ -209,6 +211,7 @@
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
     <Content Include="Content\Script\IQBPay\Pay.js" />
     <Content Include="Content\Script\IQBPay\ReceiveOrder.js" />
+    <Content Include="Content\Script\IQBPay\StoreAdd.js" />
     <Content Include="Content\Script\IQBPay\StoreList.js" />
     <Content Include="Content\Script\IQBPay\UserVerification.js" />
     <Content Include="Content\Script\jsCookie.js" />
@@ -369,7 +372,9 @@
     <Content Include="Views\PP\LeagueStoreList.cshtml" />
     <Content Include="Views\PP\OrderList - 复制.cshtml" />
     <Content Include="Views\PP\StoreList.cshtml" />
-    <Content Include="Views\PP\StoreInfo.cshtml" />
+    <Content Include="Views\PP\StoreAdd.cshtml" />
+    <Content Include="Views\PP\Agent_QR_AR_Adjust.cshtml" />
+    <Content Include="Views\PP\Agent_QR_ARList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

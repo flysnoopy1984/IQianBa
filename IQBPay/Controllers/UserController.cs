@@ -69,7 +69,7 @@ namespace IQBPay.Controllers
                            from userinfo as ui 
                            left join qrUser on qruser.ID = ui.QRUserDefaultId  
                            left join StoreInfo as si on si.ID = qruser.ReceiveStoreId                  
-                           where ui.Id = {0}
+                           where ui.Id = {0} and QRUser.IsCurrent ='true'
                         ";
 
             sql = string.Format(sql, Id);
@@ -114,6 +114,7 @@ namespace IQBPay.Controllers
                         from userinfo as ui 
                         left join qrUser on qruser.ID = ui.QRUserDefaultId
 		                left join StoreInfo as si on si.ID = qruser.ReceiveStoreId
+						where qrUser.IsCurrent = 'true'
                         ORDER BY ui.CreateDate desc";
 
            // IQueryable<EUserInfo> list = null;

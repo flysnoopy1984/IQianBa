@@ -38,7 +38,7 @@ namespace IQBPay.Core
                 qrUser.OrigQRFilePath = filePath;
                 //Create QR
                 filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
-                 Bitmap qrImg = QRManager.CreateQR(url, filePath);
+                Bitmap qrImg = QRManager.CreateQR(url, filePath);
                 
 
                 //BK

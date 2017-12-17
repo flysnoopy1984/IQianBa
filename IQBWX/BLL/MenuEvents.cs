@@ -47,10 +47,11 @@ namespace IQBWX.BLL
                 RedirectUrl = null;
                 using (AliPayContent db = new AliPayContent())
                 {
-                    payQRUser = db.DBQRUser.Where(u => u.OpenId == msg.FromUserName).FirstOrDefault();
+                    //筛选出当前的收款二维码 
+                    payQRUser = db.DBQRUser.Where(u => u.OpenId == msg.FromUserName && u.IsCurrent == true).FirstOrDefault();
                     if (payQRUser == null)
                     {
-                        this.ResponseXml = msg.toText("网站已经关闭");
+                        this.ResponseXml = msg.toText("没有权限！");
                         return;
                     }
                 }
