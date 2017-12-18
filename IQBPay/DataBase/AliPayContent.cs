@@ -5,7 +5,7 @@ using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.SMS;
 using IQBCore.IQBPay.Models.Store;
-using IQBCore.IQBPay.Models.System;
+using IQBCore.IQBPay.Models.Sys;
 using IQBCore.IQBPay.Models.Tool;
 using IQBCore.IQBPay.Models.User;
 using IQBPay.Controllers;
@@ -136,7 +136,6 @@ namespace IQBPay.DataBase
                 qrUser.ParentOpenId = qr.ParentOpenId;
                 qrUser.ParentCommissionRate = qr.ParentCommissionRate;
                 
-              
                 if(!string.IsNullOrEmpty(qr.ParentOpenId))
                 {
                     pi = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).Select(o=>new RUserInfo {
@@ -156,17 +155,18 @@ namespace IQBPay.DataBase
                 }
                 qrUser = QRManager.CreateUserUrlById(qrUser);
                 db.Entry(qrUser).State = System.Data.Entity.EntityState.Modified;
-/*
-                DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
-                entry.State = EntityState.Unchanged;
-                ui.QRUserDefaultId = qrUser.ID;
-                ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
-                //取消授权
-                ui.QRAuthId = 0;
-                
-                entry.Property(t => t.QRUserDefaultId).IsModified = true; 
- */ 
                 db.SaveChanges();
+                /*
+                                DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
+                                entry.State = EntityState.Unchanged;
+                                ui.QRUserDefaultId = qrUser.ID;
+                                ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
+                                //取消授权
+                                ui.QRAuthId = 0;
+
+                                entry.Property(t => t.QRUserDefaultId).IsModified = true; 
+                 */
+
             }
             return qrUser;
 

@@ -15,8 +15,9 @@ using System.Web.Routing;
 using IQBWX.WebCore;
 using IQBCore.IQBWX.Const;
 using IQBWX.DataBase.IQBPay;
-using IQBCore.IQBPay.Models.System;
+using IQBCore.IQBPay.Models.Sys;
 using IQBCore.Model;
+using IQBCore.IQBPay.Models.OutParameter;
 
 namespace IQBWX.Controllers
 {
@@ -31,6 +32,15 @@ namespace IQBWX.Controllers
         public WXBaseController()
         {
             
+        }
+
+        public ActionResult ErrorResult(string msg)
+        {
+            OutAPIResult result = new OutAPIResult();
+            result.ErrorMsg = msg;
+            result.IsSuccess = false;
+            return Json(result);
+
         }
 
         public static EGlobalConfig GlobalConfig

@@ -12,6 +12,9 @@ using System.Web.Http;
 using IQBCore.Common.Constant;
 using IQBCore.Common.Helper;
 using System.Text;
+using IQBCore.IQBPay.Models.OutParameter;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity;
 
 namespace IQBPay.Controllers.ExternalAPI
 {
@@ -23,8 +26,9 @@ namespace IQBPay.Controllers.ExternalAPI
   
             return responseMessage;
         }
+
         [HttpPost]
-        public HttpResponseMessage  Register([FromBody]EUserInfo ui)
+        public HttpResponseMessage Register([FromBody]EUserInfo ui)
         {
             EUserInfo updateUser = null;
             EQRInfo qr = null;
@@ -158,6 +162,42 @@ namespace IQBPay.Controllers.ExternalAPI
                 return FormatReturn("EXIST");
             
             }
+        }
+
+        [HttpPost]
+        public OutAPIResult CreateAgentQR_AR([FromBody]EQRUser qrUser)
+        {
+            OutAPIResult result = new OutAPIResult();
+            result.IsSuccess = true;
+            try
+            {
+             
+                using (AliPayContent db = new AliPayContent())
+                {
+                   
+                    qrUser = QRManager.CreateUserUrlById(qrUser);
+
+                    DbEntityEntry<EQRUser> entry = db.Entry<EQRUser>(qrUser);
+                    entry.State = EntityState.Unchanged;
+
+
+                    entry.Property(t => t.FilePath).IsModified = true;
+                    entry.Property(t => t.OrigQRFilePath).IsModified = true;
+                    entry.Property(t => t.TargetUrl).IsModified = true;
+                    db.SaveChanges();
+                }
+               
+            }
+            catch(Exception ex)
+            {
+                IQBLog _log = new IQBLog();
+                _log.log("CreateAgentQR_AR Error " + ex.InnerException.Message);
+
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+
+            return result;
         }
     }
 }

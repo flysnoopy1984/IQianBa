@@ -11,7 +11,7 @@ using IQBPay.Core;
 using IQBPay.DataBase;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
-using IQBCore.IQBPay.Models.System;
+using IQBCore.IQBPay.Models.Sys;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

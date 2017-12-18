@@ -54,6 +54,19 @@
  
 }  
 
+.funBtnList
+{
+    height:70px;
+    line-height:60px;
+    margin:2px;
+}
+.funBtnList button
+{
+    height:55px!important;
+    float:right;
+
+}
+
  .Title
  {
      font-family:"黑体";
@@ -106,7 +119,7 @@
 }
 .Validform_right{
 	color:#71b83d;
-	/*padding-left:20px;*/
+	padding-left:20px;
 	background:url(../images/right.png) no-repeat left center;
 }
 .Validform_wrong{

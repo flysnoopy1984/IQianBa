@@ -78,9 +78,9 @@ namespace IQBCore.Common.Helper
             request.Method = method.ToString();
             request.ContentType = ContentType;
 
-           // request.Headers.Add("Content-Type", ContentType);
+            //request.Headers.Add("Content-Type", ContentType);
             request.Headers.Add("charset", charset);
-            //request.Headers.Add("CharacterEncoding", charset);
+           // request.Headers.Add("CharacterEncoding", charset);
             Stream reqstream = request.GetRequestStream();
             reqstream.Write(bytes, 0, bytes.Length);
             //声明一个HttpWebRequest请求  

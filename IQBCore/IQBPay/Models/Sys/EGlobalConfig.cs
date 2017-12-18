@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace IQBCore.IQBPay.Models.System
+namespace IQBCore.IQBPay.Models.Sys
 {
     
     [Table("GlobalConfig")]

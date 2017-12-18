@@ -4,7 +4,7 @@ using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.SMS;
 using IQBCore.IQBPay.Models.Store;
-using IQBCore.IQBPay.Models.System;
+using IQBCore.IQBPay.Models.Sys;
 using IQBCore.IQBPay.Models.User;
 using System;
 using System.Collections.Generic;

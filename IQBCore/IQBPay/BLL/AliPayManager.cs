@@ -12,7 +12,7 @@ using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;
-using IQBCore.IQBPay.Models.System;
+using IQBCore.IQBPay.Models.Sys;
 using IQBCore.IQBPay.Models.Tool;
 using IQBCore.IQBPay.Models.User;
 using IQBCore.IQBWX.Models.WX.Template;

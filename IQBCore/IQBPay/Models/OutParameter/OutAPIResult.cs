@@ -8,7 +8,13 @@ namespace IQBCore.IQBPay.Models.OutParameter
 {
     public class OutAPIResult
     {
+        public OutAPIResult()
+        {
+            IsSuccess = true;
+        }
         public bool IsSuccess { get; set; }
         public string ErrorMsg { get; set; }
+
+       
     }
 }

@@ -2,6 +2,7 @@
 using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
+using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.Store;
@@ -19,8 +20,10 @@ using IQBWX.Models.WX;
 using IQBWX.Models.WX.Template;
 using LitJson;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
@@ -28,6 +31,7 @@ using System.Data.Entity.SqlServer;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using WxPayAPI;
@@ -758,7 +762,9 @@ namespace IQBWX.Controllers
                     ParentOpenId = s.ParentOpenId,
                     ParentName = s.ParentName,
                     ParentCommissionRate = s.ParentCommissionRate,
-                    FilePath = s.FilePath,
+                    ReceiveStoreId = s.ReceiveStoreId,
+                    OrigQRFilePath = s.OrigQRFilePath,
+                    IsCurrent = s.IsCurrent,
                     ID = s.ID,
                 });
 
@@ -773,9 +779,137 @@ namespace IQBWX.Controllers
                     result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
 
                 return Json(result);
+            }  
+        }
+
+        [HttpPost]
+        public ActionResult Agent_QR_ARSave(EQRUser qrUser)
+        {
+
+            OutAPIResult result = new OutAPIResult();
+            result.IsSuccess = true;
+
+            using (AliPayContent db = new AliPayContent())
+            {
+                if (qrUser.ID > 0)
+                {
+                    try
+                    {
+                        DbEntityEntry<EQRUser> entry = db.Entry<EQRUser>(qrUser);
+                        entry.State = EntityState.Unchanged;
+                        entry.Property(t => t.IsCurrent).IsModified = true;
+
+                        if (qrUser.IsCurrent)
+                        {
+                            var p_OpenId = new SqlParameter("@OpenId", UserSession.OpenId);
+
+                            string sql = @"update [QRUser]
+                                           set [IsCurrent] = 'false'
+                                           where OpenId =@OpenId";
+
+                            db.Database.ExecuteSqlCommand(sql, p_OpenId);
+                        }
+
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = ex.Message;
+                    }
+
+                }
+                else
+                {
+                    try
+                    {
+                        int n = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId && o.MarketRate == qrUser.MarketRate).Count();
+                        if (n > 0)
+                            return  ErrorResult(string.Format("已经存在用户手续费为{0}的二维码", qrUser.MarketRate));
+                           
+                    
+                        EQRUser curQRUser = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId && o.IsCurrent == true).FirstOrDefault();
+                        if(curQRUser==null)
+                            return ErrorResult("没有找到当前的收款二维码，请联系管理员");   
+            
+                        qrUser.Rate = curQRUser.Rate;
+                        qrUser.ReceiveStoreId = curQRUser.ReceiveStoreId;
+                        qrUser.ParentOpenId = curQRUser.ParentOpenId;
+                        qrUser.ParentCommissionRate = curQRUser.ParentCommissionRate;
+                        qrUser.ParentName = curQRUser.ParentName;
+                        qrUser.QRId = curQRUser.QRId;
+                        qrUser.OpenId = UserSession.OpenId;
+                        qrUser.UserName = UserSession.Name;
+                       
+
+                        if (qrUser.IsCurrent)
+                        {
+                            var p_OpenId = new SqlParameter("@OpenId", UserSession.OpenId);
+
+                            string sql = @"update [QRUser]
+                                           set [IsCurrent] = 'false'
+                                           where OpenId =@OpenId";
+
+                            db.Database.ExecuteSqlCommand(sql, p_OpenId);
+                        }
+
+                        db.DBQRUser.Add(qrUser);
+                        db.SaveChanges();
+                       
+
+                        string url = ConfigurationManager.AppSettings["Site_IQBPay"] + "api/userapi/CreateAgentQR_AR";
+
+                        string data = string.Format("ID={0}", qrUser.ID);
+                        string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+                        result = JsonConvert.DeserializeObject<OutAPIResult>(res);
+                        if(!result.IsSuccess)
+                        {
+                            var p_ID = new SqlParameter("@ID", qrUser.ID);
+
+                            string sql = "delete from QRUser where ID=@ID";
+
+                            db.Database.ExecuteSqlCommand(sql, p_ID);
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = ex.Message;
+                    }
+                   
+                }
+               
             }
 
+           
+
             
+
+            return Json(result);
+        }
+
+        public ActionResult Agent_QR_ARDelete(EQRUser qrUser)
+        {
+            OutAPIResult result = new OutAPIResult();
+            
+            try
+            {
+                if(qrUser.IsCurrent)
+                {
+                    return base.ErrorResult("当前收款账户不能删除");
+                }
+                using (AliPayContent db = new AliPayContent())
+                {
+                    db.Entry<EQRUser>(qrUser).State = EntityState.Deleted;
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                return base.ErrorResult(ex.Message);
+            }
+            return Json(result);
+
         }
         #endregion
 

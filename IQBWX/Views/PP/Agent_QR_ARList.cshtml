@@ -3,31 +3,39 @@
     ViewBag.Title = "Agent_QR_ARList";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-
+<link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
+<script src="~/Content/Script/Component/jquery-confirm.js"></script>
+<script src="~/Content/Script/jsCommon.js"></script>
 <link href="@Url.Scrpit("~/Content/Css/Info.css")" rel="stylesheet" />
 <script src="~/Content/Script/Component/Validform_v5.3.2_min.js"></script>
 <script src="@Url.Scrpit("~/Content/Script/IQBPay/Agent_QR_ARList.js")"></script>
 
+
+
 <div id="PageList">
     <div class="grzxcon2 mgz xi30 bai cen">收款二维码列表</div>
+    <div class="funBtnList">
+        <button type="button" id="btnNewQR" class="mgz btn btn-success" onclick="ToInfoPage(-1);">新增用户手续费</button>
+    </div>
     <div class="ListTableBody_noFixed" id="ListTableBody">
         <div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>
         <table class="table mgz2  large-only" id="trContainer"></table>
     </div>
-    <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%" onclick="Next();">加载更多</button>
+    <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%; height:50px;" onclick="Next();">加载更多</button>
 </div>
 
 <div id="PageInfo" class="PageInfo">
     <div class="grzxcon2 mgz xi30 bai"><a href="javascript:ToListPage();"><<返回列表</a></div>
+    
     <div class="InfoBody">
         <div class="form-group">
-            <label class="label-top">当前用户手续费</label>
+            <label class="label-top">当前二维码用户手续费</label>
             <div class="col-sm-6">
-                <input id="MarketRate" type="text" class="form-control" datatype="s" nullmsg="当前用户手续费" sucmsg="OK">
+                <input id="MarketRate" type="text" class="form-control">
             </div>
-            <div class="Validform_checktip"></div>
+          
         </div>
-        <div class="form-group">
+        <div class="form-group" id="Field_AfterMarketRate">
             <label class="label-top">用户手续费调整为（只允许8-12之间）</label>
             <div class="col-sm-6">
                 <input id="AfterMarketRate" type="text" class="form-control" datatype="My8-12" nullmsg="请填写调整手续费" sucmsg="OK" errormsg="请填写8-12之间的数字">
@@ -38,14 +46,24 @@
         <div class="form-group">
             <label class="label-top">设为当前收款二维码</label>
             <div class="col-sm-6">
-                <input type="checkbox" />
+                <input type="checkbox" id="IsCurrent" style="width:30px; height:30px;" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="label-top">二维码：</label>
+            <div class="col-sm-6">
+                <img id="QRImg" />
             </div>
         </div>
 
         <div id="buttonArea" style="margin-bottom:50px;">
-            <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnAdjustAgentQR" style="width:95%; height:60px;" onclick="AdjustAgentQR();">调整</button>
+            <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnSave" style="width:95%; height:50px;">更新</button>
+            
         </div>
+        
     </div>
     <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
+    <input type="hidden" id="QrUserId" />
+
 </div>
 

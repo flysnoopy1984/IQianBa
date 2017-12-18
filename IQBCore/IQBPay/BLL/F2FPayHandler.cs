@@ -3,7 +3,7 @@ using Com.Alipay.Business;
 using Com.Alipay.Domain;
 using Com.Alipay.Model;
 using IQBCore.Common.Helper;
-using IQBCore.IQBPay.Models.System;
+using IQBCore.IQBPay.Models.Sys;
 using IQBCore.IQBPay.Models.Tool;
 using IQBCore.IQBPay.Models.User;
 using System;

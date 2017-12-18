@@ -4,9 +4,12 @@ using Aop.Api.Response;
 using Com.Alipay.Model;
 using IQBCore.Common.Helper;
 using IQBCore.IQBPay.BLL;
-using IQBCore.IQBPay.Models.System;
+using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.Sys;
 using IQBCore.IQBPay.Models.Tool;
 using IQBPay.DataBase;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -90,30 +93,19 @@ namespace IQBPay.Controllers
 
         public ActionResult JF()
         {
-            EAliPayApplication app = BaseController.App;
+            using (AliPayContent db = new AliPayContent())
+            {
+                EQRUser qrUser = db.DBQRUser.Where(o => o.OpenId == "o3nwE0qI_cOkirmh_qbGGG-5G6B0").FirstOrDefault();
+                string url = "http://localhost:24068/api/userapi/CreateAgentQR_AR";
+                string data = string.Format(@"ID={0}", qrUser.ID);
+                string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+                OutAPIResult result = JsonConvert.DeserializeObject<OutAPIResult>(res);
+            }
+            //string url = "http://localhost:24068/api/userapi/register/";
+            //string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=平台服务客服&openId=o3nwE0jrONff65oS-_W96ErKcaa0&QRAuthId=10";
+            //string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
 
-            IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
-                      app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
-
-
-            AlipayEbppBillAddRequest request = new AlipayEbppBillAddRequest();
-            request.MerchantOrderNo = StringHelper.GenerateOrderNo();
-            request.OrderType = "JF";
-            request.SubOrderType = "ELECTRIC";
-            request.ChargeInst = "BJCEB";
-            request.BillKey = "3388102012376451";
-            request.OwnerName = "织绫";
-            request.PayAmount = "23.45";
-            request.ServiceAmount = "8";
-            request.BillDate = "201203";
-            request.Mobile = "15987838584";
-            request.TrafficLocation = "浙江,杭徽高速";
-            request.TrafficRegulations = "窜红灯";
-            request.BankBillNo = "20130916";
-            //request.ExtendField = "{"key1":"value1","key2":"value2","key3":"value3","key4":"value4"}";
-            AlipayEbppBillAddResponse response = alipayClient.Execute(request);
-
-            return Content(response.Body);
+            return View();
         }
     }
 }

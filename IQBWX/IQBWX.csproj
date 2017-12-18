@@ -179,6 +179,7 @@
     <Content Include="Content\images\kouzi_04.png" />
     <Content Include="Content\images\lxwm_03.jpg" />
     <Content Include="Content\images\qrLoading.gif" />
+    <Content Include="Content\images\right.png" />
     <Content Include="Content\images\shengjihuiyuan_02.jpg" />
     <Content Include="Content\images\shengjihuiyuan_05.jpg" />
     <Content Include="Content\images\show_03.jpg" />
@@ -215,6 +216,7 @@
     <Content Include="Content\Script\IQBPay\StoreList.js" />
     <Content Include="Content\Script\IQBPay\UserVerification.js" />
     <Content Include="Content\Script\jsCookie.js" />
+    <Content Include="Content\Script\jsValidateHelper.js" />
     <Content Include="Content\Script\MemberInfo.js" />
     <Content Include="Content\Script\ApplySuccess.js" />
     <Content Include="Content\Script\ApplyMember.js" />
@@ -263,6 +265,7 @@
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\IQBAsyncController.cs" />
     <Compile Include="Controllers\PPController.cs" />
+    <Compile Include="Controllers\ValidController.cs" />
     <Compile Include="Controllers\WXBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PayController.cs" />
@@ -389,6 +392,7 @@
     <Folder Include="Content\Html\" />
     <Folder Include="Content\QRImg\Temp\" />
     <Folder Include="Models\IQBPay\" />
+    <Folder Include="Views\Valid\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

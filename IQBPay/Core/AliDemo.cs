@@ -3,7 +3,7 @@ using Aop.Api.Domain;
 using Aop.Api.Request;
 using Aop.Api.Response;
 using IQBCore.Common.Helper;
-using IQBCore.IQBPay.Models.System;
+using IQBCore.IQBPay.Models.Sys;
 using IQBPay.Controllers;
 using System;
 using System.Collections.Generic;

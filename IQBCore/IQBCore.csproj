@@ -141,8 +141,8 @@
     <Compile Include="IQBPay\Models\SMS\ESMSLog.cs" />
     <Compile Include="IQBPay\Models\SMS\SMSResult_API51.cs" />
     <Compile Include="IQBPay\Models\Store\EStoreInfo.cs" />
-    <Compile Include="IQBPay\Models\System\EAliPayApplication.cs" />
-    <Compile Include="IQBPay\Models\System\EGlobalConfig.cs" />
+    <Compile Include="IQBPay\Models\Sys\EAliPayApplication.cs" />
+    <Compile Include="IQBPay\Models\Sys\EGlobalConfig.cs" />
     <Compile Include="IQBPay\Models\Tool\ETool_PayOrder.cs" />
     <Compile Include="IQBPay\Models\Tool\ETool_QR.cs" />
     <Compile Include="IQBPay\Models\User\EBuyerInfo.cs" />
@@ -161,6 +161,7 @@
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BaseInPage.cs" />
     <Compile Include="Model\BasePageModel.cs" />
+    <Compile Include="Model\JqueryValid.cs" />
     <Compile Include="Model\UserSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WxSDK\IQBConfig - 复制.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="WxSDK\WXSign.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Common\Controller\" />
     <Folder Include="IQBWX\BLL\" />
   </ItemGroup>
   <ItemGroup>

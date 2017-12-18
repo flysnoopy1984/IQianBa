@@ -24,7 +24,7 @@
         <div class="form-group">
             <label class="label-top">用户手续费调整为（只允许8-12之间）</label>
             <div class="col-sm-6">
-                <input id="Rate" type="text" class="form-control" datatype="/^(8\.[1-9]\d*|8)$/" nullmsg="请填写调整手续费" sucmsg="OK" errormsg="请填写8-12之间的数字">
+                <input id="Rate" type="text" class="form-control" datatype="n" ajaxurl="/Valid/CheckNum8_12" nullmsg="请填写调整手续费" sucmsg="OK" errormsg="请填写8-12之间的数字">
             </div>
             <div class="Validform_checktip"></div>
         </div>
