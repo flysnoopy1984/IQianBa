@@ -9,7 +9,9 @@
 <link href="@Url.Scrpit("~/Content/Css/Info.css")" rel="stylesheet" />
 <script src="~/Content/Script/Component/Validform_v5.3.2_min.js"></script>
 <script src="@Url.Scrpit("~/Content/Script/IQBPay/Agent_QR_ARList.js")"></script>
-
+<link href="~/Content/Css/Component/ion.rangeSlider.css" rel="stylesheet" />
+<link href="~/Content/Css/Component/ion.rangeSlider.skinHTML5.css" rel="stylesheet" />
+<script src="~/Content/Script/Component/ion.rangeSlider.min.js"></script>
 
 
 <div id="PageList">
@@ -21,7 +23,7 @@
         <div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>
         <table class="table mgz2  large-only" id="trContainer"></table>
     </div>
-    <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%; height:50px;" onclick="Next();">加载更多</button>
+    <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%; height:60px;" onclick="Next();">加载更多</button>
 </div>
 
 <div id="PageInfo" class="PageInfo">
@@ -31,16 +33,19 @@
         <div class="form-group">
             <label class="label-top">当前二维码用户手续费</label>
             <div class="col-sm-6">
-                <input id="MarketRate" type="text" class="form-control">
+                <input id="MarketRate" type="text" class="form-control" style="color:black;">
             </div>
           
         </div>
+       
         <div class="form-group" id="Field_AfterMarketRate">
             <label class="label-top">用户手续费调整为（只允许8-12之间）</label>
-            <div class="col-sm-6">
-                <input id="AfterMarketRate" type="text" class="form-control" datatype="My8-12" nullmsg="请填写调整手续费" sucmsg="OK" errormsg="请填写8-12之间的数字">
+            <div class="col-sm-6" style="width:95%">
+                
+                <input type="hidden" id="AfterMarketRate" class="irs-hidden-input" value="23" /> 
+                @*<input id="AfterMarketRate" type="text" class="form-control" datatype="My8-12" nullmsg="请填写调整手续费" sucmsg="OK" errormsg="请填写8-12之间的数字">*@
             </div>
-            <div class="Validform_checktip"></div>
+           
         </div>
 
         <div class="form-group">
@@ -52,18 +57,18 @@
         <div class="form-group">
             <label class="label-top">二维码：</label>
             <div class="col-sm-6">
-                <img id="QRImg" />
+                <img id="QRImg" style="width:256px; height:256px;" />
             </div>
         </div>
 
         <div id="buttonArea" style="margin-bottom:50px;">
-            <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnSave" style="width:95%; height:50px;">更新</button>
+            <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnSave" style="width:95%; height:60px;">更新</button>
             
         </div>
         
     </div>
     <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
     <input type="hidden" id="QrUserId" />
-
+   
 </div>
 

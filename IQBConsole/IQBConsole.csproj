@@ -103,6 +103,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ThoughtWorks.QRCode, Version=1.0.3990.25764, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\IQBPay\ReferenceDLL\ThoughtWorks.QRCode.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Form1.cs">
@@ -135,7 +139,6 @@
     <EmbeddedResource Include="WebForm.resx">
       <DependentUpon>WebForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="IQBConsole_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -157,6 +160,14 @@
       <Project>{7e16ccdc-f697-4e0f-807d-985edc805e47}</Project>
       <Name>CatchWebContent</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IQBCore\IQBCore.csproj">
+      <Project>{079669b1-7659-41c1-b5d6-fa7f634fab3a}</Project>
+      <Name>IQBCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IQBPay\IQBPay.csproj">
+      <Project>{7E6D5001-C117-4953-B10E-CB9DE9D9F1BA}</Project>
+      <Name>IQBPay</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IQBWX\IQBWX.csproj">
       <Project>{c4f07794-dc78-4e75-9b06-159b1272f93e}</Project>
       <Name>IQBWX</Name>
@@ -175,6 +186,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ARUserBK1.jpg" />
+    <Content Include="ARUserBK1.png" />
     <Content Include="IQBConsoleLogo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

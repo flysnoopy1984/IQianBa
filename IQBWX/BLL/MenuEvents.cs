@@ -60,7 +60,7 @@ namespace IQBWX.BLL
                     case "pay_101":
                         string picUrl = url + payQRUser.FilePath;
                         string GoUrl = url+"/Wap/MyReceiveQR?FilePath="+ payQRUser.FilePath;
-                        string desc = "此二维码扣点率：" + payQRUser.Rate;
+                        string desc = "代理返点率：" + payQRUser.Rate+"%  |  用户手续费：["+payQRUser.MarketRate+"%]";
                         this.ResponseXml = msg.toPicText(picUrl, GoUrl, desc);
                         break;
                    

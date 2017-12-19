@@ -182,10 +182,12 @@ namespace IQBPay.Controllers
                
                 using (AliPayContent db = new AliPayContent())
                 {
-                    EStoreInfo curReceiveStore = db.DBStoreInfo.Where(s => s.IsReceiveAccount == true).FirstOrDefault();
-                    if (curReceiveStore != null)
-                        curReceiveStore.IsReceiveAccount = false;
-
+                    if (store.IsReceiveAccount)
+                    {
+                        EStoreInfo curReceiveStore = db.DBStoreInfo.Where(s => s.IsReceiveAccount == true).FirstOrDefault();
+                        if (curReceiveStore != null)
+                            curReceiveStore.IsReceiveAccount = false;
+                    }
 
                     store.InitModify();
 

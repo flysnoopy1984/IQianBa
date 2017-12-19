@@ -1,5 +1,4 @@
 ﻿using IQBCore.Common.Helper;
-using IQBPay.Controllers;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Sys;
 using System;
@@ -15,7 +14,7 @@ using IQBCore.IQBWX.Models.OutParameter;
 using Newtonsoft.Json;
 using System.Security.Policy;
 
-namespace IQBPay.Core
+namespace IQBCore.IQBPay.BLL
 {
     public class QRManager
     {
@@ -23,7 +22,7 @@ namespace IQBPay.Core
         /// <summary>
         /// 收款二维码
         /// </summary>
-        public static EQRUser CreateUserUrlById(EQRUser qrUser)
+        public static EQRUser CreateUserUrlById(EQRUser qrUser,string logoUrl)
         {
             try
             { 
@@ -39,7 +38,18 @@ namespace IQBPay.Core
                 qrUser.OrigQRFilePath = filePath;
                 //Create QR
                 filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
-                Bitmap qrImg = QRManager.CreateQR(url, filePath);
+
+                //Logo
+                Image LogoImg = null;
+                if (!string.IsNullOrEmpty(logoUrl))
+                {
+                    LogoImg = ImgHelper.GetImgFromUrl(logoUrl);
+                    LogoImg = ImgHelper.resizeImage(LogoImg, new Size(56, 56));
+                    LogoImg = ImgHelper.AddImgBorder(new Bitmap(LogoImg), 4, Color.Wheat);
+                }
+                
+
+                Bitmap qrImg = QRManager.CreateQR(url, filePath,LogoImg);
                 
 
                 //BK
@@ -142,7 +152,7 @@ namespace IQBPay.Core
                 //Create QR
                 // filePath = PageController.Server.MapPath(filePath);
                 filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
-                QRManager.CreateQR(url, filePath);
+                QRManager.CreateQR(url, filePath,null);
             }
             catch (Exception ex)
             {
@@ -162,7 +172,7 @@ namespace IQBPay.Core
         /// <param name="Url"></param>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public static Bitmap CreateQR(string Url,string FilePath)
+        public static Bitmap CreateQR(string Url,string FilePath,Image Logo)
         {
             Bitmap bt = null;
             try
@@ -173,11 +183,17 @@ namespace IQBPay.Core
                 QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
                 qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
                 qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.H;
-                qrCodeEncoder.QRCodeScale = 2;
-                qrCodeEncoder.QRCodeVersion = 7;
+                qrCodeEncoder.QRCodeScale = 4;
+                qrCodeEncoder.QRCodeVersion = 9;
                 bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
 
-              
+                Bitmap blankBK = ImgHelper.CreateBlankImg(bt.Width + 20, bt.Height + 20, Brushes.White);
+                bt = ImgHelper.CombineImage(blankBK, bt);
+
+                if (Logo!=null)
+                {
+                    ImgHelper.CombineImage(bt, Logo);
+                }
 
                 bt.Save(FilePath);
             }

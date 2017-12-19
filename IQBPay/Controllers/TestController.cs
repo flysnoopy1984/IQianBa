@@ -8,12 +8,16 @@ using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Sys;
 using IQBCore.IQBPay.Models.Tool;
+using IQBCore.IQBPay.Models.User;
 using IQBPay.DataBase;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -97,15 +101,53 @@ namespace IQBPay.Controllers
             {
                 EQRUser qrUser = db.DBQRUser.Where(o => o.OpenId == "o3nwE0qI_cOkirmh_qbGGG-5G6B0").FirstOrDefault();
                 string url = "http://localhost:24068/api/userapi/CreateAgentQR_AR";
-                string data = string.Format(@"ID={0}", qrUser.ID);
+                string data = string.Format("ID={0}&OpenId={1}", qrUser.ID, qrUser.OpenId);
                 string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
                 OutAPIResult result = JsonConvert.DeserializeObject<OutAPIResult>(res);
             }
-            //string url = "http://localhost:24068/api/userapi/register/";
-            //string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=平台服务客服&openId=o3nwE0jrONff65oS-_W96ErKcaa0&QRAuthId=10";
-            //string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+          
 
             return View();
+        }
+        public ActionResult Batch()
+        {
+           
+                
+           return View();
+        }
+        public ActionResult Batch_QR()
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+
+                using (AliPayContent db = new AliPayContent())
+                {
+                    List<EQRUser> list = db.DBQRUser.ToList();
+                    EQRUser updateQR = null;
+                    foreach (EQRUser qr in list)
+                    {
+                        EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == qr.OpenId).FirstOrDefault();
+
+                        updateQR = db.DBQRUser.Where(a => a.ID == qr.ID).First();
+
+                      
+
+                        updateQR = QRManager.CreateUserUrlById(updateQR, ui.Headimgurl);
+
+
+
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+                result.IsSuccess = false;
+            }
+           
+            return Json(result);
         }
     }
 }

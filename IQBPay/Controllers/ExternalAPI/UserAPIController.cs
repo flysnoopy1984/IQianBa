@@ -15,6 +15,8 @@ using System.Text;
 using IQBCore.IQBPay.Models.OutParameter;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
+using IQBCore.IQBPay.BLL;
+using IQBCore.IQBPay.Models.Result;
 
 namespace IQBPay.Controllers.ExternalAPI
 {
@@ -174,8 +176,11 @@ namespace IQBPay.Controllers.ExternalAPI
              
                 using (AliPayContent db = new AliPayContent())
                 {
-                   
-                    qrUser = QRManager.CreateUserUrlById(qrUser);
+                    RUserInfo ui = db.DBUserInfo.Where(o => o.OpenId == qrUser.OpenId).Select(u=>new RUserInfo() {
+                        Headimgurl = u.Headimgurl,
+                    }).FirstOrDefault();
+
+                    qrUser = QRManager.CreateUserUrlById(qrUser, ui.Headimgurl);
 
                     DbEntityEntry<EQRUser> entry = db.Entry<EQRUser>(qrUser);
                     entry.State = EntityState.Unchanged;

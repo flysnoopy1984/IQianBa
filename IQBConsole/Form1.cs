@@ -1,16 +1,19 @@
 ﻿using CatchWebContent;
+using IQBCore.Common.Helper;
+using IQBPay.Core;
 using IQBWX.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using ThoughtWorks.QRCode.Codec;
 
 namespace IQBConsole
 {
@@ -124,6 +127,79 @@ namespace IQBConsole
             //string xml = HttpHelper.HttpGet(url);
             //tb_Result.Clear();
             //tb_Result.Text = xml;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Bitmap bt = null;
+            try
+            {
+                string enCodeString = "http://wx.iqianba.cn/PP/Pay?Id=5";
+                QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
+                qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
+                qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.H;
+                qrCodeEncoder.QRCodeScale = 4;
+                qrCodeEncoder.QRCodeVersion = 9;
+                bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
+                
+                Bitmap blankBK = ImgHelper.CreateBlankImg(bt.Width+20,bt.Height+20,Brushes.White);
+                bt = ImgHelper.CombineImage(blankBK, bt);
+
+                string url = "http://wx.qlogo.cn/mmopen/hzVGicX27IG18yibKNnHfBojH4SpCPGNEvyOUZE8jxOw2ZnYcHzAkm7yHk0oKoCA2zqtyib09sxDzX5GOubMfyOraSMren2GUSw/0";
+                Image LogoImg = ImgHelper.GetImgFromUrl(url);
+                LogoImg = ImgHelper.resizeImage(LogoImg, new Size(56, 56));
+                LogoImg = ImgHelper.AddImgBorder(new Bitmap(LogoImg), 4,Color.Wheat);
+
+                pictureBox1.Image =ImgHelper.CombineImage(bt, LogoImg);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+            
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            Bitmap bt = null;
+            try
+            {
+                string enCodeString = "http://wx.iqianba.cn/PP/Pay?Id=5";
+                QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
+                qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
+                qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.H;
+                qrCodeEncoder.QRCodeScale = 4;
+                qrCodeEncoder.QRCodeVersion = 9;
+                bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
+
+                Bitmap blankBK = ImgHelper.CreateBlankImg(bt.Width + 20, bt.Height + 20, Brushes.White);
+                bt = ImgHelper.CombineImage(blankBK, bt);
+
+                string url = "http://wx.qlogo.cn/mmopen/hzVGicX27IG18yibKNnHfBojH4SpCPGNEvyOUZE8jxOw2ZnYcHzAkm7yHk0oKoCA2zqtyib09sxDzX5GOubMfyOraSMren2GUSw/0";
+                Image LogoImg = ImgHelper.GetImgFromUrl(url);
+                LogoImg = ImgHelper.resizeImage(LogoImg, new Size(56, 56));
+                LogoImg = ImgHelper.AddImgBorder(new Bitmap(LogoImg), 4, Color.Wheat);
+                bt = ImgHelper.CombineImage(bt, LogoImg); 
+
+                Bitmap bkImg = new Bitmap(@"C:\Project\SourceCode\IQianBa\IQBConsole\ARUserBK1.jpg");
+
+                Bitmap finImg = ImgHelper.ImageWatermark(bkImg, bt);
+
+                pictureBox1.Image = finImg;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
         }
     }
 }

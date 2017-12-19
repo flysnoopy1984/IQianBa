@@ -710,22 +710,7 @@ namespace IQBWX.Controllers
             return View();
         }
 
-        /// <summary>
-        /// 代理收款二维码调整
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Agent_QR_AR_Adjust()
-        {
-            if (UserSession.UserRole < UserRole.Agent)
-            {
-                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
-            }
-            //if (msg != "OK")
-            //    return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.NormalErrorNoButton, ErrorMsg = msg });
-            InitProfilePage();
-
-            return View();
-        }
+      
 
        [HttpPost]
         public ActionResult Agent_QR_AR_Add(EQRUser qrUser)
@@ -859,17 +844,37 @@ namespace IQBWX.Controllers
 
                         string url = ConfigurationManager.AppSettings["Site_IQBPay"] + "api/userapi/CreateAgentQR_AR";
 
-                        string data = string.Format("ID={0}", qrUser.ID);
-                        string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
-                        result = JsonConvert.DeserializeObject<OutAPIResult>(res);
-                        if(!result.IsSuccess)
+                        string data = string.Format("ID={0}&OpenId={1}", qrUser.ID,UserSession.OpenId);
+                        try
                         {
-                            var p_ID = new SqlParameter("@ID", qrUser.ID);
-
-                            string sql = "delete from QRUser where ID=@ID";
-
-                            db.Database.ExecuteSqlCommand(sql, p_ID);
+                            string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+                            result = JsonConvert.DeserializeObject<OutAPIResult>(res);
                         }
+                        catch(Exception ex)
+                        {
+                            result.ErrorMsg = ex.Message;
+                            result.IsSuccess = false;
+                        }
+                        finally
+                        {
+                            
+                            if (!result.IsSuccess)
+                            {
+                                var p_ID = new SqlParameter("@ID", qrUser.ID);
+
+                                string sql = "delete from QRUser where ID=@ID";
+                                db.Database.ExecuteSqlCommand(sql, p_ID);
+
+                                DbEntityEntry<EQRUser> entry = db.Entry<EQRUser>(curQRUser);
+                                entry.State = EntityState.Unchanged;
+                                curQRUser.IsCurrent = true;
+                                entry.Property(t => t.IsCurrent).IsModified = true;
+                                db.SaveChanges();
+                                
+                            }
+                        }
+                      
+                      
                     }
                     catch(Exception ex)
                     {

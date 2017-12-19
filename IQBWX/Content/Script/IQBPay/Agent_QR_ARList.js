@@ -1,6 +1,7 @@
 ﻿var pageIndex = -1;
 var url = site + "/PP/Agent_QR_ARListQuery";
 var QueryData;
+var slider;
 
 $(document).ready(function () {
 
@@ -21,6 +22,14 @@ function Init()
     Query(pageIndex + 1);
 
     ToListPage();
+
+    $range = $("#AfterMarketRate").ionRangeSlider({
+        min: 8,
+        max: 12,
+        from: 8,
+        step:0.1,
+    });
+    slider = $range.data("ionRangeSlider");
 
     //Info Page
     $(".InfoBody").Validform({
@@ -94,6 +103,7 @@ function DeleteUserQr(i)
 
 function Save()
 {
+
     var url = "/PP/Agent_QR_ARSave";
 
     var ID = $("#QrUserId").val();
@@ -103,6 +113,8 @@ function Save()
     var sucMsg = "新增成功";
     if (ID != "")
         sucMsg = "修改成功";
+
+    $("#btnSave").attr("disabled", true);
 
     $.ajax({
         type: 'post',
@@ -125,11 +137,12 @@ function Save()
                     content: data.ErrorMsg + ".请联系管理员",
                 });
             }
+            $("#btnSave").attr("disabled", false);
 
         },
         error: function (xhr, type) {
             alert('Ajax error!');
-            // 即使加载出错，也得重置
+            $("#btnSave").attr("disabled", false);
 
         }
     });
@@ -158,6 +171,11 @@ function ToInfoPage(i) {
             }
         });
         $("#Field_AfterMarketRate").show();
+
+        slider.update({
+            from: $("#MarketRate").val(),
+        });
+
         $("#IsCurrent").attr("checked", true);
         $("#btnSave").text("创建");
     }
@@ -172,6 +190,8 @@ function ToInfoPage(i) {
         $("#QRImg").attr("src", payUrl + QueryData[i].OrigQRFilePath);
         
         $("#Field_AfterMarketRate").hide();
+
+        $("#btnSave").text("更新");
     }
 
     $("#MarketRate").attr("disabled", true);
@@ -231,10 +251,16 @@ function generateData(result) {
         strCtrl = "";
         strCtrl += "<tr>";
        
-        strCtrl += "<td style='width:47%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='color:brown; font-weight:bold;'>用户手续费" + result[i].MarketRate + "</li>";
+        strCtrl += "<td style='width:47%' ";
+        if (result[i].IsCurrent)
+        {
+            strCtrl += "class='LineSpecial' ";
+        }
+        strCtrl += "onclick='ToInfoPage(" + QueryData.length + ");'>";
+        strCtrl += "<ul><li style='color:brown; font-weight:bold; height:30px;'>用户手续费:" + result[i].MarketRate + "</li>";
         strCtrl += "<li>上级代理:" + ParentName + "</li>";
         strCtrl += "</ul></td>";
-        strCtrl += "<td style='width:47%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li>代理点率" + result[i].Rate + "</li>";
+        strCtrl += "<td style='width:47%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='height:30px;'>代理反点:" + result[i].Rate + "</li>";
         strCtrl += "<li>上级代理佣金:" + result[i].ParentCommissionRate + "</li>";
         strCtrl += "</ul></td>";
         strCtrl += "<td><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + ");' />"

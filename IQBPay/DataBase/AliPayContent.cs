@@ -1,4 +1,5 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
@@ -126,8 +127,9 @@ namespace IQBPay.DataBase
                 {
                     qrUser = new EQRUser();
                     isNew = true;
-                    qrUser.MarketRate = BaseController.GlobalConfig.MarketRate;
+                    qrUser.MarketRate = BaseController.GlobalConfig.MarketRate;  
                 }
+                qrUser.IsCurrent = true;
                 qrUser.QRId = qr.ID;
                 qrUser.OpenId = ui.OpenId;
                 qrUser.UserName = ui.Name;
@@ -153,7 +155,7 @@ namespace IQBPay.DataBase
                     db.DBQRUser.Add(qrUser);
                     db.SaveChanges();
                 }
-                qrUser = QRManager.CreateUserUrlById(qrUser);
+                qrUser = QRManager.CreateUserUrlById(qrUser,ui.Headimgurl);
                 db.Entry(qrUser).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 /*

@@ -1,4 +1,5 @@
 ﻿using IQBCore.Common.Helper;
+using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Store;

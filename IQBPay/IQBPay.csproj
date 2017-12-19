@@ -188,6 +188,7 @@
     <Content Include="Content\QR\AliPay_F2F\2017112415062000001535.jpg" />
     <Content Include="Content\QR\AliPay_F2F\2017112416070300008970.jpg" />
     <Content Include="Content\QR\BK\ARUserBK1.jpg" />
+    <Content Include="Content\QR\BK\ARUserBK1.png" />
     <Content Include="Content\Style\Web\ULList.css" />
     <Content Include="Content\Style\Web\FixTableList.css" />
     <Content Include="Content\Images\backgrounds\1.jpg" />
@@ -532,7 +533,6 @@
     <Compile Include="Core\Constant\ConstSysConfig.cs" />
     <Compile Include="Core\IQBPayAuthorizeAttribute .cs" />
     <Compile Include="Core\IQBPayAuthorize_AdminAttribute.cs" />
-    <Compile Include="Core\QRManager.cs" />
     <Compile Include="DataBase\AliPayContent.cs" />
     <Compile Include="Controllers\ExternalAPI\UserAPIController.cs" />
     <Compile Include="Global.asax.cs">
@@ -632,6 +632,7 @@
     <Content Include="Views\Test\JF.cshtml" />
     <Content Include="Views\Report\OverView.cshtml" />
     <Content Include="Views\Wap\UserVerify.cshtml" />
+    <Content Include="Views\Test\Batch.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

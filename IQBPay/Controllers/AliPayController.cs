@@ -244,14 +244,15 @@ namespace IQBPay.Controllers
                         #endregion
 
                         order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Paid;
-                       
-                       
+
+
+                        EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
                         //店铺佣金
-                        if (order.SellerCommission > 0)
+                        if (!store.IsReceiveAccount)
                         {
                             Log.log("PayNotify 开始分账");
                             //分账
-                            EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
+                            
                             EStoreInfo subStore =null;
                             try
                             {
@@ -263,7 +264,7 @@ namespace IQBPay.Controllers
                                 order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
 
                             }
-                            if (store.IsReceiveAccount==false && subStore!=null)
+                            if (subStore!=null)
                             {
                                 AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, subStore);
                                 if (res.Code == "10000")
@@ -562,12 +563,12 @@ namespace IQBPay.Controllers
 
          public ActionResult QRUserImg()
         {
-            EQRUser qrUser = new EQRUser();
-            using (AliPayContent db = new AliPayContent())
-            {
-                qrUser = db.DBQRUser.Where(a => a.ID == 12).FirstOrDefault();
-              ViewBag.FP =   QRManager.CreateUserUrlById(qrUser).FilePath;
-            }
+            //EQRUser qrUser = new EQRUser();
+            //using (AliPayContent db = new AliPayContent())
+            //{
+            //   qrUser = db.DBQRUser.Where(a => a.ID == 12).FirstOrDefault();
+            //  ViewBag.FP =   QRManager.CreateUserUrlById(qrUser).FilePath;
+            //}
             return View();
         }
 

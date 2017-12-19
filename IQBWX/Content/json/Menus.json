@@ -23,7 +23,7 @@
           ]
         },
       {
-        "name": "用户中心",
+        "name": "代理中心",
         "sub_button": [
           {
             "type": "view",
@@ -31,26 +31,17 @@
             "url": "http://wx.iqianba.cn/PP/AliPayAccount"
           },
           {
+            "type": "view",
+            "name": "收款码列表",
+            "url": "http://wx.iqianba.cn/PP/Agent_QR_ARList"
+          },
+          {
             "type": "click",
-            "name": "收款二维码",
+            "name": "当前收款码",
             "key": "pay_101"
-          }
+          },
         ]
-      },
-      {
-          "name": "商户中心",
-          "sub_button": [
-            {
-              "type": "view",
-              "name": "商户入驻",
-              "url": "http://wx.iqianba.cn/PP/StoreAdd"
-            },
-            {
-              "type": "view",
-              "name": "商户列表",
-              "key": "pay_101"
-            }
-          ]
-        }               
+      }
+    
     ]
  }

@@ -51,10 +51,8 @@ namespace ConsoleApplication1
         {
             try
             {
-                string stringA = "jsapi_ticket=HoagFKDcsGMVCIY2vOjf9gygPJt9yMfyaB9GWRr5BTg2-RCl78VNLvjKGbZRaAQT4WuQBNwPU-1D7iG9hqxAvw&noncestr=e8c20b062636464bbb28a7627d5f677d&timestamp=1512911254&url=http://pp.iqianba.cn/Wap/UserVerification";
-               string result  =  DoSHA1(stringA, Encoding.Default);
-                Console.WriteLine(result);
-                Console.Read();
+                EQRUser qrUser = new EQRUser();
+              //  QRManager.CreateUserUrlById(qrUser);
 
             }
             catch(Exception ex)

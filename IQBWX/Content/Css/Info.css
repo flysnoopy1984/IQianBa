@@ -26,6 +26,10 @@
     line-height:40px;
     width:100%;
 }
+
+.LineSpecial{
+    border-left:15px solid #0DB8DF;
+}
 .ProcessCancel{
     width:25px;
     height:25px;

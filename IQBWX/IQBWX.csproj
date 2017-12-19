@@ -134,6 +134,8 @@
     <Content Include="Content\Config\PopPolicy.xml" />
     <Content Include="Content\Css\common.css" />
     <Content Include="Content\CatchSite\HJB\list.html" />
+    <Content Include="Content\Css\Component\ion.rangeSlider.css" />
+    <Content Include="Content\Css\Component\ion.rangeSlider.skinHTML5.css" />
     <Content Include="Content\Css\Component\Mybootstrap.css" />
     <Content Include="Content\Css\Component\jquery-confirm.css" />
     <Content Include="Content\Css\Info.css" />
@@ -194,6 +196,7 @@
     <Content Include="Content\QRImg\bk_test.jpg" />
     <Content Include="Content\Script\CashOut.js" />
     <Content Include="Content\Script\CommissionDetail.js" />
+    <Content Include="Content\Script\Component\ion.rangeSlider.min.js" />
     <Content Include="Content\Script\Component\jquery-confirm.js" />
     <Content Include="Content\Script\Component\jquery.mobile-1.4.5.min.js" />
     <Content Include="Content\Script\Component\Validform_v5.3.2_min.js" />
@@ -204,7 +207,6 @@
     <Content Include="Content\Script\iqb.dropload.min.js" />
     <Content Include="Content\Script\IQBPay\AgentCommList.js" />
     <Content Include="Content\Script\IQBPay\Agent_QR_ARList.js" />
-    <Content Include="Content\Script\IQBPay\Agent_QR_AR_Adjust.js" />
     <Content Include="Content\Script\IQBPay\AliPayAccount.js" />
     <Content Include="Content\Script\IQBPay\Auth_Store.js" />
     <Content Include="Content\Script\IQBPay\DoTransfer.js" />
@@ -376,7 +378,6 @@
     <Content Include="Views\PP\OrderList - 复制.cshtml" />
     <Content Include="Views\PP\StoreList.cshtml" />
     <Content Include="Views\PP\StoreAdd.cshtml" />
-    <Content Include="Views\PP\Agent_QR_AR_Adjust.cshtml" />
     <Content Include="Views\PP\Agent_QR_ARList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
