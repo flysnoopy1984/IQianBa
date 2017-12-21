@@ -210,6 +210,7 @@
     <Content Include="Content\Script\IQBPay\AliPayAccount.js" />
     <Content Include="Content\Script\IQBPay\Auth_Store.js" />
     <Content Include="Content\Script\IQBPay\DoTransfer.js" />
+    <Content Include="Content\Script\IQBPay\InviteCode.js" />
     <Content Include="Content\Script\IQBPay\Pay2.js" />
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
     <Content Include="Content\Script\IQBPay\Pay.js" />
@@ -379,6 +380,8 @@
     <Content Include="Views\PP\StoreList.cshtml" />
     <Content Include="Views\PP\StoreAdd.cshtml" />
     <Content Include="Views\PP\Agent_QR_ARList.cshtml" />
+    <Content Include="Views\PP\AgentList.cshtml" />
+    <Content Include="Views\PP\InviteCode.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

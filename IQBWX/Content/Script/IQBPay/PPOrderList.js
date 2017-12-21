@@ -60,6 +60,7 @@ function Query(_pageIndex) {
           
         },
         error: function (xhr, type) {
+         
             alert('Ajax error!');
             // 即使加载出错，也得重置
            

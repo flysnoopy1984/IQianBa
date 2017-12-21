@@ -25,7 +25,8 @@ function Prev() {
 
 function Query(NeedClearn,_PageIndex) {
 
-  
+    if (_PageIndex == 0)
+        $("#trContainer").empty();
 
     var url = "/User/Query";
     $.ajax({

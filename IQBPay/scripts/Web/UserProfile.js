@@ -18,7 +18,7 @@ function Init() {
                 InitFormData(data);
         },
         error: function (xhr, type) {
-
+            window.location.href = "/Main/Login";
             alert(xhr.responseText);
 
         }

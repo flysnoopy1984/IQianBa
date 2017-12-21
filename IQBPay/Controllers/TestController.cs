@@ -131,9 +131,9 @@ namespace IQBPay.Controllers
 
                         updateQR = db.DBQRUser.Where(a => a.ID == qr.ID).First();
 
-                      
+                        if(string.IsNullOrEmpty(updateQR.OrigQRFilePath))
 
-                        updateQR = QRManager.CreateUserUrlById(updateQR, ui.Headimgurl);
+                         updateQR = QRManager.CreateUserUrlById(updateQR, ui.Headimgurl);
 
 
 

@@ -172,7 +172,7 @@ namespace IQBWX.Controllers
                 if(userSession ==null)
                 {
                     userSession = new UserSession();
-                    string openId = this.GetOpenId();
+                    string openId = this.GetOpenId(true);
                    
                     using (AliPayContent db = new AliPayContent())
                     {
@@ -192,9 +192,11 @@ namespace IQBWX.Controllers
         public void InitProfilePage()
         {
             ViewBag.Headimgurl = UserSession.Headimgurl;
-            ViewBag.ShowName = UserSession.Name + "收银台";
+            ViewBag.ShowName = UserSession.Name ;
             ViewBag.OpenId = UserSession.OpenId;
            
+
+
             if (UserSession.UserRole == IQBCore.IQBPay.BaseEnum.UserRole.DiamondAgent)
             {
                 ViewBag.UserRoleImg = "/Content/images/zs_blueBK.png";

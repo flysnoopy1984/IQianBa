@@ -176,6 +176,7 @@ function ToInfoPage(i) {
             from: $("#MarketRate").val(),
         });
 
+        $("#QrUserId").val("");
         $("#IsCurrent").attr("checked", true);
         $("#btnSave").text("创建");
     }
@@ -227,6 +228,7 @@ function Query(_pageIndex) {
 
         },
         error: function (xhr, type) {
+         
             alert('Ajax error!');
             // 即使加载出错，也得重置
 

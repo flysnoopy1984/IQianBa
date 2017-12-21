@@ -219,7 +219,7 @@ namespace IQBWX.Controllers
                 using (AliPayContent db = new AliPayContent())
                 {
 
-                    var list = db.DBAgentCommission.Where(o => o.ParentOpenId== OpenId).Select(s => new RAgentCommission
+                    var list = db.DBAgentCommission.Where(o => o.ParentOpenId== OpenId && o.AgentCommissionStatus == AgentCommissionStatus.Closed).Select(s => new RAgentCommission
                     {
                         ID = s.ID,
                         ChildName = s.ChildName,
@@ -275,10 +275,10 @@ namespace IQBWX.Controllers
                         DateTime startDate = DateTime.Today;
                         DateTime endDate = DateTime.Today.AddDays(1);
 
-                        var TodayComm = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.TransDate >= startDate && o.TransDate <= endDate).ToList().Sum(o => o.CommissionAmount).ToString("0.00");
+                        var TodayComm = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.TransDate >= startDate && o.TransDate <= endDate && o.AgentCommissionStatus == AgentCommissionStatus.Closed).ToList().Sum(o => o.CommissionAmount).ToString("0.00");
                         result[0].TodayCommAmt = TodayComm;
 
-                        result[0].TotalCommAmt = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId).ToList().Sum(o => o.CommissionAmount).ToString("0.00");
+                        result[0].TotalCommAmt = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.AgentCommissionStatus == AgentCommissionStatus.Closed).ToList().Sum(o => o.CommissionAmount).ToString("0.00");
 
                     }
                     else
@@ -915,6 +915,18 @@ namespace IQBWX.Controllers
             }
             return Json(result);
 
+        }
+
+        public ActionResult InviteCode()
+        {
+            if (UserSession.UserRole < UserRole.DiamondAgent)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+           
+            InitProfilePage();
+
+            return View();
         }
         #endregion
 

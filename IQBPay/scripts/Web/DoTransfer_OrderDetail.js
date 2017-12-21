@@ -61,7 +61,7 @@ function Query(NeedClearn, _PageIndex) {
            
         },
         error: function (xhr, type) {
-
+           
             alert('Ajax error!');
             CloseProcess();
 
