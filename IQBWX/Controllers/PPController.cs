@@ -317,7 +317,6 @@ namespace IQBWX.Controllers
                         RateAmount = o.RateAmount,
                         BuyerAliPayLoginId = o.BuyerAliPayLoginId,
                         TransDate = o.TransDate,
-                     
                     });
 
                     if (OrderStatus != OrderStatus.ALL)
@@ -342,8 +341,6 @@ namespace IQBWX.Controllers
                         {
                             startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
                             endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
-
-
                         }
                         else if (DateType == ConditionDataType.Month)
                         {

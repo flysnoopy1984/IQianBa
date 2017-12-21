@@ -161,7 +161,7 @@ namespace IQBPay.Controllers
             }
 
             return Json(result);
-        }
+        } 
 
         public ActionResult SaveUserAgent(InUserAgent InUA)
         {

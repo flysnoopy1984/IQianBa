@@ -189,6 +189,7 @@
     <Content Include="Content\QR\AliPay_F2F\2017112416070300008970.jpg" />
     <Content Include="Content\QR\BK\ARUserBK1.jpg" />
     <Content Include="Content\QR\BK\ARUserBK1.png" />
+    <Content Include="Content\QR\Logo_AR.png" />
     <Content Include="Content\Style\Web\ULList.css" />
     <Content Include="Content\Style\Web\FixTableList.css" />
     <Content Include="Content\Images\backgrounds\1.jpg" />

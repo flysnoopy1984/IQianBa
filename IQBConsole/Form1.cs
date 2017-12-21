@@ -1,7 +1,13 @@
 ﻿using CatchWebContent;
+using IQBCore.Common.Constant;
 using IQBCore.Common.Helper;
+using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBWX.Models.OutParameter;
 using IQBPay.Core;
 using IQBWX.Common;
+using IQBWX.Controllers;
+using IQBWX.Models.WX;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +20,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ThoughtWorks.QRCode.Codec;
+using WxPayAPI;
 
 namespace IQBConsole
 {
@@ -200,6 +207,66 @@ namespace IQBConsole
             }
 
 
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string tokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}";
+            tokenUrl = string.Format(tokenUrl, WxPayConfig.APPID, WxPayConfig.APPSECRET);
+            AccessToken token = IQBCore.Common.Helper.HttpHelper.Get<AccessToken>(tokenUrl);
+
+           
+
+            SSOQR ssrQR = new SSOQR();
+
+            string  QRId = IQBConstant.WXQR_IQBPAY_PREFIX + "11";
+
+            WXQRResult resObj = GetQR("", token.access_token, QRId, false);
+
+            string Picurl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + resObj.ticket + "";
+
+            Image QRImg = ImgHelper.GetImgFromUrl(Picurl);
+
+            Bitmap bkImg = new Bitmap(@"C:\Project\SourceCode\IQianBa\IQBConsole\ARUserBK1.jpg");
+
+        }
+
+        private WXQRResult GetQR(String account, string access_token, string ssoToken = null, bool isTemp = true)
+        {
+            WXQRResult resObj = null;
+            try
+            {
+
+                //获取数据的地址（微信提供）
+                String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + access_token;
+
+                //发送给微信服务器的数据
+
+                String jsonStr = "{\"action_name\": \"QR_LIMIT_SCENE\", \"action_info\":{\"scene\": {\"scene_id\":" + account + "}}}";
+                if (!string.IsNullOrEmpty(ssoToken))
+                {
+                    if (isTemp)
+                    {
+                        jsonStr = "{\"expire_seconds\": \"180\",\"action_name\": \"QR_STR_SCENE\", \"action_info\":{\"scene\": {\"scene_str\":\"" + ssoToken + "\"}}}";
+                    }
+                    else
+                    {
+                        jsonStr = "{\"action_name\": \"QR_LIMIT_STR_SCENE\", \"action_info\":{\"scene\": {\"scene_str\":\"" + ssoToken + "\"}}}";
+                    }
+                }
+
+                //   log.log("getQR"+jsonStr);
+
+                //post请求得到返回数据（这里是封装过的，就是普通的java post请求）
+                String response = IQBCore.Common.Helper.HttpHelper.RequestUrlSendMsg(url, IQBCore.Common.Helper.HttpHelper.HttpMethod.Post, jsonStr);
+
+                resObj = JsonConvert.DeserializeObject<WXQRResult>(response);
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            return resObj;
         }
     }
 }

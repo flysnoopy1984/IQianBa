@@ -169,7 +169,6 @@ namespace IQBPay.Controllers
                         qr.Channel = Channel.PP;
                         qr.Type = QRType.ARAuth;
                        
-                     
                         db.DBQRInfo.Add(qr);
                         db.SaveChanges();      
                                          
