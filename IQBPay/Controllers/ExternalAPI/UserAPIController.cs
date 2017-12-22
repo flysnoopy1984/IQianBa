@@ -17,6 +17,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.Result;
+using System.Web;
 
 namespace IQBPay.Controllers.ExternalAPI
 {
@@ -40,7 +41,7 @@ namespace IQBPay.Controllers.ExternalAPI
           
             try
             {
-             
+               
                 if (ui != null)
                 {
                     //检查是否授权
@@ -65,8 +66,7 @@ namespace IQBPay.Controllers.ExternalAPI
                                         updateUser.InitRegiser();
                                         updateUser.OpenId = ui.OpenId;
                                         updateUser.Name = ui.Name;
-                                        updateUser.Headimgurl = ui.Headimgurl;
-                                        
+                                        updateUser.Headimgurl = ui.Headimgurl; 
                                         updateUser.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
                                         db.DBUserInfo.Add(updateUser);
                                         isExist = false;
@@ -76,15 +76,22 @@ namespace IQBPay.Controllers.ExternalAPI
                                         }
                                     }
                                    
-                                    qrUser = db.UpdateQRUser(qr, updateUser);
-                                    if(qrUser == null)
+
+                                    int n = db.DBQRUser.Where(q => updateUser.OpenId == q.OpenId).Count();
+                                    if (n > 0)
                                     {
-                                        return FormatReturn("授权码失效，无法给用户授权,请联系平台！");
+                                        return FormatReturn("代理已经存在,不能重复邀请");
                                     }
+
+                                    updateUser = db.UpdateQRUser(qr, updateUser, HttpContext.Current);
+                                    //if(qrUser == null)
+                                    //{
+                                    //    return FormatReturn("授权码失效，无法给用户授权,请联系平台！");
+                                    //}
                                     qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
                                    
                                     updateUser.QRAuthId = 0;
-                                    updateUser.QRUserDefaultId = qrUser.ID;
+                                    //updateUser.QRUserDefaultId = qrUser.ID;
 
                                     //用户返回后，给微信提示做判断
                                     hasParent = !string.IsNullOrEmpty(qrUser.ParentOpenId);

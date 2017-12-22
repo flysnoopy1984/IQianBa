@@ -35,11 +35,37 @@
                 }
             });
         }
+
+        //邀请码
+        function DoInviteQRBatch() {
+            var url = "/Test/Batch_InviteQR";
+            $.ajax({
+                type: 'post',
+
+                url: url,
+                success: function (data) {
+                    if (data.IsSuccess == true) {
+                        alert("OK");
+                    }
+                    else {
+                        alert("Error:" + data.ErrorMsg);
+                    }
+
+
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+
+
+                }
+            });
+        }
     </script>
 </head>
 <body>
     <div> 
         <input type="button" value="DoQRBatch" onclick="DoQRBatch()" />
+        <input type="button" value="邀请码" onclick="DoInviteQRBatch()" />
     </div>
 </body>
 </html>

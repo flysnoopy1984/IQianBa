@@ -1,6 +1,7 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.Store;
+using IQBCore.IQBPay.Models.User;
 using IQBCore.Model;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace IQBCore.IQBPay.Models.QR
         /// </summary>
         public float Rate { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(40)]
         public string Name { get; set; }
 
         [DefaultValue("")]
@@ -59,6 +60,12 @@ namespace IQBCore.IQBPay.Models.QR
         /// </summary>
         [MaxLength(128)]
         public string FilePath { get; set; }
+
+        /// <summary>
+        /// 纯净版本
+        /// </summary>
+        [MaxLength(128)]
+        public string OrigFilePath { get; set; }
 
         public int ReceiveStoreId { get; set; }
 
@@ -87,6 +94,29 @@ namespace IQBCore.IQBPay.Models.QR
             this.RecordStatus = RecordStatus.Normal;
             this.Channel = si.Channel;
             this.Type = QRType.StoreAuth;
+
+
+        }
+
+        public void InitByUser(EUserInfo ui)
+        {
+            this.InitCreate();
+            this.InitModify();
+            this.OwnnerOpenId = ui.OpenId;
+            this.ParentOpenId = ui.OpenId;
+
+            this.ParentCommissionRate = Convert.ToSingle(1.5);
+            this.Rate = Convert.ToSingle(6.5);
+            this.ReceiveStoreId = 1;
+            this.Channel = IQBCore.IQBPay.BaseEnum.Channel.League;
+            this.Type = IQBCore.IQBPay.BaseEnum.QRType.ARAuth;
+
+
+            this.Name = "[邀请码]" + ui.Name;
+            if (ui.Name.Length > 40)
+            {
+                this.Name = this.Name.Substring(0, 40);
+            }
 
 
         }

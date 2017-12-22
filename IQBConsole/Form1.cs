@@ -225,10 +225,13 @@ namespace IQBConsole
 
             string Picurl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + resObj.ticket + "";
 
-            Image QRImg = ImgHelper.GetImgFromUrl(Picurl);
+            Image bkImg = ImgHelper.GetImgFromUrl(Picurl);
 
-            Bitmap bkImg = new Bitmap(@"C:\Project\SourceCode\IQianBa\IQBConsole\ARUserBK1.jpg");
+            Bitmap logo = new Bitmap(@"C:\Project\SourceCode\IQianBa\IQBConsole\Logo_AR.png");
 
+            Bitmap finImg = ImgHelper.ImageWatermark(new Bitmap(bkImg), logo);
+
+            pictureBox1.Image = finImg;
         }
 
         private WXQRResult GetQR(String account, string access_token, string ssoToken = null, bool isTemp = true)

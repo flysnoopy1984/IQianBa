@@ -5,6 +5,7 @@ using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Models.InParameter;
 using IQBCore.IQBWX.Models.OutParameter;
 using IQBWX.DataBase;
+using IQBWX.DataBase.IQBPay;
 using IQBWX.Models.JsonData;
 using IQBWX.Models.Results;
 using IQBWX.Models.WX;
@@ -114,23 +115,22 @@ namespace IQBWX.Controllers
                 entity.CreatedDate = DateTime.Today;
                 db.InserSSOToken(entity);
             }
-            ssrQR.QRImgUrl = Picurl;
+            ssrQR.TargetUrl = Picurl;
 
             return ssrQR;
         }
 
         [HttpPost]
-        public SSOQR CreatePayQRAuth([FromBody]InQR inQR)
+        public SSOQR CreateInvieteQR([FromBody]InQR inQR)
         {
             AccessToken token = this.getToken();
             SSOQR ssrQR = new SSOQR();
-
             inQR.QRId = IQBConstant.WXQR_IQBPAY_PREFIX + inQR.QRId;
-
             WXQRResult resObj = this.getQR("", token.access_token, inQR.QRId, false);
-         
             string Picurl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + resObj.ticket + "";
-            ssrQR.QRImgUrl = Picurl;
+            ssrQR.TargetUrl = resObj.url;
+         
+            
             return ssrQR;
         }
 

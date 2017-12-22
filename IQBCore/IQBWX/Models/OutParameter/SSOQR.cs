@@ -9,7 +9,9 @@ namespace IQBCore.IQBWX.Models.OutParameter
     public class SSOQR
     {
         public string ssoToken { get; set; }
-        public string QRImgUrl { get; set; }
+        public string TargetUrl { get; set; }
+
+       
 
     }
 }

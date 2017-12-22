@@ -115,32 +115,49 @@ namespace IQBPay.DataBase
         #endregion
 
         #region QRUser
-        public EQRUser UpdateQRUser(EQRInfo qr,EUserInfo ui)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pQR"></param>
+        /// <param name="ui"></param>
+        /// <param name="errorCode">1</param>
+        /// <returns></returns>
+        public EUserInfo UpdateQRUser(EQRInfo pQR,EUserInfo ui, HttpContext context)
         {
-            bool isNew = false;
+           
             EQRUser qrUser = null;
             RUserInfo pi = null;
+            EQRInfo cQR = null;
             using (AliPayContent db = new AliPayContent())
             {
-                qrUser = db.DBQRUser.Where(q=>ui.OpenId == q.OpenId).FirstOrDefault();
-                if(qrUser == null)
-                {
-                    qrUser = new EQRUser();
-                    isNew = true;
-                    qrUser.MarketRate = BaseController.GlobalConfig.MarketRate;  
-                }
+                cQR = new EQRInfo();
+                cQR.InitByUser(ui);
+                db.DBQRInfo.Add(cQR);
+                db.SaveChanges();
+                ui.QRInviteCode = cQR.ID;
+
+                cQR = QRManager.CreateMasterUrlById(cQR, context);
+                DbEntityEntry<EQRInfo> entry = db.Entry<EQRInfo>(cQR);
+                entry.State = System.Data.Entity.EntityState.Modified;
+                entry.Property(t => t.OrigFilePath).IsModified = true;
+                entry.Property(t => t.FilePath).IsModified = true;
+                entry.Property(t => t.TargetUrl).IsModified = true;
+                db.SaveChanges();
+
+                qrUser = new EQRUser();              
+                qrUser.MarketRate = BaseController.GlobalConfig.MarketRate;
                 qrUser.IsCurrent = true;
-                qrUser.QRId = qr.ID;
+                qrUser.QRId = pQR.ID;
                 qrUser.OpenId = ui.OpenId;
                 qrUser.UserName = ui.Name;
-                qrUser.Rate = qr.Rate;
-                qrUser.ReceiveStoreId = qr.ReceiveStoreId;
-                qrUser.ParentOpenId = qr.ParentOpenId;
-                qrUser.ParentCommissionRate = qr.ParentCommissionRate;
+                qrUser.Rate = pQR.Rate;
+                qrUser.ReceiveStoreId = pQR.ReceiveStoreId;
+                qrUser.ParentOpenId = pQR.ParentOpenId;
+                qrUser.ParentCommissionRate = pQR.ParentCommissionRate;
                 
-                if(!string.IsNullOrEmpty(qr.ParentOpenId))
+                if(!string.IsNullOrEmpty(pQR.ParentOpenId))
                 {
-                    pi = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).Select(o=>new RUserInfo {
+                    pi = db.DBUserInfo.Where(u => u.OpenId == pQR.ParentOpenId).Select(o=>new RUserInfo {
                         Name = o.Name
                     }).FirstOrDefault();
                     if(pi == null)
@@ -150,27 +167,15 @@ namespace IQBPay.DataBase
                     qrUser.ParentName = pi.Name;
                 }
 
-                if (isNew)
-                {
-                    db.DBQRUser.Add(qrUser);
-                    db.SaveChanges();
-                }
+                db.DBQRUser.Add(qrUser);
+                db.SaveChanges();
                 qrUser = QRManager.CreateUserUrlById(qrUser,ui.Headimgurl);
                 db.Entry(qrUser).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
-                /*
-                                DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
-                                entry.State = EntityState.Unchanged;
-                                ui.QRUserDefaultId = qrUser.ID;
-                                ui.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
-                                //取消授权
-                                ui.QRAuthId = 0;
-
-                                entry.Property(t => t.QRUserDefaultId).IsModified = true; 
-                 */
+               
 
             }
-            return qrUser;
+            return ui;
 
         }
         #endregion

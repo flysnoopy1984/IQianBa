@@ -644,9 +644,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\Frame1\credit\" />
-    <Folder Include="Content\QR\ARMaster\" />
     <Folder Include="Content\QR\ARUser\" />
     <Folder Include="Content\QR\AuthStore\" />
+    <Folder Include="Content\QR\Invite\" />
     <Folder Include="Content\QR\Tools\" />
     <Folder Include="Content\Style\Frame1\as\js\wizard\build\" />
     <Folder Include="Content\UploadFile\AgentVerify\" />

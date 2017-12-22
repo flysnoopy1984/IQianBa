@@ -606,7 +606,7 @@ namespace IQBPay.Controllers
                 string data = "QRId=13&QRType=1";
                 res= HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
                 SSOQR obj = JsonConvert.DeserializeObject<SSOQR>(res);
-                 url = obj.QRImgUrl;
+                 url = obj.TargetUrl;
 
             }
             catch(Exception ex)

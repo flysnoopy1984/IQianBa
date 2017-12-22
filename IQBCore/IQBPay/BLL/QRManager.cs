@@ -93,39 +93,40 @@ namespace IQBCore.IQBPay.BLL
             return qr;
         }
 
-        public static EQRInfo CreateMasterUrlById(EQRInfo qr)
+        public static EQRInfo CreateMasterUrlById(EQRInfo qr, HttpContext context)
         {
             try
             {
-                /*
-                 string site = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
-                 string url = site + "PP/Auth_AR?Id=" + qr.ID;
 
-                 string filePath = ConfigurationManager.AppSettings["QR_ARMaster_FP"];
-                 string filename = "QRARU" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()
-                 + ".jpg";
-
-                 filePath += filename;
-                 qr.FilePath = filePath;
-                 qr.TargetUrl = url;
-
-                 //Create QR
-                 // filePath = PageController.Server.MapPath(filePath);
-                 filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
-                 QRManager.CreateQR(url, filePath);
-                 */
                 if(qr.ID ==0 )
                 {
                     throw new Exception("创建QR错误，QR ID 不存在");
                 }
-                string url = "http://wx.iqianba.cn/api/wx/CreatePayQRAuth";
+                string url = "http://wx.iqianba.cn/api/wx/CreateInvieteQR";
                 string data = string.Format("QRId={0}&QRType={1}",qr.ID,qr.Type);
                 string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
                 SSOQR obj = JsonConvert.DeserializeObject<SSOQR>(res);
-                qr.TargetUrl = obj.QRImgUrl;
-                
+                qr.TargetUrl = obj.TargetUrl;
+
+                System.Drawing.Image bkImg = ImgHelper.GetImgFromUrl(qr.TargetUrl);
+                string filePath = "/Content/QR/Invite/Orig_QRInvite_" + qr.ID + ".jpg";
+                qr.OrigFilePath = filePath;
+
+                string fullPath = context.Server.MapPath(filePath);
+                bkImg.Save(fullPath);
+
+                Bitmap logo = new Bitmap(context.Server.MapPath(@"/Content/QR/Logo_AR.png"));
+
+                Bitmap finImg = ImgHelper.ImageWatermark(new Bitmap(bkImg), logo);
+
+                filePath = "/Content/QR/Invite/QRInvite_" + qr.ID + ".jpg";
+                qr.FilePath = filePath;
+                fullPath = context.Server.MapPath(filePath);
+                finImg.Save(fullPath);
+                return qr;
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 IQBLog log = new IQBLog();
                 log.log("CreateMasterUrlById Error:" + ex.Message);

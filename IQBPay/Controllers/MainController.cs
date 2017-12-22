@@ -125,8 +125,8 @@ namespace IQBPay.Controllers
 
                         db.DBQRInfo.Add(qr);
                         db.SaveChanges();
-
-                        qr = QRManager.CreateMasterUrlById(qr);
+                        
+                        qr = QRManager.CreateMasterUrlById(qr, System.Web.HttpContext.Current);
                         db.Entry(qr).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
                     }

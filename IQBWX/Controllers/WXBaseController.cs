@@ -172,7 +172,7 @@ namespace IQBWX.Controllers
                 if(userSession ==null)
                 {
                     userSession = new UserSession();
-                    string openId = this.GetOpenId(true);
+                    string openId = this.GetOpenId();
                    
                     using (AliPayContent db = new AliPayContent())
                     {

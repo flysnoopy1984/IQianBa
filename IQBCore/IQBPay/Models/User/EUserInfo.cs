@@ -45,6 +45,8 @@ namespace IQBCore.IQBPay.Models.User
 
         public long QRAuthId { get; set; }
 
+        public long QRInviteCode { get; set; }
+
         /// <summary>
         /// 提现账户,支付宝正常账户song_fuwei@hotmail.com
         /// </summary>
