@@ -26,12 +26,12 @@ namespace IQBWX.Controllers
     {
         protected string CodeUrlFormat = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
         List<string> filterUrl;
-
+        public IQBLog log;
         private static EGlobalConfig _GlobelConfig;
 
         public WXBaseController()
         {
-            
+            log = new IQBLog();
         }
 
         public ActionResult ErrorResult(string msg)

@@ -121,14 +121,14 @@ namespace IQBWX.Controllers
         }
 
         [HttpPost]
-        public SSOQR CreateInvieteQR([FromBody]InQR inQR)
+        public SSOQR CreateInviteQR([FromBody]InQR inQR)
         {
             AccessToken token = this.getToken();
             SSOQR ssrQR = new SSOQR();
             inQR.QRId = IQBConstant.WXQR_IQBPAY_PREFIX + inQR.QRId;
             WXQRResult resObj = this.getQR("", token.access_token, inQR.QRId, false);
             string Picurl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + resObj.ticket + "";
-            ssrQR.TargetUrl = resObj.url;
+            ssrQR.TargetUrl = Picurl;
          
             
             return ssrQR;

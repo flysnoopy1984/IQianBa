@@ -61,7 +61,7 @@ namespace IQBWX.Controllers
         }
         public ActionResult Message()
         {
-            IQBLog log = new IQBLog();
+            
           
             try
             {
@@ -73,7 +73,7 @@ namespace IQBWX.Controllers
                    
                     StreamReader reader = new StreamReader(Request.InputStream);
                     string strXml = reader.ReadToEnd();
-                    //log.log("Message strXml:" + strXml);
+                //    log.log("Message strXml:" + strXml);
                     if (string.IsNullOrEmpty(strXml))
                         return View();
                
@@ -102,7 +102,7 @@ namespace IQBWX.Controllers
                         default:
                         break;
                     }
-                    log.log("Message: " + menuEvent. ResponseXml);
+                    //log.log("Message: " + menuEvent. ResponseXml);
                     if (menuEvent.ResponseXml != null)
                         return Content(menuEvent.ResponseXml);
 

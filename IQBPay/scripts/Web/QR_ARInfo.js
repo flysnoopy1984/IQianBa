@@ -56,7 +56,7 @@ function InitFormData(data)
     $("#Remark").val(data.Remark);
 
     //var filePath =  data.FilePath;
-    $("#QRImg").attr("src", data.TargetUrl);
+    $("#QRImg").attr("src", data.FilePath);
   
     $("#ReceiveStore").val(data.ReceiveStoreId);
 

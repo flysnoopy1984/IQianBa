@@ -9,7 +9,7 @@ namespace IQBWX.Common
 {
     public class IQBLog
     {
-        private string logFile;
+        private  string logFile;
         private StreamWriter writer;
         private FileStream fileStream = null;
 
@@ -25,7 +25,7 @@ namespace IQBWX.Common
             CreateDirectory(logFile);
         }
 
-        public void log(string info)
+        public void  log(string info)
         {
 
             try

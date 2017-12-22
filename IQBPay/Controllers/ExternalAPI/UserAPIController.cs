@@ -23,6 +23,8 @@ namespace IQBPay.Controllers.ExternalAPI
 {
     public class UserAPIController : ApiController
     {
+       
+
         public HttpResponseMessage FormatReturn(string result)
         {
             HttpResponseMessage responseMessage = new HttpResponseMessage { Content = new StringContent(result, Encoding.GetEncoding("UTF-8"), "text/plain") };
@@ -34,8 +36,8 @@ namespace IQBPay.Controllers.ExternalAPI
         public HttpResponseMessage Register([FromBody]EUserInfo ui)
         {
             EUserInfo updateUser = null;
-            EQRInfo qr = null;
-            EQRUser qrUser = null;
+            EQRInfo pQR = null;
+         
             Boolean isExist=true;
             bool hasParent = false;
           
@@ -47,15 +49,19 @@ namespace IQBPay.Controllers.ExternalAPI
                     //检查是否授权
                     if (ui.QRAuthId > 0)
                     {
-                        using (TransactionScope sc = new TransactionScope())
+                       
+                        using (AliPayContent db = new AliPayContent())
                         {
-                            using (AliPayContent db = new AliPayContent())
+                            using (var sc = db.Database.BeginTransaction())
                             {
                                 try
                                 {
                                     //获取授权二维码
-                                    qr = db.DBQRInfo.Where(a => a.ID == ui.QRAuthId).FirstOrDefault();
-
+                                    pQR = db.DBQRInfo.Where(a => a.ID == ui.QRAuthId).FirstOrDefault();
+                                    if (pQR == null)
+                                    {
+                                        return FormatReturn("没有获取邀请码，或邀请码出现问题,请联系平台");
+                                    }
                                     //检查用户是否已经注册
                                     updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
                                     //没有注册
@@ -65,17 +71,20 @@ namespace IQBPay.Controllers.ExternalAPI
                                         updateUser = new EUserInfo();
                                         updateUser.InitRegiser();
                                         updateUser.OpenId = ui.OpenId;
+                                        if (!string.IsNullOrEmpty(pQR.ParentOpenId))
+                                        {
+                                            updateUser.parentOpenId = pQR.ParentOpenId;
+                                        }
                                         updateUser.Name = ui.Name;
-                                        updateUser.Headimgurl = ui.Headimgurl; 
+                                        updateUser.Headimgurl = ui.Headimgurl;
                                         updateUser.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
                                         db.DBUserInfo.Add(updateUser);
                                         isExist = false;
-                                        if(qr.NeedVerification)
+                                        if (pQR.NeedVerification)
                                         {
                                             return FormatReturn("NeedVerification");
                                         }
                                     }
-                                   
 
                                     int n = db.DBQRUser.Where(q => updateUser.OpenId == q.OpenId).Count();
                                     if (n > 0)
@@ -83,31 +92,32 @@ namespace IQBPay.Controllers.ExternalAPI
                                         return FormatReturn("代理已经存在,不能重复邀请");
                                     }
 
-                                    updateUser = db.UpdateQRUser(qr, updateUser, HttpContext.Current);
+                                    updateUser = db.UpdateQRUser(pQR, updateUser, HttpContext.Current);
                                     //if(qrUser == null)
                                     //{
                                     //    return FormatReturn("授权码失效，无法给用户授权,请联系平台！");
                                     //}
-                                    qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
-                                   
-                                    updateUser.QRAuthId = 0;
+                                    // qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
+
+
                                     //updateUser.QRUserDefaultId = qrUser.ID;
 
                                     //用户返回后，给微信提示做判断
-                                    hasParent = !string.IsNullOrEmpty(qrUser.ParentOpenId);
-                                      
-                                    db.SaveChanges();
-                                }
-                                catch(Exception ex)
-                                {
-                                    IQBLog _log = new IQBLog();
-                                    _log.log("Register Error "+ex.Message);
-                                    return FormatReturn("授权出现错误,请联系平台！");
-                                }
+                                    hasParent = !string.IsNullOrEmpty(updateUser.parentOpenId);
 
+                                    sc.Commit();
+                                    // db.SaveChanges();
+                                }
+                                catch (Exception ex)
+                                {
+                                    sc.Rollback();
+                                    return FormatReturn("授权出现错误,请联系平台！" + ex.Message);
+                                }
                             }
-                            sc.Complete();
-                        }
+                           
+
+                        } 
+                        
                     }
                     else
                     {

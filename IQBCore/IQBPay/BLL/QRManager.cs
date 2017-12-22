@@ -102,7 +102,7 @@ namespace IQBCore.IQBPay.BLL
                 {
                     throw new Exception("创建QR错误，QR ID 不存在");
                 }
-                string url = "http://wx.iqianba.cn/api/wx/CreateInvieteQR";
+                string url = "http://wx.iqianba.cn/api/wx/CreateInviteQR";
                 string data = string.Format("QRId={0}&QRType={1}",qr.ID,qr.Type);
                 string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
                 SSOQR obj = JsonConvert.DeserializeObject<SSOQR>(res);
@@ -132,7 +132,7 @@ namespace IQBCore.IQBPay.BLL
                 log.log("CreateMasterUrlById Error:" + ex.Message);
                 throw ex;
             }
-            return qr;
+          
         }
 
         public static EQRInfo CreateStoreAuthUrlById(EQRInfo qr)
@@ -175,6 +175,7 @@ namespace IQBCore.IQBPay.BLL
         /// <returns></returns>
         public static Bitmap CreateQR(string Url,string FilePath,Image Logo)
         {
+            IQBLog log = new IQBLog();
             Bitmap bt = null;
             try
             { 
@@ -187,22 +188,24 @@ namespace IQBCore.IQBPay.BLL
                 qrCodeEncoder.QRCodeScale = 4;
                 qrCodeEncoder.QRCodeVersion = 9;
                 bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
+            //    log.log("CreateQR qrCodeEncoder");
 
                 Bitmap blankBK = ImgHelper.CreateBlankImg(bt.Width + 20, bt.Height + 20, Brushes.White);
+          //     log.log("CreateQR blankBK");
                 bt = ImgHelper.CombineImage(blankBK, bt);
-
+            //    log.log("CreateQR Combine BK");
                 if (Logo!=null)
                 {
-                    ImgHelper.CombineImage(bt, Logo);
+                    bt = ImgHelper.CombineImage(bt, Logo);
                 }
-
+             //   log.log("CreateQR Combine Log");
                 bt.Save(FilePath);
             }
             catch(Exception ex)
             {
-                IQBLog log = new IQBLog();
+               
                 log.log("CreateQR Error:" + ex.Message);
-
+                log.log("CreateQR Error:" + ex.InnerException.Message);
                 throw ex;
             }
 

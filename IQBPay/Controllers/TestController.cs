@@ -100,13 +100,27 @@ namespace IQBPay.Controllers
 
         public ActionResult JF()
         {
-            using (AliPayContent db = new AliPayContent())
+            using (TransactionScope sc = new TransactionScope())
             {
-                EQRUser qrUser = db.DBQRUser.Where(o => o.OpenId == "o3nwE0qI_cOkirmh_qbGGG-5G6B0").FirstOrDefault();
-                string url = "http://localhost:24068/api/userapi/CreateAgentQR_AR";
-                string data = string.Format("ID={0}&OpenId={1}", qrUser.ID, qrUser.OpenId);
-                string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
-                OutAPIResult result = JsonConvert.DeserializeObject<OutAPIResult>(res);
+                using (AliPayContent db = new AliPayContent())
+                {
+                    //EQRUser qrUser = db.DBQRUser.Where(o => o.OpenId == "o3nwE0qI_cOkirmh_qbGGG-5G6B0").FirstOrDefault();
+                    //string url = "http://localhost:24068/api/userapi/CreateAgentQR_AR";
+                    //string data = string.Format("ID={0}&OpenId={1}", qrUser.ID, qrUser.OpenId);
+                    //string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+                    //OutAPIResult result = JsonConvert.DeserializeObject<OutAPIResult>(res);
+
+                    //   EUserInfo updateUser = db.DBUserInfo.Where(u => u.OpenId == "o3nwE0qI_cOkirmh_qbGGG-5G6B0").FirstOrDefault();
+                    EUserInfo updateUser = new EUserInfo();
+                    updateUser.InitRegiser();
+                    updateUser.OpenId = "Test1";
+                    updateUser.Name = "Test1";
+                    updateUser.Headimgurl = "";
+                    updateUser.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
+                    //  db.DBUserInfo.Add(updateUser);
+                    EQRInfo qr = db.DBQRInfo.Where(a => a.ID == 66).FirstOrDefault();
+                    updateUser = db.UpdateQRUser(qr, updateUser, System.Web.HttpContext.Current);
+                }
             }
           
 
@@ -190,7 +204,7 @@ namespace IQBPay.Controllers
 
                             db.SaveChanges();
                             
-                                string url = "http://wx.iqianba.cn/api/wx/CreatePayQRAuth";
+                                string url = "http://wx.iqianba.cn/api/wx/CreateInviteQR";
                                 string data = string.Format("QRId={0}&QRType={1}", qr.ID, qr.Type);
                                 string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
                                 SSOQR obj = JsonConvert.DeserializeObject<SSOQR>(res);

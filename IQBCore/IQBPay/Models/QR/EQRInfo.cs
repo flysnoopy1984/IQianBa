@@ -112,7 +112,8 @@ namespace IQBCore.IQBPay.Models.QR
             this.Type = IQBCore.IQBPay.BaseEnum.QRType.ARAuth;
 
 
-            this.Name = "[邀请码]" + ui.Name;
+            this.Name =  ui.Name;
+            this.Remark = "[邀请码]" + ui.Name;
             if (ui.Name.Length > 40)
             {
                 this.Name = this.Name.Substring(0, 40);

@@ -17,6 +17,8 @@ namespace IQBCore.IQBPay.Models.Result
     {
         public int Id { get; set; }
 
+        public string OpenId { get; set; }
+
         public string Name { get; set; }
 
         public string AliPayAccount { get; set; }

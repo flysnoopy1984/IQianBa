@@ -1,4 +1,5 @@
-﻿using IQBCore.IQBPay.BaseEnum;
+﻿using IQBCore.Common.Helper;
+using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
@@ -124,27 +125,48 @@ namespace IQBPay.DataBase
         /// <returns></returns>
         public EUserInfo UpdateQRUser(EQRInfo pQR,EUserInfo ui, HttpContext context)
         {
-           
-            EQRUser qrUser = null;
-            RUserInfo pi = null;
-            EQRInfo cQR = null;
-            using (AliPayContent db = new AliPayContent())
+             IQBLog _log = new IQBLog();
+            try
             {
+                EQRUser qrUser = null;
+                //RUserInfo pi = null;
+                EQRInfo cQR = null;
+                //邀请码
                 cQR = new EQRInfo();
                 cQR.InitByUser(ui);
-                db.DBQRInfo.Add(cQR);
-                db.SaveChanges();
+                this.DBQRInfo.Add(cQR);
+                this.SaveChanges();
+
                 ui.QRInviteCode = cQR.ID;
+                ui.QRAuthId = 0;
+                ui.UserStatus = UserStatus.JustRegister;
+                //if (!string.IsNullOrEmpty(pQR.ParentOpenId))
+                //{
+                //    pi = db.DBUserInfo.Where(u => u.OpenId == pQR.ParentOpenId).Select(o => new RUserInfo
+                //    {
+                //        Name = o.Name,
+                //        OpenId = o.OpenId,
+                //    }).FirstOrDefault();
+                //    if (pi == null)
+                //    {
+                //        throw new Exception("没有找到上级代理");
+                //    }               
+                //    qrUser.ParentName = pi.Name;
+                //}
+
 
                 cQR = QRManager.CreateMasterUrlById(cQR, context);
-                DbEntityEntry<EQRInfo> entry = db.Entry<EQRInfo>(cQR);
+                DbEntityEntry<EQRInfo> entry = this.Entry<EQRInfo>(cQR);
                 entry.State = System.Data.Entity.EntityState.Modified;
                 entry.Property(t => t.OrigFilePath).IsModified = true;
                 entry.Property(t => t.FilePath).IsModified = true;
                 entry.Property(t => t.TargetUrl).IsModified = true;
-                db.SaveChanges();
+                this.SaveChanges();
+            //    _log.log("UpdateQRUser 邀请码");
 
-                qrUser = new EQRUser();              
+
+                //收款 二维码
+                qrUser = new EQRUser();
                 qrUser.MarketRate = BaseController.GlobalConfig.MarketRate;
                 qrUser.IsCurrent = true;
                 qrUser.QRId = pQR.ID;
@@ -152,29 +174,28 @@ namespace IQBPay.DataBase
                 qrUser.UserName = ui.Name;
                 qrUser.Rate = pQR.Rate;
                 qrUser.ReceiveStoreId = pQR.ReceiveStoreId;
-                qrUser.ParentOpenId = pQR.ParentOpenId;
-                qrUser.ParentCommissionRate = pQR.ParentCommissionRate;
-                
-                if(!string.IsNullOrEmpty(pQR.ParentOpenId))
-                {
-                    pi = db.DBUserInfo.Where(u => u.OpenId == pQR.ParentOpenId).Select(o=>new RUserInfo {
-                        Name = o.Name
-                    }).FirstOrDefault();
-                    if(pi == null)
-                    {
-                        throw new Exception("没有找到上级代理");
-                    }
-                    qrUser.ParentName = pi.Name;
-                }
-
-                db.DBQRUser.Add(qrUser);
-                db.SaveChanges();
-                qrUser = QRManager.CreateUserUrlById(qrUser,ui.Headimgurl);
-                db.Entry(qrUser).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
                
+                if (!string.IsNullOrEmpty(pQR.ParentOpenId))
+                {
+                    qrUser.ParentOpenId = pQR.ParentOpenId;
+                    qrUser.ParentName = pQR.Name;
+                    qrUser.ParentCommissionRate = pQR.ParentCommissionRate;
+                }
+                this.DBQRUser.Add(qrUser);
+                this.SaveChanges();
+           //     _log.log("UpdateQRUser 收款 二维码");
+                qrUser = QRManager.CreateUserUrlById(qrUser, ui.Headimgurl);
+            //    _log.log("UpdateQRUser 收款 二维码图片生成");
 
+                this.Entry(qrUser).State = System.Data.Entity.EntityState.Modified;
+                this.SaveChanges();
             }
+            catch(Exception ex)
+            {
+                _log.log("UpdateQRUser Error :" + ex.Message);
+                _log.log("UpdateQRUser Error Inner :" + ex.InnerException.Message);
+            }
+          
             return ui;
 
         }

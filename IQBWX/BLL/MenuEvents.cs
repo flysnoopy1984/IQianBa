@@ -29,6 +29,11 @@ namespace IQBWX.BLL
             log = new IQBLog();
         }
 
+        public MenuEvents(IQBLog _log)
+        {
+             log= _log;
+        }
+
         public string ResponseContent { get; set; }
         public string ResponseXml { get; set; }
         public string RedirectUrl { get; set; }
@@ -200,7 +205,7 @@ namespace IQBWX.BLL
                 string ssoToken = null;
                 EUserInfo ui =null ,pui = null;
 
-              //  log.log("WXScanLogin ssoToken:" + msg.EventKey);
+       //         log.log("WXScanLogin ssoToken:" + msg.EventKey);
 
                 if (msg.Event == "scan")
                     ssoToken = msg.EventKey;
@@ -211,7 +216,7 @@ namespace IQBWX.BLL
                 if (ssoToken.StartsWith(IQBConstant.WXQR_IQBPAY_PREFIX))
                 {
                     string qrId = ssoToken.Substring(IQBConstant.WXQR_IQBPAY_PREFIX.Length);
-                   
+                 //   log.log("WXScanLogin ssoToken:" + ssoToken);
                     IQBAuth(msg, controller,qrId);
                     return true;
                 }
@@ -277,7 +282,7 @@ namespace IQBWX.BLL
                 using (UserContent db = new UserContent())
                 {
                     EUserInfo ui = db.Get(msg.FromUserName);
-                    log.log("ScanHandler :" + msg.FromUserName);
+                 //   log.log("ScanHandler :" + msg.FromUserName);
                     if (ui != null)
                     {                        
                         this.ResponseXml = msg.toText("亲爱的"+ui.nickname+"，欢迎回来！");
