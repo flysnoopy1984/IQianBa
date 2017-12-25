@@ -27,7 +27,7 @@ namespace IQBWX.Controllers
 {
     public class WXController : ApiController
     {
-        IQBLog log = new IQBLog();
+      //  IQBLog log = new IQBLog();
        [HttpGet]
         public string MessageHandler()
         {
@@ -86,7 +86,7 @@ namespace IQBWX.Controllers
             }
             catch(Exception ex)
             {
-                log.log("getQR Error" + ex.Message);
+               // log.log("getQR Error" + ex.Message);
             }
             return resObj;
         }
@@ -165,9 +165,10 @@ namespace IQBWX.Controllers
             }
             catch(Exception ex)
             {
-                IQBLog log = new IQBLog();
-                log.log("downloadQR Error:" + ex.Message);
-                log.log("downloadQR InnerError:" + ex.InnerException.Message);
+                throw ex;
+               // IQBLog log = new IQBLog();
+                //log.log("downloadQR Error:" + ex.Message);
+                //log.log("downloadQR InnerError:" + ex.InnerException.Message);
                
             }
             return address;

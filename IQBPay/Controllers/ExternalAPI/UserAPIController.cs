@@ -18,6 +18,7 @@ using System.Data.Entity;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.Result;
 using System.Web;
+using IQBCore.IQBPay.BaseEnum;
 
 namespace IQBPay.Controllers.ExternalAPI
 {
@@ -62,6 +63,12 @@ namespace IQBPay.Controllers.ExternalAPI
                                     {
                                         return FormatReturn("没有获取邀请码，或邀请码出现问题,请联系平台");
                                     }
+
+                                    int cn = db.DBUserInfo.Where(o => o.parentOpenId == pQR.ParentOpenId).Count();
+                                    if(cn> BaseController.GlobalConfig.MaxNumChildAgent)
+                                    {
+                                        return FormatReturn("最大可拥有代理数量已超限");
+                                    }
                                     //检查用户是否已经注册
                                     updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
                                     //没有注册
@@ -78,6 +85,8 @@ namespace IQBPay.Controllers.ExternalAPI
                                         updateUser.Name = ui.Name;
                                         updateUser.Headimgurl = ui.Headimgurl;
                                         updateUser.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
+                                        updateUser.QRAuthId = 0;
+                                        updateUser.UserStatus = UserStatus.PPUser;
                                         db.DBUserInfo.Add(updateUser);
                                         isExist = false;
                                         if (pQR.NeedVerification)

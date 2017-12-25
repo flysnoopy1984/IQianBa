@@ -27,7 +27,7 @@ function Init()
         min: 8,
         max: 12,
         from: 8,
-        step:0.1,
+        step:0.5,
     });
     slider = $range.data("ionRangeSlider");
 

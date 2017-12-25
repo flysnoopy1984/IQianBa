@@ -196,7 +196,9 @@
     <Content Include="Content\QRImg\bk_test.jpg" />
     <Content Include="Content\Script\CashOut.js" />
     <Content Include="Content\Script\CommissionDetail.js" />
+    <Content Include="Content\Script\Component\dropload.min.js" />
     <Content Include="Content\Script\Component\ion.rangeSlider.min.js" />
+    <Content Include="Content\Script\Component\iscroll.js" />
     <Content Include="Content\Script\Component\jquery-confirm.js" />
     <Content Include="Content\Script\Component\jquery.mobile-1.4.5.min.js" />
     <Content Include="Content\Script\Component\Validform_v5.3.2_min.js" />
@@ -206,12 +208,14 @@
     <Content Include="Content\Script\idangerous.swiper.min.js" />
     <Content Include="Content\Script\iqb.dropload.min.js" />
     <Content Include="Content\Script\IQBPay\AgentCommList.js" />
+    <Content Include="Content\Script\IQBPay\AgentList.js" />
     <Content Include="Content\Script\IQBPay\Agent_QR_ARList.js" />
     <Content Include="Content\Script\IQBPay\AliPayAccount.js" />
     <Content Include="Content\Script\IQBPay\Auth_Store.js" />
     <Content Include="Content\Script\IQBPay\DoTransfer.js" />
     <Content Include="Content\Script\IQBPay\InviteCode.js" />
     <Content Include="Content\Script\IQBPay\Pay2.js" />
+    <Content Include="Content\Script\IQBPay\PayWithAccount.js" />
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
     <Content Include="Content\Script\IQBPay\Pay.js" />
     <Content Include="Content\Script\IQBPay\ReceiveOrder.js" />
@@ -385,6 +389,7 @@
     <Content Include="Views\PP\InviteCode.cshtml" />
     <Content Include="Views\Test\TestQR.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\PP\PayWithAccount.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

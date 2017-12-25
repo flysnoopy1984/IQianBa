@@ -138,8 +138,7 @@ namespace IQBPay.DataBase
                 this.SaveChanges();
 
                 ui.QRInviteCode = cQR.ID;
-                ui.QRAuthId = 0;
-                ui.UserStatus = UserStatus.JustRegister;
+              
                 //if (!string.IsNullOrEmpty(pQR.ParentOpenId))
                 //{
                 //    pi = db.DBUserInfo.Where(u => u.OpenId == pQR.ParentOpenId).Select(o => new RUserInfo

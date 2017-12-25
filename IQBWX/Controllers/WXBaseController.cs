@@ -210,8 +210,10 @@ namespace IQBWX.Controllers
 
         protected string GetOpenId(bool isTest = false,bool IsforOpenId = true)
         {
-          //  if (isTest) return "o3nwE0m12mke3-VhWic-UAX7Oh_0";
-            if (isTest) return "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
+            bool isDev = Convert.ToBoolean(ConfigurationManager.AppSettings["DevMode"]);
+            // if(isDev) return "o3nwE0m12mke3-VhWic-UAX7Oh_0";
+
+             if (isDev) return "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
 
             string openId = (string)Session[IQBWXConst.SessionOpenId];
             if (string.IsNullOrEmpty(openId))

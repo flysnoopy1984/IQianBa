@@ -25,6 +25,7 @@ namespace IQBCore.IQBPay.Models.Sys
 
         public void Init()
         {
+            MaxNumChildAgent = 40;
             WebStatus = PayWebStatus.Running;
             Note = "";
         }
@@ -40,6 +41,11 @@ namespace IQBCore.IQBPay.Models.Sys
         /// 转账后微信通知
         /// </summary>
         public Boolean IsWXNotice_AgentTransfer { get; set; }
+
+        /// <summary>
+        /// 代理最大数量
+        /// </summary>
+        public int MaxNumChildAgent { get; set; }
 
 
     }

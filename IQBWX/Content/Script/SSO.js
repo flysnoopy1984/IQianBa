@@ -23,7 +23,7 @@ $(document).ready(function () {
         success: function (result) {
             $("#qrLoading").hide();
             $("#QRDesc").show();
-            $("#imgQR").attr('src', result.QRImgUrl);
+            $("#imgQR").attr('src', result.TargetUrl);
             waitingScan(result.ssoToken, appId);
         },
     });

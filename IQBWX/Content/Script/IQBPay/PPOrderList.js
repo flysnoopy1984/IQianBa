@@ -5,16 +5,22 @@ var IsEnd = false;
 var swiper;
 var url = site + "/PP/OrderQuery";
 var OpenId;
+var scrollSwiper;
 
 function DateChanged()
 {
     //  alert($("#cDateType").val());
-    $("#Process").show();
+   /* $("#Process").show();
     $("#trContainer").empty();
     $("#trContainer").hide();
     pageIndex = -1;
     $("#btnNext").attr("disabled", false);
     Query(pageIndex + 1);
+    */
+    $(".dropload-down").remove();
+    $("#trContainer").empty();
+    pageIndex = 0;
+    Query2()
 }
     
 
@@ -27,9 +33,68 @@ $(document).ready(function () {
  
     $("#btnNext").attr("disabled", false);
     OpenId = $("#hOpenId").val();
-    Query(pageIndex + 1);
- 
+
+    //   Query(pageIndex + 1);
+
+    pageIndex = 0;
+    Query2()
 });
+
+function Query2() {
+
+    var PageSize = 10;
+    if (pageIndex == 0)
+        PageSize = 20;
+    var cDateType = $("#cDateType").val();
+    var cOrderStatus = $("#cOrderStatus").val();
+
+  
+
+    scrollSwiper = $('#ListTableBody').dropload({
+       
+        loadDownFn: function (me) {
+
+            // 拼接HTML
+            var result = '';
+
+            $.ajax({
+                type: 'post',
+                data: "OrderStatus=" + cOrderStatus + "&DateType=" + cDateType + "&Page=" + pageIndex + "&PageSize=" + PageSize + "&OpenId=" + OpenId,
+                url: url,
+                success: function (data) {
+                    var arrLen = data.length;
+                    if (arrLen > 0) {
+                      
+                        generateData(data);
+                        pageIndex++;
+                        // 如果没有数据
+                    } else {
+                        // 锁定
+                        me.lock();
+                        // 无数据
+                        me.noData();
+
+
+                    }
+                    // 为了测试，延迟1秒加载
+                    setTimeout(function () {
+                        // 每次数据插入，必须重置
+                        me.resetload();
+                    }, 1000);
+                },
+                error: function (xhr, type) {
+                    //   alert('Ajax error!');
+                    // 即使加载出错，也得重置
+                    me.resetload();
+                }
+            });
+
+
+        }
+    });
+    $("#trContainer").show();
+    //$("#Process").hide();
+}
 
 function Query(_pageIndex) {
 
@@ -75,7 +140,7 @@ function generateData(result) {
   
 
     $.each(result, function (i) {
-        if (pageIndex == -1 && i == 0) {
+        if ((pageIndex ==0 || pageIndex == -1) && i == 0) {
        //     pageCount = result[i].TotalCount;
             $("#OrderNum").text(result[i].AgentTodayOrderCount);
             $("#TodayInCome").text(result[i].AgentTodayIncome);

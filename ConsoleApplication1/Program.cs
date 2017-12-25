@@ -51,7 +51,9 @@ namespace ConsoleApplication1
         {
             try
             {
-                EQRUser qrUser = new EQRUser();
+                float RateAmount = (float)Math.Round(5.0 * (5 / 100), 2, MidpointRounding.ToEven);
+
+              
               //  QRManager.CreateUserUrlById(qrUser);
 
             }

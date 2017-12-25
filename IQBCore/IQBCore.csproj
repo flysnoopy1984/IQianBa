@@ -136,6 +136,7 @@
     <Compile Include="IQBPay\Models\Result\RQRInfo.cs" />
     <Compile Include="IQBPay\Models\Result\RTransferAmount.cs" />
     <Compile Include="IQBPay\Models\Result\RUserInfo.cs" />
+    <Compile Include="IQBPay\Models\Result\RUser_ARQR.cs" />
     <Compile Include="IQBPay\Models\Result\RUser_Order.cs" />
     <Compile Include="IQBPay\Models\Result\RUser_OrderSum.cs" />
     <Compile Include="IQBPay\Models\SMS\ESMSVerification.cs" />

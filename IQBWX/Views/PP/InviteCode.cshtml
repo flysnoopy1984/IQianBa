@@ -1,4 +1,4 @@
-﻿
+﻿@model IQBCore.IQBPay.Models.Result.RQRInfo
 @{
     ViewBag.Title = "InviteCode";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -12,28 +12,32 @@
 
     <div class="InfoBody">
         <div class="form-group">
-            <label class="label-top">代理反点率</label>
+            <label class="label-top">代理反点率(%)</label>
             <div class="col-sm-6">
-                <input id="Rate" type="text" class="form-control" datatype="n" nullmsg="请填写代理反点率" sucmsg="OK" errormsg="请填写数字">
+                <input id="Rate" type="text" value="@Model.Rate" class="form-control" datatype="n" nullmsg="请填写代理反点率" sucmsg="OK" errormsg="请填写数字">
             </div>
 
         </div>
 
         <div class="form-group" id="Field_AfterMarketRate">
-            <label class="label-top">上级代理反佣金率</label>
-            <div class="col-sm-6" style="width:95%">
-                <input type="text" id="ParentCommRate" class="form-control" datatype="n" nullmsg="上级代理反佣金" sucmsg="OK" errormsg="请填写上级代理反佣金率" />  %            
+            <label class="label-top">上级代理反佣金率(%)</label>
+            <div class="col-sm-6">
+                <input type="text" id="ParentCommRate" value="@Model.ParentCommissionRate" class="form-control" datatype="n" nullmsg="上级代理反佣金" sucmsg="OK" errormsg="请填写上级代理反佣金率" /> 
             </div>
         </div>
-        <div id="buttonArea" style="margin-bottom:50px;">
-            <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnSave" style="width:95%; height:60px;">更新</button>
-        </div>
+        @if (ViewBag.UserRole == 100)
+        {
+            <div id="buttonArea" style="margin-bottom:50px;">
+                <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnSave" style="width:95%; height:60px;">更新</button>
+            </div>
+        }
+       
        
     </div>
     <div class="cen">
         <label class="label-top">邀请二维码</label>
         <div class="col-sm-6">
-            <img id="QRImg" style="width:256px; height:256px;" />
+            <img id="QRImg" style="width:256px; height:256px;" src="@Model.FilePath" />
         </div>
     </div>
     <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />

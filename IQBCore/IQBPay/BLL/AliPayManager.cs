@@ -79,7 +79,8 @@ namespace IQBCore.IQBPay.BLL
             AlipayFundTransToaccountTransferResponse res = null;
             string AliPayAccount = null;
             float TransferAmount = 0;
-            switch(target)
+            PayTargetMode PayTargetMode = PayTargetMode.AliPayAccount;
+            switch (target)
             {
                 case TransferTarget.Agent:
                     AliPayAccount = ui.AliPayAccount;
@@ -90,12 +91,19 @@ namespace IQBCore.IQBPay.BLL
                     TransferAmount = order.ParentCommissionAmount;
                     break;
                 case TransferTarget.User:
-                    AliPayAccount = order.BuyerAliPayId;
+                    if (string.IsNullOrEmpty(order.BuyerAliPayAccount))
+                    {
+                        AliPayAccount = order.BuyerAliPayId;
+                        PayTargetMode = PayTargetMode.AliPayId;
+                    }
+                    else
+                        AliPayAccount = order.BuyerAliPayAccount;
+
                     TransferAmount = order.BuyerTransferAmount;
                     break;
             }
 
-            res = DoTransferAmount(target, app, AliPayAccount, TransferAmount.ToString("0.00"), out TransferId);
+            res = DoTransferAmount(target, app, AliPayAccount, TransferAmount.ToString("0.00"), PayTargetMode, out TransferId);
 
             transfer = ETransferAmount.Init(target, TransferId, TransferAmount, AliPayAccount, order,ui);
 
@@ -145,7 +153,7 @@ namespace IQBCore.IQBPay.BLL
             return transfer;
         }
 
-        public AlipayFundTransToaccountTransferResponse DoTransferAmount(TransferTarget target,EAliPayApplication app,string toAliPayAccount,string Amount,out string TransferId)
+        public AlipayFundTransToaccountTransferResponse DoTransferAmount(TransferTarget target,EAliPayApplication app,string toAliPayAccount,string Amount, PayTargetMode PayTargetMode,out string TransferId)
         {
           
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
@@ -157,10 +165,11 @@ namespace IQBCore.IQBPay.BLL
             AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
             model.Amount = Amount;
             model.OutBizNo = TransferId;
-            if(target == TransferTarget.User)
-                model.PayeeType = "ALIPAY_USERID";
-            else
+            if(PayTargetMode == PayTargetMode.AliPayAccount)
                 model.PayeeType = "ALIPAY_LOGONID";
+            else
+                model.PayeeType = "ALIPAY_USERID";
+          
             model.PayeeAccount = toAliPayAccount;
             model.PayerShowName = "平台支付";
             model.Remark = string.Format("转账");

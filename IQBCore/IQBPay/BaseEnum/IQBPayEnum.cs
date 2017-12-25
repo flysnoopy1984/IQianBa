@@ -175,6 +175,13 @@ namespace IQBCore.IQBPay.BaseEnum
         User =0,
         Agent =1,
         ParentAgent=2,
+      
+    }
+
+    public enum PayTargetMode
+    {
+        AliPayId =0,
+        AliPayAccount = 1,
     }
 
     public enum TransferStatus

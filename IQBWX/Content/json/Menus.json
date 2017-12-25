@@ -25,6 +25,16 @@
       {
         "name": "代理中心",
         "sub_button": [
+           {
+            "type": "view",
+            "name": "我的邀请码",
+            "url": "http://wx.iqianba.cn/PP/InviteCode"
+          },
+          {
+            "type": "view",
+            "name": "我的兄弟们",
+            "url": "http://wx.iqianba.cn/PP/AgentList"
+          },
           {
             "type": "view",
             "name": "收款账户设置",

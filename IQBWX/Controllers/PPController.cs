@@ -80,6 +80,17 @@ namespace IQBWX.Controllers
             return View();
         }
 
+        public ActionResult PayWithAccount(string Id)
+        {
+            if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
+            }
+            ViewBag.QRUserId = Id;
+            // ViewBag.ReceiveNo = StringHelper.GenerateReceiveNo();
+            return View();
+        }
+
         public ActionResult Pay2(string Id)
         {
             if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
@@ -814,7 +825,7 @@ namespace IQBWX.Controllers
                         if(curQRUser==null)
                             return ErrorResult("没有找到当前的收款二维码，请联系管理员");   
             
-                        qrUser.Rate = curQRUser.Rate;
+                        qrUser.Rate = qrUser.MarketRate - (curQRUser.MarketRate-curQRUser.Rate);
                         qrUser.ReceiveStoreId = curQRUser.ReceiveStoreId;
                         qrUser.ParentOpenId = curQRUser.ParentOpenId;
                         qrUser.ParentCommissionRate = curQRUser.ParentCommissionRate;
@@ -883,10 +894,6 @@ namespace IQBWX.Controllers
                
             }
 
-           
-
-            
-
             return Json(result);
         }
 
@@ -916,14 +923,75 @@ namespace IQBWX.Controllers
 
         public ActionResult InviteCode()
         {
+            RQRInfo qr = null;
             if (UserSession.UserRole < UserRole.DiamondAgent)
             {
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
-           
+            InitProfilePage();
+            string PPWeb = ConfigurationManager.AppSettings["Site_IQBPay"];
+            using (AliPayContent db = new AliPayContent())
+            {
+                qr = db.DBQRInfo.Where(a => a.OwnnerOpenId == UserSession.OpenId).Select(a=>new RQRInfo {
+                    Rate=a.Rate,
+                    ParentCommissionRate = a.ParentCommissionRate,
+                    FilePath = PPWeb + a.FilePath,
+                }).FirstOrDefault();
+
+                if (qr == null)
+                    qr = new RQRInfo();
+                    
+            }
+
+            return View(qr);
+        }
+
+        public ActionResult AgentList()
+        {
+            RQRInfo qr = null;
+            if (UserSession.UserRole < UserRole.DiamondAgent)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
             InitProfilePage();
 
             return View();
+        }
+
+        public ActionResult AgentListQuery()
+        {
+            int pageIndex = Convert.ToInt32(Request["Page"]);
+            int pageSize = Convert.ToInt32(Request["PageSize"]);
+            List<RUser_ARQR> result = new List<RUser_ARQR>();
+
+            using (AliPayContent db = new AliPayContent())
+            {
+                var query = from ui in db.DBUserInfo
+                            join qrUser in db.DBQRUser
+                            on ui.OpenId equals qrUser.OpenId
+                            select new RUser_ARQR
+                            {
+                                ID = ui.Id,
+                                Rate = qrUser.Rate,
+                                UserName = ui.Name,
+                                ParentCommissionRate = qrUser.ParentCommissionRate,
+                                HeadImgUrl =ui.Headimgurl,
+                                IsCurrent = qrUser.IsCurrent,
+                                ParentOpenId = qrUser.ParentOpenId,
+                                UserStatus = ui.UserStatus,
+                            };
+
+                query = query.Where(a => a.IsCurrent == true);
+                if (UserSession.UserRole != UserRole.Administrator)
+                    query = query.Where(a => a.ParentOpenId == UserSession.OpenId);
+                if (pageIndex == 0)
+                    result = query.Take(pageSize).ToList();
+                else
+                    result = query.OrderBy(a=>a.ID).Skip(pageIndex * pageSize).Take(pageSize).ToList();
+
+                return Json(result);
+            }
+          
         }
         #endregion
 

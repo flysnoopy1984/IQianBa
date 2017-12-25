@@ -3,54 +3,56 @@
     ViewBag.Title = "订单列表";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-
+<script src="@Url.Scrpit("~/Content/Script/iqb.dropload.min.js")"></script>
 <script src="@Url.Scrpit("~/Content/Script/IQBPay/PPOrderList.js")"></script>
-<div class="grzxcon2 mgz xi30 bai cen">
-    <ul>
-        <li><span class="xi15">今日订单</span><div id="OrderNum"></div></li>
-        <li><span class="xi15">今日收益</span><div id="TodayInCome"></div></li>
-        <li><span class="xi15">累计收益</span><div id="allInCome"></div></li>
-    </ul>
+<div id="PageList">
+    <div class="grzxcon2 mgz xi30 bai cen">
+        <ul>
+            <li><span class="xi15">今日订单</span><div id="OrderNum"></div></li>
+            <li><span class="xi15">今日收益</span><div id="TodayInCome"></div></li>
+            <li><span class="xi15">累计收益</span><div id="allInCome"></div></li>
+        </ul>
+    </div>
+
+    @*<div class="ListTitle mgz2 xi20 hui">订单记录
+
+        </div>*@
+
+    <div class="ListTitle_Condition1 mgz2">
+        <label>日期：</label>
+        <select id="cDateType" style="font-size:16px;" onchange="DateChanged()">
+            <option value="1">今天</option>
+            <option value="2">本周</option>
+            <option value="3">本月</option>
+            <option value="99" selected>全部</option>
+        </select>
+        <label>订单状态：</label>
+        <select id="cOrderStatus" style="font-size:16px;" onchange="DateChanged()">
+            <option value="1">未结算</option>
+            <option value="2" selected>已结算</option>
+            <option value="99">全部</option>
+        </select>
+    </div>
+
+    <table id="TableHeader" class="table large-only mgz2 ListTableTitle">
+        <tbody>
+            <tr class="text-right" id="trHeader">
+                <th style="width:50%;">订单编号</th>
+                <th style="width:50%;">代理应得金额</th>
+            </tr>
+            @*<tr>
+                    <td colspan="2" id="RecordSum" class="RecordSum">
+                    金额总计：<span id="RealTotalAmountSum"></span>
+                    </td>
+
+                </tr>*@
+        </tbody>
+    </table>
+
+    <div class="ListTableBody" id="ListTableBody">
+        @*<div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>*@
+        <table class="table mgz2  large-only" id="trContainer"></table>
+    </div>
 </div>
-
-@*<div class="ListTitle mgz2 xi20 hui">订单记录
-
-    </div>*@
-
-<div class="ListTitle_Condition1 mgz2">
-    <label>日期：</label>
-    <select id="cDateType" style="font-size:16px;" onchange="DateChanged()">
-        <option value="1">今天</option>
-        <option value="2">本周</option>
-        <option value="3">本月</option>
-        <option value="99" selected>全部</option>
-    </select>
-    <label>订单状态：</label>
-    <select id="cOrderStatus" style="font-size:16px;" onchange="DateChanged()">
-        <option value="1">未结算</option>
-        <option value="2" selected>已结算</option>
-        <option value="99">全部</option>
-    </select>
-</div>
-
-<table id="TableHeader" class="table large-only mgz2 ListTableTitle">
-    <tbody>
-        <tr class="text-right" id="trHeader">
-            <th style="width:50%;">订单编号</th>
-            <th style="width:50%;">代理应得金额</th>
-        </tr>
-        @*<tr>
-                <td colspan="2" id="RecordSum" class="RecordSum">
-                金额总计：<span id="RealTotalAmountSum"></span>
-                </td>
-
-            </tr>*@
-    </tbody>
-</table>
-
-<div class="ListTableBody" id="ListTableBody">
-    <div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>
-    <table class="table mgz2  large-only" id="trContainer"></table>
-</div>
-<button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%" onclick="Next();">加载更多</button>
+@*<button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%" onclick="Next();">加载更多</button>*@
 <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />

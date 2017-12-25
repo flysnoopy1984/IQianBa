@@ -3,7 +3,21 @@
     ViewBag.Title = "AgentList";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
+<script src="~/Content/Script/jsCommon.js"></script>
+<link href="@Url.Scrpit("~/Content/Css/Info.css")" rel="stylesheet" />
+<link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
+<script src="~/Content/Script/Component/jquery-confirm.js"></script>
+@*<script src="~/Content/Script/Component/dropload.min.js"></script>*@
+<script src="@Url.Scrpit("~/Content/Script/iqb.dropload.min.js")"></script>
+@*<script src="~/Content/Script/Component/dropload.min.js"></script>*@
+<script src="@Url.Scrpit("~/Content/Script/IQBPay/AgentList.js")"></script>
 
-<h2>AgentList</h2>
+<div id="PageList">
+    <div class="grzxcon2 mgz xi30 bai cen">我的兄弟们</div>
+    <div class="ListTableBody_noFixed" id="ListTableBody">
+        @*<div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>*@
+        <table class="table mgz2  large-only" id="trContainer"></table>
+    </div>   
+</div>
 
 

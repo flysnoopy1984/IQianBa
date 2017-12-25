@@ -11,5 +11,6 @@ namespace IQBCore.IQBPay.Models.Result
     [NotMapped()]
     public class RQRUser:EQRUser
     {
+      
     }
 }
