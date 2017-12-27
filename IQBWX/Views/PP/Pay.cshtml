@@ -18,7 +18,7 @@
     <script src="~/Content/Script/Component/jquery-confirm.js"></script>
     <script src="@Url.Scrpit("~/Content/Script/IQBPay/Pay.js")"></script>
 
-    <title>支付界面</title>
+    <title>【找熟人】</title>
 </head>
 <body>
     <style>
@@ -28,37 +28,38 @@
 
         .TitleInfo {
             height: 110px;
-            line-height:110px;
+            line-height: 110px;
             width: 95%;
             text-align: center;
         }
     </style>
 
     <div class="mgz cen" id="PayArea">
-        <div class="yuec mg2 xi35" style="margin-top:20px;">【找熟人】花呗支付平台</div>
-        <div class="TitleInfo mg2 xi30" style="color:#F97600">请通过支付宝扫码支付</div>
+        <div class="yuec mg2 xi35" style="margin-top:20px;">服务通道</div>
+        <div class="mg2 xi30" style="color:#F97600; margin-top:40px;">
+            <button type="button" class="mgz btn btn-success" id="btnPay" style="width:60%; height:60px;" onclick="GoToSafePay();">切换模式</button>
+        </div>
+        <div class="TitleInfo mg2 xi30" style="color:#F97600">请通过支付宝扫码</div>
         @*<div>
-        <span class="FieldLabel">收款支付宝账号</span>
-        <input id="AliPayAccount" class="AliPayAccount" type="text">
-        <button type="button" class="mgz btn btn-success verifyButton" id="bnConfirmAliPayAccount" onclick="ConfirmAliPayAccount()">确定</button>
-        <button type="button" class="mgz btn btn-danger verifyButton" id="bnModifyAliPayAccount" onclick="ModifyAliPayAccount()">修改</button>
-    </div>*@
+                <span class="FieldLabel">收款支付宝账号</span>
+                <input id="AliPayAccount" class="AliPayAccount" type="text">
+                <button type="button" class="mgz btn btn-success verifyButton" id="bnConfirmAliPayAccount" onclick="ConfirmAliPayAccount()">确定</button>
+                <button type="button" class="mgz btn btn-danger verifyButton" id="bnModifyAliPayAccount" onclick="ModifyAliPayAccount()">修改</button>
+            </div>*@
 
 
         <div id="PayContent">
-            <div class="yuex mg2 xi20" style="color:cornflowerblue">请用10元测试，避免数额太小，金额为零</div>
-            
+            @*<div class="yuex mg2 xi20" style="color:cornflowerblue">请用10元测试，避免数额太小，金额为零</div>*@
+
             <div class="form-group">
                 <label class="FieldLabel">输入金额</label>
                 <div class="mgz">
                     <input id="TotalAmout" class="PayEditInput" type="text" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")' />
                 </div>
             </div>
-            <div class="mg2 xi30" style="color:#F97600; margin-top:40px;">
-                <button type="button" class="mgz btn btn-success" id="btnPay" style="width:60%; height:60px;" onclick="GoToSafePay();">切换到防风控支付模式</button>
-            </div>
-            <div id="buttonArea">
-                <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnPay" style="width:90%; height:100px;" onclick="PayToAli();">支付</button>
+          
+            <div id="buttonArea" style="margin-top:300px;border-top:dashed 1px black; height:120px; line-height:120px;">
+                <button type="button" class="mgz btn btn-primary" id="btnPay" style="width:90%; height:80px;" onclick="PayToAli();">支付</button>
             </div>
         </div>
 

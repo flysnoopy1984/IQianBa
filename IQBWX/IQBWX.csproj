@@ -263,7 +263,6 @@
     <Compile Include="BLL\SMS.cs" />
     <Compile Include="BLL\WXAuthorizeAttribute.cs" />
     <Compile Include="Common\HttpHelper.cs" />
-    <Compile Include="Common\IQBLog.cs" />
     <Compile Include="Controllers\API\HJBController.cs" />
     <Compile Include="Controllers\API\InitController.cs" />
     <Compile Include="Controllers\API\OutDataController.cs" />
@@ -278,6 +277,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PayController.cs" />
     <Compile Include="Controllers\WXController.cs" />
+    <Compile Include="Controllers\WXHelperController.cs" />
     <Compile Include="DataBase\IQBPay\AliPayContent.cs" />
     <Compile Include="DataBase\BookContent.cs" />
     <Compile Include="DataBase\Html5Content.cs" />
@@ -390,6 +390,8 @@
     <Content Include="Views\Test\TestQR.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\PP\PayWithAccount.cshtml" />
+    <Content Include="Views\Test\MediaList.cshtml" />
+    <Content Include="Views\WXHelper\MediaList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

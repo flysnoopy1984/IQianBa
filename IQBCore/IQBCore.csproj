@@ -152,6 +152,9 @@
     <Compile Include="IQBWX\BaseEnum\IQBWxEnum.cs" />
     <Compile Include="IQBWX\Const\IQBWXConst.cs" />
     <Compile Include="IQBWX\Models\InParameter\InQR.cs" />
+    <Compile Include="IQBWX\Models\Json\WXMedia\JIMedia.cs" />
+    <Compile Include="IQBWX\Models\Json\WXMedia\JOMedia.cs" />
+    <Compile Include="IQBWX\Models\Json\WXMedia\JOMedia_Item.cs" />
     <Compile Include="IQBWX\Models\OutParameter\OutSMS.cs" />
     <Compile Include="IQBWX\Models\OutParameter\SSOQR.cs" />
     <Compile Include="IQBWX\Models\WX\Template\BaseTemplate.cs" />

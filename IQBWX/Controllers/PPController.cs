@@ -921,6 +921,38 @@ namespace IQBWX.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult InviteCodeUpdate(EQRInfo qrInfo)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    qrInfo.InitModify();
+                    DbEntityEntry<EQRInfo> entry = db.Entry<EQRInfo>(qrInfo);
+                    entry.State = EntityState.Unchanged;
+                    entry.Property(t => t.ParentOpenId).IsModified = true;
+                    entry.Property(t => t.ParentCommissionRate).IsModified = true;
+                    entry.Property(t => t.Rate).IsModified = true;
+                    entry.Property(t => t.ReceiveStoreId).IsModified = true;
+
+                    entry.Property(t => t.MDate).IsModified = true;
+                    entry.Property(t => t.MTime).IsModified = true;
+                    entry.Property(t => t.ModifyDate).IsModified = true;
+                    db.SaveChanges();
+                }
+                    
+
+              
+            }
+            catch(Exception ex)
+            {
+                return base.ErrorResult(ex.Message);
+            }
+            return Json(result);
+        }
+
         public ActionResult InviteCode()
         {
             RQRInfo qr = null;
@@ -933,13 +965,21 @@ namespace IQBWX.Controllers
             using (AliPayContent db = new AliPayContent())
             {
                 qr = db.DBQRInfo.Where(a => a.OwnnerOpenId == UserSession.OpenId).Select(a=>new RQRInfo {
+                    ID = a.ID,
                     Rate=a.Rate,
+                    ParentOpenId = a.ParentOpenId,
                     ParentCommissionRate = a.ParentCommissionRate,
                     FilePath = PPWeb + a.FilePath,
                 }).FirstOrDefault();
 
                 if (qr == null)
-                    qr = new RQRInfo();
+                    throw new Exception("没有找到您的邀请码，请联系管理员");
+
+                if(UserSession.UserRole == UserRole.Administrator)
+                {
+                    qr.StoreList = db.Database.SqlQuery<HashStore>("select Id,Name,IsReceiveAccount from storeinfo").ToList();
+                    qr.ParentAgentList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo").ToList();
+                }
                     
             }
 

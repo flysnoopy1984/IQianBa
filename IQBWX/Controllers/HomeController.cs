@@ -1,4 +1,5 @@
-﻿using IQBCore.IQBWX.BaseEnum;
+﻿using IQBCore.Common.Helper;
+using IQBCore.IQBWX.BaseEnum;
 using IQBWX.BLL;
 using IQBWX.Common;
 using IQBWX.DataBase;
@@ -55,14 +56,13 @@ namespace IQBWX.Controllers
         {
             string url = "http://localhost:34484/";
             url += "API/OutData/RefreshGlobelConfig";
-            HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, "", "application/x-www-form-urlencoded");
+            IQBCore.Common.Helper.HttpHelper.RequestUrlSendMsg(url, IQBCore.Common.Helper.HttpHelper.HttpMethod.Post, "", "application/x-www-form-urlencoded");
 
             return View();
         }
         public ActionResult Message()
         {
-            
-          
+             
             try
             {
                 string echostr = Request.QueryString["echostr"];
@@ -73,13 +73,16 @@ namespace IQBWX.Controllers
                    
                     StreamReader reader = new StreamReader(Request.InputStream);
                     string strXml = reader.ReadToEnd();
-                //    log.log("Message strXml:" + strXml);
+
+                  
+                  //  log.log("Message strXml:" + strXml);
+
                     if (string.IsNullOrEmpty(strXml))
                         return View();
                
-
                     WXMessage wxMsg = new WXMessage();
                     wxMsg.LoadXml(strXml); 
+
                     MenuEvents menuEvent= new MenuEvents();
                     switch (wxMsg.Event)
                     {

@@ -1,4 +1,5 @@
 ﻿using IQBCore.Common.Constant;
+using IQBCore.Common.Helper;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Const;
@@ -68,7 +69,12 @@ namespace IQBWX.BLL
                         string desc = "代理返点率：" + payQRUser.Rate+"%  |  用户手续费：["+payQRUser.MarketRate+"%]";
                         this.ResponseXml = msg.toPicText(picUrl, GoUrl, desc);
                         break;
-                   
+                    case "wx_301":
+                       
+                        this.ResponseXml = msg.toPic("yd6E8-ZKD6W7zH_0yEbfqrbtlh8_hY9vwj-d1BzM414");
+                     //   log.log("wx_301：" + ResponseXml);
+                        break;
+
                     default:
                         break;
 
@@ -307,7 +313,7 @@ namespace IQBWX.BLL
             accessToken, msg.FromUserName);
             log.log("newUserSubscribe url:" + url_userInfo);
 
-            WXUserInfo wxUser = HttpHelper.Get<WXUserInfo>(url_userInfo);
+            WXUserInfo wxUser = IQBCore.Common.Helper.HttpHelper.Get<WXUserInfo>(url_userInfo);
             EUserInfo ui = new EUserInfo(wxUser);
             pui = null;
             ui.SubscribeDateTime = DateTime.Now;

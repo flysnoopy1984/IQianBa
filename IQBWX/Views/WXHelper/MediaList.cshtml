@@ -1,0 +1,78 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>素材列表</title>
+    <script src="~/Content/Script/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        var pageIndex = 0;
+        function AddMore()
+        {
+            pageIndex++;
+            Query();
+        }
+        function Query()
+        {
+            var url = "/WXHelper/MediaListQuery";
+
+            $.ajax({
+                type: 'post',
+                data: "Page=" + pageIndex + "&PageSize=20",
+                url: url,
+                success: function (data) {
+                    var arrLen = data.item_count;
+
+                    if (arrLen > 0) {
+                        generateData(data.item);
+                       
+                    }
+                  
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+                    // 即使加载出错，也得重置
+                }
+            });
+        }
+
+        function generateData(result)
+        {
+            var strCtrl = "";
+
+            $.each(result, function (i) {
+
+                strCtrl = "";
+                strCtrl += "<tr>";
+                strCtrl += "<td style='width:28%'>";
+                strCtrl += result[i].media_id;
+                strCtrl += "</td>";
+                strCtrl += "<td style='width:36%'>";
+                strCtrl += result[i].name;
+                strCtrl += "</td>";
+                strCtrl += "<td style='width:36%'>";
+                strCtrl += "<img src='" + result[i].url + "' style='width:128px; height:128px;' />";
+                strCtrl += "</td>";
+                strCtrl += "</tr>";
+
+                $("#trContainer").append(strCtrl);
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div> 
+        <input type="button" value="获取" onclick="Query();" />
+        <input type="button" value="加载更多" onclick="AddMore();" />
+        <table border="0" cellpadding="0" cellspacing="0" id="trContainer">
+            
+        </table>
+    </div>
+</body>
+</html>

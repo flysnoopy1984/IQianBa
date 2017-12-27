@@ -1,4 +1,5 @@
-﻿using IQBWX.Common;
+﻿using IQBCore.Common.Helper;
+using IQBWX.Common;
 using IQBWX.Models.Product;
 using IQBWX.Models.WX;
 using System;

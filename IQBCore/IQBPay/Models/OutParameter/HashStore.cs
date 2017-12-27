@@ -12,5 +12,7 @@ namespace IQBCore.IQBPay.Models.OutParameter
         public string Name { get; set; }
 
         public float Rate { get; set; }
+
+        public bool IsReceiveAccount { get; set; }
     }
 }

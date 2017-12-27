@@ -13,12 +13,63 @@ using ThoughtWorks.QRCode.Codec;
 using IQBCore.IQBWX.Models.OutParameter;
 using Newtonsoft.Json;
 using System.Security.Policy;
+using System.IO;
 
 namespace IQBCore.IQBPay.BLL
 {
     public class QRManager
     {
-        
+        /// <summary>
+        /// 更新收款二维码
+        /// </summary>
+        /// <param name="qrUser"></param>
+        /// <param name="logoUrl"></param>
+        /// <returns></returns>
+        public static EQRUser UpdateReceiveQR(EQRUser qrUser,string SeqNo)
+        {
+            try
+            {
+             
+
+
+               
+                string filename = qrUser.OrigQRFilePath;
+                string filePath = HttpContext.Current.Server.MapPath(qrUser.OrigQRFilePath);
+                FileInfo fi = new FileInfo(filePath);
+
+
+                Bitmap qrImg = new Bitmap(filePath);
+
+
+                //BK
+                //+ "ARUserBK1.jpg";
+                string bkAdree = HttpContext.Current.Server.MapPath("/Content/QR/BK/ARUserBK1.jpg");
+                Bitmap bkImg = new Bitmap(bkAdree);
+                Bitmap finImg = ImgHelper.ImageWatermark(bkImg, qrImg);
+
+                filePath = ConfigurationManager.AppSettings["QR_ARUser_FP"];
+                filename = "BK_"+ SeqNo +"_"+ fi.Name;
+                filePath += filename;
+
+                finImg.Save(HttpContext.Current.Server.MapPath(filePath));
+                finImg.Dispose();
+                bkImg.Dispose();
+                
+
+                qrUser.FilePath = filePath;
+              
+
+            }
+            catch (Exception ex)
+            {
+                IQBLog log = new IQBLog();
+                log.log("CreateUserUrlById Error:" + ex.Message);
+                throw ex;
+            }
+
+            return qrUser;
+        }
+
         /// <summary>
         /// 收款二维码
         /// </summary>
@@ -30,7 +81,7 @@ namespace IQBCore.IQBPay.BLL
                  string url = site + "PP/Pay?Id=" + qrUser.ID;
 
                  string filePath = ConfigurationManager.AppSettings["QR_ARUser_FP"];
-                 string filename = "QRARU" + System.DateTime.Now.ToString("yyyyMMddHHmmss") + (new Random()).Next(1, 100).ToString()
+                 string filename = "QRARU-1_" + System.DateTime.Now.ToString("yyyyMMddHHmm") + (new Random()).Next(1, 100).ToString()
                  + ".jpg";
 
                  filePath += filename;

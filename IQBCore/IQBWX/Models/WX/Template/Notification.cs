@@ -32,9 +32,9 @@ namespace IQBCore.IQBWX.Models.WX.Template
             
                 var data = SetData();
                 template = JsonConvert.SerializeObject(data);
-                 log.log("Push Template File: " + template);
+               //  log.log("Push Template File: " + template);
                 string result = HttpHelper.RequestUrlSendMsg(strUrl, HttpHelper.HttpMethod.Post,template, "application/json");
-                log.log("Push Result: " + result);
+                //log.log("Push Result: " + result);
 
                 return result;
             }

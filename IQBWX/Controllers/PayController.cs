@@ -1,4 +1,5 @@
-﻿using IQBCore.IQBWX.BaseEnum;
+﻿using IQBCore.Common.Helper;
+using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Const;
 using IQBWX.BLL;
 using IQBWX.BLL.NT;

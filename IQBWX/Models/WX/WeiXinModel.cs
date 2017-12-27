@@ -133,6 +133,26 @@ namespace IQBWX.Models.WX
             return xml;
         }
 
+        public string toPic(string mediaId)
+        {
+            string xml = @"<xml>
+                      <ToUserName>
+                        <![CDATA[{0}]]></ToUserName>
+                      <FromUserName>
+                        <![CDATA[{1}]]></FromUserName>
+                      <CreateTime>12345678</CreateTime>
+                      <MsgType>
+                        <![CDATA[image]]></MsgType>
+                      <Image>
+                        <MediaId>
+                          <![CDATA[{2}]]></MediaId>
+                      </Image>
+                    </xml>";
+            xml = string.Format(xml, this.FromUserName, this.ToUserName,mediaId);
+            return xml;
+
+        }
+
         public string toPicText(string picUrl,string url,string desc = "点击获取酷炫二维码标记")
         {            
             

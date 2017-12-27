@@ -1,4 +1,5 @@
-﻿using IQBWX.Common;
+﻿using IQBCore.Common.Helper;
+using IQBWX.Common;
 using IQBWX.DataBase;
 using System;
 using System.Collections.Generic;

@@ -18,6 +18,7 @@ using IQBWX.DataBase.IQBPay;
 using IQBCore.IQBPay.Models.Sys;
 using IQBCore.Model;
 using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.Common.Helper;
 
 namespace IQBWX.Controllers
 {
@@ -194,6 +195,7 @@ namespace IQBWX.Controllers
             ViewBag.Headimgurl = UserSession.Headimgurl;
             ViewBag.ShowName = UserSession.Name ;
             ViewBag.OpenId = UserSession.OpenId;
+            ViewBag.UserRole = Convert.ToInt32(UserSession.UserRole);
            
 
 

@@ -1,8 +1,12 @@
 ﻿@model IQBCore.IQBPay.Models.Result.RQRInfo
+@using IQBCore.IQBPay.Models.OutParameter;
+@using IQBCore.IQBPay.BaseEnum;
 @{
     ViewBag.Title = "InviteCode";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
+<link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
+<script src="~/Content/Script/Component/jquery-confirm.js"></script>
 <link href="@Url.Scrpit("~/Content/Css/Info.css")" rel="stylesheet" />
 <script src="~/Content/Script/Component/Validform_v5.3.2_min.js"></script>
 <script src="@Url.Scrpit("~/Content/Script/IQBPay/InviteCode.js")"></script>
@@ -18,17 +22,58 @@
             </div>
 
         </div>
-
         <div class="form-group" id="Field_AfterMarketRate">
             <label class="label-top">上级代理反佣金率(%)</label>
             <div class="col-sm-6">
                 <input type="text" id="ParentCommRate" value="@Model.ParentCommissionRate" class="form-control" datatype="n" nullmsg="上级代理反佣金" sucmsg="OK" errormsg="请填写上级代理反佣金率" /> 
             </div>
         </div>
-        @if (ViewBag.UserRole == 100)
+        @if (@ViewBag.UserRole == Convert.ToInt32(UserRole.Administrator))
         {
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上级代理</label>
+                <div class="col-sm-6">
+                    <select id="selParentAgent" class="form-control" style="height:40px;">
+                       <option value="">无</option>
+                      @foreach (HashUser u in Model.ParentAgentList)
+                      {
+                          if (Model.ParentOpenId == u.OpenId)
+                          {
+                            <option value="@u.OpenId"  selected>@u.Name</option>
+                          }
+                          else
+                          {
+                            <option value="@u.OpenId">@u.Name</option>
+                          }
+
+                      }
+                    </select>                     
+                </div>
+            </div>
+          
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">商户</label>
+                <div class="col-sm-6">
+                    <select id="selStoreRate" class="form-control" style="height:40px;">
+                        @foreach (HashStore st in Model.StoreList)
+                        {
+                            if (st.IsReceiveAccount)
+                            {
+                                <option value="@st.Id" selected>@st.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@st.Id">@st.Name</option>
+                            }
+
+                        }
+                    </select>
+                </div>
+            </div>
+
             <div id="buttonArea" style="margin-bottom:50px;">
-                <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnSave" style="width:95%; height:60px;">更新</button>
+                <button type="button" class="mgz btn btn-primary" id="btnSave" style="width:95%; height:60px;" onclick="Update();">更新</button>
             </div>
         }
        
@@ -40,8 +85,9 @@
             <img id="QRImg" style="width:256px; height:256px;" src="@Model.FilePath" />
         </div>
     </div>
+    <input type="hidden" value="@Model.ID" id="hQRId" />
     <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
-   
+    <input type="hidden" value="@ViewBag.UserRole" id="hUserRole" />
 
 </div>
 

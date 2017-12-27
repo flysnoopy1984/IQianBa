@@ -1,4 +1,5 @@
-﻿using IQBCore.IQBPay.Models.QR;
+﻿using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.IQBPay.Models.QR;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,5 +15,9 @@ namespace IQBCore.IQBPay.Models.Result
         public string ParentName { get; set; }
 
         public string StoreName { get; set; }
+
+        public List<HashStore> StoreList { get; set; }
+
+        public List<HashUser> ParentAgentList { get; set; }
     }
 }

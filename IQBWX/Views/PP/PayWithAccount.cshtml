@@ -18,7 +18,7 @@
     <script src="~/Content/Script/Component/jquery-confirm.js"></script>
     <script src="@Url.Scrpit("~/Content/Script/IQBPay/PayWithAccount.js")"></script>
 
-    <title>支付界面</title>
+    <title>【找熟人】</title>
 </head>
 <body>
     <style>
@@ -35,25 +35,27 @@
     </style>
 
     <div class="mgz cen" id="PayArea">
-        <div class="yuec mg2 xi35" style="margin-top:20px;">【找熟人】花呗支付平台</div>
-        <div class="TitleInfo mg2 xi30" style="font-weight:bold;">请填写收款支付宝账户</div>
-       <div>
-            <span class="FieldLabel" style="color:#E22018;font-weight:bold;">*尽量避免和当前支付账号相同*</span>
-           <span class="FieldLabel" style="color:#E22018;font-weight:bold;">*尽量避免使用非手机账户*</span>
-           <span class="FieldLabel" style="color:#E22018;font-weight:bold;">*收款支付宝账户对应多个号</br>将无法收到钱*</span>
-           
+       
+        <div class="yuec mg2 xi35" style="margin-top:20px;">服务通道</div>
+        <div class="mg2 xi30" style="color:#F97600; margin-top:20px;">
+            <button type="button" class="mgz btn btn-warning" id="btnPay" style="width:60%; height:60px;" onclick="GoToFastPay();">切换到闪电模式</button>
+        </div>
+
+        <div>
+            @*<span class="FieldLabel" style="color:#E22018;font-weight:bold;">*尽量避免和当前支付账号相同*</span>
+            <span class="FieldLabel" style="color:#E22018;font-weight:bold;">*尽量避免使用手机账户*</span>
+            <span class="FieldLabel" style="color:#E22018;font-weight:bold;">*收款支付宝账户对应多个号</br>请使用闪电支付*</span>*@
+            <div class="TitleInfo mg2 xi30" style="font-weight:bold;">请填写收款账户</div>
             <input id="AliPayAccount" class="AliPayAccount" type="text">
-           
+
             <button type="button" class="mgz btn btn-success verifyButton" id="bnConfirmAliPayAccount" onclick="ConfirmAliPayAccount()">确定</button>
             <button type="button" class="mgz btn btn-danger verifyButton" id="bnModifyAliPayAccount" onclick="ModifyAliPayAccount()">修改</button>
-           <div class="mg2 xi30" style="color:#F97600; margin-top:20px;">
-               <button type="button" class="mgz btn btn-warning" id="btnPay" style="width:60%; height:60px;" onclick="GoToFastPay();">切换到闪电支付模式</button>
-           </div>
-       </div>
+          
+        </div>
 
 
         <div id="PayContent">
-            <div class="yuex mg2 xi20" style="color:cornflowerblue">请用10元测试，避免数额太小，金额为零</div>
+            @*<div class="yuex mg2 xi20" style="color:cornflowerblue">请用10元测试，避免数额太小，金额为零</div>*@
 
             <div class="form-group">
                 <label class="FieldLabel">输入金额</label>
@@ -62,9 +64,9 @@
                 </div>
             </div>
 
-        
-            <div id="buttonArea">
-                <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnPay" style="width:90%; height:80px;" onclick="PayToAli();">支付</button>
+
+            <div id="buttonArea" style="margin-top:300px;border-top:dashed 1px black; height:120px; line-height:120px;">
+                <button type="button" class="mgz btn btn-primary" id="btnPay" style="width:90%; height:80px;" onclick="PayToAli();">支付</button>
             </div>
         </div>
     </div>

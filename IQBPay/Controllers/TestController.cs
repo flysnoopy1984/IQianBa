@@ -132,6 +132,10 @@ namespace IQBPay.Controllers
                 
            return View();
         }
+        /// <summary>
+        /// 收款码背景图更新
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Batch_QR()
         {
             OutAPIResult result = new OutAPIResult();
@@ -148,9 +152,9 @@ namespace IQBPay.Controllers
 
                         updateQR = db.DBQRUser.Where(a => a.ID == qr.ID).First();
 
-                        if(string.IsNullOrEmpty(updateQR.OrigQRFilePath))
-
-                         updateQR = QRManager.CreateUserUrlById(updateQR, ui.Headimgurl);
+                    //    if(string.IsNullOrEmpty(updateQR.OrigQRFilePath))
+                       if(ui.OpenId!= "o3nwE0qI_cOkirmh_qbGGG-5G6B0")
+                             updateQR = QRManager.UpdateReceiveQR(updateQR,"2018");
 
 
 

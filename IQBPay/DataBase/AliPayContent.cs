@@ -134,6 +134,7 @@ namespace IQBPay.DataBase
                 //邀请码
                 cQR = new EQRInfo();
                 cQR.InitByUser(ui);
+                cQR.ReceiveStoreId = pQR.ReceiveStoreId;
                 this.DBQRInfo.Add(cQR);
                 this.SaveChanges();
 

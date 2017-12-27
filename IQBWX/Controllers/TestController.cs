@@ -1,5 +1,6 @@
 ﻿using IQBCore.Common.Helper;
 using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBWX.Models.Json;
 using IQBCore.IQBWX.Models.OutParameter;
 using Newtonsoft.Json;
 using System;
@@ -10,7 +11,7 @@ using System.Web.Mvc;
 
 namespace IQBWX.Controllers
 {
-    public class TestController : Controller
+    public class TestController : WXBaseController
     {
         
         // GET: Test
@@ -31,5 +32,7 @@ namespace IQBWX.Controllers
                 return View();
             //}
         }
+
+    
     }
 }
