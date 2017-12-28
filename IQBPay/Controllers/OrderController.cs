@@ -179,7 +179,7 @@ namespace IQBPay.Controllers
                     }
                     if (!string.IsNullOrEmpty(parameter.AgentName))
                     { 
-                        list=list.Where(o => o.AgentName == parameter.AgentName);
+                        list=list.Where(o => o.AgentName.Contains(parameter.AgentName));
                     }
 
                     if(parameter.OrderStatus != OrderStatus.ALL)

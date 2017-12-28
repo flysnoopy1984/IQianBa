@@ -125,7 +125,7 @@ namespace IQBPay.Controllers
         /// 
         /// </summary>
         /// <param name="Id"></param>
-        /// <param name="type">1 Order, 2 Transfer</param>
+        /// <param name="type">1 Order看Transfer, 2 Transfer</param>
         /// <returns></returns>
         [HttpPost]
         public ActionResult InfoWin(string Id,string type)

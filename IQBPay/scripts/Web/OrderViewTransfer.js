@@ -10,6 +10,15 @@ $(document).ready(function () {
     Query(Id,type);
 });
 
+function AdvAlert(result) {
+
+    $.alert({
+        theme: 'dark',
+        title: '异常',
+        content: result,
+    });
+}
+
 function Query(Id,type)
 {
     var url = "/Transfer/InfoWin";
@@ -72,6 +81,7 @@ function generateData(result) {
             strCtrl += "<td>" + result.TransferList[i].TransferAmount + "</td>";
             strCtrl += "<td>" + result.TransferList[i].TransDateStr + "</td>";
             strCtrl += "<td>" + result.TransferList[i].TargetAccount + "</td>";
+            strCtrl += "<td><a href=\"javascript:AdvAlert('" + result.TransferList[i].Log + "')\">" + result.TransferList[i].Log + "</a></td>";
             strCtrl += "</tr>";
             $("#TransferContainer").append(strCtrl);
         });

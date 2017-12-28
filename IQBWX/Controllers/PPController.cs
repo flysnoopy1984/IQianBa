@@ -791,9 +791,11 @@ namespace IQBWX.Controllers
                         DbEntityEntry<EQRUser> entry = db.Entry<EQRUser>(qrUser);
                         entry.State = EntityState.Unchanged;
                         entry.Property(t => t.IsCurrent).IsModified = true;
-
-                        if (qrUser.IsCurrent)
+                        int n = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId).Count();
+                        
+                        if (qrUser.IsCurrent && n>1)
                         {
+                           
                             var p_OpenId = new SqlParameter("@OpenId", UserSession.OpenId);
 
                             string sql = @"update [QRUser]
@@ -802,6 +804,14 @@ namespace IQBWX.Controllers
 
                             db.Database.ExecuteSqlCommand(sql, p_OpenId);
                         }
+                        else
+                        {
+                            if (n == 1)
+                            {
+                                return ErrorResult("只有一个二维码不能修改当前选项");
+                            }
+                        }
+                      
 
                         db.SaveChanges();
                     }

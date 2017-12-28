@@ -75,7 +75,7 @@ namespace IQBWX.Controllers
                     string strXml = reader.ReadToEnd();
 
                   
-                  //  log.log("Message strXml:" + strXml);
+                  
 
                     if (string.IsNullOrEmpty(strXml))
                         return View();
@@ -98,11 +98,10 @@ namespace IQBWX.Controllers
                             break;
                         case "subscribe":
                             if (!menuEvent.WXScanLogin(wxMsg,this))
-                             
-                            menuEvent.SubscribeHandler(wxMsg,this);
+                                menuEvent.SubscribeHandler(wxMsg,this);
                             break;
-
                         default:
+                            menuEvent.ResponseXml = wxMsg.toText("有任何问题，请到公众号菜单【来找熟人】->【联系我们】");
                         break;
                     }
                     //log.log("Message: " + menuEvent. ResponseXml);

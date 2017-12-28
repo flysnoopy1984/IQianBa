@@ -9,11 +9,15 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>转账记录</title>
+
+  
     <link href="@Url.Scrpit("~/Content/bootstrap.min.css")" rel="stylesheet" />
     <link href="@Url.Scrpit("~/Content/main.css")" rel="stylesheet" />
     <link href="@Url.Scrpit("~/Content/Style/Web/InfoWin.css")" rel="stylesheet" />
-
+   
     <script src="@Url.Scrpit("~/scripts/jquery-1.10.2.min.js")"></script>
+    <link href="~/Content/Component/jquery-confirm.css" rel="stylesheet" />
+    <script src="~/scripts/Component/jquery-confirm.js"></script>
     <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
     <script src="@Url.Scrpit("~/scripts/Web/OrderViewTransfer.js")"></script>
     
@@ -42,10 +46,11 @@
             <thead class="cf">
                 <tr id="trHeader">
                     <th style='width:20%;'>汇款编号</th>
-                    <th style="width:20%;">汇款方向</th>
-                    <th style="width:20%;">汇款金额</th>
-                    <th style="width:20%;">汇款时间</th>
-                    <th style="width:20%;">汇款账户</th>
+                    <th style="width:10%;">汇款方向</th>
+                    <th style="width:10%;">汇款金额</th>
+                    <th style="width:15%;">汇款时间</th>
+                    <th style="width:15%;">汇款账户</th>
+                    <th style="width:30%;">日志</th>
                
                 </tr>
             </thead>

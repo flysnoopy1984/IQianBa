@@ -147,7 +147,7 @@ namespace IQBCore.IQBPay.BLL
                 transfer.TransferStatus = TransferStatus.Failure;
                 transfer.Log += string.Format("[Transfer to {2}] SubCode:{0};Submsg:{1}", res.SubCode, res.SubMsg, target.ToString());
 
-                order.LogRemark += "【转账错误】目标：" + target + "; 转账单号:"+ TransferId;
+                order.LogRemark += "【转账错误】"+ string.Format("[Transfer to {2}] SubCode:{0};Submsg:{1}", res.SubCode, res.SubMsg, target.ToString()); 
                 order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
             }
             return transfer;

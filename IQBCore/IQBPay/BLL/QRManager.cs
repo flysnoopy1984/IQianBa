@@ -81,7 +81,7 @@ namespace IQBCore.IQBPay.BLL
                  string url = site + "PP/Pay?Id=" + qrUser.ID;
 
                  string filePath = ConfigurationManager.AppSettings["QR_ARUser_FP"];
-                 string filename = "QRARU-1_" + System.DateTime.Now.ToString("yyyyMMddHHmm") + (new Random()).Next(1, 100).ToString()
+                 string filename = "QRARU_" +qrUser.ID+ System.DateTime.Now.ToString("yyyyMMdd") + (new Random()).Next(1, 100).ToString()
                  + ".jpg";
 
                  filePath += filename;
