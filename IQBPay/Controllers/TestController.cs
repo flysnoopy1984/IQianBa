@@ -132,6 +132,35 @@ namespace IQBPay.Controllers
                 
            return View();
         }
+
+        public ActionResult UpdateHeaderLogo(string openId)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+              //  string openId = "o3nwE0jrONff65oS-_W96ErKcaa0";
+                using (AliPayContent db = new AliPayContent())
+                {
+                    var list = db.DBQRUser.Where(o => o.OpenId == openId);
+                    EUserInfo ui= db.DBUserInfo.Where(o => o.OpenId == openId).FirstOrDefault();
+                    EQRUser qrUser;
+                    foreach (EQRUser qr in list)
+                    {
+                        
+                        qrUser = QRManager.CreateUserUrlById(qr, ui.Headimgurl);
+
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+                result.IsSuccess = false;
+            }
+
+            return Json(result);
+        } 
         /// <summary>
         /// 收款码背景图更新
         /// </summary>

@@ -19,6 +19,8 @@ namespace IQBPay.Controllers
     {
     
         private static EAliPayApplication _App;
+        private static EAliPayApplication _SubApp;
+
         private static EStoreInfo _SubAccount;
         private static EGlobalConfig _GlobelConfig;
         private IQBLog _Log;
@@ -38,6 +40,7 @@ namespace IQBPay.Controllers
         public static void CleanApp()
         {
             _App = null;
+            _SubApp = null;
         }
 
        
@@ -112,7 +115,26 @@ namespace IQBPay.Controllers
             }
         }
 
-      
+        public static EAliPayApplication SubApp
+        {
+            get
+            {
+                if (_SubApp == null)
+                {
+                    using (AliPayContent db = new AliPayContent())
+                    {
+                        _SubApp = db.DBAliPayApp.Where(a => a.IsSubAccount == true).FirstOrDefault();
+                        if (_SubApp == null)
+                        {
+                            throw new Exception("没有Sub应用");
+                        }
+                    }
+                }
+                return _SubApp;
+            }
+        }
+
+
 
         public BaseController()
         {

@@ -72,7 +72,7 @@ namespace IQBCore.IQBPay.BLL
         /// <param name="accessToken"></param>
         /// <param name="GlobalConfig">获取是否微信转账配置</param>
         /// <returns></returns>
-        public ETransferAmount TransferHandler(TransferTarget target,EAliPayApplication app, EUserInfo ui,ref EOrderInfo order, string accessToken,EGlobalConfig GlobalConfig)
+        public ETransferAmount TransferHandler(TransferTarget target,EAliPayApplication app, EAliPayApplication subApp,EUserInfo ui,ref EOrderInfo order, string accessToken,EGlobalConfig GlobalConfig)
         {
             string TransferId ="";
             ETransferAmount transfer = null;
@@ -102,10 +102,26 @@ namespace IQBCore.IQBPay.BLL
                     TransferAmount = order.BuyerTransferAmount;
                     break;
             }
-
-            res = DoTransferAmount(target, app, AliPayAccount, TransferAmount.ToString("0.00"), PayTargetMode, out TransferId);
+            if(target == TransferTarget.User)
+            {
+                res = DoTransferAmount(target, subApp, AliPayAccount, TransferAmount.ToString("0.00"), PayTargetMode, out TransferId);
+                if (res.Code == "40004" && res.SubCode == "PAYER_BALANCE_NOT_ENOUGH")
+                {
+                    string tid;
+                    Random r = new Random();
+                    int num = r.Next(15890, 19588);
+                    AlipayFundTransToaccountTransferResponse response = DoTransferAmount(TransferTarget.Internal,app, "hanyiadmin@126.com", num.ToString("0.00"), PayTargetMode.AliPayAccount, out tid);
+                    if(response.Code == "10000")
+                    {
+                        res = DoTransferAmount(target, subApp, AliPayAccount, TransferAmount.ToString("0.00"), PayTargetMode, out TransferId);
+                    }
+                }
+            }
+            else
+                res = DoTransferAmount(target, app, AliPayAccount, TransferAmount.ToString("0.00"), PayTargetMode, out TransferId);
 
             transfer = ETransferAmount.Init(target, TransferId, TransferAmount, AliPayAccount, order,ui);
+           
 
             if (res.Code == "10000")
             {
@@ -116,7 +132,6 @@ namespace IQBCore.IQBPay.BLL
                  
                     if (GlobalConfig.IsWXNotice_AgentTransfer)
                     {
-                     
                         if (!string.IsNullOrEmpty(accessToken))
                         {
                             if (target == TransferTarget.Agent)
@@ -144,6 +159,7 @@ namespace IQBCore.IQBPay.BLL
             }
             else
             {
+               
                 transfer.TransferStatus = TransferStatus.Failure;
                 transfer.Log += string.Format("[Transfer to {2}] SubCode:{0};Submsg:{1}", res.SubCode, res.SubMsg, target.ToString());
 
@@ -152,6 +168,8 @@ namespace IQBCore.IQBPay.BLL
             }
             return transfer;
         }
+
+       // public bool
 
         public AlipayFundTransToaccountTransferResponse DoTransferAmount(TransferTarget target,EAliPayApplication app,string toAliPayAccount,string Amount, PayTargetMode PayTargetMode,out string TransferId)
         {
@@ -180,6 +198,8 @@ namespace IQBCore.IQBPay.BLL
 
             return response;
         }
+
+   
 
         public EOrderInfo InitUnKnowOrderForAliPayNotice(HttpRequestBase Request)
         {

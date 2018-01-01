@@ -36,20 +36,20 @@
 
     <div class="mgz cen" id="PayArea">
        
-        <div class="yuec mg2 xi35" style="margin-top:20px;">服务通道</div>
-        <div class="mg2 xi30" style="color:#F97600; margin-top:20px;">
+        @*<div class="yuec mg2 xi35" style="margin-top:20px;">服务通道</div>*@
+        @*<div class="mg2 xi30" style="color:#F97600; margin-top:20px;">
             <button type="button" class="mgz btn btn-warning" id="btnPay" style="width:60%; height:60px;" onclick="GoToFastPay();">切换到闪电模式</button>
-        </div>
+        </div>*@
 
         <div>
-            @*<span class="FieldLabel" style="color:#E22018;font-weight:bold;">*尽量避免和当前支付账号相同*</span>
-            <span class="FieldLabel" style="color:#E22018;font-weight:bold;">*尽量避免使用手机账户*</span>
-            <span class="FieldLabel" style="color:#E22018;font-weight:bold;">*收款支付宝账户对应多个号</br>请使用闪电支付*</span>*@
-            <div class="TitleInfo mg2 xi30" style="font-weight:bold;">请填写收款账户</div>
+           <span class="FieldLabel" style="font-weight:bold; color:#FF6634">建议输入主账户以外的支付宝收款账户！</span>
+           @* <span class="FieldLabel" style="color:#E22018;font-weight:bold;">*尽量避免使用手机账户*</span>
+    <span class="FieldLabel" style="color:#E22018;font-weight:bold;">*收款支付宝账户对应多个号</br>请使用闪电支付*</span>*@
+            <div class="TitleInfo mg2 xi30" style="font-weight:bold; color:#FF6634">非本人支付宝账户避控效果为最佳！</div>
             <input id="AliPayAccount" class="AliPayAccount" type="text">
 
             <button type="button" class="mgz btn btn-success verifyButton" id="bnConfirmAliPayAccount" onclick="ConfirmAliPayAccount()">确定</button>
-            <button type="button" class="mgz btn btn-danger verifyButton" id="bnModifyAliPayAccount" onclick="ModifyAliPayAccount()">修改</button>
+            <button type="button" class="mgz btn btn-primary verifyButton" id="bnModifyAliPayAccount" onclick="ModifyAliPayAccount()">修改</button>
           
         </div>
 

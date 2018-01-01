@@ -71,7 +71,7 @@ namespace IQBPay.Core
 
         public static string callAliPay_Wap(string amt)
         {
-            EAliPayApplication app = BaseController.App;
+            EAliPayApplication app = BaseController.SubApp;
             IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
                        app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
 
@@ -101,7 +101,7 @@ namespace IQBPay.Core
 
         public static string callAliPay_PC(string amt)
         {
-            EAliPayApplication app = BaseController.App;
+            EAliPayApplication app = BaseController.SubApp;
             IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
                        app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
 

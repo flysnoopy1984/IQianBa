@@ -28,6 +28,9 @@ namespace IQBCore.IQBPay.Models.User
         [NotMapped()]
         public bool HasPhone { get; set; }
 
+        [MaxLength(100)]
+        public string AliPayAccount { get; set; }
 
+        public DateTime TransDate { get; set; }
     }
 }

@@ -22,5 +22,7 @@ namespace IQBCore.IQBPay.Models.Result
         public bool IsCurrent { get; set; }
 
         public string ParentOpenId { get; set; }
+
+        public float MarketRate { get; set; }
     }
 }

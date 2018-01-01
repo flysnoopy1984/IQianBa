@@ -224,7 +224,7 @@ namespace IQBPay.Controllers
         {
             return View();
         }
-        [IQBPayAuthorize_Admin]
+       // [IQBPayAuthorize_Admin]
         public ActionResult AppQuery(int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             //throw new Exception("Test Error");

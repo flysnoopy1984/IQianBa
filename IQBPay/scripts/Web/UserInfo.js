@@ -3,10 +3,10 @@ var gParentAgentList;
 
 $(document).ready(function () {
 
-    var Id = GetUrlParam("id");
+    var OpenId = GetUrlParam("OpenId");
 
-    if (Id == null || Id == "" || Id == "undefined") {
-        alert("无法识别ID");
+    if (OpenId == null || OpenId == "" || OpenId == "undefined") {
+        alert("无法识别OpenId");
         window.location.href = "list";
         return;
     }
@@ -15,13 +15,13 @@ $(document).ready(function () {
 
     $('#Name').attr("disabled", true);
     //$('#ParentCommissionRate').attr("disabled", true);
-    Init(Id);
+    Init(OpenId);
 
 });
 
-function Init(Id) {
+function Init(OpenId) {
    
-    $("#RecId").val(Id);
+    $("#OpenId").val(OpenId);
 
     $('#selStore').on('change', function () {
         var selVal = $('#selStore').val();
@@ -45,7 +45,7 @@ function Init(Id) {
     var url = "/User/Get";
     $.ajax({
         type: 'post',
-        data: "Id=" + Id,
+        data: "OpenId=" + OpenId,
         url: url,
         success: function (data) {
             gStoreList = data.StoreList;
@@ -139,7 +139,7 @@ function CheckForm() {
 
 function Save() {
     
-    var ID = $("#RecId").val();
+    var OpenId = $("#OpenId").val();
     var IsAutoTransfer = $("#IsAutoTransfer").get(0).checked;
     var AliPayAccount = $("#AliPayAccount").val();
     var UserStatus = $("#UserStatus").val();
@@ -161,7 +161,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "Id": ID,"Rate":Rate,"MarketRate":MarketRate,"IsAutoTransfer": IsAutoTransfer, "AliPayAccount": AliPayAccount,"UserRole":UserRole, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName":ParentName,"ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
+        data: { "OpenId": OpenId, "Rate": Rate, "MarketRate": MarketRate, "IsAutoTransfer": IsAutoTransfer, "AliPayAccount": AliPayAccount, "UserRole": UserRole, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName": ParentName, "ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
         url: url,
         success: function (data) {
             if (data == "OK") {

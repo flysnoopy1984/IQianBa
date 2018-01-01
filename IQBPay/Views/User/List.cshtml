@@ -17,9 +17,26 @@
 <div id="ListArea">
     <div id="Title" style="margin:0px;">
         <span id="ListTitleName"></span>
+        <div class="ListCondition">
+            <ul class="UlHorizontal">
+                <li>
+                    <div class="form-group">
+                        <label>代理名称：</label>
+                        <input id="cAgentName" type="text" class="form-control ConditionField">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-group">
+                        <label>上级代理：</label>
+                        <input id="cParentName" type="text" class="form-control ConditionField">
+                    </div>
+                </li>
+            </ul>
+
+        </div>
         <ul class="UlHorizontal" style="float:right">  
           <li>
-                <button type="button" class="btn btn-primary" onclick="Query();">查询</button>
+                <button type="button" class="btn btn-primary" onclick="BtnQuery();">查询</button>
             </li>
 
         </ul>
@@ -28,13 +45,13 @@
         <table id="tbData" class="table table-hover table-bordered TableOverflowHidden">
             <thead class="cf">
                 <tr id="trHeader">
-                    <th width="">用户名</th>
-                    <th width="">当前点率</th>
+                    <th width="250px">用户名</th>
+                    <th width="50px">当前点率</th>
                     <th width="">注册时间</th>
-                    <th width="">提现账户</th>
-                    <th width="">是否自动打款</th>
-                    <th width="">上级代理</th>
-                    <th width="">上级代理返点率</th>
+                    <th width="250px">提现账户</th>
+                    @*<th width="">是否自动打款</th>*@
+                    <th width="250px">上级代理</th>
+                    <th width="50px">上级代理返点率</th>
                     <th width="">收款商户</th>
                     <th width="">用户状态</th>
                     <th width=""> 操作</th>

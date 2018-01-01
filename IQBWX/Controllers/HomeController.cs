@@ -74,9 +74,6 @@ namespace IQBWX.Controllers
                     StreamReader reader = new StreamReader(Request.InputStream);
                     string strXml = reader.ReadToEnd();
 
-                  
-                  
-
                     if (string.IsNullOrEmpty(strXml))
                         return View();
                
@@ -101,7 +98,7 @@ namespace IQBWX.Controllers
                                 menuEvent.SubscribeHandler(wxMsg,this);
                             break;
                         default:
-                            menuEvent.ResponseXml = wxMsg.toText("有任何问题，请到公众号菜单【来找熟人】->【联系我们】");
+                            menuEvent.ResponseXml = wxMsg.toText("有任何问题，请到【找熟人官方服务号】");
                         break;
                     }
                     //log.log("Message: " + menuEvent. ResponseXml);
@@ -128,11 +125,17 @@ namespace IQBWX.Controllers
         {
             string code = Request.QueryString["code"];
             string errorMsg = Request.QueryString["ErrorMsg"];
+            string QRUserId = Request.QueryString["QRUserId"];
+
             jsonError data=null;
             if (!string.IsNullOrEmpty(code))
             {
                 Errorcode ec = (Errorcode)Enum.Parse(typeof(Errorcode), code);
                 data = jsonError.GetErrorObj(ec, errorMsg);
+                if(!string.IsNullOrEmpty(QRUserId))
+                {
+                    data.btnUrl += "?Id="+QRUserId;
+                }
                 return View(data);                       
                 
             }

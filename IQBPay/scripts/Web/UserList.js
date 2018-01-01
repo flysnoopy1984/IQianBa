@@ -22,16 +22,23 @@ function Prev() {
     }
     Query(false, pageIndex);
 }
-
+function BtnQuery()
+{
+    pageIndex = -1;
+    Query(true, pageIndex + 1);
+}
 function Query(NeedClearn,_PageIndex) {
 
     if (_PageIndex == 0)
         $("#trContainer").empty();
 
+    var cAgentName = $("#cAgentName").val();
+    var cParentName = $("#cParentName").val();
+
     var url = "/User/Query";
     $.ajax({
         type: 'post',
-        data: "role=2&pageIndex=" + _PageIndex,
+        data: "role=2&AgentName=" + cAgentName + "&ParentName="+cParentName+"&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -70,7 +77,7 @@ function generateData(result) {
         strCtrl += "<td>" + result[i].Rate + "</td>";
         strCtrl += "<td>" + result[i].CDate + "</td>";
         strCtrl += "<td>" + result[i].AliPayAccount + "</td>";
-        strCtrl += "<td>" + result[i].IsAutoTransfer + "</td>";
+        //strCtrl += "<td>" + result[i].IsAutoTransfer + "</td>";
         strCtrl += "<td>" + result[i].ParentAgent + "</td>";
         strCtrl += "<td>" + result[i].ParentCommissionRate + "</td>";
         if (result[i].StoreName == "" || result[i].StoreName == null)
@@ -85,7 +92,7 @@ function generateData(result) {
         else
             strCtrl += "<td><div class='noft-red-number'></div>禁用</td>";
 
-        strCtrl += "<td><a href='/User/Info?id=" + result[i].Id + "' class='td'>详情</a></td>";
+        strCtrl += "<td><a href='/User/Info?OpenId=" + result[i].OpenId + "' class='td'>详情</a></td>";
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);

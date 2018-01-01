@@ -61,7 +61,7 @@ namespace IQBWX.Models.JsonData
                 case Errorcode.AliPay_PayError:
                     obj.btnText = "返回支付";
                     obj.errorMsg = errorMsg;
-                    obj.btnUrl = "/PP/Pay";
+                    obj.btnUrl = "/PP/PayWithAccount";
                     break;
             }
 

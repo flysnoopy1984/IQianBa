@@ -24,6 +24,8 @@ function Query2() {
     var PageSize = 10;
     var url = "/PP/AgentListQuery";
 
+    var AgentName = $("#AgentName").val();
+
     $('#ListTableBody').dropload({
         scrollArea: window,
         loadDownFn: function (me) {
@@ -33,7 +35,7 @@ function Query2() {
 
             $.ajax({
                 type: 'post',
-                data: "Page=" + pageIndex + "&PageSize=" + PageSize,
+                data: "Page=" + pageIndex + "&PageSize=" + PageSize + "&AgentName=" + AgentName,
                 url: url,
                 success: function (data) {
                     var arrLen = data.length;
@@ -133,7 +135,7 @@ function generateData(result) {
         strCtrl += "<li style='color:cornflowerblue'>反点率:" + result[i].Rate + "</li>";
         strCtrl += "</ul></td>";
         strCtrl += "<td style='width:36%'><ul><li style='height:50px; color:gold; '>上级代理佣金:" + result[i].ParentCommissionRate + "</li>";
-        strCtrl += "<li " + usColor + ">代理状态：" + UserStatus + "</li>";
+        strCtrl += "<li " + usColor + ">用户手续费：" + result[i].MarketRate + "</li>";
      
         strCtrl += "</ul></td>";
         strCtrl += "<td><input type='button' class='btn-primary' value='详情' onclick='ToInfoPage(" + QueryData.length + ");' />"
@@ -152,4 +154,11 @@ function ToInfoPage(i)
         title: 'WOW！',
         content: "暂未开放，敬请期待！",
     });
+}
+
+function FilterAgent()
+{
+    $(".dropload-down").remove();
+    Init();
+   
 }

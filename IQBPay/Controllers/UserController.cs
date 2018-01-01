@@ -49,8 +49,8 @@ namespace IQBPay.Controllers
         {
             try
             {
-                int Id = this.GetUserSession().Id;
-                return Get(Id);
+                string OpenId = this.GetUserSession().OpenId;
+                return Get(OpenId);
             }
             catch
             {
@@ -60,7 +60,7 @@ namespace IQBPay.Controllers
         }
 
 
-        public ActionResult Get(int Id)
+        public ActionResult Get(string  OpenId)
         {
             string sql = @"select ui.Id,ui.Name,ui.UserStatus,ui.UserRole,ui.IsAutoTransfer,ui.CDate,ui.MDate,ui.UserRole,ui.Headimgurl,ui.AliPayAccount,
                            qruser.MarketRate,qruser.ID as qrUserId,QRUser.Rate,qruser.FilePath as QRFilePath,qruser.ParentCommissionRate,qruser.OrigQRFilePath,
@@ -69,10 +69,10 @@ namespace IQBPay.Controllers
                            from userinfo as ui 
                            left join qrUser on qruser.OpenId = ui.OpenId 
                            left join StoreInfo as si on si.ID = qruser.ReceiveStoreId                  
-                           where ui.Id = {0} and QRUser.IsCurrent ='true'
+                           where ui.openId = '{0}' and QRUser.IsCurrent ='true'
                         ";
 
-            sql = string.Format(sql, Id);
+            sql = string.Format(sql, OpenId);
            // base.Log.log(sql);
 
             using (AliPayContent db = new AliPayContent())
@@ -104,19 +104,29 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(UserRole role= UserRole.Agent, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
+        public ActionResult Query(UserRole role= UserRole.Agent,string AgentName="",string ParentName="", int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             
             List<RUserInfo> result = new List<RUserInfo>();
 
-            string sql = @"select ui.Id,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.AliPayAccount,ui.UserStatus,qruser.Rate,qruser.ParentCommissionRate,
+            string sql = @"select ui.Id,ui.OpenId,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.AliPayAccount,ui.UserStatus,qruser.Rate,qruser.ParentCommissionRate,
 	                    qruser.parentOpenId as ParentAgentOpenId,qruser.ParentName as ParentAgent,
 	                    si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
                         from userinfo as ui 
                         left join qrUser on qruser.OpenId = ui.OpenId
 		                left join StoreInfo as si on si.ID = qruser.ReceiveStoreId
-						where qrUser.IsCurrent = 'true'
-                        ORDER BY ui.CreateDate desc";
+						where qrUser.IsCurrent = 'true'";
+            if(!string.IsNullOrEmpty(AgentName))
+            {
+                sql += " and ui.name like '%"+AgentName+"%'";
+            }
+            if (!string.IsNullOrEmpty(ParentName))
+            {
+                sql += " and qruser.ParentName like '%" + ParentName + "%'";
+            }
+
+
+            sql +=" ORDER BY ui.CreateDate desc";
 
            // IQueryable<EUserInfo> list = null;
             try
@@ -169,44 +179,90 @@ namespace IQBPay.Controllers
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-
-                    EUserInfo ui = new EUserInfo();
-                    ui.Id = InUA.ID;
+                    float adjustRate = 0;
+                    
+                    EUserInfo ui = db.DBUserInfo.Where(o => o.OpenId == InUA.OpenId).FirstOrDefault();
+                  
                     ui.IsAutoTransfer = InUA.IsAutoTransfer;
                     ui.AliPayAccount = InUA.AliPayAccount;
                     ui.UserStatus = InUA.UserStatus;
                     ui.UserRole = InUA.UserRole;
                     ui.parentOpenId = InUA.ParentOpenId;
+                    
+                    //本人所有QRUser
+                    List<EQRUser> list = db.DBQRUser.Where(o => o.OpenId == InUA.OpenId).ToList();
+                    float Ratediff = InUA.MarketRate - InUA.Rate;
+                    
+                    for (int i=0;i<list.Count;i++)
+                    {
+                        EQRUser qrUser = list[i];
+                        if (adjustRate == 0 && qrUser.IsCurrent)
+                        {
+                            adjustRate =  InUA.Rate- qrUser.Rate;
+                        }
+                       
+                        
+                        qrUser.ParentName = InUA.ParentName;
+                        qrUser.ParentOpenId = InUA.ParentOpenId;
+                        qrUser.ParentCommissionRate = InUA.ParentCommissionRate;
+                        qrUser.ReceiveStoreId = InUA.StoreId;
+                        //qrUser.MarketRate = InUA.MarketRate;
+                        qrUser.Rate = qrUser.MarketRate- Ratediff;
 
-                    DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
-                    entry.State = EntityState.Unchanged;
-                    entry.Property(t => t.AliPayAccount).IsModified = true;
-                    entry.Property(t => t.IsAutoTransfer).IsModified = true;
-                    entry.Property(t => t.UserStatus).IsModified = true;
-                    entry.Property(t => t.UserRole).IsModified = true;
-                    entry.Property(t => t.parentOpenId).IsModified = true;
+                    }
+                    if(adjustRate!=0)
+                    {
+                        //本人邀请码QRInfo
+                        EQRInfo qrInfo = db.DBQRInfo.Where(a => a.ID == ui.QRInviteCode).FirstOrDefault();
+                        if (qrInfo == null)
+                        {
+                            throw new Exception("没有找到对应的邀请码");
+                        }
+                        qrInfo.Rate += adjustRate;
 
-                    EQRUser qrUser = new EQRUser();
-                    qrUser.ID = InUA.QrUserId;
-                    qrUser.ParentName = InUA.ParentName;
-                    qrUser.ParentOpenId  = InUA.ParentOpenId;
-                    qrUser.ParentCommissionRate  = InUA.ParentCommissionRate;
-                    qrUser.ReceiveStoreId = InUA.StoreId;
-                    qrUser.MarketRate = InUA.MarketRate;
-                    qrUser.Rate = InUA.Rate;
+                        //下级联动
+                        List<EQRUser> plist = db.DBQRUser.Where(o => o.ParentOpenId == InUA.OpenId).ToList();
+                        for (int i = 0; i < plist.Count; i++)
+                        {
+                            EQRUser qrUser = plist[i];
 
-                    DbEntityEntry<EQRUser> qrEntry = db.Entry<EQRUser>(qrUser);
-                    qrEntry.State = EntityState.Unchanged;
-                    qrEntry.Property(t => t.ParentName).IsModified = true;
-                    qrEntry.Property(t => t.ParentOpenId).IsModified = true;
-                    qrEntry.Property(t => t.ParentCommissionRate).IsModified = true;
-                    qrEntry.Property(t => t.ReceiveStoreId).IsModified = true;
-                    qrEntry.Property(t => t.MarketRate).IsModified = true;
-                    qrEntry.Property(t => t.Rate).IsModified = true;
 
+                            qrUser.Rate += adjustRate;
+
+                        }
+                    }
+                   
 
                     db.SaveChanges();
+                    /*
+                        DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
+                        entry.State = EntityState.Unchanged;
+                        entry.Property(t => t.AliPayAccount).IsModified = true;
+                        entry.Property(t => t.IsAutoTransfer).IsModified = true;
+                        entry.Property(t => t.UserStatus).IsModified = true;
+                        entry.Property(t => t.UserRole).IsModified = true;
+                        entry.Property(t => t.parentOpenId).IsModified = true;
 
+                        EQRUser qrUser = new EQRUser();
+
+                        qrUser.ID = InUA.QrUserId;
+                        qrUser.ParentName = InUA.ParentName;
+                        qrUser.ParentOpenId  = InUA.ParentOpenId;
+                        qrUser.ParentCommissionRate  = InUA.ParentCommissionRate;
+                        qrUser.ReceiveStoreId = InUA.StoreId;
+                        qrUser.MarketRate = InUA.MarketRate;
+                        qrUser.Rate = InUA.Rate;
+
+                        DbEntityEntry<EQRUser> qrEntry = db.Entry<EQRUser>(qrUser);
+                        qrEntry.State = EntityState.Unchanged;
+                        qrEntry.Property(t => t.ParentName).IsModified = true;
+                        qrEntry.Property(t => t.ParentOpenId).IsModified = true;
+                        qrEntry.Property(t => t.ParentCommissionRate).IsModified = true;
+                        qrEntry.Property(t => t.ReceiveStoreId).IsModified = true;
+                        qrEntry.Property(t => t.MarketRate).IsModified = true;
+                        qrEntry.Property(t => t.Rate).IsModified = true;
+
+                    */
 
                 }
             }

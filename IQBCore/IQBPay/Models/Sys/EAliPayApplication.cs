@@ -54,5 +54,7 @@ namespace IQBCore.IQBPay.Models.Sys
         /// </summary>
         public bool IsCurrent { get; set; }
 
+        public bool IsSubAccount { get; set; }
+
     }
 }

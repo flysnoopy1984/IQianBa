@@ -392,6 +392,7 @@
     <Content Include="Views\PP\PayWithAccount.cshtml" />
     <Content Include="Views\Test\MediaList.cshtml" />
     <Content Include="Views\WXHelper\MediaList.cshtml" />
+    <Content Include="Views\PP\AgentDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

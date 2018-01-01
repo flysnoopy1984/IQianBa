@@ -141,24 +141,24 @@ namespace IQBConsole
             Bitmap bt = null;
             try
             {
-                string enCodeString = "http://wx.iqianba.cn/PP/Pay?Id=5";
+                string enCodeString = @"http://www.dwz.cn/7b8eOm";
                 QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
                 qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
                 qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.H;
-                qrCodeEncoder.QRCodeScale = 4;
-                qrCodeEncoder.QRCodeVersion = 9;
+                qrCodeEncoder.QRCodeScale = 2;
+                qrCodeEncoder.QRCodeVersion = 0;
                 bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
-                
-                Bitmap blankBK = ImgHelper.CreateBlankImg(bt.Width+20,bt.Height+20,Brushes.White);
-                bt = ImgHelper.CombineImage(blankBK, bt);
 
-                string url = "http://wx.qlogo.cn/mmopen/hzVGicX27IG18yibKNnHfBojH4SpCPGNEvyOUZE8jxOw2ZnYcHzAkm7yHk0oKoCA2zqtyib09sxDzX5GOubMfyOraSMren2GUSw/0";
-                Image LogoImg = ImgHelper.GetImgFromUrl(url);
-                LogoImg = ImgHelper.resizeImage(LogoImg, new Size(56, 56));
-                LogoImg = ImgHelper.AddImgBorder(new Bitmap(LogoImg), 4,Color.Wheat);
+                //Bitmap blankBK = ImgHelper.CreateBlankImg(bt.Width+20,bt.Height+20,Brushes.White);
+                //bt = ImgHelper.CombineImage(blankBK, bt);
 
-                pictureBox1.Image =ImgHelper.CombineImage(bt, LogoImg);
+                //string url = "http://wx.qlogo.cn/mmopen/hzVGicX27IG18yibKNnHfBojH4SpCPGNEvyOUZE8jxOw2ZnYcHzAkm7yHk0oKoCA2zqtyib09sxDzX5GOubMfyOraSMren2GUSw/0";
+                //Image LogoImg = ImgHelper.GetImgFromUrl(url);
+                //LogoImg = ImgHelper.resizeImage(LogoImg, new Size(56, 56));
+                //LogoImg = ImgHelper.AddImgBorder(new Bitmap(LogoImg), 4,Color.Wheat);
 
+                //  pictureBox1.Image =ImgHelper.CombineImage(bt, LogoImg);
+                pictureBox1.Image = bt;
             }
             catch (Exception ex)
             {

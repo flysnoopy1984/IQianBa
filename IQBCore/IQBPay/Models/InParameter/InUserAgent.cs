@@ -9,7 +9,7 @@ namespace IQBCore.IQBPay.Models.InParameter
 {
     public class InUserAgent
     {
-        public int ID { get; set; }
+        public string OpenId { get; set; }
         public float Rate { get; set; }
 
         public string AliPayAccount { get; set; }

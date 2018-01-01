@@ -71,6 +71,8 @@ namespace IQBWX.Controllers
 
         public ActionResult Pay(string Id)
         {
+            return RedirectToAction("PayWithAccount", "PP", new { Id = Id });
+
             if(WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
             {
                 return RedirectToAction("ErrorMessage", "Home",new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
@@ -1012,6 +1014,8 @@ namespace IQBWX.Controllers
         {
             int pageIndex = Convert.ToInt32(Request["Page"]);
             int pageSize = Convert.ToInt32(Request["PageSize"]);
+            string AgentName = Request["AgentName"];
+
             List<RUser_ARQR> result = new List<RUser_ARQR>();
 
             using (AliPayContent db = new AliPayContent())
@@ -1029,11 +1033,16 @@ namespace IQBWX.Controllers
                                 IsCurrent = qrUser.IsCurrent,
                                 ParentOpenId = qrUser.ParentOpenId,
                                 UserStatus = ui.UserStatus,
+                                MarketRate = qrUser.MarketRate,
                             };
 
                 query = query.Where(a => a.IsCurrent == true);
                 if (UserSession.UserRole != UserRole.Administrator)
                     query = query.Where(a => a.ParentOpenId == UserSession.OpenId);
+                if(!string.IsNullOrEmpty(AgentName))
+                {
+                    query = query.Where(a=>a.UserName.Contains(AgentName));
+                }
                 if (pageIndex == 0)
                     result = query.Take(pageSize).ToList();
                 else
@@ -1043,6 +1052,19 @@ namespace IQBWX.Controllers
             }
           
         }
+
+        public ActionResult AgentDetail()
+        {
+            RQRInfo qr = null;
+            if (UserSession.UserRole < UserRole.DiamondAgent)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+            InitProfilePage();
+
+            return View();
+        }
+
         #endregion
 
         #region 加盟商户

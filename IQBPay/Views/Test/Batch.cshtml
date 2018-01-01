@@ -61,10 +61,35 @@
                 }
             });
         }
+        //更新头像
+        function UpdateHeaderLogo() {
+            var url = "/Test/UpdateHeaderLogo";
+            $.ajax({
+                type: 'post',
+                data:"openId=o3nwE0jrONff65oS-_W96ErKcaa0",
+                url: url,
+                success: function (data) {
+                    if (data.IsSuccess == true) {
+                        alert("OK");
+                    }
+                    else {
+                        alert("Error:" + data.ErrorMsg);
+                    }
+
+
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+
+
+                }
+            });
+        }
     </script>
 </head>
 <body>
     <div> 
+        <input type="button" value="更新头像" onclick="UpdateHeaderLogo()" />
         <input type="button" value="收款码背景图更新" onclick="DoQRBatch()" />
         <input type="button" value="邀请码" onclick="DoInviteQRBatch()" />
     </div>

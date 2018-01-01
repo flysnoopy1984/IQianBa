@@ -71,8 +71,8 @@ namespace IQBWX.BLL
                         break;
                     case "wx_301":
                        
-                        this.ResponseXml = msg.toPic("yd6E8-ZKD6W7zH_0yEbfqrbtlh8_hY9vwj-d1BzM414");
-                     //   log.log("wx_301：" + ResponseXml);
+                        this.ResponseXml = msg.toText("有任何问题请联系你的大哥大姐们!");//msg.toPic("yd6E8-ZKD6W7zH_0yEbfqrbtlh8_hY9vwj-d1BzM414");
+                                                                              //   log.log("wx_301：" + ResponseXml);
                         break;
 
                     default:
