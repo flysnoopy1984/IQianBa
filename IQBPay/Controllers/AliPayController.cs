@@ -408,7 +408,7 @@ namespace IQBPay.Controllers
                     Log.log("Auth No Id");
                     return Content("【传入的值不正确】无法授权，请联系平台");
                 }
-                app = BaseController.App;
+                app = BaseController.SubApp;
                 if (app == null)
                 {
                     Log.log("Auth No app");
@@ -502,7 +502,6 @@ namespace IQBPay.Controllers
                                     store.QRId = qr.ID;
                                     store.Rate = qr.Rate;
                                 }
-
                             }
                             qr.InitModify();
                             qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
@@ -775,6 +774,7 @@ namespace IQBPay.Controllers
         public ActionResult F2FPay(string qrUserId, string Amount,string AliPayAccount)
         {
             string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?QRUserId="+qrUserId+"&code=2001&ErrorMsg=";
+            EAliPayApplication app;
             try
             {
                // base.Log.log(string.Format("start F2FPay:qrUserId {0} Amount{1} ReceiveNo:{2}",qrUserId,Amount,));
@@ -885,8 +885,18 @@ namespace IQBPay.Controllers
                         }
                     }
                     ResultEnum status;
-                   
-                    string Res = payMag.PayF2F(BaseController.App, ui, store, Convert.ToSingle(Amount),out status);
+
+                    if (store.FromIQBAPP == BaseController.App.AppId)
+                        app = BaseController.App;
+                    else if (store.FromIQBAPP == BaseController.SubApp.AppId)
+                        app = BaseController.SubApp;
+                    else
+                    {
+                        ErrorUrl += "商户所属APP没有设置正确";
+                        return Redirect(ErrorUrl);
+                    }
+
+                    string Res = payMag.PayF2F(app, ui, store, Convert.ToSingle(Amount),out status);
                    // base.Log.log("支付PayF2F：" + Res);
                     if (status == ResultEnum.SUCCESS)
                     {

@@ -1034,6 +1034,7 @@ namespace IQBWX.Controllers
                                 ParentOpenId = qrUser.ParentOpenId,
                                 UserStatus = ui.UserStatus,
                                 MarketRate = qrUser.MarketRate,
+                                qrUserId = qrUser.ID,
                             };
 
                 query = query.Where(a => a.IsCurrent == true);
@@ -1056,13 +1057,59 @@ namespace IQBWX.Controllers
         public ActionResult AgentDetail()
         {
             RQRInfo qr = null;
+            EQRUser qrUser = null;
             if (UserSession.UserRole < UserRole.DiamondAgent)
             {
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
             InitProfilePage();
 
-            return View();
+            string inQRUser = Request.QueryString["QrUserId"];
+            if(string.IsNullOrEmpty(inQRUser))
+            {
+                return RedirectToAction("AgentList", "PP");
+            }
+            long qrUserId = Convert.ToInt64(inQRUser);
+            using (AliPayContent db = new AliPayContent())
+            {
+                qrUser =  db.DBQRUser.Where(a => a.ID == qrUserId).FirstOrDefault();
+                
+            }
+            if (qrUser == null)
+                qrUser = new EQRUser();
+                return View(qrUser);
+        }
+        [HttpPost]
+        public ActionResult AgentDetailSave(EQRUser qrUser)
+        {
+            OutAPIResult result = new OutAPIResult();
+            result.IsSuccess = true;
+
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    EQRUser CurrentQr = db.DBQRUser.Where(q => q.ID == qrUser.ID).FirstOrDefault();
+                    float RDiff = qrUser.Rate - CurrentQr.Rate;
+                    float PcDiff = qrUser.ParentCommissionRate - CurrentQr.ParentCommissionRate;
+                    List<EQRUser> list = db.DBQRUser.Where(q => q.OpenId == CurrentQr.OpenId).ToList();
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        EQRUser upQrUser = list[i];
+                        upQrUser.Rate += RDiff;
+                        upQrUser.ParentCommissionRate += PcDiff;
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+
+            
+            return Json(result);
         }
 
         #endregion
@@ -1122,8 +1169,6 @@ namespace IQBWX.Controllers
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
             InitProfilePage();
-
-          
 
             return View();
         }

@@ -165,12 +165,12 @@ namespace IQBPay.Controllers
 
                     if (!string.IsNullOrEmpty(parameter.OrderNo))
                     {
-                        list = list.Where(o => o.OrderNo == parameter.OrderNo);
+                        list = list.Where(o => o.OrderNo.Contains(parameter.OrderNo));
                     }
 
                     if (!string.IsNullOrEmpty(parameter.AliPayOrderNo))
                     {
-                        list = list.Where(o => o.OrderNo == parameter.AliPayOrderNo);
+                        list = list.Where(o => o.OrderNo.Contains(parameter.AliPayOrderNo));
                     }
 
                     if (!string.IsNullOrEmpty(parameter.AgentOpenId))

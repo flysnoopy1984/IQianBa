@@ -31,11 +31,20 @@ function generateData(result) {
     $.each(result, function (i) {
 
         var cn;
+        var app;
+
         var channel = result[i].Channel;
         if (channel == 0)
             cn = "平台";
         else if (channel == 1)
             cn = "加盟商";
+
+        if (result[i].APPId == "2017112100077913")
+            app = "玉杰";
+        else if (result[i].APPId == "2017122901328258")
+            app = "寒翼";
+        
+
 
         strCtrl = "";
         strCtrl += "<tr>";
@@ -43,6 +52,7 @@ function generateData(result) {
         strCtrl += "<td>" + result[i].Name + "</td>";
         strCtrl += "<td>" + result[i].Rate + "</td>";
         strCtrl += "<td>" + cn + "</td>";
+        strCtrl += "<td>" + app + "</td>";
         strCtrl += "<td>" + result[i].Remark + "</td>";
 
         if (result[i].RecordStatus == 0)

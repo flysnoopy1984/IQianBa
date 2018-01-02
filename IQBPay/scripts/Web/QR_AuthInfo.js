@@ -64,6 +64,7 @@ function InitFormData(data) {
     $("#Remark").val(data.Remark);
     $("#Channel").val(data.Channel);
     $("#QRStatus").val(data.RecordStatus);
+    $("#appId").find("option[value='" + data.APPId + "']").attr("selected", true);
     
 
     var filePath = data.FilePath;
@@ -117,6 +118,7 @@ function Save() {
     var remake = $("#Remark").val();
     var Channel = $("#Channel").val();
     var level = $("#Level").val();
+    var appId = $("#appId").val();
 
     var ID = $("#RecId").val();
 
@@ -126,7 +128,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID, "Name": name, "Rate": rate,"Channel":Channel, "Remark": remake, "RecordStatus": QRStatus },
+        data: { "ID": ID, "APPId":appId,"Name": name, "Rate": rate,"Channel":Channel, "Remark": remake, "RecordStatus": QRStatus },
         url: url,
         success: function (data) {
             if (data.RunResult == "OK") {

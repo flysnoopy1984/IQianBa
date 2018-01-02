@@ -26,6 +26,10 @@ namespace IQBCore.IQBPay.Models.QR
         /// </summary>
         public string OwnnerOpenId { get; set; }
 
+        [MaxLength(32)]
+        public string APPId { get; set; }
+
+        [MaxLength(32)]
         /// <summary>
         /// 2级授权码用
         /// </summary>

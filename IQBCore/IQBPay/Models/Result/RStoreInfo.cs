@@ -13,6 +13,7 @@ namespace IQBCore.IQBPay.Models.Result
     {
         public bool IsAuth { get; set; }
 
+
      
 
     }

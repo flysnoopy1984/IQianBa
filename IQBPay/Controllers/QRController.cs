@@ -62,6 +62,8 @@ namespace IQBPay.Controllers
                             StoreName = st.Name,
                             Remark = qr.Remark,
                             RecordStatus = qr.RecordStatus,
+                            APPId = qr.APPId,
+                           
 
                         }
                     ); 

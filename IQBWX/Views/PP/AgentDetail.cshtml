@@ -1,8 +1,66 @@
-﻿
+﻿@model IQBCore.IQBPay.Models.QR.EQRUser
 @{
     ViewBag.Title = "AgentDetaill";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 <link href="@Url.Scrpit("~/Content/Css/Info.css")" rel="stylesheet" />
+<link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
+<script src="~/Content/Script/Component/jquery-confirm.js"></script>
+<script src="~/Content/Script/jsCommon.js"></script>
+<link href="~/Content/Css/Component/ion.rangeSlider.css" rel="stylesheet" />
+<link href="~/Content/Css/Component/ion.rangeSlider.skinHTML5.css" rel="stylesheet" />
+<script src="~/Content/Script/Component/ion.rangeSlider.min.js"></script>
+
+<script src="~/Content/Script/IQBPay/AgentDetail.js"></script>
+
+<div id="PageInfo" class="PageInfo">
+    <div class="grzxcon2 mgz xi30 bai"><a href="javascript:ToListPage();"><<返回列表</a></div>
+
+    <div class="InfoBody">
+        <div>代理名称:<span id="UserName">【@Model.UserName】</span></div>
+        <div class="form-group">
+            <label class="label-top">当前点率</label>
+            <div class="col-sm-6">
+                <input id="Rate" type="text" readonly class="form-control" style="color:black;" value="@Model.Rate">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="label-top">当前返佣</label>
+            <div class="col-sm-6">
+                <input id="ParentComm" type="text" readonly class="form-control" style="color:black;" value="@Model.ParentCommissionRate">
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label class="label-top">当前用户手续费</label>
+            <div class="col-sm-6">
+                <input id="ParentComm" type="text" readonly class="form-control" style="color:black;" value="@Model.MarketRate">
+            </div>
+
+        </div>
+
+        <div class="form-group" id="Field_AfterMarketRate">
+            <label class="label-top">子代点率调整</label>
+            <div class="col-sm-6" style="width:95%">
+
+                <input type="hidden" id="AfterRate" class="irs-hidden-input" value="23" />
+                @*<input id="AfterMarketRate" type="text" class="form-control" datatype="My8-12" nullmsg="请填写调整手续费" sucmsg="OK" errormsg="请填写8-12之间的数字">*@
+            </div>
+
+        </div>
+
+       
+        <div id="buttonArea" style="margin-bottom:50px;">
+            <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnSave" onclick="Save()" style="width:95%; height:60px;">更新</button>
+
+        </div>
+
+    </div>
+    <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
+    <input type="hidden" id="QrUserId" />
+
+</div>
 
 

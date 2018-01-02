@@ -218,17 +218,15 @@ namespace IQBPay.Controllers
                         {
                             throw new Exception("没有找到对应的邀请码");
                         }
-                        qrInfo.Rate += adjustRate;
-
+                        //  qrInfo.Rate += adjustRate;
+                        qrInfo.ParentCommissionRate += adjustRate;
                         //下级联动
                         List<EQRUser> plist = db.DBQRUser.Where(o => o.ParentOpenId == InUA.OpenId).ToList();
                         for (int i = 0; i < plist.Count; i++)
                         {
                             EQRUser qrUser = plist[i];
 
-
-                            qrUser.Rate += adjustRate;
-
+                            qrUser.ParentCommissionRate += adjustRate;
                         }
                     }
                    

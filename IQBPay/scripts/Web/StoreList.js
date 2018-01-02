@@ -49,6 +49,12 @@ function generateData(result)
         else if (channel == 1)
             cn = "加盟商";
 
+        var appName = "";
+        if (result[i].FromIQBAPP == "2017112100077913")
+            appName = "玉杰";
+        else if (result[i].FromIQBAPP == "2017122901328258")
+            appName = "寒翼";
+
         strCtrl = "";
         strCtrl += "<tr>";
         strCtrl += "<td>" + result[i].Name + "</td>";
@@ -56,8 +62,9 @@ function generateData(result)
         strCtrl += "<td>" + result[i].Rate + "</td>";
         strCtrl += "<td>" + result[i].IsReceiveAccount + "</td>";
         strCtrl += "<td>" + result[i].AliPayAccount + "</td>";
-        strCtrl += "<td>" + result[i].OpenTime + "</td>";
-        strCtrl += "<td>" + result[i].CloseTime + "</td>";
+
+        strCtrl += "<td>" + appName + "</td>";
+        //strCtrl += "<td>" + result[i].CloseTime + "</td>";
         strCtrl += "<td>" + result[i].Remark + "</td>";
 
         if (result[i].RecordStatus == 0)

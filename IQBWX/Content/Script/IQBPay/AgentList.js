@@ -138,7 +138,7 @@ function generateData(result) {
         strCtrl += "<li " + usColor + ">用户手续费：" + result[i].MarketRate + "</li>";
      
         strCtrl += "</ul></td>";
-        strCtrl += "<td><input type='button' class='btn-primary' value='详情' onclick='ToInfoPage(" + QueryData.length + ");' />"
+        strCtrl += "<td><input type='button' class='btn-primary' value='详情' onclick='ToInfoPage(" + (QueryData.length-1) + ");' />"
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);
@@ -149,11 +149,13 @@ function generateData(result) {
 
 function ToInfoPage(i)
 {
-    $.alert({
-        theme: 'dark',
-        title: 'WOW！',
-        content: "暂未开放，敬请期待！",
-    });
+    var result = QueryData[i];
+    window.location.href = "/PP/AgentDetail?QrUserId=" + result.qrUserId + "&Rate=" + result.Rate + "&ParentComm=" + result.ParentCommissionRate + "&MarketRate=" + result.MarketRate;
+    //$.alert({
+    //    theme: 'dark',
+    //    title: 'WOW！',
+    //    content: "暂未开放，敬请期待！",
+    //});
 }
 
 function FilterAgent()

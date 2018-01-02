@@ -9,6 +9,8 @@ namespace IQBCore.IQBPay.Models.Result
 {
     public class RUser_ARQR
     {
+        public long qrUserId { get; set; }
+
         public int ID { get; set; }
         public string HeadImgUrl { get; set; }
         public string UserName { get; set; }
