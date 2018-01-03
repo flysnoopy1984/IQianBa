@@ -155,6 +155,10 @@
     <Compile Include="IQBWX\Models\Json\WXMedia\JIMedia.cs" />
     <Compile Include="IQBWX\Models\Json\WXMedia\JOMedia.cs" />
     <Compile Include="IQBWX\Models\Json\WXMedia\JOMedia_Item.cs" />
+    <Compile Include="IQBWX\Models\Json\WXMedia\News\JOMedia_Item_Content.cs" />
+    <Compile Include="IQBWX\Models\Json\WXMedia\News\JOMedia_Item_Content_NewsItem.cs" />
+    <Compile Include="IQBWX\Models\Json\WXMedia\News\JOMedia_News.cs" />
+    <Compile Include="IQBWX\Models\Json\WXMedia\News\JOMedia_NewsItem.cs" />
     <Compile Include="IQBWX\Models\OutParameter\OutSMS.cs" />
     <Compile Include="IQBWX\Models\OutParameter\SSOQR.cs" />
     <Compile Include="IQBWX\Models\WX\Template\BaseTemplate.cs" />

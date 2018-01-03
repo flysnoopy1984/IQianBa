@@ -109,13 +109,13 @@ namespace IQBPay.Controllers
             
             List<RUserInfo> result = new List<RUserInfo>();
 
-            string sql = @"select ui.Id,ui.OpenId,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.AliPayAccount,ui.UserStatus,qruser.Rate,qruser.ParentCommissionRate,
-	                    qruser.parentOpenId as ParentAgentOpenId,qruser.ParentName as ParentAgent,
-	                    si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
+            string sql = @"select ui.Id,ui.OpenId,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.AliPayAccount,ui.UserStatus,
+                        qruser.Rate,qruser.ParentCommissionRate,qruser.parentOpenId as ParentAgentOpenId,qruser.ParentName as ParentAgent,QRUser.MarketRate,
+                        si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
                         from userinfo as ui 
                         left join qrUser on qruser.OpenId = ui.OpenId
-		                left join StoreInfo as si on si.ID = qruser.ReceiveStoreId
-						where qrUser.IsCurrent = 'true'";
+                        left join StoreInfo as si on si.ID = qruser.ReceiveStoreId
+                        where qrUser.IsCurrent = 'true'";
             if(!string.IsNullOrEmpty(AgentName))
             {
                 sql += " and ui.name like '%"+AgentName+"%'";

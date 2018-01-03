@@ -15,25 +15,46 @@ function Init()
     var Rate = parseFloat(getUrlParam("Rate"));
     var ParentComm = parseFloat(getUrlParam("ParentComm"));
     var MarketRate = parseFloat(getUrlParam("MarketRate"));
-  
+    var ParentOpenId = getUrlParam("ParentOpenId");
 
     $("#QrUserId").val(QrUserId);
 
-    $range = $("#AfterRate").ionRangeSlider({
-        min: Rate-2,
-        max: Rate + ParentComm-0.5,
-        from: Rate,
-        step: 0.5,
-        onChange: function (data) {
-            var ParentComm = parseFloat($("#ParentComm").val());
-            var rate = parseFloat($("#Rate").val());
-            var afterRate = parseFloat(data.from);
-            $("#Rate").val(afterRate);
-            $("#ParentComm").val(ParentComm + (-(afterRate - rate)));
+    if (ParentOpenId == null || ParentOpenId == "" || ParentOpenId == "null")
+    {
+        $range = $("#AfterRate").ionRangeSlider({
+            min:0,
+            max: 12,
+            from: Rate,
+            step: 0.5,
+            onChange: function (data) {
+              
+                $("#Rate").val(data.from);
+               
 
 
-        },
-    });
+            },
+        });
+    }
+    else
+    {
+        //有上级
+        $range = $("#AfterRate").ionRangeSlider({
+            min: Rate - 2,
+            max: Rate + ParentComm - 0.5,
+            from: Rate,
+            step: 0.5,
+            onChange: function (data) {
+                var ParentComm = parseFloat($("#ParentComm").val());
+                var rate = parseFloat($("#Rate").val());
+                var afterRate = parseFloat(data.from);
+                $("#Rate").val(afterRate);
+                $("#ParentComm").val(ParentComm + (-(afterRate - rate)));
+
+
+            },
+        });
+    }
+   
     slider = $range.data("ionRangeSlider");
 
     //$("#UserName").val(UserName);

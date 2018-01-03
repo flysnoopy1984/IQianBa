@@ -17,12 +17,23 @@
 <div id="ListArea">
     <div id="Title" style="margin:0px;">
         代理授权码
+        <div class="ListCondition">
+            <ul class="UlHorizontal">
+                <li>
+                    <div class="form-group">
+                        <label>代理名称：</label>
+                        <input id="cAgentName" type="text" class="form-control ConditionField">
+                    </div>
+                </li>
+               
+            </ul>
+        </div>
         <ul class="UlHorizontal" style="float:right">
-            <li>
+            @*<li>
                 <button type="button" class="btn btn-warning" onclick="ToInfo(1);">新增</button>
-            </li>
+            </li>*@
             <li>
-                <button type="button" class="btn btn-primary" onclick="Query();">查询</button>
+                <button type="button" class="btn btn-primary" onclick="BtnQuery();">查询</button>
             </li>
 
         </ul>
@@ -31,10 +42,10 @@
         <table id="tbData" class="table table-hover table-bordered TableOverflowHidden">
             <thead class="cf">
                 <tr id="trHeader">  
-                    <th width="150px;">二维码 
-                    <th width="100px">点率(0-100)</th>
-                    <th width="150px">上级代理</th>
-                    <th width="150px">上级代理抽成点率</th>
+                    <th width="200px;">二维码 
+                    <th width="80px">点率(0-100)</th>
+                    <th width="80px">上级佣金</th>
+                    <th width="200px">上级代理</th> 
                     <th width="200px">收款商户</th>
                     <th width="150px">备注</th>
                     <th width="100px;">状态</th>
@@ -43,6 +54,10 @@
             </thead>
             <tbody id="trContainer"></tbody>
         </table>
+        <div class="divNextButton" id="btnNext">
+            @*<button type="button" class="btn btn-success" style="width:250px; height:60px;" onclick="Prev();">上一页</button>*@
+            <button type="button" class="btn btn-success" style="width:250px; height:60px;" onclick="Next();">加载更多</button>
+        </div>
     </div>
 </div>
 

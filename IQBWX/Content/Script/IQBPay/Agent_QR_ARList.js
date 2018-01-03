@@ -262,7 +262,7 @@ function generateData(result) {
         strCtrl += "<ul><li style='color:brown; font-weight:bold; height:30px;'>用户手续费:" + result[i].MarketRate + "</li>";
         strCtrl += "<li>上级代理:" + ParentName + "</li>";
         strCtrl += "</ul></td>";
-        strCtrl += "<td style='width:47%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='height:30px;'>代理反点:" + result[i].Rate + "</li>";
+        strCtrl += "<td style='width:47%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='height:30px;'>代理返点:" + result[i].Rate + "</li>";
         strCtrl += "<li>上级代理佣金:" + result[i].ParentCommissionRate + "</li>";
         strCtrl += "</ul></td>";
         strCtrl += "<td><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + ");' />"

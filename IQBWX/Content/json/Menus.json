@@ -48,11 +48,16 @@
       },
       {
         "name": "来找熟人",
-        "sub_button": [         
+        "sub_button": [
           {
             "type": "click",
             "name": "联系我们",
             "key": "wx_301"
+          },
+          {
+            "type": "click",
+            "name": "使用手册",
+            "key": "wx_302"
           }
         ]
       }

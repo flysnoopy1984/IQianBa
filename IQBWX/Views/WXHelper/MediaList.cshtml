@@ -20,15 +20,20 @@
         function Query()
         {
             var url = "/WXHelper/MediaListQuery";
-
+            var type = "news";
             $.ajax({
                 type: 'post',
-                data: "Page=" + pageIndex + "&PageSize=20",
+                data: "Page=" + pageIndex + "&PageSize=20&type=" + type,
                 url: url,
                 success: function (data) {
                     var arrLen = data.item_count;
 
                     if (arrLen > 0) {
+                        if (type == "news")
+                        {
+                            generateData_News(data.item);
+                        }
+                        else
                         generateData(data.item);
                        
                     }
@@ -41,6 +46,30 @@
             });
         }
 
+        //图文格式
+        function generateData_News(result) {
+            var strCtrl = "";
+
+            $.each(result, function (i) {
+
+                strCtrl = "";
+                strCtrl += "<tr>";
+                strCtrl += "<td style='width:28%'>";
+                strCtrl += result[i].media_id;
+                strCtrl += "</td>";
+                strCtrl += "<td style='width:36%'>";
+                strCtrl += result[i].name;
+                strCtrl += "</td>";
+                strCtrl += "<td style='width:36%'>";
+                strCtrl += "<img src='" + result[i].url + "' style='width:128px; height:128px;' />";
+                strCtrl += "</td>";
+                strCtrl += "</tr>";
+
+                $("#trContainer").append(strCtrl);
+            });
+        }
+
+        //其他
         function generateData(result)
         {
             var strCtrl = "";

@@ -46,6 +46,9 @@ namespace IQBWX.BLL
         public void ClickHandler(WXMessage msg)
         {
             string url = ConfigurationManager.AppSettings["Site_IQBPay"];
+            string picUrl;
+            string GoUrl;
+            string desc;
             try
             {
                 IQBCore.IQBPay.Models.QR.EQRUser payQRUser;
@@ -63,18 +66,22 @@ namespace IQBWX.BLL
                 }
                 switch (ke)
                 {
+                    //收款二维码
                     case "pay_101":
-                        string picUrl = url + payQRUser.FilePath;
-                        string GoUrl = url+"/Wap/MyReceiveQR?FilePath="+ payQRUser.FilePath;
-                        string desc = "代理返点率：" + payQRUser.Rate+"%  |  用户手续费：["+payQRUser.MarketRate+"%]";
+                        picUrl = url + payQRUser.FilePath;
+                        GoUrl = url+"/Wap/MyReceiveQR?FilePath="+ payQRUser.FilePath;
+                        desc = "代理返点率：" + payQRUser.Rate+"%  |  用户手续费：["+payQRUser.MarketRate+"%]";
                         this.ResponseXml = msg.toPicText(picUrl, GoUrl, desc);
                         break;
-                    case "wx_301":
-                       
-                        this.ResponseXml = msg.toText("有任何问题请联系你的大哥大姐们!");//msg.toPic("yd6E8-ZKD6W7zH_0yEbfqrbtlh8_hY9vwj-d1BzM414");
-                                                                              //   log.log("wx_301：" + ResponseXml);
+                    //联系我们
+                    case "wx_301":   
+                        this.ResponseXml = msg.toText("有任何问题请联系你的大哥大姐们!");//msg.toPic("yd6E8-ZKD6W7zH_0yEbfqrbtlh8_hY9vwj-d1BzM414");                                                                             //   log.log("wx_301：" + ResponseXml);
                         break;
-
+                    //使用说明：
+                    case "wx_302":
+                        GoUrl = "https://mp.weixin.qq.com/s?__biz=MzUyMzUwOTQ3MA==&mid=100000020&idx=1&sn=fb0bd4f65bdd44985bf137413012cf64&chksm=7a3acaa54d4d43b360d9513a1e810b11d9c13899ad0c50d0cff089f70c88c33037230ef65cad#rd";
+                        this.ResponseXml = msg.toPicText("http://wx.iqianba.cn/Content/images/sysc.png", GoUrl, "","【找熟人】使用手册");
+                        break;
                     default:
                         break;
 
@@ -149,10 +156,13 @@ namespace IQBWX.BLL
             ExtWebPay exWeb = new ExtWebPay();
 
             string result = exWeb.regeisterWebMember(ui, qr.ID);
+            string url = "https://mp.weixin.qq.com/s?__biz=MzUyMzUwOTQ3MA==&mid=100000020&idx=1&sn=fb0bd4f65bdd44985bf137413012cf64&chksm=7a3acaa54d4d43b360d9513a1e810b11d9c13899ad0c50d0cff089f70c88c33037230ef65cad#rd";
             if (result.StartsWith("OK"))
             {
+            
                 mText += "欢迎注册服务平台！\n";
-                mText += string.Format("你当前收款码的扣点率为【{0}%】", qr.Rate);
+                mText += string.Format("你当前收款码的扣点率为【{0}%】\n", qr.Rate);
+                mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>",url);
             }
             else if(result.StartsWith("ParentOK"))
             {
@@ -162,11 +172,13 @@ namespace IQBWX.BLL
                     pUser = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).FirstOrDefault();
                 }
                 mText += "欢迎注册服务平台！\n";
-                mText += string.Format("你当前收款码的扣点率为【{0}%】\n 您的上级代理为:{1}", qr.Rate, pUser.Name);
+                mText += string.Format("你当前收款码的扣点率为【{0}%】\n 您的上级代理为:{1}\n", qr.Rate, pUser.Name);
+                mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>", url);
             }
             else if (result.StartsWith("EXIST"))
             {
-                mText += string.Format("你当前收款码的扣点率为\n【{0}%】", qr.Rate);
+                mText += string.Format("你当前收款码的扣点率为\n【{0}%】\n", qr.Rate);
+                mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>", url);
             }
             else if (result.StartsWith("ParentEXIST"))
             {
@@ -176,7 +188,8 @@ namespace IQBWX.BLL
                     pUser = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).FirstOrDefault();
                 }
 
-                mText += string.Format("你当前收款码的扣点率为\n【{0}%】\n 您的上级代理为:{1}", qr.Rate,pUser.Name);
+                mText += string.Format("你当前收款码的扣点率为\n【{0}%】\n 您的上级代理为:{1}\n", qr.Rate,pUser.Name);
+                mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>", url);
             }
             else if (result.StartsWith("NeedVerification"))
             {

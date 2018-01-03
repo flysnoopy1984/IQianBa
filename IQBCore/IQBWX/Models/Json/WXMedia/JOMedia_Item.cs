@@ -13,5 +13,7 @@ namespace IQBCore.IQBWX.Models.Json.WXMedia
 
         public string update_time { get; set; }
         public string url { get; set; }
+
+
     }
 }

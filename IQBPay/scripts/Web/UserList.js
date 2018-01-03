@@ -27,6 +27,7 @@ function BtnQuery()
     pageIndex = -1;
     Query(true, pageIndex + 1);
 }
+
 function Query(NeedClearn,_PageIndex) {
 
     if (_PageIndex == 0)
@@ -54,8 +55,6 @@ function Query(NeedClearn,_PageIndex) {
             else {
                 pageIndex--;
                 alert("没有数据了");
-              
-
             }
         },
         error: function (xhr, type) {
@@ -75,11 +74,14 @@ function generateData(result) {
         strCtrl += "<tr>";
         strCtrl += "<td>" + result[i].Name + "</td>";
         strCtrl += "<td>" + result[i].Rate + "</td>";
+        strCtrl += "<td>" + result[i].ParentCommissionRate + "</td>";
+        strCtrl += "<td>" + result[i].MarketRate + "</td>";
+        strCtrl += "<td>" + result[i].ParentAgent + "</td>";
         strCtrl += "<td>" + result[i].CDate + "</td>";
         strCtrl += "<td>" + result[i].AliPayAccount + "</td>";
         //strCtrl += "<td>" + result[i].IsAutoTransfer + "</td>";
-        strCtrl += "<td>" + result[i].ParentAgent + "</td>";
-        strCtrl += "<td>" + result[i].ParentCommissionRate + "</td>";
+       
+       
         if (result[i].StoreName == "" || result[i].StoreName == null)
         {
             result[i].StoreName = "随机";

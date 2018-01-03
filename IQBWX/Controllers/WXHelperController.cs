@@ -1,5 +1,6 @@
 ﻿using IQBCore.Common.Helper;
 using IQBCore.IQBWX.Models.Json.WXMedia;
+using IQBCore.IQBWX.Models.Json.WXMedia.News;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,25 +18,47 @@ namespace IQBWX.Controllers
             return View();
         }
 
+        public ActionResult SendMessage()
+        {
+            return View();
+        }
+
+        public ActionResult Send()
+        {
+
+            return View();
+        }
+
         [HttpPost]
         public ActionResult MediaListQuery()
         {
             int pageIndex = Convert.ToInt32(Request["Page"]);
             int pageSize = Convert.ToInt32(Request["PageSize"]);
+            string type = Request["type"];
 
             string access_token = this.getAccessToken();
             string posturl = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=" + access_token;
 
             JIMedia obj = new JIMedia();
-            obj.type = "image";
+            obj.type = type;
             obj.offset = pageIndex.ToString();
             obj.count = pageSize.ToString();
             string data = JsonConvert.SerializeObject(obj);
 
             string responseResult = HttpHelper.RequestUrlSendMsg(posturl, HttpHelper.HttpMethod.Post, data);
-            JOMedia result = JsonConvert.DeserializeObject<JOMedia>(responseResult);
+            if (type == "news")
+            {
+                JOMedia_News resultNews =JsonConvert.DeserializeObject<JOMedia_News>(responseResult);
+                return Json(resultNews);
+            }
+            else
+            {
+                JOMedia result = JsonConvert.DeserializeObject<JOMedia>(responseResult);
+                return Json(result);
+            }
+            
 
-            return Json(result);
+            
 
         }
 

@@ -55,7 +55,7 @@ namespace IQBCore.IQBPay.BLL
             //不参与优惠计算的金额
             //builder.undiscountable_amount = "";
             //订单名称
-            builder.subject = "#"+app.AppName+"-"+ AgentUi.Name+"收银台";
+            builder.subject = "#找熟人-"+ AgentUi.Name+"收银台";
             //自定义超时时间
           //  builder.timeout_express = "5m";
             //订单描述
@@ -97,7 +97,7 @@ namespace IQBCore.IQBPay.BLL
             AlipayTradePrecreateContentBuilder builder = new AlipayTradePrecreateContentBuilder();
             //收款账号
             builder.seller_id = _SellerId;
-
+           
             //订单编号
             builder.out_trade_no = OrderNo;
             //订单总金额

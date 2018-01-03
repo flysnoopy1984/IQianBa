@@ -34,7 +34,7 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(QRType QRType, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
+        public ActionResult Query(QRType QRType, string Name = "",int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             List<RQRInfo> result = new List<RQRInfo>();
             try
@@ -63,10 +63,15 @@ namespace IQBPay.Controllers
                             Remark = qr.Remark,
                             RecordStatus = qr.RecordStatus,
                             APPId = qr.APPId,
-                           
+                            CreateDate = qr.CreateDate,
 
                         }
-                    ); 
+                    );
+                    if(!string.IsNullOrEmpty(Name))
+                    {
+                        list = list.Where(a => a.Name.Contains(Name));
+                    }
+                    list =list.OrderByDescending(i => i.CreateDate);
                     //  db.DBQRInfo.Where(i => i.Type == QRType).OrderByDescending(i => i.CreateDate);
                     int totalCount = list.Count();
                     if (pageIndex == 0)

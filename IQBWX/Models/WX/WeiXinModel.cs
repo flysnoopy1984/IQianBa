@@ -153,7 +153,7 @@ namespace IQBWX.Models.WX
 
         }
 
-        public string toPicText(string picUrl,string url,string desc = "点击获取酷炫二维码标记")
+        public string toPicText(string picUrl,string url,string desc = "点击获取酷炫二维码标记",string title= "收款二维码")
         {            
             
             string xml = @"<xml>
@@ -164,14 +164,14 @@ namespace IQBWX.Models.WX
                 <ArticleCount>1</ArticleCount>
                 <Articles>
                 <item>
-                <Title><![CDATA[收款二维码]]></Title> 
+                <Title><![CDATA[{5}]]></Title> 
                 <Description><![CDATA[{4}]]></Description>
                 <PicUrl><![CDATA[{2}]]></PicUrl>
                 <Url><![CDATA[{3}]]></Url>
                 </item>
                 </Articles>
                 </xml>";
-            xml = string.Format(xml, this.FromUserName, this.ToUserName, picUrl, url, desc);
+            xml = string.Format(xml, this.FromUserName, this.ToUserName, picUrl, url, desc,title);
             return xml;
         }
 

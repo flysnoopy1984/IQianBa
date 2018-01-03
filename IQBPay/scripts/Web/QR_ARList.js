@@ -1,21 +1,57 @@
-﻿
+﻿var pageIndex = -1;
+
 $(document).ready(function () {
-    Query();
+
+    Query(true, pageIndex + 1);
 });
 
-function Query() {
+function Next() {
 
+    Query(false, pageIndex + 1);
+}
+
+function Prev() {
+
+    pageIndex--;
+    if (pageIndex < 0) {
+        alert("已经第一页了");
+        pageIndex = 0;
+        return;
+
+    }
+    Query(false, pageIndex);
+}
+function BtnQuery() {
+    pageIndex = -1;
+    Query(true, pageIndex + 1);
+}
+
+
+function Query(NeedClearn, _PageIndex) {
+
+    if (_PageIndex == 0)
+        $("#trContainer").empty();
+
+    var Name = $("#cAgentName").val();
     var url = "/QR/Query";
     $.ajax({
         type: 'post',
-        data: "QRType=3&pageIndex=0",
+        data: "QRType=3&Name="+Name+"&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;
 
-            $("#trContainer").empty();
+            if (NeedClearn) {
+                $("#trContainer").empty();
+            }
+
             if (arrLen > 0) {
+                pageIndex++;
                 generateData(data);
+            }
+            else {
+                pageIndex--;
+                alert("没有数据了");
             }
         },
         error: function (xhr, type) {
@@ -42,8 +78,9 @@ function generateData(result) {
       //  strCtrl += "<td>" + result[i].ID + "</td>";
         strCtrl += "<td>" + result[i].Name + "</td>";
         strCtrl += "<td>" + result[i].Rate + "</td>";
-        strCtrl += "<td>" + parentName + "</td>";
         strCtrl += "<td>" + result[i].ParentCommissionRate + "</td>";
+        strCtrl += "<td>" + parentName + "</td>";
+       
         strCtrl += "<td>" + storeName + "</td>";
         strCtrl += "<td>" + result[i].Remark + "</td>";
 

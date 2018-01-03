@@ -150,7 +150,7 @@ function generateData(result) {
 function ToInfoPage(i)
 {
     var result = QueryData[i];
-    window.location.href = "/PP/AgentDetail?QrUserId=" + result.qrUserId + "&Rate=" + result.Rate + "&ParentComm=" + result.ParentCommissionRate + "&MarketRate=" + result.MarketRate;
+    window.location.href = "/PP/AgentDetail?QrUserId=" + result.qrUserId + "&Rate=" + result.Rate + "&ParentComm=" + result.ParentCommissionRate + "&MarketRate=" + result.MarketRate + "&ParentOpenId=" + result.ParentOpenId;
     //$.alert({
     //    theme: 'dark',
     //    title: 'WOW！',

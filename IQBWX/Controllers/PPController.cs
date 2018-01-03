@@ -1090,6 +1090,13 @@ namespace IQBWX.Controllers
                 using (AliPayContent db = new AliPayContent())
                 {
                     EQRUser CurrentQr = db.DBQRUser.Where(q => q.ID == qrUser.ID).FirstOrDefault();
+                    int childs = db.DBQRUser.Where(q => q.ParentOpenId == CurrentQr.OpenId).Count();
+                    if(childs>0)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = "该会员有下面有子代理，涉及到子代理点问题，手机上不能修改！";
+                        return Json(result);
+                    }
                     float RDiff = qrUser.Rate - CurrentQr.Rate;
                     float PcDiff = qrUser.ParentCommissionRate - CurrentQr.ParentCommissionRate;
                     List<EQRUser> list = db.DBQRUser.Where(q => q.OpenId == CurrentQr.OpenId).ToList();
@@ -1097,8 +1104,13 @@ namespace IQBWX.Controllers
                     {
                         EQRUser upQrUser = list[i];
                         upQrUser.Rate += RDiff;
-                        upQrUser.ParentCommissionRate += PcDiff;
+                        if (!string.IsNullOrEmpty(CurrentQr.ParentOpenId))
+                        {
+                            upQrUser.ParentCommissionRate += PcDiff;
+                        }         
                     }
+                    
+                  
                     db.SaveChanges();
                 }
             }

@@ -109,8 +109,7 @@ namespace IQBCore.IQBPay.Models.QR
             this.OwnnerOpenId = ui.OpenId;
             this.ParentOpenId = ui.OpenId;
 
-            this.ParentCommissionRate = Convert.ToSingle(1.5);
-            this.Rate = Convert.ToSingle(6.5);
+           
             this.ReceiveStoreId = 1;
             this.Channel = IQBCore.IQBPay.BaseEnum.Channel.League;
             this.Type = IQBCore.IQBPay.BaseEnum.QRType.ARAuth;
