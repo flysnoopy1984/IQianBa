@@ -30,6 +30,10 @@ namespace IQBWX.Controllers
         public IQBLog log;
         private static EGlobalConfig _GlobelConfig;
 
+        public static bool RefreshSession { get; set; }
+
+        
+
         public WXBaseController()
         {
             log = new IQBLog();
@@ -135,6 +139,7 @@ namespace IQBWX.Controllers
 
         protected Boolean CheckIsMember()
         {
+           
             using (UserContent db = new UserContent())
             {
                 return db.IsMember(this.GetOpenId());
@@ -170,8 +175,10 @@ namespace IQBWX.Controllers
             get
             {
                 UserSession userSession = Session["UserSession"] as UserSession;
-                if(userSession ==null)
+               
+                if (userSession ==null || RefreshSession == true)
                 {
+                    RefreshSession = false;
                     userSession = new UserSession();
                     string openId = this.GetOpenId();
                    
@@ -215,8 +222,8 @@ namespace IQBWX.Controllers
             bool isDev = Convert.ToBoolean(ConfigurationManager.AppSettings["DevMode"]);
             // if(isDev) return "o3nwE0m12mke3-VhWic-UAX7Oh_0";
 
-           //  if (isDev) return "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
-            if (isDev) return "o3nwE0jrONff65oS-_W96ErKcaa0";
+             if (isDev) return "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
+            //if (isDev) return "o3nwE0jrONff65oS-_W96ErKcaa0";
 
             string openId = (string)Session[IQBWXConst.SessionOpenId];
             if (string.IsNullOrEmpty(openId))

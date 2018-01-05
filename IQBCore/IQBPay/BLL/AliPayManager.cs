@@ -191,7 +191,7 @@ namespace IQBCore.IQBPay.BLL
             model.PayeeAccount = toAliPayAccount;
             model.PayerShowName = "转账-"+target.ToString();
             if(order!=null)
-                model.Remark = string.Format("#{0}-订单金额：{1}-目标：{2}",order.AgentName,order.TotalAmount,target.ToString());
+                model.Remark = string.Format("#{0}-订单金额：{1}-订单ID：{2}",order.AgentName,order.TotalAmount,order.OrderNo);
 
             request.SetBizModel(model);
 

@@ -67,6 +67,9 @@ namespace IQBCore.IQBPay.Models.User
         /// </summary>
         public UserVerifyStatus UserVerifyStatus  { get;set;}
 
+        [MaxLength(200)]
+        public string Remake { get; set; }
+
 
 
         public void InitRegiser()

@@ -862,28 +862,7 @@ namespace IQBPay.Controllers
                     }
                     //测试转账
                  
-                    if (!string.IsNullOrEmpty(AliPayAccount))
-                    {
-                        EBuyerInfo buyer = db.DBBuyerInfo.Where(a => a.AliPayAccount == AliPayAccount).FirstOrDefault();
-                        if (buyer == null)
-                        {
-                            string tId;
-                            AlipayFundTransToaccountTransferResponse res = payMag.DoTransferAmount(TransferTarget.User, BaseController.SubApp, AliPayAccount, "0.1", PayTargetMode.AliPayAccount, out tId);
-                            if (res.Code != "10000")
-                            {
-                                ErrorUrl += "收款账户不正确，请尽量填写邮箱作为收款账户";
-                                return Redirect(ErrorUrl);
-                            }
-                            else
-                            {
-                                buyer = new EBuyerInfo();
-                                buyer.AliPayAccount = AliPayAccount;
-                                buyer.TransDate = DateTime.Now;
-                                db.DBBuyerInfo.Add(buyer);
-                                db.SaveChanges();
-                            }
-                        }
-                    }
+                    
                     ResultEnum status;
 
                     if (store.FromIQBAPP == BaseController.App.AppId)
@@ -900,7 +879,29 @@ namespace IQBPay.Controllers
                    // base.Log.log("支付PayF2F：" + Res);
                     if (status == ResultEnum.SUCCESS)
                     {
-                       
+                        if (!string.IsNullOrEmpty(AliPayAccount))
+                        {
+                            EBuyerInfo buyer = db.DBBuyerInfo.Where(a => a.AliPayAccount == AliPayAccount).FirstOrDefault();
+                            if (buyer == null)
+                            {
+                                string tId;
+                                AlipayFundTransToaccountTransferResponse res = payMag.DoTransferAmount(TransferTarget.User, BaseController.SubApp, AliPayAccount, "0.1", PayTargetMode.AliPayAccount, out tId);
+                                if (res.Code != "10000")
+                                {
+                                    ErrorUrl += "收款账户不正确，请尽量填写邮箱作为收款账户";
+                                    return Redirect(ErrorUrl);
+                                }
+                                else
+                                {
+                                    buyer = new EBuyerInfo();
+                                    buyer.AliPayAccount = AliPayAccount;
+                                    buyer.TransDate = DateTime.Now;
+                                    db.DBBuyerInfo.Add(buyer);
+                                    db.SaveChanges();
+                                }
+                            }
+                        }
+
                         //创建初始化订单
                         EOrderInfo order = payMag.InitOrder(qrUser, store,Convert.ToSingle(Amount), AliPayAccount);
 

@@ -13,8 +13,17 @@ namespace IQBWX.Controllers.API
         public void RefreshGlobelConfig()
         {
             WXBaseController.GlobalConfig = null;
+            WXBaseController.RefreshSession = true;
             IQBLog log = new IQBLog();
             log.log("RefreshGlobelConfig");
         }
+
+        public void RefreshSession()
+        {
+            WXBaseController.RefreshSession = true;
+            IQBLog log = new IQBLog();
+            log.log("RefreshSession");
+        }
     }
+
 }

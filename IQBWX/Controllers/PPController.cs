@@ -1186,5 +1186,23 @@ namespace IQBWX.Controllers
         }
         #endregion
 
+        #region 系统
+
+        public  ActionResult SysMain()
+        {
+            if (UserSession.UserRole < UserRole.Administrator)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+            return View();
+        }
+        [HttpPost]
+        public ActionResult RefreshSession()
+        {
+            WXBaseController.RefreshSession = true;
+            return Content("OK");
+        }
+        #endregion
+
     }
 }

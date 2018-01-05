@@ -223,6 +223,7 @@
     <Content Include="Content\Script\IQBPay\ReceiveOrder.js" />
     <Content Include="Content\Script\IQBPay\StoreAdd.js" />
     <Content Include="Content\Script\IQBPay\StoreList.js" />
+    <Content Include="Content\Script\IQBPay\SysMain.js" />
     <Content Include="Content\Script\IQBPay\UserVerification.js" />
     <Content Include="Content\Script\jsCookie.js" />
     <Content Include="Content\Script\jsValidateHelper.js" />
@@ -396,6 +397,7 @@
     <Content Include="Views\WXHelper\MediaList.cshtml" />
     <Content Include="Views\PP\AgentDetail.cshtml" />
     <Content Include="Views\WXHelper\SendMessage.cshtml" />
+    <Content Include="Views\PP\SysMain.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
