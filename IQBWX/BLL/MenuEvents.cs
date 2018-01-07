@@ -70,7 +70,7 @@ namespace IQBWX.BLL
                     case "pay_101":
                         picUrl = url + payQRUser.FilePath;
                         GoUrl = url+"/Wap/MyReceiveQR?FilePath="+ payQRUser.FilePath;
-                        desc = "代理返点率：" + payQRUser.Rate+"%  |  用户手续费：["+payQRUser.MarketRate+"%]";
+                        desc = "代理成本：" + (payQRUser.MarketRate-payQRUser.Rate)+"%  |  用户手续费：["+payQRUser.MarketRate+"%]";
                         this.ResponseXml = msg.toPicText(picUrl, GoUrl, desc);
                         break;
                     //联系我们
@@ -112,6 +112,7 @@ namespace IQBWX.BLL
         {
             EUserInfo ui = null, pui = null;
             EQRInfo qr = null;
+        
             long Id;
             string mText= null; 
             
@@ -161,7 +162,7 @@ namespace IQBWX.BLL
             {
             
                 mText += "欢迎注册服务平台！\n";
-                mText += string.Format("你当前收款码的扣点率为【{0}%】\n", qr.Rate);
+                mText += string.Format("你当前收款码的成本为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate- qr.Rate);
                 mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>",url);
             }
             else if(result.StartsWith("ParentOK"))
@@ -172,12 +173,12 @@ namespace IQBWX.BLL
                     pUser = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).FirstOrDefault();
                 }
                 mText += "欢迎注册服务平台！\n";
-                mText += string.Format("你当前收款码的扣点率为【{0}%】\n 您的上级代理为:{1}\n", qr.Rate, pUser.Name);
+                mText += string.Format("你当前收款码的成本为【{0}%】\n 您的介绍人为:{1}\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate, pUser.Name);
                 mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>", url);
             }
             else if (result.StartsWith("EXIST"))
             {
-                mText += string.Format("你当前收款码的扣点率为\n【{0}%】\n", qr.Rate);
+                mText += string.Format("你当前收款码的成本为\n【{0}%】\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate);
                 mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>", url);
             }
             else if (result.StartsWith("ParentEXIST"))
@@ -188,7 +189,7 @@ namespace IQBWX.BLL
                     pUser = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).FirstOrDefault();
                 }
 
-                mText += string.Format("你当前收款码的扣点率为\n【{0}%】\n 您的上级代理为:{1}\n", qr.Rate,pUser.Name);
+                mText += string.Format("你当前收款码的成本为\n【{0}%】\n 您的介绍人为:{1}\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate, pUser.Name);
                 mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>", url);
             }
             else if (result.StartsWith("NeedVerification"))

@@ -81,6 +81,8 @@ namespace IQBCore.IQBPay.Models.QR
 
         public int Level { get; set; }
 
+        public bool NeedFollowUp { get; set; }
+
 
         /// <summary>
         /// 是否身份校验

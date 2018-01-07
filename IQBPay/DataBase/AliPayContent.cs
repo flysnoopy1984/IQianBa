@@ -177,6 +177,7 @@ namespace IQBPay.DataBase
                 qrUser.UserName = ui.Name;
                 qrUser.Rate = pQR.Rate;
                 qrUser.ReceiveStoreId = pQR.ReceiveStoreId;
+              
                
                 if (!string.IsNullOrEmpty(pQR.ParentOpenId))
                 {

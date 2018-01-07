@@ -98,7 +98,7 @@ namespace IQBWX.Controllers
                                 menuEvent.SubscribeHandler(wxMsg,this);
                             break;
                         default:
-                            menuEvent.ResponseXml = wxMsg.toText("有事留言，2个工作日内必回");
+                            menuEvent.ResponseXml = wxMsg.toText("有事留言，代理请联系你的介绍人！");
                         break;
                     }
                     //log.log("Message: " + menuEvent. ResponseXml);

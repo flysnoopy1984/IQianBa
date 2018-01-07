@@ -62,7 +62,11 @@ namespace IQBCore.IQBPay.Models.Result
 
         public long? QRUserId { get; set; }
 
+        public long? QRInviteCode { get; set; }
+
         public float MarketRate { get; set; }
+
+        public bool NeedFollowUp { get; set; }
 
 
 

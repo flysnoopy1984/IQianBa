@@ -16,6 +16,7 @@ using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.InParameter;
+using System.Configuration;
 
 namespace IQBPay.Controllers
 {
@@ -62,7 +63,7 @@ namespace IQBPay.Controllers
 
         public ActionResult Get(string  OpenId)
         {
-            string sql = @"select ui.Id,ui.Name,ui.UserStatus,ui.UserRole,ui.IsAutoTransfer,ui.CDate,ui.MDate,ui.UserRole,ui.Headimgurl,ui.AliPayAccount,
+            string sql = @"select ui.Id,ui.Name,ui.UserStatus,ui.UserRole,ui.IsAutoTransfer,ui.CDate,ui.MDate,ui.UserRole,ui.Headimgurl,ui.AliPayAccount,ui.QRInviteCode,ui.NeedFollowUp,
                            qruser.MarketRate,qruser.ID as qrUserId,QRUser.Rate,qruser.FilePath as QRFilePath,qruser.ParentCommissionRate,qruser.OrigQRFilePath,
                            qrUser.parentOpenId as ParentAgentOpenId,qrUser.ParentName as ParentAgent,
                            si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
@@ -89,7 +90,7 @@ namespace IQBPay.Controllers
                         return Json(result);
                     }
                     result.StoreList = db.Database.SqlQuery<HashStore>("select Id,Name,Rate from storeinfo").ToList();
-                    result.ParentAgentList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo").ToList();
+                    result.ParentAgentList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo where userRole = 3 or userRole=100").ToList();
 
                     result.QueryResult = true;
                     return Json(result);
@@ -188,7 +189,8 @@ namespace IQBPay.Controllers
                     ui.UserStatus = InUA.UserStatus;
                     ui.UserRole = InUA.UserRole;
                     ui.parentOpenId = InUA.ParentOpenId;
-                    
+                    ui.NeedFollowUp = InUA.NeedFollowUp;
+
                     //本人所有QRUser
                     List<EQRUser> list = db.DBQRUser.Where(o => o.OpenId == InUA.OpenId).ToList();
                     float Ratediff = InUA.MarketRate - InUA.Rate;
@@ -210,30 +212,49 @@ namespace IQBPay.Controllers
                         qrUser.Rate = qrUser.MarketRate- Ratediff;
 
                     }
-                    if(adjustRate!=0)
+                    //本人邀请码QRInfo
+                    EQRInfo qrInfo = db.DBQRInfo.Where(a => a.ID == ui.QRInviteCode).FirstOrDefault();
+                    qrInfo.Rate = InUA.QRInfo_Rate;
+                    qrInfo.ParentCommissionRate = InUA.QRInfo_ParentCommissionRate;
+                    qrInfo.NeedFollowUp = InUA.NeedFollowUp;
+
+                    //Child
+                    List<EUserInfo> cList = db.DBUserInfo.Where(o => o.parentOpenId == ui.OpenId && o.UserRole == UserRole.DiamondAgent).ToList();
+
+                    for(int i=0;i< cList.Count;i++)
                     {
-                        //本人邀请码QRInfo
-                        EQRInfo qrInfo = db.DBQRInfo.Where(a => a.ID == ui.QRInviteCode).FirstOrDefault();
-                        if (qrInfo == null)
-                        {
-                            throw new Exception("没有找到对应的邀请码");
-                        }
-                          qrInfo.Rate += adjustRate;
-                       // qrInfo.ParentCommissionRate += adjustRate;
-                        //下级联动
-                        List<EQRUser> plist = db.DBQRUser.Where(o => o.ParentOpenId == InUA.OpenId).ToList();
-                        for (int i = 0; i < plist.Count; i++)
-                        {
-                            EQRUser qrUser = plist[i];
-                            qrUser.Rate += adjustRate;
-                            //qrUser.ParentCommissionRate += adjustRate;
-                        }
+                        cList[i].NeedFollowUp = InUA.NeedFollowUp;
                     }
-                   
+
+
+
+                    //if(adjustRate!=0)
+                    //{
+                    //    
+                    //    EQRInfo qrInfo = db.DBQRInfo.Where(a => a.ID == ui.QRInviteCode).FirstOrDefault();
+                    //    if (qrInfo == null)
+                    //    {
+                    //        throw new Exception("没有找到对应的邀请码");
+                    //    }
+                    //      qrInfo.Rate += adjustRate;
+                    //   // qrInfo.ParentCommissionRate += adjustRate;
+                    //    //下级联动
+                    //    List<EQRUser> plist = db.DBQRUser.Where(o => o.ParentOpenId == InUA.OpenId).ToList();
+                    //    for (int i = 0; i < plist.Count; i++)
+                    //    {
+                    //        EQRUser qrUser = plist[i];
+                    //        qrUser.Rate += adjustRate;
+                    //        //qrUser.ParentCommissionRate += adjustRate;
+                    //    }
+                    //}
+
 
                     db.SaveChanges();
 
-
+                    //WX客户端
+                    string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
+                    url += "API/OutData/RefreshGlobelConfig";
+                    HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, "", "application/x-www-form-urlencoded");
                     /*
                         DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
                         entry.State = EntityState.Unchanged;

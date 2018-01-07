@@ -29,7 +29,7 @@
     </div>
    
     
-    <div id="EditArea">
+    <div id="EditLeftArea">
         <div class="form-group">
             <label class="col-sm-3 control-label">用户名</label>
             <div class="col-sm-6">
@@ -51,9 +51,9 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">是否自动打款</label>
+            <label class="col-sm-3 control-label">是否支持3级</label>
             <div class="col-sm-6">
-                <input id="IsAutoTransfer" style="width:30px;" type="checkbox" class="form-control" />
+                <input id="NeedFollowUp" style="width:30px;" type="checkbox" class="form-control" />
             </div>
         </div>
 
@@ -62,7 +62,7 @@
             <div class="col-sm-6">
                 <select id="selParentAgent" class="form-control"></select>
                 @*<input id="ParentAgentId" type="hidden" />
-                    <input id="ParentAgent" type="text" class="form-control" />*@
+                <input id="ParentAgent" type="text" class="form-control" />*@
             </div>
         </div>
 
@@ -78,7 +78,7 @@
             <div class="col-sm-6">
                 <select id="selStore" class="form-control"></select>
                 @*<input id="StoreId" type="hidden">
-                    <input id="StoreName" type="text" class="form-control" />*@
+                <input id="StoreName" type="text" class="form-control" />*@
             </div>
         </div>
 
@@ -92,7 +92,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">市场扣点率</label>
             <div class="col-sm-6">
-                <input id="MarketRate" type="text" class="form-control" disabled="disabled"/>
+                <input id="MarketRate" type="text" class="form-control" disabled="disabled" />
                 (随点率变化)
             </div>
         </div>
@@ -111,12 +111,40 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">用户状态</label>
-            <div class="switch col-sm-6" data-on="success" data-off="warning" />
+            <label class="col-sm-3 control-label">用户状态</label>          
             <input type="checkbox" id="UserStatus" />
         </div>
 
     </div>
+
+    <div id="EditRightArea">
+        <div class="form-group">
+            <label class="col-sm-4 control-label">邀请码ID</label>
+            <div class="col-sm-6">
+                <input id="Invite_QRCode" type="text" class="form-control NeedFill" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">邀请码点率(0-100)</label>
+            <div class="col-sm-6">
+                <input id="Invite_Rate" type="text" class="form-control NeedFill" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")'>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">邀请码上级代理</label>
+            <div class="col-sm-6">
+                <select class="form-control" id="Invite_ParentOpenId"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">邀请码上级佣金点率</label>
+            <div class="col-sm-6">
+                <input id="Invite_ParentCommissionRate" type="text" class="form-control">
+            </div>
+        </div>
+
+    </div>
+  
     
     <div class="ButtonList">
         <button type="button" class="btn btn-success" onclick="Save();">保存</button>

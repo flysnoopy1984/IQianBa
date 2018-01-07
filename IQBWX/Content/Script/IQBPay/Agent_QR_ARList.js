@@ -24,8 +24,8 @@ function Init()
     ToListPage();
 
     $range = $("#AfterMarketRate").ionRangeSlider({
-        min: 8,
-        max: 12,
+        min: 6,
+        max: 14,
         from: 8,
         step:0.5,
     });
@@ -39,8 +39,8 @@ function Init()
         btnSubmit: "#btnSave",
         datatype: {
             "empty": /^\s*$/,
-            "My8-12": function (v) {
-                if (v >= 8 && v <= 12)
+            "My6-14": function (v) {
+                if (v >= 6 && v <= 14)
                     return true;
                 else
                     return false;
@@ -262,7 +262,7 @@ function generateData(result) {
         strCtrl += "<ul><li style='color:brown; font-weight:bold; height:30px;'>用户手续费:" + result[i].MarketRate + "</li>";
         strCtrl += "<li>上级代理:" + ParentName + "</li>";
         strCtrl += "</ul></td>";
-        strCtrl += "<td style='width:47%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='height:30px;'>代理返点:" + result[i].Rate + "</li>";
+        strCtrl += "<td style='width:47%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='height:30px;'>代理成本:" + (result[i].MarketRate-result[i].Rate) + "</li>";
         strCtrl += "<li>上级代理佣金:" + result[i].ParentCommissionRate + "</li>";
         strCtrl += "</ul></td>";
         strCtrl += "<td><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + ");' />"

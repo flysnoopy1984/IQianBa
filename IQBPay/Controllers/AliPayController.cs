@@ -280,19 +280,16 @@ namespace IQBPay.Controllers
                         string accessToken = this.getAccessToken(true);
                         //代理打款
                         EUserInfo agentUI = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
-                        /* Log.log("PayNotify -- accessToken:" + accessToken);
-                         Log.log("PayNotify -- BaseController.GlobalConfig:" + BaseController.GlobalConfig.IsWXNotice_AgentTransfer);
-                         Log.log("PayNotify -- agentUI OpenId:" + agentUI.OpenId);
-                         */
+                  
                      //   Log.log("PayNotify 开始转账给代理");
-                        tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.App, BaseController.SubApp, agentUI,ref order, accessToken,BaseController.GlobalConfig);
+                        tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.SubApp, BaseController.SubApp, agentUI,ref order, accessToken,BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
                         if(tranfer.TransferStatus != TransferStatus.Success)
                             TransferError++;
                      //   Log.log("PayNotify 转账给代理结束");
 
                         //上级代理佣金
-                        if (!string.IsNullOrEmpty(order.ParentOpenId))
+                        if (!string.IsNullOrEmpty(order.ParentOpenId) && order.ParentCommissionAmount > 0)
                         {
 
                             agentComm = db.DBAgentCommission.Where(c => c.OrderNo == order.OrderNo && c.ParentOpenId == order.ParentOpenId && c.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
@@ -304,7 +301,7 @@ namespace IQBPay.Controllers
                             parentUi.OpenId = agentComm.ParentOpenId;
                             parentUi.Name = agentComm.ParentName;
 
-                            tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.App, BaseController.SubApp, parentUi, ref order, null,BaseController.GlobalConfig);
+                            tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order, null,BaseController.GlobalConfig);
                             db.DBTransferAmount.Add(tranfer);
                             
                             if(tranfer.TransferStatus == TransferStatus.Success)
@@ -312,11 +309,32 @@ namespace IQBPay.Controllers
                             else
                                 TransferError++;
                         }
+                        //3级
+                        if (!string.IsNullOrEmpty(order.L3OpenId) && order.L3CommissionAmount>0)
+                        {
+                            agentComm = db.DBAgentCommission.Where(c => c.OrderNo == order.OrderNo && c.ParentOpenId == order.L3OpenId && c.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
+
+                            EUserInfo parentUi = new EUserInfo();
+                            parentUi.AliPayAccount = agentComm.ParentAliPayAccount;
+
+                            //用户转账函数赋值
+                            parentUi.OpenId = agentComm.ParentOpenId;
+                            parentUi.Name = agentComm.ParentName;
+
+                            tranfer = payManager.TransferHandler(TransferTarget.L3Agent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order, null, BaseController.GlobalConfig);
+                            db.DBTransferAmount.Add(tranfer);
+
+                            if (tranfer.TransferStatus == TransferStatus.Success)
+                                agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
+                            else
+                                TransferError++;
+                        }
 
 
-                        //用户打款
-                      //  Log.log("PayNotify 开始用户打款");
-                        tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App, BaseController.SubApp,null, ref order, null, BaseController.GlobalConfig);
+
+                            //用户打款
+                            //  Log.log("PayNotify 开始用户打款");
+                            tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App, BaseController.SubApp,null, ref order, null, BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
 
                         if(tranfer.TransferStatus != TransferStatus.Success)
@@ -860,7 +878,7 @@ namespace IQBPay.Controllers
                         int i = r.Next(0, list.Count - 1);
                         store = list[i];
                     }
-                    //测试转账
+                    
                  
                     
                     ResultEnum status;
@@ -879,6 +897,7 @@ namespace IQBPay.Controllers
                    // base.Log.log("支付PayF2F：" + Res);
                     if (status == ResultEnum.SUCCESS)
                     {
+                        //测试转账
                         if (!string.IsNullOrEmpty(AliPayAccount))
                         {
                             EBuyerInfo buyer = db.DBBuyerInfo.Where(a => a.AliPayAccount == AliPayAccount).FirstOrDefault();
@@ -907,12 +926,15 @@ namespace IQBPay.Controllers
 
                         if (!string.IsNullOrEmpty(qrUser.ParentOpenId))
                         {
-                            EAgentCommission agentComm = payMag.InitAgentCommission(order, qrUser);
-                          
+                            EAgentCommission agentComm = payMag.InitAgentCommission(order, qrUser);   
 
                             RUserInfo parentUi = db.DBUserInfo.Where(u => u.OpenId == qrUser.ParentOpenId).Select(a => new RUserInfo()
                             {
-                                AliPayAccount = a.AliPayAccount
+                                OpenId = a.OpenId,
+                                ParentAgentOpenId =a.parentOpenId,
+                                AliPayAccount = a.AliPayAccount,
+                                NeedFollowUp  = a.NeedFollowUp,
+                                
                             }).FirstOrDefault();
 
                             agentComm.ParentAliPayAccount = parentUi.AliPayAccount;
@@ -921,13 +943,34 @@ namespace IQBPay.Controllers
 
                             order.ParentOpenId = qrUser.ParentOpenId;
                             order.ParentCommissionAmount = agentComm.CommissionAmount;
+
+                            //3级
+                            if (parentUi.NeedFollowUp)
+                            {
+                                RUserInfo L3Parent = db.DBUserInfo.Where(u => u.OpenId == parentUi.ParentAgentOpenId).Select(a => new RUserInfo()
+                                {
+                                    OpenId = a.OpenId,
+                                    Name = a.Name,
+                                    AliPayAccount = a.AliPayAccount,
+                                }).FirstOrDefault();
+                                if(L3Parent!=null)
+                                {
+                                    agentComm = payMag.InitAgentCommission_L3(order, qrUser, L3Parent);
+
+                                    db.DBAgentCommission.Add(agentComm);
+
+                                    order.L3OpenId = L3Parent.OpenId;
+                                    order.L3CommissionAmount = agentComm.CommissionAmount;
+                                }
+                                
+                            }
+                            
+                           
                         }
 
                         db.DBOrder.Add(order);
 
                         //初始化佣金信息，如果订单未支付，将成为脏数据。
-
-                       
 
                             //买家信息记录
                             /*

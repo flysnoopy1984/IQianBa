@@ -19,6 +19,38 @@ $(document).ready(function () {
 
 });
 
+function AjaxInviteCode(Id)
+{
+    var url = "/QR/Get";
+    $.ajax({
+        type: 'post',
+        data: "Id=" + Id + "&qrType=3",
+        url: url,
+        success: function (data) {
+
+            $("#Invite_Rate").val(data.Rate);
+          
+            $("#Invite_ParentCommissionRate").val(data.ParentCommissionRate);
+
+            $("#Invite_ParentOpenId").empty();
+            $("#Invite_ParentOpenId").append("<option value=''>无</option>");
+
+            $(data.HashUserList).each(function (i, r) {
+                if (data.ParentOpenId == r.OpenId)
+                    $("#Invite_ParentOpenId").append("<option value='" + r.OpenId + "' selected>" + r.Name + "</option>");
+                else
+                    $("#Invite_ParentOpenId").append("<option value='" + r.OpenId + "'>" + r.Name + "</option>");
+            });
+
+        },
+        error: function (xhr, type) {
+
+            alert(xhr.responseText);
+
+        }
+    });
+}
+
 function Init(OpenId) {
    
     $("#OpenId").val(OpenId);
@@ -51,6 +83,8 @@ function Init(OpenId) {
             gStoreList = data.StoreList;
             gParentAgentList = data.ParentAgentList;
             InitFormData(data);
+            AjaxInviteCode(data.QRInviteCode);
+
         },
         error: function (xhr, type) {
 
@@ -70,7 +104,7 @@ function InitFormData(data) {
     //$("#ParentAgent").val(data.ParentAgent);
     $("#ParentCommissionRate").val(data.ParentCommissionRate);
 
-    $("#IsAutoTransfer").attr("checked", data.IsAutoTransfer);
+    $("#NeedFollowUp").attr("checked", data.NeedFollowUp);
 
     //$("#StoreId").val(data.StoreId);
     $("#StoreRate").val(data.StoreRate);
@@ -95,6 +129,8 @@ function InitFormData(data) {
             $("#selParentAgent").append("<option value='" + r.OpenId + "'>" + r.Name + "</option>");
     });
 
+   
+
 
     $("#AliPayAccount").val(data.AliPayAccount);
     $("#UserStatus").val(data.UserStatus);
@@ -104,6 +140,12 @@ function InitFormData(data) {
     $("#QRShow").attr("src", data.OrigQRFilePath);
 
     $("#MarketRate").val(data.MarketRate);
+    //邀请码 - Begin
+    $("#Invite_QRCode").val(data.QRInviteCode);
+
+  
+    //邀请码 - End
+
     var st;
     if (data.UserStatus == 0)
         st = false;
@@ -140,7 +182,7 @@ function CheckForm() {
 function Save() {
     
     var OpenId = $("#OpenId").val();
-    var IsAutoTransfer = $("#IsAutoTransfer").get(0).checked;
+    var NeedFollowUp = $("#NeedFollowUp").get(0).checked;
     var AliPayAccount = $("#AliPayAccount").val();
     var UserStatus = $("#UserStatus").val();
    
@@ -155,13 +197,18 @@ function Save() {
     var MarketRate = $("#MarketRate").val();
     var Rate = $("#Rate").val();
 
+    var qrInfoId = $("#Invite_QRCode").val();
+    var Invite_Rate = $("#Invite_Rate").val();
+    var Invite_ParentCommissionRate = $("#Invite_ParentCommissionRate").val();
+
+
     if (!CheckForm()) return;
 
     var url = "/User/SaveUserAgent";
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "OpenId": OpenId, "Rate": Rate, "MarketRate": MarketRate, "IsAutoTransfer": IsAutoTransfer, "AliPayAccount": AliPayAccount, "UserRole": UserRole, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName": ParentName, "ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
+        data: { "OpenId": OpenId,"NeedFollowUp":NeedFollowUp,"QRInfo_Rate":Invite_Rate,"QRInfo_ParentCommissionRate":Invite_ParentCommissionRate,"Rate": Rate, "MarketRate": MarketRate, "AliPayAccount": AliPayAccount, "UserRole": UserRole, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName": ParentName, "ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
         url: url,
         success: function (data) {
             if (data == "OK") {

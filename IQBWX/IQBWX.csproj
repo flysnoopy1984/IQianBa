@@ -398,6 +398,7 @@
     <Content Include="Views\PP\AgentDetail.cshtml" />
     <Content Include="Views\WXHelper\SendMessage.cshtml" />
     <Content Include="Views\PP\SysMain.cshtml" />
+    <Content Include="Views\PP\Report_OverView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

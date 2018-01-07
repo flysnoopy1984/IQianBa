@@ -70,6 +70,11 @@ namespace IQBCore.IQBPay.Models.User
         [MaxLength(200)]
         public string Remake { get; set; }
 
+        /// <summary>
+        /// 是否需要追踪上级
+        /// </summary>
+        public bool NeedFollowUp { get; set; }
+
 
 
         public void InitRegiser()

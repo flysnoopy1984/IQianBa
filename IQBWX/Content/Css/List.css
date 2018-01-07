@@ -284,3 +284,11 @@ table th[class*="col-"] {
 
 }
 
+.DivTable2_2{
+    width:100%;
+    background:#4a78e6;
+}
+.DivTable2_2 ul{ width:100%;}
+.DivTable2_2 ul li{width:49.8%;float:left; height:87px;border-bottom:1px solid #3c6ce0;  border-right:1px solid #3c6ce0; overflow-y:hidden;}
+.DivTable2_2 .highlight{color:#FFCE44;}
+

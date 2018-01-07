@@ -23,9 +23,11 @@
 /*Left Area*/
 #EditLeftArea
 {
-    width:500px;
+    width:600px;
     overflow:hidden;
     float:left;
+    /*background-color:aquamarine;*/
+    height:600px;
 }
 
 #EditLeftArea > div
@@ -37,9 +39,11 @@
 /*Right Area */
 #EditRightArea
 {
-    width:500px;
+    width:600px;
     overflow:hidden;
     float:left;
+     height:600px;
+     /*background-color:bisque;*/
 
 }
 

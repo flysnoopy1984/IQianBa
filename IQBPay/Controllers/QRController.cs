@@ -123,7 +123,7 @@ namespace IQBPay.Controllers
                     if (qrType == QRType.ARAuth)
                     {
                         result.HashStoreList = db.Database.SqlQuery<HashStore>("select Id,Name from storeinfo").ToList();
-                        result.HashUserList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo").ToList();
+                        result.HashUserList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo where UserRole = 3 or userRole=4").ToList();
                     }
                 }
                 return Json(result);

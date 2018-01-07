@@ -72,14 +72,14 @@ function generateData(result) {
        
         strCtrl = "";
         strCtrl += "<tr>";
-        strCtrl += "<td>" + result[i].Name + "</td>";
+        strCtrl += "<td title='" + result[i].Name + "'>" + result[i].Name + "</td>";
         strCtrl += "<td>" + result[i].Rate + "</td>";
         strCtrl += "<td>" + result[i].ParentCommissionRate + "</td>";
         strCtrl += "<td>" + result[i].MarketRate + "</td>";
-        strCtrl += "<td>" + result[i].ParentAgent + "</td>";
+        strCtrl += "<td title='" + result[i].ParentAgent + "'>" + result[i].ParentAgent + "</td>";
         strCtrl += "<td>" + result[i].CDate + "</td>";
-        strCtrl += "<td>" + result[i].AliPayAccount + "</td>";
-        //strCtrl += "<td>" + result[i].IsAutoTransfer + "</td>";
+        strCtrl += "<td title='" + result[i].AliPayAccount + "'>" + result[i].AliPayAccount + "</td>";
+        strCtrl += "<td title='"+result[i].OpenId+"'>" + result[i].OpenId + "</td>";
        
        
         if (result[i].StoreName == "" || result[i].StoreName == null)
@@ -87,7 +87,7 @@ function generateData(result) {
             result[i].StoreName = "随机";
         }
        
-       strCtrl += "<td>" + result[i].StoreName + "</td>";
+        strCtrl += "<td title='" + result[i].StoreName + "'>" + result[i].StoreName + "</td>";
 
         if (result[i].UserStatus == 1)
             strCtrl += "<td style='color:#4AC4BC;'><div class='noft-green-number'></div>启用</td>";

@@ -154,6 +154,11 @@ namespace IQBCore.IQBPay.Models.Order
 
         public float ParentCommissionAmount { get; set; }
 
+
+        [MaxLength(32)]
+        public string L3OpenId { get; set; }
+
+        public float L3CommissionAmount { get; set; }
         //[MaxLength(10)]
         //public string ReceiveNo { get; set; }
 

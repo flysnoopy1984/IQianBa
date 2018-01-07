@@ -64,7 +64,10 @@
     <div> 
         <ul>
             <li><a href=@Url.Action("Pay", "AliPay", new { amount = 14388 })>手机Pay</a></li>
+
             <li><a href=@Url.Action("PCPay", "AliPay", new { amount = 14388 })>PC Pay</a></li>
+
+            <li><a href=@Url.Action("F2FPay", "AliPay", new { qrUserId = 300, Amount=20, AliPayAccount="song_fuwei@hotmail.com" })>当面付</a></li>
             <li><a href=@Url.Action("AuthToISV", "AliPay")>AuthToUser</a></li>
             <li><a href=@Url.Action("GetAuthToken", "AliPay")>GetAuthToken</a></li>
             <li><a href=@Url.Action("QueryToken", "AliPay")>QueryToken</a></li> 

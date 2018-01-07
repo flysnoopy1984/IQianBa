@@ -685,7 +685,7 @@ namespace IQBWX.Controllers
         }
         #endregion
 
-        #region 代理身份验证
+        #region 代理
         [HttpPost]
         public ActionResult GetJSSDK(string AuthUrl)
         {
@@ -1202,6 +1202,21 @@ namespace IQBWX.Controllers
             WXBaseController.RefreshSession = true;
             return Content("OK");
         }
+        #endregion
+
+        #region 报表
+        public ActionResult Report_OverView()
+        {
+            if (UserSession.UserRole < UserRole.Administrator)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+            InitProfilePage();
+
+            return View();
+        }
+
+
         #endregion
 
     }

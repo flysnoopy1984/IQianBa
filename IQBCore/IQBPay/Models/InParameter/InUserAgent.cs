@@ -33,6 +33,17 @@ namespace IQBCore.IQBPay.Models.InParameter
         public float MarketRate { get; set; }
 
 
+        public long QRInfoId { get; set; }
+
+        public float QRInfo_Rate { get; set; }
+
+        public float QRInfo_ParentCommissionRate { get; set; }
+
+        public bool NeedFollowUp { get; set; }
+
+
+
+
     }
 
 }

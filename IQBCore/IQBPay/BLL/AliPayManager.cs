@@ -11,6 +11,7 @@ using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.Sys;
 using IQBCore.IQBPay.Models.Tool;
@@ -85,6 +86,10 @@ namespace IQBCore.IQBPay.BLL
                 case TransferTarget.Agent:
                     AliPayAccount = ui.AliPayAccount;
                     TransferAmount = order.RateAmount;
+                    break;
+                case TransferTarget.L3Agent:
+                    AliPayAccount = ui.AliPayAccount;
+                    TransferAmount = order.L3CommissionAmount;
                     break;
                 case TransferTarget.ParentAgent:
                     AliPayAccount = ui.AliPayAccount;
@@ -189,7 +194,16 @@ namespace IQBCore.IQBPay.BLL
                 model.PayeeType = "ALIPAY_USERID";
           
             model.PayeeAccount = toAliPayAccount;
-            model.PayerShowName = "转账-"+target.ToString();
+            string profix = "";
+            if (target == TransferTarget.ParentAgent)
+                profix = "(上级佣金)";
+            else if (target == TransferTarget.Agent)
+                profix = "(代理费)";
+            else if (target == TransferTarget.User)
+                profix = "(打款)";
+            else if (target == TransferTarget.L3Agent)
+                profix = "(三级)";
+            model.PayerShowName = profix+"找熟人平台";
             if(order!=null)
                 model.Remark = string.Format("#{0}-订单金额：{1}-订单ID：{2}",order.AgentName,order.TotalAmount,order.OrderNo);
 
@@ -241,6 +255,35 @@ namespace IQBCore.IQBPay.BLL
                 ParentName = qrUser.ParentName,
                 TransDate = DateTime.Now,
                 TransDateStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+
+            };
+            return comm;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="qrUser">2级QRUser</param>
+        /// <param name="topUser">1级代理人</param>
+        /// <returns></returns>
+        public EAgentCommission InitAgentCommission_L3(EOrderInfo order, EQRUser qrUser, RUserInfo topUser)
+        {
+            EAgentCommission comm = new EAgentCommission
+            {
+                OrderNo = order.OrderNo,
+                AgentCommissionStatus = BaseEnum.AgentCommissionStatus.Open,
+                ParentOpenId = topUser.OpenId,
+                ChildOpenId = qrUser.OpenId,
+                CommissionAmount = (float)Math.Round((0.5 / 100) * order.TotalAmount, 2, MidpointRounding.ToEven),
+                Level = 3,
+               
+                CommissionRate = (float)0.5,
+                ChildName = qrUser.UserName,
+                ParentName = topUser.Name,
+                TransDate = DateTime.Now,
+                TransDateStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                ParentAliPayAccount = topUser.AliPayAccount,
 
             };
             return comm;

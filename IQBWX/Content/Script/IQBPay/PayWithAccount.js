@@ -76,6 +76,19 @@ function PayToAli() {
 
 
     var amt = $("#TotalAmout").val();
+    if (amt < 20 || amt>4000)
+    {
+       
+        $.alert({
+            theme:"dark",
+            title: "错误",
+            content: "金额区间必须在【20-4000】",
+           
+        });
+      
+        return;
+    
+    }
     var qrUserId = $("#qrUserId").val();
     if (amt == null || amt == "" || amt == 0) {
         $.alert({
