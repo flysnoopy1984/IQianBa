@@ -172,7 +172,42 @@ namespace IQBPay.Controllers
             }
 
             return Json(result);
-        } 
+        }
+
+        [HttpPost]
+        public ActionResult DeleteUserAgent(string openId)
+        {
+            OutAPIResult result = new OutAPIResult();
+            result.IsSuccess = true;
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    var user = db.DBUserInfo.Where(o => o.OpenId == openId).FirstOrDefault();
+                   
+                    db.DBUserInfo.Remove(user);
+
+                    var qrInfo = db.DBQRInfo.Where(o => o.OwnnerOpenId == openId).FirstOrDefault();
+                    db.DBQRInfo.Remove(qrInfo);
+
+                    var qrUserlist = db.DBQRUser.Where(o => o.OpenId == openId).ToList();
+                    for(int i=0;i<qrUserlist.Count;i++)
+                    {
+                        db.DBQRUser.Remove(qrUserlist[i]);
+                    }
+                    db.SaveChanges();
+                }
+            }  
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+           
+
+            return Json(result);
+            
+        }
 
         public ActionResult SaveUserAgent(InUserAgent InUA)
         {
@@ -255,35 +290,7 @@ namespace IQBPay.Controllers
                     string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
                     url += "API/OutData/RefreshGlobelConfig";
                     HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, "", "application/x-www-form-urlencoded");
-                    /*
-                        DbEntityEntry<EUserInfo> entry = db.Entry<EUserInfo>(ui);
-                        entry.State = EntityState.Unchanged;
-                        entry.Property(t => t.AliPayAccount).IsModified = true;
-                        entry.Property(t => t.IsAutoTransfer).IsModified = true;
-                        entry.Property(t => t.UserStatus).IsModified = true;
-                        entry.Property(t => t.UserRole).IsModified = true;
-                        entry.Property(t => t.parentOpenId).IsModified = true;
-
-                        EQRUser qrUser = new EQRUser();
-
-                        qrUser.ID = InUA.QrUserId;
-                        qrUser.ParentName = InUA.ParentName;
-                        qrUser.ParentOpenId  = InUA.ParentOpenId;
-                        qrUser.ParentCommissionRate  = InUA.ParentCommissionRate;
-                        qrUser.ReceiveStoreId = InUA.StoreId;
-                        qrUser.MarketRate = InUA.MarketRate;
-                        qrUser.Rate = InUA.Rate;
-
-                        DbEntityEntry<EQRUser> qrEntry = db.Entry<EQRUser>(qrUser);
-                        qrEntry.State = EntityState.Unchanged;
-                        qrEntry.Property(t => t.ParentName).IsModified = true;
-                        qrEntry.Property(t => t.ParentOpenId).IsModified = true;
-                        qrEntry.Property(t => t.ParentCommissionRate).IsModified = true;
-                        qrEntry.Property(t => t.ReceiveStoreId).IsModified = true;
-                        qrEntry.Property(t => t.MarketRate).IsModified = true;
-                        qrEntry.Property(t => t.Rate).IsModified = true;
-
-                    */
+                
 
                 }
             }

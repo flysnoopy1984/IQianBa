@@ -1,213 +1,138 @@
-﻿const InitCount = 60;
-var countdown = InitCount;
-var SMSId = "";
-
+﻿
 function InitControls() {
-    $("#BnVerifyConfirm").hide();
+
+    //  $("#BnVerifyConfirm").hide();
     //支付区域
     $("#PayContent").hide();
-    $("#userPhone").attr("disabled", false);
 
-    $("#BnGetVerifyCode").attr("disabled", false);
-    $("#BnGetVerifyCode").text("获取验证码");
-    $("#BnGetVerifyCode").css("background", "#47a447");
+    $("#AliPayAccount").attr("disabled", false);
 
-    //短信验证区域
-    $("#VerifyArea").hide();
-    $("#VerifyCode").val("");
+    $("#bnModifyAliPayAccount").hide();
+    $("#bnConfirmAliPayAccount").show();
 
-    countdown = 0;
-    SMSId = "";
-    //$("#VerifyArea").hide();
-    //支付区域
-    //$("#PayContent").show();
+}
+
+function ShowPayArea() {
+    $("#AliPayAccount").attr("disabled", true);
+    $("#bnModifyAliPayAccount").show();
+    $("#bnConfirmAliPayAccount").hide();
+    $("#PayContent").show();
 }
 
 $(document).ready(function () {
 
+    var client = IsWeixinOrAlipay();
+    if (client != "Alipay") {
+        window.location.href = "/Home/ErrorMessage?code=3000";
+    }
+
     InitControls();
+    var account = getCookie("YJ_AliPayAccount");
+    if (account != null) {
+        $("#AliPayAccount").val(account);
+        ShowPayArea();
+    }
+
 });
 
-function ConfirmPhone() {
+function ModifyAliPayAccount() {
+    InitControls();
+}
 
-    var phone = $("#userPhone").val();
+function ConfirmAliPayAccount() {
 
-    var url = "/pp/CheckPhoneIsExist";
-    $.ajax({
-        type: "post",
-        data: "phone=" + phone,
-        url: url,
-        success: function (result) {
-            if (result.HasPhone) {
-                $("#PayContent").show();
-                $("#userPhone").attr("disabled", true);
-                $("#bnConfirmPhone").hide();
+    var AliPayAccount = $("#AliPayAccount").val();
 
-                $("#VerifyArea").hide();
+    $.confirm({
+        title: '请谨慎确认!',
+        content: '如收款码输入有误，您将无法收到款项!',
+        buttons: {
+            confirm: {
+
+                btnClass: 'btn-blue',
+                text: '确定',
+                action: function () {
+
+                    ShowPayArea();
+                }
+
+            },
+            cancel: {
+                text: '重新输入',
+
+
             }
-            else {
-                $("#VerifyArea").show();
-                $("#bnConfirmPhone").hide();
-            }
-
-        },
-        error: function (xhr, type) {
-
-            alert("系统错误，请联系平台！");
-            return;
 
         }
     });
-}
 
-
-function VerifyCodeConfirm() {
-
-    var code = $("#VerifyCode").val();
-    var url = "/api/sms/IQBPay_ConfirmVerifyCode?Code=" + code + "&SMSId=" + SMSId;
-
-    $.ajax({
-        type: "get",
-        data: "",
-        url: url,
-        success: function (result) {
-
-            //验证成功
-            if (result.SMSVerifyStatus == 3) {
-                alert("验证码成功，请开始支付");
-                $("#OrderNo").val(result.OrderNo);
-                $("#PayContent").show();
-                $("#VerifyArea").hide();
-                $("#userPhone").attr("disabled", true);
-
-                return;
-            }
-            if (result.SMSVerifyStatus == 5) {
-                alert("验证码已失效，请重新验证");
-                $("#bnConfirmPhone").hide();
-                InitControls();
-                return;
-            }
-
-            if (result.SMSVerifyStatus == 4) {
-                alert("验证码不正确，请输入【验证码】！非收款码！");
-                // InitControls();
-                return;
-            }
-
-            if (result.SMSVerifyStatus == -1)//UnKnow
-            {
-                alert("短信系统错误，请联系平台！");
-                InitControls();
-                return;
-            }
-        },
-        error: function (xhr, type) {
-
-            alert("短信系统错误，请联系平台！");
-            return;
-
-        }
-    })
 
 }
 
-function GetVerifyCode() {
-    if (checkPhone() == false) {
-        alert("错误,请先正确填写手机号码");
-        return;
-    }
-    //var OrderNo = $("#OrderNo").val();
-    //if (OrderNo == "" || OrderNo == null)
-    //{
-    //    alert("支付订单号码未生成，请联系站长！");
-    //    return;
-    //}
-    //  var ReceiveNo = $("#ReceiveNo").val();
-    var phone = $("#userPhone");
-    phone.attr("disabled", true);
-
-    var bn = $("#BnGetVerifyCode");
-    bn.attr("disabled", true);
-    bn.css("background", "#DDDDDD");
-
-    var url = "/api/sms/SentSMS_IQBPay_BuyerOrder?mobilePhone=" + phone.val() + "&IntervalSec=" + InitCount;
-
-    $.ajax({
-        type: "get",
-        data: "",
-        url: url,
-        success: function (result) {
-
-            if (result.SMSVerifyStatus == 6) {
-                alert("短信系统发送失败，请联系平台！");
-                InitControls();
-                return;
-            }
-
-            $("#BnVerifyConfirm").show();
-            if (result.RemainSec > -1) {
-                alert("消息已在上次发送");
-                countdown = result.RemainSec;
-            }
-            else {
-                countdown = InitCount;
-            }
-            SMSId = result.SmsID;
-            settime(bn);
-        },
-        error: function (xhr, type) {
-
-            alert("短信系统错误，请联系平台！");
-            InitControls();
-            return;
-
-        }
-    })
-}
-
-function settime(obj) {
-    if (countdown == 0) {
-        obj.attr("disabled", false);
-        obj.css("background", "#47a447");
-        // obj.addClass("bai");
-        obj.text("获取验证码");
-        countdown = InitCount;
-
-        $("#userPhone").attr("disabled", false);
-
-
-        return;
-    } else {
-        countdown--;
-        obj.text("重新发送(" + countdown + ")");
-
-    }
-
-    setTimeout(function () {
-        settime(obj)
-    }, 1000)
+function GoToFastPay() {
+    //delCookie("YJ_AliPayAccount");
+    var qrUserId = $("#qrUserId").val();
+    var url = "/PP/Pay?Id=" + qrUserId;
+    window.location = url;
 }
 
 function PayToAli() {
+
+
     var amt = $("#TotalAmout").val();
+    if (amt < 20 || amt > 1499) {
+
+        $.alert({
+            theme: "dark",
+            title: "错误",
+            content: "金额区间必须在【20-1499】",
+
+        });
+
+        return;
+
+    }
     var qrUserId = $("#qrUserId").val();
     if (amt == null || amt == "" || amt == 0) {
-        alert("金额不能为空");
+        $.alert({
+            theme: "dark",
+            title: "错误",
+            content: "金额不能为空",
+
+        });
+
         return;
     }
     $("#btnPay").attr("disabled", true);
     if (qrUserId == null || qrUserId == "") {
-        alert("未获取代理商家ID，请重新扫描后再尝试或联系代理商家");
-        return;
-    }
-    var phone = $("#userPhone").val();
-    if (phone == null || phone == "") {
-        alert("手机号未获取，请重新扫描验证！");
-        return;
-    }
+        $.alert({
+            theme: "dark",
+            title: "错误",
+            content: "未获取代理商家ID，请重新扫描后再尝试或联系代理商家",
 
-    var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&Phone=" + phone;
+        });
+
+        return;
+    }
+    var AliPayAccount = $("#AliPayAccount").val();
+    if (AliPayAccount == null || AliPayAccount == "") {
+        $.alert({
+            theme: "dark",
+            title: "错误",
+            content: "收款账号请准确填写！",
+
+        });
+
+        return;
+    }
+    $("#btnPay").attr("disabled", true);
+    var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&AliPayAccount=" + AliPayAccount + "&PayType=1";
+
+    // var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt;
+    setCookie("YJ_AliPayAccount", AliPayAccount, 3);
+
 
     window.location = url;
+
+
 }

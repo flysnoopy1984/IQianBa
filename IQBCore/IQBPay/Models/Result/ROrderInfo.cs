@@ -49,6 +49,8 @@ namespace IQBCore.IQBPay.Models.Result
         /// </summary>
         public float ParentAmountSum { get; set; }
 
+        public float L3AmountSum { get; set; }
+
         public float PPIncome { get; set; }
 
 

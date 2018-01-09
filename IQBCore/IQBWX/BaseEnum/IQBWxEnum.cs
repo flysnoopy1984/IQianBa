@@ -29,6 +29,9 @@ namespace IQBCore.IQBWX.BaseEnum
         AliPay_PayError = 2001,
         NotAuthorized = 2002,
 
+        NotAliPayClient = 3000,
+        NotWXClient = 3001,
+
     }
 
 

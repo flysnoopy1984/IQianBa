@@ -34,6 +34,11 @@ $(document).ready(function () {
     //    $("#AliPayAccount").val(account);
     //    ShowPayArea();
     //}
+    var client = IsWeixinOrAlipay();
+    if (client != "Alipay") {
+        window.location.href = "/Home/ErrorMessage?code=3000";
+    }
+   
    
 });
 
@@ -73,7 +78,7 @@ function ConfirmAliPayAccount() {
 function GoToSafePay()
 {
     var qrUserId = $("#qrUserId").val();
-    var url = "/PP/PayWithAccount?Id=" + qrUserId;
+    var url = "/PP/Pay2?Id=" + qrUserId;
     window.location = url;
 }
 
@@ -81,6 +86,21 @@ function PayToAli() {
 
  
     var amt = $("#TotalAmout").val();
+
+    var amt = $("#TotalAmout").val();
+    if (amt < 20 || amt > 1499) {
+
+        $.alert({
+            theme: "dark",
+            title: "错误",
+            content: "金额区间必须在【20-1499】",
+
+        });
+
+        return;
+
+    }
+
     var qrUserId = $("#qrUserId").val();
     if (amt == null || amt == "" || amt == 0) {
         $.alert({
@@ -104,15 +124,9 @@ function PayToAli() {
         return;
     }
     $("#btnPay").attr("disabled", true);
-    //var AliPayAccount = $("#AliPayAccount").val();
-    //if (AliPayAccount == null || AliPayAccount == "") {
-    //    alert("收款账号请准确填写！");
-    //    return;
-    //}
+  
 
-  //  var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&AliPayAccount=" + AliPayAccount;
-
-    var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt;
+    var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt+"&PayType=1";
   //  setCookie("YJ_AliPayAccount", AliPayAccount, 3);
     
 

@@ -2,9 +2,9 @@
 #ListArea
 {
      background-color:#FAFAFA;
-     overflow:hidden; 
-     margin:30px; 
-     width:95%;
+     
+     /*margin:30px;*/ 
+     width:100%;
 }
 #Title
 {

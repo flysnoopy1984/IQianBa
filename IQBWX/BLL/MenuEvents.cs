@@ -155,15 +155,17 @@ namespace IQBWX.BLL
             }
 
             ExtWebPay exWeb = new ExtWebPay();
-
+           
             string result = exWeb.regeisterWebMember(ui, qr.ID);
             string url = "https://mp.weixin.qq.com/s?__biz=MzUyMzUwOTQ3MA==&mid=100000020&idx=1&sn=fb0bd4f65bdd44985bf137413012cf64&chksm=7a3acaa54d4d43b360d9513a1e810b11d9c13899ad0c50d0cff089f70c88c33037230ef65cad#rd";
+            string note = string.Format(@"本系统不向任何人收取介绍费用，完全免费，请<a href='{0}'>阅读使用手册先</a>。如果您已被收费，请向您的介绍人索要回。",url);
             if (result.StartsWith("OK"))
             {
             
                 mText += "欢迎注册服务平台！\n";
                 mText += string.Format("你当前收款码的成本为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate- qr.Rate);
-                mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>",url);
+                mText += note;
+                mText += string.Format("<a href='{0}'>点击阅读使用手册</a>",url);
             }
             else if(result.StartsWith("ParentOK"))
             {
@@ -174,11 +176,13 @@ namespace IQBWX.BLL
                 }
                 mText += "欢迎注册服务平台！\n";
                 mText += string.Format("你当前收款码的成本为【{0}%】\n 您的介绍人为:{1}\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate, pUser.Name);
-                mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>", url);
+                mText += note;
+                mText += string.Format("<a href='{0}'>点击阅读使用手册</a>", url);
             }
             else if (result.StartsWith("EXIST"))
             {
                 mText += string.Format("你当前收款码的成本为\n【{0}%】\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate);
+                mText += note;
                 mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>", url);
             }
             else if (result.StartsWith("ParentEXIST"))
@@ -190,6 +194,7 @@ namespace IQBWX.BLL
                 }
 
                 mText += string.Format("你当前收款码的成本为\n【{0}%】\n 您的介绍人为:{1}\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate, pUser.Name);
+                mText += note;
                 mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>", url);
             }
             else if (result.StartsWith("NeedVerification"))

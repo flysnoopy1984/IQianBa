@@ -77,9 +77,13 @@ function InitFormData(data)
     $("#RecId").val(data.ID);
     $("#Name").val(data.Name);
     $("#Rate").val(data.Rate);
-    $("#OpenTime").val(data.OpenTime);
-    $("#CloseTime").val(data.CloseTime);
+    //$("#OpenTime").val(data.OpenTime);
+    //$("#CloseTime").val(data.CloseTime);
     $("#Remark").val(data.Remark);
+    $("#DayIncome").val(data.DayIncome);
+    $("#RemainAmount").val(data.RemainAmount);
+    $("#MinLimitAmount").val(data.MinLimitAmount);
+    $("#MaxLimitAmount").val(data.MaxLimitAmount);
     $("#StoreStatus").val(data.RecordStatus);
     $("#IsReceiveAccount").attr("checked",data.IsReceiveAccount)
     var channel = data.Channel;
@@ -100,9 +104,17 @@ function Save()
 
     var ID = $("#RecId").val();
     var Rate = $("#Rate").val();
-    var OpenTime = $("#OpenTime").val();
-    var CloseTime = $("#CloseTime").val();
+    //var OpenTime = $("#OpenTime").val();
+    //var CloseTime = $("#CloseTime").val();
     var DayIncome = $("#DayIncome").val();
+    var RemainAmount = $("#RemainAmount").val();
+    var MinLimitAmount = $("#MinLimitAmount").val();
+    var MaxLimitAmount = $("#MaxLimitAmount").val();
+
+    //$("#RemainAmount").val(data.RemainAmount);
+    //$("#MinLimitAmount").val(data.MinLimitAmount);
+    //$("#MaxLimitAmount").val(data.MaxLimitAmount);
+
 
     var IsReceiveAccount = $("#IsReceiveAccount").get(0).checked;
  
@@ -113,7 +125,7 @@ function Save()
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID,"DayIncome":DayIncome, "Name": name, "Rate": Rate, "OpenTime": OpenTime, "CloseTime": CloseTime, "Remark": remake, "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount },
+        data: { "ID": ID,"RemainAmount":RemainAmount,"DayIncome":DayIncome,"MinLimitAmount":MinLimitAmount,"MaxLimitAmount":MaxLimitAmount, "Name": name, "Rate": Rate,  "Remark": remake, "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount },
         url: url,
         success: function (data) {
             if(data == "OK")

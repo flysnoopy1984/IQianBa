@@ -128,29 +128,29 @@ namespace IQBPay.Controllers
         }
         public ActionResult Batch()
         {
-            using (AliPayContent db = new AliPayContent())
-            {
-                List<EUserInfo> list = db.DBUserInfo.Where(u => u.Id>211 && u.Id<=279).ToList();
-                EUserInfo updateUI = null;
-                EUserInfo pUI = db.DBUserInfo.Where(u => u.OpenId == "o3nwE0lm5RKCTJdBVeMsSVNHGIvE").FirstOrDefault();
-                foreach (EUserInfo ui in list)
-                {
-                    updateUI = ui;
-                    updateUI.parentOpenId = "";
+            //using (AliPayContent db = new AliPayContent())
+            //{
+            //    List<EUserInfo> list = db.DBUserInfo.Where(u => u.Id>211 && u.Id<=279).ToList();
+            //    EUserInfo updateUI = null;
+            //    EUserInfo pUI = db.DBUserInfo.Where(u => u.OpenId == "o3nwE0lm5RKCTJdBVeMsSVNHGIvE").FirstOrDefault();
+            //    foreach (EUserInfo ui in list)
+            //    {
+            //        updateUI = ui;
+            //        updateUI.parentOpenId = "";
                    
-                    List<EQRUser> qrUserList = db.DBQRUser.Where(a => a.OpenId == ui.OpenId).ToList();
-                    EQRUser updateQRUesr = null;
-                    foreach (EQRUser qrUser in qrUserList)
-                    {
-                        updateQRUesr = qrUser;
-                        updateQRUesr.ParentOpenId = pUI.OpenId;
-                        updateQRUesr.ParentName = pUI.Name;
-                        updateQRUesr.ParentCommissionRate = (float)0.5;
-                    }
-                }
+            //        List<EQRUser> qrUserList = db.DBQRUser.Where(a => a.OpenId == ui.OpenId).ToList();
+            //        EQRUser updateQRUesr = null;
+            //        foreach (EQRUser qrUser in qrUserList)
+            //        {
+            //            updateQRUesr = qrUser;
+            //            updateQRUesr.ParentOpenId = pUI.OpenId;
+            //            updateQRUesr.ParentName = pUI.Name;
+            //            updateQRUesr.ParentCommissionRate = (float)0.5;
+            //        }
+            //    }
 
-                db.SaveChanges();
-            }
+            //    db.SaveChanges();
+            //}
          
            return View();
         }

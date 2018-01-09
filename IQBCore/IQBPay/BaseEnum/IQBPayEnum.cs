@@ -48,6 +48,10 @@ namespace IQBCore.IQBPay.BaseEnum
         /// </summary>
         Administrator=100,
 
+        All = -1,
+
+       
+
     }
 
     /// <summary>

@@ -1,8 +1,13 @@
 ﻿
+using Aop.Api;
+using Aop.Api.Domain;
+using Aop.Api.Request;
+using Aop.Api.Response;
 using Com.Alipay.Business;
 using Com.Alipay.Domain;
 using Com.Alipay.Model;
 using IQBCore.Common.Helper;
+using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.Sys;
 using IQBCore.IQBPay.Models.Tool;
 using IQBCore.IQBPay.Models.User;
@@ -32,6 +37,32 @@ namespace IQBCore.IQBPay.BLL
         {
             get { return _SellerId; }
         }
+
+        public AlipayTradePrecreateResponse BuildNew(EAliPayApplication app,EStoreInfo store,EUserInfo AgentUI,string TotalAmt,bool needNotifyUrl=true)
+        {
+            string NotifyUrl = ConfigurationManager.AppSettings["Main_SiteUrl"] + "AliPay/PayNotify";
+            _OrderNo = StringHelper.GenerateOrderNo();
+
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+          app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+
+            AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
+            AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();
+
+            model.SellerId = store.AliPayAccount;
+            model.OutTradeNo = _OrderNo;
+            model.TotalAmount = TotalAmt;
+            model.Subject =  "#"+AgentUI.Name+ " 收银台";
+            model.Body = app.AppName + "-商品";
+            
+
+            request.SetBizModel(model);
+            if(needNotifyUrl)
+                request.SetNotifyUrl(NotifyUrl);
+
+            AlipayTradePrecreateResponse response = aliyapClient.Execute(request, null, store.AliPayAuthToke);
+            return response;
+        }
      
         public AlipayTradePrecreateContentBuilder BuildPrecreateContent(EAliPayApplication app,EUserInfo AgentUi, string sellerid,string TotalAmt)
         {
@@ -43,7 +74,7 @@ namespace IQBCore.IQBPay.BLL
             //收款账号
             builder.seller_id = _SellerId;
 
-           // builder.store_id = _SellerId;
+      //      builder.store_id = _SellerId;
 
             //订单编号
             builder.out_trade_no = OrderNo;
@@ -73,14 +104,14 @@ namespace IQBCore.IQBPay.BLL
             //goods.price = TotalAmt;
             //goods.quantity = "1";
             //gList.Add(goods);
-            List<GoodsInfo> gList = AliPayManager.GetGoodsList(TotalAmt);
-            builder.goods_detail = gList;
+            //List<GoodsInfo> gList = AliPayManager.GetGoodsList(TotalAmt);
+            //builder.goods_detail = gList;
 
             //系统商接入可以填此参数用作返佣
-            ExtendParams exParam = new ExtendParams();
-            exParam.sys_service_provider_id = app.AppId;
+            //ExtendParams exParam = new ExtendParams();
+            //exParam.sys_service_provider_id = app.AppId;
 
-            builder.extend_params = exParam;
+            //builder.extend_params = exParam;
 
 
 
@@ -125,16 +156,16 @@ namespace IQBCore.IQBPay.BLL
             //goods.price = TotalAmt;
             //goods.quantity = "1";
             //gList.Add(goods);
-            List<GoodsInfo> gList = AliPayManager.GetGoodsList(TotalAmt);
-            builder.goods_detail = gList;
+            //List<GoodsInfo> gList = AliPayManager.GetGoodsList(TotalAmt);
+            //builder.goods_detail = gList;
 
             builder.body = "#玉杰商品";
 
             //系统商接入可以填此参数用作返佣
-            ExtendParams exParam = new ExtendParams();
-            exParam.sys_service_provider_id = app.AppId;
+            //ExtendParams exParam = new ExtendParams();
+            //exParam.sys_service_provider_id = app.AppId;
 
-            builder.extend_params = exParam;
+            //builder.extend_params = exParam;
 
 
 
@@ -199,6 +230,41 @@ namespace IQBCore.IQBPay.BLL
            
         }
 
+        public string CreateF2FQR(string QRUrl, bool ForTool = false)
+        {
+            Bitmap bt;
+            string filePath, virtualPath;
+            string enCodeString = QRUrl;
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
+            qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;
+            qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.H;
+            qrCodeEncoder.QRCodeScale = 3;
+            qrCodeEncoder.QRCodeVersion = 8;
+            bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
+            string filename = System.DateTime.Now.ToString("yyyyMMddHHmmss") + "0000" + (new Random()).Next(1, 10000).ToString()
+             + ".jpg";
+
+            filePath = ConfigurationManager.AppSettings["QR_F2F_FP"] + filename;
+            if (ForTool)
+            {
+                filePath = "/Content/QR/Tools/" + filename;
+            }
+
+            virtualPath = filePath;
+
+          
+
+            filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
+            bt.Save(filePath);
+
+            if (ForTool)
+                return virtualPath;
+
+            // string ds = DeQR(filePath);
+            return filePath;
+
+        }
+
         public string CreateQR(AlipayF2FPrecreateResult precreateResult,bool ForTool = false)
         {
             Bitmap bt;
@@ -256,7 +322,7 @@ namespace IQBCore.IQBPay.BLL
         {
             if (!System.IO.File.Exists(filePath))
                 return null;
-            Bitmap myBitmap = new Bitmap(Image.FromFile(filePath));
+            Bitmap myBitmap = new Bitmap(System.Drawing.Image.FromFile(filePath));
             QRCodeDecoder decoder = new QRCodeDecoder();
             string decodedString = decoder.decode(new QRCodeBitmapImage(myBitmap));
             return decodedString;

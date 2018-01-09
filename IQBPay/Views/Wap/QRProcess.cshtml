@@ -1,0 +1,66 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>QRProcess</title>
+
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/scripts/Web/Common.js"></script>
+    <script type="text/javascript">
+
+        //$(document).ready(function () {
+
+        //    //Query(true,pageIndex+1);
+        //    var client = IsWeixinOrAlipay();
+        //    if (client != "Alipay") {
+        //        alert("not AliPay");
+        //    }
+        //    else
+        //        alert("OK");
+        //});
+
+        function MakeQR()
+        {
+            var url = "/Wap/MakeQR";
+            var amt = $("#Amount").val();
+            if(amt<500)
+            {
+                alert("金额必须大于500");
+                return;
+
+            }
+
+            $.ajax({
+                type: 'post',
+                data: "Amount="+amt,
+                url: url,
+                success: function (data) {
+                    if(data !="Error")
+                    {
+                        $("#QR").attr("src", data);
+                    }
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+                }
+            });
+        }
+    </script>
+
+</head>
+<body>
+    <div>
+        <input type="text" id="Amount" />
+        <div style="padding:20px;">
+            <img id="QR" src="" />
+        </div>
+        <input type="button" value="制作" onclick="MakeQR();" />
+    </div>
+</body>
+</html>

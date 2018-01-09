@@ -131,7 +131,7 @@ namespace IQBPay.Controllers
                 using (AliPayContent db = new AliPayContent())
                 {
 
-                    var list = db.DBOrder.Where(o=>o.OrderType == parameter.OrderType).Select(o=>new ROrderInfo {
+                    var list = db.DBOrder.Where(o => o.OrderType == parameter.OrderType).Select(o => new ROrderInfo {
 
                         ID = o.ID,
                         OrderNo = o.OrderNo,
@@ -140,6 +140,7 @@ namespace IQBPay.Controllers
                         TotalAmount = o.TotalAmount,
                         RateAmount = o.RateAmount,
                         ParentCommissionAmount = o.ParentCommissionAmount,
+                        L3CommissionAmount = o.L3CommissionAmount,
                         SellerCommission = o.SellerCommission,
                         BuyerTransferAmount = o.BuyerTransferAmount,
                         AgentName= o.AgentName,
@@ -229,8 +230,10 @@ namespace IQBPay.Controllers
                             result[0].BuyerTransferSum = list.ToList().Sum(o => o.BuyerTransferAmount);
                             result[0].StoreAmountSum = list.ToList().Sum(o => o.SellerCommission);
                             result[0].TotalAmountSum = list.ToList().Sum(o => o.TotalAmount);
+                            result[0].L3AmountSum = list.ToList().Sum(o => o.L3CommissionAmount);
 
-                            result[0].PPIncome = result[0].TotalAmountSum - result[0].RealTotalAmountSum - result[0].ParentAmountSum - result[0].BuyerTransferSum - result[0].StoreAmountSum;
+                            float AliPayFee = list.Where(o=>o.SellerCommission==0).ToList().Sum(o => o.TotalAmount)*(float)(0.6/100);
+                            result[0].PPIncome = result[0].TotalAmountSum - AliPayFee - result[0].RealTotalAmountSum - result[0].ParentAmountSum - result[0].BuyerTransferSum - result[0].StoreAmountSum - result[0].L3AmountSum;
                         }
                     }
                     else

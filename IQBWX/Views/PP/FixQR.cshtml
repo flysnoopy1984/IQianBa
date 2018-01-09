@@ -1,0 +1,53 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MakeFixQR</title>
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        function MakeQR()
+        {
+            var url = "/PP/MakeFixQR";
+            var amt = $("#Amount").val();
+            if(amt<500)
+            {
+                alert("金额必须大于500");
+                return;
+
+            }
+
+            $.ajax({
+                type: 'post',
+                data: "Amount="+amt,
+                url: url,
+                success: function (data) {
+                    if (data.IsSuccess) {
+                     
+                    }
+                    else
+                        alert(data.ErrorMsg);
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+                }
+            });
+        }
+    </script>
+    
+</head>
+<body>
+    <div>
+        <input type="text" id="Amount" />
+        <div>
+            <img id="QR" src="" />
+        </div>
+        <input type="button" value="制作" />
+    </div>
+</body>
+</html>

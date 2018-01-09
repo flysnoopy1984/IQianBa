@@ -220,9 +220,35 @@ div {word-wrap: break-word; }
 .zw120{ height:120px;}
 
 
-#TransferLogo
-{
+.noft-red {
+    background: none repeat scroll 0 0 #EA3F3F;
+    border-radius: 50%;
+    color: #FFFFFF;
+    font-size: 10px;
+     height: 20px;
+    left: 0;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    top: 0;
+    width: 20px;
+   
+}
 
+.noft-green-number {
+    background: none repeat scroll 0 0 #4AC4BC;
+    border-radius: 50%;
+    color: #FFFFFF;
+  
+    /*float: right;*/
+    font-size: 10px;
+    height: 20px;
+    left: 0;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    top: 0;
+    width: 20px;
 }
 
 

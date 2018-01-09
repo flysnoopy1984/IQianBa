@@ -223,7 +223,8 @@ border: 1px solid #E0E0E0;
 {
     border-radius:10px;
     background-color:#F5F5F5;
-    width:80%;
+    width:84%;
+   
     display: block !important;
     padding:10px;
 }
@@ -282,7 +283,6 @@ ul.topnav ul li {
     background: none repeat scroll 0 0 #4AC4BC;
     border-radius: 50%;
     color: #FFFFFF;
-    float: right;
     font-size: 10px;
     height: 20px;
     left: 0;

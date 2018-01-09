@@ -21,6 +21,11 @@ function ShowPayArea() {
 
 $(document).ready(function () {
 
+    var client = IsWeixinOrAlipay();
+    if (client != "Alipay") {
+        window.location.href = "/Home/ErrorMessage?code=3000";
+    }
+
     InitControls();
     var account = getCookie("YJ_AliPayAccount");
     if (account != null)
@@ -100,7 +105,7 @@ function PayToAli() {
       
         return;
     }
-    $("#btnPay").attr("disabled", true);
+   
     if (qrUserId == null || qrUserId == "") {
         $.alert({
             theme: "dark",
@@ -123,7 +128,7 @@ function PayToAli() {
         return;
     }
     $("#btnPay").attr("disabled", true);
-      var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&AliPayAccount=" + AliPayAccount;
+    var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&AliPayAccount=" + AliPayAccount+"&PayType=0";
 
    // var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt;
       setCookie("YJ_AliPayAccount", AliPayAccount, 3);

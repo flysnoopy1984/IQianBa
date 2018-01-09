@@ -131,7 +131,8 @@ namespace IQBPay.DataBase
                 EQRUser qrUser = null;
                 //RUserInfo pi = null;
                 EQRInfo cQR = null;
-                //邀请码
+
+                //被邀请人的邀请码
                 cQR = new EQRInfo();
                 cQR.InitByUser(ui);
 

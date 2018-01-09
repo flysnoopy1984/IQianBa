@@ -194,13 +194,17 @@ namespace IQBPay.Controllers
 
                    
                     entry.Property(t => t.Name).IsModified = true;
-                    entry.Property(t => t.OpenTime).IsModified = true;
-                    entry.Property(t => t.CloseTime).IsModified = true;
+                    //entry.Property(t => t.OpenTime).IsModified = true;
+                    //entry.Property(t => t.CloseTime).IsModified = true;
+
                     entry.Property(t => t.RecordStatus).IsModified = true;
                     entry.Property(t => t.Rate).IsModified = true;
                     entry.Property(t => t.Remark).IsModified = true;
                     entry.Property(t => t.DayIncome).IsModified = true;
                     entry.Property(t => t.IsReceiveAccount).IsModified = true;
+                    entry.Property(t => t.MaxLimitAmount).IsModified = true;
+                    entry.Property(t => t.MinLimitAmount).IsModified = true;
+                    entry.Property(t => t.RemainAmount).IsModified = true;
 
                     entry.Property(t => t.MDate).IsModified = true;
                     entry.Property(t => t.MTime).IsModified = true;

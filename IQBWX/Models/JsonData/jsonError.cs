@@ -34,7 +34,7 @@ namespace IQBWX.Models.JsonData
             }
         }
       
-        public static jsonError GetErrorObj(Errorcode code,string errorMsg = "")
+        public static jsonError GetErrorObj(Errorcode code,string errorMsg = "",string returnUrl="")
         {
             jsonError obj = new jsonError();
             obj.errorCode = Convert.ToInt32(code);
@@ -63,6 +63,15 @@ namespace IQBWX.Models.JsonData
                     obj.errorMsg = errorMsg;
                     obj.btnUrl = "/PP/PayWithAccount";
                     break;
+                case Errorcode.NotAliPayClient:
+                    obj.errorMsg = "请用支付宝扫描";
+                  
+                    break;
+                case Errorcode.NotWXClient:
+                    obj.errorMsg = "请用微信扫描";
+                  
+                    break;
+
             }
 
             return obj;

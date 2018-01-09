@@ -73,9 +73,21 @@ namespace IQBCore.IQBPay.Models.Store
         /// </summary>
         public bool IsReceiveAccount { get; set; }
 
+        /// <summary>
+        /// 非风控金额
+        /// </summary>
 
         public float MaxLimitAmount{get;set;}
 
+        /// <summary>
+        /// 风控金额
+        /// </summary>
+        public float MinLimitAmount { get; set; }
+
+        public float RemainAmount { get; set; }
+
         public StoreAuthStatus StoreAuthStatus { get; set; }
+
+        
     }
 }

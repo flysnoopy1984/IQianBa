@@ -15,6 +15,11 @@ using System.Text;
 using IQBCore.Common.Helper;
 using System.IO;
 using IQBCore.IQBPay.Models.OutParameter;
+using Aop.Api;
+using IQBCore.IQBPay.BLL;
+using IQBCore.IQBPay.Models.Store;
+using Aop.Api.Response;
+
 
 namespace IQBPay.Controllers
 {
@@ -134,6 +139,43 @@ namespace IQBPay.Controllers
 
             return Json(UploadObj);
         }
+
+        #region MakeQR
+        public ActionResult MakeQR(string Amount)
+        {
+            EAliPayApplication app = BaseController.App;
+            string path;
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+           app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+
+            EStoreInfo store = null;
+            using (AliPayContent db = new AliPayContent())
+            {
+                store = db.DBStoreInfo.Where(o => o.IsReceiveAccount == true).FirstOrDefault();
+            }
+            
+            F2FPayHandler _handler = new F2FPayHandler();
+            IQBCore.IQBPay.Models.User.EUserInfo ui = new IQBCore.IQBPay.Models.User.EUserInfo();
+            ui.Name = "大额";
+            AlipayTradePrecreateResponse builder = _handler.BuildNew(app, store, ui, Amount,false);
+            if(builder.Code == "10000")
+            {
+                path = _handler.CreateF2FQR(builder.QrCode,true);
+                return Content(path);
+            }
+            else
+            {
+                return Content("Error");
+            }
+          
+        }
+
+        public ActionResult QRProcess()
+        {
+            return View();
+        }
+
+        #endregion
 
 
     }

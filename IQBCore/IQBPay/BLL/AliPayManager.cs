@@ -45,21 +45,21 @@ namespace IQBCore.IQBPay.BLL
             request.BizContent = "{" +
             "\"out_request_no\":\"" + StringHelper.GenerateSubAccountTransNo() + "\"," +
             "\"trade_no\":\""+order.AliPayOrderNo+"\"," +
-            "      \"royalty_parameters\":[{" +
-            "        \"trans_out\":\""+store.AliPayAccount+"\"," +
-            "\"trans_in\":\""+ receiveStore.AliPayAccount+ "\"," +
+            "\"royalty_parameters\":[{" +
+            "\"trans_out\":\""+ store.AliPayAccount + "\"," + 
+            "\"trans_in\":\"" + receiveStore.AliPayAccount + "\"," +
             "\"amount\":"+ commission + "," +
             "\"desc\":\"分账\"" +
-            "        }]," +
-            "\"operator_id\":\"\"" +
-            "  }";
+            "}]," +
+            "\"operator_id\":\"ZSR\"" +
+            "}";
 
             // model.RoyaltyParameters = paramList;
             // request.SetBizModel(model);
             IQBLog log = new IQBLog();
             log.log(request.BizContent);
 
-            AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request, store.AliPayAuthToke);
+            AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request,null, store.AliPayAuthToke);
             return response;
         }
 
@@ -414,6 +414,38 @@ namespace IQBCore.IQBPay.BLL
 
                     break;
             }
+            return result;
+        }
+
+        public string PayF2FNew(EAliPayApplication app, EUserInfo AgentUi, EStoreInfo storeInfo, string TotalAmount, out ResultEnum status)
+        {
+            string result = "";
+           
+            /*
+            IAlipayTradeService serviceClient = F2FBiz.CreateClientInstance(AliPayConfig.serverUrl, AliPayConfig.appId, AliPayConfig.merchant_private_key, AliPayConfig.version,
+                           AliPayConfig.sign_type, AliPayConfig.alipay_public_key, AliPayConfig.charset);
+          */
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+            app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+
+
+            _handler = new F2FPayHandler();
+
+            AlipayTradePrecreateResponse builder = _handler.BuildNew(app, storeInfo, AgentUi, TotalAmount);
+
+            if(builder.Code == "10000")
+            {
+                result = _handler.CreateF2FQR(builder.QrCode);
+                result = _handler.DeQR(result);
+                status = ResultEnum.SUCCESS;
+            }
+            else
+            {
+                result = "[Error Message]"+builder.Msg+"[Sub Msg]"+builder.SubMsg;
+                status = ResultEnum.FAILED;
+            }
+
+          
             return result;
         }
 

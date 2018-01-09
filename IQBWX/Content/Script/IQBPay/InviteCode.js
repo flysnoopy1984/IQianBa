@@ -8,6 +8,56 @@
     }
 });
 
+function InviteCodeStatus()
+{
+    $.alert({
+        theme: 'dark',
+        title: 'WOW',
+        content: "暂时不开放",
+    });
+    return;
+    var url = "/PP/InviteCodeUpdate_Status";
+    var RecordStatus = $("#RecStatus").val();
+    var ID = $("#hQRId").val();
+    
+    $.ajax({
+        type: 'post',
+        dataType: "json",
+        data: { "ID": ID, "RecordStatus": RecordStatus },
+        url: url,
+        success: function (data) {
+           
+            if (data.IsSuccess == true) {
+                //$.alert({
+                //    title: '成功!',
+                //    content: "成功",
+                //    confirm: function () {
+                //        window.location.reload();
+                //        return true;
+                //    }
+
+                //});
+                alert("邀请码已更新");
+                window.location.reload();
+              //  window.location.reload();
+            }
+            else {
+                $.alert({
+                    theme: 'dark',
+                    title: '错误!',
+                    content: data.ErrorMsg + ".请联系管理员",
+                });
+            }
+        },
+        error: function (xhr, type) {
+
+            alert(xhr.responseText);
+
+        }
+    });
+
+}
+
 function Update()
 {
     var ID = $("#hQRId").val();

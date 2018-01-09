@@ -65,6 +65,33 @@ function Query(NeedClearn,_PageIndex) {
     });
 }
 
+function deleteUser(openId) {
+    if (confirm("用户将被删除,是否继续?")) {
+        var url = "/User/DeleteUserAgent";
+        $.ajax({
+            type: 'post',
+            data: "openId="+openId,
+            url: url,
+            success: function (data) {
+
+                if (data.IsSuccess) {
+                    window.location.reload();
+                    alert("删除完成");
+                }
+                else
+                    alert(data.ErrorMsg);
+            },
+            error: function (xhr, type) {
+
+                alert('Ajax error!');
+
+            }
+        });
+    }
+    else
+        alert("取消删除");
+}
+
 function generateData(result) {
     var strCtrl = "";
     $.each(result, function (i) {
@@ -94,10 +121,13 @@ function generateData(result) {
         else
             strCtrl += "<td><div class='noft-red-number'></div>禁用</td>";
 
-        strCtrl += "<td><a href='/User/Info?OpenId=" + result[i].OpenId + "' class='td'>详情</a></td>";
+        strCtrl += "<td><a href='/User/Info?OpenId=" + result[i].OpenId + "' class='td'>详情</a><br />"
+        strCtrl += "<input type=button onclick=deleteUser('" + result[i].OpenId + "') value='删除' /></td>";
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);
 
     });
+
+   
 }

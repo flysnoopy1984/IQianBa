@@ -49,15 +49,38 @@ namespace IQBPay.Controllers
 
         public object EORderInfo { get; private set; }
 
-        public string callF2FPay(string TotalAmt, string sellerid)
+        public string callF2FPay(EStoreInfo store,string TotalAmt,string orderNo)
         {
 
             string result = "";
 
-            IAlipayTradeService serviceClient = F2FBiz.CreateClientInstance(AliPayConfig.serverUrl, AliPayConfig.appId, AliPayConfig.merchant_private_key, AliPayConfig.version,
-                            AliPayConfig.sign_type, AliPayConfig.alipay_public_key, AliPayConfig.charset);
+            EAliPayApplication app = BaseController.App;
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+            app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
 
+            AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
+            AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();
+          
+            model.SellerId = store.AliPayAccount;
+            model.OutTradeNo = orderNo;
+            model.TotalAmount = TotalAmt;
+            model.Subject = "找熟人-原原 收银台";
+            model.Body =  app.AppName + "-商品";
+           // List<GoodsDetail> gList = new List<GoodsDetail>();
+           // GoodsDetail good = new GoodsDetail();
+           // good.GoodsName = "找熟人服务包";
+           // good.GoodsId = "找熟人服务包";
+           //// good.GoodsCategory = "服装";
+           // good.Price = TotalAmt;
+           // good.Quantity = 1;
 
+           // model.GoodsDetail= gList;
+
+            request.SetBizModel(model);
+
+            AlipayTradePrecreateResponse  response = aliyapClient.Execute(request, null, store.AliPayAuthToke);
+            return response.Body;
+            /*
             F2FPayHandler handler = new F2FPayHandler();
             EUserInfo ui = new EUserInfo();
             ui.Name = "Test";
@@ -90,6 +113,7 @@ namespace IQBPay.Controllers
 
                     break;
             }
+            */
             return result;
         }
 
@@ -245,12 +269,13 @@ namespace IQBPay.Controllers
 
                         order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Paid;
 
-
                         EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
+                        //家门店铺更新额度
+                        store.RemainAmount -= order.TotalAmount;
                         //店铺佣金
                         if (!store.IsReceiveAccount)
                         {
-                         //   Log.log("PayNotify 开始分账");
+                          //  Log.log("PayNotify 开始分账");
                             //分账
                             
                             EStoreInfo subStore =null;
@@ -262,31 +287,41 @@ namespace IQBPay.Controllers
                             {
                                 order.LogRemark += ex.Message;
                                 order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
-
+                                Log.log("subStore 获取错误");
                             }
                             if (subStore!=null)
                             {
-                                AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, subStore);
-                                if (res.Code == "10000")
-                                    order.LogRemark += string.Format("[SubAccount] Code:{0};msg:{1}; ", res.Code, res.Msg);
-                                else
+                                try
                                 {
-                                    order.LogRemark += string.Format("[SubAccount] SubCode:{0};Submsg:{1}; ", res.SubCode, res.SubMsg);
-                                    order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                                    AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, subStore);
+                                    if (res.Code == "10000")
+                                        order.LogRemark += string.Format("[SubAccount] Code:{0};msg:{1}; ", res.Code, res.Msg);
+                                    else
+                                    {
+                                        order.LogRemark += string.Format("[SubAccount] SubCode:{0};Submsg:{1}; ", res.SubCode, res.SubMsg);
+                                        order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                                        store.RecordStatus = RecordStatus.Blocked;
+                                    }
                                 }
+                                catch(Exception ex)
+                                {
+                                    order.LogRemark += ex.Message;
+                                    store.RecordStatus = RecordStatus.Blocked;
+                                }
+                               
                             }
-                         //   Log.log("PayNotify 分账结束");
+                         //  Log.log("PayNotify 分账结束");
                         }
                         string accessToken = this.getAccessToken(true);
                         //代理打款
                         EUserInfo agentUI = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
                   
-                     //   Log.log("PayNotify 开始转账给代理");
+                      //  Log.log("PayNotify 开始转账给代理");
                         tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.SubApp, BaseController.SubApp, agentUI,ref order, accessToken,BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
                         if(tranfer.TransferStatus != TransferStatus.Success)
                             TransferError++;
-                     //   Log.log("PayNotify 转账给代理结束");
+                      //  Log.log("PayNotify 转账给代理结束");
 
                         //上级代理佣金
                         if (!string.IsNullOrEmpty(order.ParentOpenId) && order.ParentCommissionAmount > 0)
@@ -330,11 +365,9 @@ namespace IQBPay.Controllers
                                 TransferError++;
                         }
 
-
-
                             //用户打款
-                            //  Log.log("PayNotify 开始用户打款");
-                            tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App, BaseController.SubApp,null, ref order, null, BaseController.GlobalConfig);
+                       //  Log.log("PayNotify 开始用户打款");
+                        tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App, BaseController.SubApp,null, ref order, null, BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
 
                         if(tranfer.TransferStatus != TransferStatus.Success)
@@ -344,52 +377,21 @@ namespace IQBPay.Controllers
                         else
                             order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Closed;
 
-                     //   Log.log("PayNotify 结束用户打款");
+                      //  Log.log("PayNotify 结束用户打款");
 
-                        #region 自动提款(老逻辑)
-
-                        //自动提款
-                        //EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
-                        //if(ui.IsAutoTransfer)
-                        //{
-                        //    string TransferId;
-                        //    AlipayFundTransToaccountTransferResponse res2 = payManager.TransferAmount(BaseController.App, ui.AliPayAccount, order.RealTotalAmount.ToString("0.00"), out TransferId);
-
-                        //    if (res2.Code == "10000")
-                        //    {
-                        //        //微信通知代理开始
-                        //        string accessToken = this.getAccessToken(true);
-                        //        PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
-                        //        notice.Push();
-                        //        //微信通知代理通知结束
-
-                        //        //转账记录开始
-                        //        ETransferAmount tranfer = ETransferAmount.Init(TransferId, ui, order);
-                        //        tranfer.Buyer_AliPayId = order.BuyerAliPayId;
-                        //        tranfer.Buyer_AliPayLoginId = order.BuyerAliPayLoginId;
-                        //        db.DBTransferAmount.Add(tranfer);
-                        //        order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Closed;
-                        //        order.TransferId = TransferId;
-                        //        order.TransferAmount = tranfer.TransferAmount;
-
-                        //        //转装记录结束
-                        //        order.LogRemark += string.Format("[Transfer] Code:{0};msg:{1}", res2.Code, res2.Msg);
-                        //    }
-                        //    else
-                        //    {
-                        //        order.LogRemark += string.Format("[Transfer] SubCode:{0};Submsg:{1}", res2.SubCode, res2.SubMsg);
-                        //        order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
-                        //    }
-                        //}  
-                        //else
-                        //{
-                        //    order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.WaitingBuyerConfirm;
-                        //}
-                        #endregion
+                 
                     }
                     else
                     {
-                        order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                        //order.LogRemark += "支付状态为未成功！";
+                        //order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                        if (order.AliPayTradeStatus == "WAIT_BUYER_PAY")
+                            return Content("success");
+                        else
+                        {
+                            order.LogRemark += "通知状态异常：" + order.AliPayTradeStatus;
+                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                        }
 
                     }
                     
@@ -713,6 +715,15 @@ namespace IQBPay.Controllers
             return Content(AliDemo.callAliPay_Wap(amt));
         }
 
+        public ActionResult TestF2F(string No)
+        {
+            using (AliPayContent db = new AliPayContent())
+            {
+                EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == 7).FirstOrDefault();
+                return Content(callF2FPay(store, "10.00",No));
+            }
+        }
+
         public ActionResult Demo()
         {
            
@@ -789,7 +800,7 @@ namespace IQBPay.Controllers
         /// <param name="Id">QRUserId</param>
         /// <param name="Amount"></param>
         /// <returns></returns>   
-        public ActionResult F2FPay(string qrUserId, string Amount,string AliPayAccount)
+        public ActionResult F2FPay(string qrUserId, string Amount,string AliPayAccount,int PayType)
         {
             string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?QRUserId="+qrUserId+"&code=2001&ErrorMsg=";
             EAliPayApplication app;
@@ -845,42 +856,50 @@ namespace IQBPay.Controllers
                    
 
                     EStoreInfo store = null;
-                    //获取并校验商户
-                    if (qrUser.ReceiveStoreId > 0)
+                    string selectStoreSql = @"select top 1 * from StoreInfo 
+                                    where RecordStatus = 0 and RemainAmount> 0 and Channel=1
+                                    order by NEWID() ";
+                    if (PayType == 1)
                     {
-                        store = db.DBStoreInfo.Where(a => a.ID == qrUser.ReceiveStoreId).FirstOrDefault();
-                        if (store == null)
-                        {
-                            ErrorUrl += "没有找到对应的收款商户";
-                            return Redirect(ErrorUrl);
-                        }
-                        if (store.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
-                        {
-                            ErrorUrl += "收款商户已下线";
-                            return Redirect(ErrorUrl);
-                        }
-                       
-                        //if(store.IsReceiveAccount)
-                        //{
-                        //    ErrorUrl += "支付的商户不能作为收款商户";
-                        //    return Redirect(ErrorUrl);
-                        //}
+                        
+
+                        store = db.Database.SqlQuery<EStoreInfo>(selectStoreSql).FirstOrDefault();
+                        //  store = db.Database.SqlQuery("")
                     }
-                    else
+                    else if(PayType ==0)
                     {
-                        List<EStoreInfo> list = db.DBStoreInfo.Where(a => a.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Normal && a.IsReceiveAccount == false).ToList();
-                        if (list.Count == 0)
+                        if (qrUser.ReceiveStoreId > 0)
                         {
-                            ErrorUrl += "没有任何对应的支付商户，请联系平台";
-                            return Redirect(ErrorUrl);
+                            store = db.DBStoreInfo.Where(a => a.ID == qrUser.ReceiveStoreId).FirstOrDefault();
+                            if (store == null)
+                            {
+                                ErrorUrl += "没有找到对应的收款商户";
+                                return Redirect(ErrorUrl);
+                            }
+                            if (store.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
+                            {
+                                ErrorUrl += "收款商户已下线";
+                                return Redirect(ErrorUrl);
+                            }
+
+                            //if(store.IsReceiveAccount)
+                            //{
+                            //    ErrorUrl += "支付的商户不能作为收款商户";
+                            //    return Redirect(ErrorUrl);
+                            //}
                         }
-                        Random r = new Random();
-                        int i = r.Next(0, list.Count - 1);
-                        store = list[i];
+                        else
+                        {
+                          
+                            store = db.Database.SqlQuery<EStoreInfo>(selectStoreSql).FirstOrDefault();
+                        }
                     }
-                    
-                 
-                    
+                    if(store == null)
+                    {
+                        ErrorUrl += "今日所有可用花呗已用完，请明天12点再尝试";
+                        return Redirect(ErrorUrl);
+                    }
+                    //获取并校验商户 
                     ResultEnum status;
 
                     if (store.FromIQBAPP == BaseController.App.AppId)
@@ -893,34 +912,35 @@ namespace IQBPay.Controllers
                         return Redirect(ErrorUrl);
                     }
 
-                    string Res = payMag.PayF2F(app, ui, store, Convert.ToSingle(Amount),out status);
+                    //测试转账
+                    if (!string.IsNullOrEmpty(AliPayAccount))
+                    {
+                        EBuyerInfo buyer = db.DBBuyerInfo.Where(a => a.AliPayAccount == AliPayAccount).FirstOrDefault();
+                        if (buyer == null)
+                        {
+                            string tId;
+                            AlipayFundTransToaccountTransferResponse res = payMag.DoTransferAmount(TransferTarget.User, BaseController.SubApp, AliPayAccount, "0.1", PayTargetMode.AliPayAccount, out tId);
+                            if (res.Code != "10000")
+                            {
+                                ErrorUrl += "当前收款账户转账失败,请更换！";
+                                return Redirect(ErrorUrl);
+                            }
+                            else
+                            {
+                                buyer = new EBuyerInfo();
+                                buyer.AliPayAccount = AliPayAccount;
+                                buyer.TransDate = DateTime.Now;
+                                db.DBBuyerInfo.Add(buyer);
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+
+                    //  string Res = payMag.PayF2F(app, ui, store, Convert.ToSingle(Amount),out status);
+                    string Res = payMag.PayF2FNew(app, ui, store, Amount, out status);
                    // base.Log.log("支付PayF2F：" + Res);
                     if (status == ResultEnum.SUCCESS)
                     {
-                        //测试转账
-                        if (!string.IsNullOrEmpty(AliPayAccount))
-                        {
-                            EBuyerInfo buyer = db.DBBuyerInfo.Where(a => a.AliPayAccount == AliPayAccount).FirstOrDefault();
-                            if (buyer == null)
-                            {
-                                string tId;
-                                AlipayFundTransToaccountTransferResponse res = payMag.DoTransferAmount(TransferTarget.User, BaseController.SubApp, AliPayAccount, "0.1", PayTargetMode.AliPayAccount, out tId);
-                                if (res.Code != "10000")
-                                {
-                                    ErrorUrl += "收款账户不正确，请尽量填写邮箱作为收款账户";
-                                    return Redirect(ErrorUrl);
-                                }
-                                else
-                                {
-                                    buyer = new EBuyerInfo();
-                                    buyer.AliPayAccount = AliPayAccount;
-                                    buyer.TransDate = DateTime.Now;
-                                    db.DBBuyerInfo.Add(buyer);
-                                    db.SaveChanges();
-                                }
-                            }
-                        }
-
                         //创建初始化订单
                         EOrderInfo order = payMag.InitOrder(qrUser, store,Convert.ToSingle(Amount), AliPayAccount);
 
@@ -979,7 +999,7 @@ namespace IQBPay.Controllers
                             buyInfo.PhoneNumber = Phone;
                             db.DBBuyerInfo.Add(buyInfo);
                             */
-                            db.SaveChanges();
+                         db.SaveChanges();
 
                         return Redirect(Res);
                     }
@@ -1031,13 +1051,13 @@ namespace IQBPay.Controllers
             return Content(result);
         }
 
-        public ActionResult SubAccount()
+        public ActionResult SubAccount(string OrderNo)
         {
             AlipayTradeOrderSettleResponse res = null;
             using (AliPayContent db = new AliPayContent())
             {
                 AliPayManager payManager = new AliPayManager();
-                EOrderInfo order = db.DBOrder.Where(o => o.OrderNo == "IQBO20171010103417ex7gsgbd").FirstOrDefault();
+                EOrderInfo order = db.DBOrder.Where(o => o.OrderNo == OrderNo).FirstOrDefault();
                 EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
                 res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount);
               
@@ -1061,6 +1081,23 @@ namespace IQBPay.Controllers
 
             string amt = Request.QueryString["amount"];
             return Content(AliDemo.callAliPay_PC(amt));
+        }
+
+        public ActionResult QueryOrder()
+        {
+            //EAliPayApplication app = BaseController.App;
+            //IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+            // app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+
+            //AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
+            //AlipayTradeQueryModel model = new AlipayTradeQueryModel();
+
+            //model.OutTradeNo = "YJO20180109111128wo";
+            //request.SetBizModel(model);
+
+            //AlipayTradeQueryResponse response = client.execute(request);
+            //Console.WriteLine(response.Body);
+            return View();
         }
 
 

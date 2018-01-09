@@ -28,6 +28,23 @@
                 <input type="text" id="ParentCommRate" value="@Model.ParentCommissionRate" class="form-control" datatype="n" nullmsg="上级代理反佣金" sucmsg="OK" errormsg="请填写上级代理反佣金率" /> 
             </div>
         </div>
+        <div class="form-group" id="Field_AfterMarketRate">
+            <label>状态:</label>
+            @if (Model.RecordStatus == RecordStatus.Normal)
+            {
+                <div class='noft-green-number' style="display:inline-block; margin-left:10px;margin-right:10px;"></div><span>有效</span>
+            }
+            else
+            {
+                <div class='noft-red' style="display:inline-block; margin-left:10px;margin-right:10px;"></div><span>无效</span>
+            }
+
+            @*<div class="col-sm-6">
+                <input type="text" id="RecordStatus" value="@Model.RecordStatus" class="form-control" />
+            </div>*@
+            <button type="button" class="mgz btn btn-primary" id="btnSave" style="width:150px; height:50px; margin-left:20px;" onclick="InviteCodeStatus();">更新新邀请码</button>
+        </div>
+        
         @if (@ViewBag.UserRole == Convert.ToInt32(UserRole.Administrator))
         {
             <div class="form-group">
@@ -72,7 +89,7 @@
                 </div>
             </div>
 
-            <div id="buttonArea" style="margin-bottom:50px;">
+            <div id="buttonArea" style="margin-bottom:150px;">
                 <button type="button" class="mgz btn btn-primary" id="btnSave" style="width:95%; height:60px;" onclick="Update();">更新</button>
             </div>
         }
@@ -86,6 +103,7 @@
         </div>
     </div>
     <input type="hidden" value="@Model.ID" id="hQRId" />
+    <input type="hidden" value="@Model.RecordStatus" id="RecStatus" />
     <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
     <input type="hidden" value="@ViewBag.UserRole" id="hUserRole" />
 

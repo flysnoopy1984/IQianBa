@@ -34,13 +34,14 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(QRType QRType, string Name = "",int pageIndex = 0, int pageSize = IQBConstant.PageSize)
+        public ActionResult Query(QRType QRType, string Name = "", UserRole UserRole = UserRole.All,int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             List<RQRInfo> result = new List<RQRInfo>();
+         
             try
             {
                //string openId = this.GetOpenId(true);
-
+                
                 using (AliPayContent db = new AliPayContent())
                 {
                     var list =
@@ -48,6 +49,8 @@ namespace IQBPay.Controllers
                         from qr in db.DBQRInfo
                         join st in db.DBStoreInfo on qr.ReceiveStoreId equals st.ID into joinedQRST 
                         from st in joinedQRST.DefaultIfEmpty()
+                        join ui in db.DBUserInfo on qr.OwnnerOpenId equals ui.OpenId into joinedUI
+                        from ui in joinedUI.DefaultIfEmpty()
                         join pi in db.DBUserInfo.DefaultIfEmpty() on qr.ParentOpenId  equals pi.OpenId into joinQRUser
                         from pi in joinQRUser.DefaultIfEmpty()
                         where qr.Type== QRType
@@ -64,12 +67,19 @@ namespace IQBPay.Controllers
                             RecordStatus = qr.RecordStatus,
                             APPId = qr.APPId,
                             CreateDate = qr.CreateDate,
+                            UserRole = ui.UserRole,
+                            
 
                         }
                     );
                     if(!string.IsNullOrEmpty(Name))
                     {
                         list = list.Where(a => a.Name.Contains(Name));
+                    }
+                    if(UserRole!= UserRole.All)
+                    {
+                        
+                        list = list.Where(a => a.UserRole == UserRole);
                     }
                     list =list.OrderByDescending(i => i.CreateDate);
                     //  db.DBQRInfo.Where(i => i.Type == QRType).OrderByDescending(i => i.CreateDate);

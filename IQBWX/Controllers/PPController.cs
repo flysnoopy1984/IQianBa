@@ -71,7 +71,7 @@ namespace IQBWX.Controllers
 
         public ActionResult Pay(string Id)
         {
-            return RedirectToAction("PayWithAccount", "PP", new { Id = Id });
+           // return RedirectToAction("PayWithAccount", "PP", new { Id = Id });
 
             if(WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
             {
@@ -84,10 +84,14 @@ namespace IQBWX.Controllers
 
         public ActionResult PayWithAccount(string Id)
         {
+            return RedirectToAction("Pay", "PP", new { Id = Id });
+
             if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
             {
                 return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
             }
+           
+
             ViewBag.QRUserId = Id;
             // ViewBag.ReceiveNo = StringHelper.GenerateReceiveNo();
             return View();
@@ -965,6 +969,37 @@ namespace IQBWX.Controllers
             return Json(result);
         }
 
+        [HttpPost]
+        public ActionResult InviteCodeUpdate_Status(EQRInfo qrInfo)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                
+                using (AliPayContent db = new AliPayContent())
+                {
+                    qrInfo.RecordStatus = RecordStatus.Normal;
+                    qrInfo.InitModify();
+                    DbEntityEntry<EQRInfo> entry = db.Entry<EQRInfo>(qrInfo);
+                    entry.State = EntityState.Unchanged;
+                    entry.Property(t => t.RecordStatus).IsModified = true;
+
+                    entry.Property(t => t.MDate).IsModified = true;
+                    entry.Property(t => t.MTime).IsModified = true;
+                    entry.Property(t => t.ModifyDate).IsModified = true;
+                    db.SaveChanges();
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return base.ErrorResult(ex.Message);
+            }
+            return Json(result);
+        }
+
         public ActionResult InviteCode()
         {
             RQRInfo qr = null;
@@ -982,6 +1017,7 @@ namespace IQBWX.Controllers
                     ParentOpenId = a.ParentOpenId,
                     ParentCommissionRate = a.ParentCommissionRate,
                     FilePath = PPWeb + a.FilePath,
+                    RecordStatus = a.RecordStatus,
                 }).FirstOrDefault();
 
                 if (qr == null)
@@ -1153,6 +1189,9 @@ namespace IQBWX.Controllers
                     IsAuth = !string.IsNullOrEmpty(s.AliPayAccount),
                     DayIncome = s.DayIncome,
                     MaxLimitAmount = s.MaxLimitAmount,
+                    MinLimitAmount = s.MinLimitAmount,
+                    RemainAmount = s.RemainAmount,
+
                     CDate = s.CDate,
                     CTime = s.CTime,
                     CreateDate = s.CreateDate
@@ -1218,6 +1257,8 @@ namespace IQBWX.Controllers
 
 
         #endregion
+
+      
 
     }
 }

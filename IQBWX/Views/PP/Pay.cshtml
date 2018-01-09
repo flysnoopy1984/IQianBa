@@ -35,24 +35,23 @@
     </style>
 
     <div class="mgz cen" id="PayArea">
-        <div class="yuec mg2 xi35" style="margin-top:20px;">服务通道</div>
+        <div class="yuec mg2 xi35" style="margin-top:20px;">输入金额直接支付秒回款</div>
+       
         <div class="mg2 xi30" style="color:#F97600; margin-top:40px;">
-            <button type="button" class="mgz btn btn-success" id="btnPay" style="width:60%; height:60px;" onclick="GoToSafePay();">切换保护模式</button>
+            <button type="button" class="mgz btn btn-success" style="width:60%; height:60px;" onclick="GoToSafePay();">切换至保护模式</button>
         </div>
-        <div class="TitleInfo mg2 xi30" style="color:#F97600">请通过支付宝扫码</div>
-        @*<div>
-                <span class="FieldLabel">收款支付宝账号</span>
-                <input id="AliPayAccount" class="AliPayAccount" type="text">
-                <button type="button" class="mgz btn btn-success verifyButton" id="bnConfirmAliPayAccount" onclick="ConfirmAliPayAccount()">确定</button>
-                <button type="button" class="mgz btn btn-danger verifyButton" id="bnModifyAliPayAccount" onclick="ModifyAliPayAccount()">修改</button>
-            </div>*@
+        @*<div class="TitleInfo mg2 xi30" style="color:#F97600">请通过支付宝扫码</div>*@
+        <div>
+            <span class="FieldLabel" style="font-weight:bold;color:brown;">*只针对非风控用户*</span>
+            <span class="FieldLabel" style="font-weight:bold;color:brown;">*请配合关闭wifi和定位*</span>
+        </div>
 
 
         <div id="PayContent">
             @*<div class="yuex mg2 xi20" style="color:cornflowerblue">请用10元测试，避免数额太小，金额为零</div>*@
 
             <div class="form-group">
-                <label class="FieldLabel">输入金额</label>
+                <label class="FieldLabel">请输入金额</label>
                 <div class="mgz">
                     <input id="TotalAmout" class="PayEditInput" type="text" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")' />
                 </div>

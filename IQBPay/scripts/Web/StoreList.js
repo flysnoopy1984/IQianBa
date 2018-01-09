@@ -61,8 +61,11 @@ function generateData(result)
         strCtrl += "<td>" + cn + "</td>";
         strCtrl += "<td>" + result[i].Rate + "</td>";
         strCtrl += "<td>" + result[i].IsReceiveAccount + "</td>";
+        strCtrl += "<td>" + result[i].DayIncome + "</td>";
+        strCtrl += "<td>" + result[i].RemainAmount + "</td>";
+        strCtrl += "<td>" + result[i].MaxLimitAmount + "</td>";
+        strCtrl += "<td>" + result[i].MinLimitAmount + "</td>";
         strCtrl += "<td>" + result[i].AliPayAccount + "</td>";
-
         strCtrl += "<td>" + appName + "</td>";
         //strCtrl += "<td>" + result[i].CloseTime + "</td>";
         strCtrl += "<td>" + result[i].Remark + "</td>";

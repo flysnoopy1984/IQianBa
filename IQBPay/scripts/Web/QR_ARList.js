@@ -33,10 +33,11 @@ function Query(NeedClearn, _PageIndex) {
         $("#trContainer").empty();
 
     var Name = $("#cAgentName").val();
+    var UserRole = $("#cUserRole").val();
     var url = "/QR/Query";
     $.ajax({
         type: 'post',
-        data: "QRType=3&Name="+Name+"&pageIndex=" + _PageIndex,
+        data: "QRType=3&Name=" + Name + "&UserRole="+UserRole+"&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;

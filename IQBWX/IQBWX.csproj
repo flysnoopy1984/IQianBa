@@ -274,7 +274,6 @@
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\IQBAsyncController.cs" />
     <Compile Include="Controllers\PPController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\ValidController.cs" />
     <Compile Include="Controllers\WXBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -399,6 +398,8 @@
     <Content Include="Views\WXHelper\SendMessage.cshtml" />
     <Content Include="Views\PP\SysMain.cshtml" />
     <Content Include="Views\PP\Report_OverView.cshtml" />
+    <Content Include="Views\HOME\ClientProblem.cshtml" />
+    <Content Include="Views\PP\FixQR.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

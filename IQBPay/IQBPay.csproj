@@ -633,6 +633,7 @@
     <Content Include="Views\Report\OverView.cshtml" />
     <Content Include="Views\Wap\UserVerify.cshtml" />
     <Content Include="Views\Test\Batch.cshtml" />
+    <Content Include="Views\Wap\QRProcess.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -656,6 +657,10 @@
     <ProjectReference Include="..\IQBCore\IQBCore.csproj">
       <Project>{079669b1-7659-41c1-b5d6-fa7f634fab3a}</Project>
       <Name>IQBCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IQBWX\IQBWX.csproj">
+      <Project>{C4F07794-DC78-4E75-9B06-159B1272F93E}</Project>
+      <Name>IQBWX</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
