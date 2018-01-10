@@ -12,6 +12,27 @@ $(document).ready(function () {
     }
         Query();
     });
+function CheckStoreAuth()
+{
+    var url = "/Store/CheckStoreAuth";
+    $.ajax({
+        type: 'post',
+        data: "",
+        url: url,
+        success: function (data) {
+            if(data.IsSuccess)
+            {
+                alert("检查完毕");
+                
+            }
+        },
+        error: function (xhr, type) {
+
+            alert('Ajax error!');
+
+        }
+    });
+}
 
 function Query() {
 
@@ -65,10 +86,10 @@ function generateData(result)
         strCtrl += "<td>" + result[i].RemainAmount + "</td>";
         strCtrl += "<td>" + result[i].MaxLimitAmount + "</td>";
         strCtrl += "<td>" + result[i].MinLimitAmount + "</td>";
-        strCtrl += "<td>" + result[i].AliPayAccount + "</td>";
-        strCtrl += "<td>" + appName + "</td>";
+        strCtrl += "<td title='" + result[i].AliPayAccount + "'>" + result[i].AliPayAccount + "</td>";
+        strCtrl += "<td title='" + appName + "'>" + appName + "</td>";
         //strCtrl += "<td>" + result[i].CloseTime + "</td>";
-        strCtrl += "<td>" + result[i].Remark + "</td>";
+        strCtrl += "<td title='" + result[i].Remark + "'>" + result[i].Remark + "</td>";
 
         if (result[i].RecordStatus == 0)
             strCtrl += "<td style='color:#4AC4BC;'><div class='noft-green-number'></div>启用</td>";

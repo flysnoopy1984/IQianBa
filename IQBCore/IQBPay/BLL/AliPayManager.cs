@@ -417,7 +417,27 @@ namespace IQBCore.IQBPay.BLL
             return result;
         }
 
-        public string PayF2FNew(EAliPayApplication app, EUserInfo AgentUi, EStoreInfo storeInfo, string TotalAmount, out ResultEnum status)
+        public string PayTest(EAliPayApplication app,EStoreInfo store,out AliPayResult status)
+        {
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+          app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+
+
+            _handler = new F2FPayHandler();
+            EUserInfo ui = new EUserInfo();
+            ui.Name = "Check Store";
+            AlipayTradePrecreateResponse builder = _handler.BuildNew(app, store, ui, "1.00");
+            if (builder.Code == "10000")
+            {
+                status = AliPayResult.SUCCESS;
+            }
+            else
+            {
+                status = AliPayResult.FAILED;
+            }
+            return builder.Code;
+        }
+        public string PayF2FNew(EAliPayApplication app, EUserInfo AgentUi, EStoreInfo storeInfo, string TotalAmount, out AliPayResult status)
         {
             string result = "";
            
@@ -437,12 +457,19 @@ namespace IQBCore.IQBPay.BLL
             {
                 result = _handler.CreateF2FQR(builder.QrCode);
                 result = _handler.DeQR(result);
-                status = ResultEnum.SUCCESS;
+                status = AliPayResult.SUCCESS;
             }
             else
             {
-                result = "[Error Message]"+builder.Msg+"[Sub Msg]"+builder.SubMsg;
-                status = ResultEnum.FAILED;
+                if (builder.Code == "20001")
+                {
+                    status = AliPayResult.AUTHERROR;
+                }
+                else
+                {
+                    result = "[Error Message]" + builder.Msg + "[Sub Msg]" + builder.SubMsg;
+                    status = AliPayResult.FAILED;
+                }
             }
 
           

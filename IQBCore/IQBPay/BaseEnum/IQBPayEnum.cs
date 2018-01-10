@@ -15,6 +15,13 @@ namespace IQBCore.IQBPay.BaseEnum
         Stop = -1,
     }
 
+    public enum AliPayResult
+    {
+        SUCCESS = 0,
+        FAILED = 1,
+        AUTHERROR =2,
+    }
+
     /// <summary>
     /// 表明用户是普通用户还是管理员
     /// </summary>

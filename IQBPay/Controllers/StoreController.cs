@@ -15,6 +15,7 @@ using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.Common.Helper;
 using IQBCore.IQBPay.BLL;
+using Com.Alipay.Model;
 
 namespace IQBPay.Controllers
 {
@@ -232,6 +233,27 @@ namespace IQBPay.Controllers
         public ActionResult Info()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult CheckStoreAuth()
+        {
+            OutAPIResult result = new OutAPIResult();
+
+            using (AliPayContent db = new AliPayContent())
+            {
+                var list = db.DBStoreInfo.Where(s=>s.Channel == Channel.League).ToList();
+                AliPayManager payMag = new AliPayManager();
+                AliPayResult status;
+                for(int i=0;i<list.Count;i++)
+                {
+                    string Res = payMag.PayTest(BaseController.App, list[i], out status);
+                    if (status == AliPayResult.FAILED)
+                    list[i].Remark = "[Error]Code:" + Res;
+                }
+                db.SaveChanges();           
+            }
+            return Json(result);
         }
 
         

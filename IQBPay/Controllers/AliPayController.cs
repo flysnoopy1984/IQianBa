@@ -859,48 +859,39 @@ namespace IQBPay.Controllers
                     string selectStoreSql = @"select top 1 * from StoreInfo 
                                     where RecordStatus = 0 and RemainAmount> 0 and Channel=1
                                     order by NEWID() ";
-                    if (PayType == 1)
+                    if (qrUser.ReceiveStoreId > 0)
                     {
-                        
+                        store = db.DBStoreInfo.Where(a => a.ID == qrUser.ReceiveStoreId).FirstOrDefault();
+                        if (store == null)
+                        {
+                            ErrorUrl += "没有找到对应的收款商户";
+                            return Redirect(ErrorUrl);
+                        }
+                        if (store.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
+                        {
+                            ErrorUrl += "收款商户已下线";
+                            return Redirect(ErrorUrl);
+                        }
+
+                        //if(store.IsReceiveAccount)
+                        //{
+                        //    ErrorUrl += "支付的商户不能作为收款商户";
+                        //    return Redirect(ErrorUrl);
+                        //}
+                    }
+                    else
+                    {
 
                         store = db.Database.SqlQuery<EStoreInfo>(selectStoreSql).FirstOrDefault();
-                        //  store = db.Database.SqlQuery("")
                     }
-                    else if(PayType ==0)
-                    {
-                        if (qrUser.ReceiveStoreId > 0)
-                        {
-                            store = db.DBStoreInfo.Where(a => a.ID == qrUser.ReceiveStoreId).FirstOrDefault();
-                            if (store == null)
-                            {
-                                ErrorUrl += "没有找到对应的收款商户";
-                                return Redirect(ErrorUrl);
-                            }
-                            if (store.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
-                            {
-                                ErrorUrl += "收款商户已下线";
-                                return Redirect(ErrorUrl);
-                            }
 
-                            //if(store.IsReceiveAccount)
-                            //{
-                            //    ErrorUrl += "支付的商户不能作为收款商户";
-                            //    return Redirect(ErrorUrl);
-                            //}
-                        }
-                        else
-                        {
-                          
-                            store = db.Database.SqlQuery<EStoreInfo>(selectStoreSql).FirstOrDefault();
-                        }
-                    }
-                    if(store == null)
+                    if (store == null)
                     {
                         ErrorUrl += "今日所有可用花呗已用完，请明天12点再尝试";
                         return Redirect(ErrorUrl);
                     }
                     //获取并校验商户 
-                    ResultEnum status;
+                    AliPayResult status;
 
                     if (store.FromIQBAPP == BaseController.App.AppId)
                         app = BaseController.App;
@@ -939,7 +930,7 @@ namespace IQBPay.Controllers
                     //  string Res = payMag.PayF2F(app, ui, store, Convert.ToSingle(Amount),out status);
                     string Res = payMag.PayF2FNew(app, ui, store, Amount, out status);
                    // base.Log.log("支付PayF2F：" + Res);
-                    if (status == ResultEnum.SUCCESS)
+                    if (status == AliPayResult.SUCCESS)
                     {
                         //创建初始化订单
                         EOrderInfo order = payMag.InitOrder(qrUser, store,Convert.ToSingle(Amount), AliPayAccount);
@@ -1003,9 +994,19 @@ namespace IQBPay.Controllers
 
                         return Redirect(Res);
                     }
+                    else if(status == AliPayResult.AUTHERROR)
+                    {
+                        ErrorUrl += "商户下架，抱歉，请重新扫下支付码";
+                        store.Remark = string.Format("[{0}][Error]商户授权出错",DateTime.Now.ToShortDateString());
+                        store.RecordStatus = RecordStatus.Blocked;
+                        db.SaveChanges();
+                        return Redirect(ErrorUrl);
+                    }
                     else
                     {
-                        ErrorUrl += "【支付失败】" + Res;
+                       
+                        ErrorUrl += "【支付问题】" + Res;
+                       
                         return Redirect(ErrorUrl);
                     }
 
