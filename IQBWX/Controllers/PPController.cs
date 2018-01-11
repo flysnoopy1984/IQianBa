@@ -809,9 +809,9 @@ namespace IQBWX.Controllers
                         EQRUser curQRUser = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId && o.IsCurrent == true).FirstOrDefault();
 
 
-                        var diff = curQRUser.MarketRate - curQRUser.Rate;
-                        curQRUser.Rate = qrUser.MarketRate - diff;
-
+                        //  var diff = curQRUser.MarketRate - curQRUser.Rate;
+                        // curQRUser.Rate = qrUser.MarketRate - diff;
+                        curQRUser.Rate = qrUser.Rate;
                         curQRUser.MarketRate = qrUser.MarketRate;
 
                         //  entry.Property(t => t.IsCurrent).IsModified = true;
@@ -1276,7 +1276,20 @@ namespace IQBWX.Controllers
 
         #endregion
 
-      
+        #region 大额入口设置
+        public ActionResult QRHugeEntry()
+        {
+            if (!UserSession.HasQRHuge)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+
+            InitProfilePage();
+            return View();
+        }
+        #endregion
+
+
 
     }
 }

@@ -90,6 +90,8 @@
             <li><a href=@Url.Action("TransferToMainAccount", "AliPay")>转账到子公司</a></li>
             <li><a href=@Url.Action("QueryOrder", "AliPay")>查询订单</a></li>
 
+            <li><a href=@Url.Action("F2FPay", "AliPay",new { qrUserId = "1371", Amount = "20" })>真是F2F</a></li>
+
 
         </ul>
         <img src=@ViewData["imgSrc"] />

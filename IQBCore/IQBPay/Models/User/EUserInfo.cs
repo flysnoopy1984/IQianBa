@@ -31,6 +31,9 @@ namespace IQBCore.IQBPay.Models.User
 
         public Boolean Isadmin { get; set; }
 
+        public bool HasQRHuge { get; set; }
+
+
         /// <summary>
         /// QRUser中的ID
         /// </summary>

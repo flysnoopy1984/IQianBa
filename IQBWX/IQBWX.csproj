@@ -400,6 +400,7 @@
     <Content Include="Views\PP\Report_OverView.cshtml" />
     <Content Include="Views\HOME\ClientProblem.cshtml" />
     <Content Include="Views\PP\FixQR.cshtml" />
+    <Content Include="Views\PP\QRHugeEntry.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

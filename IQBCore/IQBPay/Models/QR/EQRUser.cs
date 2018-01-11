@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IQBCore.IQBPay.BaseEnum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -79,6 +80,14 @@ namespace IQBCore.IQBPay.Models.QR
         /// 是否当前收款码
         /// </summary>
         public bool IsCurrent { get; set; }
+
+        public QRType QRType { get; set; }
+
+
+        /// <summary>
+        /// 大额码是否自助
+        /// </summary>
+        public bool IsQRHugeAuto { get; set; }
 
 
 

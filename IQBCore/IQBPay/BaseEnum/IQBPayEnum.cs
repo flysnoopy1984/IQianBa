@@ -15,6 +15,12 @@ namespace IQBCore.IQBPay.BaseEnum
         Stop = -1,
     }
 
+    public enum QRHugeEntry
+    {
+        Running = 0,
+        Stop = -1,
+    }
+
     public enum AliPayResult
     {
         SUCCESS = 0,
@@ -103,10 +109,19 @@ namespace IQBCore.IQBPay.BaseEnum
 
     public enum QRType
     {
+        /// <summary>
+        /// 普通收款码
+        /// </summary>
         AR =1,
+        /// <summary>
+        /// 大额收款码
+        /// </summary>
+        ARHuge = 4,
+
         StoreAuth =2,
         ARAuth = 3,
         Temp =0,
+       
     }
 
     public enum Channel
@@ -124,6 +139,25 @@ namespace IQBCore.IQBPay.BaseEnum
         Blocked=1,
 
         Process = 2,
+    }
+
+    public enum QRHugeTransStatus
+    {
+        Open =1,
+        Closed = 2,  
+    }
+
+    public enum QRHugeStatus
+    {
+        /// <summary>
+        /// 创建
+        /// </summary>
+        Created,
+        /// <summary>
+        /// 失效
+        /// </summary>
+        InValid,
+
     }
 
     public enum AgentCommissionStatus

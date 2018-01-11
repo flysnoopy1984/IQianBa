@@ -20,6 +20,19 @@ namespace IQBCore.IQBPay.Models.Sys
        
         public PayWebStatus WebStatus { get; set; }
 
+        public QRHugeEntry QRHugeEntry { get; set; }
+
+        /// <summary>
+        /// 大额码申请后可被扫码次数
+        /// </summary>
+        public int QRHugeScanedNum { get; set; }
+
+        /// <summary>
+        /// 大额码多久失效
+        /// </summary>
+        public int QRHugeInValidMinutes { get; set; }
+
+
         [MaxLength(500)]
         public string Note { get; set; }
 
@@ -46,6 +59,8 @@ namespace IQBCore.IQBPay.Models.Sys
         /// 代理最大数量
         /// </summary>
         public int MaxNumChildAgent { get; set; }
+
+        
 
 
     }

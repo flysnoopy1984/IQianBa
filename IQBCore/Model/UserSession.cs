@@ -21,8 +21,11 @@ namespace IQBCore.Model
 
         public string Name { get; set; }
 
+        public bool HasQRHuge { get; set; }
+
         public void InitFromUser(EUserInfo ui)
         {
+            HasQRHuge = ui.HasQRHuge;
             Id = ui.Id;
             OpenId = ui.OpenId;
             UserRole = ui.UserRole;

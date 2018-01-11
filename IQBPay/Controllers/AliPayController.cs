@@ -799,7 +799,7 @@ namespace IQBPay.Controllers
         /// <param name="Id">QRUserId</param>
         /// <param name="Amount"></param>
         /// <returns></returns>   
-        public ActionResult F2FPay(string qrUserId, string Amount,string AliPayAccount,int PayType)
+        public ActionResult F2FPay(string qrUserId, string Amount,string AliPayAccount="",int PayType=0)
         {
             string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?QRUserId="+qrUserId+"&code=2001&ErrorMsg=";
             EAliPayApplication app;

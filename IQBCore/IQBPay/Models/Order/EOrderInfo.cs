@@ -159,6 +159,11 @@ namespace IQBCore.IQBPay.Models.Order
         public string L3OpenId { get; set; }
 
         public float L3CommissionAmount { get; set; }
+
+        /// <summary>
+        /// 大额码交易记录ID
+        /// </summary>
+        public long EQRHugeTransId { get; set; }
         //[MaxLength(10)]
         //public string ReceiveNo { get; set; }
 

@@ -106,18 +106,19 @@ function Save()
    // var IsCurrent = $("#IsCurrent").get(0).checked;
     var Rate = parseFloat($("#Rate").val()).toFixed(2);
     var diff = MarketRate - Rate;
-    var realRate = 10-diff;
+    Rate = (AfterMarketRate - diff).toFixed(2);
+    //var realRate = 10-diff;
 
    
-    if (AfterMarketRate < realRate)
-    {
-        $.alert({
-            theme: 'dark',
-            title: '错误!',
-            content: "您这样设置，费率将小于0，请重新调整！",
-        });
-        return;
-    }
+    //if (AfterMarketRate < realRate)
+    //{
+    //    $.alert({
+    //        theme: 'dark',
+    //        title: '错误!',
+    //        content: "您这样设置，费率将小于0，请重新调整！",
+    //    });
+    //    return;
+    //}
     var sucMsg = "新增成功";
     if (ID != "")
         sucMsg = "修改成功";
@@ -126,7 +127,7 @@ function Save()
 
     $.ajax({
         type: 'post',
-        data: "ID=" + ID + "&MarketRate=" + AfterMarketRate,
+        data: "ID=" + ID + "&MarketRate=" + AfterMarketRate + "&Rate=" + Rate,
         url: url,
         success: function (data) {
             if(data.IsSuccess == true)
@@ -196,7 +197,7 @@ function ToInfoPage(i) {
     {
         var diff = (QueryData[i].MarketRate - QueryData[i].Rate).toFixed(2);
         $range = $("#AfterMarketRate").ionRangeSlider({
-            min: (10-diff)+1,
+            min: 6,
             max: 14,
             from: QueryData[i].MarketRate,
             step: 0.5,

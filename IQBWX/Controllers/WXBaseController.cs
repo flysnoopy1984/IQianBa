@@ -220,11 +220,11 @@ namespace IQBWX.Controllers
         protected string GetOpenId(bool isTest = false,bool IsforOpenId = true)
         {
             bool isDev = Convert.ToBoolean(ConfigurationManager.AppSettings["DevMode"]);
-          //   if(isDev) return "o3nwE0gUm-kVoZ4tXP78Ztf_SoOc";
+             if(isDev) return "o3nwE0m6kPRmNsM9OIaYRkcizN3A";
 
             // if (isDev) return "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
              //平台
-            if (isDev) return "o3nwE0jrONff65oS-_W96ErKcaa0";
+           // if (isDev) return "o3nwE0jrONff65oS-_W96ErKcaa0";
 
             string openId = (string)Session[IQBWXConst.SessionOpenId];
             if (string.IsNullOrEmpty(openId))
