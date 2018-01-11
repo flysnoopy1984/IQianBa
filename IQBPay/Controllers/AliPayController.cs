@@ -294,19 +294,20 @@ namespace IQBPay.Controllers
                                 try
                                 {
                                     AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, subStore);
-                                    if (res.Code == "10000")
-                                        order.LogRemark += string.Format("[SubAccount] Code:{0};msg:{1}; ", res.Code, res.Msg);
-                                    else
+                                    if (res.Code != "10000")                                 
                                     {
                                         order.LogRemark += string.Format("[SubAccount] SubCode:{0};Submsg:{1}; ", res.SubCode, res.SubMsg);
                                         order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
+                                        TransferError++;
                                         store.RecordStatus = RecordStatus.Blocked;
+                                        store.Remark = string.Format("[分账错误]订单：{0}。时间：{1}",order.OrderNo,order.TransDateStr);
                                     }
                                 }
                                 catch(Exception ex)
                                 {
                                     order.LogRemark += ex.Message;
                                     store.RecordStatus = RecordStatus.Blocked;
+                                    store.Remark += ex.Message;
                                 }
                                
                             }
@@ -392,9 +393,7 @@ namespace IQBPay.Controllers
                             order.LogRemark += "通知状态异常：" + order.AliPayTradeStatus;
                             order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
                         }
-
                     }
-                    
                     db.SaveChanges();
                 }
             }
@@ -814,7 +813,7 @@ namespace IQBPay.Controllers
                 long Id;
                 if (string.IsNullOrEmpty(qrUserId) || !long.TryParse(qrUserId, out Id))
                 {
-                    ErrorUrl += "代理二维码ID获取错误";
+                    ErrorUrl += "二维码已更新，请向代理索要最新当前二维码";
                     return Redirect(ErrorUrl);
                 }
                 using (AliPayContent db = new AliPayContent())
@@ -823,7 +822,7 @@ namespace IQBPay.Controllers
                     qrUser = db.DBQRUser.Where(q => q.ID == Id).FirstOrDefault();
                     if (qrUser == null)
                     {
-                        ErrorUrl += "未找到对应的收款二维码";
+                        ErrorUrl += "二维码已更新，请向代理索要最新当前二维码";
                         return Redirect(ErrorUrl);
                     }
                     if(qrUser.MarketRate <=0)

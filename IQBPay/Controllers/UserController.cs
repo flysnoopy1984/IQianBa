@@ -227,26 +227,23 @@ namespace IQBPay.Controllers
                     ui.NeedFollowUp = InUA.NeedFollowUp;
 
                     //本人所有QRUser
-                    List<EQRUser> list = db.DBQRUser.Where(o => o.OpenId == InUA.OpenId).ToList();
-                    float Ratediff = InUA.MarketRate - InUA.Rate;
-                    
-                    for (int i=0;i<list.Count;i++)
-                    {
-                        EQRUser qrUser = list[i];
-                        if (adjustRate == 0 && qrUser.IsCurrent)
-                        {
-                            adjustRate =  InUA.Rate- qrUser.Rate;
-                        }
-                       
-                        
-                        qrUser.ParentName = InUA.ParentName;
-                        qrUser.ParentOpenId = InUA.ParentOpenId;
-                        qrUser.ParentCommissionRate = InUA.ParentCommissionRate;
-                        qrUser.ReceiveStoreId = InUA.StoreId;
-                        //qrUser.MarketRate = InUA.MarketRate;
-                        qrUser.Rate = qrUser.MarketRate- Ratediff;
+                    EQRUser qrUser = db.DBQRUser.Where(o => o.OpenId == InUA.OpenId && o.IsCurrent == true).FirstOrDefault();
 
+                    float Ratediff = InUA.MarketRate - InUA.Rate;
+
+                    if (adjustRate == 0 && qrUser.IsCurrent)
+                    {
+                        adjustRate = InUA.Rate - qrUser.Rate;
                     }
+
+
+                    qrUser.ParentName = InUA.ParentName;
+                    qrUser.ParentOpenId = InUA.ParentOpenId;
+                    qrUser.ParentCommissionRate = InUA.ParentCommissionRate;
+                    qrUser.ReceiveStoreId = InUA.StoreId;
+                    //qrUser.MarketRate = InUA.MarketRate;
+                    qrUser.Rate = qrUser.MarketRate - Ratediff;
+
                     //本人邀请码QRInfo
                     EQRInfo qrInfo = db.DBQRInfo.Where(a => a.ID == ui.QRInviteCode).FirstOrDefault();
                     qrInfo.Rate = InUA.QRInfo_Rate;

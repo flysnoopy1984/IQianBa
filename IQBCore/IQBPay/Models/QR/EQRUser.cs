@@ -31,15 +31,37 @@ namespace IQBCore.IQBPay.Models.QR
 
         public long QRId { get; set; }
 
+
         /// <summary>
         /// 返点率0-100
         /// </summary>
-        public float Rate { get; set; }
+        private float _Rate;
+        public float Rate
+        {
+            get
+            {
+                return _Rate;
+            }
+            set
+            {
+                _Rate = float.Parse(value.ToString("0.00"));
+            }
+        }
 
         /// <summary>
         /// 市场扣点，用户支付后，默认扣除这些点率
         /// </summary>
-        public float MarketRate { get; set; }
+        private float _MarketRate { get; set; }
+        public float MarketRate {
+            get
+            {
+                return _MarketRate;
+            }
+            set
+            {
+                _MarketRate = float.Parse(value.ToString("0.00"));
+            }
+        }
 
         [MaxLength(128)]
         public string TargetUrl { get; set; }

@@ -27,11 +27,7 @@ function Init()
             from: Rate,
             step: 0.5,
             onChange: function (data) {
-              
                 $("#Rate").val(data.from);
-               
-
-
             },
         });
     }

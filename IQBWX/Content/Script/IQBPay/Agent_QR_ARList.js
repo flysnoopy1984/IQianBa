@@ -23,13 +23,7 @@ function Init()
 
     ToListPage();
 
-    $range = $("#AfterMarketRate").ionRangeSlider({
-        min: 6,
-        max: 14,
-        from: 8,
-        step:0.5,
-    });
-    slider = $range.data("ionRangeSlider");
+  
 
     //Info Page
     $(".InfoBody").Validform({
@@ -107,9 +101,23 @@ function Save()
     var url = "/PP/Agent_QR_ARSave";
 
     var ID = $("#QrUserId").val();
-    var MarketRate = $("#AfterMarketRate").val();
-    var IsCurrent = $("#IsCurrent").get(0).checked;
-    
+    var AfterMarketRate = $("#AfterMarketRate").val();
+    var MarketRate = parseFloat($("#MarketRate").val()).toFixed(2);
+   // var IsCurrent = $("#IsCurrent").get(0).checked;
+    var Rate = parseFloat($("#Rate").val()).toFixed(2);
+    var diff = MarketRate - Rate;
+    var realRate = 10-diff;
+
+   
+    if (AfterMarketRate < realRate)
+    {
+        $.alert({
+            theme: 'dark',
+            title: '错误!',
+            content: "您这样设置，费率将小于0，请重新调整！",
+        });
+        return;
+    }
     var sucMsg = "新增成功";
     if (ID != "")
         sucMsg = "修改成功";
@@ -118,7 +126,7 @@ function Save()
 
     $.ajax({
         type: 'post',
-        data: "ID=" + ID + "&MarketRate=" + MarketRate + "&IsCurrent=" + IsCurrent,
+        data: "ID=" + ID + "&MarketRate=" + AfterMarketRate,
         url: url,
         success: function (data) {
             if(data.IsSuccess == true)
@@ -155,10 +163,13 @@ function ToListPage() {
 }
 
 function ToInfoPage(i) {
+
     $("#PageList").hide();
     $("#PageInfo").show();
 
+
     i--;
+    //新增
     if (i<0)
     {
         $(QueryData).each(function (i) {
@@ -180,8 +191,21 @@ function ToInfoPage(i) {
         $("#IsCurrent").attr("checked", true);
         $("#btnSave").text("创建");
     }
+    //更新
     else
     {
+        var diff = (QueryData[i].MarketRate - QueryData[i].Rate).toFixed(2);
+        $range = $("#AfterMarketRate").ionRangeSlider({
+            min: (10-diff)+1,
+            max: 14,
+            from: QueryData[i].MarketRate,
+            step: 0.5,
+            //onChange: function (data) {
+            //    $("#MarketRate").val(data.from);
+            //},
+        });
+        slider = $range.data("ionRangeSlider");
+
         $("#QrUserId").val(QueryData[i].ID);
 
         $("#MarketRate").val(QueryData[i].MarketRate);
@@ -190,7 +214,9 @@ function ToInfoPage(i) {
       
         $("#QRImg").attr("src", payUrl + QueryData[i].OrigQRFilePath);
         
-        $("#Field_AfterMarketRate").hide();
+
+        $("#Rate").val(QueryData[i].Rate);
+     //   $("#Field_AfterMarketRate").hide();
 
         $("#btnSave").text("更新");
     }
@@ -262,11 +288,11 @@ function generateData(result) {
         strCtrl += "<ul><li style='color:brown; font-weight:bold; height:30px;'>用户手续费:" + result[i].MarketRate + "</li>";
         strCtrl += "<li>上级代理:" + ParentName + "</li>";
         strCtrl += "</ul></td>";
-        strCtrl += "<td style='width:47%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='height:30px;'>代理成本:" + (result[i].MarketRate-result[i].Rate) + "</li>";
+        strCtrl += "<td style='width:47%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='height:30px;'>代理成本:" + (result[i].MarketRate - result[i].Rate).toFixed(2) + "</li>";
         strCtrl += "<li>上级代理佣金:" + result[i].ParentCommissionRate + "</li>";
         strCtrl += "</ul></td>";
-        strCtrl += "<td><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + ");' />"
-        strCtrl += "<input type='button' class='btn-danger' value='删除' onclick='DeleteUserQr(" + QueryData.length + ");' />";
+        strCtrl += "<td><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + ");' /></td>"
+        //strCtrl += "<input type='button' class='btn-danger' value='删除' onclick='DeleteUserQr(" + QueryData.length + ");' />";
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);

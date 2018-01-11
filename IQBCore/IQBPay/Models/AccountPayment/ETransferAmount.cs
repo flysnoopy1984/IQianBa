@@ -64,6 +64,9 @@ namespace IQBCore.IQBPay.Models.AccountPayment
         [MaxLength(255)]
         public string Log { get; set; }
 
+        [MaxLength(64)]
+        public string AliPayOrderId { get; set; }
+
 
         public static ETransferAmount Init(TransferTarget target, string TransferId, float TransferAmount, string AliPayAccount, EOrderInfo order, EUserInfo ui = null)
         {

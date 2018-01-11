@@ -36,7 +36,7 @@
           },
           {
             "type": "view",
-            "name": "二维码列表",
+            "name": "设置二维码",
             "url": "http://wx.iqianba.cn/PP/Agent_QR_ARList"
           },
           {

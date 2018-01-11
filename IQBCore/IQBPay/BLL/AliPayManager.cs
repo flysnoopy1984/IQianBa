@@ -39,9 +39,9 @@ namespace IQBCore.IQBPay.BLL
 
 
             AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
-           
-            string commission = (order.TotalAmount - order.SellerCommission).ToString("0.00");
 
+             string commission = (order.TotalAmount - order.SellerCommission).ToString("0.00");
+           // string commission = "47.00";
             request.BizContent = "{" +
             "\"out_request_no\":\"" + StringHelper.GenerateSubAccountTransNo() + "\"," +
             "\"trade_no\":\""+order.AliPayOrderNo+"\"," +
@@ -126,7 +126,7 @@ namespace IQBCore.IQBPay.BLL
                 res = DoTransferAmount(target, app, AliPayAccount, TransferAmount.ToString("0.00"), PayTargetMode, out TransferId, order);
 
             transfer = ETransferAmount.Init(target, TransferId, TransferAmount, AliPayAccount, order,ui);
-           
+            transfer.AliPayOrderId = res.OrderId;
 
             if (res.Code == "10000")
             {
@@ -206,7 +206,7 @@ namespace IQBCore.IQBPay.BLL
             model.PayerShowName = profix+"找熟人平台";
             if(order!=null)
                 model.Remark = string.Format("#{0}-订单金额：{1}-订单ID：{2}",order.AgentName,order.TotalAmount,order.OrderNo);
-
+           
             request.SetBizModel(model);
 
             AlipayFundTransToaccountTransferResponse response =  aliyapClient.Execute(request);

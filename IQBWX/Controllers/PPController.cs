@@ -336,6 +336,8 @@ namespace IQBWX.Controllers
                         TransDate = o.TransDate,
                     });
 
+                  
+
                     if (OrderStatus != OrderStatus.ALL)
                     {
                         list = list.Where(o => o.OrderStatus == OrderStatus);
@@ -385,12 +387,22 @@ namespace IQBWX.Controllers
                         else
                             result.Add(new ROrderInfo());
 
+                        var PList = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.AgentCommissionStatus == AgentCommissionStatus.Closed && o.TransDate >= startDate && o.TransDate <= endDate).Select(o => new RAgentCommission
+                        {
+                            CommissionAmount = o.CommissionAmount,
+                        });
+
+                        var AllPLList = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.AgentCommissionStatus == AgentCommissionStatus.Closed).Select(o => new RAgentCommission
+                        {
+                            CommissionAmount = o.CommissionAmount,
+                        });
+
                         var TodayOrder = db.DBOrder.Where(o => o.AgentOpenId == OpenId && o.OrderStatus == OrderStatus.Closed && o.TransDate >= startDate && o.TransDate <= endDate);
                         result[0].AgentTodayOrderCount = TodayOrder.Count().ToString();
-                        result[0].AgentTodayIncome = TodayOrder.ToList().Sum(o => o.RateAmount).ToString("0.00");
+                        result[0].AgentTodayIncome = (TodayOrder.ToList().Sum(o => o.RateAmount)+ PList.ToList().Sum(o=>o.CommissionAmount)).ToString("0.00");
 
                         var allOrder = db.DBOrder.Where(o => o.AgentOpenId == OpenId && o.OrderStatus == OrderStatus.Closed);
-                        result[0].AgentTotalIncome = allOrder.ToList().Sum(o => o.RateAmount).ToString("0.00");
+                        result[0].AgentTotalIncome = (allOrder.ToList().Sum(o => o.RateAmount)+ AllPLList.ToList().Sum(o=>o.CommissionAmount)).ToString("0.00");
                     }
                     else
                         result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
@@ -794,30 +806,36 @@ namespace IQBWX.Controllers
                 {
                     try
                     {
-                        DbEntityEntry<EQRUser> entry = db.Entry<EQRUser>(qrUser);
-                        entry.State = EntityState.Unchanged;
-                        entry.Property(t => t.IsCurrent).IsModified = true;
-                        int n = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId).Count();
-                        
-                        if (qrUser.IsCurrent && n>1)
-                        {
-                           
-                            var p_OpenId = new SqlParameter("@OpenId", UserSession.OpenId);
+                        EQRUser curQRUser = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId && o.IsCurrent == true).FirstOrDefault();
 
-                            string sql = @"update [QRUser]
-                                           set [IsCurrent] = 'false'
-                                           where OpenId =@OpenId";
 
-                            db.Database.ExecuteSqlCommand(sql, p_OpenId);
-                        }
-                        else
-                        {
-                            if (n == 1)
-                            {
-                                return ErrorResult("只有一个二维码不能修改当前选项");
-                            }
-                        }
-                      
+                        var diff = curQRUser.MarketRate - curQRUser.Rate;
+                        curQRUser.Rate = qrUser.MarketRate - diff;
+
+                        curQRUser.MarketRate = qrUser.MarketRate;
+
+                        //  entry.Property(t => t.IsCurrent).IsModified = true;
+                        //  int n = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId).Count();
+
+                        //if (qrUser.IsCurrent && n>1)
+                        //{
+
+                        //    var p_OpenId = new SqlParameter("@OpenId", UserSession.OpenId);
+
+                        //    string sql = @"update [QRUser]
+                        //                   set [IsCurrent] = 'false'
+                        //                   where OpenId =@OpenId";
+
+                        //    db.Database.ExecuteSqlCommand(sql, p_OpenId);
+                        //}
+                        //else
+                        //{
+                        //    if (n == 1)
+                        //    {
+                        //        return ErrorResult("只有一个二维码不能修改当前选项");
+                        //    }
+                        //}
+
 
                         db.SaveChanges();
                     }

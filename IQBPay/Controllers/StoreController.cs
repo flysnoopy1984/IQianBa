@@ -181,12 +181,7 @@ namespace IQBPay.Controllers
                
                 using (AliPayContent db = new AliPayContent())
                 {
-                    if (store.IsReceiveAccount)
-                    {
-                        EStoreInfo curReceiveStore = db.DBStoreInfo.Where(s => s.IsReceiveAccount == true).FirstOrDefault();
-                        if (curReceiveStore != null)
-                            curReceiveStore.IsReceiveAccount = false;
-                    }
+                   
 
                     store.InitModify();
 
@@ -213,7 +208,20 @@ namespace IQBPay.Controllers
 
                     db.SaveChanges();
 
-                    if(store.IsReceiveAccount)
+                    if (store.IsReceiveAccount)
+                    {
+                        EStoreInfo curReceiveStore = db.DBStoreInfo.Where(s => s.IsReceiveAccount == true).FirstOrDefault();
+                        if (curReceiveStore.ID != store.ID)
+                        {
+                            if (curReceiveStore != null)
+                                curReceiveStore.IsReceiveAccount = false;
+                        }
+                        db.SaveChanges();
+
+
+                    }
+
+                    if (store.IsReceiveAccount)
                     {
                         BaseController.CleanSubAccount();
                     }
