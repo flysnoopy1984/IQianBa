@@ -55,7 +55,24 @@
                 }
             });
         }
-
+        function PartPayQR()
+        {
+            var url = "/AliPay/PartPayQR";
+            $.ajax({
+                type: 'post',
+                data: "",
+                url: url,
+                success: function (data) {
+                    if (data == "error")
+                        alert("出错");
+                    else
+                    $("#QR").attr("src", data);
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+                }
+            });
+        }
       
     </script>
 </head>
@@ -78,7 +95,7 @@
             @*<li><a href="/API/TransferAPI/TransferToAgent?OpenId=o3nwE0qI_cOkirmh_qbGGG-5G6B0&AliPayAccount=song_fuwei@hotmail.com&OrderAmount=1.95&CommissionAmount=0">Transfer</a></li>*@ 
             <input type="button" onclick="Transfer('1', '0', 'song_fuwei@hotmail.com', 'o3nwE0qI_cOkirmh_qbGGG-5G6B0')" value="转账" />
             <li>           
-               <a href=@Url.Action("SubAccount", "AliPay",new { OrderNo = "YJO20180111013903nh" })>分账</a>
+               <a href=@Url.Action("SubAccount", "AliPay",new { OrderNo = "YJO2018011310265758" })>分账</a>
             </li>
          
             <li>
@@ -90,11 +107,11 @@
             <li><a href=@Url.Action("TransferToMainAccount", "AliPay")>转账到子公司</a></li>
             <li><a href=@Url.Action("QueryOrder", "AliPay")>查询订单</a></li>
 
-            <li><a href=@Url.Action("F2FPay", "AliPay",new { qrUserId = "1371", Amount = "20" })>真是F2F</a></li>
-
+            <li><a href=@Url.Action("F2FPay", "AliPay",new { qrUserId = "1383", Amount = "580" })>真实F2F</a></li>
+            <li><input type="button" onclick="PartPayQR()" value="分期" /></li>
 
         </ul>
-        <img src=@ViewData["imgSrc"] />
+        <img id="QR" src=@ViewData["imgSrc"] />
         <span>@ViewData["url"]</span>
        
     </div>

@@ -63,7 +63,35 @@ namespace IQBCore.IQBPay.BLL
             AlipayTradePrecreateResponse response = aliyapClient.Execute(request, null, store.AliPayAuthToke);
             return response;
         }
-     
+
+        public AlipayTradePrecreateResponse BuildPartyPay(EAliPayApplication app, EStoreInfo store, EUserInfo AgentUI, string TotalAmt, bool needNotifyUrl = true)
+        {
+            string NotifyUrl = ConfigurationManager.AppSettings["Main_SiteUrl"] + "AliPay/PayNotify";
+            _OrderNo = StringHelper.GenerateOrderNo();
+
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+          app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+
+            AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
+            AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();
+
+            model.SellerId = store.AliPayAccount;
+            model.OutTradeNo = _OrderNo;
+            model.TotalAmount = TotalAmt;
+            model.Subject = "#" + AgentUI.Name + " 收银台";
+            model.Body = app.AppName + "-商品";
+            model.ExtendParams.HbFqNum = "3";
+            model.ExtendParams.HbFqSellerPercent = "0";
+
+
+            request.SetBizModel(model);
+            if (needNotifyUrl)
+                request.SetNotifyUrl(NotifyUrl);
+
+            AlipayTradePrecreateResponse response = aliyapClient.Execute(request, null, store.AliPayAuthToke);
+            return response;
+        }
+
         public AlipayTradePrecreateContentBuilder BuildPrecreateContent(EAliPayApplication app,EUserInfo AgentUi, string sellerid,string TotalAmt)
         {
             //线上联调时，请输入真实的外部订单号。

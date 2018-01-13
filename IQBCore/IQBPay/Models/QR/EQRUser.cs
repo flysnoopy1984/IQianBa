@@ -83,11 +83,28 @@ namespace IQBCore.IQBPay.Models.QR
 
         public QRType QRType { get; set; }
 
+        public RecordStatus RecordStatus { get; set; }
+
 
         /// <summary>
         /// 大额码是否自助
         /// </summary>
         public bool IsQRHugeAuto { get; set; }
+
+        public static EQRUser CopyToQRUserForHuge(EQRUser qrSmall)
+        {
+            EQRUser QRhuge = new EQRUser
+            {
+                OpenId = qrSmall.OpenId,
+                ParentOpenId = qrSmall.ParentOpenId,
+                ParentName = qrSmall.ParentName,
+                ParentCommissionRate = qrSmall.ParentCommissionRate,
+                ReceiveStoreId = qrSmall.ReceiveStoreId,
+                UserName = qrSmall.UserName,
+                QRType = QRType.ARHuge,
+            };
+            return QRhuge;
+        }
 
 
 

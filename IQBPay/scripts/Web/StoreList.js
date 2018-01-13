@@ -37,9 +37,11 @@ function CheckStoreAuth()
 function Query() {
 
     var url = "/Store/Query";
+    var StoreName = $("#cStoreName").val();
+
     $.ajax({
         type: 'post',
-        data: "Channel="+Channel+"&pageIndex=0&pageSize=20",
+        data: "Name="+StoreName+"&Channel="+Channel+"&pageIndex=0&pageSize=80",
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -76,6 +78,13 @@ function generateData(result)
         else if (result[i].FromIQBAPP == "2017122901328258")
             appName = "寒翼";
 
+        var storeType = "未知??";
+        if (result[i].StoreType == 0)
+            storeType = "小码";
+        else if (result[i].StoreType == 4)
+            storeType = "大额";
+        
+
         strCtrl = "";
         strCtrl += "<tr>";
         strCtrl += "<td>" + result[i].Name + "</td>";
@@ -83,9 +92,10 @@ function generateData(result)
         strCtrl += "<td>" + result[i].Rate + "</td>";
         strCtrl += "<td>" + result[i].IsReceiveAccount + "</td>";
         strCtrl += "<td>" + result[i].DayIncome + "</td>";
-        strCtrl += "<td>" + result[i].RemainAmount + "</td>";
-        strCtrl += "<td>" + result[i].MaxLimitAmount + "</td>";
+        strCtrl += "<td>" + result[i].RemainAmount + "</td>";     
         strCtrl += "<td>" + result[i].MinLimitAmount + "</td>";
+        strCtrl += "<td>" + result[i].MaxLimitAmount + "</td>";
+        strCtrl += "<td>" +storeType + "</td>";
         strCtrl += "<td title='" + result[i].AliPayAccount + "'>" + result[i].AliPayAccount + "</td>";
         strCtrl += "<td title='" + appName + "'>" + appName + "</td>";
         //strCtrl += "<td>" + result[i].CloseTime + "</td>";

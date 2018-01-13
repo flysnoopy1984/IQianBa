@@ -52,6 +52,12 @@ namespace IQBWX.DataBase.IQBPay
 
         public DbSet<EBuyerInfo> DBBuyerInfo { get; set; }
 
+        public DbSet<EQRHuge> DBQRHuge { get; set; }
+
+        public DbSet<EQRHugeTrans> DBQRHugeTrans { get; set; }
+
+
+
         #region User  
         public Boolean IsExistUser(string openId)
         {

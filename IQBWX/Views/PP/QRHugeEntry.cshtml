@@ -3,9 +3,65 @@
     ViewBag.Title = "QRHugeEntry";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
+<link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
+<script src="~/Content/Script/Component/jquery-confirm.js"></script>
 <link href="@Url.Scrpit("~/Content/Css/Info.css")" rel="stylesheet" />
-
+<script src="~/Content/Script/IQBPay/QRHugeEntry.js"></script>
+<style type="text/css">
+    .QRHugeInfo {height:80px;}
+    .QRHugeInfo ul {margin-left:20px;margin-right:20px;padding:2px; clear:both;}
+   
+    .QRHugeInfo ul li{float:left; padding:10px;}
+    #Amount
+    {
+        color:black; width:35%;height:44px; display:inline-block;
+    }
+    #MakeQRHuge{width:200px; height:60px; float:right;}
+    #ErrorMsg{padding:20px;}
+    #QRImgContainer{padding:20px; text-align:center;}
+    
+</style>
 <div id="PageInfo" class="PageInfo">
-    <div class="grzxcon2 mgz xi30 bai cen">大额二维码</div>
+    <div class="grzxcon2 mgz xi30 bai cen">大额二维码创建</div>
+    <div class="InfoBody">
+        <div style="text-align:center; width:100%">您当前大额码的设置</div>
+        <div class="QRHugeInfo">
+           <ul>
+               <li>费率:</li>
+               <li>5</li>
+           </ul>
+            <ul>
+                <li>用户手续费:</li>
+                <li>12</li>
+            </ul>         
+        </div>
+        <hr class="HR3_Red" style="width:100%; text-align:center;" />
 
+        <div id="MakeQR" style="">
+            <div class="form-group">
+                <label class="label-left" style="width:20%;height:44px; line-height:44px;">制作金额:</label>
+                <div>
+                    <input id="Amount" type="text" class="form-control" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")'>   
+                    <button type="button" class="btn btn-primary" id="MakeQRHuge" onclick="MakeQRHuge();">开始制作</button>
+                </div>
+                @*<div class="cen" style="margin-top:40px;">
+                    <button type="button" class="btn btn-primary" id="btnMake" style="width:200px; height:60px;">开始制作</button>
+                </div>*@
+            </div>
+        </div>
+        
+        <div id="Result">
+            <hr class="HR3_668ff2" style="width:100%; text-align:center;" />
+            <div id="ErrorMsg">错误：您的二维码还不能制作，请勿刷二维码错误：您的二维码还不能制作，请勿刷二维码
+                错误：您的二维码还不能制作，请勿刷二维码错误：您的二维码还不能制作，请勿刷二维码</div>
+            <div id="QRImgContainer">
+                <img id="QRImg" src="~/Content/QRImg/Temp/QRHuge_820180113213233.jpg" />
+                <ul>
+                    <li>金额：<span></span></li>
+                </ul>
+            </div>
+        </div>
+   </div>
+    <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
+    <input type="hidden" value="@ViewBag.PPSite" id="PPSite" />
 </div>

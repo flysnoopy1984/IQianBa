@@ -1,0 +1,68 @@
+﻿@model IQBCore.IQBPay.Models.QR.EQRHuge
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+
+
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
+
+   
+   
+    <link href="~/Content/Component/jquery-confirm.css" rel="stylesheet" />
+    <script src="~/scripts/Component/jquery-confirm.js"></script>
+    @*<link href="@Url.Scrpit("~/Content/Wap/WAPbootstrap.css")" rel="stylesheet" />*@
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Wap/WapMain.css")" rel="stylesheet" />
+
+    <script src="@Url.Scrpit("~/scripts/Wap/PayHuge.js")"></script>
+   
+
+    <title>【找熟人-非风控大额花呗】</title>
+</head>
+<body>
+    <style>
+        body {
+            background: #ffffff;
+        }
+
+        .TitleInfo {
+            height: 80px;
+            line-height: 80px;
+            width: 95%;
+            text-align: center;
+        }
+    </style>
+    <div class="yue mgz cen">
+        <div style="height:80px;">【找熟人-大额入口】</div>
+        <div class="yues mg2">
+            <img align="absmiddle" src="~/Content/Images/PayHuge_ADLogo.png" />
+        </div>
+        <div class="yuec mg2 xi21">支付金额(元)</div>
+        <div class="yuex mg2 xi71">¥@Model.Amount</div>
+    </div>
+    <div>
+        <span class="FieldLabel" style="font-weight:bold; color:#FF6634">请输入<span style="color:firebrick">自己</span>的另一个支付宝账户收款！</span>    
+        @* <span class="FieldLabel" style="color:#E22018;font-weight:bold;">*尽量避免使用手机账户*</span>*@
+        <span class="FieldLabel" style="font-weight:bold;">*请配合关闭wifi和定位*</span>
+        @*<div class="TitleInfo mg2 xi30" style="font-weight:bold; color:#FF6634">非本人支付宝账户避控效果为最佳！</div>*@
+        <input id="AliPayAccount" class="AliPayAccount" type="text">
+        <button type="button" class="mgz btn btn-success verifyButton" id="bnConfirmAliPayAccount" onclick="ConfirmAliPayAccount()">确定</button>
+        <button type="button" class="mgz btn btn-primary verifyButton" id="bnModifyAliPayAccount" onclick="ModifyAliPayAccount()">修改</button>
+    </div>
+
+    <div id="buttonArea" class="cen" style="margin-top:300px;border-top:dashed 1px black; height:120px; line-height:120px;">
+        <button type="button" class="mgz btn btn-primary" id="btnPay" style="width:95%; height:80px;  font-size: 22px;" onclick="PayToAli();">我要支付</button>
+    </div>
+
+
+    @*<input type="hidden" id="ReceiveNo" value="@ViewBag.ReceiveNo" />*@
+    <input type="hidden" id="qrUserId" value="@ViewBag.QRUserId" />
+</body>
+</html>

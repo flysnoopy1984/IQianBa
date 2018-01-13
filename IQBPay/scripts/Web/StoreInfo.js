@@ -85,7 +85,9 @@ function InitFormData(data)
     $("#MinLimitAmount").val(data.MinLimitAmount);
     $("#MaxLimitAmount").val(data.MaxLimitAmount);
     $("#StoreStatus").val(data.RecordStatus);
-    $("#IsReceiveAccount").attr("checked",data.IsReceiveAccount)
+    $("#IsReceiveAccount").attr("checked", data.IsReceiveAccount);
+    $("#Channel").val(data.Channel);
+
     var channel = data.Channel;
     if(channel == 0)
         $("#gpIsReceiveAccount").show();
@@ -111,7 +113,7 @@ function Save()
     var MinLimitAmount = $("#MinLimitAmount").val();
     var MaxLimitAmount = $("#MaxLimitAmount").val();
 
-    //$("#RemainAmount").val(data.RemainAmount);
+    var Channel = $("#Channel").val();
     //$("#MinLimitAmount").val(data.MinLimitAmount);
     //$("#MaxLimitAmount").val(data.MaxLimitAmount);
 
@@ -125,13 +127,13 @@ function Save()
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID,"RemainAmount":RemainAmount,"DayIncome":DayIncome,"MinLimitAmount":MinLimitAmount,"MaxLimitAmount":MaxLimitAmount, "Name": name, "Rate": Rate,  "Remark": remake, "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount },
+        data: { "ID": ID,"Channel":Channel,"RemainAmount":RemainAmount,"DayIncome":DayIncome,"MinLimitAmount":MinLimitAmount,"MaxLimitAmount":MaxLimitAmount, "Name": name, "Rate": Rate,  "Remark": remake, "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount },
         url: url,
         success: function (data) {
             if(data == "OK")
             {
                 alert("Save Done");
-                window.location = "list";
+             //   window.location = "list";
             }
             else
             {

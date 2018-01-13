@@ -644,7 +644,7 @@ var jconfirm, Jconfirm;
                 that.buttons[key].text = button.text || key;
                 that.buttons[key].btnClass = button.btnClass || 'btn-default';
                 that.buttons[key].action = button.action || function () {
-                    };
+                };
                 that.buttons[key].keys = button.keys || [];
                 that.buttons[key].isHidden = button.isHidden || false;
                 that.buttons[key].isDisabled = button.isDisabled || false;

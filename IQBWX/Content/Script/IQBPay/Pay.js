@@ -34,11 +34,22 @@ $(document).ready(function () {
     //    $("#AliPayAccount").val(account);
     //    ShowPayArea();
     //}
-    var client = IsWeixinOrAlipay();
-    if (client != "Alipay") {
-        window.location.href = "/Home/ErrorMessage?code=3000";
-    }
-   
+    //var client = IsWeixinOrAlipay();
+    //if (client != "Alipay") {
+    //    window.location.href = "/Home/ErrorMessage?code=3000";
+    //}
+
+    $.alert({
+        theme: "dark",
+        title: "注意",
+        content: "风控用户请【199支付】必过！！",
+        btnClass:"btn-warning",
+        boxWidth: '30%',
+       
+        
+        
+    });
+
    
 });
 

@@ -251,6 +251,8 @@ div {word-wrap: break-word; }
     width: 20px;
 }
 
+.HR3_Red{height:3px;border:none;border-top:3px double red;}
+.HR3_668ff2{height:3px;border:none;border-top:3px double #668ff2;}
 
 
 

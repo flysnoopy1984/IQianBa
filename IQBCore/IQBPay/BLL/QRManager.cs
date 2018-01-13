@@ -29,10 +29,6 @@ namespace IQBCore.IQBPay.BLL
         {
             try
             {
-             
-
-
-               
                 string filename = qrUser.OrigQRFilePath;
                 string filePath = HttpContext.Current.Server.MapPath(qrUser.OrigQRFilePath);
                 FileInfo fi = new FileInfo(filePath);
@@ -218,13 +214,14 @@ namespace IQBCore.IQBPay.BLL
         
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Url"></param>
-        /// <param name="FilePath"></param>
-        /// <returns></returns>
-        public static Bitmap CreateQR(string Url,string FilePath,Image Logo)
+       /// <summary>
+       /// 
+       /// </summary>
+       /// <param name="Url"></param>
+       /// <param name="FilePath"></param>
+       /// <param name="Logo">如何没有Logo填写null</param>
+       /// <returns></returns>
+        public static Bitmap CreateQR(string Url,string FilePath,Image Logo,string Text="")
         {
             IQBLog log = new IQBLog();
             Bitmap bt = null;
@@ -239,16 +236,31 @@ namespace IQBCore.IQBPay.BLL
                 qrCodeEncoder.QRCodeScale = 4;
                 qrCodeEncoder.QRCodeVersion = 9;
                 bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
-            //    log.log("CreateQR qrCodeEncoder");
+                //    log.log("CreateQR qrCodeEncoder");
+                Bitmap blankBK = null;
+                if (!string.IsNullOrEmpty(Text))
+                {
+                    blankBK = ImgHelper.CreateBlankImg(bt.Width + 20, bt.Height + 60, Brushes.White);
+                    bt = ImgHelper.CombineImage(blankBK, bt,40);
+                    using (Graphics g = Graphics.FromImage(blankBK))
+                    {
+                        string s = Text;
+                        Font font = new Font("宋体", 16);
+                        SolidBrush b = new SolidBrush(Color.Black);
+                        g.DrawString(s, font, b, new PointF(45, bt.Height-45));
+                    }
+                }
+                else
+                {
+                    blankBK = ImgHelper.CreateBlankImg(bt.Width + 20, bt.Height + 20, Brushes.White);
+                    bt = ImgHelper.CombineImage(blankBK, bt);
+                }
 
-                Bitmap blankBK = ImgHelper.CreateBlankImg(bt.Width + 20, bt.Height + 20, Brushes.White);
-          //     log.log("CreateQR blankBK");
-                bt = ImgHelper.CombineImage(blankBK, bt);
-            //    log.log("CreateQR Combine BK");
                 if (Logo!=null)
                 {
                     bt = ImgHelper.CombineImage(bt, Logo);
                 }
+               
              //   log.log("CreateQR Combine Log");
                 bt.Save(FilePath);
             }
@@ -265,7 +277,32 @@ namespace IQBCore.IQBPay.BLL
 
         }
 
+        public static EQRHuge CreateQRHuge(EQRHuge qrHuge)
+        {
+            string site = ConfigurationManager.AppSettings["Main_SiteUrl"];
+            string url = site + "Wap/PayHuge?QRHugeId=" + qrHuge.ID;
 
+            string filePath = "/Content/QR/QRHuge/";
+            string filename = "QRHuge_" + qrHuge.ID +"_"+ System.DateTime.Now.ToString("yyyyMMddHHmm") + (new Random()).Next(1, 100).ToString()
+            + ".jpg";
+            filePath += filename;
+            qrHuge.QRUrl = url;
+            qrHuge.FilePath = filePath;
+
+            Bitmap logo = new Bitmap(System.Web.HttpContext.Current.Server.MapPath(@"/Content/QR/QRHugeLogo.png"));
+           
+            filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
+
+            Bitmap qrImg = QRManager.CreateQR(url, filePath, logo, "金额["+qrHuge.Amount+"]");
+
+
+            logo.Dispose();
+            qrImg.Dispose();
+
+            
+            return qrHuge;
+
+        }
 
     }
 }

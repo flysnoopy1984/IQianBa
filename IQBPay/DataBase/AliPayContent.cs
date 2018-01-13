@@ -61,6 +61,10 @@ namespace IQBPay.DataBase
 
         public DbSet<ETool_QR> DBTool_QR { get; set; }
 
+        public DbSet<EQRHuge> DBQRHuge { get; set; }
+
+        public DbSet<EQRHugeTrans> DBQRHugeTrans { get; set; }
+
         #region User  
         public Boolean IsExistUser(string openId)
         {
@@ -205,5 +209,7 @@ namespace IQBPay.DataBase
 
         }
         #endregion
+
+      
     }
 }

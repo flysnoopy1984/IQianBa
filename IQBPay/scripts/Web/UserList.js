@@ -35,11 +35,12 @@ function Query(NeedClearn,_PageIndex) {
 
     var cAgentName = $("#cAgentName").val();
     var cParentName = $("#cParentName").val();
+    var cHasQRHuge = $("#cHasQRHuge").val();
 
     var url = "/User/Query";
     $.ajax({
         type: 'post',
-        data: "role=2&AgentName=" + cAgentName + "&ParentName="+cParentName+"&pageIndex=" + _PageIndex,
+        data: "HasQRHuge="+cHasQRHuge+"&role=2&AgentName=" + cAgentName + "&ParentName=" + cParentName + "&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -95,7 +96,12 @@ function deleteUser(openId) {
 function generateData(result) {
     var strCtrl = "";
     $.each(result, function (i) {
-
+        var HasQRHuge = "没有";
+        if (result[i].HasQRHuge)
+        {
+            HasQRHuge = "有";
+        }
+       
        
         strCtrl = "";
         strCtrl += "<tr>";
@@ -105,7 +111,12 @@ function generateData(result) {
         strCtrl += "<td>" + result[i].MarketRate + "</td>";
         strCtrl += "<td title='" + result[i].ParentAgent + "'>" + result[i].ParentAgent + "</td>";
         strCtrl += "<td>" + result[i].CDate + "</td>";
-        strCtrl += "<td title='" + result[i].AliPayAccount + "'>" + result[i].AliPayAccount + "</td>";
+        if (result[i].HasQRHuge)
+            strCtrl += "<td style='color:blue'>" + HasQRHuge + "</td>";
+        else
+            strCtrl += "<td>" + HasQRHuge + "</td>";
+
+        //strCtrl += "<td title='" + result[i].AliPayAccount + "'>" + result[i].AliPayAccount + "</td>";
         strCtrl += "<td title='"+result[i].OpenId+"'>" + result[i].OpenId + "</td>";
        
        

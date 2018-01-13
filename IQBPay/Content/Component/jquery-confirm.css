@@ -380,7 +380,7 @@ body[class*=jconfirm-no-scroll-] {
 .jconfirm .jconfirm-box .jconfirm-buttons button {
   display: inline-block;
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 22px;
   font-weight: 400;
   line-height: 1.42857143;
   text-align: center;
@@ -952,7 +952,7 @@ body[class*=jconfirm-no-scroll-] {
 }
 .jconfirm.jconfirm-modern .jconfirm-box div.jconfirm-content {
   text-align: center;
-  font-size: 15px;
+  font-size: 20px;
   color: #777;
   margin-bottom: 25px;
 }

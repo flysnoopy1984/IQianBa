@@ -21,6 +21,11 @@
         $("#btnContainer").hide();
     }
 
+    if (errorCode == "2003") {
+
+        $("#btnContainer").hide();
+    }
+
     //微信和支付宝客户端
     if (errorCode == "3000" || errorCode == "3001") {
         $("#btnContainer").hide();

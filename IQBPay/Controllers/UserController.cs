@@ -89,6 +89,14 @@ namespace IQBPay.Controllers
                         result.QueryResult = false;
                         return Json(result);
                     }
+                    EQRUser qrHuge = db.DBQRUser.Where(o => o.OpenId == OpenId && o.QRType == QRType.ARHuge).FirstOrDefault();
+                    if(qrHuge ==null)
+                        result.QRHuge = new EQRUser();
+                    else
+                    {
+                        result.QRHuge = qrHuge;
+                    }
+
                     result.StoreList = db.Database.SqlQuery<HashStore>("select Id,Name,Rate from storeinfo").ToList();
                     result.ParentAgentList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo where userRole = 3 or userRole=100").ToList();
 
@@ -105,18 +113,19 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(UserRole role= UserRole.Agent,string AgentName="",string ParentName="", int pageIndex = 0, int pageSize = IQBConstant.PageSize)
+        public ActionResult Query(UserRole role= UserRole.Agent,string AgentName="",string ParentName="",int HasQRHuge= -1, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             
             List<RUserInfo> result = new List<RUserInfo>();
-
-            string sql = @"select ui.Id,ui.OpenId,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.AliPayAccount,ui.UserStatus,
+            
+            string sql = @"select ui.Id,ui.OpenId,ui.Name,ui.IsAutoTransfer,ui.CDate,ui.AliPayAccount,ui.UserStatus,ui.HasQRHuge,
                         qruser.Rate,qruser.ParentCommissionRate,qruser.parentOpenId as ParentAgentOpenId,qruser.ParentName as ParentAgent,QRUser.MarketRate,
                         si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
                         from userinfo as ui 
                         left join qrUser on qruser.OpenId = ui.OpenId
                         left join StoreInfo as si on si.ID = qruser.ReceiveStoreId
                         where qrUser.IsCurrent = 'true'";
+
             if(!string.IsNullOrEmpty(AgentName))
             {
                 sql += " and ui.name like '%"+AgentName+"%'";
@@ -125,7 +134,10 @@ namespace IQBPay.Controllers
             {
                 sql += " and qruser.ParentName like '%" + ParentName + "%'";
             }
-
+            if (HasQRHuge!=-1)
+            {
+                sql += " and ui.HasQRHuge="+ HasQRHuge;
+            }
 
             sql +=" ORDER BY ui.CreateDate desc";
 
@@ -333,6 +345,53 @@ namespace IQBPay.Controllers
                 return Content("Save Store Error" + ex.Message);
             }
             return Json("OK");
+        }
+        [HttpPost]
+        public ActionResult CreateOrUpdateQRHuge(string openId,float Rate,float marketRate)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.AR).First();
+                    EQRUser bQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.ARHuge).FirstOrDefault();
+                    if (bQRUser == null)
+                    {
+                        //大额码参数
+                        bQRUser = EQRUser.CopyToQRUserForHuge(sQRUser);
+                        bQRUser.Rate = Rate;
+                        bQRUser.MarketRate = marketRate;
+                        db.DBQRUser.Add(bQRUser);
+
+                        //用户大额标记修改
+                        EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == openId).First();
+                        ui.HasQRHuge = true;
+
+                        result.SuccessMsge = "开通权限";
+                    }
+                    else
+                    {
+                        bQRUser.Rate = Rate;
+                        bQRUser.MarketRate = marketRate;
+                       
+
+                        result.SuccessMsge = "修改成功";
+
+                        
+                    }
+                    db.SaveChanges();
+                   
+
+
+                }
+            }
+            catch(Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
         }
 
 

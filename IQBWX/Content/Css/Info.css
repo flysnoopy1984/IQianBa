@@ -1,12 +1,10 @@
 ﻿
-
 .InfoBody
 {
     padding:20px;
-    font-size: 18px;
-    font-family: 'MicroSoft YaHei';
+    font-size: 22px;
+    font-family:"Open Sans", Arial, sans-serif;
 }
-
 .form-group
 {
     clear:both;
@@ -78,6 +76,12 @@
      margin-bottom:10px;
      display:block;
  }
+.label-left
+{
+    float:left;
+
+}
+
  .ValidformLabel{
      font-size:22px;
  }

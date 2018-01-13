@@ -134,7 +134,7 @@ function Save() {
             if (data.RunResult == "OK") {
                 alert("Save Done");
                 //InitFormData(data);
-                window.location.href = "Authlist";
+             //   window.location.href = "Authlist";
             }
             else {
                 alert(data.RunResult);

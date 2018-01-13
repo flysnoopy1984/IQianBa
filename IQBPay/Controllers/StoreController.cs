@@ -137,7 +137,7 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(Channel Channel,int pageIndex = 0, int pageSize = IQBConstant.PageSize)
+        public ActionResult Query(string Name,Channel Channel,int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             List<EStoreInfo> result = new List<EStoreInfo>();
             IQueryable<EStoreInfo> list = null ;
@@ -152,6 +152,9 @@ namespace IQBPay.Controllers
                         list = db.DBStoreInfo.Where(i => i.OwnnerOpenId == openId).OrderByDescending(i => i.CreateDate);
                     else
                         list = db.DBStoreInfo.Where(i => i.OwnnerOpenId == openId && i.Channel == Channel).OrderByDescending(i => i.CreateDate);
+
+                    if (!string.IsNullOrEmpty(Name))
+                        list = list.Where(s => s.Name.Contains(Name));
 
                     int totalCount = list.Count();
                     if (pageIndex == 0)
@@ -197,10 +200,13 @@ namespace IQBPay.Controllers
                     entry.Property(t => t.Rate).IsModified = true;
                     entry.Property(t => t.Remark).IsModified = true;
                     entry.Property(t => t.DayIncome).IsModified = true;
-                    entry.Property(t => t.IsReceiveAccount).IsModified = true;
+                    if(store.Channel == Channel.PP)
+                        entry.Property(t => t.IsReceiveAccount).IsModified = true;
+
                     entry.Property(t => t.MaxLimitAmount).IsModified = true;
                     entry.Property(t => t.MinLimitAmount).IsModified = true;
                     entry.Property(t => t.RemainAmount).IsModified = true;
+                    entry.Property(t => t.Channel).IsModified = true;
 
                     entry.Property(t => t.MDate).IsModified = true;
                     entry.Property(t => t.MTime).IsModified = true;

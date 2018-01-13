@@ -106,7 +106,7 @@ namespace IQBCore.Common.Helper
 
         public static string BKPath = ConfigurationManager.AppSettings["QRPathPrefix"];//@"\IQB\Content\QRImg\bk_";
 
-        public static Bitmap CombineImage(Bitmap BKImg, Image waterimg)
+        public static Bitmap CombineImage(Bitmap BKImg, Image waterimg,int BK_offsetHeight =0)
         {
 
             //添加水印
@@ -116,7 +116,10 @@ namespace IQBCore.Common.Helper
                 int x = 0;
                 int y = 0;
                 x = BKImg.Width / 2 - waterimg.Width / 2;
-                y = BKImg.Height / 2 - waterimg.Height / 2;
+                if(BK_offsetHeight > 0)
+                    y = (BKImg.Height- BK_offsetHeight) / 2 - waterimg.Height / 2;
+                else
+                    y = BKImg.Height / 2 - waterimg.Height / 2;
 
                 loca.Add(x);
                 loca.Add(y);
@@ -131,6 +134,8 @@ namespace IQBCore.Common.Helper
 
             return BKImg;
         }
+
+       
 
         //图片水印处理方法
         public static Bitmap ImageWatermark(Bitmap MainImg, Image waterimg)

@@ -31,6 +31,17 @@
                         <input id="cParentName" type="text" class="form-control ConditionField">
                     </div>
                 </li>
+                <li>
+                    <div class="form-group">
+                        <label>是否大额：</label>
+                        <select id="cHasQRHuge"  class="form-control ConditionField">
+                            <option value="-1">全部</option>
+                             <option value="1">是</option>
+                            <option value="0">否</option>
+                        </select>
+                       
+                    </div>
+                </li>
             </ul>
 
         </div>
@@ -51,11 +62,11 @@
                     <th width="60px">用户手续费</th>
                     <th width="150px">上级代理</th>
                     <th width="80px;">注册时间</th>
-                    <th width="180px">提现账户</th>
+                    <th width="80">有无大额</th>
                     @*<th width="">是否自动打款</th>*@
-                    <th width="240px">OpenId</th>       
-                    <th width="">收款商户</th>
-                    <th width="">用户状态</th>
+                    <th width="260px">OpenId</th>       
+                    <th width="120px">收款商户</th>
+                    <th width="100px">用户状态</th>
                     <th width="100px"> 操作</th>
                 </tr>
             </thead>

@@ -10,6 +10,7 @@ using IQBCore.Common.Helper;
 using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
+using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.Store;
@@ -56,8 +57,8 @@ namespace IQBCore.IQBPay.BLL
 
             // model.RoyaltyParameters = paramList;
             // request.SetBizModel(model);
-            IQBLog log = new IQBLog();
-            log.log(request.BizContent);
+            //IQBLog log = new IQBLog();
+            //log.log(request.BizContent);
 
             AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request,null, store.AliPayAuthToke);
             return response;
@@ -288,7 +289,7 @@ namespace IQBCore.IQBPay.BLL
             };
             return comm;
         }
-        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount,string AliPayAccount = "")
+        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount,OrderType orderType,string AliPayAccount = "")
         {
             EOrderInfo order = new EOrderInfo()
             {
@@ -309,8 +310,8 @@ namespace IQBCore.IQBPay.BLL
                 SellerChannel = store.Channel,
                 SellerRate = store.Rate,
                 SellerCommission = (float)Math.Round(TotalAmount * (store.Rate) / 100, 2, MidpointRounding.ToEven),
-                OrderType = BaseEnum.OrderType.Normal,
-
+                OrderType = orderType,
+               
                 BuyerMarketRate = qrUser.MarketRate,
                 BuyerTransferAmount = (float)Math.Round(TotalAmount * (100-qrUser.MarketRate) / 100, 2, MidpointRounding.ToEven),
                 BuyerAliPayAccount = AliPayAccount,
@@ -319,6 +320,7 @@ namespace IQBCore.IQBPay.BLL
                 
 
             };
+            
             //代理
           //  order.RealTotalAmount = order.TotalAmount - order.RateAmount;
             //上级代理
@@ -476,6 +478,83 @@ namespace IQBCore.IQBPay.BLL
             return result;
         }
 
+        public string PartPay(EAliPayApplication app, EUserInfo AgentUi, EStoreInfo storeInfo, string TotalAmount, out AliPayResult status)
+        {
+            string result = "";
+
+            /*
+            IAlipayTradeService serviceClient = F2FBiz.CreateClientInstance(AliPayConfig.serverUrl, AliPayConfig.appId, AliPayConfig.merchant_private_key, AliPayConfig.version,
+                           AliPayConfig.sign_type, AliPayConfig.alipay_public_key, AliPayConfig.charset);
+          */
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+            app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+
+
+            _handler = new F2FPayHandler();
+
+            AlipayTradePrecreateResponse builder = _handler.BuildNew(app, storeInfo, AgentUi, TotalAmount);
+
+            if (builder.Code == "10000")
+            {
+                result = _handler.CreateF2FQR(builder.QrCode);
+                result = _handler.DeQR(result);
+                status = AliPayResult.SUCCESS;
+            }
+            else
+            {
+                if (builder.Code == "20001")
+                {
+                    status = AliPayResult.AUTHERROR;
+                }
+                else
+                {
+                    result = "[Error Message]" + builder.Msg + "[Sub Msg]" + builder.SubMsg;
+                    status = AliPayResult.FAILED;
+                }
+            }
+
+
+            return result;
+        }
+
+        public string PartPayQR(EAliPayApplication app, EUserInfo AgentUi, EStoreInfo storeInfo, string TotalAmount, out AliPayResult status)
+        {
+            string result = "";
+        
+            /*
+            IAlipayTradeService serviceClient = F2FBiz.CreateClientInstance(AliPayConfig.serverUrl, AliPayConfig.appId, AliPayConfig.merchant_private_key, AliPayConfig.version,
+                           AliPayConfig.sign_type, AliPayConfig.alipay_public_key, AliPayConfig.charset);
+          */
+            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+            app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+
+
+            _handler = new F2FPayHandler();
+
+            AlipayTradePrecreateResponse builder = _handler.BuildNew(app, storeInfo, AgentUi, TotalAmount);
+
+            if (builder.Code == "10000")
+            {
+                result = _handler.CreateF2FQR(builder.QrCode,true);
+             
+                status = AliPayResult.SUCCESS;
+            }
+            else
+            {
+                if (builder.Code == "20001")
+                {
+                    status = AliPayResult.AUTHERROR;
+                }
+                else
+                {
+                    result = "[Error Message]" + builder.Msg + "[Sub Msg]" + builder.SubMsg;
+                    status = AliPayResult.FAILED;
+                }
+            }
+
+
+            return result;
+        }
         public static List<Com.Alipay.Model.GoodsInfo> GetGoodsList(string TotalAmt)
         {
 

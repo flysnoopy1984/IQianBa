@@ -88,6 +88,10 @@ namespace IQBCore.IQBPay.Models.Store
 
         public StoreAuthStatus StoreAuthStatus { get; set; }
 
-        
+
+        public StoreType StoreType { get; set; }
+
+
+
     }
 }

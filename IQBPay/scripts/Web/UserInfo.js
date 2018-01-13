@@ -70,8 +70,6 @@ function Init(OpenId) {
                 }
             });
         }
-       
-
     });
 
     var url = "/User/Get";
@@ -83,8 +81,52 @@ function Init(OpenId) {
             gStoreList = data.StoreList;
             gParentAgentList = data.ParentAgentList;
             InitFormData(data);
+
+            var QRHuge = data.QRHuge;
+            $("#QRHuge_Rate").val(QRHuge.Rate);
+            $("#QRHuge_MarketRate").val(QRHuge.MarketRate);
+
             AjaxInviteCode(data.QRInviteCode);
 
+        },
+        error: function (xhr, type) {
+
+            alert(xhr.responseText);
+
+        }
+    });
+}
+function CloseQRHuge()
+{
+    var url = "/User/CloseQRHuge";
+    var OpenId = $("#OpenId").val();
+}
+
+function CreateOrUpdateQRHuge()
+{
+    var url = "/User/CreateOrUpdateQRHuge";
+    var OpenId = $("#OpenId").val();
+
+    var QRHuge_Rate = $("#QRHuge_Rate").val();
+    var QRHuge_MarketRate = $("#QRHuge_MarketRate").val();
+    if (QRHuge_Rate == 0 || QRHuge_MarketRate == 0)
+    {
+        alert("值不能为空或0");
+        return;
+    }
+    $.ajax({
+        type: 'post',
+        dataType: "json",
+        //  data: "OpenId=" + OpenId + "&Rate=" + QRHuge_Rate + "&QRHuge_MarketRate=" + QRHuge_MarketRate,
+        data:{"OpenId":OpenId,"Rate":QRHuge_Rate,"marketRate":QRHuge_MarketRate},
+        url: url,
+        success: function (data) {
+            if (data.IsSuccess) {
+                alert(data.SuccessMsge);  
+            }
+            else {
+                alert(data.ErrorMsg);
+            }
         },
         error: function (xhr, type) {
 
@@ -128,9 +170,6 @@ function InitFormData(data) {
         else
             $("#selParentAgent").append("<option value='" + r.OpenId + "'>" + r.Name + "</option>");
     });
-
-   
-
 
     $("#AliPayAccount").val(data.AliPayAccount);
     $("#UserStatus").val(data.UserStatus);
@@ -214,7 +253,7 @@ function Save() {
             if (data == "OK") {
 
                 alert("Save Done");
-                window.location.href = "list";
+              //  window.location.href = "list";
             }
             else {
                 alert(data);

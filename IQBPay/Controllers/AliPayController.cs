@@ -791,8 +791,215 @@ namespace IQBPay.Controllers
             return Content(res);
         }
 
-       
 
+        public ActionResult F2FHugePay(string rQRHugeId, string AliPayAccount = "")
+        {
+            string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?QRHugeId=" + rQRHugeId + "&code=2003&ErrorMsg=";
+            long qrHugeId;
+            if (string.IsNullOrEmpty(rQRHugeId) || !long.TryParse(rQRHugeId, out qrHugeId))
+            {
+                ErrorUrl += "二维码不存在，请咨询您的联系人！";
+                return Redirect(ErrorUrl);
+            }
+
+            EAliPayApplication app;
+            try
+            {
+               
+                AliPayManager payMag = new AliPayManager();
+                EQRUser qrUser = null;
+                EUserInfo ui = null;
+                EQRHuge qrHuge = null;
+                long Id;
+                
+                using (AliPayContent db = new AliPayContent())
+                {
+                    qrHuge = db.DBQRHuge.Where(o => o.ID == qrHugeId).FirstOrDefault();
+                    if(qrHuge == null)
+                    {
+                        ErrorUrl += "二维码已更新，请向您的联系人重新索要！";
+                        return Redirect(ErrorUrl);
+                    }
+                    string qrUserId;
+                    //校验代理二维码
+                    qrUser = db.DBQRUser.Where(q => q.OpenId == qrHuge.OpenId && q.QRType == QRType.ARHuge && q.RecordStatus == RecordStatus.Normal).FirstOrDefault();
+
+                    if (qrUser == null)
+                    {
+                        ErrorUrl += "二维码已更新，请向代理索要最新当前二维码";
+                        return Redirect(ErrorUrl);
+                    }
+                    if (qrUser.MarketRate <= 0)
+                    {
+                        ErrorUrl += "市场折扣点配置错误，请联系代理";
+                        return Redirect(ErrorUrl);
+                    }
+                    //检验代理人
+                    ui = db.DBUserInfo.Where(u => u.OpenId == qrUser.OpenId).FirstOrDefault();
+                    if (ui == null)
+                    {
+                        ErrorUrl += "未找到收款二维码代理人";
+                        return Redirect(ErrorUrl);
+                    }
+                    if (string.IsNullOrEmpty(ui.OpenId))
+                    {
+                        ErrorUrl += "收款二维码代理人微信号没有找到";
+                        return Redirect(ErrorUrl);
+                    }
+                    if (ui.UserStatus == IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister)
+                    {
+                        ErrorUrl += "代理被禁用,您无法支付！";
+                        return Redirect(ErrorUrl);
+                    }
+                    if (string.IsNullOrEmpty(ui.AliPayAccount))
+                    {
+                        ErrorUrl += "您的联系人没有设置支付宝账户";
+                        return Redirect(ErrorUrl);
+                    }
+
+
+                    EStoreInfo store = null;
+                    string selectStoreSql = @"select top 1 * from StoreInfo 
+                                            where RecordStatus = 0 and StoreType = 4
+                                            order by NEWID()";
+
+                    store = db.Database.SqlQuery<EStoreInfo>(selectStoreSql).FirstOrDefault();
+                    if (store == null)
+                    {
+                        ErrorUrl += "商户已下线，请过段时间尝试,或去普通支付区";
+                        return Redirect(ErrorUrl);
+                    }
+                    //获取并校验商户 
+                    AliPayResult status;
+
+                    if (store.FromIQBAPP == BaseController.App.AppId)
+                        app = BaseController.App;
+                    else if (store.FromIQBAPP == BaseController.SubApp.AppId)
+                        app = BaseController.SubApp;
+                    else
+                    {
+                        ErrorUrl += "商户所属APP没有设置正确";
+                        return Redirect(ErrorUrl);
+                    }
+
+                    //测试转账
+                    if (!string.IsNullOrEmpty(AliPayAccount))
+                    {
+                        EBuyerInfo buyer = db.DBBuyerInfo.Where(a => a.AliPayAccount == AliPayAccount).FirstOrDefault();
+                        if (buyer == null)
+                        {
+                            string tId;
+                            AlipayFundTransToaccountTransferResponse res = payMag.DoTransferAmount(TransferTarget.User, BaseController.SubApp, AliPayAccount, "0.1", PayTargetMode.AliPayAccount, out tId);
+                            if (res.Code != "10000")
+                            {
+                                ErrorUrl += "当前收款账户转账失败,请更换！";
+                                return Redirect(ErrorUrl);
+                            }
+                            else
+                            {
+                                buyer = new EBuyerInfo();
+                                buyer.AliPayAccount = AliPayAccount;
+                                buyer.TransDate = DateTime.Now;
+                                db.DBBuyerInfo.Add(buyer);
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+
+                    //  string Res = payMag.PayF2F(app, ui, store, Convert.ToSingle(Amount),out status);
+                    string Res = payMag.PayF2FNew(app, ui, store, qrHuge.Amount.ToString("0.00"), out status);
+                    // base.Log.log("支付PayF2F：" + Res);
+                    if (status == AliPayResult.SUCCESS)
+                    {
+                        //创建初始化订单
+                        EOrderInfo order = payMag.InitOrder(qrUser, store, qrHuge.Amount,OrderType.Huge, AliPayAccount);
+                        EQRHugeTrans QRHugeTrans = EQRHugeTrans.Init(qrHuge, AliPayAccount);
+                        db.DBQRHugeTrans.Add(QRHugeTrans);
+
+                        if (!string.IsNullOrEmpty(qrUser.ParentOpenId))
+                        {
+                            EAgentCommission agentComm = payMag.InitAgentCommission(order, qrUser);
+
+                            RUserInfo parentUi = db.DBUserInfo.Where(u => u.OpenId == qrUser.ParentOpenId).Select(a => new RUserInfo()
+                            {
+                                OpenId = a.OpenId,
+                                ParentAgentOpenId = a.parentOpenId,
+                                AliPayAccount = a.AliPayAccount,
+                                NeedFollowUp = a.NeedFollowUp,
+
+                            }).FirstOrDefault();
+
+                            agentComm.ParentAliPayAccount = parentUi.AliPayAccount;
+
+                            db.DBAgentCommission.Add(agentComm);
+
+                            order.ParentOpenId = qrUser.ParentOpenId;
+                            order.ParentCommissionAmount = agentComm.CommissionAmount;
+
+                            //3级
+                            if (parentUi.NeedFollowUp)
+                            {
+                                RUserInfo L3Parent = db.DBUserInfo.Where(u => u.OpenId == parentUi.ParentAgentOpenId).Select(a => new RUserInfo()
+                                {
+                                    OpenId = a.OpenId,
+                                    Name = a.Name,
+                                    AliPayAccount = a.AliPayAccount,
+                                }).FirstOrDefault();
+                                if (L3Parent != null)
+                                {
+                                    agentComm = payMag.InitAgentCommission_L3(order, qrUser, L3Parent);
+
+                                    db.DBAgentCommission.Add(agentComm);
+
+                                    order.L3OpenId = L3Parent.OpenId;
+                                    order.L3CommissionAmount = agentComm.CommissionAmount;
+                                }
+
+                            }
+
+
+                        }
+
+                        db.DBOrder.Add(order);
+
+                        //初始化佣金信息，如果订单未支付，将成为脏数据。
+
+                        //买家信息记录
+                        /*
+                        EBuyerInfo buyInfo = new EBuyerInfo();
+                        buyInfo.LastTransDate = DateTime.Now;
+                        buyInfo.PhoneNumber = Phone;
+                        db.DBBuyerInfo.Add(buyInfo);
+                        */
+                        db.SaveChanges();
+
+                        return Redirect(Res);
+                    }
+                    else
+                    {
+
+                        ErrorUrl += "商户下架，抱歉，请重新扫下支付码";
+                        store.Remark = string.Format("[{0}][Error]商户授权出错", DateTime.Now.ToShortDateString());
+                        store.RecordStatus = RecordStatus.Blocked;
+                        db.SaveChanges();
+                        return Redirect(ErrorUrl);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+                base.Log.log("支付失败：" + ex.Message);
+                ErrorUrl += "支付失败：" + ex.Message;
+                return Redirect(ErrorUrl);
+            }
+
+
+
+            return View();
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -822,7 +1029,7 @@ namespace IQBPay.Controllers
                     qrUser = db.DBQRUser.Where(q => q.ID == Id).FirstOrDefault();
                     if (qrUser == null)
                     {
-                        ErrorUrl += "二维码已更新，请向代理索要最新当前二维码";
+                        ErrorUrl += "请重新扫码进去，如果还是有问题，请联系您的联系人";
                         return Redirect(ErrorUrl);
                     }
                     if(qrUser.MarketRate <=0)
@@ -844,20 +1051,20 @@ namespace IQBPay.Controllers
                     }
                     if (ui.UserStatus == IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister)
                     {
-                        ErrorUrl += "代理被禁用";
+                        ErrorUrl += "您的联系人被禁用,无法支付！";
                         return Redirect(ErrorUrl);
                     }
                     if(string.IsNullOrEmpty(ui.AliPayAccount))
                     {
-                        ErrorUrl += "代理没有设置支付宝账户";
+                        ErrorUrl += "您的联系人没有设置支付宝账户！";
                         return Redirect(ErrorUrl);
                     }
                    
 
                     EStoreInfo store = null;
-                    string selectStoreSql = @"select top 1 * from StoreInfo 
-                                    where RecordStatus = 0 and RemainAmount> 0 and Channel=1
-                                    order by NEWID() ";
+                    string selectStoreSql = string.Format(@"select top 1 * from StoreInfo 
+                                            where RecordStatus = 0 and RemainAmount> 0 and Channel=1 and MinLimitAmount<={0} and MaxLimitAmount>={0}
+                                            order by NEWID()", Amount);
                     if (qrUser.ReceiveStoreId > 0)
                     {
                         store = db.DBStoreInfo.Where(a => a.ID == qrUser.ReceiveStoreId).FirstOrDefault();
@@ -886,7 +1093,7 @@ namespace IQBPay.Controllers
 
                     if (store == null)
                     {
-                        ErrorUrl += "今日所有可用花呗已用完，请明天12点再尝试";
+                        ErrorUrl += "【799-999】金额花呗已用完，请尝试【20-799】或【1000-1499】支付金额";
                         return Redirect(ErrorUrl);
                     }
                     //获取并校验商户 
@@ -932,7 +1139,7 @@ namespace IQBPay.Controllers
                     if (status == AliPayResult.SUCCESS)
                     {
                         //创建初始化订单
-                        EOrderInfo order = payMag.InitOrder(qrUser, store,Convert.ToSingle(Amount), AliPayAccount);
+                        EOrderInfo order = payMag.InitOrder(qrUser, store,Convert.ToSingle(Amount),OrderType.Normal, AliPayAccount);
 
                         if (!string.IsNullOrEmpty(qrUser.ParentOpenId))
                         {
@@ -993,19 +1200,13 @@ namespace IQBPay.Controllers
 
                         return Redirect(Res);
                     }
-                    else if(status == AliPayResult.AUTHERROR)
-                    {
-                        ErrorUrl += "商户下架，抱歉，请重新扫下支付码";
-                        store.Remark = string.Format("[{0}][Error]商户授权出错",DateTime.Now.ToShortDateString());
-                        store.RecordStatus = RecordStatus.Blocked;
-                        db.SaveChanges();
-                        return Redirect(ErrorUrl);
-                    }
                     else
                     {
-                       
-                        ErrorUrl += "【支付问题】" + Res;
-                       
+
+                        ErrorUrl += "商户下架，抱歉，请重新扫下支付码";
+                        store.Remark = string.Format("[{0}][Error]商户授权出错", DateTime.Now.ToShortDateString());
+                        store.RecordStatus = RecordStatus.Blocked;
+                        db.SaveChanges();
                         return Redirect(ErrorUrl);
                     }
 
@@ -1098,6 +1299,33 @@ namespace IQBPay.Controllers
             //AlipayTradeQueryResponse response = client.execute(request);
             //Console.WriteLine(response.Body);
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult PartPayQR()
+        {
+            try
+            {
+                AlipayTradeOrderSettleResponse res = null;
+                using (AliPayContent db = new AliPayContent())
+                {
+                    AliPayManager payManager = new AliPayManager();
+                    EUserInfo ui = new EUserInfo();
+                    ui.Name = "分期";
+                    EStoreInfo store = db.DBStoreInfo.Where(s => s.IsReceiveAccount).FirstOrDefault();
+                    AliPayResult status;
+                    string imgPath = payManager.PartPayQR(BaseController.App, ui, store, "5100", out status);
+                    return Content(imgPath);
+                    //  res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount);
+
+                }
+            }
+            catch(Exception ex)
+            {
+                return Content("error");
+            }
+           
+           
         }
 
 

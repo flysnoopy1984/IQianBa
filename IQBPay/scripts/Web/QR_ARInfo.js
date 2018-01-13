@@ -132,7 +132,7 @@ function Save() {
             if (data.RunResult == "OK") {
 
                 alert("Save Done");
-                window.location.href = "ARlist";
+              //  window.location.href = "ARlist";
 
                // InitFormData(data);
             }

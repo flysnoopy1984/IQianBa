@@ -230,12 +230,21 @@ namespace IQBWX.BLL
                 string ssoToken = null;
                 EUserInfo ui =null ,pui = null;
 
-       //         log.log("WXScanLogin ssoToken:" + msg.EventKey);
+                //         log.log("WXScanLogin ssoToken:" + msg.EventKey);
 
                 if (msg.Event == "scan")
                     ssoToken = msg.EventKey;
                 else if (msg.Event == "subscribe")
-                    ssoToken = msg.EventKey.Substring(8);
+                {
+                    try
+                    {
+                        ssoToken = msg.EventKey.Substring(8);
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
 
                 
                 if (ssoToken.StartsWith(IQBConstant.WXQR_IQBPAY_PREFIX))
@@ -378,7 +387,7 @@ namespace IQBWX.BLL
                             notice.Push();
                         }      
 
-                        this.ResponseXml = msg.toText(string.Format("欢迎,亲爱的{0}",ui.nickname));
+                        this.ResponseXml = msg.toText(string.Format("欢迎关注,亲爱的{0}",ui.nickname));
                             
                     }
                     else

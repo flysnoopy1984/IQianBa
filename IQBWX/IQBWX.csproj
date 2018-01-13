@@ -195,6 +195,7 @@
     <Content Include="Content\images\zs_blueBK.png" />
     <Content Include="Content\QRImg\BK\QRBK.jpg" />
     <Content Include="Content\QRImg\bk_test.jpg" />
+    <Content Include="Content\QRImg\Temp\QRHuge_820180113213233.jpg" />
     <Content Include="Content\Script\CashOut.js" />
     <Content Include="Content\Script\CommissionDetail.js" />
     <Content Include="Content\Script\Component\dropload.min.js" />
@@ -220,6 +221,7 @@
     <Content Include="Content\Script\IQBPay\PayWithAccount.js" />
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
     <Content Include="Content\Script\IQBPay\Pay.js" />
+    <Content Include="Content\Script\IQBPay\QRHugeEntry.js" />
     <Content Include="Content\Script\IQBPay\ReceiveOrder.js" />
     <Content Include="Content\Script\IQBPay\StoreAdd.js" />
     <Content Include="Content\Script\IQBPay\StoreList.js" />
@@ -413,7 +415,6 @@
     <Folder Include="Content\CatchSite\HJB\css\" />
     <Folder Include="Content\CatchSite\HJB\images\" />
     <Folder Include="Content\Html\" />
-    <Folder Include="Content\QRImg\Temp\" />
     <Folder Include="Models\IQBPay\" />
     <Folder Include="Views\Valid\" />
   </ItemGroup>

@@ -11,9 +11,9 @@
     font-family:'FontAwesome', sans-serif;
 }
 body {
-    color: #9ea7b3!important;
+    color: black;
     font-family:"Open Sans", Arial, sans-serif!important;
-    font-size: 13px!important;
+    font-size: 18px;
     line-height: 20px;
     overflow-x: hidden!important;
     min-height: 100%;

@@ -126,6 +126,7 @@ namespace IQBWX.Controllers
             string code = Request.QueryString["code"];
             string errorMsg = Request.QueryString["ErrorMsg"];
             string QRUserId = Request.QueryString["QRUserId"];
+            string QRHugeId = Request.QueryString["QRHugeId"];
 
             jsonError data=null;
             if (!string.IsNullOrEmpty(code))
@@ -136,6 +137,11 @@ namespace IQBWX.Controllers
                 {
                     data.btnUrl += "?Id="+QRUserId;
                 }
+                else if (!string.IsNullOrEmpty(QRUserId))
+                {
+                    data.btnUrl += "?rQRHugeId=" + QRHugeId;
+                }
+
                 return View(data);                       
                 
             }

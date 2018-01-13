@@ -63,6 +63,9 @@ namespace IQBWX.Models.JsonData
                     obj.errorMsg = errorMsg;
                     obj.btnUrl = "/PP/Pay";
                     break;
+                case Errorcode.QRHugeError:
+                    obj.errorMsg = errorMsg;
+                    break;
                 case Errorcode.NotAliPayClient:
                     obj.errorMsg = "请用支付宝扫描";
                   

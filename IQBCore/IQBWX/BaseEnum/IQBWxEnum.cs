@@ -23,12 +23,26 @@ namespace IQBCore.IQBWX.BaseEnum
         NotMember = 1002,
         OpenIdNotFound = 1003,
         
+        /// <summary>
+        /// 系统刚维护
+        /// </summary>
         SystemMaintain = 9999,
         
         NormalErrorNoButton = 2000,
+        /// <summary>
+        /// 支付错误
+        /// </summary>
         AliPay_PayError = 2001,
         NotAuthorized = 2002,
 
+        /// <summary>
+        /// 大额支付错误
+        /// </summary>
+        QRHugeError = 2003,
+
+        /// <summary>
+        /// 客户端错误
+        /// </summary>
         NotAliPayClient = 3000,
         NotWXClient = 3001,
 

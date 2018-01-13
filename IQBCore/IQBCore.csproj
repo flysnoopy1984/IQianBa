@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Helper\DateHelper.cs" />
     <Compile Include="Common\Helper\ImgHelper.cs" />
     <Compile Include="Common\Helper\IQBUrlHelper.cs" />
     <Compile Include="Common\Helper\UtilityHelper.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="IQBPay\Models\OutParameter\HashStore.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashUser.cs" />
     <Compile Include="IQBPay\Models\OutParameter\OutAPIResult.cs" />
+    <Compile Include="IQBPay\Models\OutParameter\OutAPI_QRHuge.cs" />
     <Compile Include="IQBPay\Models\OutParameter\OutDoTransfer.cs" />
     <Compile Include="IQBPay\Models\OutParameter\UploadObj.cs" />
     <Compile Include="IQBPay\Models\QR\EQRHuge.cs" />

@@ -152,11 +152,13 @@ namespace IQBCore.IQBPay.BaseEnum
         /// <summary>
         /// 创建
         /// </summary>
-        Created,
+        Created =0,
         /// <summary>
         /// 失效
         /// </summary>
-        InValid,
+        InValid = 1,
+
+        Closed = 100
 
     }
 
@@ -205,6 +207,7 @@ namespace IQBCore.IQBPay.BaseEnum
     public enum  OrderType
     {
         Normal=0,
+        Huge = 1,
         UnKnow=-1,
     }
 
@@ -246,5 +249,13 @@ namespace IQBCore.IQBPay.BaseEnum
         Authed = 100
     }
 
+    public enum StoreType
+    {
+        Small = 0,
+        Huge =4,
+        All =100,
+    }
+
+   
 
 }

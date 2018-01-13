@@ -19,7 +19,7 @@ using Aop.Api;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.Store;
 using Aop.Api.Response;
-
+using System.Configuration;
 
 namespace IQBPay.Controllers
 {
@@ -177,6 +177,63 @@ namespace IQBPay.Controllers
 
         #endregion
 
+        #region QRHugeEntry
+        public ActionResult PayHuge()
+        {
+            string reqQRHugeId = Request.QueryString["QRHugeId"];
+            string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?code=2003&ErrorMsg=";
+            EQRHuge qrHuge;
+            try
+            {
+                if (string.IsNullOrEmpty(reqQRHugeId))
+                {
+                    ErrorUrl += "非扫码进入!";
+                    return Redirect(ErrorUrl);
+                }
+                long QRHugeId;
+                if (long.TryParse(reqQRHugeId, out QRHugeId))
+                {
+                    using (AliPayContent db = new AliPayContent())
+                    {
+                        qrHuge = db.DBQRHuge.Where(o => o.ID == QRHugeId).FirstOrDefault();
+                        //if(qrHuge == null)
+                        //{
+                        //    ErrorUrl += "此二维码已损坏，请重新向联系人索要!";
+                        //    return Redirect(ErrorUrl);
+                        //}
+                        //if(qrHuge.QRHugeStatus != IQBCore.IQBPay.BaseEnum.QRHugeStatus.Created)
+                        //{
+                        //    ErrorUrl += "二维码已失效，请重新向联系人索要!";
+                        //    return Redirect(ErrorUrl);
+                        //}
+                        //if(DateHelper.IsOverTime(qrHuge.CreateDate,10))
+                        //{
+                        //    ErrorUrl += "二维码已失效，请重新向联系人索要!";
+                        //    qrHuge.QRHugeStatus = IQBCore.IQBPay.BaseEnum.QRHugeStatus.InValid;
+                        //    db.SaveChanges();
+                        //    return Redirect(ErrorUrl);
+                        //}
+                    }
+                }
+                else
+                {
+                    ErrorUrl += "二维码ID错误，请重新向联系人索要!";
+                    return Redirect(ErrorUrl);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorUrl += "错误，请联系您的联系人!";
+                Log.log(ex.Message);
+                return Redirect(ErrorUrl);
+            }
 
-    }
+
+            return View(qrHuge);
+         
+        }
+            #endregion
+
+
+        }
 }

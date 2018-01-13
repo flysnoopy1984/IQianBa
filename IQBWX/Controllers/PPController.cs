@@ -765,7 +765,7 @@ namespace IQBWX.Controllers
             using (AliPayContent db = new AliPayContent())
             {
 
-                var list = db.DBQRUser.Where(u=>u.OpenId == UserSession.OpenId).Select(s => new RQRUser()
+                var list = db.DBQRUser.Where(u=>u.OpenId == UserSession.OpenId && u.RecordStatus == RecordStatus.Normal).Select(s => new RQRUser()
                 {
                     QRId = s.QRId,
                     Rate = s.Rate,
@@ -1285,7 +1285,59 @@ namespace IQBWX.Controllers
             }
 
             InitProfilePage();
+            ViewBag.PPSite = ConfigurationManager.AppSettings["Site_IQBPay"];
             return View();
+        }
+
+       
+
+        public ActionResult MakeQRHuge(string OpenId,float Amount)
+        {
+            OutAPI_QRHuge result = new OutAPI_QRHuge();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    //获取最近的QR
+                   EQRHuge qrHuge =  db.DBQRHuge.Where(o => o.OpenId == OpenId).OrderByDescending(o => o.CreateDate).FirstOrDefault();
+                   if(qrHuge == null)
+                   {
+                        qrHuge = new EQRHuge
+                        {
+                            OpenId = OpenId,
+                            Amount = Convert.ToSingle(Amount.ToString("0.00")),
+                            CreateDate = DateTime.Now,
+                            QRHugeStatus = QRHugeStatus.Created,
+                        };
+                        db.DBQRHuge.Add(qrHuge);
+                        db.SaveChanges();
+
+                        string url = ConfigurationManager.AppSettings["Site_IQBPay"]+ "API/QRAPI/CreateQRHuge";
+                        string data = string.Format("ID={0}&OpenId={1}&Amount={2}", qrHuge.ID,qrHuge.OpenId,qrHuge.Amount);
+                      
+                        string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+                        result =  JsonConvert.DeserializeObject<OutAPI_QRHuge>(res);
+
+                    }
+                   else
+                   {
+                       
+                        
+
+
+                    }
+
+
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+
+            return Json(result);
+
         }
         #endregion
 

@@ -12,12 +12,17 @@ namespace IQBCore.IQBPay.Models.QR
     [Table("QRHuge")]
     public class EQRHuge
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
 
         public DateTime CreateDate { get; set; }
 
         [MaxLength(32)]
         public string OpenId { get; set; }
+
+        [MaxLength(40)]
+        public string AgentName { get; set; }
 
         public float Amount { get; set; }
 
@@ -28,5 +33,7 @@ namespace IQBCore.IQBPay.Models.QR
         public string FilePath { get; set; }
 
         public QRHugeStatus QRHugeStatus { get;set;}
+
+       
     }
 }

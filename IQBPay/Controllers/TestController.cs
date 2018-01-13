@@ -1,6 +1,7 @@
 ﻿
 using Com.Alipay.Model;
 using IQBCore.Common.Helper;
+using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.QR;
@@ -100,28 +101,7 @@ namespace IQBPay.Controllers
 
         public ActionResult JF()
         {
-            using (TransactionScope sc = new TransactionScope())
-            {
-                using (AliPayContent db = new AliPayContent())
-                {
-                    //EQRUser qrUser = db.DBQRUser.Where(o => o.OpenId == "o3nwE0qI_cOkirmh_qbGGG-5G6B0").FirstOrDefault();
-                    //string url = "http://localhost:24068/api/userapi/CreateAgentQR_AR";
-                    //string data = string.Format("ID={0}&OpenId={1}", qrUser.ID, qrUser.OpenId);
-                    //string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
-                    //OutAPIResult result = JsonConvert.DeserializeObject<OutAPIResult>(res);
-
-                    //   EUserInfo updateUser = db.DBUserInfo.Where(u => u.OpenId == "o3nwE0qI_cOkirmh_qbGGG-5G6B0").FirstOrDefault();
-                    EUserInfo updateUser = new EUserInfo();
-                    updateUser.InitRegiser();
-                    updateUser.OpenId = "Test1";
-                    updateUser.Name = "Test1";
-                    updateUser.Headimgurl = "";
-                    updateUser.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
-                    //  db.DBUserInfo.Add(updateUser);
-                    EQRInfo qr = db.DBQRInfo.Where(a => a.ID == 66).FirstOrDefault();
-                    updateUser = db.UpdateQRUser(qr, updateUser, System.Web.HttpContext.Current);
-                }
-            }
+           
           
 
             return View();
@@ -310,5 +290,39 @@ namespace IQBPay.Controllers
 
             return Json(result);
         }
+
+        #region QRHuge
+
+        public ActionResult Demo()
+        {
+            return View();
+        }
+
+        public ActionResult QRHuge()
+        {
+            float Amount = 1000;
+
+            using (AliPayContent db = new AliPayContent())
+            {
+                EQRHuge qrHuge = new EQRHuge
+                {
+                    OpenId = "o3nwE0qI_cOkirmh_qbGGG-5G6B0",
+                    Amount = Convert.ToSingle(Amount.ToString("0.00")),
+                    CreateDate = DateTime.Now,
+                    QRHugeStatus = QRHugeStatus.Created,
+                };
+                db.DBQRHuge.Add(qrHuge);
+                db.SaveChanges();
+
+                string data = string.Format("ID={0}&OpenId={1}&Amount={2}", qrHuge.ID, qrHuge.OpenId, qrHuge.Amount);
+                string url = "http://localhost:24068//API/QRAPI/CreateQRHuge";
+                string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+                OutAPI_QRHuge Result = JsonConvert.DeserializeObject<OutAPI_QRHuge>(res);
+
+            }
+
+            return Content("OK");
+        }
+        #endregion
     }
 }
