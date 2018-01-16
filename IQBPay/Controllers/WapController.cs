@@ -181,7 +181,8 @@ namespace IQBPay.Controllers
         public ActionResult PayHuge()
         {
             string reqQRHugeId = Request.QueryString["QRHugeId"];
-            string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?code=2003&ErrorMsg=";
+            string wxSite = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
+            string ErrorUrl = wxSite + "Home/ErrorMessage?code=2003&ErrorMsg=";
             EQRHuge qrHuge;
             try
             {
@@ -196,28 +197,29 @@ namespace IQBPay.Controllers
                     using (AliPayContent db = new AliPayContent())
                     {
                         qrHuge = db.DBQRHuge.Where(o => o.ID == QRHugeId).FirstOrDefault();
-                        //if(qrHuge == null)
-                        //{
-                        //    ErrorUrl += "此二维码已损坏，请重新向联系人索要!";
-                        //    return Redirect(ErrorUrl);
-                        //}
-                        //if(qrHuge.QRHugeStatus != IQBCore.IQBPay.BaseEnum.QRHugeStatus.Created)
-                        //{
-                        //    ErrorUrl += "二维码已失效，请重新向联系人索要!";
-                        //    return Redirect(ErrorUrl);
-                        //}
-                        //if(DateHelper.IsOverTime(qrHuge.CreateDate,10))
-                        //{
-                        //    ErrorUrl += "二维码已失效，请重新向联系人索要!";
-                        //    qrHuge.QRHugeStatus = IQBCore.IQBPay.BaseEnum.QRHugeStatus.InValid;
-                        //    db.SaveChanges();
-                        //    return Redirect(ErrorUrl);
-                        //}
+                        ViewBag.WXSite_JS_Cookie = wxSite+"Content/Script/jsCookie.js";
+                        if (qrHuge == null)
+                        {
+                            ErrorUrl += "此二维码已损坏，请重新向索要!";
+                            return Redirect(ErrorUrl);
+                        }
+                        if (qrHuge.QRHugeStatus != IQBCore.IQBPay.BaseEnum.QRHugeStatus.Created)
+                        {
+                            ErrorUrl += "二维码已失效，请重新向索要!";
+                            return Redirect(ErrorUrl);
+                        }
+                        if (DateHelper.IsOverTime(qrHuge.CreateDate, 10*60))
+                        {
+                            ErrorUrl += "二维码已失效，请重新索要!";
+                            qrHuge.QRHugeStatus = IQBCore.IQBPay.BaseEnum.QRHugeStatus.InValid;
+                            db.SaveChanges();
+                            return Redirect(ErrorUrl);
+                        }
                     }
                 }
                 else
                 {
-                    ErrorUrl += "二维码ID错误，请重新向联系人索要!";
+                    ErrorUrl += "二维码ID错误，请重新索要!";
                     return Redirect(ErrorUrl);
                 }
             }

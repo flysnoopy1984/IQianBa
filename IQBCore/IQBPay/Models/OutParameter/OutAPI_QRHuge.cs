@@ -10,5 +10,7 @@ namespace IQBCore.IQBPay.Models.OutParameter
     public class OutAPI_QRHuge:OutAPIResult
     {
         public EQRHuge EQRHuge { get; set; }
+
+        public int DiffSec { get; set; }
     }
 }

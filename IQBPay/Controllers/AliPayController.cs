@@ -32,6 +32,8 @@ using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBPay.Models.Result;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity;
 
 namespace IQBPay.Controllers
 {
@@ -203,20 +205,17 @@ namespace IQBPay.Controllers
             AliPayManager payManager = new AliPayManager();
             ETransferAmount tranfer = null;
             EAgentCommission agentComm = null;
+         
             int TransferError = 0 ;
 
             try
             {
                 using (AliPayContent db = new AliPayContent())
-                {
-                    
+                {  
                     EOrderInfo order = db.DBOrder.Where(o => o.OrderNo == orderNo).FirstOrDefault();
 
                     if (order == null)
-                    {
-                        //order = payManager.InitUnKnowOrderForAliPayNotice(Request);
-                        //db.DBOrder.Add(order);
-                        //db.SaveChanges();
+                    {   
                         return View();
                     }
 
@@ -240,8 +239,18 @@ namespace IQBPay.Controllers
                   //  order.AliPayTransDate = Convert.ToDateTime(Request["gmt_create"]);
                     if (order.AliPayTradeStatus == "TRADE_SUCCESS")
                     {
-                      //  Log.log("PayNotify 1");
-
+                        //不管打款是否成功，用户是成功支付了大额码
+                        if(order.EQRHugeTransId>0)
+                        {
+                            try
+                            {
+                                UpdateQRHuge(db, order.EQRHugeTransId);
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.log("PayNotify UpdateQRHuge Error:"+ ex.Message);
+                            }
+                        }
                         #region 短信通知收款码
                         //短信通知买家收款码开始
                         // base.Log.log("BuyerMobilePhone" + order.BuyerMobilePhone);
@@ -394,6 +403,7 @@ namespace IQBPay.Controllers
                             order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
                         }
                     }
+
                     db.SaveChanges();
                 }
             }
@@ -718,7 +728,7 @@ namespace IQBPay.Controllers
         {
             using (AliPayContent db = new AliPayContent())
             {
-                EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == 7).FirstOrDefault();
+                EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == 3).FirstOrDefault();
                 return Content(callF2FPay(store, "10.00",No));
             }
         }
@@ -791,6 +801,30 @@ namespace IQBPay.Controllers
             return Content(res);
         }
 
+        private void UpdateQRHuge(AliPayContent db,long QRHugeTransId)
+        {
+            RQRHugeTrans qrTrans = db.DBQRHugeTrans.Select(s => new RQRHugeTrans
+            {
+                QRHugeId = s.QRHugeId,
+            }).First();
+
+            EQRHugeTrans EQRHugeTrans = new EQRHugeTrans();
+
+            EQRHugeTrans.ID = QRHugeTransId;
+            EQRHugeTrans.TransStatus = QRHugeTransStatus.Closed;
+
+            DbEntityEntry<EQRHugeTrans> entryTrans = db.Entry<EQRHugeTrans>(EQRHugeTrans);
+            entryTrans.State = EntityState.Unchanged;
+            entryTrans.Property(t => t.TransStatus).IsModified = true;
+
+            EQRHuge EQRHuge = new EQRHuge();
+            EQRHuge.ID = qrTrans.QRHugeId;
+            EQRHuge.QRHugeStatus = QRHugeStatus.Closed;
+
+            DbEntityEntry<EQRHuge> entryHuge = db.Entry<EQRHuge>(EQRHuge);
+            entryHuge.State = EntityState.Unchanged;
+            entryHuge.Property(t => t.QRHugeStatus).IsModified = true;
+        }
 
         public ActionResult F2FHugePay(string rQRHugeId, string AliPayAccount = "")
         {
@@ -799,6 +833,11 @@ namespace IQBPay.Controllers
             if (string.IsNullOrEmpty(rQRHugeId) || !long.TryParse(rQRHugeId, out qrHugeId))
             {
                 ErrorUrl += "二维码不存在，请咨询您的联系人！";
+                return Redirect(ErrorUrl);
+            }
+            if(string.IsNullOrEmpty(AliPayAccount))
+            {
+                ErrorUrl += "请填写收款账户！";
                 return Redirect(ErrorUrl);
             }
 
@@ -814,19 +853,27 @@ namespace IQBPay.Controllers
                 
                 using (AliPayContent db = new AliPayContent())
                 {
-                    qrHuge = db.DBQRHuge.Where(o => o.ID == qrHugeId).FirstOrDefault();
+                    qrHuge = db.DBQRHuge.Where(o => o.ID == qrHugeId && o.QRHugeStatus == QRHugeStatus.Created).FirstOrDefault();
                     if(qrHuge == null)
                     {
-                        ErrorUrl += "二维码已更新，请向您的联系人重新索要！";
+                        ErrorUrl += "二维码已更新，请您重新索要！";
                         return Redirect(ErrorUrl);
                     }
-                    string qrUserId;
+                    if(qrHuge.PayCount>=2)
+                    {
+                        qrHuge.QRHugeStatus = QRHugeStatus.InValid;
+                        db.SaveChanges();
+
+                        ErrorUrl += "请一次性扫码完成支付，此码已失效，请您重新索要！";
+                        return Redirect(ErrorUrl);
+                    }
+                   
                     //校验代理二维码
                     qrUser = db.DBQRUser.Where(q => q.OpenId == qrHuge.OpenId && q.QRType == QRType.ARHuge && q.RecordStatus == RecordStatus.Normal).FirstOrDefault();
 
                     if (qrUser == null)
                     {
-                        ErrorUrl += "二维码已更新，请向代理索要最新当前二维码";
+                        ErrorUrl += "中介费率配置未找到，请联系您的中介";
                         return Redirect(ErrorUrl);
                     }
                     if (qrUser.MarketRate <= 0)
@@ -905,16 +952,34 @@ namespace IQBPay.Controllers
                             }
                         }
                     }
+                    DateTime startDate = DateTime.Today;
+                    DateTime endDate = DateTime.Today.AddDays(1);
+
+                    //每个用户一天只能交易2次
+                    int transCount = db.DBQRHugeTrans.Where(o => o.UserAliPayAccount == AliPayAccount
+                                                                   && o.TransStatus == QRHugeTransStatus.Closed
+                                                                   && o.CreatedDate >= startDate
+                                                                   && o.CreatedDate <= endDate).Count();
+                    if(transCount>=2)
+                    {
+                        ErrorUrl += "您今天使用次数已满，请明天再使用，谢谢";
+                        return Redirect(ErrorUrl);
+                    }
 
                     //  string Res = payMag.PayF2F(app, ui, store, Convert.ToSingle(Amount),out status);
                     string Res = payMag.PayF2FNew(app, ui, store, qrHuge.Amount.ToString("0.00"), out status);
                     // base.Log.log("支付PayF2F：" + Res);
                     if (status == AliPayResult.SUCCESS)
                     {
-                        //创建初始化订单
-                        EOrderInfo order = payMag.InitOrder(qrUser, store, qrHuge.Amount,OrderType.Huge, AliPayAccount);
+
                         EQRHugeTrans QRHugeTrans = EQRHugeTrans.Init(qrHuge, AliPayAccount);
                         db.DBQRHugeTrans.Add(QRHugeTrans);
+                        qrHuge.PayCount++;
+                        db.SaveChanges();
+
+                        //创建初始化订单
+                        EOrderInfo order = payMag.InitOrder(qrUser, store, qrHuge.Amount,OrderType.Huge, AliPayAccount, QRHugeTrans);
+                      
 
                         if (!string.IsNullOrEmpty(qrUser.ParentOpenId))
                         {
@@ -1000,6 +1065,12 @@ namespace IQBPay.Controllers
 
             return View();
         }
+
+        //private bool IsBlockUser()
+        //{
+        //    List<String> list = new List<string>();
+        //    list.Add("")
+        //}
         /// <summary>
         /// 
         /// </summary>
@@ -1093,7 +1164,7 @@ namespace IQBPay.Controllers
 
                     if (store == null)
                     {
-                        ErrorUrl += "【799-999】金额花呗已用完，请尝试【20-799】或【1000-1499】支付金额";
+                        ErrorUrl += "该额度金额花呗已用完，请尝试【20-799】支付金额";
                         return Redirect(ErrorUrl);
                     }
                     //获取并校验商户 
@@ -1132,10 +1203,9 @@ namespace IQBPay.Controllers
                             }
                         }
                     }
-
-                    //  string Res = payMag.PayF2F(app, ui, store, Convert.ToSingle(Amount),out status);
+               
                     string Res = payMag.PayF2FNew(app, ui, store, Amount, out status);
-                   // base.Log.log("支付PayF2F：" + Res);
+                                
                     if (status == AliPayResult.SUCCESS)
                     {
                         //创建初始化订单
@@ -1186,27 +1256,19 @@ namespace IQBPay.Controllers
                         }
 
                         db.DBOrder.Add(order);
-
-                        //初始化佣金信息，如果订单未支付，将成为脏数据。
-
-                            //买家信息记录
-                            /*
-                            EBuyerInfo buyInfo = new EBuyerInfo();
-                            buyInfo.LastTransDate = DateTime.Now;
-                            buyInfo.PhoneNumber = Phone;
-                            db.DBBuyerInfo.Add(buyInfo);
-                            */
-                         db.SaveChanges();
+                        db.SaveChanges();
 
                         return Redirect(Res);
                     }
                     else
                     {
 
-                        ErrorUrl += "商户下架，抱歉，请重新扫下支付码";
+                        
                         store.Remark = string.Format("[{0}][Error]商户授权出错", DateTime.Now.ToShortDateString());
                         store.RecordStatus = RecordStatus.Blocked;
                         db.SaveChanges();
+
+                        ErrorUrl += "商户下架，抱歉，请重新扫下支付码";
                         return Redirect(ErrorUrl);
                     }
 

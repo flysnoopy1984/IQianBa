@@ -239,7 +239,7 @@ namespace IQBPay.Controllers
                     ui.NeedFollowUp = InUA.NeedFollowUp;
 
                     //本人所有QRUser
-                    EQRUser qrUser = db.DBQRUser.Where(o => o.OpenId == InUA.OpenId && o.IsCurrent == true).FirstOrDefault();
+                    EQRUser qrUser = db.DBQRUser.Where(o => o.OpenId == InUA.OpenId && o.QRType ==  QRType.AR).FirstOrDefault();
 
                     float Ratediff = InUA.MarketRate - InUA.Rate;
 

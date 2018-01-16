@@ -71,7 +71,7 @@ namespace IQBWX.Controllers
 
         public ActionResult Pay(string Id)
         {
-           // return RedirectToAction("PayWithAccount", "PP", new { Id = Id });
+            return RedirectToAction("Pay2", "PP", new { Id = Id });
 
             if(WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
             {
@@ -777,10 +777,11 @@ namespace IQBWX.Controllers
                     OrigQRFilePath = s.OrigQRFilePath,
                     IsCurrent = s.IsCurrent,
                     ID = s.ID,
+                    QRType = s.QRType,
                 });
 
                
-                list = list.OrderByDescending(o => o.ID);
+                list = list.OrderBy(o => o.QRType);
 
                 List<RQRUser> result = new List<RQRUser>();
 
@@ -806,35 +807,11 @@ namespace IQBWX.Controllers
                 {
                     try
                     {
-                        EQRUser curQRUser = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId && o.IsCurrent == true).FirstOrDefault();
+                        DbEntityEntry<EQRUser> entry = db.Entry<EQRUser>(qrUser);
+                        entry.State = EntityState.Unchanged;
 
-
-                        //  var diff = curQRUser.MarketRate - curQRUser.Rate;
-                        // curQRUser.Rate = qrUser.MarketRate - diff;
-                        curQRUser.Rate = qrUser.Rate;
-                        curQRUser.MarketRate = qrUser.MarketRate;
-
-                        //  entry.Property(t => t.IsCurrent).IsModified = true;
-                        //  int n = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId).Count();
-
-                        //if (qrUser.IsCurrent && n>1)
-                        //{
-
-                        //    var p_OpenId = new SqlParameter("@OpenId", UserSession.OpenId);
-
-                        //    string sql = @"update [QRUser]
-                        //                   set [IsCurrent] = 'false'
-                        //                   where OpenId =@OpenId";
-
-                        //    db.Database.ExecuteSqlCommand(sql, p_OpenId);
-                        //}
-                        //else
-                        //{
-                        //    if (n == 1)
-                        //    {
-                        //        return ErrorResult("只有一个二维码不能修改当前选项");
-                        //    }
-                        //}
+                        entry.Property(t => t.Rate).IsModified = true;
+                        entry.Property(t => t.MarketRate).IsModified = true;
 
 
                         db.SaveChanges();
@@ -1285,13 +1262,52 @@ namespace IQBWX.Controllers
             }
 
             InitProfilePage();
-            ViewBag.PPSite = ConfigurationManager.AppSettings["Site_IQBPay"];
-            return View();
+            RQRUser qrUser;
+
+            using (AliPayContent db = new AliPayContent())
+            {
+                qrUser = db.DBQRUser.Select(o=>new RQRUser {
+                    FeeRate = o.MarketRate - o.Rate,
+                    MarketRate = o.MarketRate,
+                    OpenId = o.OpenId,
+                    RecordStatus = o.RecordStatus,
+                    QRType = o.QRType
+                }).Where(o => o.OpenId == UserSession.OpenId 
+                                        && o.RecordStatus == RecordStatus.Normal
+                                        && o.QRType == QRType.ARHuge).FirstOrDefault();
+                if(qrUser == null)
+                {
+                    return RedirectToAction("ErrorMessage", "Home", new {code = Errorcode.QRHugeQRUserMiss });
+                }
+                
+            }
+
+           ViewBag.PPSite = ConfigurationManager.AppSettings["Site_IQBPay"];
+            return View(qrUser);
         }
 
-       
+        private OutAPI_QRHuge CreateQRHuge(AliPayContent db,string OpenId, float Amount)
+        {
+            EQRHuge qrHuge = new EQRHuge
+            {
+                OpenId = OpenId,
+                AgentName = UserSession.Name,
+                Amount = Convert.ToSingle(Amount.ToString("0.00")),
+                CreateDate = DateTime.Now,
+                QRHugeStatus = QRHugeStatus.Created,
+            };
+            db.DBQRHuge.Add(qrHuge);
+            db.SaveChanges();
 
-        public ActionResult MakeQRHuge(string OpenId,float Amount)
+            string url = ConfigurationManager.AppSettings["Site_IQBPay"] + "API/QRAPI/CreateQRHuge";
+            string data = string.Format("ID={0}&OpenId={1}&Amount={2}", qrHuge.ID, qrHuge.OpenId, qrHuge.Amount);
+
+            string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+            OutAPI_QRHuge result = JsonConvert.DeserializeObject<OutAPI_QRHuge>(res);
+            return result;
+        }
+
+        public ActionResult QRHugeMake(string OpenId,float Amount)
         {
             OutAPI_QRHuge result = new OutAPI_QRHuge();
             try
@@ -1299,35 +1315,34 @@ namespace IQBWX.Controllers
                 using (AliPayContent db = new AliPayContent())
                 {
                     //获取最近的QR
-                   EQRHuge qrHuge =  db.DBQRHuge.Where(o => o.OpenId == OpenId).OrderByDescending(o => o.CreateDate).FirstOrDefault();
+                   EQRHuge qrHuge =  db.DBQRHuge.Where(o => o.OpenId == OpenId && o.QRHugeStatus== QRHugeStatus.Created).OrderByDescending(o => o.CreateDate).FirstOrDefault();
                    if(qrHuge == null)
                    {
-                        qrHuge = new EQRHuge
-                        {
-                            OpenId = OpenId,
-                            Amount = Convert.ToSingle(Amount.ToString("0.00")),
-                            CreateDate = DateTime.Now,
-                            QRHugeStatus = QRHugeStatus.Created,
-                        };
-                        db.DBQRHuge.Add(qrHuge);
-                        db.SaveChanges();
-
-                        string url = ConfigurationManager.AppSettings["Site_IQBPay"]+ "API/QRAPI/CreateQRHuge";
-                        string data = string.Format("ID={0}&OpenId={1}&Amount={2}", qrHuge.ID,qrHuge.OpenId,qrHuge.Amount);
-                      
-                        string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
-                        result =  JsonConvert.DeserializeObject<OutAPI_QRHuge>(res);
-
+                        result = CreateQRHuge(db, OpenId, Amount);
                     }
                    else
                    {
-                       
-                        
+                        //if(qrHuge.QRHugeStatus == QRHugeStatus.Created)
+                        //{
+                          
+                        //    qrHuge.QRHugeStatus = QRHugeStatus.InValid;
+                        //    db.SaveChanges();
+                        //}
+                        result = CreateQRHuge(db, OpenId, Amount);
 
 
+
+                        //检查是否超时
+                        //bool IsOverTime =  DateHelper.IsOverTime(qrHuge.CreateDate,90);
+                        //if(IsOverTime)
+                        //{
+                        //    result = CreateQRHuge(db, OpenId, Amount);
+                        //}
+                        //else
+                        //{
+
+                        //}
                     }
-
-
                 }
             }
             catch(Exception ex)
@@ -1337,7 +1352,62 @@ namespace IQBWX.Controllers
             }
 
             return Json(result);
+        }
 
+        /// <summary>
+        /// 返回-1说明不需要控制按钮
+        /// </summary>
+        /// <param name="OpenId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult QRHugeGet(string OpenId)
+        {
+            OutAPI_QRHuge result = new OutAPI_QRHuge();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    EQRHuge qrHuge = db.DBQRHuge.Where(o => o.OpenId == OpenId).OrderByDescending(o => o.CreateDate).FirstOrDefault();
+                    if (qrHuge != null)
+                    {
+                        bool IsOverTime = DateHelper.IsOverTime(qrHuge.CreateDate, 600);
+                        if(IsOverTime)
+                        {
+                            //超时 还能找到创建的QRHuge,可能是没有扫，手动变为失效
+                            if (qrHuge.QRHugeStatus == QRHugeStatus.Created)
+                            {
+                                qrHuge.QRHugeStatus = QRHugeStatus.InValid;
+                                db.SaveChanges();
+                            }
+                            result.DiffSec = -1;
+                        }
+                        else
+                        {
+                            if (qrHuge.QRHugeStatus == QRHugeStatus.Created)
+                            {
+                                result.EQRHuge = qrHuge;
+                                result.DiffSec = DateHelper.GetDiffSec(qrHuge.CreateDate, DateTime.Now);
+                            }
+                            else if(qrHuge.QRHugeStatus == QRHugeStatus.InValid)
+                            {
+                                result.DiffSec = DateHelper.GetDiffSec(qrHuge.CreateDate, DateTime.Now);
+                            }
+                            else
+                                result.DiffSec = -1;
+
+                        }    
+                    }
+                    else
+                        result.DiffSec = -1;
+                }
+
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
         }
         #endregion
 

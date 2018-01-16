@@ -34,6 +34,11 @@ namespace IQBCore.IQBPay.Models.QR
 
         public QRHugeStatus QRHugeStatus { get;set;}
 
-       
+        /// <summary>
+        /// 被支付次数
+        /// </summary>
+        public int PayCount { get; set; }
+
+
     }
 }

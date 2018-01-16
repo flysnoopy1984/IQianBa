@@ -42,10 +42,20 @@ function ModifyAliPayAccount() {
 function ConfirmAliPayAccount() {
 
     var AliPayAccount = $("#AliPayAccount").val();
+    if (AliPayAccount == "")
+    {
+        $.alert({
+            theme: "dark",
+            title: "错误",
+            content: "收款账号请准确填写！",
+
+        });
+        return;
+    }
 
     $.confirm({
-        title: '请谨慎确认!',
-        content: '如收款码输入有误，您将无法收到款项!',
+        title: '谨慎确认!',
+        content: '请输入自己的另一个支付宝账户用于收款，不要输入其他人的账户，以防诈骗！',
         buttons: {
             confirm: {
 
@@ -55,18 +65,13 @@ function ConfirmAliPayAccount() {
 
                     ShowPayArea();
                 }
-
             },
             cancel: {
                 text: '重新输入',
 
-
             }
-
         }
     });
-
-
 }
 
 function GoToFastPay() {
@@ -80,12 +85,12 @@ function PayToAli() {
 
 
     var amt = $("#TotalAmout").val();
-    if (amt < 20 || amt > 1499) {
+    if (amt < 20 || amt > 999) {
 
         $.alert({
             theme: "dark",
             title: "错误",
-            content: "金额区间必须在【20-1499】",
+            content: "金额区间必须在【20-999】",
 
         });
 

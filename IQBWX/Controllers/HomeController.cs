@@ -121,6 +121,8 @@ namespace IQBWX.Controllers
 
         }
 
+        
+
         public ActionResult ErrorMessage()
         {
             string code = Request.QueryString["code"];
@@ -196,6 +198,11 @@ namespace IQBWX.Controllers
             }
         
            return View();
+        }
+
+        public ActionResult MakeMessagePage()
+        {
+            return View();
         }
     }
 }

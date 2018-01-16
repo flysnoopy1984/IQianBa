@@ -1,0 +1,31 @@
+﻿.AliPayAccount {
+    width:90%;  
+    outline: none;
+    background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid;
+    border-radius: 4px;
+    box-shadow: none !important;
+    color: #43C2FA !important;
+    font-size: 40px !important;
+    font-weight:bold;
+    height: 80px !important;
+    padding:4px;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.FieldLabel{
+    font-size:30px;
+    font-weight:bold;
+    margin-bottom:10px;
+    display:block;
+}
+.verifyButton{
+    width:92%; height:75px; margin-bottom:4px;margin-top:30px; font-size: 22px;
+
+}
+
+.verifyOKButton{
+
+    width:92%;height:100px; margin-bottom:4px; font-size: 22px;
+
+}

@@ -1,4 +1,4 @@
-﻿
+﻿@model IQBCore.IQBPay.Models.Result.RQRUser
 @{
     ViewBag.Title = "QRHugeEntry";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -6,7 +6,7 @@
 <link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
 <script src="~/Content/Script/Component/jquery-confirm.js"></script>
 <link href="@Url.Scrpit("~/Content/Css/Info.css")" rel="stylesheet" />
-<script src="~/Content/Script/IQBPay/QRHugeEntry.js"></script>
+<script src="@Url.Scrpit("~/Content/Script/IQBPay/QRHugeEntry.js")"></script>
 <style type="text/css">
     .QRHugeInfo {height:80px;}
     .QRHugeInfo ul {margin-left:20px;margin-right:20px;padding:2px; clear:both;}
@@ -18,7 +18,11 @@
     }
     #MakeQRHuge{width:200px; height:60px; float:right;}
     #ErrorMsg{padding:20px;}
-    #QRImgContainer{padding:20px; text-align:center;}
+    #QRImgContainer{padding:20px; text-align:center; display:inline-block}
+
+    #QRDescription{width:300px; display:inline-block;}
+    #QRDescription ul {width:300px;}
+     #QRDescription ul li {width:100%;}
     
 </style>
 <div id="PageInfo" class="PageInfo">
@@ -28,11 +32,11 @@
         <div class="QRHugeInfo">
            <ul>
                <li>费率:</li>
-               <li>5</li>
+               <li>@Model.FeeRate</li>
            </ul>
             <ul>
                 <li>用户手续费:</li>
-                <li>12</li>
+                <li>@Model.MarketRate</li>
             </ul>         
         </div>
         <hr class="HR3_Red" style="width:100%; text-align:center;" />
@@ -49,16 +53,31 @@
                 </div>*@
             </div>
         </div>
-        
-        <div id="Result">
-            <hr class="HR3_668ff2" style="width:100%; text-align:center;" />
-            <div id="ErrorMsg">错误：您的二维码还不能制作，请勿刷二维码错误：您的二维码还不能制作，请勿刷二维码
-                错误：您的二维码还不能制作，请勿刷二维码错误：您的二维码还不能制作，请勿刷二维码</div>
+        <hr class="HR3_668ff2" style="width:100%; text-align:center;" />
+        <div id="ErrorMsg"></div>
+        <div id="Result">                
             <div id="QRImgContainer">
-                <img id="QRImg" src="~/Content/QRImg/Temp/QRHuge_820180113213233.jpg" />
+                <img id="QRImg" src="" />
+               
+            </div>
+            <div id="QRDescription">
+                二维码说明：
                 <ul>
-                    <li>金额：<span></span></li>
+                    <li>1.大额码只<span style="color:brown">支持非风控用户</span>，请让用户去平台<span style="color:brown">测试599</span>后再使用</li>
+                    <li>
+                        2.二维码<span style="color:brown">10分钟</span>自动失效。                       
+                    </li>
+                    <li>
+                        3.制作有一段时间的间隔。请注意填写金额和使用方式。
+                    </li>
+                    <li>
+                        4.用户在有效期内可以无限次扫入，但只能支付2次。2次支付无论是否成功。二维码都将失效。
+                    </li>
+                    <li>
+                        5.一个用户一天最多使用2次大额码支付。
+                    </li>
                 </ul>
+                
             </div>
         </div>
    </div>

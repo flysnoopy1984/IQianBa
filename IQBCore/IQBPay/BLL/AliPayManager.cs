@@ -51,8 +51,8 @@ namespace IQBCore.IQBPay.BLL
             "\"trans_in\":\"" + receiveStore.AliPayAccount + "\"," +
             "\"amount\":"+ commission + "," +
             "\"desc\":\"分账\"" +
-            "}]," +
-            "\"operator_id\":\"ZSR\"" +
+            "}]" +
+            //"\"operator_id\":" +
             "}";
 
             // model.RoyaltyParameters = paramList;
@@ -289,7 +289,7 @@ namespace IQBCore.IQBPay.BLL
             };
             return comm;
         }
-        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount,OrderType orderType,string AliPayAccount = "")
+        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount,OrderType orderType,string AliPayAccount = "",EQRHugeTrans QRHugeTrans = null)
         {
             EOrderInfo order = new EOrderInfo()
             {
@@ -315,12 +315,15 @@ namespace IQBCore.IQBPay.BLL
                 BuyerMarketRate = qrUser.MarketRate,
                 BuyerTransferAmount = (float)Math.Round(TotalAmount * (100-qrUser.MarketRate) / 100, 2, MidpointRounding.ToEven),
                 BuyerAliPayAccount = AliPayAccount,
-
+              
                 //ReceiveNo = StringHelper.GenerateReceiveNo(),
                 
 
             };
-            
+            if(QRHugeTrans!=null)
+            {
+                order.EQRHugeTransId = QRHugeTrans.ID;
+            }
             //代理
           //  order.RealTotalAmount = order.TotalAmount - order.RateAmount;
             //上级代理

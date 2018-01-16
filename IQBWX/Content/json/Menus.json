@@ -51,13 +51,13 @@
         "sub_button": [
           {
             "type": "click",
-            "name": "联系我们",
-            "key": "wx_301"
-          },
-          {
-            "type": "click",
             "name": "使用手册",
             "key": "wx_302"
+          },
+          {
+            "type": "view",
+            "name": "大额入口",
+            "url": "http://wx.iqianba.cn/PP/QRHugeEntry"
           }
         ]
       }

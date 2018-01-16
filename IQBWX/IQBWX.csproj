@@ -132,6 +132,7 @@
   <ItemGroup>
     <Content Include="Content\CatchSite\HJB\script\hjb.js" />
     <Content Include="Content\Config\PopPolicy.xml" />
+    <Content Include="Content\Css\bootstrap.min.css" />
     <Content Include="Content\Css\common.css" />
     <Content Include="Content\CatchSite\HJB\list.html" />
     <Content Include="Content\Css\Component\ion.rangeSlider.css" />
@@ -147,6 +148,7 @@
     <Content Include="Content\Css\ReceiveOrder.css" />
     <Content Include="Content\Css\WebCss.css" />
     <Content Include="Content\images\404_02.jpg" />
+    <Content Include="Content\images\bQR.png" />
     <Content Include="Content\images\daikuanchaoshi_03.jpg" />
     <Content Include="Content\images\daikuanchaoshi_05.jpg" />
     <Content Include="Content\images\daikuanchaoshi_07.jpg" />
@@ -186,6 +188,7 @@
     <Content Include="Content\images\shengjihuiyuan_05.jpg" />
     <Content Include="Content\images\show_03.jpg" />
     <Content Include="Content\images\show_06.jpg" />
+    <Content Include="Content\images\sQR.png" />
     <Content Include="Content\images\sysc.png" />
     <Content Include="Content\images\tx2.jpg" />
     <Content Include="Content\images\WXIcons.png" />
@@ -403,6 +406,7 @@
     <Content Include="Views\HOME\ClientProblem.cshtml" />
     <Content Include="Views\PP\FixQR.cshtml" />
     <Content Include="Views\PP\QRHugeEntry.cshtml" />
+    <Content Include="Views\HOME\MakeMessagePage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -21,7 +21,7 @@
         $("#btnContainer").hide();
     }
 
-    if (errorCode == "2003") {
+    if (errorCode == "2003" || errorCode == "2004") {
 
         $("#btnContainer").hide();
     }

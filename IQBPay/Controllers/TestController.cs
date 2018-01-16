@@ -5,6 +5,7 @@ using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.Sys;
 using IQBCore.IQBPay.Models.Tool;
 using IQBCore.IQBPay.Models.User;
@@ -324,5 +325,42 @@ namespace IQBPay.Controllers
             return Content("OK");
         }
         #endregion
+
+        public ActionResult Other()
+        {
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    RQRHugeTrans qrTrans = db.DBQRHugeTrans.Select(s => new RQRHugeTrans {
+                        QRHugeId = s.QRHugeId,
+                    }).First();
+
+                    EQRHugeTrans EQRHugeTrans = new EQRHugeTrans();
+
+                    EQRHugeTrans.ID = 1;
+                    EQRHugeTrans.TransStatus = QRHugeTransStatus.Closed;
+
+                    DbEntityEntry<EQRHugeTrans> entry = db.Entry<EQRHugeTrans>(EQRHugeTrans);
+                    entry.State = EntityState.Unchanged;
+                    entry.Property(t => t.TransStatus).IsModified = true;
+
+                    EQRHuge EQRHuge = new EQRHuge();
+                    EQRHuge.ID = qrTrans.QRHugeId;
+                    EQRHuge.QRHugeStatus = QRHugeStatus.Closed;
+
+                    DbEntityEntry<EQRHuge> e2 = db.Entry<EQRHuge>(EQRHuge);
+                    e2.State = EntityState.Unchanged;
+                    e2.Property(t => t.QRHugeStatus).IsModified = true;
+
+                    db.SaveChanges();
+                }
+            }
+            catch( Exception ex )
+            {
+                throw ex;
+            }
+            return Content("OK");
+        }
     }
 }

@@ -54,7 +54,9 @@ namespace IQBCore.IQBPay.BLL
             model.TotalAmount = TotalAmt;
             model.Subject =  "#"+AgentUI.Name+ " 收银台";
             model.Body = app.AppName + "-商品";
-            
+            model.ExtendParams.SysServiceProviderId = app.AppId;
+
+            model.DisablePayChannels = "ALIPAYACCOUNT,FINANCEACCOUNT";
 
             request.SetBizModel(model);
             if(needNotifyUrl)
@@ -82,7 +84,7 @@ namespace IQBCore.IQBPay.BLL
             model.Body = app.AppName + "-商品";
             model.ExtendParams.HbFqNum = "3";
             model.ExtendParams.HbFqSellerPercent = "0";
-
+            
 
             request.SetBizModel(model);
             if (needNotifyUrl)

@@ -31,6 +31,8 @@ namespace IQBCore.IQBPay.Models.QR
         [MaxLength(40)]
         public string AgentName { get; set; }
 
+       
+
         public static EQRHugeTrans Init(EQRHuge qrHuge,string UserAliPayAccount)
         {
             EQRHugeTrans trans = new EQRHugeTrans

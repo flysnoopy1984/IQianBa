@@ -476,6 +476,7 @@
     <Content Include="Content\Style\Web\User.css" />
     <Content Include="Content\Style\Web\WapInfo.css" />
     <Content Include="Content\Wap\bg.jpg" />
+    <Content Include="Content\Wap\WapPay.css" />
     <Content Include="Content\Wap\WAPbootstrap.css" />
     <Content Include="Content\Wap\WapMain.css" />
     <Content Include="Content\Wap\Wap.css" />

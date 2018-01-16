@@ -66,6 +66,9 @@ namespace IQBWX.Models.JsonData
                 case Errorcode.QRHugeError:
                     obj.errorMsg = errorMsg;
                     break;
+                case Errorcode.QRHugeQRUserMiss:
+                    obj.errorMsg = "您的大额码配置未找到或被禁用！";
+                    break;
                 case Errorcode.NotAliPayClient:
                     obj.errorMsg = "请用支付宝扫描";
                   

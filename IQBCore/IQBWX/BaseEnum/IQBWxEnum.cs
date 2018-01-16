@@ -39,6 +39,7 @@ namespace IQBCore.IQBWX.BaseEnum
         /// 大额支付错误
         /// </summary>
         QRHugeError = 2003,
+        QRHugeQRUserMiss = 2004,
 
         /// <summary>
         /// 客户端错误

@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace IQBCore.IQBPay.Models.Result
 {
     [NotMapped()]
-    public class RQRUser:EQRUser
+    public class RQRHugeTrans:EQRHugeTrans
     {
-        public float FeeRate { get; set; }
     }
 }

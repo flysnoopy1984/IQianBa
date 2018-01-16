@@ -34,10 +34,10 @@ $(document).ready(function () {
     //    $("#AliPayAccount").val(account);
     //    ShowPayArea();
     //}
-    //var client = IsWeixinOrAlipay();
-    //if (client != "Alipay") {
-    //    window.location.href = "/Home/ErrorMessage?code=3000";
-    //}
+    var client = IsWeixinOrAlipay();
+    if (client != "Alipay") {
+        window.location.href = "/Home/ErrorMessage?code=3000";
+    }
 
     $.alert({
         theme: "dark",
