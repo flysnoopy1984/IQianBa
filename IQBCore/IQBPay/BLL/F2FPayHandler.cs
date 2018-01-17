@@ -57,7 +57,7 @@ namespace IQBCore.IQBPay.BLL
             model.ExtendParams = new Aop.Api.Domain.ExtendParams();
             model.ExtendParams.SysServiceProviderId = app.AppId;
             if(needControl)
-                model.DisablePayChannels = "moneyFund,creditCard,creditCardExpress,creditCardCartoon,debitCardExpress,point,bankPay";
+                model.DisablePayChannels = "balance,moneyFund,creditCard,creditCardExpress,creditCardCartoon,debitCardExpress,point,bankPay";
 
             request.SetBizModel(model);
             if(needNotifyUrl)
@@ -117,7 +117,7 @@ namespace IQBCore.IQBPay.BLL
             //不参与优惠计算的金额
             //builder.undiscountable_amount = "";
             //订单名称
-            builder.subject = "#找熟人-"+ AgentUi.Name+"收银台";
+            builder.subject = "#"+ AgentUi.Name+"收银台";
             //自定义超时时间
           //  builder.timeout_express = "5m";
             //订单描述

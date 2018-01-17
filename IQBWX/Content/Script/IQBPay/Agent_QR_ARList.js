@@ -169,11 +169,20 @@ function Save()
         success: function (data) {
             if(data.IsSuccess == true)
             {
-                $.alert({
-                    title: '成功!',
-                    content: sucMsg,
-                });
-                Init();
+                if (ReqHuge == 1)
+                {
+                    alert("成功，将返回大额页面");
+                    window.location.href = "/PP/QRHugeEntry";
+                }                   
+                else
+                {
+                    $.alert({
+                        title: '成功!',
+                        content: sucMsg,
+                    });
+                    Init();
+                }
+              
             }
             else
             {
@@ -368,10 +377,10 @@ function generateData(result) {
         strCtrl += "<td style='width:45%' ";     
         strCtrl += "onclick='ToInfoPage(" + QueryData.length + ");'>";
         strCtrl += "<ul><li style='color:brown; font-weight:bold; height:30px;'>用户手续费:" + result[i].MarketRate + "</li>";
-        strCtrl += "<li>上级代理:" + ParentName + "</li>";
+        //strCtrl += "<li>上级代理:" + ParentName + "</li>";
         strCtrl += "</ul></td>";
         strCtrl += "<td style='width:45%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='height:30px;'>代理成本:" + (result[i].MarketRate - result[i].Rate).toFixed(2) + "</li>";
-        strCtrl += "<li>上级代理佣金:" + result[i].ParentCommissionRate + "</li>";
+        //strCtrl += "<li>上级代理佣金:" + result[i].ParentCommissionRate + "</li>";
         strCtrl += "</ul></td>";
         if (i == 0 && result.length==2)
             strCtrl += "<td style='border-bottom: 1px solid #ddd;'><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + "," + qrType + ");' /></td>";

@@ -120,7 +120,7 @@ function MakeQRHuge()
         $.alert({
             theme: "dark",
             title: "错误",
-            content: "金额请随机在【1988-4689】区间",
+            content: "建议输入非整数金额，可输入区间【1988-4689】。",
         });
         return;
     }

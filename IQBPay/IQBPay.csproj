@@ -501,6 +501,7 @@
     <Content Include="scripts\Web\Report_Store.js" />
     <Content Include="scripts\Web\TransferList.js" />
     <Content Include="scripts\Web\TransferMyList.js" />
+    <Content Include="scripts\Web\UserAdjustment.js" />
     <Content Include="scripts\Web\UserInfo.js" />
     <Content Include="scripts\Web\UserList.js" />
     <Content Include="scripts\Web\App.js" />

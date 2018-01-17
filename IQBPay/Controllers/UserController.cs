@@ -420,7 +420,21 @@ namespace IQBPay.Controllers
             return View();
          */
         }
+        [HttpPost]
+        public ActionResult UserNoAccount()
+        {
+            string DateBefore = Request["DateBefore"];
+            List<RUserInfo> result = new List<RUserInfo>();
+            try
+            {
 
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return Json(result);
+        }
         public ActionResult UserAdjustment()
         {
             return View();

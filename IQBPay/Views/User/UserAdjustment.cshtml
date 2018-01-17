@@ -13,7 +13,7 @@
 <link href="@Url.Scrpit("~/Content/Style/Web/List.css")" rel="stylesheet" />
 <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
 <script src="@Url.Scrpit("~/scripts/Component/IQBTable.js")"></script>
-
+<script src="@Url.Scrpit("~/scripts/Web/UserAdjustment.js")"></script>
 <div id="ListArea">
     <div id="Title" style="margin:0px;">
         <span id="ListTitleName"></span>
@@ -23,12 +23,10 @@
                 <li>
                     <div class="form-group">
                         <label>时间：</label>
-                        <select id="cHasQRHuge" class="form-control ConditionField">
+                        <select id="cDateBefore" class="form-control ConditionField">
                             <option value="7" selected>7天</option>
-                            <option value="3">3天</option>
-                         
+                            <option value="3">3天</option> 
                         </select>
-
                     </div>
                 </li>
             </ul>
@@ -36,7 +34,7 @@
         </div>
         <ul class="UlHorizontal" style="float:right">
             <li>
-                <button type="button" class="btn btn-primary" onclick="BtnQuery();">查询没有设置账户的用户</button>
+                <button type="button" class="btn btn-primary" onclick="QueryNoAccount();">查询没有设置账户的用户</button>
             </li>
         </ul>
     </div>

@@ -925,14 +925,14 @@ namespace IQBPay.Controllers
                     DateTime startDate = DateTime.Today;
                     DateTime endDate = DateTime.Today.AddDays(1);
 
-                    //每个用户一天只能交易2次
+                    //每个用户一天只能交易3次
                     int transCount = db.DBQRHugeTrans.Where(o => o.UserAliPayAccount == AliPayAccount
                                                                    && o.TransStatus == QRHugeTransStatus.Closed
                                                                    && o.CreatedDate >= startDate
                                                                    && o.CreatedDate <= endDate).Count();
-                    if(transCount>=2)
+                    if(transCount>=3)
                     {
-                        ErrorUrl += "您今天使用次数已满，请明天再使用，谢谢";
+                        ErrorUrl += "您今天大额使用次数已满，请明天再使用，谢谢光临";
                         return Redirect(ErrorUrl);
                     }
 

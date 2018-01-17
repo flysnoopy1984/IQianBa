@@ -24,6 +24,24 @@
             </ul>
         </li>
         <li>
+            <a class="tooltip-tip ajax-load" href="#" title="单据管理">
+                <i class="icon-feed"></i>
+                <span>单据管理</span>
+            </a>
+            <ul>
+                <li>
+                    <a class="tooltip-tip2 ajax-load" href="/Order/List" title="订单列表"><i class="icon icon-user"></i><span>订单列表</span></a>
+                </li>
+                <li>
+                    <a class="tooltip-tip2 ajax-load" href="/Transfer/List" title="汇款列表"><i class="icon icon-user"></i><span>汇款列表</span></a>
+                </li>
+                @*<li>
+                        <a class="tooltip-tip2 ajax-load" href="/Transfer/DoTransfer" title="汇款管理"><i class="icon icon-user"></i><span>汇款管理</span></a>
+                    </li>*@
+
+            </ul>
+        </li>
+        @*<li>
             <a class="tooltip-tip ajax-load" href="#" title="报表">
                 <i class="icon-feed"></i>
                 <span>报表</span>
@@ -34,7 +52,7 @@
                 </li>
                 
             </ul>
-        </li>
+        </li>*@
         <li>
             <a class="tooltip-tip ajax-load" href="#" title="订单管理">
                 <i class="icon-feed"></i>
@@ -93,24 +111,7 @@
                 </li>
             </ul>
         </li>
-        <li>
-            <a class="tooltip-tip ajax-load" href="#" title="单据管理">
-                <i class="icon-feed"></i>
-                <span>单据管理</span>
-            </a>
-            <ul>
-                <li>
-                    <a class="tooltip-tip2 ajax-load" href="/Order/List" title="订单列表"><i class="icon icon-user"></i><span>订单列表</span></a>
-                </li>
-                <li>
-                    <a class="tooltip-tip2 ajax-load" href="/Transfer/List" title="汇款列表"><i class="icon icon-user"></i><span>汇款列表</span></a>
-                </li>
-                @*<li>
-                    <a class="tooltip-tip2 ajax-load" href="/Transfer/DoTransfer" title="汇款管理"><i class="icon icon-user"></i><span>汇款管理</span></a>
-                </li>*@
-
-            </ul>
-        </li>
+    
     }
    @if (ViewBag.UserRole > 1)
    {
