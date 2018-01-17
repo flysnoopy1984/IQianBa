@@ -1,6 +1,7 @@
 ﻿using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.Result;
 using IQBPay.DataBase;
 using System;
 using System.Collections.Generic;
@@ -14,24 +15,27 @@ namespace IQBPay.Controllers.ExternalAPI
 {
     public class QRAPIController : ApiController
     {
-        public OutAPI_QRHuge CreateQRHuge([FromBody]EQRHuge qrHuge)
+        public OutAPI_QRHuge CreateQRHuge([FromBody]RQRHuge qrHuge)
         {
             OutAPI_QRHuge result = new OutAPI_QRHuge();
             try
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    qrHuge = QRManager.CreateQRHuge(qrHuge);
+                    EQRHuge obj = new EQRHuge();
+                    obj.ID = qrHuge.ID;
+                    obj.Amount = qrHuge.Amount;
+                    obj = QRManager.CreateQRHuge(obj);
 
-                
-
-                    DbEntityEntry<EQRHuge> entry = db.Entry<EQRHuge>(qrHuge);
+                    DbEntityEntry<EQRHuge> entry = db.Entry<EQRHuge>(obj);
                     entry.State = System.Data.Entity.EntityState.Unchanged;
                     entry.Property(t => t.FilePath).IsModified = true;
                     entry.Property(t => t.QRUrl).IsModified = true;
                     db.SaveChanges();
 
-                    result.EQRHuge = qrHuge;
+                    qrHuge.FilePath = obj.FilePath;
+                    qrHuge.QRUrl = obj.QRUrl;
+                    result.RQRHuge = qrHuge;
                 }
                
             }

@@ -25,6 +25,13 @@ $(document).ready(function () {
     if (client != "Alipay") {
         window.location.href = "/Home/ErrorMessage?code=3000";
     }
+    $.alert({
+        theme: "dark",
+        title: "注意",
+        content: "风控用户请【199连续支付】！",
+        btnClass: "btn-warning",
+        width: '30%',
+    });
 
     InitControls();
     var account = getCookie("YJ_AliPayAccount");
@@ -85,12 +92,12 @@ function PayToAli() {
 
 
     var amt = $("#TotalAmout").val();
-    if (amt < 20 || amt > 999) {
+    if (amt < 20 || amt > 799) {
 
         $.alert({
             theme: "dark",
             title: "错误",
-            content: "金额区间必须在【20-999】",
+            content: "金额区间必须在【20-799】",
 
         });
 

@@ -8,10 +8,11 @@
 <link href="@Url.Scrpit("~/Content/Css/Info.css")" rel="stylesheet" />
 <script src="@Url.Scrpit("~/Content/Script/IQBPay/QRHugeEntry.js")"></script>
 <style type="text/css">
-    .QRHugeInfo {height:80px;}
+    .QRHugeInfo {height:120px; width:380px;float:left;}
     .QRHugeInfo ul {margin-left:20px;margin-right:20px;padding:2px; clear:both;}
    
     .QRHugeInfo ul li{float:left; padding:10px;}
+    #QRHugeInfoRight{height:100px; line-height:100px; }
     #Amount
     {
         color:black; width:35%;height:44px; display:inline-block;
@@ -20,9 +21,16 @@
     #ErrorMsg{padding:20px;}
     #QRImgContainer{padding:20px; text-align:center; display:inline-block}
 
-    #QRDescription{width:300px; display:inline-block;}
-    #QRDescription ul {width:300px;}
-     #QRDescription ul li {width:100%;}
+    #QRDescription{width:320px; display:inline-block;}
+    #QRDescription ul {width:320px;}
+    #QRDescription ul li {width:100%;}
+
+    #TransList{width:95%; margin-top:15px;}
+    #TransList ul{width:95%; clear:both; padding:10px;}
+    #TransList ul li {float:left;}
+    .TLHeaderLi{ font-size:26px; border-bottom:solid 1px #0094ff;}
+    #btnViewLog{width:100px; height:40px; line-height:20px;}
+    #btnChangeMartket{width:150px; height:40px; line-height:20px;}
     
 </style>
 <div id="PageInfo" class="PageInfo">
@@ -39,9 +47,12 @@
                 <li>@Model.MarketRate</li>
             </ul>         
         </div>
+        <div id="QRHugeInfoRight">
+            <button type="button" class="btn btn-warning" id="btnChangeMartket" onclick="ChangeMartket();">调整手续费</button>
+        </div>
         <hr class="HR3_Red" style="width:100%; text-align:center;" />
 
-        <div id="MakeQR" style="">
+        <div id="MakeQR" style="height:120px; padding:20px;">
             <div class="form-group">
                 <label class="label-left" style="width:20%;height:44px; line-height:44px;">制作金额:</label>
                 <div>
@@ -53,15 +64,19 @@
                 </div>*@
             </div>
         </div>
-        <hr class="HR3_668ff2" style="width:100%; text-align:center;" />
+      
         <div id="ErrorMsg"></div>
-        <div id="Result">                
+        <div id="Result">   
+            <hr class="HR3_668ff2" style="width:100%; text-align:center;" />             
             <div id="QRImgContainer">
+                <div>
+                    创建：<span id="createDate"></span>
+                </div>
                 <img id="QRImg" src="" />
                
             </div>
             <div id="QRDescription">
-                二维码说明：
+                <span style="font-size:large;">【二维码说明】</span>
                 <ul>
                     <li>1.大额码只<span style="color:brown">支持非风控用户</span>，请让用户去平台<span style="color:brown">测试599</span>后再使用</li>
                     <li>
@@ -80,7 +95,26 @@
                 
             </div>
         </div>
+        <hr class="HR2_Black" style="width:100%; text-align:center;" />
+        <div id="TransLog">
+            <div style="color:gray"><span style="margin-right:200px;">最近十条交易记录</span>
+            <button type="button" class="btn btn-danger" id="btnViewLog" onclick="ViewLog()">刷新</button></div>
+             <div id="TransList">
+                 <ul id="header">
+                     <li class="TLHeaderLi" style="width:10%;">序号</li>
+                     <li class="TLHeaderLi" style="width:40%;">创建时间</li>
+                     <li class="TLHeaderLi" style="width:25%">金额</li>
+                     <li class="TLHeaderLi" style="width:25%">支付状态</li>
+                </ul>
+                 <div id="Body">
+                     
+                 </div>
+                 
+             </div>
+
+        </div>
    </div>
     <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
     <input type="hidden" value="@ViewBag.PPSite" id="PPSite" />
+    <input type="hidden" value="@ViewBag.QRUserId" id="QRUserId" />
 </div>

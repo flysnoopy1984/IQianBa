@@ -29,12 +29,14 @@ function CheckMakeTime() {
                         DisableMakeBtn();
                     }
                 }
-                if(result.EQRHuge)
+                if (result.RQRHuge)
                 {
-                    var qrPath = PPSite + result.EQRHuge.FilePath;
+                    var qrPath = PPSite + result.RQRHuge.FilePath;
 
                     $("#Result").show();
                     $("#QRImg").attr("src", qrPath);
+                    $("#createDate").text(result.RQRHuge.CreateDateStr);
+
                   //  $("#MakeQRHuge").text("重新制作");
                 }
               
@@ -44,7 +46,7 @@ function CheckMakeTime() {
             {
                 ShowError("系统错误，请联系管理员");
 
-                $("MakeQRHuge").attr("disabled", true);
+                $("#MakeQRHuge").attr("disabled", true);
                 //$("MakeQRHuge").attr("disabled", true);
                 //$.alert({
                 //    theme: "dark",
@@ -66,6 +68,7 @@ function Init()
     $("MakeQRHuge").attr("disabled", false);
     $("#Result").hide();
     $("#ErrorMsg").hide();
+    $("#TransList").hide();
 }
 
 function StartMake()
@@ -133,7 +136,8 @@ function MakeQRHuge()
 
             if (data.IsSuccess == true) {
              
-                var qrPath = PPSite + data.EQRHuge.FilePath;
+                var qrPath = PPSite + data.RQRHuge.FilePath;
+                $("#createDate").text(data.RQRHuge.CreateDateStr);
                 $("#QRImg").attr("src", qrPath);
                 //创建按钮倒计时
                 $.alert({        
@@ -155,6 +159,68 @@ function MakeQRHuge()
 
         }
     });
+}
+
+function ViewLog()
+{
+    var OpenId = $("#hOpenId").val();
+
+    var url = "/PP/QRHugeList";
+    $.ajax({
+        type: 'post',
+        dataType: "json",
+        data: { "OpenId": OpenId},
+        url: url,
+        success: function (data) {
+            if (data.length > 0)
+            {
+                $("#Body").empty();
+                var ctrl = "";
+                
+                $.each(data, function (i) {
+                    var payStatus = "创建";
+                    if (data[i].QRHugeStatus == 1)
+                        payStatus = "失效";
+                    else if (data[i].QRHugeStatus == 100)
+                        payStatus = "成功支付";
+                    ctrl = "";
+
+                    ctrl += "<ul>";
+                    ctrl += "<li style='width:10%'>" + (i + 1) + "</li>";
+                    ctrl += "<li style='width:40%'>" + data[i].CreateDateStr + "</li>";
+                    ctrl += "<li style='width:25%'>" + data[i].Amount + "</li>";
+                    ctrl += "<li style='width:25%'>" + payStatus + "</li>";
+                    ctrl += "</ul>";
+
+                    $("#Body").append(ctrl);
+                });
+                $("#TransList").show();
+                //滚动条到底部
+                var h = $(document).height() - $(window).height();
+                $(document).scrollTop(h);
+
+                $.alert({
+                    title: "成功",
+                    content: "已刷新",
+                });
+              
+            }              
+           
+        },
+        error: function (xhr, type) {
+
+            $("#ErrorMsg").text("发生错误，请联系管理员");
+           
+
+        }
+    });
+
+}
+
+function ChangeMartket()
+{
+    var QRUserId = $("#QRUserId").val();
+    window.location.href = "/PP/Agent_QR_ARList?ReqHuge=1&QRUserId=" + QRUserId;
 }
 
 function settime(obj) {

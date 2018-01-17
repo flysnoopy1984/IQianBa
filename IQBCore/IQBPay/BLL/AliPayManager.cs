@@ -204,7 +204,7 @@ namespace IQBCore.IQBPay.BLL
                 profix = "(打款)";
             else if (target == TransferTarget.L3Agent)
                 profix = "(三级)";
-            model.PayerShowName = profix+"找熟人平台";
+            model.PayerShowName = profix+"平台服务费";
             if(order!=null)
                 model.Remark = string.Format("#{0}-订单金额：{1}-订单ID：{2}",order.AgentName,order.TotalAmount,order.OrderNo);
            
@@ -445,7 +445,8 @@ namespace IQBCore.IQBPay.BLL
         public string PayF2FNew(EAliPayApplication app, EUserInfo AgentUi, EStoreInfo storeInfo, string TotalAmount, out AliPayResult status)
         {
             string result = "";
-           
+            bool NeedControl = true;
+
             /*
             IAlipayTradeService serviceClient = F2FBiz.CreateClientInstance(AliPayConfig.serverUrl, AliPayConfig.appId, AliPayConfig.merchant_private_key, AliPayConfig.version,
                            AliPayConfig.sign_type, AliPayConfig.alipay_public_key, AliPayConfig.charset);
@@ -456,7 +457,9 @@ namespace IQBCore.IQBPay.BLL
 
             _handler = new F2FPayHandler();
 
-            AlipayTradePrecreateResponse builder = _handler.BuildNew(app, storeInfo, AgentUi, TotalAmount);
+            if (AgentUi.UserRole == UserRole.Administrator)
+                NeedControl = false;
+            AlipayTradePrecreateResponse builder = _handler.BuildNew(app, storeInfo, AgentUi, TotalAmount,true, NeedControl);
 
             if(builder.Code == "10000")
             {

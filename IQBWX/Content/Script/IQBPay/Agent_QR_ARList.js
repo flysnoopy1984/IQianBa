@@ -2,28 +2,41 @@
 var url = site + "/PP/Agent_QR_ARListQuery";
 var QueryData;
 var slider;
+var ReqHuge
 
 $(document).ready(function () {
 
     Init();
+
+   
 });
+
 
 function Init()
 {
+   
     pageIndex = -1;
 
     $("#btnNext").attr("disabled", false);
     $("#btnNewQR").hide();
-
     QueryData = [];
 
-    $("#trContainer").empty();
+    //从大额入口直接进入
+    ReqHuge = getUrlParam("ReqHuge");
+    if (ReqHuge == 1)
+    {
+        InitFromQRHuge();
 
-    Query(pageIndex + 1);
+    }
+    else
+    {
+       
+        $("#trContainer").empty();
+        Query(pageIndex + 1);
+        ToListPage();
+    }
 
-    ToListPage();
-
-  
+   
 
     //Info Page
     $(".InfoBody").Validform({
@@ -43,6 +56,30 @@ function Init()
         callback: function (data) {
             Save();
         },
+    });
+}
+
+function InitFromQRHuge()
+{
+    var url = "/PP/GetQRUser";
+    $.ajax({
+        type: 'post',
+        data: "QRType=4",
+        url: url,
+        success: function (data) {
+           
+            if(data)
+            {
+                QueryData.push(data);
+                ToInfoPage(1, 1);
+            }
+
+        },
+        error: function (xhr, type) {
+            alert('Ajax error!');
+           
+
+        }
     });
 }
 
@@ -159,15 +196,30 @@ function Save()
 }
 
 function ToListPage() {
-    $("#PageList").show();
-    $("#PageInfo").hide();
+    if (ReqHuge == 1) {
+        window.location.href = "/PP/QRHugeEntry";
+    }
+    else {
+        $("#PageList").show();
+        $("#PageInfo").hide();
+    }
+
 }
 
-function ToInfoPage(i) {
+//qrType =0 小 1 大
+function ToInfoPage(i,qrType) {
 
     $("#PageList").hide();
     $("#PageInfo").show();
 
+    if (qrType == 0)
+    {
+        $("#Title").text("【普通码设置】");
+        $("#QRImgContainer").show();
+    }
+    else
+        $("#Title").text("【大额码设置】");
+    $("#QRImgContainer").hide();
 
     i--;
     //新增
@@ -195,26 +247,42 @@ function ToInfoPage(i) {
     //更新
     else
     {
+        
         var diff = (QueryData[i].MarketRate - QueryData[i].Rate).toFixed(2);
-        $range = $("#AfterMarketRate").ionRangeSlider({
-            min: 6,
-            max: 14,
-            from: QueryData[i].MarketRate,
-            step: 0.5,
-            //onChange: function (data) {
-            //    $("#MarketRate").val(data.from);
-            //},
-        });
+        if (qrType == 0)
+        {
+            $range = $("#AfterMarketRate").ionRangeSlider({
+                min: 6,
+                max: 14,
+                from: QueryData[i].MarketRate,
+                step: 0.5,
+                //onChange: function (data) {
+                //    $("#MarketRate").val(data.from);
+                //},
+            });
+            $("#QRImg").attr("src", payUrl + QueryData[i].OrigQRFilePath);
+        }
+        else
+        {
+            $range = $("#AfterMarketRate").ionRangeSlider({
+                min: 6,
+                max: 20,
+                from: QueryData[i].MarketRate,
+                step: 0.5,
+                //onChange: function (data) {
+                //    $("#MarketRate").val(data.from);
+                //},
+            });
+        }
+      
         slider = $range.data("ionRangeSlider");
 
         $("#QrUserId").val(QueryData[i].ID);
 
         $("#MarketRate").val(QueryData[i].MarketRate);
        
-        $("#IsCurrent").attr("checked", QueryData[i].IsCurrent);
-      
-        $("#QRImg").attr("src", payUrl + QueryData[i].OrigQRFilePath);
-        
+    //    $("#IsCurrent").attr("checked", QueryData[i].IsCurrent);
+
 
         $("#Rate").val(QueryData[i].Rate);
      //   $("#Field_AfterMarketRate").hide();
@@ -272,19 +340,24 @@ function generateData(result) {
     $.each(result, function (i) {
       
       
+        var qrType = 1;
         QueryData.push(result[i]);
 
         var ParentName = result[i].ParentName;
+       
         if (ParentName == "")
             ParentName = "无"
 
         strCtrl = "";
+        
 
         if (i == 0) {
             strCtrl += "<tr><td colspan='3' style='text-align:center'>普通码配置</td></tr>";
+            qrType = 0;
         }
         if (i == 1) {
             strCtrl += "<tr><td colspan='3' style='text-align:center'>大额码配置</td></tr>";
+            qrType = 1;
         }
 
         strCtrl += "<tr>";
@@ -301,9 +374,9 @@ function generateData(result) {
         strCtrl += "<li>上级代理佣金:" + result[i].ParentCommissionRate + "</li>";
         strCtrl += "</ul></td>";
         if (i == 0 && result.length==2)
-            strCtrl += "<td style='border-bottom: 1px solid #ddd;'><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + ");' /></td>";
+            strCtrl += "<td style='border-bottom: 1px solid #ddd;'><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + "," + qrType + ");' /></td>";
         else
-            strCtrl += "<td><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + ");' /></td>";
+            strCtrl += "<td><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + "," + qrType + ");' /></td>";
         //strCtrl += "<input type='button' class='btn-danger' value='删除' onclick='DeleteUserQr(" + QueryData.length + ");' />";
         strCtrl += "</tr>";
 

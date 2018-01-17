@@ -643,6 +643,7 @@
     <Content Include="Views\Wap\QRProcess.cshtml" />
     <Content Include="Views\Wap\PayHuge.cshtml" />
     <Content Include="Views\Test\Demo.cshtml" />
+    <Content Include="Views\User\UserAdjustment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

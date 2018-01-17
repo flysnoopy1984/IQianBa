@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -10,13 +11,12 @@ namespace IQBCore.IQBPay.Models.Order
     [Table("OrderDetail")]
     public class EOrderDetail
     {
-
+        [Key]
         public string OrderNo { get; set; }
 
-        /// <summary>
-        /// 支付渠道 花呗还是余额
-        /// </summary>
-        public string AliPayChannel { get; set; }
+       
+        [MaxLength(512)]
+        public  string fund_bill_list { get; set; }
 
 
     }

@@ -420,5 +420,10 @@ namespace IQBPay.Controllers
             return View();
          */
         }
+
+        public ActionResult UserAdjustment()
+        {
+            return View();
+        }
     }
 }

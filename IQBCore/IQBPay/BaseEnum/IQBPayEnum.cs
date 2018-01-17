@@ -209,6 +209,7 @@ namespace IQBCore.IQBPay.BaseEnum
         Normal=0,
         Huge = 1,
         UnKnow=-1,
+        All = 99,
     }
 
     public enum ExistAction

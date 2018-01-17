@@ -131,7 +131,7 @@ namespace IQBPay.Controllers
                 using (AliPayContent db = new AliPayContent())
                 {
 
-                    var list = db.DBOrder.Where(o => o.OrderType == parameter.OrderType).Select(o => new ROrderInfo {
+                    var list = db.DBOrder.Select(o => new ROrderInfo {
 
                         ID = o.ID,
                         OrderNo = o.OrderNo,
@@ -152,8 +152,14 @@ namespace IQBPay.Controllers
                         TransDate = o.TransDate,
                         AgentOpenId = o.AgentOpenId,
                         LogRemark = o.LogRemark,
+                        OrderType = o.OrderType,
                         
                     });
+                    if (parameter.OrderType != OrderType.All)
+                    {
+                        list = list.Where(o => o.OrderType == parameter.OrderType);
+                    }
+                   
 
                     if (!string.IsNullOrEmpty(parameter.StoreId))
                     {

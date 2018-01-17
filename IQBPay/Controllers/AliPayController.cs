@@ -34,6 +34,7 @@ using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBPay.Models.Result;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
+using IQBCore.IQBPay.Models.Json;
 
 namespace IQBPay.Controllers
 {
@@ -49,74 +50,29 @@ namespace IQBPay.Controllers
 
         public string AppID = ConfigurationManager.AppSettings["APPID"];
 
+        private static List<string>  _BlockList =null ;
+
         public object EORderInfo { get; private set; }
+
+        public AliPayController()
+        {
+            if (_BlockList == null)
+            {
+                _BlockList = new List<string>();
+                _BlockList.Add("13225930162");
+            }
+
+        }
 
         public string callF2FPay(EStoreInfo store,string TotalAmt,string orderNo)
         {
-
-            string result = "";
-
-            EAliPayApplication app = BaseController.App;
-            IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
-            app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
-
-            AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
-            AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();
-          
-            model.SellerId = store.AliPayAccount;
-            model.OutTradeNo = orderNo;
-            model.TotalAmount = TotalAmt;
-            model.Subject = "找熟人-原原 收银台";
-            model.Body =  app.AppName + "-商品";
-           // List<GoodsDetail> gList = new List<GoodsDetail>();
-           // GoodsDetail good = new GoodsDetail();
-           // good.GoodsName = "找熟人服务包";
-           // good.GoodsId = "找熟人服务包";
-           //// good.GoodsCategory = "服装";
-           // good.Price = TotalAmt;
-           // good.Quantity = 1;
-
-           // model.GoodsDetail= gList;
-
-            request.SetBizModel(model);
-
-            AlipayTradePrecreateResponse  response = aliyapClient.Execute(request, null, store.AliPayAuthToke);
-            return response.Body;
-            /*
-            F2FPayHandler handler = new F2FPayHandler();
+            AliPayManager payMag = new AliPayManager();
             EUserInfo ui = new EUserInfo();
-            ui.Name = "Test";
-            AlipayTradePrecreateContentBuilder builder = handler.BuildPrecreateContent(BaseController.App,ui, sellerid, TotalAmt);
+            ui.Name = "好又多";
+            AliPayResult status;
+            string Res = payMag.PayF2FNew(BaseController.App, ui, store, TotalAmt, out status);
 
-            AlipayF2FPrecreateResult precreateResult = serviceClient.tradePrecreate(builder);
-
-
-            switch (precreateResult.Status)
-            {
-                case ResultEnum.SUCCESS:
-                    result = handler.CreateQR(precreateResult);
-                    result = handler.DeQR(result);
-
-                    break;
-                case ResultEnum.FAILED:
-                    result = precreateResult.response.Body;
-
-                    break;
-
-                case ResultEnum.UNKNOWN:
-                    if (precreateResult.response == null)
-                    {
-                        result = "配置或网络异常，请检查后重试";
-                    }
-                    else
-                    {
-                        result = "系统异常，请更新外部订单后重新发起请求";
-                    }
-
-                    break;
-            }
-            */
-            return result;
+            return Res;
         }
 
         private string callSubAccount2()
@@ -205,7 +161,10 @@ namespace IQBPay.Controllers
             AliPayManager payManager = new AliPayManager();
             ETransferAmount tranfer = null;
             EAgentCommission agentComm = null;
-         
+            EOrderDetail orderDetail = null;
+            JOrderPayMethod JOrderPayMethod;
+
+
             int TransferError = 0 ;
 
             try
@@ -236,6 +195,12 @@ namespace IQBPay.Controllers
                     order.AliPayTotalAmount = Convert.ToSingle(Request["total_amount"]);
                     order.AliPayReceiptAmount = Convert.ToSingle(Request["receipt_amount"]);
                     order.AliPayBuerPayAmount = Convert.ToSingle(Request["buyer_pay_amount"]);
+
+                    string payMethod = Request["fund_bill_list"];
+                    orderDetail = new EOrderDetail();
+                    orderDetail.OrderNo = order.OrderNo;
+                    orderDetail.fund_bill_list = payMethod;
+                    db.DBOrderDetail.Add(orderDetail);
                   //  order.AliPayTransDate = Convert.ToDateTime(Request["gmt_create"]);
                     if (order.AliPayTradeStatus == "TRADE_SUCCESS")
                     {
@@ -806,7 +771,8 @@ namespace IQBPay.Controllers
             RQRHugeTrans qrTrans = db.DBQRHugeTrans.Select(s => new RQRHugeTrans
             {
                 QRHugeId = s.QRHugeId,
-            }).First();
+                ID = s.ID,
+            }).Where(o=>o.ID == QRHugeTransId).First();
 
             EQRHugeTrans EQRHugeTrans = new EQRHugeTrans();
 
@@ -820,7 +786,7 @@ namespace IQBPay.Controllers
             EQRHuge EQRHuge = new EQRHuge();
             EQRHuge.ID = qrTrans.QRHugeId;
             EQRHuge.QRHugeStatus = QRHugeStatus.Closed;
-
+           
             DbEntityEntry<EQRHuge> entryHuge = db.Entry<EQRHuge>(EQRHuge);
             entryHuge.State = EntityState.Unchanged;
             entryHuge.Property(t => t.QRHugeStatus).IsModified = true;
@@ -839,6 +805,10 @@ namespace IQBPay.Controllers
             {
                 ErrorUrl += "请填写收款账户！";
                 return Redirect(ErrorUrl);
+            }
+            if (IsBlockUser(AliPayAccount))
+            {
+                return Redirect("https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=%E6%88%91%E9%94%99%E4%BA%86&oq=%25E6%2588%2591%25E8%25A6%2581%25E5%25A4%25A7%25E9%25A2%259D&rsv_pq=fdc9a37600011847&rsv_t=12bbtVESTOTvr2Vka6q3RaIFGkTv3u3HZMssQ3J0JYuez4Fx0Cqqzvj%2BxqM&rqlang=cn&rsv_enter=1&inputT=13704&rsv_sug3=49&rsv_sug1=46&rsv_sug7=100&bs=%E6%88%91%E8%A6%81%E5%A4%A7%E9%A2%9D");
             }
 
             EAliPayApplication app;
@@ -1065,12 +1035,13 @@ namespace IQBPay.Controllers
 
             return View();
         }
+       
 
-        //private bool IsBlockUser()
-        //{
-        //    List<String> list = new List<string>();
-        //    list.Add("")
-        //}
+        private bool IsBlockUser(string AliPayAccount)
+        {
+           return  _BlockList.Contains(AliPayAccount);
+
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -1093,6 +1064,10 @@ namespace IQBPay.Controllers
                 {
                     ErrorUrl += "二维码已更新，请向代理索要最新当前二维码";
                     return Redirect(ErrorUrl);
+                }
+                if(IsBlockUser(AliPayAccount))
+                {
+                    return Redirect("https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=%E6%88%91%E9%94%99%E4%BA%86&oq=%25E6%2588%2591%25E8%25A6%2581%25E5%25A4%25A7%25E9%25A2%259D&rsv_pq=fdc9a37600011847&rsv_t=12bbtVESTOTvr2Vka6q3RaIFGkTv3u3HZMssQ3J0JYuez4Fx0Cqqzvj%2BxqM&rqlang=cn&rsv_enter=1&inputT=13704&rsv_sug3=49&rsv_sug1=46&rsv_sug7=100&bs=%E6%88%91%E8%A6%81%E5%A4%A7%E9%A2%9D");
                 }
                 using (AliPayContent db = new AliPayContent())
                 {

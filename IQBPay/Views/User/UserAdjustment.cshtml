@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "UserAdjustment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+    <a href="/User/List" title="用户管理">用户管理</a>
+}
+@section SubMenu2{
+    代理筛选
+}
+
+<link href="@Url.Scrpit("~/Content/Style/Web/List.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+<script src="@Url.Scrpit("~/scripts/Component/IQBTable.js")"></script>
+
+<div id="ListArea">
+    <div id="Title" style="margin:0px;">
+        <span id="ListTitleName"></span>
+        <div class="ListCondition">
+            <ul class="UlHorizontal">
+     
+                <li>
+                    <div class="form-group">
+                        <label>时间：</label>
+                        <select id="cHasQRHuge" class="form-control ConditionField">
+                            <option value="7" selected>7天</option>
+                            <option value="3">3天</option>
+                         
+                        </select>
+
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+        <ul class="UlHorizontal" style="float:right">
+            <li>
+                <button type="button" class="btn btn-primary" onclick="BtnQuery();">查询没有设置账户的用户</button>
+            </li>
+        </ul>
+    </div>
+    <div id="ListContent">
+        <table id="tbData" class="table table-hover table-bordered">
+            <thead class="cf">
+                <tr id="trHeader">
+                    <th width="220px">用户名</th>
+                    <th width="60px">当前点率</th>
+                    <th width="150px">上级代理</th>
+                    <th width="150">账户</th>
+                    <th width="80px;">注册时间</th>
+                    <th width="260px">OpenId</th>           
+                    <th width="100px"> 操作</th>
+                </tr>
+            </thead>
+            <tbody id="trContainer"></tbody>
+        </table>
+      
+
+    </div>
+</div>

@@ -56,6 +56,8 @@ namespace IQBWX.DataBase.IQBPay
 
         public DbSet<EQRHugeTrans> DBQRHugeTrans { get; set; }
 
+        public DbSet<EOrderDetail> DBOrderDetail { get; set; }
+
 
 
         #region User  

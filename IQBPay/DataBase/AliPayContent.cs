@@ -65,6 +65,8 @@ namespace IQBPay.DataBase
 
         public DbSet<EQRHugeTrans> DBQRHugeTrans { get; set; }
 
+        public DbSet<EOrderDetail> DBOrderDetail { get; set; }
+
         #region User  
         public Boolean IsExistUser(string openId)
         {
@@ -182,6 +184,7 @@ namespace IQBPay.DataBase
                 qrUser.UserName = ui.Name;
                 qrUser.Rate = pQR.Rate;
                 qrUser.ReceiveStoreId = pQR.ReceiveStoreId;
+                qrUser.QRType = QRType.AR;
               
                
                 if (!string.IsNullOrEmpty(pQR.ParentOpenId))

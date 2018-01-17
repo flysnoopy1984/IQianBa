@@ -1,9 +1,9 @@
 ﻿$(document).ready(function () {
 
-    //var client = IsWeixinOrAlipay();
-    //if (client != "Alipay") {
-    //    window.location.href = wxUrl+"/Home/ErrorMessage?code=3000";
-    //}
+    var client = IsWeixinOrAlipay();
+    if (client != "Alipay") {
+        window.location.href = wxUrl+"/Home/ErrorMessage?code=3000";
+    }
 
     InitControls();
     var account = getCookie("YJ_AliPayAccount");

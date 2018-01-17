@@ -38,7 +38,7 @@ namespace IQBCore.IQBPay.BLL
             get { return _SellerId; }
         }
 
-        public AlipayTradePrecreateResponse BuildNew(EAliPayApplication app,EStoreInfo store,EUserInfo AgentUI,string TotalAmt,bool needNotifyUrl=true)
+        public AlipayTradePrecreateResponse BuildNew(EAliPayApplication app,EStoreInfo store,EUserInfo AgentUI,string TotalAmt,bool needNotifyUrl=true,bool needControl = true)
         {
             string NotifyUrl = ConfigurationManager.AppSettings["Main_SiteUrl"] + "AliPay/PayNotify";
             _OrderNo = StringHelper.GenerateOrderNo();
@@ -54,9 +54,10 @@ namespace IQBCore.IQBPay.BLL
             model.TotalAmount = TotalAmt;
             model.Subject =  "#"+AgentUI.Name+ " 收银台";
             model.Body = app.AppName + "-商品";
+            model.ExtendParams = new Aop.Api.Domain.ExtendParams();
             model.ExtendParams.SysServiceProviderId = app.AppId;
-
-            model.DisablePayChannels = "ALIPAYACCOUNT,FINANCEACCOUNT";
+            if(needControl)
+                model.DisablePayChannels = "moneyFund,creditCard,creditCardExpress,creditCardCartoon,debitCardExpress,point,bankPay";
 
             request.SetBizModel(model);
             if(needNotifyUrl)

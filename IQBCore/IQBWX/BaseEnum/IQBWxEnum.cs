@@ -40,6 +40,7 @@ namespace IQBCore.IQBWX.BaseEnum
         /// </summary>
         QRHugeError = 2003,
         QRHugeQRUserMiss = 2004,
+        QRHugeBlock = 2005,
 
         /// <summary>
         /// 客户端错误

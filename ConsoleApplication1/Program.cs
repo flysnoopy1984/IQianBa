@@ -51,23 +51,16 @@ namespace ConsoleApplication1
         {
             try
             {
-                DateTime dt = DateTime.Now.AddMinutes(-10);
-                //TimeSpan ts1 = new TimeSpan(dt.Ticks);
-                //TimeSpan ts2 = new TimeSpan(DateTime.Now.Ticks);
-                //TimeSpan ts3 = ts1.Subtract(ts2).Duration();
+                string b = "13225930162";
+                List<String> list = new List<string>();
+                list.Add("13225930162");
+                if(list.Contains(b))
+                {
 
-                ////你想转的格式
-                //string s = ts3.TotalSeconds.ToString();
-                //Console.WriteLine(s);
-                //Console.Read();
-
-                //      // float RateAmount = (float)Math.Round(5.0 * (5 / 100), 2, MidpointRounding.ToEven);
-                      bool ok = DateHelper.IsOverTime(dt, 10);
-
-                //  QRManager.CreateUserUrlById(qrUser);
+                }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);

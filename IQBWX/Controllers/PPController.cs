@@ -754,7 +754,22 @@ namespace IQBWX.Controllers
             InitProfilePage();
 
           
+
+          
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult GetQRUser(QRType qrType)
+        {
+            EQRUser qrUser = null;
+            using (AliPayContent db = new AliPayContent())
+            {
+                qrUser = db.DBQRUser.Where(u => u.OpenId == UserSession.OpenId && u.RecordStatus == RecordStatus.Normal && u.QRType == qrType).FirstOrDefault();
+            }
+            if (qrUser == null)
+                qrUser = new EQRUser();
+            return Json(qrUser);
         }
 
         public ActionResult Agent_QR_ARListQuery()
@@ -1271,7 +1286,8 @@ namespace IQBWX.Controllers
                     MarketRate = o.MarketRate,
                     OpenId = o.OpenId,
                     RecordStatus = o.RecordStatus,
-                    QRType = o.QRType
+                    QRType = o.QRType,
+                    ID = o.ID,
                 }).Where(o => o.OpenId == UserSession.OpenId 
                                         && o.RecordStatus == RecordStatus.Normal
                                         && o.QRType == QRType.ARHuge).FirstOrDefault();
@@ -1279,10 +1295,15 @@ namespace IQBWX.Controllers
                 {
                     return RedirectToAction("ErrorMessage", "Home", new {code = Errorcode.QRHugeQRUserMiss });
                 }
-                
+
+                if (qrUser.RecordStatus == RecordStatus.Blocked)
+                {
+                    return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.QRHugeBlock });
+                }
             }
 
            ViewBag.PPSite = ConfigurationManager.AppSettings["Site_IQBPay"];
+            ViewBag.QRUserId = qrUser.ID;
             return View(qrUser);
         }
 
@@ -1304,6 +1325,7 @@ namespace IQBWX.Controllers
 
             string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
             OutAPI_QRHuge result = JsonConvert.DeserializeObject<OutAPI_QRHuge>(res);
+            result.RQRHuge.CreateDate = qrHuge.CreateDate;
             return result;
         }
 
@@ -1314,35 +1336,8 @@ namespace IQBWX.Controllers
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    //获取最近的QR
-                   EQRHuge qrHuge =  db.DBQRHuge.Where(o => o.OpenId == OpenId && o.QRHugeStatus== QRHugeStatus.Created).OrderByDescending(o => o.CreateDate).FirstOrDefault();
-                   if(qrHuge == null)
-                   {
-                        result = CreateQRHuge(db, OpenId, Amount);
-                    }
-                   else
-                   {
-                        //if(qrHuge.QRHugeStatus == QRHugeStatus.Created)
-                        //{
-                          
-                        //    qrHuge.QRHugeStatus = QRHugeStatus.InValid;
-                        //    db.SaveChanges();
-                        //}
-                        result = CreateQRHuge(db, OpenId, Amount);
-
-
-
-                        //检查是否超时
-                        //bool IsOverTime =  DateHelper.IsOverTime(qrHuge.CreateDate,90);
-                        //if(IsOverTime)
-                        //{
-                        //    result = CreateQRHuge(db, OpenId, Amount);
-                        //}
-                        //else
-                        //{
-
-                        //}
-                    }
+                    result = CreateQRHuge(db, OpenId, Amount);
+                   
                 }
             }
             catch(Exception ex)
@@ -1367,7 +1362,18 @@ namespace IQBWX.Controllers
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    EQRHuge qrHuge = db.DBQRHuge.Where(o => o.OpenId == OpenId).OrderByDescending(o => o.CreateDate).FirstOrDefault();
+                    RQRHuge qrHuge = db.DBQRHuge.Select(o => new RQRHuge
+                    {
+                        AgentName = o.AgentName,
+                        Amount = o.Amount,
+                        CreateDate = o.CreateDate,
+                        FilePath = o.FilePath,
+                        PayCount = o.PayCount,
+                        QRHugeStatus = o.QRHugeStatus,
+                        OpenId = o.OpenId,
+
+                    }).Where(o => o.OpenId == OpenId).OrderByDescending(o => o.CreateDate).FirstOrDefault();
+
                     if (qrHuge != null)
                     {
                         bool IsOverTime = DateHelper.IsOverTime(qrHuge.CreateDate, 600);
@@ -1385,7 +1391,7 @@ namespace IQBWX.Controllers
                         {
                             if (qrHuge.QRHugeStatus == QRHugeStatus.Created)
                             {
-                                result.EQRHuge = qrHuge;
+                                result.RQRHuge = qrHuge;
                                 result.DiffSec = DateHelper.GetDiffSec(qrHuge.CreateDate, DateTime.Now);
                             }
                             else if(qrHuge.QRHugeStatus == QRHugeStatus.InValid)
@@ -1408,6 +1414,28 @@ namespace IQBWX.Controllers
                 result.ErrorMsg = ex.Message;
             }
             return Json(result);
+        }
+
+        public ActionResult QRHugeList(string openId)
+        {
+            List<RQRHuge> list = null;
+            using (AliPayContent db = new AliPayContent())
+            {
+                list = db.DBQRHuge.Select(o => new RQRHuge
+                {
+                    Amount = o.Amount,
+                    CreateDate = o.CreateDate,
+                    QRHugeStatus = o.QRHugeStatus,
+                    ID = o.ID,
+                    OpenId = o.OpenId,
+                }).Where(o => o.OpenId == openId)
+                .OrderByDescending(o=>o.ID).Take(10).ToList();
+                if (list == null)
+                    list = new List<RQRHuge>();
+
+               
+            }
+            return Json(list);
         }
         #endregion
 

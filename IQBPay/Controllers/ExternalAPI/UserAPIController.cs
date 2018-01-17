@@ -92,6 +92,7 @@ namespace IQBPay.Controllers.ExternalAPI
                                         updateUser.QRAuthId = 0;
                                         updateUser.UserStatus = UserStatus.PPUser;
                                         updateUser.NeedFollowUp = pQR.NeedFollowUp;
+                                        
                                         db.DBUserInfo.Add(updateUser);
                                         isExist = false;
                                         if (pQR.NeedVerification)
