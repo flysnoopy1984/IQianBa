@@ -139,7 +139,7 @@ namespace IQBWX.Controllers
                 {
                     data.btnUrl += "?Id="+QRUserId;
                 }
-                else if (!string.IsNullOrEmpty(QRUserId))
+                else if (!string.IsNullOrEmpty(QRHugeId))
                 {
                     data.btnUrl += "?rQRHugeId=" + QRHugeId;
                 }

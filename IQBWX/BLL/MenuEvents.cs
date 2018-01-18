@@ -80,7 +80,7 @@ namespace IQBWX.BLL
                     //使用说明：
                     case "wx_302":
                         GoUrl = "https://mp.weixin.qq.com/s?__biz=MzUyMzUwOTQ3MA==&mid=100000020&idx=1&sn=fb0bd4f65bdd44985bf137413012cf64&chksm=7a3acaa54d4d43b360d9513a1e810b11d9c13899ad0c50d0cff089f70c88c33037230ef65cad#rd";
-                        this.ResponseXml = msg.toPicText("http://wx.iqianba.cn/Content/images/sysc.png", GoUrl, "","【找熟人】使用手册");
+                        this.ResponseXml = msg.toPicText("http://wx.iqianba.cn/Content/images/sysc.png", GoUrl, "","【玉杰】使用手册");
                         break;
                     default:
                         break;

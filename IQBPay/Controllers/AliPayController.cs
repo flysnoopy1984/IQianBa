@@ -798,6 +798,7 @@ namespace IQBPay.Controllers
             long qrHugeId;
             if (string.IsNullOrEmpty(rQRHugeId) || !long.TryParse(rQRHugeId, out qrHugeId))
             {
+                ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?code=2000&ErrorMsg=";
                 ErrorUrl += "二维码不存在，请咨询您的联系人！";
                 return Redirect(ErrorUrl);
             }

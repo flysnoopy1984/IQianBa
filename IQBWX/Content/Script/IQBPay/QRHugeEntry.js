@@ -204,7 +204,14 @@ function ViewLog()
                     content: "已刷新",
                 });
               
-            }              
+            }
+            else
+            {
+                $.alert({
+                    title: "刷新",
+                    content: "暂时没有记录",
+                });
+            }
            
         },
         error: function (xhr, type) {

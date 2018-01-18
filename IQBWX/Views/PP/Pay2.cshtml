@@ -18,7 +18,7 @@
     <script src="~/Content/Script/Component/jquery-confirm.js"></script>
     <script src="@Url.Scrpit("~/Content/Script/IQBPay/Pay2.js")"></script>
 
-    <title>【找熟人】</title>
+    <title>【玉杰服务】</title>
 </head>
 <body>
     <style>
@@ -50,22 +50,22 @@
             <button type="button" class="mgz btn btn-primary verifyButton" id="bnModifyAliPayAccount" onclick="ModifyAliPayAccount()">修改</button>
         </div>
 
-        <div>
-            <span class="FieldLabel" style="font-weight:bold;color:brown;">*风控用户请支付【199】*</span>
-            <span class="FieldLabel" style="font-weight:bold;color:brown;">*非风控用户请支付【20-799】*</span>
-        </div>
+      
 
 
         <div id="PayContent">
             @*<div class="yuex mg2 xi20" style="color:cornflowerblue">请用10元测试，避免数额太小，金额为零</div>*@
-
+            <div>
+                <span class="FieldLabel" style="font-weight:bold;color:brown;">*风控用户请支付【199】*</span>
+                <span class="FieldLabel" style="font-weight:bold;color:brown;">*非风控用户请支付【20-799】*</span>
+            </div>
             <div class="form-group">
                 <label class="FieldLabel">输入金额</label>
                 <div class="mgz">
                     <input id="TotalAmout" class="PayEditInput" type="text" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")' />
                 </div>
             </div>
-
+            
             <div id="buttonArea" style="margin-top:200px;border-top:dashed 1px black; height:120px; line-height:120px;">
                 <button type="button" class="mgz btn btn-warning" id="btnPay" style="width:90%; height:80px;" onclick="PayToAli();">支付</button>
             </div>

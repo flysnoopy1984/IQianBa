@@ -258,7 +258,12 @@ namespace IQBCore.IQBPay.BLL
 
                 if (Logo!=null)
                 {
-                    bt = ImgHelper.CombineImage(bt, Logo);
+                  
+                    Logo = ImgHelper.resizeImage(Logo, new Size(65, 65));
+                    if (!string.IsNullOrEmpty(Text))
+                        bt = ImgHelper.CombineImage(bt, Logo,40);
+                    else
+                        bt = ImgHelper.CombineImage(bt, Logo);
                 }
                
              //   log.log("CreateQR Combine Log");

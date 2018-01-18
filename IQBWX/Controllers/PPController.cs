@@ -1371,6 +1371,7 @@ namespace IQBWX.Controllers
                         PayCount = o.PayCount,
                         QRHugeStatus = o.QRHugeStatus,
                         OpenId = o.OpenId,
+                        ID = o.ID
 
                     }).Where(o => o.OpenId == OpenId).OrderByDescending(o => o.CreateDate).FirstOrDefault();
 
@@ -1382,7 +1383,14 @@ namespace IQBWX.Controllers
                             //超时 还能找到创建的QRHuge,可能是没有扫，手动变为失效
                             if (qrHuge.QRHugeStatus == QRHugeStatus.Created)
                             {
-                                qrHuge.QRHugeStatus = QRHugeStatus.InValid;
+                                EQRHuge obj = new EQRHuge();
+                                obj.ID = qrHuge.ID;
+                                obj.QRHugeStatus = QRHugeStatus.InValid;
+
+                                DbEntityEntry<EQRHuge> entryHuge = db.Entry<EQRHuge>(obj);
+                                entryHuge.State = EntityState.Unchanged;
+                                entryHuge.Property(t => t.QRHugeStatus).IsModified = true;
+
                                 db.SaveChanges();
                             }
                             result.DiffSec = -1;

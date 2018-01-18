@@ -182,7 +182,8 @@ namespace IQBPay.Controllers
         {
             string reqQRHugeId = Request.QueryString["QRHugeId"];
             string wxSite = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
-            string ErrorUrl = wxSite + "Home/ErrorMessage?code=2003&ErrorMsg=";
+            string ErrorUrl = wxSite + "Home/ErrorMessage?code=2000&ErrorMsg=";
+          //  string ErrorUrl2 = wxSite + "Home/ErrorMessage?code=2000&ErrorMsg=";
             EQRHuge qrHuge;
             try
             {
@@ -197,7 +198,7 @@ namespace IQBPay.Controllers
                     using (AliPayContent db = new AliPayContent())
                     {
                         qrHuge = db.DBQRHuge.Where(o => o.ID == QRHugeId).FirstOrDefault();
-                        ViewBag.WXSite_JS_Cookie = wxSite+"Content/Script/jsCookie.js";
+                       
                         if (qrHuge == null)
                         {
                             ErrorUrl += "此二维码已损坏，请重新向索要!";
@@ -215,6 +216,7 @@ namespace IQBPay.Controllers
                             db.SaveChanges();
                             return Redirect(ErrorUrl);
                         }
+                        ViewBag.WXSite_JS_Cookie = wxSite + "Content/Script/jsCookie.js";
                     }
                 }
                 else

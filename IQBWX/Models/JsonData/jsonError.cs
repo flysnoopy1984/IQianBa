@@ -2,6 +2,7 @@
 using IQBWX.Common;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 
@@ -38,6 +39,7 @@ namespace IQBWX.Models.JsonData
         {
             jsonError obj = new jsonError();
             obj.errorCode = Convert.ToInt32(code);
+            string PaySite = ConfigurationManager.AppSettings["Site_IQBPay"];
             switch (code)
             {
                 case Errorcode.IncorrectVerifyCode:
@@ -61,10 +63,12 @@ namespace IQBWX.Models.JsonData
                 case Errorcode.AliPay_PayError:
                     obj.btnText = "返回支付";
                     obj.errorMsg = errorMsg;
-                    obj.btnUrl = "/PP/Pay";
+                    obj.btnUrl = "/PP/Pay2";
                     break;
                 case Errorcode.QRHugeError:
+                    obj.btnText = "返回支付";
                     obj.errorMsg = errorMsg;
+                    obj.btnUrl = PaySite+ "Wap/PayHuge";
                     break;
                 case Errorcode.QRHugeQRUserMiss:
                     obj.errorMsg = "您的大额码配置未找到或被禁用！";

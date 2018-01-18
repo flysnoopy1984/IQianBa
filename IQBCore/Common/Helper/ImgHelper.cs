@@ -124,7 +124,6 @@ namespace IQBCore.Common.Helper
                 loca.Add(x);
                 loca.Add(y);
 
-
                 g.DrawImage(waterimg, new Rectangle(int.Parse(loca[0].ToString()), int.Parse(loca[1].ToString()), waterimg.Width, waterimg.Width));
                 g.Dispose();
             }
