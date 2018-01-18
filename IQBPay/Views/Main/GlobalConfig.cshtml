@@ -40,30 +40,53 @@
         </div>
 
         <div class="form-group">
+            <label class="col-sm-3 control-label" style="text-align:center">大额入口状态</label>
+            <div class="col-sm-6">
+                <select id="QRHugeEntry">
+                    <option value="0">运行</option>
+                    <option value="-1">停止</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label" style="text-align:center">大额失效时间</label>
+            <div class="col-sm-6">
+                <input id="QRHugeInValidMinutes" type="text" class="form-control NeedFill">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" style="text-align:center">小额码最小值</label>
+            <div class="col-sm-6">
+                <input id="QRMin" type="text" class="form-control NeedFill">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" style="text-align:center">小额码最大值</label>
+            <div class="col-sm-6">
+                <input id="QRMax" type="text" class="form-control NeedFill">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" style="text-align:center">大额码最小值</label>
+            <div class="col-sm-6">
+                <input id="QRHugeMin" type="text" class="form-control NeedFill">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" style="text-align:center">大额码最大值</label>
+            <div class="col-sm-6">
+                <input id="QRHugeMax" type="text" class="form-control NeedFill">
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-3 control-label" style="text-align:center">市场点率</label>
             <div class="col-sm-6">
                 <input id="MarketRate" type="text" class="form-control NeedFill">
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="col-sm-3 control-label" style="text-align:center">是否允许注册</label>
-            <div class="col-sm-6">
-                <select id="AllowRegister">
-                    <option value="true">允许</option>
-                    <option value="false">禁止</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label" style="text-align:center">是否代理转账微信通知</label>
-            <div class="col-sm-6">
-                <select id="IsWXNotice_AgentTransfer">
-                    <option value="true">允许</option>
-                    <option value="false">禁止</option>
-                </select>
-            </div>
-        </div>
+       
     </div>
   
     <input type="hidden" id="RecId" />

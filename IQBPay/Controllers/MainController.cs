@@ -73,8 +73,14 @@ namespace IQBPay.Controllers
                     entry.Property(t => t.MarketRate).IsModified = true;
                     entry.Property(t => t.Note).IsModified = true;
                     entry.Property(t => t.WebStatus).IsModified = true;
-                    entry.Property(t => t.AllowRegister).IsModified = true;
-                    entry.Property(t => t.IsWXNotice_AgentTransfer).IsModified = true;
+                    entry.Property(t => t.QRHugeEntry).IsModified = true;
+                    entry.Property(t => t.QRHugeInValidMinutes).IsModified = true;
+                    entry.Property(t => t.QRHugeMin).IsModified = true;
+                    entry.Property(t => t.QRHugeMax).IsModified = true;
+                    entry.Property(t => t.QRMin).IsModified = true;
+                    entry.Property(t => t.QRMax).IsModified = true;
+                    //entry.Property(t => t.AllowRegister).IsModified = true;
+                    //entry.Property(t => t.IsWXNotice_AgentTransfer).IsModified = true;
 
                     db.SaveChanges();
 

@@ -1,9 +1,10 @@
 ﻿$(document).ready(function () {
 
     var client = IsWeixinOrAlipay();
-    if (client != "Alipay" || client!="WeiXin") {
+    if (client =="false") {
         alert("请用微信或支付宝访问");
-        return false;
+        window.location.href = "about:blank";
+        return true;
     }
 
     var errorCode = $("#errorCode").val();

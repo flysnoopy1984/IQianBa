@@ -21,29 +21,26 @@ function CheckMakeTime() {
         success: function (result) {
             if (result.IsSuccess == true) {
 
-                if (result.DiffSec != -1)
-                {
+                if (result.DiffSec != -1) {
                     var remainSec = InitCount - result.DiffSec;
                     if (remainSec > 0) {
                         countdown = remainSec;
                         DisableMakeBtn();
                     }
                 }
-                if (result.RQRHuge)
-                {
+                if (result.RQRHuge) {
                     var qrPath = PPSite + result.RQRHuge.FilePath;
 
                     $("#Result").show();
                     $("#QRImg").attr("src", qrPath);
                     $("#createDate").text(result.RQRHuge.CreateDateStr);
-
-                  //  $("#MakeQRHuge").text("重新制作");
+                    var h = $(window).height();
+                    $(window).scrollTop(h);
                 }
-              
-               
+
+
             }
-            else
-            {
+            else {
                 ShowError("系统错误，请联系管理员");
 
                 $("#MakeQRHuge").attr("disabled", true);
@@ -63,46 +60,40 @@ function CheckMakeTime() {
     });
 }
 
-function Init()
-{
+function Init() {
     $("MakeQRHuge").attr("disabled", false);
     $("#Result").hide();
     $("#ErrorMsg").hide();
     $("#TransList").hide();
 }
 
-function StartMake()
-{
+function StartMake() {
     $("#Result").hide();
     $("#ErrorMsg").text("");
     $("#ErrorMsg").hide();
     $("MakeQRHuge").attr("disabled", true);
 }
 
-function ShowError(msg)
-{
+function ShowError(msg) {
     $("#Result").hide();
     $("#ErrorMsg").show();
     $("#ErrorMsg").text(msg);
 }
 
-function EndMake()
-{
+function EndMake() {
     $("#Result").show();
-    
+
     $("MakeQRHuge").attr("disabled", false);
 }
 
-function DisableMakeBtn()
-{
+function DisableMakeBtn() {
     var bn = $("#MakeQRHuge");
     bn.attr("disabled", true);
     bn.addClass("btn-default")
     bn.removeClass("btn-primary");
     settime(bn);
 }
-function EnableMakeBtn(obj)
-{
+function EnableMakeBtn(obj) {
     obj.attr("disabled", false);
     obj.addClass("btn-primary")
     obj.removeClass("btn-default");
@@ -110,17 +101,15 @@ function EnableMakeBtn(obj)
     countdown = InitCount;
 }
 
-function MakeQRHuge()
-{
+function MakeQRHuge() {
     var PPSite = $("#PPSite").val();
     var OpenId = $("#hOpenId").val();
     var Amt = $("#Amount").val();
-    if (Amt < 1988 || Amt > 4689)
-    {
+    if (Amt < 1999 || Amt > 9999) {
         $.alert({
             theme: "dark",
             title: "错误",
-            content: "建议输入非整数金额，可输入区间【1988-4689】。",
+            content: "建议输入非整数金额，可输入区间【1999-9999】。",
         });
         return;
     }
@@ -135,20 +124,22 @@ function MakeQRHuge()
         success: function (data) {
 
             if (data.IsSuccess == true) {
-             
+
                 var qrPath = PPSite + data.RQRHuge.FilePath;
                 $("#createDate").text(data.RQRHuge.CreateDateStr);
                 $("#QRImg").attr("src", qrPath);
                 //创建按钮倒计时
-                $.alert({        
+                $.alert({
                     title: "成功",
                     content: "已生成新的二维码",
                 });
                 DisableMakeBtn();
+                var h = $(window).height();
+                $(window).scrollTop(h);
             }
             else {
                 $("#ErrorMsg").show();
-                $("#ErrorMsg").text(data.ErrorMsg);   
+                $("#ErrorMsg").text(data.ErrorMsg);
             }
             EndMake();
         },
@@ -161,22 +152,20 @@ function MakeQRHuge()
     });
 }
 
-function ViewLog()
-{
+function ViewLog() {
     var OpenId = $("#hOpenId").val();
 
     var url = "/PP/QRHugeList";
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "OpenId": OpenId},
+        data: { "OpenId": OpenId },
         url: url,
         success: function (data) {
-            if (data.length > 0)
-            {
+            if (data.length > 0) {
                 $("#Body").empty();
                 var ctrl = "";
-                
+
                 $.each(data, function (i) {
                     var payStatus = "创建";
                     if (data[i].QRHugeStatus == 1)
@@ -195,37 +184,34 @@ function ViewLog()
                     $("#Body").append(ctrl);
                 });
                 $("#TransList").show();
-                //滚动条到底部
-                var h = $(document).height() - $(window).height();
-                $(document).scrollTop(h);
+                var h = $(window).height();
+                $(window).scrollTop(h);
 
                 $.alert({
                     title: "成功",
                     content: "已刷新",
                 });
-              
+
             }
-            else
-            {
+            else {
                 $.alert({
                     title: "刷新",
                     content: "暂时没有记录",
                 });
             }
-           
+
         },
         error: function (xhr, type) {
 
             $("#ErrorMsg").text("发生错误，请联系管理员");
-           
+
 
         }
     });
 
 }
 
-function ChangeMartket()
-{
+function ChangeMartket() {
     var QRUserId = $("#QRUserId").val();
     window.location.href = "/PP/Agent_QR_ARList?ReqHuge=1&QRUserId=" + QRUserId;
 }

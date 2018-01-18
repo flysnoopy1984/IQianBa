@@ -32,6 +32,11 @@ namespace IQBCore.IQBPay.Models.Sys
         /// </summary>
         public int QRHugeInValidMinutes { get; set; }
 
+        public int QRHugeMax { get; set; }
+        public int QRHugeMin { get; set; }
+        public int QRMax { get; set; }
+        public int QRMin { get; set; }
+
 
         [MaxLength(500)]
         public string Note { get; set; }
@@ -40,7 +45,13 @@ namespace IQBCore.IQBPay.Models.Sys
         {
             MaxNumChildAgent = 40;
             WebStatus = PayWebStatus.Running;
+            QRHugeEntry = QRHugeEntry.Running;
+            QRHugeMin = 1999;
+            QRHugeMax = 4999;
+            QRMin = 20;
+            QRMax = 7999;
             Note = "";
+
         }
 
         public Boolean AllowRegister { get; set; }
@@ -59,6 +70,8 @@ namespace IQBCore.IQBPay.Models.Sys
         /// 代理最大数量
         /// </summary>
         public int MaxNumChildAgent { get; set; }
+
+      
 
         
 

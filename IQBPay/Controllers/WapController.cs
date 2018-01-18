@@ -20,6 +20,8 @@ using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.Store;
 using Aop.Api.Response;
 using System.Configuration;
+using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBWX.BaseEnum;
 
 namespace IQBPay.Controllers
 {
@@ -183,7 +185,16 @@ namespace IQBPay.Controllers
             string reqQRHugeId = Request.QueryString["QRHugeId"];
             string wxSite = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
             string ErrorUrl = wxSite + "Home/ErrorMessage?code=2000&ErrorMsg=";
-          //  string ErrorUrl2 = wxSite + "Home/ErrorMessage?code=2000&ErrorMsg=";
+
+            if (BaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.SystemMaintain, ErrorMsg = BaseController.GlobalConfig.Note });
+            }
+            if (BaseController.GlobalConfig.QRHugeEntry == QRHugeEntry.Stop)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.SystemMaintain, ErrorMsg ="大额通道维护中，请稍后进入！" });
+            }
+
             EQRHuge qrHuge;
             try
             {

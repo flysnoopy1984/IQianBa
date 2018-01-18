@@ -89,6 +89,7 @@ namespace IQBCore.IQBPay.Models.QR
         /// </summary>
         public Boolean NeedVerification { get; set; }
 
+
         /// <summary>
         /// 最大可邀请人数
         /// </summary>

@@ -1300,6 +1300,18 @@ namespace IQBWX.Controllers
                 {
                     return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.QRHugeBlock });
                 }
+
+                List<EQRHuge> qrHugeList = db.DBQRHuge.Where(o => o.OpenId == UserSession.OpenId && o.QRHugeStatus == QRHugeStatus.Created).ToList();
+                
+                foreach(EQRHuge qrHuge in qrHugeList)
+                {
+                    if(DateHelper.IsOverTime(qrHuge.CreateDate,600))
+                    {
+                        qrHuge.QRHugeStatus = QRHugeStatus.InValid;
+                    }
+                }
+                if(qrHugeList.Count>0)
+                    db.SaveChanges();
             }
 
            ViewBag.PPSite = ConfigurationManager.AppSettings["Site_IQBPay"];

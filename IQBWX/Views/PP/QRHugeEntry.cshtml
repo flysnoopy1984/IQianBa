@@ -19,10 +19,10 @@
     }
     #MakeQRHuge{width:200px; height:60px; float:right;}
     #ErrorMsg{padding:20px;}
-    #QRImgContainer{padding:20px; text-align:center; display:inline-block}
+    #QRImgContainer{padding:20px; text-align:center; }
 
-    #QRDescription{width:320px; display:inline-block;}
-    #QRDescription ul {width:320px;}
+    #QRDescription{width:100%; display:inline-block;}
+    #QRDescription ul {width:100%;}
     #QRDescription ul li {width:100%;}
 
     #TransList{width:95%; margin-top:15px;}
@@ -52,16 +52,37 @@
         </div>
         <hr class="HR3_Red" style="width:100%; text-align:center;" />
 
+        <div id="QRDescription">
+            <span style="font-size:26px;">【大额码使用说明】</span>
+            <ul>
+                <li>1.输入框填写金额,点击[开始制作]按钮。</li>
+                <li>2.二维码生成后,长按二维码,可直接发送给您的客户。</li>
+                <li>3.大额码只支持<span style="color:brown">非风控</span>用户,请让用户先使用小额通道测试<span style="color:brown">300以上</span>金额(无需支付)，如显示可用花呗支付，则可使用大额码。</li>
+                <li>
+                    4.二维码<span style="color:brown">10分钟</span>自动失效。
+                </li>
+                <li>
+                    5.二维码<span style="color:brown">支付成功后</span>自动失效。
+                </li>
+                <li>
+                    6.二维码只能支付<span style="color:brown">2次</span>,2次支付无论是否成功。二维码都将失效。
+                </li>
+                <li>
+                    7.每个用户每天只支持连刷大额码<span style="color:brown">3笔</span>,请谨慎使用！
+                </li>
+            </ul>
+        </div>
+
         <div id="MakeQR" style="height:120px; padding:20px;">
             <div class="form-group">
                 <label class="label-left" style="width:20%;height:44px; line-height:44px;">制作金额:</label>
+               
                 <div>
                     <input id="Amount" type="text" class="form-control" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")'>   
                     <button type="button" class="btn btn-primary" id="MakeQRHuge" onclick="MakeQRHuge();">开始制作</button>
                 </div>
-                @*<div class="cen" style="margin-top:40px;">
-                    <button type="button" class="btn btn-primary" id="btnMake" style="width:200px; height:60px;">开始制作</button>
-                </div>*@
+                <div>【单笔1999-4999】</div>
+                <div>【分期5000-9999】</div>
             </div>
         </div>
       
@@ -75,28 +96,11 @@
                 <img id="QRImg" src="" />
                
             </div>
-            <div id="QRDescription">
-                <span style="font-size:large;">【大额码使用说明】</span>
-                <ul>
-                    <li>1.大额码只支持<span style="color:brown">非风控</span>用户，请让用户先使用小额通道测试<span style="color:brown">300以上</span>金额(无需支付)，如显示可用花呗支付，则可使用大额码</li>
-                    <li>
-                        2.此二维码<span style="color:brown">10分钟</span>自动失效。                       
-                    </li>
-                    <li>
-                        3.此二维码<span style="color:brown">支付成功后</span>自动失效。
-                    </li>                  
-                    <li>
-                        4.此二维码只能支付<span style="color:brown">2次</span> 。2次支付无论是否成功。二维码都将失效。
-</li>
-                    <li>
-                        5.每个用户每天只支持连刷大额码<span style="color:brown">3笔</span>，请谨慎使用！
-</li>                   
-                </ul>    
-            </div>
+            
         </div>
         <hr class="HR2_Black" style="width:100%; text-align:center;" />
         <div id="TransLog">
-            <div style="color:gray"><span style="margin-right:200px;">最近十条交易记录</span>
+            <div style="color:gray"><span style="margin-right:200px;">最近创建的十个二维码</span>
             <button type="button" class="btn btn-danger" id="btnViewLog" onclick="ViewLog()">刷新</button></div>
              <div id="TransList">
                  <ul id="header">

@@ -23,15 +23,22 @@ $(document).ready(function () {
 
     var client = IsWeixinOrAlipay();
     if (client != "Alipay") {
-        window.location.href = "/Home/ErrorMessage?code=3000";
+        alert("请使用支付宝打开");
+        window.location.href = "/Home/ErrorMessage?code=2000&ErrorMsg=请用支付宝打开";
+        return false;
+
     }
-    $.alert({
-        theme: "dark",
-        title: "注意",
-        content: "风控用户请【199连续支付】！",
-        btnClass: "btn-warning",
-        width: '30%',
-    });
+    //$.alert({
+    //    theme: "dark",
+    //    title: "注意",
+    //    content: "风控用户请【199连续支付】！",
+    //    btnClass: "btn-warning",
+    //    width: '30%',
+    //});
+
+
+
+
 
     InitControls();
     var account = getCookie("YJ_AliPayAccount");
@@ -49,8 +56,7 @@ function ModifyAliPayAccount() {
 function ConfirmAliPayAccount() {
 
     var AliPayAccount = $("#AliPayAccount").val();
-    if (AliPayAccount == "")
-    {
+    if (AliPayAccount == "") {
         $.alert({
             theme: "dark",
             title: "错误",
@@ -90,7 +96,6 @@ function GoToFastPay() {
 
 function PayToAli() {
 
-
     var amt = $("#TotalAmout").val();
     if (amt < 20 || amt > 799) {
 
@@ -100,9 +105,7 @@ function PayToAli() {
             content: "金额区间必须在【20-799】",
 
         });
-
         return;
-
     }
     var qrUserId = $("#qrUserId").val();
     if (amt == null || amt == "" || amt == 0) {
@@ -137,14 +140,35 @@ function PayToAli() {
 
         return;
     }
+
     $("#btnPay").attr("disabled", true);
     var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&AliPayAccount=" + AliPayAccount + "&PayType=1";
 
     // var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt;
     setCookie("YJ_AliPayAccount", AliPayAccount, 3);
 
+    var str = '<div>若支付宝出现以下提示<br />说明您是风控用户，只能199连刷</div>';
+    str += '<div style="text-align:center; margin-top:10px;"><img src="/Content/images/PayError1.jpg" /></div>';
 
-    window.location = url;
+
+    $.confirm({
+        theme: "modern",
+        title: '确认',
+        type: 'red',
+        content: str,
+        buttons: {
+            Know: {
+                btnClass: 'btn-danger',
+                text: "我知道了",
+                action: function () {
+                    window.location = url;
+                }
+            },
+
+        }
+    });
+
+
 
 
 }

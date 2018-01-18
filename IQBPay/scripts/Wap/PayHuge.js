@@ -1,8 +1,12 @@
 ﻿$(document).ready(function () {
 
+    var url = wxUrl+"/Home/ErrorMessage?code=2000&ErrorMsg=请用支付宝打开";
     var client = IsWeixinOrAlipay();
     if (client != "Alipay") {
-        window.location.href = wxUrl+"/Home/ErrorMessage?code=3000";
+        alert("请使用支付宝打开");
+        window.location.href = url;
+        return false;
+
     }
 
     InitControls();
