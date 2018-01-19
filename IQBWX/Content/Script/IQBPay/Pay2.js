@@ -147,18 +147,18 @@ function PayToAli() {
     // var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt;
     setCookie("YJ_AliPayAccount", AliPayAccount, 3);
 
-    var str = '<div>若支付宝出现以下提示<br />说明您是风控用户，只能199连刷</div>';
+    var str = '<div style="font-size:20px">若支付宝出现以下提示<br />说明您是花呗风控用户，只能199连刷</div>';
     str += '<div style="text-align:center; margin-top:10px;"><img src="/Content/images/PayError1.jpg" /></div>';
 
 
     $.confirm({
         theme: "modern",
-        title: '确认',
+        title: '注意',
         type: 'red',
         content: str,
         buttons: {
             Know: {
-                btnClass: 'btn-danger',
+                btnClass: 'btn btn-danger',
                 text: "我知道了",
                 action: function () {
                     window.location = url;

@@ -109,7 +109,7 @@ function MakeQRHuge() {
         $.alert({
             theme: "dark",
             title: "错误",
-            content: "建议输入非整数金额，可输入区间【1999-9999】。",
+            content: "金额区间【1999-4999单笔花呗】【5000-9999分期花呗】。",
         });
         return;
     }

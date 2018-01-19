@@ -15,7 +15,8 @@
     #QRHugeInfoRight{height:100px; line-height:100px; }
     #Amount
     {
-        color:black; width:35%;height:44px; display:inline-block;
+        width:40%;height:48px; display:inline-block;
+        font-size:30px; color:firebrick;
     }
     #MakeQRHuge{width:200px; height:60px; float:right;}
     #ErrorMsg{padding:20px;}
@@ -73,19 +74,17 @@
             </ul>
         </div>
 
-        <div id="MakeQR" style="height:120px; padding:20px;">
+        <div id="MakeQR" style="height:100px; padding:10px;">
             <div class="form-group">
-                <label class="label-left" style="width:20%;height:44px; line-height:44px;">制作金额:</label>
+                <label class="label-left" style="width:20%;height:44px; line-height:50px;">制作金额:</label>
                
                 <div>
-                    <input id="Amount" type="text" class="form-control" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")'>   
+                    <input id="Amount" type="tel" class="form-control" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")'>   
                     <button type="button" class="btn btn-primary" id="MakeQRHuge" onclick="MakeQRHuge();">开始制作</button>
-                </div>
-                <div>【单笔1999-4999】</div>
-                <div>【分期5000-9999】</div>
+                </div>              
             </div>
         </div>
-      
+        <div>【1999-4999单笔花呗】【5000-9999分期花呗】</div>
         <div id="ErrorMsg"></div>
         <div id="Result">   
             <hr class="HR3_668ff2" style="width:100%; text-align:center;" />             

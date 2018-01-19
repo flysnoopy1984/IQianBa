@@ -1166,7 +1166,7 @@ namespace IQBPay.Controllers
                             AlipayFundTransToaccountTransferResponse res = payMag.DoTransferAmount(TransferTarget.User, BaseController.SubApp, AliPayAccount, "0.1", PayTargetMode.AliPayAccount, out tId);
                             if (res.Code != "10000")
                             {
-                                ErrorUrl += "当前收款账户转账失败,请更换！";
+                                ErrorUrl += "您输入的收款账户,无法转账,如果您输入的是手机账户，请尝试使用对应的邮箱账户！";
                                 return Redirect(ErrorUrl);
                             }
                             else
