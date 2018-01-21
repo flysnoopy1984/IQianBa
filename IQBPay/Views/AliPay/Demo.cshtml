@@ -83,7 +83,7 @@
 
             <li><a href=@Url.Action("PCPay", "AliPay", new { amount = 14388 })>PC Pay</a></li>
 
-            <li><a href=@Url.Action("TestF2F", "AliPay",new { No = 201801080031 })>当面付</a></li>
+            <li><a href=@Url.Action("TestF2F", "AliPay",new { No = 201801080032,storeId=23,Amount="799"  })>当面付</a></li>
             <li><a href=@Url.Action("AuthToISV", "AliPay")>AuthToUser</a></li>
             <li><a href=@Url.Action("GetAuthToken", "AliPay")>GetAuthToken</a></li>
             <li><a href=@Url.Action("QueryToken", "AliPay")>QueryToken</a></li> 
@@ -95,7 +95,7 @@
             @*<li><a href="/API/TransferAPI/TransferToAgent?OpenId=o3nwE0qI_cOkirmh_qbGGG-5G6B0&AliPayAccount=song_fuwei@hotmail.com&OrderAmount=1.95&CommissionAmount=0">Transfer</a></li>*@ 
             <input type="button" onclick="Transfer('1', '0', 'song_fuwei@hotmail.com', 'o3nwE0qI_cOkirmh_qbGGG-5G6B0')" value="转账" />
             <li>           
-               <a href=@Url.Action("SubAccount", "AliPay",new { OrderNo = "YJO20180115110129mw" })>分账</a>
+               <a href=@Url.Action("SubAccount", "AliPay",new { OrderNo = "YJO20180115110129mw"})>分账</a>
             </li>
          
             <li>
@@ -107,7 +107,7 @@
             <li><a href=@Url.Action("TransferToMainAccount", "AliPay")>转账到子公司</a></li>
             <li><a href=@Url.Action("QueryOrder", "AliPay")>查询订单</a></li>
 
-            <li><a href=@Url.Action("F2FPay", "AliPay",new { qrUserId = "1386", Amount = "20" ,AliPayAccount="13225930162"})>真实F2F</a></li>
+            <li><a href=@Url.Action("F2FPay", "AliPay",new { qrUserId = "1400", Amount = "899" ,AliPayAccount="song_fuwei@hotmail.com"})>真实F2F</a></li>
             <li><input type="button" onclick="PartPayQR()" value="分期" /></li>
 
         </ul>

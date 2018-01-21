@@ -172,8 +172,8 @@ function ViewLog() {
                         payStatus = "失效";
                     else if (data[i].QRHugeStatus == 100)
                         payStatus = "成功支付";
-                    ctrl = "";
 
+                    ctrl = "";
                     ctrl += "<ul>";
                     ctrl += "<li style='width:10%'>" + (i + 1) + "</li>";
                     ctrl += "<li style='width:40%'>" + data[i].CreateDateStr + "</li>";

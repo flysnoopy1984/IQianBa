@@ -66,9 +66,9 @@ function Query(NeedClearn, _PageIndex) {
 function generateData(result) {
     var strCtrl = "";
     $.each(result, function (i) {
-        var storeName = result[i].StoreName;
-        if (storeName == null)
-            storeName = "随机";
+        //var storeName = result[i].StoreName;
+        //if (storeName == null)
+        //    storeName = "随机";
 
         var parentName = result[i].ParentName;
         if (parentName == null)
@@ -80,9 +80,9 @@ function generateData(result) {
         strCtrl += "<td>" + result[i].Name + "</td>";
         strCtrl += "<td>" + result[i].Rate + "</td>";
         strCtrl += "<td>" + result[i].ParentCommissionRate + "</td>";
-        strCtrl += "<td>" + parentName + "</td>";
-       
-        strCtrl += "<td>" + storeName + "</td>";
+        strCtrl += "<td>" + parentName + "</td>";      
+        strCtrl += "<td>" + result[i].MaxInviteCount + "</td>";
+        strCtrl += "<td>" + result[i].CurrentInvitedNum + "</td>";
         strCtrl += "<td>" + result[i].Remark + "</td>";
 
         if (result[i].RecordStatus == 0)

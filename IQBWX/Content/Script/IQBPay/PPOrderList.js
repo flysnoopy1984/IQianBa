@@ -142,7 +142,7 @@ function generateData(result) {
     $.each(result, function (i) {
         if ((pageIndex ==0 || pageIndex == -1) && i == 0) {
        //     pageCount = result[i].TotalCount;
-            $("#OrderNum").text(result[i].AgentTodayOrderCount);
+            $("#OrderNum").text(result[i].AgentTodayOrderAmount);
             $("#TodayInCome").text(result[i].AgentTodayIncome);
             $("#allInCome").text(result[i].AgentTotalIncome);
             if (result[i].ID == 0)
@@ -168,31 +168,28 @@ function generateData(result) {
             case -2:
                 orderStatus = "等待用户确认";
                 break;
+            case -3:
+                orderStatus = "交易关闭";
+                break;
         }
         strCtrl = "";
         strCtrl += "<tr>";
 
       //tdWidth = "width:" + $("#trHeader th").eq(0).css("width");
-        strCtrl += "<td style='width:50%'><ul><li style='color:cadetblue'>" + result[i].OrderNo + "</li>";
+        strCtrl += "<td style='width:50%'><ul><li style='color:cadetblue;'>" + result[i].OrderNo + "</li>";
         strCtrl += "<li>创建时间:" + result[i].TransDateStr + "</li>";
-        strCtrl += "<li style='color:brown; font-size:14px;'>订单状态:" + orderStatus + "</li></ul></td>";
+        //strCtrl += "<li style='color:brown; font-size:14px;'>订单状态:" + orderStatus + "</li>";
+  //      strCtrl += "<li>付款账户:" + result[i].BuyerAliPayLoginId + "</li>";
+        strCtrl += "</ul></td>";
         strCtrl += "<td style='width:50%'><ul><li style='color:firebrick; font-weight:bold;'>" + result[i].RateAmount + " &yen</li>";
         strCtrl += "<li>订单总额:" + result[i].TotalAmount + " &yen</li>";
-        strCtrl += "<li>付款账户:" + result[i].BuyerAliPayLoginId + "</li></ul></td>";
-
-        //tdWidth = "width:" + $("#trHeader th").eq(1).css("width");
-        //strCtrl += "<td>" + result[i].TransDateStr + "</td>";
-
-        //tdWidth = "width:" + $("#trHeader th").eq(2).css("width");
-        //strCtrl += "<td>" + result[i].BuyerAliPayLoginId + "</td>";
-
-       // tdWidth = "width:" + $("#trHeader th").eq(1).css("width");
        
-
-        //tdWidth = "width:" + $("#trHeader th").eq(4).css("width");
-        //strCtrl += "<td>" + orderStatus + "</td>";
-
+        strCtrl += "</ul>";
+        //strCtrl += "<ul><li>付款账户：" + result[i].BuyerAliPayLoginId + "</li></ul>"
+        strCtrl += "</td>";
         strCtrl += "</tr>";
+
+        strCtrl += "<tr ><td style='border:none; padding-top:0px;' colspan='2'>付款账户:" + result[i].BuyerAliPayLoginId + "</td></tr>"
       
        
 

@@ -64,8 +64,13 @@ function InitFormData(data)
 
     $("#ParentOpenId").val(data.ParentOpenId);
 
-    $("#NeedVerification").attr("checked", data.NeedVerification)
+    $("#NeedVerification").attr("checked", data.NeedVerification);
 
+    $("#MaxInviteCount").val(data.MaxInviteCount);
+
+    $("#CurrentInvitedNum").val(data.CurrentInvitedNum);
+
+    $("#QRStatus").val(data.RecordStatus);
     var st;
     if (data.RecordStatus == 0)
         st = true;
@@ -120,13 +125,15 @@ function Save() {
 
     var NeedVerification = $("#NeedVerification").get(0).checked;
 
+    var MaxInviteCount = $("#MaxInviteCount").val();
+
     if (!CheckForm()) return;
 
     var url = "/QR/SaveAR";
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID, "NeedVerification":NeedVerification,"Name": name, "ParentOpenId":ParentOpenId,"ParentCommissionRate": ParentCommissionRate, "Rate": rate, "Remark": remake, "RecordStatus": QRStatus, "ReceiveStoreId": storeId },
+        data: { "ID": ID,"MaxInviteCount":MaxInviteCount, "NeedVerification":NeedVerification,"Name": name, "ParentOpenId":ParentOpenId,"ParentCommissionRate": ParentCommissionRate, "Rate": rate, "Remark": remake, "RecordStatus": QRStatus, "ReceiveStoreId": storeId },
         url: url,
         success: function (data) {
             if (data.RunResult == "OK") {

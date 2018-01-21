@@ -67,12 +67,12 @@ namespace IQBPay.Controllers.ExternalAPI
                                     {
                                         return FormatReturn("邀请码已被禁用！");
                                     }
-
-                                    //int cn = db.DBUserInfo.Where(o => o.parentOpenId == pQR.ParentOpenId).Count();
-                                    //if(cn> BaseController.GlobalConfig.MaxNumChildAgent)
-                                    //{
-                                    //    return FormatReturn("最大可拥有代理数量已超限");
-                                    //}
+                                    
+                                    int cn = db.DBUserInfo.Where(o => o.parentOpenId == pQR.OwnnerOpenId && o.UserStatus == UserStatus.PPUser).Count();
+                                    if (cn >= pQR.MaxInviteCount)
+                                    {
+                                        return FormatReturn("邀请码可邀请次数已达上限，邀请失败！");
+                                    }
                                     //检查用户是否已经注册
                                     updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
                                     //没有注册
@@ -107,7 +107,7 @@ namespace IQBPay.Controllers.ExternalAPI
                                         return FormatReturn("代理已经存在,不能重复邀请");
                                     }
                                     pQR.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
-
+                                   
                                     updateUser = db.UpdateQRUser(pQR, updateUser, HttpContext.Current);
                                     //if(qrUser == null)
                                     //{

@@ -11,14 +11,49 @@
 <script src="@Url.Scrpit("~/Content/Script/iqb.dropload.min.js")"></script>
 @*<script src="~/Content/Script/Component/dropload.min.js"></script>*@
 <script src="@Url.Scrpit("~/Content/Script/IQBPay/AgentList.js")"></script>
+<style type="text/css">
+    #OverView{ height:80px; line-height:80px; margin:10px; width:100%}
+    #OverView ul{width:90%; height:100%;}
 
+    #OverView ul li{ width:46%; height:80px;float:left; line-height:80px; text-align:center;}
+   
+    #FilterArea{height:60px; line-height:60px; margin:10px;}
+    #btnPay{width:80px; height:40px;float:right; margin-top:10px;}
+
+    #UserStatus{color:firebrick;}
+
+</style>
 <div id="PageList">
-    <div class="grzxcon2 mgz xi30 bai cen">我的兄弟们</div>
-    <div style="margin:10px;">
-        <label>兄弟名称</label>
+    <div class="grzxcon2 mgz xi30 bai cen">我的团队</div>
+    <div id ="FilterArea">
+        <label>成员名称</label>
         <input id="AgentName" type="text" class="form-control" style="color:black; width:40% !important;display:inline-block !important">
-        <button type="button" class="mgz btn btn-success" id="btnPay" style="width:80px; height:40px;float:right;" onclick="FilterAgent()">筛选</button>
+        <button type="button" class="mgz btn btn-success" id="btnPay"  onclick="FilterAgent()">筛选</button>
     </div>
+    <hr class="HR3_668ff2" style="width:100%; text-align:center;" />   
+    <div id="OverView">
+        <ul>
+            <li>
+                <div style="display:inline">
+                    <img src="~/Content/images/PeopleGroup.png" class="ImgVerticalMiddle" />                  
+                </div>
+                <div style="display:inline;padding:10px;">
+                    <span>总人数</span>
+                    <span id="TotalMember" style="color:darkmagenta; font-size:30px;"></span>
+                </div>
+            </li>
+            <li>
+                <div style="display:inline">
+                    <img src="~/Content/images/money1.png" class="ImgVerticalMiddle" />
+                </div>
+                <div style="display:inline;padding:10px;">
+                    <span>总金额</span>
+                    <span id="TotalAmount" style="color:goldenrod; font-size:30px;"></span>
+                </div>               
+            </li>       
+        </ul>    
+    </div>  
+    @*<hr class="HR3_00ff21" style="width:100%; text-align:center;" />*@    
     <div class="ListTableBody_noFixed" id="ListTableBody">
         @*<div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>*@
         <table class="table mgz2  large-only" id="trContainer"></table>

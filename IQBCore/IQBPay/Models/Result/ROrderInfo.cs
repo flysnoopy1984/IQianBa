@@ -22,7 +22,7 @@ namespace IQBCore.IQBPay.Models.Result
         /// <summary>
         /// 代理今日订单
         /// </summary>
-        public string AgentTodayOrderCount { get; set; }
+        public string AgentTodayOrderAmount { get; set; }
 
         /// <summary>
         /// 代理今日收益

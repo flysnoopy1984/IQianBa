@@ -36,11 +36,12 @@ function Query(NeedClearn,_PageIndex) {
     var cAgentName = $("#cAgentName").val();
     var cParentName = $("#cParentName").val();
     var cHasQRHuge = $("#cHasQRHuge").val();
+    var cUserStatus = $("#cUserStatus").val();
 
     var url = "/User/Query";
     $.ajax({
         type: 'post',
-        data: "HasQRHuge="+cHasQRHuge+"&role=2&AgentName=" + cAgentName + "&ParentName=" + cParentName + "&pageIndex=" + _PageIndex,
+        data: "HasQRHuge="+cHasQRHuge+"&role=2&AgentName=" + cAgentName + "&ParentName=" + cParentName + "&UserStatus="+cUserStatus+"&pageIndex=" + _PageIndex,
         url: url,
         success: function (data) {
             var arrLen = data.length;

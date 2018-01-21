@@ -1,49 +1,66 @@
 ﻿{
     "button": [
-        {
-            "name": "成为会员",
-            "type": "view",
-            "url": "http://wx.iqianba.cn/Html5/applyMember"                 
-        },
-        {
-            "name": "全民秒贷",
+       {
+          "name": "成绩中心",
           "sub_button": [
+           
             {
               "type": "view",
-              "name": "全民秒贷书站",
-              "url": "http://wx.iqianba.cn/home/wxloginwap?entry=1"
+              "name": "我的战绩",
+              "url": "http://wx.iqianba.cn/PP/OrderList"
             },
             {
               "type": "view",
-              "name": "自适应版书站",
-              "url": "http://wx.iqianba.cn/home/wxloginwap?entry=2"
-            },
-            {
-              "type": "click",
-              "name": "我的赚钱二维码",
-              "key": "mn_202"
+              "name": "朋友成绩",
+              "url": "http://wx.iqianba.cn/PP/AgentCommList"
             }
           ]
-        },       
-        {
-            "name": "会员中心",
-            "sub_button": [
-              {
-                "type": "view",
-                "name": "会员中心入口",
-                "url": "http://wx.iqianba.cn/Html5/MemberCenter"
-              },
-              {
-                "type": "view",
-                "name": "贷款超市",
-                "url": "http://wx.iqianba.cn/Html5/LoanMarket"
-              },
-              {
-                "type": "view",
-                "name": "最新口子",
-                "url": "http://wx.iqianba.cn/Info/Summery"
-              }
-            ]
-        }
+        },
+      {
+        "name": "用户中心",
+        "sub_button": [
+          {
+            "type": "view",
+            "name": "我的邀请码",
+            "url": "http://wx.iqianba.cn/PP/InviteCode"
+          },
+          {
+            "type": "view",
+            "name": "我的兄弟们",
+            "url": "http://wx.iqianba.cn/PP/AgentList"
+          },
+          {
+            "type": "view",
+            "name": "我的账户",
+            "url": "http://wx.iqianba.cn/PP/AliPayAccount"
+          },
+          {
+            "type": "view",
+            "name": "设置二维码",
+            "url": "http://wx.iqianba.cn/PP/Agent_QR_ARList"
+          },
+          {
+            "type": "click",
+            "name": "当前二维码",
+            "key": "pay_101"
+          }
+        ]
+      },
+      {
+        "name": "玉杰服务",
+        "sub_button": [
+          {
+            "type": "click",
+            "name": "使用手册",
+            "key": "wx_302"
+          },
+          {
+            "type": "view",
+            "name": "大额入口",
+            "url": "http://wx.iqianba.cn/PP/QRHugeEntry"
+          }
+        ]
+      }
+    
     ]
  }

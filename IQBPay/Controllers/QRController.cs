@@ -68,6 +68,8 @@ namespace IQBPay.Controllers
                             APPId = qr.APPId,
                             CreateDate = qr.CreateDate,
                             UserRole = ui.UserRole,
+                            MaxInviteCount = qr.MaxInviteCount,
+                            OwnnerOpenId = qr.OwnnerOpenId,
                             
 
                         }
@@ -82,6 +84,7 @@ namespace IQBPay.Controllers
                         list = list.Where(a => a.UserRole == UserRole);
                     }
                     list =list.OrderByDescending(i => i.CreateDate);
+                  
                     //  db.DBQRInfo.Where(i => i.Type == QRType).OrderByDescending(i => i.CreateDate);
                     int totalCount = list.Count();
                     if (pageIndex == 0)
@@ -93,6 +96,20 @@ namespace IQBPay.Controllers
                     }
                     else
                         result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+
+                   
+                }
+
+                using (AliPayContent db = new AliPayContent())
+                {
+                    if (UserRole == UserRole.DiamondAgent)
+                    {
+                        foreach (RQRInfo r in result)
+                        {
+                            string sql = string.Format("select count(*) from UserInfo where parentOpenId = '{0}'", r.OwnnerOpenId);
+                            r.CurrentInvitedNum = db.Database.SqlQuery<int>(sql).FirstOrDefault();
+                        }
+                    }
                 }
 
             }
@@ -125,6 +142,7 @@ namespace IQBPay.Controllers
                     {
                         result = new EQRInfo();
                         result.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal;
+                        
                     }
                     else
                     {
@@ -132,8 +150,10 @@ namespace IQBPay.Controllers
                     }
                     if (qrType == QRType.ARAuth)
                     {
+                        string sql = string.Format("select count(*) from UserInfo where parentOpenId = '{0}'", result.OwnnerOpenId);
+                        result.CurrentInvitedNum = db.Database.SqlQuery<int>(sql).FirstOrDefault();
                         result.HashStoreList = db.Database.SqlQuery<HashStore>("select Id,Name from storeinfo").ToList();
-                        result.HashUserList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo where UserRole = 3 or userRole=4").ToList();
+                        result.HashUserList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo where UserRole = 3 or userRole=100").ToList();
                     }
                 }
                 return Json(result);
@@ -173,7 +193,7 @@ namespace IQBPay.Controllers
                         entry.Property(t => t.ParentCommissionRate).IsModified = true;
                         entry.Property(t => t.RecordStatus).IsModified = true;
                         entry.Property(t => t.NeedVerification).IsModified = true;
-
+                        entry.Property(t => t.MaxInviteCount).IsModified = true;
                         entry.Property(t => t.MDate).IsModified = true;
                         entry.Property(t => t.MTime).IsModified = true;
                         entry.Property(t => t.ModifyDate).IsModified = true;

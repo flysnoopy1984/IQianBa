@@ -23,10 +23,10 @@ $(document).ready(function () {
 
     var client = IsWeixinOrAlipay();
     if (client != "Alipay") {
-        alert("请使用支付宝打开");
         window.location.href = "/Home/ErrorMessage?code=2000&ErrorMsg=请用支付宝打开";
+        alert("请使用支付宝打开");
+       
         return false;
-
     }
     //$.alert({
     //    theme: "dark",
@@ -35,10 +35,6 @@ $(document).ready(function () {
     //    btnClass: "btn-warning",
     //    width: '30%',
     //});
-
-
-
-
 
     InitControls();
     var account = getCookie("YJ_AliPayAccount");
@@ -147,7 +143,7 @@ function PayToAli() {
     // var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt;
     setCookie("YJ_AliPayAccount", AliPayAccount, 3);
 
-    var str = '<div style="font-size:20px">若支付宝出现以下提示<br />说明您是花呗风控用户，只能199连刷</div>';
+    var str = '<div style="font-size:26px">若支付宝出现以下提示<br />说明您只能<span style="color:firebrick">199元连续支付</span></div>';
     str += '<div style="text-align:center; margin-top:10px;"><img src="/Content/images/PayError1.jpg" /></div>';
 
 
@@ -167,8 +163,5 @@ function PayToAli() {
 
         }
     });
-
-
-
 
 }

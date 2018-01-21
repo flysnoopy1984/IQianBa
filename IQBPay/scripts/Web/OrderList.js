@@ -148,6 +148,9 @@ function generateData(result) {
             case -2:
                 OrderStatus = "等待用户确认";
                 break;
+            case -3:
+                OrderStatus = "系统关闭交易";
+                break;
         }
 
         var Channel = result[i].SellerChannel;
@@ -288,4 +291,26 @@ function ShowError(no) {
 function ToInfo(action) {
     window.location.href = "OrderInfo?do=" + action;
     return;
+}
+
+function CleanWaitOrder()
+{
+    var url = "/Order/CleanWaitOrder";
+    $.ajax({
+        type: 'post',
+        data: "",
+        url: url,
+        success: function (data) {
+            if (data.IsSuccess == true) {
+                alert("清除完成");
+            }
+            else
+                alert(data.ErrorMsg);
+        },
+        error: function (xhr, type) {
+
+            alert('Ajax error!');
+
+        }
+    });
 }

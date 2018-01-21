@@ -133,6 +133,7 @@
     <Compile Include="IQBPay\Models\QR\EQRUser.cs" />
     <Compile Include="IQBPay\Models\Result\RAgentCommission.cs" />
     <Compile Include="IQBPay\Models\Result\RDoTransfer.cs" />
+    <Compile Include="IQBPay\Models\Result\RNews.cs" />
     <Compile Include="IQBPay\Models\Result\ROrderInfo.cs" />
     <Compile Include="IQBPay\Models\Result\ROrder_Receive.cs" />
     <Compile Include="IQBPay\Models\Result\ROrder_Transfer.cs" />
@@ -164,10 +165,10 @@
     <Compile Include="IQBWX\Models\Json\WXMedia\JIMedia.cs" />
     <Compile Include="IQBWX\Models\Json\WXMedia\JOMedia.cs" />
     <Compile Include="IQBWX\Models\Json\WXMedia\JOMedia_Item.cs" />
-    <Compile Include="IQBWX\Models\Json\WXMedia\News\JOMedia_Item_Content.cs" />
-    <Compile Include="IQBWX\Models\Json\WXMedia\News\JOMedia_Item_Content_NewsItem.cs" />
+    <Compile Include="IQBWX\Models\Json\WXMedia\News\Content.cs" />
+    <Compile Include="IQBWX\Models\Json\WXMedia\News\ItemItem.cs" />
+    <Compile Include="IQBWX\Models\Json\WXMedia\News\News_itemItem.cs" />
     <Compile Include="IQBWX\Models\Json\WXMedia\News\JOMedia_News.cs" />
-    <Compile Include="IQBWX\Models\Json\WXMedia\News\JOMedia_NewsItem.cs" />
     <Compile Include="IQBWX\Models\OutParameter\OutSMS.cs" />
     <Compile Include="IQBWX\Models\OutParameter\SSOQR.cs" />
     <Compile Include="IQBWX\Models\WX\Template\BaseTemplate.cs" />

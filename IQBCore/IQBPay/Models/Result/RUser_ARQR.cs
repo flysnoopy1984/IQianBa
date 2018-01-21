@@ -26,5 +26,9 @@ namespace IQBCore.IQBPay.Models.Result
         public string ParentOpenId { get; set; }
 
         public float MarketRate { get; set; }
+
+        public int TotalMember { get; set; }
+
+        public float TotalAmount { get; set; }
     }
 }

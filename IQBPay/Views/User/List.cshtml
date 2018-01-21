@@ -35,11 +35,23 @@
                     <div class="form-group">
                         <label>是否大额：</label>
                         <select id="cHasQRHuge"  class="form-control ConditionField">
-                            <option value="-1">全部</option>
+                            <option value="99" selected>全部</option>
                              <option value="1">是</option>
                             <option value="0">否</option>
                         </select>
                        
+                    </div>
+                </li>
+
+                <li>
+                    <div class="form-group">
+                        <label>状态：</label>
+                        <select id="cUserStatus" class="form-control ConditionField">
+                            <option value="0" >禁用</option>
+                            <option value="99">全部</option>
+                            <option value="1" selected>正常</option>                            
+                        </select>
+
                     </div>
                 </li>
             </ul>

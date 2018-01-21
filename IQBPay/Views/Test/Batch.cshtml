@@ -85,6 +85,50 @@
                 }
             });
         }
+        //测试收款二维码
+        function TestReceiveQR()
+        {
+            var url = "/Test/Test_ReceiveQR";
+            $.ajax({
+                type: 'post',
+                data: "",
+                url: url,
+                success: function (data) {
+                    if (data.IsSuccess == true) {
+                        $("#qrImg").attr("src", data.SuccessMsge);
+                    }
+                    else {
+                        alert("Error:" + data.ErrorMsg);
+                    }
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+
+
+                }
+            });
+        }
+        //测试邀请码
+        function TestDoInviteQR() {
+            var url = "/Test/Test_DoInviteQR";
+            $.ajax({
+                type: 'post',
+                data: "",
+                url: url,
+                success: function (data) {
+                    if (data.IsSuccess == true) {
+                        $("#qrImg").attr("src", data.SuccessMsge);
+                    }
+                    else {
+                        alert("Error:" + data.ErrorMsg);
+                    }
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+
+                }
+            });
+        }
     </script>
 </head>
 <body>
@@ -92,6 +136,11 @@
         <input type="button" value="更新头像" onclick="UpdateHeaderLogo()" />
         <input type="button" value="收款码背景图更新" onclick="DoQRBatch()" />
         <input type="button" value="邀请码" onclick="DoInviteQRBatch()" />
+        <input type="button" value="测试收款二维码" onclick="TestReceiveQR()" />
+        <input type="button" value="测试邀请码" onclick="TestDoInviteQR" />
+    </div>
+    <div>
+        <img id="qrImg" src="" />
     </div>
 </body>
 </html>

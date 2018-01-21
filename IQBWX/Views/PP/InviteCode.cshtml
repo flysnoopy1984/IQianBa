@@ -73,30 +73,24 @@
                 <label class="col-sm-3 control-label">商户</label>
                 <div class="col-sm-6">
                     <select id="selStoreRate" class="form-control" style="height:40px;">
-                        @foreach (HashStore st in Model.StoreList)
+                        <option value="-1">随机</option>
+                        @*@foreach (HashStore st in Model.StoreList)
                         {
-                            if (st.IsReceiveAccount)
-                            {
-                                <option value="@st.Id" selected>@st.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@st.Id">@st.Name</option>
-                            }
+                            <option value="@st.Id">@st.Name</option>
 
-                        }
+                        }*@
                     </select>
                 </div>
             </div>
 
-            <div id="buttonArea" style="margin-bottom:150px;">
+            <div id="buttonArea">
                 <button type="button" class="mgz btn btn-primary" id="btnSave" style="width:95%; height:60px;" onclick="Update();">更新</button>
             </div>
         }
        
        
     </div>
-    <div class="cen">
+    <div class="cen" style="margin-bottom:20px;margin-top:20px;">
         <label class="label-top">邀请二维码</label>
         <div class="col-sm-6">
             <img id="QRImg" style="width:256px; height:256px;" src="@Model.FilePath" />

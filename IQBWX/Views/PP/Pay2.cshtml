@@ -19,7 +19,7 @@
     <script src="~/Content/Script/Component/jquery-confirm.js"></script>
     <script src="@Url.Scrpit("~/Content/Script/IQBPay/Pay2.js")"></script>
 
-    <title>【玉杰服务】</title>
+    <title>【收银台】</title>
 </head>
 <body>
     <style>
@@ -44,8 +44,8 @@
             </div>*@
 
         <div style="margin-top:20px; margin-bottom:20px; padding:10px;">
-            <span class="FieldLabel" style="font-weight:bold; color:#FF6634">请输入<span style="color:firebrick">自己</span>的另一个支付宝账户收款！</span>          
-            <span class="FieldLabel" style="font-weight:bold;">*请配合关闭wifi和定位*</span>           
+            <span class="FieldLabel" style="font-weight:bold; color:#FF6634">请输入您的<span style="color:firebrick">收款支付宝账户</span>！</span>          
+            <span class="FieldLabel" style="font-weight:bold;">*本系统自动回款，请放心使用！*</span>           
             <input id="AliPayAccount" class="AliPayAccount" type="text">
             <button type="button" class="mgz btn btn-success verifyButton" id="bnConfirmAliPayAccount" onclick="ConfirmAliPayAccount()">确定</button>
             <button type="button" class="mgz btn btn-primary verifyButton" id="bnModifyAliPayAccount" onclick="ModifyAliPayAccount()">修改</button>

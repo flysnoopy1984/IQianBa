@@ -89,9 +89,7 @@ namespace IQBPay.Controllers
                 ResultEnum status;
                 Res = payMag.PayF2F_ForR(BaseController.App, sellerId, Amount, qr,out status);
                 if (status == ResultEnum.SUCCESS)
-                {
-                   
-                  
+                {                   
                     qr.FilePath = Res;
                     db.DBTool_QR.Add(qr);
                     db.SaveChanges();
@@ -180,17 +178,25 @@ namespace IQBPay.Controllers
                     EQRUser updateQR = null;
                     foreach (EQRUser qr in list)
                     {
-                        EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == qr.OpenId).FirstOrDefault();
-
                         updateQR = db.DBQRUser.Where(a => a.ID == qr.ID).First();
-
-                    //    if(string.IsNullOrEmpty(updateQR.OrigQRFilePath))
-                       if(ui.OpenId!= "o3nwE0qI_cOkirmh_qbGGG-5G6B0")
-                             updateQR = QRManager.UpdateReceiveQR(updateQR,"2018");
-
-
-
+                        updateQR = QRManager.CreateUserUrlById(updateQR, "1");
                     }
+                  //      updateQR = db.DBQRUser.Where(a => a.OpenId == "o3nwE0jrONff65oS-_W96ErKcaa0").First();
+                 //   updateQR = QRManager.CreateUserUrlById(updateQR, "1");
+
+                    //foreach (EQRUser qr in list)
+                    //{
+                    //    EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == qr.OpenId).FirstOrDefault();
+
+                    //    updateQR = db.DBQRUser.Where(a => a.ID == qr.ID).First();
+
+                    ////    if(string.IsNullOrEmpty(updateQR.OrigQRFilePath))
+                    //   if(ui.OpenId!= "o3nwE0qI_cOkirmh_qbGGG-5G6B0")
+                    //         updateQR = QRManager.UpdateReceiveQR(updateQR,"2018");
+
+
+
+                    //}
                     db.SaveChanges();
                 }
             }
@@ -288,6 +294,56 @@ namespace IQBPay.Controllers
                 result.ErrorMsg = ex.Message;
                 result.IsSuccess = false;
             }
+
+            return Json(result);
+        }
+
+        public ActionResult Test_ReceiveQR()
+        {
+           
+            OutAPIResult result = new OutAPIResult();
+            EQRUser qrUser = new EQRUser();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    qrUser = db.DBQRUser.Where(o => o.OpenId == "o3nwE0jrONff65oS-_W96ErKcaa0").FirstOrDefault();
+                    qrUser = QRManager.CreateUserUrlById(qrUser, "1");
+
+                }
+                result.SuccessMsge = qrUser.FilePath;
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+           
+           
+            return Json(result);
+        }
+
+        public ActionResult Test_DoInviteQR()
+        {
+
+            OutAPIResult result = new OutAPIResult();
+            EQRInfo qrInfo = new EQRInfo();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    qrInfo = db.DBQRInfo.Where(o => o.OwnnerOpenId == "o3nwE0jrONff65oS-_W96ErKcaa0").FirstOrDefault();
+                   
+
+                }
+                result.SuccessMsge = qrInfo.FilePath;
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+
 
             return Json(result);
         }

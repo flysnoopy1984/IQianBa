@@ -1,4 +1,4 @@
-﻿var Channel
+﻿var Channel;
 $(document).ready(function () {
     Channel = GetUrlParam("Channel");
     if (Channel == null || Channel == undefined)
@@ -38,10 +38,10 @@ function Query() {
 
     var url = "/Store/Query";
     var StoreName = $("#cStoreName").val();
-
+    var cRecordStatus = $("#cRecordStatus").val();
     $.ajax({
         type: 'post',
-        data: "Name="+StoreName+"&Channel="+Channel+"&pageIndex=0&pageSize=80",
+        data: "Name=" + StoreName + "&RecordStatus=" + cRecordStatus + "&Channel=" + Channel + "&pageIndex=0&pageSize=80",
         url: url,
         success: function (data) {
             var arrLen = data.length;

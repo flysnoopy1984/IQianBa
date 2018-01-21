@@ -137,7 +137,7 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(string Name,Channel Channel,int pageIndex = 0, int pageSize = IQBConstant.PageSize)
+        public ActionResult Query(string Name,Channel Channel,RecordStatus RecordStatus = RecordStatus.Normal, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             List<EStoreInfo> result = new List<EStoreInfo>();
             IQueryable<EStoreInfo> list = null ;
@@ -152,6 +152,11 @@ namespace IQBPay.Controllers
                         list = db.DBStoreInfo.Where(i => i.OwnnerOpenId == openId).OrderByDescending(i => i.CreateDate);
                     else
                         list = db.DBStoreInfo.Where(i => i.OwnnerOpenId == openId && i.Channel == Channel).OrderByDescending(i => i.CreateDate);
+
+                    if(RecordStatus!= RecordStatus.All)
+                    {
+                        list = list.Where(s => s.RecordStatus == RecordStatus);
+                    }
 
                     if (!string.IsNullOrEmpty(Name))
                         list = list.Where(s => s.Name.Contains(Name));

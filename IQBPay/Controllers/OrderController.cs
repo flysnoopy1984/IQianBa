@@ -1,8 +1,10 @@
-﻿using IQBCore.Common.Helper;
+﻿using Aop.Api.Response;
+using IQBCore.Common.Helper;
 using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.IQBPay.Models.Order;
+using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.Result;
 using IQBPay.Core;
 using IQBPay.DataBase;
@@ -153,6 +155,7 @@ namespace IQBPay.Controllers
                         AgentOpenId = o.AgentOpenId,
                         LogRemark = o.LogRemark,
                         OrderType = o.OrderType,
+                        SellerStoreId = o.SellerStoreId,
                         
                     });
                     if (parameter.OrderType != OrderType.All)
@@ -195,7 +198,7 @@ namespace IQBPay.Controllers
                     }
                     else
                     {
-                        list = list.Where(o => o.OrderStatus != OrderStatus.WaitingAliPayNotify);
+                        list = list.Where(o => o.OrderStatus != OrderStatus.WaitingAliPayNotify && o.OrderStatus != OrderStatus.SystemClose);
                     }
 
                     if (parameter.DataType != ConditionDataType.All)
@@ -289,6 +292,48 @@ namespace IQBPay.Controllers
             }
             return Json(result);
         }
+
+        [HttpPost]
+        public ActionResult CleanWaitOrder()
+        {
+            OutAPIResult result = new OutAPIResult();
+            AliPayManager AliPayManager = new AliPayManager();
+          
+
+            try
+
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    var list =  db.DBOrder.Where(o => o.OrderStatus == OrderStatus.WaitingAliPayNotify && o.SellerStoreId == 1);
+                    foreach(EOrderInfo order in list)
+                    {
+                     
+                        AlipayTradeCloseResponse res = AliPayManager.CleanWaitOrder(BaseController.App, order);
+                        if (res.Code == "10000")
+                        {
+                            order.OrderStatus = OrderStatus.SystemClose;
+                        }
+                        else
+                        {
+                            order.LogRemark += "Msg:" + res.Msg + "SubCode" + res.SubCode + "SubMsg:" + res.SubMsg;
+                        }
+                       
+                    }
+                    db.SaveChanges();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+        }
+         
+
 
     }
 }

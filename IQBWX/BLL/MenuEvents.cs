@@ -57,7 +57,7 @@ namespace IQBWX.BLL
                 using (AliPayContent db = new AliPayContent())
                 {
                     //筛选出当前的收款二维码 
-                    payQRUser = db.DBQRUser.Where(u => u.OpenId == msg.FromUserName && u.IsCurrent == true).FirstOrDefault();
+                    payQRUser = db.DBQRUser.Where(u => u.OpenId == msg.FromUserName && u.IsCurrent == true && u.QRType == IQBCore.IQBPay.BaseEnum.QRType.AR).FirstOrDefault();
                     if (payQRUser == null)
                     {
                         this.ResponseXml = msg.toText("没有权限！");
@@ -73,14 +73,15 @@ namespace IQBWX.BLL
                         desc = "代理成本：" + (payQRUser.MarketRate-payQRUser.Rate)+"%  |  用户手续费：["+payQRUser.MarketRate+"%]";
                         this.ResponseXml = msg.toPicText(picUrl, GoUrl, desc);
                         break;
-                    //联系我们
-                    case "wx_301":   
-                        this.ResponseXml = msg.toText("有任何问题请联系你的大哥大姐们!");//msg.toPic("yd6E8-ZKD6W7zH_0yEbfqrbtlh8_hY9vwj-d1BzM414");                                                                             //   log.log("wx_301：" + ResponseXml);
+                    //使用手册
+                    case "wx_101":
+                        GoUrl = "https://mp.weixin.qq.com/s?__biz=MzUyMzUwOTQ3MA==&mid=100000020&idx=1&sn=fb0bd4f65bdd44985bf137413012cf64&chksm=7a3acaa54d4d43b360d9513a1e810b11d9c13899ad0c50d0cff089f70c88c33037230ef65cad#rd";
+                        this.ResponseXml = msg.toPicText("http://wx.iqianba.cn/Content/images/sysc.png", GoUrl, "", "【玉杰】使用手册");
+                                                                                               //   log.log("wx_301：" + ResponseXml);
                         break;
                     //使用说明：
                     case "wx_302":
-                        GoUrl = "https://mp.weixin.qq.com/s?__biz=MzUyMzUwOTQ3MA==&mid=100000020&idx=1&sn=fb0bd4f65bdd44985bf137413012cf64&chksm=7a3acaa54d4d43b360d9513a1e810b11d9c13899ad0c50d0cff089f70c88c33037230ef65cad#rd";
-                        this.ResponseXml = msg.toPicText("http://wx.iqianba.cn/Content/images/sysc.png", GoUrl, "","【玉杰】使用手册");
+                      
                         break;
                     default:
                         break;

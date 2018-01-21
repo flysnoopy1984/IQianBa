@@ -689,12 +689,12 @@ namespace IQBPay.Controllers
             return Content(AliDemo.callAliPay_Wap(amt));
         }
 
-        public ActionResult TestF2F(string No)
+        public ActionResult TestF2F(string No,long storeId,string Amount)
         {
             using (AliPayContent db = new AliPayContent())
             {
-                EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == 3).FirstOrDefault();
-                return Content(callF2FPay(store, "10.00",No));
+                EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == storeId).FirstOrDefault();
+                return Content(callF2FPay(store, Amount, No));
             }
         }
 

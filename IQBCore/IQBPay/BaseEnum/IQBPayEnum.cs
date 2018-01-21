@@ -80,6 +80,7 @@ namespace IQBCore.IQBPay.BaseEnum
 
 
         PPUser= 1,
+        All = 99,
 
 
     }
@@ -119,6 +120,9 @@ namespace IQBCore.IQBPay.BaseEnum
         ARHuge = 4,
 
         StoreAuth =2,
+        /// <summary>
+        /// 邀请码
+        /// </summary>
         ARAuth = 3,
         Temp =0,
        
@@ -139,6 +143,8 @@ namespace IQBCore.IQBPay.BaseEnum
         Blocked=1,
 
         Process = 2,
+
+        All = 99,
     }
 
     public enum QRHugeTransStatus
@@ -185,12 +191,29 @@ namespace IQBCore.IQBPay.BaseEnum
         /// </summary>
         WaitingBuyerConfirm =-2,
 
+        /// <summary>
+        /// 系统关闭交易，用户未支付
+        /// </summary>
+        SystemClose = -3,
+        /// <summary>
+        /// 等待支付
+        /// </summary>
         WaitingAliPayNotify =0,
 
+        /// <summary>
+        /// 用户已支付
+        /// </summary>
         Paid =1,
 
+        /// <summary>
+        /// 成功交易
+        /// </summary>
         Closed= 2,
+
         
+        /// <summary>
+        /// 异常
+        /// </summary>
         Exception =-1,
 
         ALL = 99,

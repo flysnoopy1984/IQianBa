@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace IQBCore.IQBWX.Models.Json.WXMedia.News
 {
-    public class JOMedia_News
+    public class Content
     {
         /// <summary>
         /// 
         /// </summary>
-        public List<ItemItem> item { get; set; }
+        public List<News_itemItem> news_item { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public int total_count { get; set; }
+        public int create_time { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public int item_count { get; set; }
+        public int update_time { get; set; }
     }
 }

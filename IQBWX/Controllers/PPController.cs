@@ -1,4 +1,5 @@
-﻿using IQBCore.Common.Helper;
+﻿using HtmlAgilityPack;
+using IQBCore.Common.Helper;
 using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
@@ -8,6 +9,7 @@ using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.Store;
 using IQBCore.IQBPay.Models.User;
 using IQBCore.IQBWX.BaseEnum;
+using IQBCore.IQBWX.Models.Json.WXMedia.News;
 using IQBCore.IQBWX.Models.WX.Template;
 using IQBCore.WxSDK;
 using IQBWX.BLL;
@@ -84,7 +86,7 @@ namespace IQBWX.Controllers
 
         public ActionResult PayWithAccount(string Id)
         {
-            return RedirectToAction("Pay", "PP", new { Id = Id });
+           // return RedirectToAction("Pay", "PP", new { Id = Id });
 
             if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
             {
@@ -343,7 +345,7 @@ namespace IQBWX.Controllers
                         list = list.Where(o => o.OrderStatus == OrderStatus);
                     }
                     else
-                        list = list.Where(o => o.OrderStatus != OrderStatus.WaitingAliPayNotify);
+                        list = list.Where(o => o.OrderStatus != OrderStatus.WaitingAliPayNotify && o.OrderStatus!=OrderStatus.SystemClose);
 
                     if (DateType != ConditionDataType.All)
                     {
@@ -398,8 +400,10 @@ namespace IQBWX.Controllers
                         });
 
                         var TodayOrder = db.DBOrder.Where(o => o.AgentOpenId == OpenId && o.OrderStatus == OrderStatus.Closed && o.TransDate >= startDate && o.TransDate <= endDate);
-                        result[0].AgentTodayOrderCount = TodayOrder.Count().ToString();
-                        result[0].AgentTodayIncome = (TodayOrder.ToList().Sum(o => o.RateAmount)+ PList.ToList().Sum(o=>o.CommissionAmount)).ToString("0.00");
+                        var myToday = TodayOrder.ToList();
+                        //   result[0].AgentTodayOrderAmount = myToday.Sum(o => o.TotalAmount).ToString("0.00");
+                        result[0].AgentTodayOrderAmount = myToday.Count.ToString();
+                        result[0].AgentTodayIncome = (myToday.Sum(o => o.RateAmount)+ PList.ToList().Sum(o=>o.CommissionAmount)).ToString("0.00");
 
                         var allOrder = db.DBOrder.Where(o => o.AgentOpenId == OpenId && o.OrderStatus == OrderStatus.Closed);
                         result[0].AgentTotalIncome = (allOrder.ToList().Sum(o => o.RateAmount)+ AllPLList.ToList().Sum(o=>o.CommissionAmount)).ToString("0.00");
@@ -1035,8 +1039,8 @@ namespace IQBWX.Controllers
 
                 if(UserSession.UserRole == UserRole.Administrator)
                 {
-                    qr.StoreList = db.Database.SqlQuery<HashStore>("select Id,Name,IsReceiveAccount from storeinfo").ToList();
-                    qr.ParentAgentList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo").ToList();
+                   // qr.StoreList = db.Database.SqlQuery<HashStore>("select Id,Name,IsReceiveAccount from storeinfo").ToList();
+                    qr.ParentAgentList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo where UserRole = 3 or UserRole=100").ToList();
                 }
                     
             }
@@ -1091,9 +1095,17 @@ namespace IQBWX.Controllers
                     query = query.Where(a=>a.UserName.Contains(AgentName));
                 }
                 if (pageIndex == 0)
+                {
                     result = query.Take(pageSize).ToList();
+                   
+                    result[0].TotalMember = db.DBUserInfo.Where(o => o.parentOpenId == UserSession.OpenId && o.UserStatus == UserStatus.PPUser).Count();
+
+                    string sql = string.Format("select sum(TotalAmount) as TotalAmount from OrderInfo where OrderStatus =2 and ParentOpenId = '{0}'", UserSession.OpenId);
+                    result[0].TotalAmount = (float)db.Database.SqlQuery<double>(sql).FirstOrDefault();
+                    
+                }
                 else
-                    result = query.OrderBy(a=>a.ID).Skip(pageIndex * pageSize).Take(pageSize).ToList();
+                    result = query.OrderBy(a => a.ID).Skip(pageIndex * pageSize).Take(pageSize).ToList();
 
                 return Json(result);
             }
@@ -1457,6 +1469,50 @@ namespace IQBWX.Controllers
             }
             return Json(list);
         }
+        #endregion
+
+        #region News
+        [OutputCache(Duration = 60*60)]
+        public ActionResult News()
+        {
+            WXHelperController wx = new WXHelperController();
+            JOMedia_News news = null;
+            List<RNews> result = new List<RNews>();
+            try
+            {
+                string access_token = this.getAccessToken();
+                news = wx.GetNews(access_token);
+                foreach(ItemItem item in news.item)
+                {
+                    foreach (News_itemItem newsItem in item.content.news_item)
+                    {
+                        if (newsItem.author == "虔诚" || newsItem.author=="玉杰官网")
+                        {
+                            RNews r = new RNews();
+                            r.DetailUrl = newsItem.url.Replace("\\","");
+                            r.ImgUrl = newsItem.thumb_url.Replace("\\", "");
+                            r.Title = newsItem.title;
+                            r.Summery= System.Web.HttpUtility.HtmlEncode(newsItem.content.Substring(0, 100));
+                                    
+                            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1)); // 当地时区
+                            DateTime dt = startTime.AddSeconds(item.content.create_time);
+                            r.CreateDate = dt.ToString("yyyy-MM-dd hh:mm:ss");
+                            result.Add(r);
+                          
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                return RedirectToAction("ErrorMessage", "Home",new { code = 2000, ErrorMsg ="获取信息错误，请联系管理员！"});
+            }
+            
+
+            return View(result);
+        }
+
+       
         #endregion
 
 

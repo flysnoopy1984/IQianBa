@@ -19,6 +19,21 @@ namespace IQBCore.IQBPay.BLL
 {
     public class QRManager
     {
+
+        public static string TestQR(EQRUser qrUser)
+        {
+            string imgPath="";
+            //string site = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
+            //string url = site + "PP/Pay?Id=" + qrUser.ID;
+
+            //Image LogoImg;
+            //string LogoAddr = HttpContext.Current.Server.MapPath("/Content/QR/ReceiveMoney_Logo");
+            //LogoImg = new Bitmap(LogoAddr);
+
+            //Bitmap qrImg = QRManager.CreateQR(url, filePath, LogoImg);
+
+            return imgPath;
+        }
         /// <summary>
         /// 更新收款二维码
         /// </summary>
@@ -36,10 +51,9 @@ namespace IQBCore.IQBPay.BLL
 
                 Bitmap qrImg = new Bitmap(filePath);
 
-
                 //BK
                 //+ "ARUserBK1.jpg";
-                string bkAdree = HttpContext.Current.Server.MapPath("/Content/QR/BK/ARUserBK1.jpg");
+                string bkAdree = HttpContext.Current.Server.MapPath("/Content/QR/BK/bk_spring.jpg");
                 Bitmap bkImg = new Bitmap(bkAdree);
                 Bitmap finImg = ImgHelper.ImageWatermark(bkImg, qrImg);
 
@@ -77,7 +91,7 @@ namespace IQBCore.IQBPay.BLL
                  string url = site + "PP/Pay?Id=" + qrUser.ID;
 
                  string filePath = ConfigurationManager.AppSettings["QR_ARUser_FP"];
-                 string filename = "QRARU_" +qrUser.ID+ System.DateTime.Now.ToString("yyyyMMdd") + (new Random()).Next(1, 100).ToString()
+                 string filename = "QRARU_" +qrUser.ID+ "_"+System.DateTime.Now.ToString("yyyyMMdd") + (new Random()).Next(1, 100).ToString()
                  + ".jpg";
 
                  filePath += filename;
@@ -88,25 +102,41 @@ namespace IQBCore.IQBPay.BLL
 
                 //Logo
                 Image LogoImg = null;
-                if (!string.IsNullOrEmpty(logoUrl))
-                {
-                    LogoImg = ImgHelper.GetImgFromUrl(logoUrl);
-                    LogoImg = ImgHelper.resizeImage(LogoImg, new Size(56, 56));
-                    LogoImg = ImgHelper.AddImgBorder(new Bitmap(LogoImg), 4, Color.Wheat);
-                }
-                
+                //根据头像创建收款码Logo
+                //if (!string.IsNullOrEmpty(logoUrl))
+                //{
+                //    LogoImg = ImgHelper.GetImgFromUrl(logoUrl);
+                //    LogoImg = ImgHelper.resizeImage(LogoImg, new Size(56, 56));
+                //    LogoImg = ImgHelper.AddImgBorder(new Bitmap(LogoImg), 4, Color.Wheat);
+                //}
+
+                //收款码统一Logo
+                string LogoAddr = HttpContext.Current.Server.MapPath("/Content/QR/ReceiveMoney_Logo.png");
+                LogoImg = new Bitmap(LogoAddr);
 
                 Bitmap qrImg = QRManager.CreateQR(url, filePath,LogoImg);
                 
 
                 //BK
                 //+ "ARUserBK1.jpg";
-                string bkAdree = HttpContext.Current.Server.MapPath("/Content/QR/BK/ARUserBK1.jpg");
+                string bkAdree = HttpContext.Current.Server.MapPath("/Content/QR/BK/bk_spring.jpg");
                 Bitmap bkImg = new Bitmap(bkAdree);
+                
+                //添加文字
+                using (Graphics g = Graphics.FromImage(bkImg))
+                {
+                    string s = "欢迎使用支付宝付款";
+                    Font font = new Font("黑体", 12,FontStyle.Bold);
+                    
+                    SolidBrush b = new SolidBrush(Color.FromArgb(50,159,250));
+                    
+                    g.DrawString(s, font, b, new PointF(96,125 ));
+                }
+
                 Bitmap finImg = ImgHelper.ImageWatermark(bkImg, qrImg);
 
                 filePath = ConfigurationManager.AppSettings["QR_ARUser_FP"];
-                filename = "BK_" + filename;
+                filename = "BK_" + qrUser.ID+"_"+ filename;
                 filePath += filename;
 
                 finImg.Save(HttpContext.Current.Server.MapPath(filePath));
@@ -140,6 +170,38 @@ namespace IQBCore.IQBPay.BLL
             return qr;
         }
 
+        public static EQRInfo UpdateMasterUrlById(EQRInfo qr)
+        {
+            string fp = HttpContext.Current.Server.MapPath(qr.OrigFilePath);
+            System.Drawing.Image qrImg = new Bitmap(HttpContext.Current.Server.MapPath(fp));
+
+            Bitmap bkImg = ImgHelper.CreateBlankImg(qrImg.Width, qrImg.Height + 80, Brushes.White);
+
+            using (Graphics g = Graphics.FromImage(bkImg))
+            {
+                string s = "此邀请码不收费！";
+                Font font = new Font("黑体", 12, FontStyle.Bold);
+                SolidBrush b = new SolidBrush(Color.FromArgb(50, 159, 250));
+
+                g.DrawString(s, font, b, new PointF(20, qrImg.Height+10));
+
+                s = "平台入驻不收费,请谨防骗子!";              
+                g.DrawString(s, font, b, new PointF(20, qrImg.Height + 200));
+            }
+            Bitmap finImg = ImgHelper.CombineImage(bkImg, qrImg,80);
+            string filePath = "/Content/QR/Invite/QRInvite_" + qr.ID + ".jpg";
+            qr.FilePath = filePath;
+
+            string fullPath = HttpContext.Current.Server.MapPath(filePath);
+            finImg.Save(fullPath);
+
+            finImg.Dispose();
+            bkImg.Dispose();
+
+            return qr;
+
+        }
+
         public static EQRInfo CreateMasterUrlById(EQRInfo qr, HttpContext context)
         {
             try
@@ -170,6 +232,10 @@ namespace IQBCore.IQBPay.BLL
                 qr.FilePath = filePath;
                 fullPath = context.Server.MapPath(filePath);
                 finImg.Save(fullPath);
+
+                finImg.Dispose();
+                bkImg.Dispose();
+
                 return qr;
 
             }
@@ -259,7 +325,7 @@ namespace IQBCore.IQBPay.BLL
                 if (Logo!=null)
                 {
                   
-                    Logo = ImgHelper.resizeImage(Logo, new Size(65, 65));
+                    Logo = ImgHelper.resizeImage(Logo, new Size(60, 60));
                     if (!string.IsNullOrEmpty(Text))
                         bt = ImgHelper.CombineImage(bt, Logo,40);
                     else

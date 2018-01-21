@@ -55,6 +55,9 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\RefDll\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="LitJson">
       <HintPath>..\RefDll\LitJson.dll</HintPath>
     </Reference>
@@ -168,7 +171,7 @@
     <Content Include="Content\images\goumaihuiyuan_11.jpg" />
     <Content Include="Content\images\grzx_03.jpg" />
     <Content Include="Content\images\grzx_07.jpg" />
-    <Content Include="Content\images\grzx_10.jpg" />
+    <Content Include="Content\images\IconMoney1.jpg" />
     <Content Include="Content\images\grzx_14.jpg" />
     <Content Include="Content\images\grzx_15.jpg" />
     <Content Include="Content\images\grzx_19.png" />
@@ -182,7 +185,9 @@
     <Content Include="Content\images\kouzi_03.jpg" />
     <Content Include="Content\images\kouzi_04.png" />
     <Content Include="Content\images\lxwm_03.jpg" />
+    <Content Include="Content\images\money1.png" />
     <Content Include="Content\images\PayError1.jpg" />
+    <Content Include="Content\images\PeopleGroup.png" />
     <Content Include="Content\images\qrLoading.gif" />
     <Content Include="Content\images\right.png" />
     <Content Include="Content\images\shengjihuiyuan_02.jpg" />
@@ -221,6 +226,7 @@
     <Content Include="Content\Script\IQBPay\Auth_Store.js" />
     <Content Include="Content\Script\IQBPay\DoTransfer.js" />
     <Content Include="Content\Script\IQBPay\InviteCode.js" />
+    <Content Include="Content\Script\IQBPay\News.js" />
     <Content Include="Content\Script\IQBPay\Pay2.js" />
     <Content Include="Content\Script\IQBPay\PayWithAccount.js" />
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
@@ -348,6 +354,7 @@
     <Content Include="Content\json\Cities.json" />
     <Content Include="Content\json\SendMsg.json" />
     <Content Include="Content\json\Menus - 复制.json" />
+    <Content Include="Content\json\json.json" />
     <None Include="Properties\PublishProfiles\IQBWX.pubxml" />
     <Content Include="Views\Pay\Index.cshtml" />
     <Content Include="Views\Pay\Test.cshtml" />
@@ -408,6 +415,7 @@
     <Content Include="Views\PP\FixQR.cshtml" />
     <Content Include="Views\PP\QRHugeEntry.cshtml" />
     <Content Include="Views\HOME\MakeMessagePage.cshtml" />
+    <Content Include="Views\PP\News.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

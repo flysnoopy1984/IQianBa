@@ -1,10 +1,11 @@
 ﻿$(document).ready(function () {
 
     var client = IsWeixinOrAlipay();
-    if (client =="false") {
+    if (client == "false") {
+        window.location.href = "http://m.yujiept.icoc.me/";
         alert("请用微信或支付宝访问");
-        window.location.href = "about:blank";
-        return true;
+        
+        return false;
     }
 
     var errorCode = $("#errorCode").val();

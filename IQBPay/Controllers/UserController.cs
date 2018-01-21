@@ -113,7 +113,7 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(UserRole role= UserRole.Agent,string AgentName="",string ParentName="",int HasQRHuge= -1, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
+        public ActionResult Query(UserRole role= UserRole.Agent,string AgentName="",string ParentName="",int HasQRHuge= -1,UserStatus UserStatus= UserStatus.PPUser, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             
             List<RUserInfo> result = new List<RUserInfo>();
@@ -134,9 +134,14 @@ namespace IQBPay.Controllers
             {
                 sql += " and qruser.ParentName like '%" + ParentName + "%'";
             }
-            if (HasQRHuge!=-1)
+            if (HasQRHuge!=99)
             {
                 sql += " and ui.HasQRHuge="+ HasQRHuge;
+            }
+
+            if (UserStatus !=  UserStatus.All)
+            {
+                sql += " and ui.UserStatus=" +  (int)UserStatus;
             }
 
             sql +=" ORDER BY ui.CreateDate desc";
@@ -402,7 +407,7 @@ namespace IQBPay.Controllers
             
            // string url = "http://ap.iqianba.cn/api/userapi/register/";
             string url = "http://localhost:24068/api/userapi/register/";
-            string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=平台服务客服&openId=o3nwE0m12mke3-VhWic-UAX7Oh_0&QRAuthId=71&Headimgurl=http://wx.qlogo.cn/mmopen/6bFpEa5VMGgc8Aoj6Ro2sTK4icFibQrEpLBQCiaGey6gWzBJnZZ44ic9JEUC2zxxRbx9bKC1COuXlwjZ8tMsC1wZtSHrW19qicl0N/0";
+            string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=平台服务客服&openId=o3nwE0m12mke3-VhWic-UAX7Oh_0&QRAuthId=66&Headimgurl=http://wx.qlogo.cn/mmopen/6bFpEa5VMGgc8Aoj6Ro2sTK4icFibQrEpLBQCiaGey6gWzBJnZZ44ic9JEUC2zxxRbx9bKC1COuXlwjZ8tMsC1wZtSHrW19qicl0N/0";
          
             string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
             if (res == "EXIST")

@@ -121,7 +121,8 @@
 }
 
 .ListTableBody_noFixed{
-     overflow-y:scroll;
+     clear:both;    
+
 }
 
 

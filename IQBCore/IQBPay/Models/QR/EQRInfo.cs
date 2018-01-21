@@ -79,6 +79,8 @@ namespace IQBCore.IQBPay.Models.QR
         [NotMapped()]
         public List<HashUser> HashUserList { get; set; }
 
+     
+
         public int Level { get; set; }
 
         public bool NeedFollowUp { get; set; }
@@ -94,6 +96,12 @@ namespace IQBCore.IQBPay.Models.QR
         /// 最大可邀请人数
         /// </summary>
         public int MaxInviteCount { get; set; }
+
+        /// <summary>
+        /// 已邀请人数
+        /// </summary>
+        [NotMapped()]
+        public int CurrentInvitedNum { get; set; }
 
         public void InitByStore(EStoreInfo si)
         {

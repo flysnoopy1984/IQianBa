@@ -599,28 +599,19 @@ namespace IQBCore.IQBPay.BLL
             return list;
         }
 
-        public string SHPay(EAliPayApplication app)
+        public AlipayTradeCloseResponse CleanWaitOrder(EAliPayApplication app,EOrderInfo order)
         {
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
             app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
 
-            AlipayEbppBillAddRequest request = new AlipayEbppBillAddRequest();
-            request.MerchantOrderNo = "IQB201203031234567";
-            request.OrderType = "JF";
-            request.SubOrderType = "WATER";
-            request.ChargeInst = "BJCEB";
-            request.BillKey = "3388102012376451";
-            request.OwnerName = "织绫";
-            request.PayAmount = "23.45";
-            request.ServiceAmount = "8";
-            request.BillDate = "201703";
-            request.Mobile = "15987838584";
-            request.TrafficLocation = "浙江,杭徽高速";
-            request.TrafficRegulations = "窜红灯";
-            request.BankBillNo = "20130916";
-          //  request.ExtendField = "{"key1":"value1","key2":"value2","key3":"value3","key4":"value4"}";
-            AlipayEbppBillAddResponse response = aliyapClient.Execute(request);
-            return response.Code;
+            AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
+            AlipayTradeCloseModel model = new AlipayTradeCloseModel();
+            model.OutTradeNo = order.OrderNo;
+            request.SetBizModel(model);
+
+
+            AlipayTradeCloseResponse response = aliyapClient.Execute(request);
+            return response;
         }
     }
 }

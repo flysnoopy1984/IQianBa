@@ -179,18 +179,11 @@
     <Content Include="Content\Images\cancel.png" />
     <Content Include="Content\Images\PayHuge_ADLogo.png" />
     <Content Include="Content\Images\Tool\CouPonQRCode.png" />
-    <Content Include="Content\QR\AliPay_F2F\2017100814512800005466.jpg" />
-    <Content Include="Content\QR\AliPay_F2F\2017100814573600001004.jpg" />
-    <Content Include="Content\QR\AliPay_F2F\2017100814590200005346.jpg" />
-    <Content Include="Content\QR\AliPay_F2F\201710081505210000634.jpg" />
-    <Content Include="Content\QR\AliPay_F2F\2017112414512500001451.jpg" />
-    <Content Include="Content\QR\AliPay_F2F\201711241454510000630.jpg" />
-    <Content Include="Content\QR\AliPay_F2F\2017112415042200004855.jpg" />
-    <Content Include="Content\QR\AliPay_F2F\2017112415062000001535.jpg" />
-    <Content Include="Content\QR\AliPay_F2F\2017112416070300008970.jpg" />
     <Content Include="Content\QR\BK\ARUserBK1.jpg" />
+    <Content Include="Content\QR\BK\bk_spring.jpg" />
     <Content Include="Content\QR\Logo_AR.png" />
     <Content Include="Content\QR\QRHugeLogo.png" />
+    <Content Include="Content\QR\ReceiveMoney_Logo.png" />
     <Content Include="Content\Style\Web\ULList.css" />
     <Content Include="Content\Style\Web\FixTableList.css" />
     <Content Include="Content\Images\backgrounds\1.jpg" />
@@ -655,6 +648,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\Frame1\credit\" />
+    <Folder Include="Content\QR\AliPay_F2F\" />
     <Folder Include="Content\QR\ARUser\" />
     <Folder Include="Content\QR\AuthStore\" />
     <Folder Include="Content\QR\Invite\" />

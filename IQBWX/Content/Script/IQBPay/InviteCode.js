@@ -10,12 +10,12 @@
 
 function InviteCodeStatus()
 {
-    $.alert({
-        theme: 'dark',
-        title: 'WOW',
-        content: "暂时不开放",
-    });
-    return;
+    //$.alert({
+    //    theme: 'dark',
+    //    title: 'WOW',
+    //    content: "暂时不开放",
+    //});
+    //return;
     var url = "/PP/InviteCodeUpdate_Status";
     var RecordStatus = $("#RecStatus").val();
     var ID = $("#hQRId").val();

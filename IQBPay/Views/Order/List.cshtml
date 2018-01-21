@@ -50,9 +50,9 @@
                 <li>
                     <label>订单状态：</label>
                     <select id="cOrderStatus" class="form-control ConditionField">
-                        <option value="1">用户已支付</option>
-                        <option value="2">代理已结算</option>
                         <option value="-1">异常</option>
+                        <option value="0">用户未支付</option>     
+                        <option value="-3">系统关闭交易</option>                                           
                         <option value="99" selected>全部</option>
                     </select>
                 </li>
@@ -82,6 +82,10 @@
         <ul class="UlHorizontal ListButtonRight" >
             <li>             
                 <button id="btnSearch" type="button" class="btn btn-primary" onclick="btnSearch();">查询</button>
+            </li>
+
+            <li>
+                <button id="btnSearch" type="button" class="btn btn-warning" onclick="CleanWaitOrder();">清理未结订单</button>
             </li>
         </ul>
     </div>
