@@ -22,7 +22,7 @@ namespace IQBCore.IQBWX.Models.WX.Template
             {
                 first = new TemplateField() { value = first,color= "#EB6B13" },
                 keyword1 = new TemplateField() { value = ppOrder.TransDate.ToString() },
-                keyword2 = new TemplateField() { value = ppOrder.SellerName },
+                keyword2 = new TemplateField() { value = "码商提供" },
                 keyword3 = new TemplateField() { value = ppOrder.TotalAmount.ToString() },
                 keyword4 = new TemplateField() { value = ppOrder.OrderNo.ToString() },
                 keyword5 = new TemplateField() { value ="" },

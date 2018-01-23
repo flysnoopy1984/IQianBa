@@ -39,9 +39,11 @@ function Query() {
     var url = "/Store/Query";
     var StoreName = $("#cStoreName").val();
     var cRecordStatus = $("#cRecordStatus").val();
+    var cStoreType = $("#cStoreType").val();
+
     $.ajax({
         type: 'post',
-        data: "Name=" + StoreName + "&RecordStatus=" + cRecordStatus + "&Channel=" + Channel + "&pageIndex=0&pageSize=80",
+        data: "Name=" + StoreName + "&StoreType=" + cStoreType + "&RecordStatus=" + cRecordStatus + "&Channel=" + Channel + "&pageIndex=0&pageSize=80",
         url: url,
         success: function (data) {
             var arrLen = data.length;

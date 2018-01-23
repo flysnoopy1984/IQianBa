@@ -6,6 +6,7 @@ using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.Result;
+using IQBCore.IQBPay.Models.User;
 using IQBPay.DataBase;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,11 @@ namespace IQBPay.Controllers.ExternalAPI
             float OrderAmt =0 ;
             float CommAmt =0 ;
             AliPayManager payManager = new AliPayManager();
+            EUserInfo agentUI = new EUserInfo();
+            EOrderInfo order = new EOrderInfo();
+
+         //   payManager.TransferHandler(TransferTarget.Agent, BaseController.SubApp, BaseController.SubApp, agentUI, ref order, accessToken, BaseController.GlobalConfig);
+
             OutDoTransfer result = new OutDoTransfer();
             //result.IsSuccess = true;
 

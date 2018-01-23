@@ -24,7 +24,7 @@ $(document).ready(function () {
     var client = IsWeixinOrAlipay();
     if (client != "Alipay") {
         window.location.href = "/Home/ErrorMessage?code=2000&ErrorMsg=请用支付宝打开";
-        alert("请使用支付宝打开");
+    //    alert("请使用支付宝打开");
        
         return false;
     }
@@ -137,16 +137,15 @@ function PayToAli() {
         return;
     }
 
+
     $("#btnPay").attr("disabled", true);
     var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&AliPayAccount=" + AliPayAccount + "&PayType=1";
 
-    // var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt;
+    //设置账户cookie
     setCookie("YJ_AliPayAccount", AliPayAccount, 3);
 
     var str = '<div style="font-size:26px">若支付宝出现以下提示<br />说明您只能<span style="color:firebrick">199元连续支付</span></div>';
     str += '<div style="text-align:center; margin-top:10px;"><img src="/Content/images/PayError1.jpg" /></div>';
-
-
     $.confirm({
         theme: "modern",
         title: '注意',
@@ -157,11 +156,23 @@ function PayToAli() {
                 btnClass: 'btn btn-danger',
                 text: "我知道了",
                 action: function () {
-                    window.location = url;
+                   // setCookie("YJ_PayWarning", 1, 3);
+                    window.location.href = url;
                 }
             },
 
         }
     });
+
+    //var PayWarning = getCookie("YJ_PayWarning");
+    //if (PayWarning == null) {
+     
+    //}
+    //else
+    //{
+    //    window.location.href = url;
+    //}
+
+  
 
 }

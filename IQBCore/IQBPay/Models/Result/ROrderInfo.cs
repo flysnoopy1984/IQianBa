@@ -53,6 +53,11 @@ namespace IQBCore.IQBPay.Models.Result
 
         public float PPIncome { get; set; }
 
+        public string ParentName { get; set; }
+
+
+        public string L3Name { get; set; }
+
 
     }
 }

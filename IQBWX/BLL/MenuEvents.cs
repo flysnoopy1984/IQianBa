@@ -340,7 +340,7 @@ namespace IQBWX.BLL
             string accessToken = JsApiPay.GetAccessToken();
             string url_userInfo = string.Format("https://api.weixin.qq.com/cgi-bin/user/info?access_token={0}&openid={1}",
             accessToken, msg.FromUserName);
-            log.log("newUserSubscribe url:" + url_userInfo);
+         //   log.log("newUserSubscribe url:" + url_userInfo);
 
             WXUserInfo wxUser = IQBCore.Common.Helper.HttpHelper.Get<WXUserInfo>(url_userInfo);
             EUserInfo ui = new EUserInfo(wxUser);
@@ -388,7 +388,7 @@ namespace IQBWX.BLL
                             notice.Push();
                         }      
 
-                        this.ResponseXml = msg.toText(string.Format("欢迎关注,亲爱的{0}",ui.nickname));
+                        this.ResponseXml = msg.toText(string.Format("欢迎关注,亲爱的{0},本系统免费，不收取任何介绍费。",ui.nickname));
                             
                     }
                     else

@@ -286,19 +286,19 @@ namespace IQBWX.Controllers
                     {
 
                         result = list.Take(pageSize).ToList();
-                        if (result.Count <= 0)
+                        if (result.Count > 0)
                         {
-                            result.Add(new RAgentCommission());
+
                             //result[0].TotalCommAmount = list.ToList().Sum(s => s.CommissionAmount);
+
+                            DateTime startDate = DateTime.Today;
+                            DateTime endDate = DateTime.Today.AddDays(1);
+
+                            var TodayComm = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.TransDate >= startDate && o.TransDate <= endDate && o.AgentCommissionStatus == AgentCommissionStatus.Closed).ToList().Sum(o => o.CommissionAmount).ToString("0.00");
+                            result[0].TodayCommAmt = TodayComm;
+
+                            result[0].TotalCommAmt = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.AgentCommissionStatus == AgentCommissionStatus.Closed).ToList().Sum(o => o.CommissionAmount).ToString("0.00");
                         }
-                        DateTime startDate = DateTime.Today;
-                        DateTime endDate = DateTime.Today.AddDays(1);
-
-                        var TodayComm = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.TransDate >= startDate && o.TransDate <= endDate && o.AgentCommissionStatus == AgentCommissionStatus.Closed).ToList().Sum(o => o.CommissionAmount).ToString("0.00");
-                        result[0].TodayCommAmt = TodayComm;
-
-                        result[0].TotalCommAmt = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.AgentCommissionStatus == AgentCommissionStatus.Closed).ToList().Sum(o => o.CommissionAmount).ToString("0.00");
-
                     }
                     else
                         result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
@@ -383,30 +383,27 @@ namespace IQBWX.Controllers
                         result = list.Take(pageSize).ToList();
                         if (result.Count > 0)
                         {
-                          //  result[0].TotalCount = totalCount;
+                            var PList = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.AgentCommissionStatus == AgentCommissionStatus.Closed && o.TransDate >= startDate && o.TransDate <= endDate).Select(o => new RAgentCommission
+                            {
+                                CommissionAmount = o.CommissionAmount,
+                            });
+
+                            var AllPLList = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.AgentCommissionStatus == AgentCommissionStatus.Closed).Select(o => new RAgentCommission
+                            {
+                                CommissionAmount = o.CommissionAmount,
+                            });
+
+                            var TodayOrder = db.DBOrder.Where(o => o.AgentOpenId == OpenId && o.OrderStatus == OrderStatus.Closed && o.TransDate >= startDate && o.TransDate <= endDate);
+                            var myToday = TodayOrder.ToList();
+                            //   result[0].AgentTodayOrderAmount = myToday.Sum(o => o.TotalAmount).ToString("0.00");
+                            result[0].AgentTodayOrderAmount = myToday.Count.ToString();
+                            result[0].AgentTodayIncome = (myToday.Sum(o => o.RateAmount) + PList.ToList().Sum(o => o.CommissionAmount)).ToString("0.00");
+
+                            var allOrder = db.DBOrder.Where(o => o.AgentOpenId == OpenId && o.OrderStatus == OrderStatus.Closed);
+                            result[0].AgentTotalIncome = (allOrder.ToList().Sum(o => o.RateAmount) + AllPLList.ToList().Sum(o => o.CommissionAmount)).ToString("0.00");
 
                         }
-                        else
-                            result.Add(new ROrderInfo());
 
-                        var PList = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.AgentCommissionStatus == AgentCommissionStatus.Closed && o.TransDate >= startDate && o.TransDate <= endDate).Select(o => new RAgentCommission
-                        {
-                            CommissionAmount = o.CommissionAmount,
-                        });
-
-                        var AllPLList = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.AgentCommissionStatus == AgentCommissionStatus.Closed).Select(o => new RAgentCommission
-                        {
-                            CommissionAmount = o.CommissionAmount,
-                        });
-
-                        var TodayOrder = db.DBOrder.Where(o => o.AgentOpenId == OpenId && o.OrderStatus == OrderStatus.Closed && o.TransDate >= startDate && o.TransDate <= endDate);
-                        var myToday = TodayOrder.ToList();
-                        //   result[0].AgentTodayOrderAmount = myToday.Sum(o => o.TotalAmount).ToString("0.00");
-                        result[0].AgentTodayOrderAmount = myToday.Count.ToString();
-                        result[0].AgentTodayIncome = (myToday.Sum(o => o.RateAmount)+ PList.ToList().Sum(o=>o.CommissionAmount)).ToString("0.00");
-
-                        var allOrder = db.DBOrder.Where(o => o.AgentOpenId == OpenId && o.OrderStatus == OrderStatus.Closed);
-                        result[0].AgentTotalIncome = (allOrder.ToList().Sum(o => o.RateAmount)+ AllPLList.ToList().Sum(o=>o.CommissionAmount)).ToString("0.00");
                     }
                     else
                         result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
@@ -1027,12 +1024,15 @@ namespace IQBWX.Controllers
             {
                 qr = db.DBQRInfo.Where(a => a.OwnnerOpenId == UserSession.OpenId).Select(a=>new RQRInfo {
                     ID = a.ID,
-                    Rate=a.Rate,
+                    Rate=10-a.Rate,
                     ParentOpenId = a.ParentOpenId,
                     ParentCommissionRate = a.ParentCommissionRate,
                     FilePath = PPWeb + a.FilePath,
                     RecordStatus = a.RecordStatus,
+                   
                 }).FirstOrDefault();
+
+               
 
                 if (qr == null)
                     throw new Exception("没有找到您的邀请码，请联系管理员");
@@ -1097,11 +1097,23 @@ namespace IQBWX.Controllers
                 if (pageIndex == 0)
                 {
                     result = query.Take(pageSize).ToList();
-                   
-                    result[0].TotalMember = db.DBUserInfo.Where(o => o.parentOpenId == UserSession.OpenId && o.UserStatus == UserStatus.PPUser).Count();
 
-                    string sql = string.Format("select sum(TotalAmount) as TotalAmount from OrderInfo where OrderStatus =2 and ParentOpenId = '{0}'", UserSession.OpenId);
-                    result[0].TotalAmount = (float)db.Database.SqlQuery<double>(sql).FirstOrDefault();
+                    if (result.Count > 0)
+                    {
+                        result[0].TotalMember = db.DBUserInfo.Where(o => o.parentOpenId == UserSession.OpenId && o.UserStatus == UserStatus.PPUser).Count();
+
+                        string sql = string.Format("select sum(TotalAmount) as TotalAmount from OrderInfo where OrderStatus =2 and ParentOpenId = '{0}'", UserSession.OpenId);
+                        try
+                        {
+                            double d = db.Database.SqlQuery<double>(sql).FirstOrDefault();
+                            result[0].TotalAmount = (float)d;
+                        }
+                        catch
+                        {
+                            result[0].TotalAmount = 0;
+                        }
+                       
+                    }
                     
                 }
                 else
@@ -1290,6 +1302,12 @@ namespace IQBWX.Controllers
 
             InitProfilePage();
             RQRUser qrUser;
+
+            if (WXBaseController.GlobalConfig.QRHugeEntry == IQBCore.IQBPay.BaseEnum.QRHugeEntry.Stop)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg = "大额通道维护中，请明天再尝试！" });
+            }
+
 
             using (AliPayContent db = new AliPayContent())
             {

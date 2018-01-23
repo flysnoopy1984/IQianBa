@@ -877,9 +877,9 @@ namespace IQBPay.Controllers
 
 
                     EStoreInfo store = null;
-                    string selectStoreSql = @"select top 1 * from StoreInfo 
-                                            where RecordStatus = 0 and StoreType = 4
-                                            order by NEWID()";
+                    string selectStoreSql = string.Format(@"select top 1 * from StoreInfo 
+                                            where RecordStatus = 0 and StoreType = 4 and RemainAmount> 0 and MinLimitAmount<={0} and MaxLimitAmount>={0}
+                                            order by NEWID()", qrHuge.Amount);
 
                     store = db.Database.SqlQuery<EStoreInfo>(selectStoreSql).FirstOrDefault();
                     if (store == null)
@@ -910,7 +910,7 @@ namespace IQBPay.Controllers
                             AlipayFundTransToaccountTransferResponse res = payMag.DoTransferAmount(TransferTarget.User, BaseController.SubApp, AliPayAccount, "0.1", PayTargetMode.AliPayAccount, out tId);
                             if (res.Code != "10000")
                             {
-                                ErrorUrl += "当前收款账户转账失败,请更换！";
+                                ErrorUrl += "您输入的收款账户,无法转账,如果您输入的是手机账户，请尝试使用对应的邮箱账户！";
                                 return Redirect(ErrorUrl);
                             }
                             else
@@ -1015,8 +1015,9 @@ namespace IQBPay.Controllers
                     {
 
                         ErrorUrl += "商户下架，抱歉，请重新扫下支付码";
-                        store.Remark = string.Format("[{0}][Error]商户授权出错", DateTime.Now.ToShortDateString());
                         store.RecordStatus = RecordStatus.Blocked;
+                        store.Remark = string.Format("[{0}][Error]商户授权出错", DateTime.Now.ToShortDateString());
+                       
                         db.SaveChanges();
                         return Redirect(ErrorUrl);
                     }
@@ -1110,7 +1111,7 @@ namespace IQBPay.Controllers
 
                     EStoreInfo store = null;
                     string selectStoreSql = string.Format(@"select top 1 * from StoreInfo 
-                                            where RecordStatus = 0 and RemainAmount> 0 and Channel=1 and MinLimitAmount<={0} and MaxLimitAmount>={0}
+                                            where RecordStatus = 0 and RemainAmount> 0 and StoreType=0 and MinLimitAmount<={0} and MaxLimitAmount>={0}
                                             order by NEWID()", Amount);
                     if (qrUser.ReceiveStoreId > 0)
                     {
@@ -1140,7 +1141,7 @@ namespace IQBPay.Controllers
 
                     if (store == null)
                     {
-                        ErrorUrl += "该额度金额花呗已用完，请尝试【20-799】支付金额";
+                        ErrorUrl += "该额度金额花呗已用完，请尝试【20-499】金额支付";
                         return Redirect(ErrorUrl);
                     }
                     //获取并校验商户 
@@ -1163,7 +1164,10 @@ namespace IQBPay.Controllers
                         if (buyer == null)
                         {
                             string tId;
-                            AlipayFundTransToaccountTransferResponse res = payMag.DoTransferAmount(TransferTarget.User, BaseController.SubApp, AliPayAccount, "0.1", PayTargetMode.AliPayAccount, out tId);
+                            EOrderInfo testOrder = new EOrderInfo();
+                            testOrder.AgentName = ui.Name;
+                            testOrder.OrderNo = "T" + DateTime.Now.Ticks;
+                            AlipayFundTransToaccountTransferResponse res = payMag.DoTransferAmount(TransferTarget.User, BaseController.SubApp, AliPayAccount, "0.1", PayTargetMode.AliPayAccount, out tId, testOrder);
                             if (res.Code != "10000")
                             {
                                 ErrorUrl += "您输入的收款账户,无法转账,如果您输入的是手机账户，请尝试使用对应的邮箱账户！";
@@ -1305,11 +1309,11 @@ namespace IQBPay.Controllers
                
         }
 
-        public ActionResult TransferToMainAccount()
+        public ActionResult TransferTest()
         {
             AliPayManager payManager = new AliPayManager();
             string tid; 
-            AlipayFundTransToaccountTransferResponse response =  payManager.DoTransferAmount(TransferTarget.Internal,BaseController.SubApp,"m18221882506@163.com",100.ToString("0.00"),PayTargetMode.AliPayAccount,out tid);
+            AlipayFundTransToaccountTransferResponse response =  payManager.DoTransferAmount(TransferTarget.Internal,BaseController.SubApp, "1451286938@qq.com", 0.1.ToString("0.00"),PayTargetMode.AliPayAccount,out tid);
 
             return Content(response.Body);
            // return View();

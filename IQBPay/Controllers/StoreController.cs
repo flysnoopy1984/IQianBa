@@ -137,7 +137,7 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(string Name,Channel Channel,RecordStatus RecordStatus = RecordStatus.Normal, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
+        public ActionResult Query(string Name, StoreType StoreType= StoreType.All,Channel Channel= Channel.All,RecordStatus RecordStatus = RecordStatus.Normal, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             List<EStoreInfo> result = new List<EStoreInfo>();
             IQueryable<EStoreInfo> list = null ;
@@ -157,6 +157,12 @@ namespace IQBPay.Controllers
                     {
                         list = list.Where(s => s.RecordStatus == RecordStatus);
                     }
+
+                    if (StoreType != StoreType.All)
+                    {
+                        list = list.Where(s => s.StoreType == StoreType);
+                    }
+
 
                     if (!string.IsNullOrEmpty(Name))
                         list = list.Where(s => s.Name.Contains(Name));
@@ -264,11 +270,15 @@ namespace IQBPay.Controllers
                 var list = db.DBStoreInfo.Where(s=>s.Channel == Channel.League).ToList();
                 AliPayManager payMag = new AliPayManager();
                 AliPayResult status;
-                for(int i=0;i<list.Count;i++)
+                for (int i = 0; i < list.Count; i++)
                 {
                     string Res = payMag.PayTest(BaseController.App, list[i], out status);
                     if (status == AliPayResult.FAILED)
-                    list[i].Remark = "[Error]Code:" + Res;
+                    {
+                        list[i].Remark = "[Error]Code:" + Res;
+                        list[i].RecordStatus = RecordStatus.Blocked;
+
+                    }
                 }
                 db.SaveChanges();           
             }

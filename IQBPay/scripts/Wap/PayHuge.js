@@ -11,7 +11,7 @@
     }
 
     InitControls();
-    var account = getCookie("YJ_AliPayAccount");
+    var account = getCookie("YJ_Huge_AliPayAccount");
     if (account != null) {
         $("#AliPayAccount").val(account);
         ShowPayArea();
@@ -105,7 +105,7 @@ function GotoPay()
     }
 
     var url = "/AliPay/F2FHugePay?rQRHugeId=" + qrHugeId + "&AliPayAccount=" + AliPayAccount;
-    setCookie("YJ_AliPayAccount", AliPayAccount, 3);
+    setCookie("YJ_Huge_AliPayAccount", AliPayAccount, 3);
     window.location = url;
 
 }

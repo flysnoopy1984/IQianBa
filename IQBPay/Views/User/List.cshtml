@@ -54,14 +54,26 @@
 
                     </div>
                 </li>
+                <li>
+                    <div class="form-group">
+                        <label>代理级别：</label>
+                        <select id="cUserRole"  class="form-control ConditionField">
+                            <option value="-1" selected>全部</option>
+                            <option value="2">代理</option>
+                            <option value="3">总代理</option>
+                            <option value="100">管理员</option>
+                        </select>
+                    </div>
+                </li>
+              
             </ul>
 
         </div>
         <ul class="UlHorizontal" style="float:right">  
           <li>
-                <button type="button" class="btn btn-primary" onclick="BtnQuery();">查询</button>
-            </li>
-
+             <button type="button" class="btn btn-primary" onclick="BtnQuery();">查询</button>
+              <button type="button" class="btn btn-warning" onclick="BtnQuery();">Fileter</button>
+         </li>
         </ul>
     </div>
     <div id="ListContent">

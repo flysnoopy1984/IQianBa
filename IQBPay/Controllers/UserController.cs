@@ -113,7 +113,7 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Query(UserRole role= UserRole.Agent,string AgentName="",string ParentName="",int HasQRHuge= -1,UserStatus UserStatus= UserStatus.PPUser, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
+        public ActionResult Query(UserRole UserRole = UserRole.All,string AgentName="",string ParentName="",int HasQRHuge= -1,UserStatus UserStatus= UserStatus.PPUser, int pageIndex = 0, int pageSize = IQBConstant.PageSize)
         {
             
             List<RUserInfo> result = new List<RUserInfo>();
@@ -142,6 +142,11 @@ namespace IQBPay.Controllers
             if (UserStatus !=  UserStatus.All)
             {
                 sql += " and ui.UserStatus=" +  (int)UserStatus;
+            }
+
+            if (UserRole != UserRole.All)
+            {
+                sql += " and ui.UserRole=" + (int)UserRole;
             }
 
             sql +=" ORDER BY ui.CreateDate desc";

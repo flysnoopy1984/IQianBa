@@ -277,7 +277,7 @@ namespace IQBCore.IQBPay.BaseEnum
     {
         Small = 0,
         Huge =4,
-        All =100,
+        All =99,
     }
 
    

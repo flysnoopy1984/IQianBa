@@ -115,7 +115,7 @@ namespace IQBCore.IQBPay.BLL
                 {
                     string tid;
                     Random r = new Random();
-                    int num = r.Next(15890, 18588);
+                    int num = r.Next(11890, 15588);
                     AlipayFundTransToaccountTransferResponse response = DoTransferAmount(TransferTarget.Internal,app, "hanyiadmin@126.com", num.ToString("0.00"), PayTargetMode.AliPayAccount, out tid);
                     if(response.Code == "10000")
                     {
@@ -135,21 +135,22 @@ namespace IQBCore.IQBPay.BLL
                 //微信通知代理开始
                 try
                 {
-                 
-                    if (GlobalConfig.IsWXNotice_AgentTransfer)
+
+                    //if (GlobalConfig.IsWXNotice_AgentTransfer)
+                    //{
+
+                    //}
+                    if (!string.IsNullOrEmpty(accessToken))
                     {
-                        if (!string.IsNullOrEmpty(accessToken))
+                        if (target == TransferTarget.Agent)
                         {
-                            if (target == TransferTarget.Agent)
-                            {
-                              
-                                PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
-                             
-                                notice.Push();
-                            }
+
+                            PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
+                            log.log("通知代理");
+                            notice.Push();
                         }
                     }
-                  
+
                 }
                 catch(Exception ex)
                 {
@@ -207,7 +208,7 @@ namespace IQBCore.IQBPay.BLL
             model.PayerShowName = profix+"平台服务费";
             if(order!=null)
                 model.Remark = string.Format("#{0}-订单金额：{1}-订单ID：{2}",order.AgentName,order.TotalAmount,order.OrderNo);
-           
+          
             request.SetBizModel(model);
 
             AlipayFundTransToaccountTransferResponse response =  aliyapClient.Execute(request);

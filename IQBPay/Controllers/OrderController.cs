@@ -132,37 +132,72 @@ namespace IQBPay.Controllers
 
                 using (AliPayContent db = new AliPayContent())
                 {
+                    //   var order =from _data in new 
+                    //string sql = @"select * from orderinfo";
+                    //var list = db.Database.SqlQuery<EOrderInfo>(sql);
+                    var list = (
+                        from o in db.DBOrder
+                        join pui in db.DBUserInfo on o.ParentOpenId equals pui.OpenId into PO
+                        from pui in PO.DefaultIfEmpty()
+                        join L3ui in db.DBUserInfo on o.L3OpenId equals L3ui.OpenId into L3
+                        from L3ui in L3.DefaultIfEmpty()
+                       
+                        select new ROrderInfo
+                        {
+                            ID = o.ID,
+                            OrderNo = o.OrderNo,
+                            TransDateStr = o.TransDateStr,
+                            OrderStatus = o.OrderStatus,
+                            TotalAmount = o.TotalAmount,
+                            RateAmount = o.RateAmount,
+                            ParentCommissionAmount = o.ParentCommissionAmount,
+                            L3CommissionAmount = o.L3CommissionAmount,
+                            SellerCommission = o.SellerCommission,
+                            BuyerTransferAmount = o.BuyerTransferAmount,
+                            AgentName = o.AgentName,
+                            //Rate = o.Rate,
+                            SellerName = o.SellerName,
+                            //SellerChannel = o.SellerChannel,
+                            AliPayOrderNo = o.AliPayOrderNo,
+                          //  BuyerAliPayLoginId = o.BuyerAliPayLoginId,
+                            TransDate = o.TransDate,
+                            AgentOpenId = o.AgentOpenId,
+                            LogRemark = o.LogRemark,
+                            OrderType = o.OrderType,
+                            SellerStoreId = o.SellerStoreId,
+                            ParentName =pui.Name,
+                            L3Name = L3ui.Name,
+                            BuyerAliPayAccount = o.BuyerAliPayAccount,
+                        }
+                     );
+                    //var list = db.DBOrder.Select(o => new ROrderInfo {
+                    //    ID = o.ID,
+                    //    OrderNo = o.OrderNo,
+                    //    TransDateStr = o.TransDateStr,
+                    //    OrderStatus = o.OrderStatus,
+                    //    TotalAmount = o.TotalAmount,
+                    //    RateAmount = o.RateAmount,
+                    //    ParentCommissionAmount = o.ParentCommissionAmount,
+                    //    L3CommissionAmount = o.L3CommissionAmount,
+                    //    SellerCommission = o.SellerCommission,
+                    //    BuyerTransferAmount = o.BuyerTransferAmount,
+                    //    AgentName= o.AgentName,
+                    //    //Rate = o.Rate,
+                    //    SellerName = o.SellerName,
+                    //    //SellerChannel = o.SellerChannel,
+                    //    AliPayOrderNo = o.AliPayOrderNo,
+                    //    BuyerAliPayLoginId = o.BuyerAliPayLoginId,
+                    //    TransDate = o.TransDate,
+                    //    AgentOpenId = o.AgentOpenId,
+                    //    LogRemark = o.LogRemark,
+                    //    OrderType = o.OrderType,
+                    //    SellerStoreId = o.SellerStoreId,
+                    //});
 
-                    var list = db.DBOrder.Select(o => new ROrderInfo {
-
-                        ID = o.ID,
-                        OrderNo = o.OrderNo,
-                        TransDateStr = o.TransDateStr,
-                        OrderStatus = o.OrderStatus,
-                        TotalAmount = o.TotalAmount,
-                        RateAmount = o.RateAmount,
-                        ParentCommissionAmount = o.ParentCommissionAmount,
-                        L3CommissionAmount = o.L3CommissionAmount,
-                        SellerCommission = o.SellerCommission,
-                        BuyerTransferAmount = o.BuyerTransferAmount,
-                        AgentName= o.AgentName,
-                        Rate = o.Rate,
-                        SellerName = o.SellerName,
-                        SellerChannel = o.SellerChannel,
-                        AliPayOrderNo = o.AliPayOrderNo,
-                        BuyerAliPayLoginId = o.BuyerAliPayLoginId,
-                        TransDate = o.TransDate,
-                        AgentOpenId = o.AgentOpenId,
-                        LogRemark = o.LogRemark,
-                        OrderType = o.OrderType,
-                        SellerStoreId = o.SellerStoreId,
-                        
-                    });
                     if (parameter.OrderType != OrderType.All)
                     {
                         list = list.Where(o => o.OrderType == parameter.OrderType);
                     }
-                   
 
                     if (!string.IsNullOrEmpty(parameter.StoreId))
                     {
