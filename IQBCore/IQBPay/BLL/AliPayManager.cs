@@ -144,9 +144,9 @@ namespace IQBCore.IQBPay.BLL
                     {
                         if (target == TransferTarget.Agent)
                         {
-
+                       
                             PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
-                            log.log("通知代理");
+                          //  log.log("通知代理");
                             notice.Push();
                         }
                     }
@@ -600,7 +600,7 @@ namespace IQBCore.IQBPay.BLL
             return list;
         }
 
-        public AlipayTradeCloseResponse CleanWaitOrder(EAliPayApplication app,EOrderInfo order)
+        public AlipayTradeCloseResponse CleanWaitOrder(EAliPayApplication app,EOrderInfo order,EStoreInfo store=null)
         {
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
             app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
@@ -609,9 +609,18 @@ namespace IQBCore.IQBPay.BLL
             AlipayTradeCloseModel model = new AlipayTradeCloseModel();
             model.OutTradeNo = order.OrderNo;
             request.SetBizModel(model);
+            AlipayTradeCloseResponse response = null;
+            if (store!=null)
+            {
+                response = aliyapClient.Execute(request,null,store.AliPayAuthToke);
+            }
+            else
+            {
+                response = aliyapClient.Execute(request);
+            }
 
 
-            AlipayTradeCloseResponse response = aliyapClient.Execute(request);
+           
             return response;
         }
     }

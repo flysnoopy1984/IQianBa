@@ -180,8 +180,8 @@ namespace IQBWX.Controllers
 
         public ActionResult IndexWxLogin()
         {
-          
-            return View();
+            return Redirect("http://m.yujiept.icoc.me/");
+          //  return View();
         }
 
 

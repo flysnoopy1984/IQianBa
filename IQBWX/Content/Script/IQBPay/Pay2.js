@@ -90,15 +90,15 @@ function GoToFastPay() {
     window.location = url;
 }
 
-function PayToAli() {
+function PayToAli(QRMin,QRMax) {
 
     var amt = $("#TotalAmout").val();
-    if (amt < 20 || amt > 799) {
+    if (amt < QRMin || amt > QRMax) {
 
         $.alert({
             theme: "dark",
             title: "错误",
-            content: "金额区间必须在【20-799】",
+            content: "金额区间必须在【"+QRMin+"-"+QRMax+"】",
 
         });
         return;

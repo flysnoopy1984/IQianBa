@@ -43,9 +43,9 @@
                 <button type="button" class="mgz btn btn-warning"  style="width:60%; height:60px;" onclick="GoToFastPay();">切换到闪电模式</button>
             </div>*@
 
-        <div style="margin-top:20px; margin-bottom:20px; padding:10px;">
+        <div style="margin-top:40px; margin-bottom:20px; padding:10px;">
             <span class="FieldLabel" style="font-weight:bold; color:#FF6634">请输入您的<span style="color:firebrick">收款支付宝账户</span>！</span>          
-            <span class="FieldLabel" style="font-weight:bold;">*本系统自动回款，请放心使用！*</span>           
+            @*<span class="FieldLabel" style="font-weight:bold;">*本系统自动回款，请放心使用！*</span>*@           
             <input id="AliPayAccount" class="AliPayAccount" type="text">
             <button type="button" class="mgz btn btn-success verifyButton" id="bnConfirmAliPayAccount" onclick="ConfirmAliPayAccount()">确定</button>
             <button type="button" class="mgz btn btn-primary verifyButton" id="bnModifyAliPayAccount" onclick="ModifyAliPayAccount()">修改</button>
@@ -55,7 +55,7 @@
             @*<div class="yuex mg2 xi20" style="color:cornflowerblue">请用10元测试，避免数额太小，金额为零</div>*@
             <div>
                 <span class="FieldLabel" style="font-weight:bold;color:brown;">*风控用户请支付【199】*</span>
-                <span class="FieldLabel" style="font-weight:bold;color:brown;">*非风控用户请支付【20-799】*</span>
+                <span class="FieldLabel" style="font-weight:bold;color:brown;">*非风控用户请支付【@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMin-@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMax】*</span>
             </div>
             <div class="form-group">
                 <label class="FieldLabel">输入金额</label>
@@ -65,7 +65,7 @@
             </div>
             
             <div id="buttonArea" style="margin-top:200px;border-top:dashed 1px black; height:120px; line-height:120px;">
-                <button type="button" class="mgz btn btn-warning" id="btnPay" style="width:90%; height:80px;" onclick="PayToAli();">支付</button>
+                <button type="button" class="mgz btn btn-warning" id="btnPay" style="width:90%; height:80px;" onclick="PayToAli(@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMin,@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMax);">支付</button>
             </div>        
         </div>
     </div>

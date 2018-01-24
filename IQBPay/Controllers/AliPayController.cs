@@ -163,6 +163,7 @@ namespace IQBPay.Controllers
             EAgentCommission agentComm = null;
             EOrderDetail orderDetail = null;
             JOrderPayMethod JOrderPayMethod;
+            EQRUser qrUser = null;
 
 
             int TransferError = 0 ;
@@ -290,8 +291,9 @@ namespace IQBPay.Controllers
                         string accessToken = this.getAccessToken(true);
                         //代理打款
                         EUserInfo agentUI = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
-                  
-                      //  Log.log("PayNotify 开始转账给代理");
+
+                        //  Log.log("PayNotify 开始转账给代理");
+                        
                         tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.SubApp, BaseController.SubApp, agentUI,ref order, accessToken,BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
                         if(tranfer.TransferStatus != TransferStatus.Success)
@@ -1050,7 +1052,7 @@ namespace IQBPay.Controllers
         /// <param name="Id">QRUserId</param>
         /// <param name="Amount"></param>
         /// <returns></returns>   
-        public ActionResult F2FPay(string qrUserId, string Amount,string AliPayAccount="",int PayType=0)
+        public ActionResult F2FPay(string qrUserId, string Amount,string AliPayAccount="",string TestStoreId="")
         {
             string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?QRUserId="+qrUserId+"&code=2001&ErrorMsg=";
             EAliPayApplication app;
@@ -1108,36 +1110,46 @@ namespace IQBPay.Controllers
                         return Redirect(ErrorUrl);
                     }
                    
-
+                   
                     EStoreInfo store = null;
                     string selectStoreSql = string.Format(@"select top 1 * from StoreInfo 
                                             where RecordStatus = 0 and RemainAmount> 0 and StoreType=0 and MinLimitAmount<={0} and MaxLimitAmount>={0}
                                             order by NEWID()", Amount);
-                    if (qrUser.ReceiveStoreId > 0)
-                    {
-                        store = db.DBStoreInfo.Where(a => a.ID == qrUser.ReceiveStoreId).FirstOrDefault();
-                        if (store == null)
-                        {
-                            ErrorUrl += "没有找到对应的收款商户";
-                            return Redirect(ErrorUrl);
-                        }
-                        if (store.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
-                        {
-                            ErrorUrl += "收款商户已下线";
-                            return Redirect(ErrorUrl);
-                        }
 
-                        //if(store.IsReceiveAccount)
-                        //{
-                        //    ErrorUrl += "支付的商户不能作为收款商户";
-                        //    return Redirect(ErrorUrl);
-                        //}
+                    if (!string.IsNullOrEmpty(TestStoreId))
+                    {
+                        long sId = Convert.ToInt64(TestStoreId);
+                        store = db.DBStoreInfo.Where(o=>o.ID == sId).FirstOrDefault();
                     }
                     else
                     {
+                        if (qrUser.ReceiveStoreId > 0)
+                        {
+                            store = db.DBStoreInfo.Where(a => a.ID == qrUser.ReceiveStoreId).FirstOrDefault();
+                            if (store == null)
+                            {
+                                ErrorUrl += "没有找到对应的收款商户";
+                                return Redirect(ErrorUrl);
+                            }
+                            if (store.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
+                            {
+                                ErrorUrl += "收款商户已下线";
+                                return Redirect(ErrorUrl);
+                            }
 
-                        store = db.Database.SqlQuery<EStoreInfo>(selectStoreSql).FirstOrDefault();
+                            //if(store.IsReceiveAccount)
+                            //{
+                            //    ErrorUrl += "支付的商户不能作为收款商户";
+                            //    return Redirect(ErrorUrl);
+                            //}
+                        }
+                        else
+                        {
+
+                            store = db.Database.SqlQuery<EStoreInfo>(selectStoreSql).FirstOrDefault();
+                        }
                     }
+                   
 
                     if (store == null)
                     {

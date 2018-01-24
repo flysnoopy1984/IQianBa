@@ -6,6 +6,7 @@ using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.Result;
+using IQBCore.IQBPay.Models.Store;
 using IQBPay.Core;
 using IQBPay.DataBase;
 using System;
@@ -333,26 +334,39 @@ namespace IQBPay.Controllers
         {
             OutAPIResult result = new OutAPIResult();
             AliPayManager AliPayManager = new AliPayManager();
-          
+            DateTime startDate = DateTime.Today;
+            DateTime endDate = DateTime.Today.AddDays(1);
 
             try
 
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    var list =  db.DBOrder.Where(o => o.OrderStatus == OrderStatus.WaitingAliPayNotify && o.SellerStoreId == 1);
-                    foreach(EOrderInfo order in list)
+                    List<EOrderInfo> list =  db.DBOrder.Where(o => o.OrderStatus == OrderStatus.WaitingAliPayNotify 
+                                                           && o.TransDate >= startDate && o.TransDate <= endDate).ToList();
+                    
+                    foreach (EOrderInfo order in list)
                     {
-                     
-                        AlipayTradeCloseResponse res = AliPayManager.CleanWaitOrder(BaseController.App, order);
-                        if (res.Code == "10000")
+                        int sec = DateHelper.GetDiffSec(order.TransDate, DateTime.Now);
+                        if(sec>60*10)
                         {
-                            order.OrderStatus = OrderStatus.SystemClose;
+                            EStoreInfo store = null;
+                            if (order.SellerStoreId != 1)
+                            {
+                                store = db.DBStoreInfo.Where(a => a.ID == order.SellerStoreId).FirstOrDefault();
+                            }
+                            
+                            AlipayTradeCloseResponse res = AliPayManager.CleanWaitOrder(BaseController.App, order, store);
+                            if (res.Code == "10000")
+                            {
+                                order.OrderStatus = OrderStatus.SystemClose;
+                            }
+                            else
+                            {
+                                order.LogRemark = "Msg:" + res.Msg;
+                            }
                         }
-                        else
-                        {
-                            order.LogRemark += "Msg:" + res.Msg + "SubCode" + res.SubCode + "SubMsg:" + res.SubMsg;
-                        }
+                       
                        
                     }
                     db.SaveChanges();
