@@ -106,7 +106,7 @@ namespace IQBPay.Controllers
                     {
                         foreach (RQRInfo r in result)
                         {
-                            string sql = string.Format("select count(*) from UserInfo where parentOpenId = '{0}'", r.OwnnerOpenId);
+                            string sql = string.Format("select count(*) from UserInfo where parentOpenId = '{0}' and UserStatus=1", r.OwnnerOpenId);
                             r.CurrentInvitedNum = db.Database.SqlQuery<int>(sql).FirstOrDefault();
                         }
                     }
@@ -150,7 +150,7 @@ namespace IQBPay.Controllers
                     }
                     if (qrType == QRType.ARAuth)
                     {
-                        string sql = string.Format("select count(*) from UserInfo where parentOpenId = '{0}'", result.OwnnerOpenId);
+                        string sql = string.Format("select count(*) from UserInfo where parentOpenId = '{0}' and UserStatus = 1", result.OwnnerOpenId);
                         result.CurrentInvitedNum = db.Database.SqlQuery<int>(sql).FirstOrDefault();
                         result.HashStoreList = db.Database.SqlQuery<HashStore>("select Id,Name from storeinfo").ToList();
                         result.HashUserList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo where UserRole = 3 or userRole=100").ToList();

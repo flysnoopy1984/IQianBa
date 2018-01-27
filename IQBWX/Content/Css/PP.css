@@ -6,7 +6,7 @@
           display: inline-block;
           padding: 6px 6px;
           margin-bottom: 0;
-          font-size: 22px;
+          font-size: 22px !important;
           font-weight: normal;
           line-height: 1.428571429;
           text-align: center;

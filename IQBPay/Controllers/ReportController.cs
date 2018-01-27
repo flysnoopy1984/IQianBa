@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IQBPay.DataBase;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -17,6 +18,15 @@ namespace IQBPay.Controllers
         public ActionResult OverView()
         {
             return View();
+        }
+
+        public ActionResult AgentInTeam()
+        {
+            using (AliPayContent db = new AliPayContent())
+            {
+
+            }
+           return View();
         }
     }
 }

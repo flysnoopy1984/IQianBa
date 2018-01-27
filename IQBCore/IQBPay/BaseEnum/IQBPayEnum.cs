@@ -229,8 +229,8 @@ namespace IQBCore.IQBPay.BaseEnum
 
     public enum  OrderType
     {
-        Normal=0,
-        Huge = 1,
+        Normal=1,
+        Huge = 4,
         UnKnow=-1,
         All = 99,
     }

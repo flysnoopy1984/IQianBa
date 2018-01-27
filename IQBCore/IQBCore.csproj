@@ -127,6 +127,7 @@
     <Compile Include="IQBPay\Models\OutParameter\OutAPI_QRHuge.cs" />
     <Compile Include="IQBPay\Models\OutParameter\OutDoTransfer.cs" />
     <Compile Include="IQBPay\Models\OutParameter\UploadObj.cs" />
+    <Compile Include="IQBPay\Models\PayChannel\EPayChannel.cs" />
     <Compile Include="IQBPay\Models\QR\EQRHuge.cs" />
     <Compile Include="IQBPay\Models\QR\EQRHugeTrans.cs" />
     <Compile Include="IQBPay\Models\QR\EQRInfo.cs" />

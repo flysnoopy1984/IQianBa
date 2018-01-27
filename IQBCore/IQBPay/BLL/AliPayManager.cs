@@ -271,16 +271,21 @@ namespace IQBCore.IQBPay.BLL
         /// <returns></returns>
         public EAgentCommission InitAgentCommission_L3(EOrderInfo order, EQRUser qrUser, RUserInfo topUser)
         {
+            double L3Comm = 0.2;
+
+            //if (qrUser.QRType == QRType.ARHuge)
+            //    L3Comm = 0.2;
+
             EAgentCommission comm = new EAgentCommission
             {
                 OrderNo = order.OrderNo,
                 AgentCommissionStatus = BaseEnum.AgentCommissionStatus.Open,
                 ParentOpenId = topUser.OpenId,
                 ChildOpenId = qrUser.OpenId,
-                CommissionAmount = (float)Math.Round((0.5 / 100) * order.TotalAmount, 2, MidpointRounding.ToEven),
+                CommissionAmount = (float)Math.Round((L3Comm / 100) * order.TotalAmount, 2, MidpointRounding.ToEven),
                 Level = 3,
                
-                CommissionRate = (float)0.5,
+                CommissionRate = (float)L3Comm,
                 ChildName = qrUser.UserName,
                 ParentName = topUser.Name,
                 TransDate = DateTime.Now,
@@ -473,6 +478,7 @@ namespace IQBCore.IQBPay.BLL
                 if (builder.Code == "20001")
                 {
                     status = AliPayResult.AUTHERROR;
+                    result = "授权错误！";
                 }
                 else
                 {

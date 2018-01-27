@@ -15,7 +15,7 @@ namespace IQBCore.IQBWX.Models.WX.Template
             string first = string.Format("用户扫描了您的收款二维码");
             string remark = string.Format("支付宝流水号：{0} \n买家账号：{1} \n实际收款：{2}",
                                          ppOrder.AliPayOrderNo,
-                                         ppOrder.BuyerAliPayAccount,
+                                         ppOrder.BuyerAliPayLoginId,
                                         // ppOrder.Rate,
                                          ppOrder.RateAmount);
             var data = new

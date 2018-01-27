@@ -53,7 +53,6 @@ namespace IQBPay.Controllers
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                 
                     result = db.DBStoreInfo.Where(a => a.ID == Id).FirstOrDefault();
                     result.RunResult = "OK";
                 }
@@ -218,6 +217,7 @@ namespace IQBPay.Controllers
                     entry.Property(t => t.MinLimitAmount).IsModified = true;
                     entry.Property(t => t.RemainAmount).IsModified = true;
                     entry.Property(t => t.Channel).IsModified = true;
+                    entry.Property(t => t.StoreType).IsModified = true;
 
                     entry.Property(t => t.MDate).IsModified = true;
                     entry.Property(t => t.MTime).IsModified = true;
@@ -285,6 +285,29 @@ namespace IQBPay.Controllers
             return Json(result);
         }
 
-        
+        public ActionResult DeleteStore(long ID)
+        {
+            OutAPIResult result = new OutAPIResult();
+            result.IsSuccess = true;
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    var store = db.DBStoreInfo.Where(o => o.ID == ID).FirstOrDefault();
+
+                    db.DBStoreInfo.Remove(store);
+
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+
+
+            return Json(result);
+        }
     }
 }

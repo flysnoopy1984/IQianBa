@@ -44,8 +44,8 @@
                         <label>大/小：</label>
                         <select id="cStoreType" class="form-control ConditionField">
                             <option value="4">大额</option>
-                            <option value="99">全部</option>
-                            <option value="0" selected>小额</option>
+                            <option value="99" selected>全部</option>
+                            <option value="0">小额</option>
                         </select>
 
                     </div>
@@ -55,14 +55,13 @@
         </div>
 
         <ul class="UlHorizontal" style="float:right">
-            <li>
+            @*<li>
                 <button type="button" class="btn btn-warning" onclick="ToInfo(1,1);">添加商户</button>
-            </li>
-            <li>
-                
-            </li>
+            </li>*@
             <li>
                 <button type="button" class="btn btn-success" onclick="CheckStoreAuth();">检测商户</button>
+            </li>
+            <li>
                 <button type="button" class="btn btn-primary" onclick="Query();">查询</button>
             </li>
            

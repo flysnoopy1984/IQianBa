@@ -49,7 +49,6 @@ function Query2() {
                         // 无数据
                         me.noData();
                        
-
                     }
                     // 为了测试，延迟1秒加载
                     setTimeout(function () {
@@ -109,33 +108,33 @@ function Query(_pageIndex) {
 
 function generateData(result) {
     var strCtrl = "";
-
+    var userId ="";
 
     $.each(result, function (i) {
-
-     //   QueryData.push(result[i]);
-       
-        if (i == 0)
+        QueryData.push(result[i]);
+        if (i == 0 && pageIndex ==0)
         {
             $("#TotalMember").text(result[0].TotalMember);
             $("#TotalAmount").text(result[0].TotalAmount);
         }
+     
+         
         var UserStatus;
-        var usColor = "style='color:forestgreen'";
+        //var usColor = "style='color:forestgreen'";
         if (result[i].UserStatus == 0) {
             usColor = "style='color:crimson'";
             UserStatus = "禁用";
-        
-            
+
         }
         else
             UserStatus = "正常";
 
         strCtrl = "";
-        if (result[i].UserStatus == 0)
-            strCtrl += "<tr style='background-color:#949494'>";
-        else
-            strCtrl += "<tr>";
+        //if (result[i].UserStatus == 0)
+        //    strCtrl += "<tr style='background-color:#949494'>";
+        //else
+       strCtrl += "<tr>";
+
         strCtrl += "<td style='width:25%;height:80px;line-height:80px;'>";
         strCtrl += "<img style='vertical-align: middle;text-align: center;' class='img-profile' src='" + result[i].HeadImgUrl + "' />";
         if (result[i].UserStatus == 0)
@@ -144,25 +143,102 @@ function generateData(result) {
             strCtrl += "<span style='color:#43ce08'>" + UserStatus + "</span>";
         strCtrl += "</td>";
         strCtrl += "<td style='width:75%'>";
-        strCtrl += "<ul><li style='font-weight:bold; height:40px;'>代理名称:" + result[i].UserName + "</li>";       
+        strCtrl += "<ul><li style='font-weight:bold; height:55px;'>代理名称:" + result[i].UserName + "</li>";       
         strCtrl += "</ul>";
+        //小额费率 返点
         strCtrl += "<ul>";
-        strCtrl += "<li style='color:cornflowerblue; width:49%;float:left;' > 费率: " + (result[i].MarketRate - result[i].Rate) + "</li>";
-        strCtrl += "<li style='height:40px; color:coral;width:49%;float:left;'>上级代理佣金: " + result[i].ParentCommissionRate + "</li>";
-        strCtrl += "</ul>"
-        strCtrl += "</td>";
+        strCtrl += "<li style='color:cornflowerblue; width:49%;float:left;' > 小额费率: " + result[i].FeeRate.toFixed(2) + "</li>";
+        strCtrl += "<li style='height:40px; color:#EBC952;width:49%;float:left;'>小额返点: " + result[i].ParentCommissionRate + "</li>";
+        strCtrl += "</ul>";
 
-       
-        //strCtrl += "<li " + usColor + ">用户手续费：" + result[i].MarketRate + "</li>";
-     
+        var totalAmount = 0;
+        //大额费率返点
+        if (result[i].HugeQR)
+        {
+            strCtrl += "<ul>";
+            strCtrl += "<li style='color:cornflowerblue; width:49%;float:left;' > 大额费率: " + result[i].HugeQR.FeeRate.toFixed(2) + "</li>";
+            strCtrl += "<li style='height:40px; color:#EBC952;width:49%;float:left;'>大额返点: " + result[i].HugeQR.ParentCommissionRate + "</li>";
+            strCtrl += "</ul>";
+
+            totalAmount = result[i].MemberTotalAmount + result[i].HugeQR.MemberTotalAmount;
+            strCtrl += "<ul>";
+            strCtrl += "<li style='color:#8E210B; width:99%;' >业绩: " + result[i].MemberTotalAmount.toFixed(2) + "(小)" + "+" + result[i].HugeQR.MemberTotalAmount.toFixed(2) + "(大)" + "=" + totalAmount.toFixed(2) + " &yen</li>";
+            strCtrl += "</ul>";
+        }
+        else
+        {
+            strCtrl += "<ul>";
+            strCtrl += "<li style='color:#8E210B; width:99%;' >业绩: " + result[i].MemberTotalAmount.toFixed(2) + " &yen</li>";
+            strCtrl += "</ul>";
+        }
+
+        
+
+      
+        strCtrl += "</td>";
         strCtrl += "</ul></td>";
-        //strCtrl += "<td><input type='button' class='btn-primary' value='详情' onclick='ToInfoPage(" + (QueryData.length-1) + ");' />"
+        strCtrl += "<td><input type='button' class='btn btn-primary' style='width:80px;height:40px;line-height:20px;' value='删除' onclick='BlockUser(" + (QueryData.length-1) + ");' />"
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);
     });
 
 
+}
+
+function BlockUser(i)
+{
+    var result = QueryData[i];
+    $.confirm({
+        theme: "modern",
+        title: '注意',
+        type: 'red',
+        content: "<div style='font-size:22px; color:black;'>你是否确定更要删除成员：<span style='color:blue;font-size:26px;'>" + result.UserName + "</span>?</div>",
+        buttons: {
+            confirm: {
+                btnClass: 'btn btn-danger',
+                text: "确定",
+                action: function () {
+                    DoBlockUser(result.userId);
+                }
+            },
+            cancel: {
+                text:"算了吧",
+            }
+
+        }
+    });
+}
+
+function DoBlockUser(ID)
+{
+    var url = "/PP/DoBlockUser";
+
+    $.ajax({
+        type: 'post',
+        data:'ID='+ID,
+        url: url,
+        success: function (data) {
+            if(data.IsSuccess)
+            {
+                alert("删除成功");
+                window.location.reload();
+            }
+            else
+            {
+                $.alert({
+                    theme:'dark',
+                    title: '删除失败!',
+                    content: '请联系管理员!',
+                   
+                });
+            }
+
+        },
+        error: function (xhr, type) {
+            alert('Ajax error!');
+        }
+    });
 }
 
 function ToInfoPage(i)

@@ -83,7 +83,7 @@
 
             <li><a href=@Url.Action("PCPay", "AliPay", new { amount = 14388 })>PC Pay</a></li>
 
-            <li><a href=@Url.Action("TestF2F", "AliPay",new { No = 20180109003213,storeId= 25, Amount="1"  })>当面付</a></li>
+            <li><a href=@Url.Action("TestF2F", "AliPay",new { No = 20180109003214,storeId= 32, Amount="1"  })>当面付</a></li>
             <li><a href=@Url.Action("AuthToISV", "AliPay")>AuthToUser</a></li>
             <li><a href=@Url.Action("GetAuthToken", "AliPay")>GetAuthToken</a></li>
             <li><a href=@Url.Action("QueryToken", "AliPay")>QueryToken</a></li> 
@@ -107,7 +107,7 @@
             <li><a href=@Url.Action("TransferTest", "AliPay")>转账测试</a></li>
             <li><a href=@Url.Action("QueryOrder", "AliPay")>查询订单</a></li>
 
-            <li><a href=@Url.Action("F2FPay", "AliPay",new { qrUserId = "1400", Amount = "20" ,AliPayAccount="song_fuwei@hotmail.com"})>真实F2F</a></li>
+            <li><a href=@Url.Action("F2FPay", "AliPay",new { qrUserId = "1400", Amount = "999" ,AliPayAccount="song_fuwei@hotmail.com",TestStoreId=38})>真实F2F</a></li>
             <li><input type="button" onclick="PartPayQR()" value="分期" /></li>
 
         </ul>

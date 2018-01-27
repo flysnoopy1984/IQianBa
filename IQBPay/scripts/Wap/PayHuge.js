@@ -67,25 +67,26 @@ function ConfirmAliPayAccount() {
 
 function PayToAli() {
 
-    $.confirm({
-        theme:"modern",
-        title: '确认',
-        type:'red',
-        content: '请务必一次性完成支付！如需测试是否风控，请索要小额通道码',
-        buttons: {
-            Know: {
-                btnClass: 'btn-warning',
-                text: "我要继续",
-                action: function () {
-                    GotoPay();
-                }
-            },
-            cancel: {
-                text: "取消",
-                btnClass: 'btn-primary',
-            },
-        }
-    });
+    GotoPay();
+    //$.confirm({
+    //    theme:"modern",
+    //    title: '确认',
+    //    type:'red',
+    //    content: '请务必一次性完成支付！如需测试是否风控，请索要小额通道码',
+    //    buttons: {
+    //        Know: {
+    //            btnClass: 'btn-warning',
+    //            text: "我要继续",
+    //            action: function () {
+                  
+    //            }
+    //        },
+    //        cancel: {
+    //            text: "取消",
+    //            btnClass: 'btn-primary',
+    //        },
+    //    }
+    //});
 }
 
 function GotoPay()

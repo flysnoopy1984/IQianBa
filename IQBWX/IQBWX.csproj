@@ -184,6 +184,7 @@
     <Content Include="Content\images\grzx_251.png" />
     <Content Include="Content\images\kouzi_03.jpg" />
     <Content Include="Content\images\kouzi_04.png" />
+    <Content Include="Content\images\LeftArrow.jpg" />
     <Content Include="Content\images\lxwm_03.jpg" />
     <Content Include="Content\images\money1.png" />
     <Content Include="Content\images\PayError1.jpg" />

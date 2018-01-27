@@ -77,6 +77,7 @@ function InitFormData(data)
     $("#RecId").val(data.ID);
     $("#Name").val(data.Name);
     $("#Rate").val(data.Rate);
+    $("#StoreType").val(data.StoreType);
     //$("#OpenTime").val(data.OpenTime);
     //$("#CloseTime").val(data.CloseTime);
     $("#Remark").val(data.Remark);
@@ -116,7 +117,7 @@ function Save()
     var Channel = $("#Channel").val();
     //$("#MinLimitAmount").val(data.MinLimitAmount);
     //$("#MaxLimitAmount").val(data.MaxLimitAmount);
-
+    var StoreType = $("#StoreType").val();
 
     var IsReceiveAccount = $("#IsReceiveAccount").get(0).checked;
  
@@ -127,7 +128,7 @@ function Save()
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID,"Channel":Channel,"RemainAmount":RemainAmount,"DayIncome":DayIncome,"MinLimitAmount":MinLimitAmount,"MaxLimitAmount":MaxLimitAmount, "Name": name, "Rate": Rate,  "Remark": remake, "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount },
+        data: { "ID": ID,"Channel":Channel,"StoreType":StoreType,"RemainAmount":RemainAmount,"DayIncome":DayIncome,"MinLimitAmount":MinLimitAmount,"MaxLimitAmount":MaxLimitAmount, "Name": name, "Rate": Rate,  "Remark": remake, "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount },
         url: url,
         success: function (data) {
             if(data == "OK")

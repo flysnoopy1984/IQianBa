@@ -754,9 +754,6 @@ namespace IQBWX.Controllers
             }
             InitProfilePage();
 
-          
-
-          
             return View();
         }
 
@@ -1060,66 +1057,112 @@ namespace IQBWX.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult DoBlockUser(string ID)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    IQBCore.IQBPay.Models.User.EUserInfo ui = new IQBCore.IQBPay.Models.User.EUserInfo();
+                    ui.Id = Convert.ToInt32(ID);
+                    ui.UserStatus = UserStatus.JustRegister;
+                    DbEntityEntry<IQBCore.IQBPay.Models.User.EUserInfo> entry = db.Entry<IQBCore.IQBPay.Models.User.EUserInfo>(ui);
+                    entry.State = EntityState.Unchanged;
+                    entry.Property(t => t.UserStatus).IsModified = true;
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+           
+            return Json(result);
+        }
+
         public ActionResult AgentListQuery()
         {
             int pageIndex = Convert.ToInt32(Request["Page"]);
             int pageSize = Convert.ToInt32(Request["PageSize"]);
             string AgentName = Request["AgentName"];
 
-            List<RUser_ARQR> result = new List<RUser_ARQR>();
+            List<RUser_ARQR> data = new List<RUser_ARQR>();
 
             using (AliPayContent db = new AliPayContent())
             {
-                var query = from ui in db.DBUserInfo
-                            join qrUser in db.DBQRUser
-                            on ui.OpenId equals qrUser.OpenId
-                            select new RUser_ARQR
-                            {
-                                ID = ui.Id,
-                                Rate = qrUser.Rate,
-                                UserName = ui.Name,
-                                ParentCommissionRate = qrUser.ParentCommissionRate,
-                                HeadImgUrl =ui.Headimgurl,
-                                IsCurrent = qrUser.IsCurrent,
-                                ParentOpenId = qrUser.ParentOpenId,
-                                UserStatus = ui.UserStatus,
-                                MarketRate = qrUser.MarketRate,
-                                qrUserId = qrUser.ID,
-                            };
 
-                query = query.Where(a => a.IsCurrent == true);
+                var sqlScript = @"select ui.Id as userId,ui.Name as UserName,ui.HeadImgUrl,MemberTotalAmount,qr.QRType,(qr.MarketRate-qr.Rate) as FeeRate,qr.ParentCommissionRate,ui.UserStatus 
+from UserInfo as ui
+right join QRUser as qr on qr.OpenId = ui.OpenId and qr.QRType ={0}
+left join
+(
+select sum(o.TotalAmount) as MemberTotalAmount ,o.AgentOpenId,o.OrderType from OrderInfo as o 
+where o.OrderStatus =2
+group by o.AgentOpenId ,o.OrderType
+
+) as od on od.AgentOpenId = ui.OpenId and od.OrderType = qr.QRType where 1=1 ";
+
                 if (UserSession.UserRole != UserRole.Administrator)
-                    query = query.Where(a => a.ParentOpenId == UserSession.OpenId);
-                if(!string.IsNullOrEmpty(AgentName))
+                    sqlScript += string.Format(" and ui.UserStatus = 1 and ui.parentOpenId = '{0}'", UserSession.OpenId);
+                else
+                    sqlScript += " and ui.UserStatus = 1 ";
+
+                if (!string.IsNullOrEmpty(AgentName))
                 {
-                    query = query.Where(a=>a.UserName.Contains(AgentName));
+                    sqlScript += string.Format(" and UserName like '%{0}%' ", AgentName);
                 }
+
+                sqlScript += " order by userId desc,qr.QRType";
+
+                string sql = string.Format(sqlScript, "1");
+                var query = db.Database.SqlQuery<RUser_ARQR>(sql);
+               
                 if (pageIndex == 0)
                 {
-                    result = query.Take(pageSize).ToList();
+                    data = query.Take(pageSize).ToList();
 
-                    if (result.Count > 0)
+                    if (data.Count > 0)
                     {
-                        result[0].TotalMember = db.DBUserInfo.Where(o => o.parentOpenId == UserSession.OpenId && o.UserStatus == UserStatus.PPUser).Count();
+                        data[0].TotalMember = db.DBUserInfo.Where(o => o.parentOpenId == UserSession.OpenId && o.UserStatus == UserStatus.PPUser).Count();
 
-                        string sql = string.Format("select sum(TotalAmount) as TotalAmount from OrderInfo where OrderStatus =2 and ParentOpenId = '{0}'", UserSession.OpenId);
+                        sql = string.Format("select sum(TotalAmount) as TotalAmount from OrderInfo where OrderStatus =2 and ParentOpenId = '{0}'", UserSession.OpenId);
                         try
                         {
                             double d = db.Database.SqlQuery<double>(sql).FirstOrDefault();
-                            result[0].TotalAmount = (float)d;
+                            data[0].TotalAmount = (float)d;
                         }
                         catch
                         {
-                            result[0].TotalAmount = 0;
+                            data[0].TotalAmount = 0;
                         }
                        
                     }
                     
                 }
                 else
-                    result = query.OrderBy(a => a.ID).Skip(pageIndex * pageSize).Take(pageSize).ToList();
+                    data = query.Skip(pageIndex * pageSize).Take(pageSize).ToList();
 
-                return Json(result);
+                List<RUser_ARQR> hugeData = null;
+                sql = string.Format(sqlScript, "4");
+                query = db.Database.SqlQuery<RUser_ARQR>(sql);
+                hugeData = query.ToList();
+
+                foreach (RUser_ARQR d in data)
+                {
+                   foreach(RUser_ARQR huge in hugeData)
+                    {
+                        if(d.userId == huge.userId)
+                        {
+                            d.HugeQR = huge;
+                            break;
+                        }
+                    }
+                }
+
+                return Json(data);
             }
           
         }

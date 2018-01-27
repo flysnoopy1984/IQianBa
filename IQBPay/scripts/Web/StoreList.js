@@ -108,12 +108,42 @@ function generateData(result)
         else
             strCtrl += "<td><div class='noft-red-number'></div>停用</td>";
 
-        strCtrl += "<td><a href='/Store/Info?id=" + result[i].ID + "' class='td'>详情</a></td>";
-        strCtrl += "</tr>";
+        strCtrl += "<td>";
+        strCtrl += "<a href='/Store/Info?id=" + result[i].ID + "' class='td'>详情</a>";
+        strCtrl += "<input type=button onclick=deleteStore('" + result[i].ID + "') value='删除' /></td>";
+        strCtrl += "</td></tr>";
 
         $("#trContainer").append(strCtrl);
 
     });
+}
+
+function deleteStore(ID)
+{
+    if (confirm("商户被删除,是否继续?")) {
+        var url = "/Store/DeleteStore";
+        $.ajax({
+            type: 'post',
+            data: "ID=" + ID,
+            url: url,
+            success: function (data) {
+
+                if (data.IsSuccess) {
+                    window.location.reload();
+                    alert("删除完成");
+                }
+                else
+                    alert(data.ErrorMsg);
+            },
+            error: function (xhr, type) {
+
+                alert('Ajax error!');
+
+            }
+        });
+    }
+    else
+        alert("取消删除");
 }
 
 // 根据channel 去不同的页面

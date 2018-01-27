@@ -23,7 +23,7 @@ namespace IQBCore.IQBPay.Models.Store
         [MaxLength(32)]
         public string OwnnerOpenId { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(50)]
         public string Name { get; set; }
 
         [DefaultValue("")]
@@ -90,6 +90,18 @@ namespace IQBCore.IQBPay.Models.Store
 
 
         public StoreType StoreType { get; set; }
+
+        [MaxLength(255)]
+        public string Log { get; set; }
+
+        [MaxLength(50)]
+        public string Provider { get; set; }
+
+        [MaxLength(100)]
+        /// <summary>
+        /// 中间商的账户
+        /// </summary>
+        public string MidCommAccount { get; set; }
 
 
 

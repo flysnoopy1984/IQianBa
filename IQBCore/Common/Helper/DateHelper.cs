@@ -32,5 +32,14 @@ namespace IQBCore.Common.Helper
             TimeSpan ts3 = ts1.Subtract(ts2).Duration();
             return Convert.ToInt32(ts3.TotalSeconds);
         }
+
+        
+        public static int GetDiffSecWithNow_Ticks(long tick)
+        {
+            TimeSpan ts1 = new TimeSpan(tick);
+            TimeSpan ts2 = new TimeSpan(DateTime.Now.Ticks);
+            TimeSpan ts3 = ts1.Subtract(ts2).Duration();
+            return Convert.ToInt32(ts3.TotalSeconds);
+        }
     }
 }

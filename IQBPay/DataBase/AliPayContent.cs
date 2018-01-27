@@ -3,6 +3,7 @@ using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Order;
+using IQBCore.IQBPay.Models.PayChannel;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.SMS;
@@ -66,6 +67,8 @@ namespace IQBPay.DataBase
         public DbSet<EQRHugeTrans> DBQRHugeTrans { get; set; }
 
         public DbSet<EOrderDetail> DBOrderDetail { get; set; }
+
+        public DbSet<EPayChannel> DBPayChannel { get; set; }
 
         #region User  
         public Boolean IsExistUser(string openId)

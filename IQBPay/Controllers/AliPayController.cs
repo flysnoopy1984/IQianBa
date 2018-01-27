@@ -35,6 +35,7 @@ using IQBCore.IQBPay.Models.Result;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using IQBCore.IQBPay.Models.Json;
+using IQBCore.Common.Constant;
 
 namespace IQBPay.Controllers
 {
@@ -886,7 +887,21 @@ namespace IQBPay.Controllers
                     store = db.Database.SqlQuery<EStoreInfo>(selectStoreSql).FirstOrDefault();
                     if (store == null)
                     {
-                        ErrorUrl += "商户已下线，请过段时间尝试,或去普通支付区";
+                        ErrorUrl += "抱歉，大额支付今天已经用完，清明天再来或去普通区支付";
+                        //关闭大额入口
+
+                        EGlobalConfig gc = db.DBGlobalConfig.First();
+                        gc.QRHugeEntry = QRHugeEntry.Stop;
+                        db.SaveChanges();
+
+                        BaseController.GlobalConfig = gc;
+
+                        //通知WX客户端
+                        string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
+                        url += "API/OutData/RefreshGlobelConfig";
+                        HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, "", "application/x-www-form-urlencoded");
+
+
                         return Redirect(ErrorUrl);
                     }
                     //获取并校验商户 
@@ -936,6 +951,7 @@ namespace IQBPay.Controllers
                     if(transCount>=3)
                     {
                         ErrorUrl += "您今天大额使用次数已满，请明天再使用，谢谢光临";
+
                         return Redirect(ErrorUrl);
                     }
 
@@ -953,7 +969,6 @@ namespace IQBPay.Controllers
                         //创建初始化订单
                         EOrderInfo order = payMag.InitOrder(qrUser, store, qrHuge.Amount,OrderType.Huge, AliPayAccount, QRHugeTrans);
                       
-
                         if (!string.IsNullOrEmpty(qrUser.ParentOpenId))
                         {
                             EAgentCommission agentComm = payMag.InitAgentCommission(order, qrUser);
@@ -1046,6 +1061,30 @@ namespace IQBPay.Controllers
            return  _BlockList.Contains(AliPayAccount);
 
         }
+
+        /// <summary>
+        /// 0-OK 1-速度太快
+        /// </summary>
+        /// <param name="AliPayAccount"></param>
+        /// <returns></returns>
+        private int VerifyUserAction(string AliPayAccount)
+        {
+            long ticks = (long)Session[IQBConstant.SK_UserPayTime];
+            if (ticks > 0)
+            {
+                int sec = DateHelper.GetDiffSecWithNow_Ticks(ticks);
+                if(sec<15)
+                {
+                    return 1;
+                }
+                else
+                    Session[IQBConstant.SK_UserPayTime] = ticks;
+            }
+            else
+                Session[IQBConstant.SK_UserPayTime] = ticks;
+
+            return 0;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -1069,6 +1108,13 @@ namespace IQBPay.Controllers
                     ErrorUrl += "二维码已更新，请向代理索要最新当前二维码";
                     return Redirect(ErrorUrl);
                 }
+                //int userAction = VerifyUserAction(AliPayAccount);
+                //if (userAction==1)
+                //{
+                //    ErrorUrl += "您刷的太快，请等几秒后再尝试";
+                //    return Redirect(ErrorUrl);
+                //}
+                //黑名单
                 if(IsBlockUser(AliPayAccount))
                 {
                     return Redirect("https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=%E6%88%91%E9%94%99%E4%BA%86&oq=%25E6%2588%2591%25E8%25A6%2581%25E5%25A4%25A7%25E9%25A2%259D&rsv_pq=fdc9a37600011847&rsv_t=12bbtVESTOTvr2Vka6q3RaIFGkTv3u3HZMssQ3J0JYuez4Fx0Cqqzvj%2BxqM&rqlang=cn&rsv_enter=1&inputT=13704&rsv_sug3=49&rsv_sug1=46&rsv_sug7=100&bs=%E6%88%91%E8%A6%81%E5%A4%A7%E9%A2%9D");
@@ -1109,8 +1155,7 @@ namespace IQBPay.Controllers
                         ErrorUrl += "您的联系人没有设置支付宝账户！";
                         return Redirect(ErrorUrl);
                     }
-                   
-                   
+
                     EStoreInfo store = null;
                     string selectStoreSql = string.Format(@"select top 1 * from StoreInfo 
                                             where RecordStatus = 0 and RemainAmount> 0 and StoreType=0 and MinLimitAmount<={0} and MaxLimitAmount>={0}
@@ -1255,8 +1300,8 @@ namespace IQBPay.Controllers
                     else
                     {
 
-                        
-                        store.Remark = string.Format("[{0}][Error]商户授权出错", DateTime.Now.ToShortDateString());
+
+                        store.Remark = string.Format("[{0}][Error]商户出错-{1}", DateTime.Now.ToShortDateString(), Res);
                         store.RecordStatus = RecordStatus.Blocked;
                         db.SaveChanges();
 
