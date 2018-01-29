@@ -83,6 +83,7 @@ function generateData(result) {
         strCtrl += "<td>" + parentName + "</td>";      
         strCtrl += "<td>" + result[i].MaxInviteCount + "</td>";
         strCtrl += "<td>" + result[i].CurrentInvitedNum + "</td>";
+        strCtrl += "<td>" + result[i].NeedFollowUp + "</td>";
         strCtrl += "<td>" + result[i].Remark + "</td>";
 
         if (result[i].RecordStatus == 0)

@@ -172,9 +172,6 @@ function generateData(result) {
             strCtrl += "</ul>";
         }
 
-        
-
-      
         strCtrl += "</td>";
         strCtrl += "</ul></td>";
         strCtrl += "<td><input type='button' class='btn btn-primary' style='width:80px;height:40px;line-height:20px;' value='删除' onclick='BlockUser(" + (QueryData.length-1) + ");' />"

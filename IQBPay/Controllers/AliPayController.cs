@@ -357,6 +357,18 @@ namespace IQBPay.Controllers
 
                       //  Log.log("PayNotify 结束用户打款");
 
+                      //政策实施
+                        if(order.OrderStatus == OrderStatus.Closed)
+                        {
+                            if(agentUI.HasPassRegFee== false)
+                            {
+                                agentUI.HasPassRegFee = true;
+                            }
+                            //if(agentUI.HasPassInviteFee==false)
+                            //{
+                            //    db.DBOrder.Where(o=>o.AgentOpenId == agentUI.OpenId && o.OrderStatus == OrderStatus.Closed).ToList().Sum()
+                            //}
+                        }
                  
                     }
                     else
@@ -967,7 +979,7 @@ namespace IQBPay.Controllers
                         db.SaveChanges();
 
                         //创建初始化订单
-                        EOrderInfo order = payMag.InitOrder(qrUser, store, qrHuge.Amount,OrderType.Huge, AliPayAccount, QRHugeTrans);
+                        EOrderInfo order = payMag.InitOrder(qrUser, store, qrHuge.Amount,OrderType.Huge, AliPayAccount,1, QRHugeTrans);
                       
                         if (!string.IsNullOrEmpty(qrUser.ParentOpenId))
                         {
@@ -1007,10 +1019,7 @@ namespace IQBPay.Controllers
                                     order.L3OpenId = L3Parent.OpenId;
                                     order.L3CommissionAmount = agentComm.CommissionAmount;
                                 }
-
                             }
-
-
                         }
 
                         db.DBOrder.Add(order);
@@ -1245,8 +1254,12 @@ namespace IQBPay.Controllers
                                 
                     if (status == AliPayResult.SUCCESS)
                     {
+                        //    int ordernum = db.DBOrder.Where(a => a.OrderStatus == OrderStatus.Closed && a.AgentOpenId == qrUser.OpenId).Count();
+                        int ordernum =0;
+                        if (ui.HasPassRegFee)
+                            ordernum = 1;
                         //创建初始化订单
-                        EOrderInfo order = payMag.InitOrder(qrUser, store,Convert.ToSingle(Amount),OrderType.Normal, AliPayAccount);
+                        EOrderInfo order = payMag.InitOrder(qrUser, store,Convert.ToSingle(Amount),OrderType.Normal, AliPayAccount, ordernum);
 
                         if (!string.IsNullOrEmpty(qrUser.ParentOpenId))
                         {

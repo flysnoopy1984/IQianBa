@@ -106,9 +106,11 @@
     <Compile Include="IQBPay\BaseEnum\IQBPayEnum.cs" />
     <Compile Include="IQBPay\BLL\F2FPayHandler.cs" />
     <Compile Include="IQBPay\BLL\QRManager.cs" />
+    <Compile Include="IQBPay\BLL\RuleManager.cs" />
     <Compile Include="IQBPay\BLL\SMSManager.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\EAgentCommission.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\EPreTransfer.cs" />
+    <Compile Include="IQBPay\Models\Rules\EBenefitRule.cs" />
     <Compile Include="IQBPay\Models\InParameter\InDoTransfer.cs" />
     <Compile Include="IQBPay\Models\InParameter\InF2F.cs" />
     <Compile Include="IQBPay\Models\InParameter\InOrder.cs" />
@@ -150,6 +152,7 @@
     <Compile Include="IQBPay\Models\Result\RUser_ARQR.cs" />
     <Compile Include="IQBPay\Models\Result\RUser_Order.cs" />
     <Compile Include="IQBPay\Models\Result\RUser_OrderSum.cs" />
+    <Compile Include="IQBPay\Models\Rules\EPayRule.cs" />
     <Compile Include="IQBPay\Models\SMS\ESMSVerification.cs" />
     <Compile Include="IQBPay\Models\SMS\ESMSLog.cs" />
     <Compile Include="IQBPay\Models\SMS\SMSResult_API51.cs" />

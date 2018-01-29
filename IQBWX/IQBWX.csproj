@@ -286,6 +286,7 @@
     <Compile Include="Controllers\Html5Controller.cs" />
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\IQBAsyncController.cs" />
+    <Compile Include="Controllers\PartyStoreController.cs" />
     <Compile Include="Controllers\PPController.cs" />
     <Compile Include="Controllers\ValidController.cs" />
     <Compile Include="Controllers\WXBaseController.cs" />
@@ -417,6 +418,7 @@
     <Content Include="Views\PP\QRHugeEntry.cshtml" />
     <Content Include="Views\HOME\MakeMessagePage.cshtml" />
     <Content Include="Views\PP\News.cshtml" />
+    <Content Include="Views\PartyStore\Tmall.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

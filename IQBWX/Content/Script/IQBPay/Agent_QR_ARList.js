@@ -211,6 +211,8 @@ function ToListPage() {
     else {
         $("#PageList").show();
         $("#PageInfo").hide();
+
+
     }
 
 }
@@ -229,6 +231,18 @@ function ToInfoPage(i,qrType) {
     else
         $("#Title").text("【大额码设置】");
     $("#QRImgContainer").hide();
+
+    $range = $("#AfterMarketRate").ionRangeSlider({
+        min: 6,
+        max: 15,
+        from: 10,
+        step: 0.5,
+        //onChange: function (data) {
+        //    $("#MarketRate").val(data.from);
+        //},
+    });
+
+    slider = $range.data("ionRangeSlider");
 
     i--;
     //新增
@@ -256,35 +270,34 @@ function ToInfoPage(i,qrType) {
     //更新
     else
     {
-        
+     
         var diff = (QueryData[i].MarketRate - QueryData[i].Rate).toFixed(2);
         if (qrType == 0)
         {
-            $range = $("#AfterMarketRate").ionRangeSlider({
+            slider.update({
                 min: 6,
-                max: 14,
+                max: 15,
                 from: QueryData[i].MarketRate,
                 step: 0.5,
-                //onChange: function (data) {
-                //    $("#MarketRate").val(data.from);
-                //},
             });
+           
             $("#QRImg").attr("src", payUrl + QueryData[i].OrigQRFilePath);
         }
         else
         {
-            $range = $("#AfterMarketRate").ionRangeSlider({
+            slider.update({
                 min: 6,
                 max: 20,
                 from: QueryData[i].MarketRate,
                 step: 0.5,
-                //onChange: function (data) {
-                //    $("#MarketRate").val(data.from);
-                //},
-            });
+            }); 
+              
+           
+         
+        
         }
       
-        slider = $range.data("ionRangeSlider");
+       
 
         $("#QrUserId").val(QueryData[i].ID);
 

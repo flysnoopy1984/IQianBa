@@ -159,12 +159,16 @@ namespace IQBWX.BLL
            
             string result = exWeb.regeisterWebMember(ui, qr.ID);
             string url = "https://mp.weixin.qq.com/s?__biz=MzUyMzUwOTQ3MA==&mid=100000020&idx=1&sn=fb0bd4f65bdd44985bf137413012cf64&chksm=7a3acaa54d4d43b360d9513a1e810b11d9c13899ad0c50d0cff089f70c88c33037230ef65cad#rd";
-            string note = string.Format(@"本系统不向任何人收取介绍费用，完全免费，请<a href='{0}'>阅读使用手册先</a>。如果您已被收费，请向您的介绍人索要回。",url);
+            string note = string.Format("本系统不向任何人收取介绍费用，完全免费。\n请<a href='{0}'>阅读使用手册先</a>。\n如果您已被收费，请向您的介绍人索要回。\n",url);
             if (result.StartsWith("OK"))
             {
             
                 mText += "欢迎注册服务平台！\n";
-                mText += string.Format("你当前收款码的成本为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate- qr.Rate);
+                mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate- qr.Rate);
+                mText += "首笔订单统一费率2.8%\n之后订单\n";
+                mText += "【中介】费率2%\n";
+                mText += "【队长】费率1.8%\n";
+                mText += "【总代】费率1.5%\n";
                 mText += note;
                 mText += string.Format("<a href='{0}'>点击阅读使用手册</a>",url);
             }
@@ -176,7 +180,11 @@ namespace IQBWX.BLL
                     pUser = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).FirstOrDefault();
                 }
                 mText += "欢迎注册服务平台！\n";
-                mText += string.Format("你当前收款码的成本为【{0}%】\n 您的介绍人为:{1}\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate, pUser.Name);
+                mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate);
+                mText += "首笔订单统一费率2.8%\n之后订单\n";
+                mText += "【中介】费率2%\n";
+                mText += "【队长】费率1.8%\n";
+                mText += "【总代】费率1.5%\n";
                 mText += note;
                 mText += string.Format("<a href='{0}'>点击阅读使用手册</a>", url);
             }
@@ -194,7 +202,11 @@ namespace IQBWX.BLL
                     pUser = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).FirstOrDefault();
                 }
 
-                mText += string.Format("你当前收款码的成本为\n【{0}%】\n 您的介绍人为:{1}\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate, pUser.Name);
+                mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate);
+                mText += "首笔订单统一费率2.8%\n之后订单\n";
+                mText += "【中介】费率2%\n";
+                mText += "【队长】费率1.8%\n";
+                mText += "【总代】费率1.5%\n";
                 mText += note;
                 mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>", url);
             }

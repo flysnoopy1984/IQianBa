@@ -71,7 +71,7 @@ namespace IQBPay.Core
 
         public static string callAliPay_Wap(string amt)
         {
-            EAliPayApplication app = BaseController.SubApp;
+            EAliPayApplication app = BaseController.App;
             IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
                        app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
 
@@ -83,7 +83,10 @@ namespace IQBPay.Core
             model.OutTradeNo = StringHelper.GenerateOrderNo();
             model.ProductCode = "QUICK_WAP_PAY";
             model.GoodsType = "1";
-            
+            //model.EnablePayChannels = "pcreditpayInstallment";
+            //model.ExtendParams = new ExtendParams();
+            //model.ExtendParams.HbFqNum = "3";
+            //model.ExtendParams.HbFqSellerPercent = "100";
             // model.EnablePayChannels = "pcredit";
             //  model.SellerId = "2088821092484390";
             // model.AuthToken = "201709BBd8a868e8d3ab4f4fb61d1f6f42d3dE39";
@@ -114,12 +117,13 @@ namespace IQBPay.Core
             model.TotalAmount = amt;
             model.OutTradeNo = orderNo;
             model.ProductCode = "FAST_INSTANT_TRADE_PAY";
+           
             
-           // model.ExtendParams = new ExtendParams();
-            //model.ExtendParams.HbFqNum = "6";
-            //model.ExtendParams.HbFqSellerPercent = "100";
-            //model.ExtendParams.SysServiceProviderId = "";
-          
+            model.ExtendParams = new ExtendParams();
+            model.ExtendParams.HbFqNum = "3";
+            model.ExtendParams.HbFqSellerPercent = "100";
+       //     model.ExtendParams.SysServiceProviderId = "";
+
 
 
 

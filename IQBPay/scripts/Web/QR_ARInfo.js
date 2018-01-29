@@ -66,6 +66,8 @@ function InitFormData(data)
 
     $("#NeedVerification").attr("checked", data.NeedVerification);
 
+    $("#IsL3").attr("checked", data.NeedFollowUp);
+
     $("#MaxInviteCount").val(data.MaxInviteCount);
 
     $("#CurrentInvitedNum").val(data.CurrentInvitedNum);
@@ -125,6 +127,9 @@ function Save() {
 
     var NeedVerification = $("#NeedVerification").get(0).checked;
 
+    var IsL3 = $("#IsL3").get(0).checked;
+ 
+
     var MaxInviteCount = $("#MaxInviteCount").val();
 
     if (!CheckForm()) return;
@@ -133,7 +138,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID,"MaxInviteCount":MaxInviteCount, "NeedVerification":NeedVerification,"Name": name, "ParentOpenId":ParentOpenId,"ParentCommissionRate": ParentCommissionRate, "Rate": rate, "Remark": remake, "RecordStatus": QRStatus, "ReceiveStoreId": storeId },
+        data: { "ID": ID,"NeedFollowUp":IsL3,"MaxInviteCount":MaxInviteCount, "NeedVerification":NeedVerification,"Name": name, "ParentOpenId":ParentOpenId,"ParentCommissionRate": ParentCommissionRate, "Rate": rate, "Remark": remake, "RecordStatus": QRStatus, "ReceiveStoreId": storeId },
         url: url,
         success: function (data) {
             if (data.RunResult == "OK") {

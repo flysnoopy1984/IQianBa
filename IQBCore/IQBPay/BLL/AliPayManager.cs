@@ -295,7 +295,19 @@ namespace IQBCore.IQBPay.BLL
             };
             return comm;
         }
-        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount,OrderType orderType,string AliPayAccount = "",EQRHugeTrans QRHugeTrans = null)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="qrUser"></param>
+        /// <param name="store"></param>
+        /// <param name="TotalAmount">订单总金额</param>
+        /// <param name="orderType">订单类型:大额/小额</param>
+        /// <param name="AliPayAccount">支付宝账户</param>
+        /// <param name="orderNum">是否有订单，没有费率则为全局费率</param>
+        /// <param name="QRHugeTrans"></param>
+        /// <returns></returns>
+        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount,OrderType orderType,string AliPayAccount = "",int orderNum=0,EQRHugeTrans QRHugeTrans = null)
         {
             EOrderInfo order = new EOrderInfo()
             {
@@ -311,7 +323,6 @@ namespace IQBCore.IQBPay.BLL
                 TransDateStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 SellerAliPayId = store.AliPayAccount,
                 SellerStoreId = store.ID,
-
                 SellerName = store.Name,
                 SellerChannel = store.Channel,
                 SellerRate = store.Rate,
@@ -324,11 +335,24 @@ namespace IQBCore.IQBPay.BLL
               
                 //ReceiveNo = StringHelper.GenerateReceiveNo(),
                 
-
             };
             if(QRHugeTrans!=null)
             {
                 order.EQRHugeTransId = QRHugeTrans.ID;
+
+                //大单用户手续费
+                order.BuyerTransferAmount -= 1;
+            }
+            else
+            {
+                double FOFeeRate = RuleManager.PayRule().Agent_FOFeeRate;
+                //小单用户手续费
+                if(order.TotalAmount>199)
+                    order.BuyerTransferAmount -=1;
+
+                if(orderNum == 0)
+                    order.RateAmount = (float)Math.Round(TotalAmount * (FOFeeRate / 100), 2, MidpointRounding.ToEven);
+
             }
             //代理
           //  order.RealTotalAmount = order.TotalAmount - order.RateAmount;

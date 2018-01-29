@@ -31,8 +31,20 @@ namespace IQBCore.IQBPay.Models.User
 
         public Boolean Isadmin { get; set; }
 
+        /// <summary>
+        /// 是否拥有大码
+        /// </summary>
         public bool HasQRHuge { get; set; }
 
+        /// <summary>
+        /// 是否已经通过首单费
+        /// </summary>
+        public bool HasPassRegFee { get; set; }
+
+        /// <summary>
+        /// 队长是否已经刷满999开通邀请码
+        /// </summary>
+        public bool HasPassInviteFee { get; set; }
 
         /// <summary>
         /// QRUser中的ID

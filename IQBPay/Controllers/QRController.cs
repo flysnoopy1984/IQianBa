@@ -70,6 +70,7 @@ namespace IQBPay.Controllers
                             UserRole = ui.UserRole,
                             MaxInviteCount = qr.MaxInviteCount,
                             OwnnerOpenId = qr.OwnnerOpenId,
+                            NeedFollowUp = qr.NeedFollowUp,
                             
 
                         }
@@ -197,6 +198,7 @@ namespace IQBPay.Controllers
                         entry.Property(t => t.MDate).IsModified = true;
                         entry.Property(t => t.MTime).IsModified = true;
                         entry.Property(t => t.ModifyDate).IsModified = true;
+                        entry.Property(t => t.NeedFollowUp).IsModified = true;
                         db.SaveChanges();
                     }
                     else
