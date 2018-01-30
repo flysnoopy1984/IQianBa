@@ -1,0 +1,65 @@
+﻿@model IQBCore.IQBPay.Models.Error.EPrivilegeError
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+    <title>权限错误</title>
+    <script src="~/Content/Script/jquery-1.10.2.min.js"></script>
+    <link href=@Url.Scrpit("~/Content/Css/MainCss.css") rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
+    <style>
+        body {
+            background: #ffffff;
+        }
+        #ErrorContent{ }
+        #ErrorContent ul{width:450px; clear:both;margin: 0 auto;}
+       
+        #ErrorContent ul li
+        {
+            width:50%;
+            height:40px;
+            text-align:center;
+            float:left;
+        }
+    </style>
+    <script type="text/javascript">
+        //$(document).ready(function () {
+        //    var client = IsWeixinOrAlipay();
+        //    if (client == "false") {
+        //        window.location.href = "http://m.yujiept.icoc.me/";
+        //        alert("请用微信或支付宝访问");
+        
+        //        return false;
+        //    }
+        //})
+       
+    </script>
+</head>
+<body>
+    <div class="mgz cen" id="ErrorContent">
+        <div style="height:100px; line-height:100px;">
+           @Model.Title 
+        </div>
+       <div style="height:50px; line-height:50px;">
+           @Model.Content 
+       </div>
+        <hr class="HR3_668ff2" style="width:90%" />
+        <ul>
+            @*<li>开通金额</li>*@
+            <li>当前金额</li>
+            <li>还需金额</li>
+        </ul>
+        <ul>
+            @*<li>@Model.NeedPoint</li>*@
+            <li>@Model.CurrentPoint</li>
+            <li>@Model.RemainPoint</li>
+        </ul>
+    </div> 
+</body>
+</html>

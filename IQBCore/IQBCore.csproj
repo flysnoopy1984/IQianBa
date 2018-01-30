@@ -110,6 +110,7 @@
     <Compile Include="IQBPay\BLL\SMSManager.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\EAgentCommission.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\EPreTransfer.cs" />
+    <Compile Include="IQBPay\Models\Error\EPrivilegeError.cs" />
     <Compile Include="IQBPay\Models\Rules\EBenefitRule.cs" />
     <Compile Include="IQBPay\Models\InParameter\InDoTransfer.cs" />
     <Compile Include="IQBPay\Models\InParameter\InF2F.cs" />

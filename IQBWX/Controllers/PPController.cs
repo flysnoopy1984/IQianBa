@@ -1,8 +1,6 @@
-﻿using HtmlAgilityPack;
-using IQBCore.Common.Helper;
+﻿using IQBCore.Common.Helper;
 using IQBCore.IQBPay.BaseEnum;
-using IQBCore.IQBPay.Models.AccountPayment;
-using IQBCore.IQBPay.Models.Order;
+using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Result;
@@ -12,14 +10,7 @@ using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Models.Json.WXMedia.News;
 using IQBCore.IQBWX.Models.WX.Template;
 using IQBCore.WxSDK;
-using IQBWX.BLL;
-using IQBWX.BLL.ExternalWeb;
-using IQBWX.BLL.NT;
 using IQBWX.DataBase.IQBPay;
-using IQBWX.Models.Results;
-using IQBWX.Models.User;
-using IQBWX.Models.WX;
-using IQBWX.Models.WX.Template;
 using LitJson;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
@@ -1015,6 +1006,36 @@ namespace IQBWX.Controllers
             {
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
+            else
+            {
+                if (!UserSession.HasPassInviteFee)
+                {
+                    
+                    using (AliPayContent db = new AliPayContent())
+                    {
+                        float num = db.DBOrder.Where(o => o.AgentOpenId == UserSession.OpenId && o.OrderStatus == OrderStatus.Closed).ToList().Sum(o=>o.TotalAmount);
+                        if(num> RuleManager.PayRule().Agent_InviteFee)
+                        {
+                            IQBCore.IQBPay.Models.User.EUserInfo ui = new IQBCore.IQBPay.Models.User.EUserInfo();
+                            ui.Id = UserSession.Id;
+                            ui.HasPassInviteFee = true;
+
+                            DbEntityEntry<IQBCore.IQBPay.Models.User.EUserInfo> entry = db.Entry<IQBCore.IQBPay.Models.User.EUserInfo>(ui);
+                            entry.State = EntityState.Unchanged;
+                            entry.Property(t => t.HasPassInviteFee).IsModified = true;
+                            db.SaveChanges();
+
+                            UserSession.HasPassInviteFee = true;
+                            UserSession = UserSession;
+                        }
+                        else
+                        {
+                            return RedirectToAction("PrivilegeError", "Home", new { code = 1000, curAmt= num });
+                        }
+                    }
+                }
+            }
+
             InitProfilePage();
             string PPWeb = ConfigurationManager.AppSettings["Site_IQBPay"];
             using (AliPayContent db = new AliPayContent())
@@ -1340,8 +1361,30 @@ group by o.AgentOpenId ,o.OrderType
         {
             if (!UserSession.HasQRHuge)
             {
-                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+                using (AliPayContent db = new AliPayContent())
+                {
+                    float num = db.DBOrder.Where(o => o.AgentOpenId == UserSession.OpenId && o.OrderStatus == OrderStatus.Closed).ToList().Sum(o => o.TotalAmount);
+                    if (num > RuleManager.PayRule().Agent_QRHugeFee)
+                    {
+                        IQBCore.IQBPay.Models.User.EUserInfo ui = new IQBCore.IQBPay.Models.User.EUserInfo();
+                        ui.Id = UserSession.Id;
+                        ui.HasQRHuge = true;
+
+                        DbEntityEntry<IQBCore.IQBPay.Models.User.EUserInfo> entry = db.Entry<IQBCore.IQBPay.Models.User.EUserInfo>(ui);
+                        entry.State = EntityState.Modified;
+                        entry.Property(t => t.HasQRHuge).IsModified = true;
+                        db.SaveChanges();
+
+                        UserSession.HasQRHuge = true;
+                        UserSession = UserSession;
+                    }
+                    else
+                    {
+                        return RedirectToAction("PrivilegeError", "Home", new { code = 1001, curAmt = num });
+                    }
+                }
             }
+           
 
             InitProfilePage();
             RQRUser qrUser;

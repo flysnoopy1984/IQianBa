@@ -341,16 +341,16 @@ namespace IQBCore.IQBPay.BLL
                 order.EQRHugeTransId = QRHugeTrans.ID;
 
                 //大单用户手续费
-                order.BuyerTransferAmount -= 1;
+                order.BuyerTransferAmount -= (float)RuleManager.PayRule().User_ServerFee_HQ;
             }
             else
             {
                 double FOFeeRate = RuleManager.PayRule().Agent_FOFeeRate;
                 //小单用户手续费
-                if(order.TotalAmount>199)
-                    order.BuyerTransferAmount -=1;
+                if(order.TotalAmount>=199)
+                    order.BuyerTransferAmount -= (float)RuleManager.PayRule().User_ServerFee_Q;
 
-                if(orderNum == 0)
+                if(orderNum == 0 && (qrUser.MarketRate-qrUser.Rate)< FOFeeRate)
                     order.RateAmount = (float)Math.Round(TotalAmount * (FOFeeRate / 100), 2, MidpointRounding.ToEven);
 
             }

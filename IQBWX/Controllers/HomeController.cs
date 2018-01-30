@@ -1,4 +1,7 @@
 ﻿using IQBCore.Common.Helper;
+using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.BLL;
+using IQBCore.IQBPay.Models.Error;
 using IQBCore.IQBWX.BaseEnum;
 using IQBWX.BLL;
 using IQBWX.Common;
@@ -121,7 +124,43 @@ namespace IQBWX.Controllers
 
         }
 
-        
+        public ActionResult PrivilegeError()
+        {
+            string code = Request.QueryString["code"];
+            string curAmt = Request.QueryString["curAmt"];
+
+            double lcurAmt = Convert.ToDouble(curAmt);
+            double lneedAmt = 0;
+            string content = "您订单总金额达到【{0}元】后将自动开通。";
+
+            EPrivilegeError error = new EPrivilegeError();
+            error.CurrentPoint = curAmt;
+           
+
+            PriviegeError errorType = PriviegeError.UnKnow;
+            if (!string.IsNullOrEmpty(code))
+            {
+                errorType = (PriviegeError)Enum.Parse(typeof(PriviegeError), code);
+                switch(errorType)
+                {
+                    case PriviegeError.InviteCode:
+                        lneedAmt = RuleManager.PayRule().Agent_InviteFee;
+                        error.Title = "邀请码须知";
+                        error.Content = string.Format(content, lneedAmt);
+                        error.NeedPoint = lneedAmt.ToString();                       
+                        break;
+                    case PriviegeError.QRHuge:
+                        error.Title = "大额码须知";
+                        lneedAmt = RuleManager.PayRule().Agent_QRHugeFee;
+                        error.Content = string.Format(content, lneedAmt);
+                        error.NeedPoint = lneedAmt.ToString();
+                        break;
+                }
+                error.RemainPoint = (lneedAmt - lcurAmt).ToString();
+
+            }
+            return View(error);
+        }
 
         public ActionResult ErrorMessage()
         {

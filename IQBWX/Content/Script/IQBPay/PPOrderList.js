@@ -45,13 +45,13 @@ function Query2() {
     var PageSize = 10;
     if (pageIndex == 0)
         PageSize = 20;
-    var cDateType = $("#cDateType").val();
-    var cOrderStatus = $("#cOrderStatus").val();
+    var cDateType = 99;//$("#cDateType").val();
+    var cOrderStatus = 2;//$("#cOrderStatus").val();
 
   
 
     scrollSwiper = $('#ListTableBody').dropload({
-       
+        scrollArea: window,
         loadDownFn: function (me) {
 
             // 拼接HTML

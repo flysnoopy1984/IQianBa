@@ -280,6 +280,13 @@ namespace IQBCore.IQBPay.BaseEnum
         All =99,
     }
 
+    public enum PriviegeError
+    {
+        UnKnow = -1,
+        InviteCode =1000,
+        QRHuge=1001,
+    }
+
    
 
 }

@@ -14,6 +14,16 @@ namespace IQBCore.IQBPay.Models.Rules
         public double Agent_FOFeeRate { get; set; }
 
         /// <summary>
+        /// 代理邀请码开通所需订单金额
+        /// </summary>
+        public double Agent_InviteFee { get; set; }
+
+        /// <summary>
+        /// 大额码开通所需订单金额
+        /// </summary>
+        public double Agent_QRHugeFee { get; set; }
+
+        /// <summary>
         /// 用户每单服务费
         /// </summary>
         public double User_ServerFee_Q { get; set; }

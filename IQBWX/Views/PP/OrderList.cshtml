@@ -21,7 +21,7 @@
 
         </div>*@
 
-    <div class="ListTitle_Condition1 mgz2">
+    @*<div class="ListTitle_Condition1 mgz2">
         <label>日期：</label>
         <select id="cDateType" style="font-size:16px;" onchange="DateChanged()">
             <option value="1">今天</option>
@@ -35,9 +35,9 @@
             <option value="2" selected>已结算</option>
             <option value="99">全部</option>
         </select>
-    </div>
+    </div>*@
 
-    <table id="TableHeader" class="table large-only mgz2 ListTableTitle">
+    <table id="TableHeader" class="table large-only mgz2 ListTableTitle" style="position:unset" >
         <tbody>
             <tr class="text-right" id="trHeader">
                 <th style="width:50%;">订单编号</th>
@@ -52,7 +52,7 @@
         </tbody>
     </table>
 
-    <div class="ListTableBody" id="ListTableBody">
+    <div class="ListTableBody" id="ListTableBody" style="height:100%;position:unset">
         @*<div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>*@
         <table class="table mgz2  large-only" id="trContainer"></table>
     </div>

@@ -398,7 +398,6 @@
     <Content Include="Views\PP\UserVerification.cshtml" />
     <Content Include="Views\Shared\_MainLayout.cshtml" />
     <Content Include="Views\PP\LeagueStoreList.cshtml" />
-    <Content Include="Views\PP\OrderList - 复制.cshtml" />
     <Content Include="Views\PP\StoreList.cshtml" />
     <Content Include="Views\PP\StoreAdd.cshtml" />
     <Content Include="Views\PP\Agent_QR_ARList.cshtml" />
@@ -419,6 +418,7 @@
     <Content Include="Views\HOME\MakeMessagePage.cshtml" />
     <Content Include="Views\PP\News.cshtml" />
     <Content Include="Views\PartyStore\Tmall.cshtml" />
+    <Content Include="Views\HOME\PrivilegeError.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
