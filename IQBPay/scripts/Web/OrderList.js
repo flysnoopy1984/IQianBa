@@ -206,39 +206,44 @@ function generateData(result) {
         tdWidth = "width:" + $("#trHeader th").eq(6).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].ParentCommissionAmount + "</td>";
 
-        //商户佣金
+        //3级金额
         tdWidth = "width:" + $("#trHeader th").eq(7).css("width");
+        strCtrl += "<td style='" + tdWidth + "'>" + result[i].L3CommissionAmount + "</td>";
+
+        //商户佣金
+        tdWidth = "width:" + $("#trHeader th").eq(8).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerCommission + "</td>";
         storeAmt += parseFloat(result[i].SellerCommission);
 
         //买家转账
-        tdWidth = "width:" + $("#trHeader th").eq(8).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(9).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].BuyerTransferAmount + "</td>";
 
         //代理用户
-        tdWidth = "width:" + $("#trHeader th").eq(9).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(10).css("width");
         strCtrl += "<td style='" + tdWidth + "' title='" + result[i].AgentName + "'>" + result[i].AgentName + "</td>";
 
         //上级代理
-        tdWidth = "width:" + $("#trHeader th").eq(10).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(11).css("width");
         strCtrl += "<td style='" + tdWidth + "' title='" + result[i].ParentName + "'>" + result[i].ParentName + "</td>";
 
         //3级代理
-        tdWidth = "width:" + $("#trHeader th").eq(11).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(12).css("width");
         strCtrl += "<td style='" + tdWidth + "' title='" + result[i].L3Name + "'>" + result[i].L3Name + "</td>";
 
-        //买家账户
-        tdWidth = "width:" + $("#trHeader th").eq(12).css("width");
-        strCtrl += "<td style='" + tdWidth + "' title='" + result[i].BuyerAliPayAccount + "'>" + result[i].BuyerAliPayAccount + "</td>";
+      
 
         ////代理扣点率
         //tdWidth = "width:" + $("#trHeader th").eq(10).css("width");
         //strCtrl += "<td style='" + tdWidth + "'>" + result[i].Rate + "</td>";
 
+        //商户编号
+        tdWidth = "width:" + $("#trHeader th").eq(13).css("width");
+        strCtrl += "<td style='" + tdWidth + "' title='" + result[i].SellerStoreId + "'>" + result[i].SellerStoreId + "</td>";
    
         //商户名
-        tdWidth = "width:" + $("#trHeader th").eq(13).css("width");
-        strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerName + "</td>";
+        tdWidth = "width:" + $("#trHeader th").eq(14).css("width");
+        strCtrl += "<td style='" + tdWidth + "' title='" + result[i].SellerName + "'>" + result[i].SellerName + "</td>";
 
         ////商户类型
         //tdWidth = "width:" + $("#trHeader th").eq(12).css("width");
@@ -249,14 +254,16 @@ function generateData(result) {
         //strCtrl += "<td style='" + tdWidth + "'>" + result[i].SellerRate + "</td>";
 
       
-
+        //买家账户
+        tdWidth = "width:" + $("#trHeader th").eq(15).css("width");
+        strCtrl += "<td style='" + tdWidth + "' title='" + result[i].BuyerAliPayLoginId + "'>" + result[i].BuyerAliPayLoginId + "</td>";
 
         //订单编号
-        tdWidth = "width:" + $("#trHeader th").eq(14).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(16).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].OrderNo + "</td>";
 
         //支付宝订单编号
-        tdWidth = "width:" + $("#trHeader th").eq(15).css("width");
+        tdWidth = "width:" + $("#trHeader th").eq(17).css("width");
         strCtrl += "<td style='" + tdWidth + "'>" + result[i].AliPayOrderNo + "</td>";
 
         strCtrl += "</tr>";

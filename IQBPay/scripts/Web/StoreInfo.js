@@ -89,6 +89,11 @@ function InitFormData(data)
     $("#IsReceiveAccount").attr("checked", data.IsReceiveAccount);
     $("#Channel").val(data.Channel);
 
+    $("#Provider").val(data.Provider);
+    $("#MidCommAccount").val(data.MidCommAccount);
+    $("#MidCommRate").val(data.MidCommRate);
+    $("#Log").val(data.Log);
+
     var channel = data.Channel;
     if(channel == 0)
         $("#gpIsReceiveAccount").show();
@@ -120,6 +125,11 @@ function Save()
     var StoreType = $("#StoreType").val();
 
     var IsReceiveAccount = $("#IsReceiveAccount").get(0).checked;
+    var Provider = $("#Provider").val();
+    var MidCommAccount = $("#MidCommAccount").val();
+    var MidCommRate = $("#MidCommRate").val();
+    var Log = $("#Log").val();
+   
  
 
     if (!CheckForm()) return;
@@ -128,7 +138,7 @@ function Save()
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID,"Channel":Channel,"StoreType":StoreType,"RemainAmount":RemainAmount,"DayIncome":DayIncome,"MinLimitAmount":MinLimitAmount,"MaxLimitAmount":MaxLimitAmount, "Name": name, "Rate": Rate,  "Remark": remake, "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount },
+        data: { "ID": ID, "Provider": Provider, "MidCommAccount": MidCommAccount, "MidCommRate": MidCommRate, "Log": Log, "Channel": Channel, "StoreType": StoreType, "RemainAmount": RemainAmount, "DayIncome": DayIncome, "MinLimitAmount": MinLimitAmount, "MaxLimitAmount": MaxLimitAmount, "Name": name, "Rate": Rate, "Remark": remake, "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount },
         url: url,
         success: function (data) {
             if(data == "OK")

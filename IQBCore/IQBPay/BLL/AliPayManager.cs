@@ -351,7 +351,7 @@ namespace IQBCore.IQBPay.BLL
                     order.BuyerTransferAmount -= (float)RuleManager.PayRule().User_ServerFee_Q;
 
                 if(orderNum == 0 && (qrUser.MarketRate-qrUser.Rate)< FOFeeRate)
-                    order.RateAmount = (float)Math.Round(TotalAmount * (FOFeeRate / 100), 2, MidpointRounding.ToEven);
+                    order.RateAmount = (float)Math.Round(TotalAmount * ((qrUser.MarketRate-FOFeeRate) / 100), 2, MidpointRounding.ToEven);
 
             }
            

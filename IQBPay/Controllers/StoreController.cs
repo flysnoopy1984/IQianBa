@@ -219,6 +219,11 @@ namespace IQBPay.Controllers
                     entry.Property(t => t.Channel).IsModified = true;
                     entry.Property(t => t.StoreType).IsModified = true;
 
+                    entry.Property(t => t.Provider).IsModified = true;
+                    entry.Property(t => t.MidCommAccount).IsModified = true;
+                    entry.Property(t => t.MidCommRate).IsModified = true;
+                    entry.Property(t => t.Log).IsModified = true;
+
                     entry.Property(t => t.MDate).IsModified = true;
                     entry.Property(t => t.MTime).IsModified = true;
                     entry.Property(t => t.ModifyDate).IsModified = true;
@@ -275,7 +280,7 @@ namespace IQBPay.Controllers
                     string Res = payMag.PayTest(BaseController.App, list[i], out status);
                     if (status == AliPayResult.FAILED)
                     {
-                        list[i].Remark = "[Error]Code:" + Res;
+                        list[i].Log = "[Error]Code:" + Res;
                         list[i].RecordStatus = RecordStatus.Blocked;
 
                     }
@@ -283,6 +288,31 @@ namespace IQBPay.Controllers
                 db.SaveChanges();           
             }
             return Json(result);
+        }
+
+        public ActionResult ResetAmount()
+        {
+            OutAPIResult result = new OutAPIResult();
+
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    var sql = @"update s
+                         set s.RemainAmount = s.DayIncome
+                         from StoreInfo as s where s.Channel = 1 and s.RecordStatus = 0";
+                    db.Database.ExecuteSqlCommand(sql);
+                   // db.DBStoreInfo.Where(s=>s.Channel == Channel.League && s.RecordStatus == RecordStatus.Normal)
+                }
+                
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+
         }
 
         public ActionResult DeleteStore(long ID)

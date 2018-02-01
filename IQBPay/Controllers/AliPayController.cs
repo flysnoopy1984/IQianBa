@@ -276,7 +276,7 @@ namespace IQBPay.Controllers
                                         order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
                                         TransferError++;
                                         store.RecordStatus = RecordStatus.Blocked;
-                                        store.Remark = string.Format("[分账错误]订单：{0}。时间：{1}",order.OrderNo,order.TransDateStr);
+                                        store.Log = string.Format("[分账错误]订单：{0}。时间：{1}",order.OrderNo,order.TransDateStr);
                                     }
                                 }
                                 catch(Exception ex)
@@ -1041,7 +1041,7 @@ namespace IQBPay.Controllers
 
                         ErrorUrl += "商户下架，抱歉，请重新扫下支付码";
                         store.RecordStatus = RecordStatus.Blocked;
-                        store.Remark = string.Format("[{0}][Error]商户授权出错", DateTime.Now.ToShortDateString());
+                        store.Log = string.Format("[{0}][Error]商户授权出错", DateTime.Now.ToShortDateString());
                        
                         db.SaveChanges();
                         return Redirect(ErrorUrl);
@@ -1314,7 +1314,7 @@ namespace IQBPay.Controllers
                     {
 
 
-                        store.Remark = string.Format("[{0}][Error]商户出错-{1}", DateTime.Now.ToShortDateString(), Res);
+                        store.Log = string.Format("[{0}][Error]商户出错-{1}", DateTime.Now.ToShortDateString(), Res);
                         store.RecordStatus = RecordStatus.Blocked;
                         db.SaveChanges();
 

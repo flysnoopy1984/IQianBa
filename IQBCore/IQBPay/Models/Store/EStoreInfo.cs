@@ -103,6 +103,11 @@ namespace IQBCore.IQBPay.Models.Store
         /// </summary>
         public string MidCommAccount { get; set; }
 
+        /// <summary>
+        /// 中间商返利
+        /// </summary>
+        public float MidCommRate { get; set; }
+
 
 
     }

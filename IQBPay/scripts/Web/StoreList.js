@@ -23,7 +23,34 @@ function CheckStoreAuth()
             if(data.IsSuccess)
             {
                 alert("检查完毕");
+                window.location.reload();
                 
+            }
+        },
+        error: function (xhr, type) {
+
+            alert('Ajax error!');
+
+        }
+    });
+}
+
+function ReSet()
+{
+    var url = "/Store/ResetAmount";
+    $.ajax({
+        type: 'post',
+        data: "",
+        url: url,
+        success: function (data) {
+            if(data.IsSuccess)
+            {
+                alert("重置完成");
+                window.location.reload();
+            }
+            else
+            {
+                alert(data.ErrorMsg);
             }
         },
         error: function (xhr, type) {
@@ -90,18 +117,21 @@ function generateData(result)
         strCtrl = "";
         strCtrl += "<tr>";
         strCtrl += "<td>" + result[i].ID + "</td>";
+        strCtrl += "<td title='" + result[i].Provider + "'>" + result[i].Provider + "</td>";
         strCtrl += "<td>" + result[i].Name + "</td>";
         strCtrl += "<td>" + cn + "</td>";
         strCtrl += "<td>" + result[i].Rate + "</td>";
-        strCtrl += "<td>" + result[i].IsReceiveAccount + "</td>";
+        //strCtrl += "<td>" + result[i].IsReceiveAccount + "</td>";
         strCtrl += "<td>" + result[i].DayIncome + "</td>";
         strCtrl += "<td>" + result[i].RemainAmount + "</td>";     
         strCtrl += "<td>" + result[i].MinLimitAmount + "</td>";
         strCtrl += "<td>" + result[i].MaxLimitAmount + "</td>";
         strCtrl += "<td>" +storeType + "</td>";
         strCtrl += "<td title='" + result[i].AliPayAccount + "'>" + result[i].AliPayAccount + "</td>";
-        strCtrl += "<td title='" + appName + "'>" + appName + "</td>";
-        //strCtrl += "<td>" + result[i].CloseTime + "</td>";
+        strCtrl += "<td title='" + result[i].MidCommAccount + "'>" + result[i].MidCommAccount + "</td>";
+        strCtrl += "<td title='" + result[i].MidCommRate + "'>" + result[i].MidCommRate + "</td>";
+        //strCtrl += "<td title='" + appName + "'>" + appName + "</td>";
+    
         strCtrl += "<td title='" + result[i].Remark + "'>" + result[i].Remark + "</td>";
 
         if (result[i].RecordStatus == 0)
@@ -111,7 +141,7 @@ function generateData(result)
 
         strCtrl += "<td>";
         strCtrl += "<a href='/Store/Info?id=" + result[i].ID + "' class='td'>详情</a>";
-        strCtrl += "<input type=button onclick=deleteStore('" + result[i].ID + "') value='删除' /></td>";
+        strCtrl += "<input style='float:right' type=button onclick=deleteStore('" + result[i].ID + "') value='删除' /></td>";
         strCtrl += "</td></tr>";
 
         $("#trContainer").append(strCtrl);

@@ -160,7 +160,7 @@ namespace IQBPay.Controllers
                             SellerName = o.SellerName,
                             //SellerChannel = o.SellerChannel,
                             AliPayOrderNo = o.AliPayOrderNo,
-                          //  BuyerAliPayLoginId = o.BuyerAliPayLoginId,
+                          
                             TransDate = o.TransDate,
                             AgentOpenId = o.AgentOpenId,
                             LogRemark = o.LogRemark,
@@ -168,7 +168,9 @@ namespace IQBPay.Controllers
                             SellerStoreId = o.SellerStoreId,
                             ParentName =pui.Name,
                             L3Name = L3ui.Name,
-                            BuyerAliPayAccount = o.BuyerAliPayAccount,
+                           
+                            BuyerAliPayLoginId = o.BuyerAliPayLoginId,
+                            //   BuyerAliPayAccount = o.BuyerAliPayAccount,
                         }
                      );
                     //var list = db.DBOrder.Select(o => new ROrderInfo {

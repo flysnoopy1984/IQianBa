@@ -25,11 +25,20 @@
     <div id="EditArea">
         <input type="hidden" id="storeId" />
         <div class="form-group">
+            <label class="col-sm-3 control-label">供应商</label>
+            <div class="col-sm-6">
+                <input id="Provider" type="text" class="form-control NeedFill">
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-3 control-label">商户名</label>
             <div class="col-sm-6">
                 <input id="Name" type="text" class="form-control NeedFill">
             </div>
         </div>
+
+       
+
         <div class="form-group" id="gpIsReceiveAccount">
             <label class="col-sm-3 control-label">是否收款账户</label>
             <div class="col-sm-6">
@@ -57,14 +66,14 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">风控额度</label>
+            <label class="col-sm-3 control-label">最小额度</label>
             <div class="col-sm-6">
                 <input id="MinLimitAmount" type="text" class="form-control">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">非风控额度</label>
+            <label class="col-sm-3 control-label">最大额度</label>
             <div class="col-sm-6">
                 <input id="MaxLimitAmount" type="text" class="form-control">
             </div>
@@ -85,28 +94,34 @@
                     <option value="0">平台</option>
                     <option value="1">加盟</option>
                 </select>
-               
-            </div>
-        </div>
-
-        @*<div class="form-group">
-            <label class="col-sm-3 control-label">店铺开放时间</label>
-            <div class="col-sm-6">
-                <input id="OpenTime" type="text" class="form-control">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">店铺结束时间</label>
+            <label class="col-sm-3 control-label">中账户</label>
             <div class="col-sm-6">
-                <input id="CloseTime" type="text" class="form-control">
+                <input id="MidCommAccount" type="text" class="form-control">
             </div>
-        </div>*@
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">中佣金</label>
+            <div class="col-sm-6">
+                <input id="MidCommRate" type="text" class="form-control">
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label">备注</label>
             <div class="col-sm-6">
                 <input id="Remark" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">日志</label>
+            <div class="col-sm-6">
+                <input id="Log" type="text" class="form-control">
             </div>
         </div>
 
