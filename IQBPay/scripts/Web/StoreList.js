@@ -89,6 +89,7 @@ function generateData(result)
 
         strCtrl = "";
         strCtrl += "<tr>";
+        strCtrl += "<td>" + result[i].ID + "</td>";
         strCtrl += "<td>" + result[i].Name + "</td>";
         strCtrl += "<td>" + cn + "</td>";
         strCtrl += "<td>" + result[i].Rate + "</td>";

@@ -326,7 +326,7 @@ namespace IQBPay.Controllers
                         entry.Property(t => t.Remark).IsModified = true;
                         entry.Property(t => t.RecordStatus).IsModified = true;
                         entry.Property(t => t.Channel).IsModified = true;
-
+                        entry.Property(t => t.APPId).IsModified = true;
                         entry.Property(t => t.MDate).IsModified = true;
                         entry.Property(t => t.MTime).IsModified = true;
                         entry.Property(t => t.ModifyDate).IsModified = true;

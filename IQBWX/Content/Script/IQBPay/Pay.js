@@ -13,16 +13,20 @@ function InitControls() {
 
 }
 
-function ShowPayArea()
-{
-    $("#AliPayAccount").attr("disabled", true);
-    $("#bnModifyAliPayAccount").show();
-    $("#bnConfirmAliPayAccount").hide();
-    $("#PayContent").show();
-}
+//function ShowPayArea()
+//{
+//    $("#AliPayAccount").attr("disabled", true);
+//    $("#bnModifyAliPayAccount").show();
+//    $("#bnConfirmAliPayAccount").hide();
+//    $("#PayContent").show();
+//}
 
 $(document).ready(function () {
 
+    $("#btnPay").click(function () {　　//普通事件方法
+       
+        PayToAli();
+    });
     //InitControls();
     //var account = getCookie("YJ_AliPayAccount");
     //if (account != null || account!="") {
@@ -36,81 +40,82 @@ $(document).ready(function () {
     //}
     var client = IsWeixinOrAlipay();
     if (client != "Alipay") {
-        window.location.href = "/Home/ErrorMessage?code=3000";
+        window.location.href = "/Home/ErrorMessage?code=2000&ErrorMsg=请用支付宝打开";
+            alert("请使用支付宝打开");
+
+        return false;
     }
 
-    $.alert({
-        theme: "dark",
-        title: "注意",
-        content: "风控用户请【199支付】必过！！",
-        btnClass:"btn-warning",
-        width: '30%',
+ 
+
+    //$.alert({
+    //    theme: "dark",
+    //    title: "注意",
+    //    content: "风控用户请【199支付】必过！！",
+    //    btnClass:"btn-warning",
+    //    width: '30%',
        
          
-    });
+    //});
 
    
 });
 
-function ModifyAliPayAccount() {
-    InitControls();
-}
+//function ModifyAliPayAccount() {
+//    InitControls();
+//}
 
-function ConfirmAliPayAccount() {
+//function ConfirmAliPayAccount() {
 
-    var AliPayAccount = $("#AliPayAccount").val();
+//    var AliPayAccount = $("#AliPayAccount").val();
 
-    $.confirm({
-        title: '请谨慎确认!',
-        content: '如收款码输入有误，您将无法收到款项!',
-        buttons: {
-            confirm: {
+//    $.confirm({
+//        title: '请谨慎确认!',
+//        content: '如收款码输入有误，您将无法收到款项!',
+//        buttons: {
+//            confirm: {
 
-                btnClass: 'btn-blue',
-                text: '确定',
-                action: function () {
+//                btnClass: 'btn-blue',
+//                text: '确定',
+//                action: function () {
                    
-                    ShowPayArea();
-                }
+//                    ShowPayArea();
+//                }
 
-            },
-            cancel: {
-                text: '重新输入',
+//            },
+//            cancel: {
+//                text: '重新输入',
 
 
-            }
+//            }
 
-        }
-    });
+//        }
+//    });
 
    
-}
-function GoToSafePay()
-{
-    var qrUserId = $("#qrUserId").val();
-    var url = "/PP/Pay2?Id=" + qrUserId;
-    window.location = url;
-}
+//}
+//function GoToSafePay()
+//{
+//    var qrUserId = $("#qrUserId").val();
+//    var url = "/PP/Pay2?Id=" + qrUserId;
+//    window.location = url;
+//}
 
 function PayToAli() {
-
+    var QRMin = parseFloat($("#QRMin").val());
+    var QRMax = parseFloat($("#QRMax").val());
  
-    var amt = $("#TotalAmout").val();
-
-    var amt = $("#TotalAmout").val();
-    if (amt < 20 || amt > 1499) {
+    var amt = parseFloat($("#TotalAmout").val());
+    if (amt < QRMin || amt > QRMax) {
 
         $.alert({
             theme: "dark",
             title: "错误",
-            content: "金额区间必须在【20-1499】",
+            content: "金额区间必须在【" + QRMin + "-" + QRMax + "】",
 
         });
-
         return;
-
     }
-
     var qrUserId = $("#qrUserId").val();
     if (amt == null || amt == "" || amt == 0) {
         $.alert({
@@ -122,7 +127,7 @@ function PayToAli() {
 
         return;
     }
-  
+    $("#btnPay").attr("disabled", true);
     if (qrUserId == null || qrUserId == "") {
         $.alert({
             theme: "dark",
@@ -134,11 +139,30 @@ function PayToAli() {
         return;
     }
     $("#btnPay").attr("disabled", true);
-  
+    var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt ;
+    window.location.href = url;
+    //设置账户cookie
+    //setCookie("YJ_AliPayAccount", AliPayAccount, 3);
 
-    var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt+"&PayType=1";
-  //  setCookie("YJ_AliPayAccount", AliPayAccount, 3);
-    
+    //var str = '<div style="font-size:26px">若支付宝出现以下提示<br />说明您只能<span style="color:firebrick">199元连续支付</span></div>';
+    //str += '<div style="text-align:center; margin-top:10px;"><img src="/Content/images/PayError1.jpg" /></div>';
+    //$.confirm({
+    //    theme: "modern",
+    //    title: '注意',
+    //    type: 'red',
+    //    content: str,
+    //    buttons: {
+    //        Know: {
+    //            btnClass: 'btn btn-danger',
+    //            text: "我知道了",
+    //            action: function () {
+    //                // setCookie("YJ_PayWarning", 1, 3);
+    //                window.location.href = url;
+    //            }
+    //        },
+
+    //    }
+    //});
 
     window.location = url;
 

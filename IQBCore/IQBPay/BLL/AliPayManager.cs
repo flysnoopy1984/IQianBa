@@ -354,11 +354,7 @@ namespace IQBCore.IQBPay.BLL
                     order.RateAmount = (float)Math.Round(TotalAmount * (FOFeeRate / 100), 2, MidpointRounding.ToEven);
 
             }
-            //代理
-          //  order.RealTotalAmount = order.TotalAmount - order.RateAmount;
-            //上级代理
-            
-         
+           
 
             return order;
            
@@ -475,7 +471,7 @@ namespace IQBCore.IQBPay.BLL
         public string PayF2FNew(EAliPayApplication app, EUserInfo AgentUi, EStoreInfo storeInfo, string TotalAmount, out AliPayResult status)
         {
             string result = "";
-            bool NeedControl = true;
+            bool NeedControl = false;
 
             /*
             IAlipayTradeService serviceClient = F2FBiz.CreateClientInstance(AliPayConfig.serverUrl, AliPayConfig.appId, AliPayConfig.merchant_private_key, AliPayConfig.version,
@@ -487,8 +483,8 @@ namespace IQBCore.IQBPay.BLL
 
             _handler = new F2FPayHandler();
 
-            if (AgentUi.UserRole == UserRole.Administrator)
-                NeedControl = false;
+            //if (AgentUi.UserRole == UserRole.Administrator)
+            //    NeedControl = false;
             AlipayTradePrecreateResponse builder = _handler.BuildNew(app, storeInfo, AgentUi, TotalAmount,true, NeedControl);
 
             if(builder.Code == "10000")

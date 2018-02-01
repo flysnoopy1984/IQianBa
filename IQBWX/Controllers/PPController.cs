@@ -64,9 +64,9 @@ namespace IQBWX.Controllers
 
         public ActionResult Pay(string Id)
         {
-            return RedirectToAction("Pay2", "PP", new { Id = Id });
+           // return RedirectToAction("Pay2", "PP", new { Id = Id });
 
-            if(WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
+            if(WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop && Id!="118")
             {
                 return RedirectToAction("ErrorMessage", "Home",new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
             }
@@ -77,7 +77,7 @@ namespace IQBWX.Controllers
 
         public ActionResult PayWithAccount(string Id)
         {
-           // return RedirectToAction("Pay", "PP", new { Id = Id });
+            // return RedirectToAction("Pay", "PP", new { Id = Id });
 
             if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
             {
@@ -92,7 +92,7 @@ namespace IQBWX.Controllers
 
         public ActionResult Pay2(string Id)
         {
-            if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
+            if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop )
             {
                 return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
             }
@@ -303,67 +303,28 @@ namespace IQBWX.Controllers
 
             return Json(result);
         }
-
         [HttpPost]
         public ActionResult OrderQuery()
         {
             int pageIndex = Convert.ToInt32(Request["Page"]);
             int pageSize = Convert.ToInt32(Request["PageSize"]);
             string OpenId = Request["OpenId"];
-            ConditionDataType DateType =(ConditionDataType)Enum.Parse(typeof(ConditionDataType),Request["DateType"]);
-            OrderStatus OrderStatus = (OrderStatus)Enum.Parse(typeof(OrderStatus), Request["OrderStatus"]);
-            List<ROrderInfo> result = new List<ROrderInfo>();
+            List<RUser_Order> result = new List<RUser_Order>();
             try
             {
-                
                 using (AliPayContent db = new AliPayContent())
                 {
-                    var list = db.DBOrder.Where(o => o.AgentOpenId == OpenId).Select(o=>new ROrderInfo {
-                        ID = o.ID,
+                    var list = db.DBOrder.Where(o => o.AgentOpenId == OpenId || o.ParentOpenId == OpenId || o.L3OpenId == OpenId).Select(o => new RUser_Order
+                    {
                         OrderNo = o.OrderNo,
                         TransDateStr = o.TransDateStr,
-                        OrderStatus = o.OrderStatus,
                         TotalAmount = o.TotalAmount,
-                        RateAmount = o.RateAmount,
-                        BuyerAliPayLoginId = o.BuyerAliPayLoginId,
-                        TransDate = o.TransDate,
-                    });
-
-                  
-
-                    if (OrderStatus != OrderStatus.ALL)
-                    {
-                        list = list.Where(o => o.OrderStatus == OrderStatus);
-                    }
-                    else
-                        list = list.Where(o => o.OrderStatus != OrderStatus.WaitingAliPayNotify && o.OrderStatus!=OrderStatus.SystemClose);
-
-                    if (DateType != ConditionDataType.All)
-                    {
-                        DateTime startDate = DateTime.Today;
-                        DateTime endDate = DateTime.Today.AddDays(1);
-
-                        if (DateType == ConditionDataType.Today)
-                        {
-                            startDate = DateTime.Today;
-                            endDate = DateTime.Today.AddDays(1);
-
-                        }
-                        else if (DateType == ConditionDataType.Week)
-                        {
-                            startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
-                            endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
-                        }
-                        else if (DateType == ConditionDataType.Month)
-                        {
-                            startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
-                            endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
-
-                        }
-                        list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
-                    }
-                    //list = list.Where(o => o.OrderStatus == OrderStatus.Paid);
-                    list = list.OrderByDescending(i => i.TransDate);
+                        AgentAmount = o.RateAmount,
+                        ParentCommissionAmount = o.ParentCommissionAmount,
+                        L3CommissionAmount = o.L3CommissionAmount,
+                        TransDate =o.TransDate,
+                        OrderStatus = o.OrderStatus,
+                    }).Where(o=>o.OrderStatus == OrderStatus.Closed).OrderByDescending(i => i.TransDate);
 
                     if (pageIndex == 0)
                     {
@@ -405,8 +366,112 @@ namespace IQBWX.Controllers
                 throw ex;
             }
             return Json(result);
-           
+
         }
+
+        //[HttpPost]
+        //public ActionResult OrderQuery()
+        //{
+        //    int pageIndex = Convert.ToInt32(Request["Page"]);
+        //    int pageSize = Convert.ToInt32(Request["PageSize"]);
+        //    string OpenId = Request["OpenId"];
+        //    ConditionDataType DateType =(ConditionDataType)Enum.Parse(typeof(ConditionDataType),Request["DateType"]);
+        //    OrderStatus OrderStatus = (OrderStatus)Enum.Parse(typeof(OrderStatus), Request["OrderStatus"]);
+        //    List<ROrderInfo> result = new List<ROrderInfo>();
+        //    try
+        //    {
+
+        //        using (AliPayContent db = new AliPayContent())
+        //        {
+        //            var list = db.DBOrder.Where(o => o.AgentOpenId == OpenId).Select(o=>new ROrderInfo {
+        //                ID = o.ID,
+        //                OrderNo = o.OrderNo,
+        //                TransDateStr = o.TransDateStr,
+        //                OrderStatus = o.OrderStatus,
+        //                TotalAmount = o.TotalAmount,
+        //                RateAmount = o.RateAmount,
+        //                BuyerAliPayLoginId = o.BuyerAliPayLoginId,
+        //                TransDate = o.TransDate,
+        //            });
+
+
+
+        //            if (OrderStatus != OrderStatus.ALL)
+        //            {
+        //                list = list.Where(o => o.OrderStatus == OrderStatus);
+        //            }
+        //            else
+        //                list = list.Where(o => o.OrderStatus != OrderStatus.WaitingAliPayNotify && o.OrderStatus!=OrderStatus.SystemClose);
+
+        //            if (DateType != ConditionDataType.All)
+        //            {
+        //                DateTime startDate = DateTime.Today;
+        //                DateTime endDate = DateTime.Today.AddDays(1);
+
+        //                if (DateType == ConditionDataType.Today)
+        //                {
+        //                    startDate = DateTime.Today;
+        //                    endDate = DateTime.Today.AddDays(1);
+
+        //                }
+        //                else if (DateType == ConditionDataType.Week)
+        //                {
+        //                    startDate = UtilityHelper.GetTimeStartByType("Week", DateTime.Now);
+        //                    endDate = UtilityHelper.GetTimeEndByType("Week", DateTime.Now);
+        //                }
+        //                else if (DateType == ConditionDataType.Month)
+        //                {
+        //                    startDate = UtilityHelper.GetTimeStartByType("Month", DateTime.Now);
+        //                    endDate = UtilityHelper.GetTimeEndByType("Month", DateTime.Now);
+
+        //                }
+        //                list = list.Where(o => o.TransDate >= startDate && o.TransDate <= endDate);
+        //            }
+        //            //list = list.Where(o => o.OrderStatus == OrderStatus.Paid);
+        //            list = list.OrderByDescending(i => i.TransDate);
+
+        //            if (pageIndex == 0)
+        //            {
+        //                DateTime startDate = DateTime.Today;
+        //                DateTime endDate = DateTime.Today.AddDays(1);
+
+        //                int totalCount = list.Count();
+        //                result = list.Take(pageSize).ToList();
+        //                if (result.Count > 0)
+        //                {
+        //                    var PList = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.AgentCommissionStatus == AgentCommissionStatus.Closed && o.TransDate >= startDate && o.TransDate <= endDate).Select(o => new RAgentCommission
+        //                    {
+        //                        CommissionAmount = o.CommissionAmount,
+        //                    });
+
+        //                    var AllPLList = db.DBAgentCommission.Where(o => o.ParentOpenId == OpenId && o.AgentCommissionStatus == AgentCommissionStatus.Closed).Select(o => new RAgentCommission
+        //                    {
+        //                        CommissionAmount = o.CommissionAmount,
+        //                    });
+
+        //                    var TodayOrder = db.DBOrder.Where(o => o.AgentOpenId == OpenId && o.OrderStatus == OrderStatus.Closed && o.TransDate >= startDate && o.TransDate <= endDate);
+        //                    var myToday = TodayOrder.ToList();
+        //                    //   result[0].AgentTodayOrderAmount = myToday.Sum(o => o.TotalAmount).ToString("0.00");
+        //                    result[0].AgentTodayOrderAmount = myToday.Count.ToString();
+        //                    result[0].AgentTodayIncome = (myToday.Sum(o => o.RateAmount) + PList.ToList().Sum(o => o.CommissionAmount)).ToString("0.00");
+
+        //                    var allOrder = db.DBOrder.Where(o => o.AgentOpenId == OpenId && o.OrderStatus == OrderStatus.Closed);
+        //                    result[0].AgentTotalIncome = (allOrder.ToList().Sum(o => o.RateAmount) + AllPLList.ToList().Sum(o => o.CommissionAmount)).ToString("0.00");
+
+        //                }
+
+        //            }
+        //            else
+        //                result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //    return Json(result);
+
+        //}
 
         [HttpPost]
         public ActionResult TransferQuery()
@@ -1359,6 +1424,13 @@ group by o.AgentOpenId ,o.OrderType
         #region 大额入口设置
         public ActionResult QRHugeEntry()
         {
+            return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg="产品研发中，尽情期待！" });
+
+            if (WXBaseController.GlobalConfig.QRHugeEntry == IQBCore.IQBPay.BaseEnum.QRHugeEntry.Stop)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg = "大额通道维护中，请明天再尝试！" });
+            }
+
             if (!UserSession.HasQRHuge)
             {
                 using (AliPayContent db = new AliPayContent())
@@ -1366,6 +1438,24 @@ group by o.AgentOpenId ,o.OrderType
                     float num = db.DBOrder.Where(o => o.AgentOpenId == UserSession.OpenId && o.OrderStatus == OrderStatus.Closed).ToList().Sum(o => o.TotalAmount);
                     if (num > RuleManager.PayRule().Agent_QRHugeFee)
                     {
+                       
+                        EQRUser bQRUser = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId && o.QRType == QRType.ARHuge).FirstOrDefault();
+                        if (bQRUser == null)
+                        {
+                            EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId && o.QRType == QRType.AR).First();
+                            //大额码参数
+                            bQRUser = EQRUser.CopyToQRUserForHuge(sQRUser);
+                            if (UserSession.UserRole == UserRole.Agent)
+                                bQRUser.Rate = (float)6.5;
+                            else
+                                bQRUser.Rate = 7;
+                            bQRUser.MarketRate = 10;
+
+                            db.DBQRUser.Add(bQRUser);
+
+                           
+                        }
+
                         IQBCore.IQBPay.Models.User.EUserInfo ui = new IQBCore.IQBPay.Models.User.EUserInfo();
                         ui.Id = UserSession.Id;
                         ui.HasQRHuge = true;
@@ -1373,7 +1463,12 @@ group by o.AgentOpenId ,o.OrderType
                         DbEntityEntry<IQBCore.IQBPay.Models.User.EUserInfo> entry = db.Entry<IQBCore.IQBPay.Models.User.EUserInfo>(ui);
                         entry.State = EntityState.Modified;
                         entry.Property(t => t.HasQRHuge).IsModified = true;
+
+                       
                         db.SaveChanges();
+
+                       
+
 
                         UserSession.HasQRHuge = true;
                         UserSession = UserSession;
@@ -1389,10 +1484,7 @@ group by o.AgentOpenId ,o.OrderType
             InitProfilePage();
             RQRUser qrUser;
 
-            if (WXBaseController.GlobalConfig.QRHugeEntry == IQBCore.IQBPay.BaseEnum.QRHugeEntry.Stop)
-            {
-                return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg = "大额通道维护中，请明天再尝试！" });
-            }
+      
 
 
             using (AliPayContent db = new AliPayContent())

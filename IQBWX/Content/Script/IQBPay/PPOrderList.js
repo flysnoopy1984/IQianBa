@@ -103,10 +103,10 @@ function Query(_pageIndex) {
         PageSize = 20;
     var cDateType = $("#cDateType").val();
     var cOrderStatus = $("#cOrderStatus").val();
-
+    //"OrderStatus=" + cOrderStatus + "&DateType=" + cDateType + 
     $.ajax({
         type: 'post',
-        data: "OrderStatus=" + cOrderStatus + "&DateType=" + cDateType + "&Page=" + _pageIndex + "&PageSize=" + PageSize + "&OpenId=" + OpenId,
+        data: "Page=" + _pageIndex + "&PageSize=" + PageSize + "&OpenId=" + OpenId,
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -173,24 +173,26 @@ function generateData(result) {
                 break;
         }
         strCtrl = "";
-        strCtrl += "<tr>";
+        strCtrl += "<tr style='height:80px;'>";
 
       //tdWidth = "width:" + $("#trHeader th").eq(0).css("width");
-        strCtrl += "<td style='width:50%'><ul><li style='color:cadetblue;'>" + result[i].OrderNo + "</li>";
-        strCtrl += "<li>创建时间:" + result[i].TransDateStr + "</li>";
-        //strCtrl += "<li style='color:brown; font-size:14px;'>订单状态:" + orderStatus + "</li>";
-  //      strCtrl += "<li>付款账户:" + result[i].BuyerAliPayLoginId + "</li>";
-        strCtrl += "</ul></td>";
-        strCtrl += "<td style='width:50%'><ul><li style='color:firebrick; font-weight:bold;'>" + result[i].RateAmount + " &yen</li>";
-        strCtrl += "<li>订单总额:" + result[i].TotalAmount + " &yen</li>";
-       
-        strCtrl += "</ul>";
-        //strCtrl += "<ul><li>付款账户：" + result[i].BuyerAliPayLoginId + "</li></ul>"
-        strCtrl += "</td>";
+        strCtrl += "<td style='line-height:80px;width:45%;color:cadetblue;padding-left:20px;'>交易时间:" + result[i].TransDateStr + "</td>";
+        strCtrl += "<td style='line-height:80px;width:55%;text-align:right;color:firebrick;padding-right:20px;'>+" + result[i].AgentAmount.toFixed(2) + " &yen</td>";
         strCtrl += "</tr>";
+        if (result[i].ParentCommissionAmount > 0)
+        {
+            strCtrl += "<tr>";
+            strCtrl += "<td style='border:none;width:100%;text-align:right;color:firebrick;padding-right:20px;' colspan=2>+" + result[i].ParentCommissionAmount.toFixed(2) + "(反佣) &yen</td>";
+            strCtrl += "</tr>";
+        }
+        if (result[i].L3CommissionAmount > 0) {
+            strCtrl += "<tr>";
+            strCtrl += "<td style='border:none;width:100%;text-align:right;color:firebrick;padding-right:20px;' colspan=2>+" + result[i].L3CommissionAmount.toFixed(2) + " (3级佣金) &yen</td>";
+            strCtrl += "</tr>";
+        }
+       
 
-        strCtrl += "<tr ><td style='border:none; padding-top:0px;' colspan='2'>付款账户:" + result[i].BuyerAliPayLoginId + "</td></tr>"
-      
+    
        
 
         $("#trContainer").append(strCtrl);
@@ -198,3 +200,26 @@ function generateData(result) {
    
 
 }
+//strCtrl = "";
+//        strCtrl += "<tr>";
+
+//      //tdWidth = "width:" + $("#trHeader th").eq(0).css("width");
+//        strCtrl += "<td style='width:100%'><ul><li style='color:cadetblue;'>交易时间:" + result[i].TransDateStr + "</li>";
+//        strCtrl += "<li style='color:firebrick; font-weight:bold;'>" + result[i].RateAmount + " &yen</li>";
+//        //strCtrl += "<li>创建时间:" + result[i].TransDateStr + "</li>";
+//        //strCtrl += "<li style='color:brown; font-size:14px;'>订单状态:" + orderStatus + "</li>";
+//  //      strCtrl += "<li>付款账户:" + result[i].BuyerAliPayLoginId + "</li>";
+//        strCtrl += "</ul></td>";
+//        strCtrl += "<td style='width:50%'><ul><li style='color:firebrick; font-weight:bold;'>" + result[i].RateAmount + " &yen</li>";
+//        strCtrl += "<li>订单总额:" + result[i].TotalAmount + " &yen</li>";
+       
+//        strCtrl += "</ul>";
+//        //strCtrl += "<ul><li>付款账户：" + result[i].BuyerAliPayLoginId + "</li></ul>"
+//        strCtrl += "</td>";
+//        strCtrl += "</tr>";
+
+//        strCtrl += "<tr ><td style='border:none; padding-top:0px;' colspan='2'>付款账户:" + result[i].BuyerAliPayLoginId + "</td></tr>"
+      
+       
+
+//        $("#trContainer").append(strCtrl);

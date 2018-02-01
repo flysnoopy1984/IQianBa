@@ -20,13 +20,14 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        public ActionResult AgentInTeam()
+
+        public ActionResult AgentOverView()
         {
             using (AliPayContent db = new AliPayContent())
             {
 
             }
-           return View();
+            return View();
         }
     }
 }

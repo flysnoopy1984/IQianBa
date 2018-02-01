@@ -488,7 +488,6 @@ namespace IQBPay.Controllers
                                     db.DBStoreInfo.Add(store);
                                 }
 
-
                             }
                             else
                             {
@@ -514,7 +513,7 @@ namespace IQBPay.Controllers
                             }
                             qr.InitModify();
                             qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
-                            Log.log("Auth QR Status:" + qr.RecordStatus);
+                        //    Log.log("Auth QR Status:" + qr.RecordStatus);
                             db.SaveChanges();
                         }
                         else
@@ -1306,6 +1305,7 @@ namespace IQBPay.Controllers
                         }
 
                         db.DBOrder.Add(order);
+                        
                         db.SaveChanges();
 
                         return Redirect(Res);

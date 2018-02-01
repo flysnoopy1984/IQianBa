@@ -18,7 +18,7 @@
 
 <div id="ListArea">
     <div id="Title" style="margin:0px; height:200px;">
-        <span id="ListTitleName">订单列表</span>
+        <span id="ListTitleName">代理业绩</span>
         <hr />
         <div class="ListCondition">
             <ul class="UlHorizontal">
@@ -29,40 +29,18 @@
                     </div>
                 </li>
                 <li>
-                    <label>商户：</label>
-                    <select id="cStore" class="form-control ConditionField"></select>
-                </li>
+                    <label>上级：</label>
+                    <input id="cParentName" type="text" class="form-control ConditionField">
+                </li> 
                 <li>
                     <label>日期：</label>
                     <select id="cDateType" class="form-control ConditionField">
                         <option value="1" selected>今天</option>
-                        <option value="2">本周</option>
-                        <option value="3">本月</option>
+                        <option value="2">3天</option>
+                        <option value="3">7天</option>
                         <option value="99">全部</option>
                     </select>
-                </li>
-                <li>
-                    <label>订单状态：</label>
-                    <select id="cOrderStatus" class="form-control ConditionField">
-                        <option value="1">用户已支付</option>
-                        <option value="2" selected>代理已结算</option>
-                        <option value="-1">异常</option>
-                        <option value="99">全部</option>
-                    </select>
-                </li>
-            </ul>
-            <ul class="UlHorizontal">
-                <li>
-                    <div class="form-group">
-                        <label>支付宝订单号：</label>
-                        <input id="AliPayOrderNo" type="text" class="form-control ConditionField" style="width:300px;">
-                    </div>
-                </li>
-                <li>
-                    <label>网站订单号：</label>
-                    <input id="OrderNo" type="text" class="form-control ConditionField" style="width:300px;">
-                </li>
-
+                </li>   
             </ul>
         </div>
         <ul class="UlHorizontal ListButtonRight">
@@ -77,22 +55,11 @@
                 <table id="TableHeader" class="table table-hover table-bordered TableOverflowHidden">
                     <thead class="cf">
                         <tr id="trHeader">
-                            <th style="width:150px;"> 操作</th>
-                            <th style="width:200px;">订单编号</th>
-                            <th style="width:120px;">订单状态</th>
-                            <th style="width:100px;">平台盈利</th>
-                            <th style="width:100px;">总金额</th>
-                            <th style="width:100px;">代理金额</th>
-                            <th style="width:100px">上级金额</th>
-                            <th style="width:100px;">商户佣金</th>
-                            <th style="width:100px;">买家打款</th>
-                            <th style="width:120px;">代理用户</th>
-                            <th style="width:100px;">代理扣点率</th>
-                            <th style="width:120px;">商户名</th>
-                            <th style="width:100px;">商户类型</th>
-                            <th style="width:100px;">商户佣金点率</th>
-                            <th style="width:150px;">交易时间</th>
-                            <th style="width:250px;">支付宝订单编号</th>
+                            <th style="width:200px;">用户名</th>
+                            <th style="width:120px;">上级名</th>      
+                            <th style="width:100px;">达成订单数</th>
+                            <th style="width:100px;">达成金额</th>
+                            <th style="width:100px;">未成订单数</th>
                         </tr>
                         <tr>
                             <td colspan="17" class="RecordSum" id="RecordSum"></td>

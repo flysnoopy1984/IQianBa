@@ -135,7 +135,7 @@ namespace IQBCore.IQBPay.Models.Order
         /// </summary>
         public float SellerCommission { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(50)]
         public string SellerName { get; set; }
 
         public int SellerStoreId { get; set; }

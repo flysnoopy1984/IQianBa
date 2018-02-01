@@ -37,15 +37,15 @@
     </style>
 
     <div class="mgz cen" id="PayArea">
-        <div class="yuec mg2 xi35" style="margin-top:20px;">输入金额直接支付秒回款</div>
+        <div class="yuec mg2 xi35" style="margin-top:20px;">请关闭wifi和定位</div>
        
-        <div class="mg2 xi30" style="color:#F97600; margin-top:40px;">
+        @*<div class="mg2 xi30" style="color:#F97600; margin-top:40px;">
             <button type="button" class="mgz btn btn-success" style="width:60%; height:60px;" onclick="GoToSafePay();">切换至保护模式</button>
-        </div>
+        </div>*@
         @*<div class="TitleInfo mg2 xi30" style="color:#F97600">请通过支付宝扫码</div>*@
         <div>
             <span class="FieldLabel" style="font-weight:bold;color:brown;">*风控用户请支付【199】*</span>
-            <span class="FieldLabel" style="font-weight:bold;color:brown;">*非风控用户请支付【20-1499】*</span>
+            <span class="FieldLabel" style="font-weight:bold;color:brown;">*非风控用户请支付【@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMin-@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMax】*</span>
         </div>
 
 
@@ -55,12 +55,12 @@
             <div class="form-group">
                 <label class="FieldLabel">请输入金额</label>
                 <div class="mgz">
-                    <input id="TotalAmout" class="PayEditInput" type="text" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")' />
+                    <input id="TotalAmout" class="PayEditInput" type="tel" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")' />
                 </div>
             </div>
           
             <div id="buttonArea" style="margin-top:300px;border-top:dashed 1px black; height:120px; line-height:120px;">
-                <button type="button" class="mgz btn btn-primary" id="btnPay" style="width:90%; height:80px;" onclick="PayToAli();">支付</button>
+                <button type="button" class="mgz btn btn-warning" id="btnPay" style="width:90%; height:80px;">支付</button>
             </div>
         </div>
 
@@ -68,5 +68,7 @@
     </div>
     @*<input type="hidden" id="ReceiveNo" value="@ViewBag.ReceiveNo" />*@
     <input type="hidden" id="qrUserId" value="@ViewBag.QRUserId" />
+    <input type="hidden" id="QRMin" value="@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMin" />
+    <input type="hidden" id="QRMax" value="@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMax" />
 </body>
 </html>

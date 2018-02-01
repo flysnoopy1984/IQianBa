@@ -632,7 +632,7 @@
     <Content Include="Views\AliPay\QRUserImg.cshtml" />
     <Content Include="Views\Test\Tool_RPay.cshtml" />
     <Content Include="Views\Test\JF.cshtml" />
-    <Content Include="Views\Report\OverView.cshtml" />
+    <Content Include="Views\Report\AgentOverView.cshtml" />
     <Content Include="Views\Wap\UserVerify.cshtml" />
     <Content Include="Views\Test\Batch.cshtml" />
     <Content Include="Views\Wap\QRProcess.cshtml" />

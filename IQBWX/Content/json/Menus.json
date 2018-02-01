@@ -1,73 +1,75 @@
 ﻿{
-    "button": [
-       {
-        "name": "玉杰服务",
-        "sub_button": [
-          {
-            "type": "click",
-            "name": "使用手册",
-            "key": "wx_101"
-          },
-          {
-            "type": "view",
-            "name": "大事件",
-            "url": "http://wx.iqianba.cn/PP/News"
-          },
-          {
-            "type": "view",
-            "name": "我的账户",
-            "url": "http://wx.iqianba.cn/PP/AliPayAccount"
-          }       
-         
-        ]
+  "button": [
+    {
+      "name": "玉杰服务",
+      "sub_button": [
+        {
+          "type": "click",
+          "name": "使用手册",
+          "key": "wx_101"
         },
-      {
-        "name": "用户中心",
-        "sub_button": [
-         
-         
-            {
-            "type": "view",
-            "name": "我的业绩",
-            "url": "http://wx.iqianba.cn/PP/OrderList"
-          },
-          {
-            "type": "view",
-            "name": "设置二维码",
-            "url": "http://wx.iqianba.cn/PP/Agent_QR_ARList"
-          },
-          {
-            "type": "click",
-            "name": "小额通道",
-            "key": "pay_101"
-          },
-           {
-            "type": "view",
-            "name": "大额通道",
-            "url": "http://wx.iqianba.cn/PP/QRHugeEntry"
-          }
-        ]
-      },
-      {
-        "name": "团队管理",
-        "sub_button": [
-           {
-            "type": "view",
-            "name": "邀请码",
-            "url": "http://wx.iqianba.cn/PP/InviteCode"
-          },
-          {
-            "type": "view",
-            "name": "我的反佣",
-            "url": "http://wx.iqianba.cn/PP/AgentCommList"
-          },
-          {
-            "type": "view",
-            "name": "我的团队",
-            "url": "http://wx.iqianba.cn/PP/AgentList"
-          }
-        ]
-      }
-    
-    ]
- }
+        {
+          "type": "view",
+          "name": "大事件",
+          "url": "http://wx.iqianba.cn/PP/News"
+        },
+        {
+          "type": "view",
+          "name": "我的账户",
+          "url": "http://wx.iqianba.cn/PP/AliPayAccount"
+        }
+
+      ]
+    },
+    {
+      "name": "用户中心",
+      "sub_button": [
+
+
+        {
+          "type": "view",
+          "name": "我的业绩",
+          "url": "http://wx.iqianba.cn/PP/OrderList"
+        },
+        {
+          "type": "view",
+          "name": "设置二维码",
+          "url": "http://wx.iqianba.cn/PP/Agent_QR_ARList"
+        },
+        {
+          "type": "click",
+          "name": "我的二维码",
+          "key": "pay_101"
+        },
+        {
+          "type": "view",
+          "name": "新产品",
+          "url": "http://wx.iqianba.cn/PP/QRHugeEntry"
+        }
+      ]
+    },
+    {
+      "name": "团队管理",
+      "sub_button": [
+         {
+          "type": "view",
+          "name": "我的团队",
+          "url": "http://wx.iqianba.cn/PP/AgentList"
+        },
+        {
+          "type": "view",
+          "name": "邀请码",
+          "url": "http://wx.iqianba.cn/PP/InviteCode"
+        }
+
+      ]
+    }
+
+  ]
+}
+
+  //{
+          //  "type": "view",
+          //  "name": "我的反佣",
+          //  "url": "http://wx.iqianba.cn/PP/AgentCommList"
+          //},
