@@ -4,6 +4,15 @@ $(document).ready(function () {
   
     //Query(true,pageIndex+1);
     InitCondition();
+
+    //var AgentName = GetUrlParam("AgentName");
+    //if (AgentName != null || AgentName != undefined)
+    //{
+    //    $("#cAgentName").val(AgentName);
+
+    //    pageIndex = -1;
+    //    Query(true, pageIndex + 1);
+    //}
 });
 
 function AdvAlert(result) {
@@ -221,15 +230,15 @@ function generateData(result) {
 
         //代理用户
         tdWidth = "width:" + $("#trHeader th").eq(10).css("width");
-        strCtrl += "<td style='" + tdWidth + "' title='" + result[i].AgentName + "'>" + result[i].AgentName + "</td>";
+        strCtrl += "<td style='" + tdWidth + "' title='" + result[i].AgentName + "'><a href='/User/Info?OpenId=" + result[i].AgentOpenId + "'>" + result[i].AgentName + "</a></td>";
 
         //上级代理
         tdWidth = "width:" + $("#trHeader th").eq(11).css("width");
-        strCtrl += "<td style='" + tdWidth + "' title='" + result[i].ParentName + "'>" + result[i].ParentName + "</td>";
+        strCtrl += "<td style='" + tdWidth + "' title='" + result[i].ParentName + "'><a href='/User/Info?OpenId=" + result[i].ParentOpenId + "'>" + result[i].ParentName + "</a></td>";
 
         //3级代理
         tdWidth = "width:" + $("#trHeader th").eq(12).css("width");
-        strCtrl += "<td style='" + tdWidth + "' title='" + result[i].L3Name + "'>" + result[i].L3Name + "</td>";
+        strCtrl += "<td style='" + tdWidth + "' title='" + result[i].L3Name + "'><a href='/User/Info?OpenId=" + result[i].L3OpenId + "'>" + result[i].L3Name + "</a></td>";
 
       
 

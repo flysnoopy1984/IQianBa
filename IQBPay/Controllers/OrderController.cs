@@ -151,10 +151,13 @@ namespace IQBPay.Controllers
                             OrderStatus = o.OrderStatus,
                             TotalAmount = o.TotalAmount,
                             RateAmount = o.RateAmount,
+                            ParentOpenId = o.ParentOpenId,
                             ParentCommissionAmount = o.ParentCommissionAmount,
+                            L3OpenId = o.L3OpenId,
                             L3CommissionAmount = o.L3CommissionAmount,
                             SellerCommission = o.SellerCommission,
                             BuyerTransferAmount = o.BuyerTransferAmount,
+                            AgentOpenId = o.AgentOpenId,
                             AgentName = o.AgentName,
                             //Rate = o.Rate,
                             SellerName = o.SellerName,
@@ -162,7 +165,7 @@ namespace IQBPay.Controllers
                             AliPayOrderNo = o.AliPayOrderNo,
                           
                             TransDate = o.TransDate,
-                            AgentOpenId = o.AgentOpenId,
+                           
                             LogRemark = o.LogRemark,
                             OrderType = o.OrderType,
                             SellerStoreId = o.SellerStoreId,

@@ -36,6 +36,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using IQBCore.IQBPay.Models.Json;
 using IQBCore.Common.Constant;
+using IQBCore.IQBWX.Models.WX.Template.InviteCode;
 
 namespace IQBPay.Controllers
 {
@@ -278,6 +279,19 @@ namespace IQBPay.Controllers
                                         store.RecordStatus = RecordStatus.Blocked;
                                         store.Log = string.Format("[分账错误]订单：{0}。时间：{1}",order.OrderNo,order.TransDateStr);
                                     }
+                                    else
+                                    {
+                                        if(!string.IsNullOrEmpty(store.MidCommAccount) && store.MidCommRate>0)
+                                        {
+                                            float midComm = (store.MidCommRate * order.TotalAmount)/100;
+                                            EUserInfo midUI = new EUserInfo();
+                                            midUI.AliPayAccount = store.MidCommAccount;
+                                            tranfer = payManager.TransferHandler(TransferTarget.MidStore, BaseController.SubApp, BaseController.SubApp, midUI, ref order, midComm);
+                                            db.DBTransferAmount.Add(tranfer);
+                                            if (tranfer.TransferStatus != TransferStatus.Success)
+                                                TransferError++;
+                                        }
+                                    }
                                 }
                                 catch(Exception ex)
                                 {
@@ -295,7 +309,7 @@ namespace IQBPay.Controllers
 
                         //  Log.log("PayNotify 开始转账给代理");
                         
-                        tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.SubApp, BaseController.SubApp, agentUI,ref order, accessToken,BaseController.GlobalConfig);
+                        tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.SubApp, BaseController.SubApp, agentUI,ref order,0, accessToken,BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
                         if(tranfer.TransferStatus != TransferStatus.Success)
                             TransferError++;
@@ -314,7 +328,7 @@ namespace IQBPay.Controllers
                             parentUi.OpenId = agentComm.ParentOpenId;
                             parentUi.Name = agentComm.ParentName;
 
-                            tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order, null,BaseController.GlobalConfig);
+                            tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order,0, null,BaseController.GlobalConfig);
                             db.DBTransferAmount.Add(tranfer);
                             
                             if(tranfer.TransferStatus == TransferStatus.Success)
@@ -334,7 +348,7 @@ namespace IQBPay.Controllers
                             parentUi.OpenId = agentComm.ParentOpenId;
                             parentUi.Name = agentComm.ParentName;
 
-                            tranfer = payManager.TransferHandler(TransferTarget.L3Agent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order, null, BaseController.GlobalConfig);
+                            tranfer = payManager.TransferHandler(TransferTarget.L3Agent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order,0, null, BaseController.GlobalConfig);
                             db.DBTransferAmount.Add(tranfer);
 
                             if (tranfer.TransferStatus == TransferStatus.Success)
@@ -345,7 +359,7 @@ namespace IQBPay.Controllers
 
                             //用户打款
                        //  Log.log("PayNotify 开始用户打款");
-                        tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App, BaseController.SubApp,null, ref order, null, BaseController.GlobalConfig);
+                        tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App, BaseController.SubApp,null, ref order,0, null, BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
 
                         if(tranfer.TransferStatus != TransferStatus.Success)
@@ -739,26 +753,19 @@ namespace IQBPay.Controllers
         public ActionResult Note()
         {
             string accessToken = this.getAccessToken(true);
-            IQBCore.IQBPay.Models.Order.EOrderInfo _ppOrder;
-            PPOrderPayNT notice = null;
-            using (AliPayContent db = new AliPayContent())
-            {
-                _ppOrder = db.DBOrder.FirstOrDefault();
-            }
+
+            PPInviteCodeNT notice = null;
             try
             {
-                if (!string.IsNullOrEmpty(accessToken))
-                {
-                    notice = new PPOrderPayNT(accessToken, "o3nwE0qI_cOkirmh_qbGGG-5G6B0", _ppOrder);
-                    notice.Push();
-                }
+                notice = new PPInviteCodeNT(accessToken, 10, 20, "o3nwE0qI_cOkirmh_qbGGG-5G6B0");
+                return Content(notice.Push());
 
             }
             catch
             {
 
             }
-            return Content(notice.Push());
+            return View();
         }
 
         public ActionResult QRImgWX()

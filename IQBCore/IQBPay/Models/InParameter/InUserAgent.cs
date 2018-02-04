@@ -39,6 +39,8 @@ namespace IQBCore.IQBPay.Models.InParameter
 
         public float QRInfo_ParentCommissionRate { get; set; }
 
+        public int QRInfo_MaxInviteCount { get; set; }
+
         public bool NeedFollowUp { get; set; }
 
 

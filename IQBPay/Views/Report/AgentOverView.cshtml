@@ -14,7 +14,7 @@
 <link href="@Url.Scrpit("~/Content/Style/Web/FixTableList.css")" rel="stylesheet" />
 <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
 <script src="@Url.Scrpit("~/scripts/Component/IQBTable.js")"></script>
-
+<script src="@Url.Scrpit("~/scripts/Web/AgentOverView.js")"></script>
 
 <div id="ListArea">
     <div id="Title" style="margin:0px; height:200px;">
@@ -34,10 +34,11 @@
                 </li> 
                 <li>
                     <label>日期：</label>
-                    <select id="cDateType" class="form-control ConditionField">
-                        <option value="1" selected>今天</option>
-                        <option value="2">3天</option>
-                        <option value="3">7天</option>
+                    <select id="cBeforeDay" class="form-control ConditionField">
+                        <option value="0" selected>今天</option>
+                        <option value="3">3天</option>
+                        <option value="7">7天</option>
+                        <option value="30">30天</option>
                         <option value="99">全部</option>
                     </select>
                 </li>   
@@ -55,14 +56,16 @@
                 <table id="TableHeader" class="table table-hover table-bordered TableOverflowHidden">
                     <thead class="cf">
                         <tr id="trHeader">
+                            <th style="width:60px;">用户ID</th>
                             <th style="width:200px;">用户名</th>
                             <th style="width:120px;">上级名</th>      
+                            <th style="width:120px;">注册日期</th>      
                             <th style="width:100px;">达成订单数</th>
                             <th style="width:100px;">达成金额</th>
-                            <th style="width:100px;">未成订单数</th>
+                            <th>操作</th>
                         </tr>
                         <tr>
-                            <td colspan="17" class="RecordSum" id="RecordSum"></td>
+                            <td colspan="7" class="RecordSum" id="RecordSum"></td>
                         </tr>
                     </thead>
                 </table>

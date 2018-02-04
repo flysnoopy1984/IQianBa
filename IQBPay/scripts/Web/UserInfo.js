@@ -32,8 +32,12 @@ function AjaxInviteCode(Id)
           
             $("#Invite_ParentCommissionRate").val(data.ParentCommissionRate);
 
+            $("#Invite_MaxInviteCount").val(data.MaxInviteCount);
+
             $("#Invite_ParentOpenId").empty();
             $("#Invite_ParentOpenId").append("<option value=''>无</option>");
+
+            $("#GoQRDetail").attr("href", "/QR/ARInfo?id="+Id);
 
             $(data.HashUserList).each(function (i, r) {
                 if (data.ParentOpenId == r.OpenId)
@@ -239,6 +243,7 @@ function Save() {
     var qrInfoId = $("#Invite_QRCode").val();
     var Invite_Rate = $("#Invite_Rate").val();
     var Invite_ParentCommissionRate = $("#Invite_ParentCommissionRate").val();
+    var QRInfo_MaxInviteCount = $("#Invite_MaxInviteCount").val();
 
 
     if (!CheckForm()) return;
@@ -247,7 +252,7 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "OpenId": OpenId,"NeedFollowUp":NeedFollowUp,"QRInfo_Rate":Invite_Rate,"QRInfo_ParentCommissionRate":Invite_ParentCommissionRate,"Rate": Rate, "MarketRate": MarketRate, "AliPayAccount": AliPayAccount, "UserRole": UserRole, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName": ParentName, "ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
+        data: { "OpenId": OpenId,"QRInfo_MaxInviteCount":QRInfo_MaxInviteCount,"NeedFollowUp":NeedFollowUp,"QRInfo_Rate":Invite_Rate,"QRInfo_ParentCommissionRate":Invite_ParentCommissionRate,"Rate": Rate, "MarketRate": MarketRate, "AliPayAccount": AliPayAccount, "UserRole": UserRole, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName": ParentName, "ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
         url: url,
         success: function (data) {
             if (data == "OK") {

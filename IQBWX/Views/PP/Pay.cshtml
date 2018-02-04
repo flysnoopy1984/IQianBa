@@ -20,7 +20,7 @@
     <script src="~/Content/Script/Component/jquery-confirm.js"></script>
     <script src="@Url.Scrpit("~/Content/Script/IQBPay/Pay.js")"></script>
 
-    <title>【玉杰服务】</title>
+    <title>【收银台】</title>
 </head>
 <body>
     <style>
@@ -34,14 +34,22 @@
             width: 95%;
             text-align: center;
         }
+        #TotalAmout::-webkit-input-placeholder{
+            padding-left:5px;
+            color:#808080;
+            font-size: 26px;
+            height:70px;
+            line-height:70px;
+            
+         }
     </style>
 
     <div class="mgz cen" id="PayArea">
-        <div class="yuec mg2 xi35" style="margin-top:20px;">请关闭wifi和定位</div>
        
-        @*<div class="mg2 xi30" style="color:#F97600; margin-top:40px;">
-            <button type="button" class="mgz btn btn-success" style="width:60%; height:60px;" onclick="GoToSafePay();">切换至保护模式</button>
-        </div>*@
+        <div class="mg2 xi30" style="color:#F97600; margin:20px;">
+            <button type="button" class="mgz btn btn-success" style="width:60%; height:60px;" onclick="GoToSafePay();">切换其它模式</button>
+        </div>
+        <div class="yuec mg2 xi35" style="margin:20px;font-weight:bold;">*请关闭wifi和定位*</div>
         @*<div class="TitleInfo mg2 xi30" style="color:#F97600">请通过支付宝扫码</div>*@
         <div>
             <span class="FieldLabel" style="font-weight:bold;color:brown;">*风控用户请支付【199】*</span>
@@ -51,16 +59,21 @@
 
         <div id="PayContent">
             @*<div class="yuex mg2 xi20" style="color:cornflowerblue">请用10元测试，避免数额太小，金额为零</div>*@
-
             <div class="form-group">
+                <div class="mgz">
+                    <label>金额：</label>
+                    <input id="TotalAmout" class="PayEditInput2" type="tel" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")' placeholder="在此输入金额" onfocus=" this.placeholder = ''" onblur="this.placeholder = '在此输入金额'" />
+                </div>
+            </div>
+            @*<div class="form-group">
                 <label class="FieldLabel">请输入金额</label>
                 <div class="mgz">
                     <input id="TotalAmout" class="PayEditInput" type="tel" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")' />
                 </div>
-            </div>
+            </div>*@
           
             <div id="buttonArea" style="margin-top:300px;border-top:dashed 1px black; height:120px; line-height:120px;">
-                <button type="button" class="mgz btn btn-warning" id="btnPay" style="width:90%; height:80px;">支付</button>
+                <button type="button" class="mgz btn btn-danger" id="btnPay" style="width:90%; height:80px;">支付</button>
             </div>
         </div>
 
@@ -70,5 +83,8 @@
     <input type="hidden" id="qrUserId" value="@ViewBag.QRUserId" />
     <input type="hidden" id="QRMin" value="@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMin" />
     <input type="hidden" id="QRMax" value="@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMax" />
+    <div style="text-align:center">
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1272813751'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1272813751%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+    </div>
 </body>
 </html>

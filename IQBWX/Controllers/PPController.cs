@@ -64,12 +64,19 @@ namespace IQBWX.Controllers
 
         public ActionResult Pay(string Id)
         {
-           // return RedirectToAction("Pay2", "PP", new { Id = Id });
+            // return RedirectToAction("Pay2", "PP", new { Id = Id });
+            List<string> list = new List<string>();
+            list.Add("1431");
 
             if(WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop && Id!="118")
             {
                 return RedirectToAction("ErrorMessage", "Home",new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
             }
+            if(list.Contains(Id))
+            {
+                return RedirectToAction("Pay2", "PP", new { Id = Id });
+            }
+            
             ViewBag.QRUserId = Id;
            // ViewBag.ReceiveNo = StringHelper.GenerateReceiveNo();
             return View();
@@ -1180,7 +1187,7 @@ namespace IQBWX.Controllers
             using (AliPayContent db = new AliPayContent())
             {
 
-                var sqlScript = @"select ui.Id as userId,ui.Name as UserName,ui.HeadImgUrl,MemberTotalAmount,qr.QRType,(qr.MarketRate-qr.Rate) as FeeRate,qr.ParentCommissionRate,ui.UserStatus 
+                var sqlScript = @"select ui.Id as userId,ui.Name as UserName, CONVERT(varchar(100), ui.RegisterDate, 111) as RegisterDate,ui.HeadImgUrl,MemberTotalAmount,qr.QRType,(qr.MarketRate-qr.Rate) as FeeRate,qr.ParentCommissionRate,ui.UserStatus 
 from UserInfo as ui
 right join QRUser as qr on qr.OpenId = ui.OpenId and qr.QRType ={0}
 left join
@@ -1213,6 +1220,8 @@ group by o.AgentOpenId ,o.OrderType
                     if (data.Count > 0)
                     {
                         data[0].TotalMember = db.DBUserInfo.Where(o => o.parentOpenId == UserSession.OpenId && o.UserStatus == UserStatus.PPUser).Count();
+                        sql = string.Format("select MaxInviteCount from QRInfo where OwnnerOpenId = '{0}'", UserSession.OpenId);
+                        data[0].MaxInviteCount = db.Database.SqlQuery<int>(sql).FirstOrDefault();
 
                         sql = string.Format("select sum(TotalAmount) as TotalAmount from OrderInfo where OrderStatus =2 and ParentOpenId = '{0}'", UserSession.OpenId);
                         try

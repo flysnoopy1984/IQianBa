@@ -24,16 +24,28 @@
             </ul>
         </li>
         <li>
-            <a class="tooltip-tip ajax-load" href="#" title="单据管理">
+            <a class="tooltip-tip ajax-load" href="#" title="常用">
                 <i class="icon-feed"></i>
-                <span>单据管理</span>
+                <span>常用</span>
             </a>
             <ul>
                 <li>
                     <a class="tooltip-tip2 ajax-load" href="/Order/List" title="订单列表"><i class="icon icon-user"></i><span>订单列表</span></a>
                 </li>
                 <li>
-                    <a class="tooltip-tip2 ajax-load" href="/Transfer/List" title="汇款列表"><i class="icon icon-user"></i><span>汇款列表</span></a>
+                    <a class="tooltip-tip2 ajax-load" href="/User/List" title="代理列表"><i class="icon icon-user"></i><span>代理列表</span></a>
+                </li>
+                <li>
+                    <a class="tooltip-tip2 ajax-load" href="/QR/ARList" title="代理授权码"><i class="icon icon-user"></i><span>代理授权码</span></a>
+                </li>
+                <li>
+                    <a class="tooltip-tip2 ajax-load" href="/QR/AuthList" title="商户授权码"><i class="icon icon-user"></i><span>商户授权码</span></a>
+                </li>
+                <li>
+                    <a class="tooltip-tip2 ajax-load" href="/Store/List?Channel=0" title="平台商户"><i class="icon icon-user"></i><span>平台商户</span></a>
+                </li>
+                <li>
+                    <a class="tooltip-tip2 ajax-load" href="/Store/List?Channel=1" title="加盟商户"><i class="icon icon-user"></i><span>加盟商户</span></a>
                 </li>
                 @*<li>
                         <a class="tooltip-tip2 ajax-load" href="/Transfer/DoTransfer" title="汇款管理"><i class="icon icon-user"></i><span>汇款管理</span></a>
@@ -54,63 +66,66 @@
             </ul>
         </li>*@
         <li>
-            <a class="tooltip-tip ajax-load" href="#" title="订单管理">
+            <a class="tooltip-tip ajax-load" href="#" title="数据分析">
                 <i class="icon-feed"></i>
-                <span>工具</span>
+                <span>数据分析</span>
+            </a>
+            <ul>
+                <li>
+                    <a class="tooltip-tip2 ajax-load" href="/Report/AgentOverView" title="代理报表"><i class="icon icon-user"></i><span>代理报表</span></a>
+                </li>
+            
+            </ul>
+        </li>
+        <li>
+            <a class="tooltip-tip ajax-load" href="#" title="其他管理">
+                <i class="icon-feed"></i>
+                <span>其他管理</span>
             </a>
             <ul>
                 <li>
                     <a class="tooltip-tip2 ajax-load" href="/Test/Tool_RPay" title="刷单"><i class="icon icon-user"></i><span>刷单</span></a>
                 </li>
+                <li>
+                    <a class="tooltip-tip2 ajax-load" href="/Transfer/List" title="汇款列表"><i class="icon icon-user"></i><span>汇款列表</span></a>
+                </li>
              
             </ul>
         </li>
-        <li>
+        @*<li>
             <a class="tooltip-tip ajax-load" href="#" title="二维码管理">
                 <i class="icon-document-edit"></i>
                 <span>二维码管理</span>
             </a>
             <ul>
-                @*<li>
+                <li>
                         <a class="tooltip-tip2 ajax-load" href="/QR/ARDefaultInfo" title="平台默认授权码"><i class="icon icon-user"></i><span>平台默认授权码</span></a>
-                    </li>*@
-                <li>
-                    <a class="tooltip-tip2 ajax-load" href="/QR/ARList" title="代理授权码"><i class="icon icon-user"></i><span>代理授权码</span></a>
-                </li>
-                <li>
-                    <a class="tooltip-tip2 ajax-load" href="/QR/AuthList" title="商户授权码"><i class="icon icon-user"></i><span>商户授权码</span></a>
-                </li>
+                    </li>
+              
 
             </ul>
-        </li>
-        <li>
+        </li>*@
+        @*<li>
             <a class="tooltip-tip ajax-load" href="#" title="Media">
                 <i class="icon-camera"></i>
                 <span>代理管理</span>
             </a>
             <ul>
-                <li>
-                    <a class="tooltip-tip2 ajax-load" href="/User/List" title="代理列表"><i class="icon icon-user"></i><span>代理列表</span></a>
-                </li>
+               
                 <li>
                     <a class="tooltip-tip2 ajax-load" href="/User/UserAdjustment" title="代理筛选"><i class="icon icon-user"></i><span>代理筛选</span></a>
                 </li>
             </ul>
-        </li>
-        <li>
+        </li>*@
+        @*<li>
             <a class="tooltip-tip ajax-load" href="#" title="Media">
                 <i class="icon-camera"></i>
                 <span>商户管理</span>
             </a>
             <ul>
-                <li>
-                    <a class="tooltip-tip2 ajax-load" href="/Store/List?Channel=0" title="平台商户"><i class="icon icon-user"></i><span>平台商户</span></a>
-                </li>
-                <li>
-                    <a class="tooltip-tip2 ajax-load" href="/Store/List?Channel=1" title="加盟商户"><i class="icon icon-user"></i><span>加盟商户</span></a>
-                </li>
+               
             </ul>
-        </li>
+        </li>*@
     
     }
    @if (ViewBag.UserRole > 1)

@@ -9,11 +9,41 @@
 <head>
     <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
     <title>Tmall</title>
+    <script src="~/Content/Script/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        function imitateClick(oElement, iClientX, iClientY) {
+            var oEvent;
+            if (document.createEventObject) { //For IE
+                oEvent = document.createEventObject();
+                oEvent.clientX = iClientX;
+                oEvent.clientY = iClientY;
+                oElement.fireEvent("onclick", oEvent);
+            } else {
+                oEvent = document.createEvent("MouseEvents");
+                oEvent.initMouseEvent("click", true, true, document.defaultView, 0, 0, 0,
+                                        iClientX, iClientY/*, false, false, false, false, 0, null*/);
+                oElement.dispatchEvent(oEvent);
+            }
+        }
+        $(document).ready(function () {
+
+          
+            //var body = document.getElementById("mainFrame");
+            //body.onclick = function (event) {
+            //    alert("clicked at (" + event.clientX + "," + event.clientY + ")");
+            //};
+            //imitateClick(body, 600, 600);
+
+
+        });
+      
+    </script>
 </head>
 
-<frameset cols="50%,50%">
-    <frame src="http://wx.iqianba.cn/pp/pay2?id=1519" />
-    <frame src="http://www.baidu.com" />
-
-</frameset>
+<body>
+    <div>
+        <input type="text" /><input type="button" value="确定" />
+    </div>
+    <div><iframe src="https://m.vmall.com/order/confirm?isHuabiProductFlag=0&isCashProductFlag=0&state=0&backUri=%2Fproduct%2F135859985.html&extWarrantyId=&selectExtWarrantyId=&accWarrantyId=&selectAccWarrantyId=&skuIdAndQtys=438977332%3A1&bundleIdAndQtys=&mainSkuIds=&types=0&giftSkuIds=619682642-733009709&count=&shopAddressId=&enableAutoCoupon=true" id="mainFrame" style="width:480px;; height:600px;"></iframe></div>  
+</body>
 </html>

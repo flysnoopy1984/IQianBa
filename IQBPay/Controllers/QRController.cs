@@ -14,6 +14,7 @@ using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.Common.Constant;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.BLL;
+using IQBCore.IQBWX.Models.WX.Template.InviteCode;
 
 namespace IQBPay.Controllers
 {
@@ -175,31 +176,60 @@ namespace IQBPay.Controllers
            
             try
             {
+                int origNum, curNum;
                 qr.OwnnerOpenId = base.GetUserSession().OpenId;
                 qr.RunResult = "OK";
                 using (AliPayContent db = new AliPayContent())
                 {
                     if(qr.ID>0)
                     {
-                        qr.InitModify();
+                        EQRInfo updateQR = db.DBQRInfo.Where(o => o.ID == qr.ID).FirstOrDefault();
+                        origNum = updateQR.MaxInviteCount;
+                        curNum = qr.MaxInviteCount;
+                        updateQR.Name = qr.Name;
+                        updateQR.Rate = qr.Rate;
+                        updateQR.ReceiveStoreId = qr.ReceiveStoreId;
+                        updateQR.Remark = qr.Remark;
+                        updateQR.ParentOpenId = qr.ParentOpenId;
+                        updateQR.ParentCommissionRate = qr.ParentCommissionRate;
+                        updateQR.RecordStatus = qr.RecordStatus;
+                        updateQR.NeedVerification = qr.NeedVerification;
+                        updateQR.MaxInviteCount = qr.MaxInviteCount;
+                        updateQR.NeedFollowUp = qr.NeedFollowUp;
+                      
+                        updateQR.InitModify();
 
-                        DbEntityEntry<EQRInfo> entry = db.Entry<EQRInfo>(qr);
-                        entry.State = EntityState.Unchanged;
+                        //DbEntityEntry<EQRInfo> entry = db.Entry<EQRInfo>(qr);
+                        //entry.State = EntityState.Unchanged;
 
-                        entry.Property(t => t.Name).IsModified = true;
-                        entry.Property(t => t.Rate).IsModified = true;
-                        entry.Property(t => t.ReceiveStoreId).IsModified = true;
-                        entry.Property(t => t.Remark).IsModified = true;
-                        entry.Property(t => t.ParentOpenId).IsModified = true;
-                        entry.Property(t => t.ParentCommissionRate).IsModified = true;
-                        entry.Property(t => t.RecordStatus).IsModified = true;
-                        entry.Property(t => t.NeedVerification).IsModified = true;
-                        entry.Property(t => t.MaxInviteCount).IsModified = true;
-                        entry.Property(t => t.MDate).IsModified = true;
-                        entry.Property(t => t.MTime).IsModified = true;
-                        entry.Property(t => t.ModifyDate).IsModified = true;
-                        entry.Property(t => t.NeedFollowUp).IsModified = true;
+                        //entry.Property(t => t.Name).IsModified = true;
+                        //entry.Property(t => t.Rate).IsModified = true;
+                        //entry.Property(t => t.ReceiveStoreId).IsModified = true;
+                        //entry.Property(t => t.Remark).IsModified = true;
+                        //entry.Property(t => t.ParentOpenId).IsModified = true;
+                        //entry.Property(t => t.ParentCommissionRate).IsModified = true;
+                        //entry.Property(t => t.RecordStatus).IsModified = true;
+                        //entry.Property(t => t.NeedVerification).IsModified = true;
+                        //entry.Property(t => t.MaxInviteCount).IsModified = true;
+                        //entry.Property(t => t.MDate).IsModified = true;
+                        //entry.Property(t => t.MTime).IsModified = true;
+                        //entry.Property(t => t.ModifyDate).IsModified = true;
+                        //entry.Property(t => t.NeedFollowUp).IsModified = true;
                         db.SaveChanges();
+
+                        if(origNum != 0 && curNum>origNum)
+                        {
+                            try
+                            {
+                                string accessToken = this.getAccessToken(true);
+                                PPInviteCodeNT notice = new PPInviteCodeNT(accessToken, origNum, curNum, updateQR.OwnnerOpenId);
+                                notice.Push();
+                            }
+                            catch(Exception ex)
+                            {
+                                Log.log(ex.Message);
+                            }
+                        }
                     }
                     else
                     {

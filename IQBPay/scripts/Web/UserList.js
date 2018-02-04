@@ -95,6 +95,30 @@ function deleteUser(openId) {
         alert("取消删除");
 }
 
+function ChangeUserStatus(openId) {
+
+    var url = "/User/ChangeUserStatus";
+    $.ajax({
+        type: 'post',
+        data: "openId=" + openId,
+        url: url,
+        success: function (data) {
+
+            if (data.IsSuccess) {
+                window.location.reload();
+                alert("变更完成");
+            }
+            else
+                alert(data.ErrorMsg);
+        },
+        error: function (xhr, type) {
+
+            alert('Ajax error!');
+
+        }
+    });
+}
+
 function generateData(result) {
     var strCtrl = "";
     $.each(result, function (i) {
@@ -134,8 +158,10 @@ function generateData(result) {
         else
             strCtrl += "<td><div class='noft-red-number'></div>禁用</td>";
 
-        strCtrl += "<td><a href='/User/Info?OpenId=" + result[i].OpenId + "' class='td'>详情</a><br />"
-        strCtrl += "<input type=button onclick=deleteUser('" + result[i].OpenId + "') value='删除' /></td>";
+        strCtrl += "<td><a style='margin-right:20px;' href='/User/Info?OpenId=" + result[i].OpenId + "' class='td'>详情</a>"
+        strCtrl += "<input style='margin-right:20px;' type=button onclick=deleteUser('" + result[i].OpenId + "') value='删除' />";
+        strCtrl += "<input type=button onclick=ChangeUserStatus('" + result[i].OpenId + "') value='状态变更' />"
+        strCtrl +="</td>";
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);

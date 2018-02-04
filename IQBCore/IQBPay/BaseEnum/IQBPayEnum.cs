@@ -249,6 +249,7 @@ namespace IQBCore.IQBPay.BaseEnum
         ParentAgent=2,
         Internal =3,
         L3Agent = 4,
+        MidStore = 5,
       
     }
 

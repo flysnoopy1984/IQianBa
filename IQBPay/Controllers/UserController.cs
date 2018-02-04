@@ -197,6 +197,34 @@ namespace IQBPay.Controllers
         }
 
         [HttpPost]
+        public ActionResult ChangeUserStatus()
+        {
+            string openId = Request["OpenId"];
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    EUserInfo ui = db.DBUserInfo.Where(o => o.OpenId == openId).FirstOrDefault();
+                    if (ui != null)
+                    {
+                        if (ui.UserStatus == UserStatus.JustRegister)
+                            ui.UserStatus = UserStatus.PPUser;
+                        else
+                            ui.UserStatus = UserStatus.JustRegister;
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+       }
+
+        [HttpPost]
         public ActionResult DeleteUserAgent(string openId)
         {
             OutAPIResult result = new OutAPIResult();
@@ -271,6 +299,7 @@ namespace IQBPay.Controllers
                     qrInfo.Rate = InUA.QRInfo_Rate;
                     qrInfo.ParentCommissionRate = InUA.QRInfo_ParentCommissionRate;
                     qrInfo.NeedFollowUp = InUA.NeedFollowUp;
+                    qrInfo.MaxInviteCount = InUA.QRInfo_MaxInviteCount;
 
                     //Child
                     List<EUserInfo> cList = db.DBUserInfo.Where(o => o.parentOpenId == ui.OpenId && o.UserRole == UserRole.DiamondAgent).ToList();

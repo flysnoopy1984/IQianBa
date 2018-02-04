@@ -114,11 +114,10 @@ function generateData(result) {
         QueryData.push(result[i]);
         if (i == 0 && pageIndex ==0)
         {
-            $("#TotalMember").text(result[0].TotalMember);
+            $("#TotalMember").text(result[0].TotalMember + "/" + result[0].MaxInviteCount);
             $("#TotalAmount").text(result[0].TotalAmount);
         }
-     
-         
+
         var UserStatus;
         //var usColor = "style='color:forestgreen'";
         if (result[i].UserStatus == 0) {
@@ -142,14 +141,12 @@ function generateData(result) {
         else
             strCtrl += "<span style='color:#43ce08'>" + UserStatus + "</span>";
         strCtrl += "</td>";
+
         strCtrl += "<td style='width:75%'>";
         strCtrl += "<ul><li style='font-weight:bold; height:55px;'>代理名称:" + result[i].UserName + "</li>";       
         strCtrl += "</ul>";
-        //小额费率 返点
-        strCtrl += "<ul>";
-        strCtrl += "<li style='color:cornflowerblue; width:49%;float:left;' > 小额费率: " + result[i].FeeRate.toFixed(2) + "</li>";
-        strCtrl += "<li style='height:40px; color:#EBC952;width:49%;float:left;'>小额返点: " + result[i].ParentCommissionRate + "</li>";
-        strCtrl += "</ul>";
+
+    
 
         var totalAmount = 0;
         //大额费率返点
@@ -157,22 +154,31 @@ function generateData(result) {
         {
             strCtrl += "<ul>";
             strCtrl += "<li style='color:cornflowerblue; width:49%;float:left;' > 大额费率: " + result[i].HugeQR.FeeRate.toFixed(2) + "</li>";
-            strCtrl += "<li style='height:40px; color:#EBC952;width:49%;float:left;'>大额返点: " + result[i].HugeQR.ParentCommissionRate + "</li>";
+            strCtrl += "<li style='height:32px; color:#EBC952;width:49%;float:left;'>大额返点: " + result[i].HugeQR.ParentCommissionRate + "</li>";
             strCtrl += "</ul>";
 
             totalAmount = result[i].MemberTotalAmount + result[i].HugeQR.MemberTotalAmount;
             strCtrl += "<ul>";
-            strCtrl += "<li style='color:#8E210B; width:99%;' >业绩: " + result[i].MemberTotalAmount.toFixed(2) + "(小)" + "+" + result[i].HugeQR.MemberTotalAmount.toFixed(2) + "(大)" + "=" + totalAmount.toFixed(2) + " &yen</li>";
+            strCtrl += "<li style='color:#8E210B; width:99%;height:32px;' >业绩: " + result[i].MemberTotalAmount.toFixed(2) + "(小)" + "+" + result[i].HugeQR.MemberTotalAmount.toFixed(2) + "(大)" + "=" + totalAmount.toFixed(2) + " &yen</li>";
             strCtrl += "</ul>";
         }
         else
         {
             strCtrl += "<ul>";
-            strCtrl += "<li style='color:#8E210B; width:99%;' >业绩: " + result[i].MemberTotalAmount.toFixed(2) + " &yen</li>";
+            strCtrl += "<li style='color:#8E210B; width:99%;height:32px;' >业绩: " + result[i].MemberTotalAmount.toFixed(2) + " &yen</li>";
             strCtrl += "</ul>";
         }
+        strCtrl += "<ul>";
+        strCtrl += "<li style='width:99%;height:32px;' >注册日期: " + result[i].RegisterDate + "</li>";
+        strCtrl += "</ul>";
+        //小额费率 返点
+        strCtrl += "<ul>";
+        strCtrl += "<li style='color:cornflowerblue; width:49%;float:left;' > 小额费率: " + result[i].FeeRate.toFixed(2) + "</li>";
+        strCtrl += "<li style='height:32px; color:#EBC952;width:49%;float:left;'>小额返点: " + result[i].ParentCommissionRate + "</li>";
+        strCtrl += "</ul>";
 
         strCtrl += "</td>";
+
         strCtrl += "</ul></td>";
         strCtrl += "<td><input type='button' class='btn btn-primary' style='width:80px;height:40px;line-height:20px;' value='删除' onclick='BlockUser(" + (QueryData.length-1) + ");' />"
         strCtrl += "</tr>";

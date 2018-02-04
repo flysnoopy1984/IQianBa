@@ -44,9 +44,13 @@ namespace IQBCore.IQBPay.Models.Result
 
         public int TotalMember { get; set; }
 
+        public int MaxInviteCount { get; set; }
+
         public float TotalAmount { get; set; }
 
         public string OpenId { get; set; }
+
+        public string RegisterDate { get; set; }
 
         public RUser_ARQR HugeQR { get; set; }
 

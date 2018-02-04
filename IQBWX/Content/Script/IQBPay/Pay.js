@@ -94,12 +94,12 @@ $(document).ready(function () {
 
    
 //}
-//function GoToSafePay()
-//{
-//    var qrUserId = $("#qrUserId").val();
-//    var url = "/PP/Pay2?Id=" + qrUserId;
-//    window.location = url;
-//}
+function GoToSafePay()
+{
+    var qrUserId = $("#qrUserId").val();
+    var url = "/PP/Pay2?Id=" + qrUserId;
+    window.location = url;
+}
 
 function PayToAli() {
     var QRMin = parseFloat($("#QRMin").val());

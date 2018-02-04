@@ -111,6 +111,8 @@
     <Compile Include="IQBPay\Models\AccountPayment\EAgentCommission.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\EPreTransfer.cs" />
     <Compile Include="IQBPay\Models\Error\EPrivilegeError.cs" />
+    <Compile Include="IQBPay\Models\InParameter\InAgentOverview.cs" />
+    <Compile Include="IQBPay\Models\Report\RPAgentPerformance.cs" />
     <Compile Include="IQBPay\Models\Rules\EBenefitRule.cs" />
     <Compile Include="IQBPay\Models\InParameter\InDoTransfer.cs" />
     <Compile Include="IQBPay\Models\InParameter\InF2F.cs" />
@@ -177,6 +179,8 @@
     <Compile Include="IQBWX\Models\OutParameter\OutSMS.cs" />
     <Compile Include="IQBWX\Models\OutParameter\SSOQR.cs" />
     <Compile Include="IQBWX\Models\WX\Template\BaseTemplate.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\InviteCode\PPInviteCodeNT.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\InviteCode\PPInviteCodeTemplate.cs" />
     <Compile Include="IQBWX\Models\WX\Template\Notification.cs" />
     <Compile Include="IQBWX\Models\WX\Template\PPOrderPayNT.cs" />
     <Compile Include="IQBWX\Models\WX\Template\PPOrderPayTemplate.cs" />

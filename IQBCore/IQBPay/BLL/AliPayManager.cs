@@ -63,6 +63,7 @@ namespace IQBCore.IQBPay.BLL
             AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request,null, store.AliPayAuthToke);
             return response;
         }
+       
 
         /// <summary>
         /// 转账
@@ -74,7 +75,7 @@ namespace IQBCore.IQBPay.BLL
         /// <param name="accessToken"></param>
         /// <param name="GlobalConfig">获取是否微信转账配置</param>
         /// <returns></returns>
-        public ETransferAmount TransferHandler(TransferTarget target,EAliPayApplication app, EAliPayApplication subApp,EUserInfo ui,ref EOrderInfo order, string accessToken,EGlobalConfig GlobalConfig)
+        public ETransferAmount TransferHandler(TransferTarget target,EAliPayApplication app, EAliPayApplication subApp,EUserInfo ui,ref EOrderInfo order,float AmountNotInOrder=0, string accessToken=null,EGlobalConfig GlobalConfig =null)
         {
             string TransferId ="";
             ETransferAmount transfer = null;
@@ -106,6 +107,10 @@ namespace IQBCore.IQBPay.BLL
                         AliPayAccount = order.BuyerAliPayAccount;
 
                     TransferAmount = order.BuyerTransferAmount;
+                    break;
+                case TransferTarget.MidStore:
+                    AliPayAccount = ui.AliPayAccount;
+                    TransferAmount = AmountNotInOrder;
                     break;
             }
             if(target == TransferTarget.User)
@@ -205,7 +210,9 @@ namespace IQBCore.IQBPay.BLL
                 profix = "(打款)";
             else if (target == TransferTarget.L3Agent)
                 profix = "(三级)";
-            model.PayerShowName = profix+"平台服务费";
+            else if (target == TransferTarget.MidStore)
+                profix = "(码商)";
+            model.PayerShowName = profix+"服务费";
             if(order!=null)
                 model.Remark = string.Format("#{0}-订单金额：{1}-订单ID：{2}",order.AgentName,order.TotalAmount,order.OrderNo);
           
