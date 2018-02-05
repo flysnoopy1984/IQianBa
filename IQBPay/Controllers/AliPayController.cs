@@ -378,6 +378,8 @@ namespace IQBPay.Controllers
                             {
                                 agentUI.HasPassRegFee = true;
                             }
+                            if (agentUI.UserStatus == UserStatus.JustRegister)
+                                agentUI.UserStatus = UserStatus.PPUser;
                             //if(agentUI.HasPassInviteFee==false)
                             //{
                             //    db.DBOrder.Where(o=>o.AgentOpenId == agentUI.OpenId && o.OrderStatus == OrderStatus.Closed).ToList().Sum()
@@ -1160,12 +1162,15 @@ namespace IQBPay.Controllers
                         ErrorUrl += "收款二维码代理人微信号没有找到";
                         return Redirect(ErrorUrl);
                     }
-                    if (ui.UserStatus == IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister)
-                    {
-                        ErrorUrl += "您的联系人被禁用,无法支付！";
-                        return Redirect(ErrorUrl);
-                    }
-                    if(string.IsNullOrEmpty(ui.AliPayAccount))
+                    //被禁用的用户，手续费调整为8
+                    qrUser.Rate = 2;
+                    
+                    //if (ui.UserStatus == IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister)
+                    //{
+                    //    ErrorUrl += "您的联系人被禁用,无法支付！";
+                    //    return Redirect(ErrorUrl);
+                    //}
+                    if (string.IsNullOrEmpty(ui.AliPayAccount))
                     {
                         ErrorUrl += "您的联系人没有设置支付宝账户！";
                         return Redirect(ErrorUrl);

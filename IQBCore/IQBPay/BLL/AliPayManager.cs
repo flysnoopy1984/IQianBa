@@ -149,10 +149,13 @@ namespace IQBCore.IQBPay.BLL
                     {
                         if (target == TransferTarget.Agent)
                         {
-                       
-                            PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
-                          //  log.log("通知代理");
-                            notice.Push();
+                            if(ui.UserStatus == UserStatus.PPUser)
+                            {
+                                PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
+                                //  log.log("通知代理");
+                                notice.Push();
+                            }
+                          
                         }
                     }
 

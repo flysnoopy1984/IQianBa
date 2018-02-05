@@ -95,7 +95,7 @@
             @*<li><a href="/API/TransferAPI/TransferToAgent?OpenId=o3nwE0qI_cOkirmh_qbGGG-5G6B0&AliPayAccount=song_fuwei@hotmail.com&OrderAmount=1.95&CommissionAmount=0">Transfer</a></li>*@ 
             <input type="button" onclick="Transfer('0.1', '0', '1451286938@qq.com', 'o3nwE0qI_cOkirmh_qbGGG-5G6B0')" value="转账" />
             <li>           
-               <a href=@Url.Action("SubAccount", "AliPay",new { OrderNo = "YJO20180201045842ii" })>分账</a>
+               <a href=@Url.Action("SubAccount", "AliPay",new { OrderNo = "YJO20180205102103wp" })>分账</a>
             </li>
          
             <li>
@@ -107,7 +107,7 @@
             <li><a href=@Url.Action("TransferTest", "AliPay")>转账测试</a></li>
             <li><a href=@Url.Action("QueryOrder", "AliPay")>查询订单</a></li>
 
-            <li><a href=@Url.Action("F2FPay", "AliPay",new { qrUserId = "118", Amount = "799" ,AliPayAccount="song_fuwei@hotmail.com",TestStoreId=46 })>真实F2F</a></li>
+            <li><a href=@Url.Action("F2FPay", "AliPay",new { qrUserId = "118", Amount = "10" ,AliPayAccount="song_fuwei@hotmail.com",TestStoreId=66 })>真实F2F</a></li>
             <li><input type="button" onclick="PartPayQR()" value="分期" /></li>
 
         </ul>

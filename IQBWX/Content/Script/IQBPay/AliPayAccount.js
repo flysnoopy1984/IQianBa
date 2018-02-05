@@ -7,7 +7,6 @@ function InitControl()
 {
     var AliPayAccount = $("#AliPayAccount").val();
 
-   
     $("#AliPayAccount").attr("disabled", true);
 
     if (AliPayAccount.replace(/(^s*)|(s*$)/g, "").length >0)  

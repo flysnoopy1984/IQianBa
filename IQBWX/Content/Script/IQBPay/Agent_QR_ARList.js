@@ -233,7 +233,7 @@ function ToInfoPage(i,qrType) {
     $("#QRImgContainer").hide();
 
     $range = $("#AfterMarketRate").ionRangeSlider({
-        min: 6,
+        min: 4,
         max: 15,
         from: 10,
         step: 0.5,
@@ -275,7 +275,7 @@ function ToInfoPage(i,qrType) {
         if (qrType == 0)
         {
             slider.update({
-                min: 6,
+                min: 4,
                 max: 15,
                 from: QueryData[i].MarketRate,
                 step: 0.5,

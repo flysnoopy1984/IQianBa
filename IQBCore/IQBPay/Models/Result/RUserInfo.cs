@@ -71,6 +71,8 @@ namespace IQBCore.IQBPay.Models.Result
 
         public bool NeedFollowUp { get; set; }
 
+        public string RegisterDate { get; set; }
+
 
 
 

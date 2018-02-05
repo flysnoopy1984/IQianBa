@@ -13,7 +13,7 @@ $(document).ready(function () {
 
     $('#StoreRate').attr("disabled", true);
 
-    $('#Name').attr("disabled", true);
+   // $('#Name').attr("disabled", true);
     //$('#ParentCommissionRate').attr("disabled", true);
     Init(OpenId);
 
@@ -153,7 +153,7 @@ function InitFormData(data) {
     $("#NeedFollowUp").attr("checked", data.NeedFollowUp);
 
     //$("#StoreId").val(data.StoreId);
-    $("#StoreRate").val(data.StoreRate);
+    $("#RegisterDate").val(data.RegisterDate);
     //$("#StoreName").val(data.StoreName);
 
     $("#selStore").empty();
