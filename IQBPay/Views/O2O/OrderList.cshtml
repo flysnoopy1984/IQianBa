@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "O2O订单";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+    <a href="/Order/List" title="O2O订单">O2O订单 </a>
+
+}
+@section SubMenu2{
+    列表
+}
+<link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+<style type="text/css">
+    #ListArea{
+      
+    }
+    #DataContainer{
+       width:1024px;
+       overflow-x:auto;   
+    }
+    #DataContainer table{
+      
+    }
+    #DataContainer tr th{
+        border:1px solid black;
+        height:40px;
+        line-height:40px;
+    }
+</style>
+<h2>O2O订单"</h2>
+<div id="ListArea">
+    <div id="ButtonList">
+        <ul class="UlHorizontal" style="margin:30px;">
+            <li>
+                <button id="btnAdd" type="button" class="btn btn-primary" onclick="Query()">查询</button>
+            </li>
+        </ul>
+    </div>
+    <div id="DataContainer">
+        <table >
+            <tr style="display:-webkit-flex;">
+                <th style="width:150px;">O2O编号</th>
+                <th style="width:150px;">用户手机</th>
+                <th style="width:150px;">对应的订单编号</th> 
+                <th style="width:150px;">订单状态</th>
+                <th style="width:150px;">创建时间</th>
+                <th style="width:150px;">商城</th>
+                <th style="width:150px;">商城登陆账户</th>
+                <th style="width:150px;">商城登陆密码</th>
+                <th style="width:150px;">商城订单编号</th>     
+                <th style="width:150px;">商城订单编号</th>   
+                <th style="width:150px;">商城订单编号</th>     
+                <th style="width:150px;">商城订单编号</th>       
+            </tr>
+            <tr style="display:-webkit-flex;">
+                <td style="width:150px;">O2O编号</td>
+                <td style="width:150px;">用户手机</td>
+                <td style="width:150px;">对应的订单编号</td>
+                <td style="width:150px;">订单状态</td>
+                <td style="width:150px;">创建时间</td>
+                <td style="width:150px;">商城</td>
+                <td style="width:150px;">商城登陆账户</td>
+                <td style="width:150px;">商城登陆密码</td>
+                <td style="width:150px;">商城订单编号</td>
+                <td style="width:150px;">商城订单编号</td>
+                <td style="width:150px;">商城订单编号</td>
+                <td style="">商城订单编号</td>       
+              @*<td>O2O编号</td>
+                <td>O2O编号</td>
+                <td>O2O编号</td>
+                <td>O2O编号</td>
+                <td>O2O编号</td>
+                <td>O2O编号</td>
+                <td>O2O编号</td>
+                <td>O2O编号</td>
+                <td>O2O编号</td>
+                <td>O2O编号</td>
+                <td>O2O编号</td>
+                <td>O2O编号</td>*@
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+
