@@ -493,6 +493,7 @@
     <Content Include="scripts\Web\GlobalConfig.js" />
     <Content Include="scripts\Web\O2O\ItemList.js" />
     <Content Include="scripts\Web\O2O\MallList.js" />
+    <Content Include="scripts\Web\O2O\OrderList.js" />
     <Content Include="scripts\Web\O2O\PriceGroup.js" />
     <Content Include="scripts\Web\O2O\RuleList.js" />
     <Content Include="scripts\Web\OrderViewTransfer.js" />
@@ -654,7 +655,7 @@
     <Content Include="Views\O2O\ItemList.cshtml" />
     <Content Include="Views\O2OWap\Demo.cshtml" />
     <Content Include="Views\O2O\PriceGroupList.cshtml" />
-    <Content Include="Views\O2O\Order.cshtml" />
+    <Content Include="Views\O2O\OrderList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
