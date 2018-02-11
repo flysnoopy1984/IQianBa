@@ -12,20 +12,42 @@
 }
 <link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
 <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+<style type="text/css">
+    #ListArea{
+        overflow:scroll;   
+    }
+    #DataContainer{
+        width:2000px;
+    }
+    #DataContainer table{
+      
+    }
+    #DataContainer tr th{border:1px solid black;}
+</style>
 <h2>O2O订单"</h2>
 <div id="ListArea">
     <div id="ButtonList">
         <ul class="UlHorizontal" style="margin:30px;">
             <li>
-                <button id="btnAdd" type="button" class="btn btn-primary" onclick="CreateNew(null);">新增商品</button>
+                <button id="btnAdd" type="button" class="btn btn-primary" onclick="Query()">查询</button>
             </li>
         </ul>
     </div>
     <div id="DataContainer">
         <table>
             <tr>
-                <th>订单编号</th>
-                <th>订单编号</th>
+                <th style="width:150px;">O2O编号</th>
+                <th style="width:150px;">用户手机</th>
+                <th style="width:150px;">对应的订单编号</th> 
+                <th style="width:150px;">订单状态</th>
+                <th style="width:150px;">创建时间</th>
+                <th style="width:150px;">商城</th>
+                <th style="width:150px;">商城登陆账户</th>
+                <th style="width:150px;">商城登陆密码</th>
+                <th style="width:150px;">商城订单编号</th>     
+                <th style="width:150px;">商城订单编号</th>   
+                <th style="width:150px;">商城订单编号</th>     
+                <th style="">商城订单编号</th>       
             </tr>
         </table>
     </div>

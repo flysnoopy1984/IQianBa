@@ -117,7 +117,7 @@
     <Compile Include="IQBPay\Models\O2O\EO2OPriceGroup.cs" />
     <Compile Include="IQBPay\Models\O2O\EOrderStep.cs" />
     <Compile Include="IQBPay\Models\O2O\EOrderUpload.cs" />
-    <Compile Include="IQBPay\Models\O2O\EPreOrder.cs" />
+    <Compile Include="IQBPay\Models\O2O\EO2OOrder.cs" />
     <Compile Include="IQBPay\Models\O2O\EStepTemplate.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2OItemInfo.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2OMall.cs" />

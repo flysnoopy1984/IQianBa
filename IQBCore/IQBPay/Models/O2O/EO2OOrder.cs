@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace IQBCore.IQBPay.Models.O2O
 {
-    [Table("PreOrder")]
-    public class EPreOrder
+    [Table("O2OOrder")]
+    public class EO2OOrder
     {
-        public EPreOrder()
+        public EO2OOrder()
         {
             CreateDateTime = DateTime.Now;
         }
@@ -30,6 +30,8 @@ namespace IQBCore.IQBPay.Models.O2O
         [MaxLength(100)]
         public string UserAliPayAccount { get; set; }
 
+        public int MallId { get; set; }
+
         [MaxLength(50)]
         public string MallAccount { get; set; }
 
@@ -45,7 +47,7 @@ namespace IQBCore.IQBPay.Models.O2O
         [MaxLength(50)]
         public  string MallOrderId { get; set; }
 
-        public O2OOrderStatus PreOrderStatus { get; set; }
+        public O2OOrderStatus O2OOrderStatus { get; set; }
 
         public DateTime CreateDateTime { get; set; }
     }
