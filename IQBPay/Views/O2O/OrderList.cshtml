@@ -12,17 +12,25 @@
 }
 <link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
 <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+<script src="@Url.Scrpit("~/scripts/Web/O2O/OrderList.js")"></script>
+
+
 <style type="text/css">
     #ListArea{
-        overflow:scroll;   
-    }
-    #DataContainer{
-        width:2000px;
-    }
-    #DataContainer table{
+      
       
     }
-    #DataContainer tr th{border:1px solid black;}
+    #DataContainer{
+         overflow:auto;   
+    }
+    #DataContainer tr th
+    {
+        border:1px solid black;
+        height:40px;
+        line-height:40px;
+        text-align:center;
+
+    }
 </style>
 <h2>O2O订单"</h2>
 <div id="ListArea">
@@ -34,20 +42,20 @@
         </ul>
     </div>
     <div id="DataContainer">
-        <table>
+        <table style="table-layout: fixed; word-break: break-all;">
             <tr>
-                <th style="width:150px;">O2O编号</th>
-                <th style="width:150px;">用户手机</th>
-                <th style="width:150px;">对应的订单编号</th> 
+                <th style="width:150px;">操作</th>       
+                <th style="width:150px;">商城订单编号</th>             
+                <th style="width:150px;">用户手机</th>  
                 <th style="width:150px;">订单状态</th>
                 <th style="width:150px;">创建时间</th>
                 <th style="width:150px;">商城</th>
                 <th style="width:150px;">商城登陆账户</th>
                 <th style="width:150px;">商城登陆密码</th>
-                <th style="width:150px;">商城订单编号</th>     
-                <th style="width:150px;">商城订单编号</th>   
-                <th style="width:150px;">商城订单编号</th>     
-                <th style="">商城订单编号</th>       
+                <th style="width:150px;">O2O编号</th>
+                <th style="width:150px;">对应的玉杰订单编号</th> 
+                <th style="width:150px;">对应的玉杰订单编号</th> 
+                <th style="width:150px;">对应的玉杰订单编号</th> 
             </tr>
         </table>
     </div>

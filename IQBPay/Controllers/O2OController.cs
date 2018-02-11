@@ -439,7 +439,7 @@ namespace IQBPay.Controllers
 
         #region O2OOrder
 
-        public ActionResult Order()
+        public ActionResult OrderList()
         {
             return View();
         }
