@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "价格组";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+    <a href="#" title="O2O价格"> O2O价格</a>
+
+}
+@section SubMenu2{
+    价格组
+}
+<link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Web/O2O/PriceGroup.js")"></script>
+<script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+
+<style type="text/css">
+
+</style>
+
+<h2>O2O 价格组</h2>
+<div id="ListArea">
+    <div id="ButtonList">
+        <ul class="UlHorizontal" style="margin:30px;">
+
+            <li>
+                <button id="btnSearch" type="button" class="btn btn-warning" onclick="CreateNew(null);">新增价格组</button>
+            </li>
+        </ul>
+    </div>
+    <div id="DataContainer">
+
+     
+    </div>
+</div>

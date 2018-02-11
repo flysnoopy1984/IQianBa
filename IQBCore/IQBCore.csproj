@@ -112,7 +112,19 @@
     <Compile Include="IQBPay\Models\AccountPayment\EPreTransfer.cs" />
     <Compile Include="IQBPay\Models\Error\EPrivilegeError.cs" />
     <Compile Include="IQBPay\Models\InParameter\InAgentOverview.cs" />
-    <Compile Include="IQBPay\Models\Item\EO2OItemInfo.cs" />
+    <Compile Include="IQBPay\Models\O2O\EO2OItemInfo.cs" />
+    <Compile Include="IQBPay\Models\O2O\EO2OMall.cs" />
+    <Compile Include="IQBPay\Models\O2O\EO2OPriceGroup.cs" />
+    <Compile Include="IQBPay\Models\O2O\EOrderStep.cs" />
+    <Compile Include="IQBPay\Models\O2O\EOrderUpload.cs" />
+    <Compile Include="IQBPay\Models\O2O\EPreOrder.cs" />
+    <Compile Include="IQBPay\Models\O2O\EStepTemplate.cs" />
+    <Compile Include="IQBPay\Models\O2O\RO2OItemInfo.cs" />
+    <Compile Include="IQBPay\Models\O2O\RO2OMall.cs" />
+    <Compile Include="IQBPay\Models\O2O\RO2ORule.cs" />
+    <Compile Include="IQBPay\Models\OutParameter\HashO2OMall_Rule.cs" />
+    <Compile Include="IQBPay\Models\OutParameter\HashO2ORule.cs" />
+    <Compile Include="IQBPay\Models\OutParameter\HashO2OMall.cs" />
     <Compile Include="IQBPay\Models\Report\RPAgentPerformance.cs" />
     <Compile Include="IQBPay\Models\Rules\EBenefitRule.cs" />
     <Compile Include="IQBPay\Models\InParameter\InDoTransfer.cs" />
@@ -156,7 +168,7 @@
     <Compile Include="IQBPay\Models\Result\RUser_ARQR.cs" />
     <Compile Include="IQBPay\Models\Result\RUser_Order.cs" />
     <Compile Include="IQBPay\Models\Result\RUser_OrderSum.cs" />
-    <Compile Include="IQBPay\Models\Rules\EO2OItemRule.cs" />
+    <Compile Include="IQBPay\Models\O2O\EO2ORule.cs" />
     <Compile Include="IQBPay\Models\Rules\EPayRule.cs" />
     <Compile Include="IQBPay\Models\SMS\ESMSVerification.cs" />
     <Compile Include="IQBPay\Models\SMS\ESMSLog.cs" />
@@ -167,6 +179,7 @@
     <Compile Include="IQBPay\Models\Tool\ETool_PayOrder.cs" />
     <Compile Include="IQBPay\Models\Tool\ETool_QR.cs" />
     <Compile Include="IQBPay\Models\User\EBuyerInfo.cs" />
+    <Compile Include="IQBPay\Models\User\EBuyerTrans.cs" />
     <Compile Include="IQBPay\Models\User\EUserInfo.cs" />
     <Compile Include="IQBWX\BaseEnum\IQBWxEnum.cs" />
     <Compile Include="IQBWX\Const\IQBWXConst.cs" />

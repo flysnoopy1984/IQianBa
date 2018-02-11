@@ -2,6 +2,7 @@
 using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.AccountPayment;
+using IQBCore.IQBPay.Models.O2O;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.PayChannel;
 using IQBCore.IQBPay.Models.QR;
@@ -19,20 +20,21 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
+using System.Linq.Expressions;
 
 namespace IQBPay.DataBase
 {
     //[DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
-    public class AliPayContent: DbContext
+    public class AliPayContent : DbContext, IBaseContent
     {
         public AliPayContent() : base("PPConnection")
         {
 
         }
 
-        public AliPayContent(bool isInit=false) : base("PPConnection")
+        public AliPayContent(bool isInit = false) : base("PPConnection")
         {
-            if(isInit)
+            if (isInit)
                 Database.SetInitializer<AliPayContent>(new DropCreateDatabaseAlways<AliPayContent>());
             else
                 Database.SetInitializer<AliPayContent>(null);
@@ -70,12 +72,49 @@ namespace IQBPay.DataBase
 
         public DbSet<EPayChannel> DBPayChannel { get; set; }
 
+        #region Interface
+        public T Update<T>(T entity) where T : class
+        {
+            var set = this.Set<T>();
+            set.Attach(entity);
+            this.Entry<T>(entity).State = EntityState.Modified;
+            this.SaveChanges();
+            return entity;
+        }
+
+        public T Insert<T>(T entity) where T : class
+        {
+            this.Set<T>().Add(entity);
+            this.SaveChanges();
+            return entity;
+        }
+
+        public void Delete<T>(T entity) where T : class
+        {
+            this.Entry<T>(entity).State = EntityState.Deleted;
+            this.SaveChanges();
+        }
+
+        public T Find<T>(params object[] keyValues) where T : class
+        {
+            return this.Set<T>().Find(keyValues);
+        }
+
+        public List<T> FindAll<T>(Expression<Func<T, bool>> conditions = null) where T : class
+        {
+            if (conditions == null)
+                return this.Set<T>().ToList();
+            else
+                return this.Set<T>().Where(conditions).ToList();
+        }
+        #endregion
+
         #region User  
         public Boolean IsExistUser(string openId)
         {
             int i = DBUserInfo.Count(u => u.OpenId == openId);
             return (i > 0);
-           
+
         }
         #endregion
 
@@ -86,7 +125,7 @@ namespace IQBPay.DataBase
             int i = DBStoreInfo.Count(u => u.OwnnerOpenId == openId);
             return i;
         }
-        public Boolean IsExistStore(string openId,string name)
+        public Boolean IsExistStore(string openId, string name)
         {
             int i = DBStoreInfo.Count(u => u.OwnnerOpenId == openId && u.Name == name);
 
@@ -106,23 +145,21 @@ namespace IQBPay.DataBase
         #endregion
 
         #region QR
-        public Boolean IsExistQR(string openId, string name,QRType qrType)
+        public Boolean IsExistQR(string openId, string name, QRType qrType)
         {
-            int i = DBQRInfo.Count(u => u.OwnnerOpenId == openId && u.Name == name && u.Type ==qrType);
+            int i = DBQRInfo.Count(u => u.OwnnerOpenId == openId && u.Name == name && u.Type == qrType);
 
             return (i > 0);
 
         }
 
-        public EQRInfo QR_GetById(long Id,QRType qrType)
+        public EQRInfo QR_GetById(long Id, QRType qrType)
         {
-           return  DBQRInfo.Where(a => a.ID == Id && a.Type == qrType).FirstOrDefault();
+            return DBQRInfo.Where(a => a.ID == Id && a.Type == qrType).FirstOrDefault();
         }
         #endregion
 
-        #region APP
 
-        #endregion
 
         #region QRUser
         /// <summary>
@@ -132,9 +169,9 @@ namespace IQBPay.DataBase
         /// <param name="ui"></param>
         /// <param name="errorCode">1</param>
         /// <returns></returns>
-        public EUserInfo UpdateQRUser(EQRInfo pQR,EUserInfo ui, HttpContext context)
+        public EUserInfo UpdateQRUser(EQRInfo pQR, EUserInfo ui, HttpContext context)
         {
-             IQBLog _log = new IQBLog();
+            IQBLog _log = new IQBLog();
             try
             {
                 EQRUser qrUser = null;
@@ -152,7 +189,7 @@ namespace IQBPay.DataBase
                 this.SaveChanges();
 
                 ui.QRInviteCode = cQR.ID;
-              
+
                 //if (!string.IsNullOrEmpty(pQR.ParentOpenId))
                 //{
                 //    pi = db.DBUserInfo.Where(u => u.OpenId == pQR.ParentOpenId).Select(o => new RUserInfo
@@ -175,7 +212,7 @@ namespace IQBPay.DataBase
                 entry.Property(t => t.FilePath).IsModified = true;
                 entry.Property(t => t.TargetUrl).IsModified = true;
                 this.SaveChanges();
-            //    _log.log("UpdateQRUser 邀请码");
+                //    _log.log("UpdateQRUser 邀请码");
 
 
                 //收款 二维码
@@ -188,8 +225,8 @@ namespace IQBPay.DataBase
                 qrUser.Rate = pQR.Rate;
                 qrUser.ReceiveStoreId = pQR.ReceiveStoreId;
                 qrUser.QRType = QRType.AR;
-              
-               
+
+
                 if (!string.IsNullOrEmpty(pQR.ParentOpenId))
                 {
                     qrUser.ParentOpenId = pQR.ParentOpenId;
@@ -198,24 +235,41 @@ namespace IQBPay.DataBase
                 }
                 this.DBQRUser.Add(qrUser);
                 this.SaveChanges();
-           //     _log.log("UpdateQRUser 收款 二维码");
+                //     _log.log("UpdateQRUser 收款 二维码");
                 qrUser = QRManager.CreateUserUrlById(qrUser, ui.Headimgurl);
-            //    _log.log("UpdateQRUser 收款 二维码图片生成");
+                //    _log.log("UpdateQRUser 收款 二维码图片生成");
 
                 this.Entry(qrUser).State = System.Data.Entity.EntityState.Modified;
                 this.SaveChanges();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _log.log("UpdateQRUser Error :" + ex.Message);
                 _log.log("UpdateQRUser Error Inner :" + ex.InnerException.Message);
             }
-          
+
             return ui;
 
         }
+
+
         #endregion
 
-      
+
+        #region O2O
+
+        public DbSet<EO2OItemInfo> DBO2OItemInfo { get; set; }
+
+        public DbSet<EO2OMall> DBO2OMall { get; set; }
+
+        public DbSet<EO2ORule> DBO2ORule { get; set; }
+
+        public DbSet<EO2OPriceGroup> DBO2OPriceGroup { get; set; }
+
+        #endregion
+
+
+
+
     }
 }

@@ -184,6 +184,7 @@
     <Content Include="Content\QR\Logo_AR.png" />
     <Content Include="Content\QR\QRHugeLogo.png" />
     <Content Include="Content\QR\ReceiveMoney_Logo.png" />
+    <Content Include="Content\Style\Web\O2O\O2OList.css" />
     <Content Include="Content\Style\Web\ULList.css" />
     <Content Include="Content\Style\Web\FixTableList.css" />
     <Content Include="Content\Images\backgrounds\1.jpg" />
@@ -490,6 +491,10 @@
     <Content Include="scripts\Web\DoTransfer.js" />
     <Content Include="scripts\Web\DoTransfer_OrderDetail.js" />
     <Content Include="scripts\Web\GlobalConfig.js" />
+    <Content Include="scripts\Web\O2O\ItemList.js" />
+    <Content Include="scripts\Web\O2O\MallList.js" />
+    <Content Include="scripts\Web\O2O\PriceGroup.js" />
+    <Content Include="scripts\Web\O2O\RuleList.js" />
     <Content Include="scripts\Web\OrderViewTransfer.js" />
     <Content Include="scripts\Web\OrderMyList.js" />
     <Content Include="scripts\Web\Report_Store.js" />
@@ -522,6 +527,8 @@
     <Compile Include="Controllers\ExternalAPI\StoreAPIController.cs" />
     <Compile Include="Controllers\ExternalAPI\TransferAPIController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\O2OController.cs" />
+    <Compile Include="Controllers\O2OWapController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PartStoreController.cs" />
     <Compile Include="Controllers\QRController.cs" />
@@ -538,6 +545,7 @@
     <Compile Include="Core\IQBPayAuthorize_AdminAttribute.cs" />
     <Compile Include="DataBase\AliPayContent.cs" />
     <Compile Include="Controllers\ExternalAPI\UserAPIController.cs" />
+    <Compile Include="DataBase\IBaseContent.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -640,6 +648,13 @@
     <Content Include="Views\Wap\PayHuge.cshtml" />
     <Content Include="Views\Test\Demo.cshtml" />
     <Content Include="Views\User\UserAdjustment.cshtml" />
+    <Content Include="Views\Shared\_O2OLayout.cshtml" />
+    <Content Include="Views\O2O\RuleList.cshtml" />
+    <Content Include="Views\O2O\MallList.cshtml" />
+    <Content Include="Views\O2O\ItemList.cshtml" />
+    <Content Include="Views\O2OWap\Demo.cshtml" />
+    <Content Include="Views\O2O\PriceGroupList.cshtml" />
+    <Content Include="Views\O2O\Order.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

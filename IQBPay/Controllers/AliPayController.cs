@@ -52,6 +52,8 @@ namespace IQBPay.Controllers
 
         public string AppID = ConfigurationManager.AppSettings["APPID"];
 
+
+
         private static List<string>  _BlockList =null ;
 
         public object EORderInfo { get; private set; }
@@ -63,7 +65,6 @@ namespace IQBPay.Controllers
                 _BlockList = new List<string>();
                 _BlockList.Add("13225930162");
             }
-
         }
 
         public string callF2FPay(EStoreInfo store,string TotalAmt,string orderNo)
@@ -987,7 +988,7 @@ namespace IQBPay.Controllers
                         db.SaveChanges();
 
                         //创建初始化订单
-                        EOrderInfo order = payMag.InitOrder(qrUser, store, qrHuge.Amount,OrderType.Huge, AliPayAccount,1, QRHugeTrans);
+                        EOrderInfo order = payMag.InitOrder(qrUser, store, qrHuge.Amount,OrderType.Huge, AliPayAccount,1, ui,QRHugeTrans);
                       
                         if (!string.IsNullOrEmpty(qrUser.ParentOpenId))
                         {
@@ -1163,13 +1164,14 @@ namespace IQBPay.Controllers
                         return Redirect(ErrorUrl);
                     }
                     //被禁用的用户，手续费调整为8
-                    qrUser.Rate = 2;
                     
-                    //if (ui.UserStatus == IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister)
-                    //{
-                    //    ErrorUrl += "您的联系人被禁用,无法支付！";
-                    //    return Redirect(ErrorUrl);
-                    //}
+                    
+                   /* if (ui.UserStatus == IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister)
+                    {
+
+                       //ErrorUrl += "您的联系人被禁用,无法支付！";
+                       // return Redirect(ErrorUrl);
+                    }*/
                     if (string.IsNullOrEmpty(ui.AliPayAccount))
                     {
                         ErrorUrl += "您的联系人没有设置支付宝账户！";
@@ -1270,7 +1272,7 @@ namespace IQBPay.Controllers
                         if (ui.HasPassRegFee)
                             ordernum = 1;
                         //创建初始化订单
-                        EOrderInfo order = payMag.InitOrder(qrUser, store,Convert.ToSingle(Amount),OrderType.Normal, AliPayAccount, ordernum);
+                        EOrderInfo order = payMag.InitOrder(qrUser, store,Convert.ToSingle(Amount),OrderType.Normal, AliPayAccount, ordernum,ui);
 
                         if (!string.IsNullOrEmpty(qrUser.ParentOpenId))
                         {

@@ -16,6 +16,15 @@ namespace IQBPay
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            //json 序列化设置  
+            GlobalConfiguration.Configuration.Formatters
+                .JsonFormatter.SerializerSettings = new Newtonsoft.Json.JsonSerializerSettings()
+                {
+                    NullValueHandling = Newtonsoft.Json.NullValueHandling.Include,
+                    DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local,
+                    DateFormatString = "yyyy-MM-dd HH:mm:ss",
+                };
         }
     }
 }

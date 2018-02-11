@@ -12,6 +12,7 @@ using IQBCore.IQBPay.Models.Store;
 using WxPayAPI;
 using IQBCore.Model;
 using System.Configuration;
+using IQBCore.IQBPay.Models.OutParameter;
 
 namespace IQBPay.Controllers
 {
@@ -231,6 +232,14 @@ namespace IQBPay.Controllers
                 return Convert.ToBoolean(ConfigurationManager.AppSettings["TestModel"]);
             }
         }
-       
+        public ActionResult ErrorResult(string msg)
+        {
+            OutAPIResult result = new OutAPIResult();
+            result.ErrorMsg = msg;
+            result.IsSuccess = false;
+            return Json(result);
+
+        }
+
     }
 }

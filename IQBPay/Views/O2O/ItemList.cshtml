@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "物品列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+    <a href="/Order/List" title="物品列表"> 商品</a>
+
+}
+@section SubMenu2{
+    列表
+}
+<link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Web/O2O/ItemList.js")"></script>
+<script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+
+<style type="text/css">
+.ItemBlock{
+    background-color:#cecbcb;
+}
+.CellTitle{
+    height:35px;
+    line-height:40px;
+    color:dimgrey;
+}
+</style>
+<h2>O2O商品列表</h2>
+<div id="ListArea">
+    <div id="ButtonList">
+        <ul class="UlHorizontal" style="margin:30px;">
+            <li>
+                <button id="btnAdd" type="button" class="btn btn-primary" onclick="CreateNew(null);">新增商品</button>
+            </li>
+        </ul>
+    </div>
+    <div id="DataContainer">
+      
+    </div>
+</div>

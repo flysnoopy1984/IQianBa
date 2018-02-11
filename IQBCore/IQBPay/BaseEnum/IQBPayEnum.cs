@@ -288,6 +288,32 @@ namespace IQBCore.IQBPay.BaseEnum
         QRHuge=1001,
     }
 
+    public enum PreOrderStatus
+    {
+        //初始化
+        OpenOrder =0,
+
+        //真实订单上传
+        WaitingUpload = 2,
+
+        //审核驳回
+        OrderRefused = 5,
+        //订单审核
+        OrderReview=6,
+
+        //仓库等待到货
+        WaitingDeliver=10,
+
+        //到货结算
+        Settlement=14,
+
+        //支付用户
+        Payment=18,
+
+        //订单完成
+        Complete=50,
+    }
+
    
 
 }

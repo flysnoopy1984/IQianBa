@@ -315,9 +315,10 @@ namespace IQBCore.IQBPay.BLL
         /// <param name="orderType">订单类型:大额/小额</param>
         /// <param name="AliPayAccount">支付宝账户</param>
         /// <param name="orderNum">是否有订单，没有费率则为全局费率</param>
+        /// <param name="ui">如果用户被禁用，传入</param>
         /// <param name="QRHugeTrans"></param>
         /// <returns></returns>
-        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount,OrderType orderType,string AliPayAccount = "",int orderNum=0,EQRHugeTrans QRHugeTrans = null)
+        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount,OrderType orderType,string AliPayAccount = "",int orderNum=0,EUserInfo ui = null,EQRHugeTrans QRHugeTrans = null)
         {
             EOrderInfo order = new EOrderInfo()
             {
@@ -362,6 +363,11 @@ namespace IQBCore.IQBPay.BLL
 
                 if(orderNum == 0 && (qrUser.MarketRate-qrUser.Rate)< FOFeeRate)
                     order.RateAmount = (float)Math.Round(TotalAmount * ((qrUser.MarketRate-FOFeeRate) / 100), 2, MidpointRounding.ToEven);
+
+                if(ui.UserStatus == UserStatus.JustRegister)
+                {
+                    order.RateAmount = (float)Math.Round(TotalAmount * (2 / 100), 2, MidpointRounding.ToEven);
+                }
 
             }
            
@@ -659,5 +665,7 @@ namespace IQBCore.IQBPay.BLL
            
             return response;
         }
+
+        
     }
 }

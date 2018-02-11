@@ -311,7 +311,7 @@ namespace IQBPay.Controllers
                     qrUser = QRManager.CreateUserUrlById(qrUser, "1");
 
                 }
-                result.SuccessMsge = qrUser.FilePath;
+                result.SuccessMsg = qrUser.FilePath;
             }
             catch(Exception ex)
             {
@@ -336,7 +336,7 @@ namespace IQBPay.Controllers
                    
 
                 }
-                result.SuccessMsge = qrInfo.FilePath;
+                result.SuccessMsg = qrInfo.FilePath;
             }
             catch (Exception ex)
             {

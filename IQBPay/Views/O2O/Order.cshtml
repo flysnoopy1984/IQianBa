@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "O2O订单";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+    <a href="/Order/List" title="O2O订单">O2O订单 </a>
+
+}
+@section SubMenu2{
+    列表
+}
+<link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+<h2>O2O订单"</h2>
+<div id="ListArea">
+    <div id="ButtonList">
+        <ul class="UlHorizontal" style="margin:30px;">
+            <li>
+                <button id="btnAdd" type="button" class="btn btn-primary" onclick="CreateNew(null);">新增商品</button>
+            </li>
+        </ul>
+    </div>
+    <div id="DataContainer">
+        <table>
+            <tr>
+                <th>订单编号</th>
+                <th>订单编号</th>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+

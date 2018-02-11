@@ -126,7 +126,7 @@ function CreateOrUpdateQRHuge()
         url: url,
         success: function (data) {
             if (data.IsSuccess) {
-                alert(data.SuccessMsge);  
+                alert(data.SuccessMsg);  
             }
             else {
                 alert(data.ErrorMsg);

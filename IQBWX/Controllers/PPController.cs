@@ -99,7 +99,7 @@ namespace IQBWX.Controllers
 
         public ActionResult Pay2(string Id)
         {
-            if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop )
+            if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
             {
                 return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
             }

@@ -409,7 +409,7 @@ namespace IQBPay.Controllers
                         EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == openId).First();
                         ui.HasQRHuge = true;
 
-                        result.SuccessMsge = "开通权限";
+                        result.SuccessMsg = "开通权限";
                     }
                     else
                     {
@@ -417,7 +417,7 @@ namespace IQBPay.Controllers
                         bQRUser.MarketRate = marketRate;
                        
 
-                        result.SuccessMsge = "修改成功";
+                        result.SuccessMsg = "修改成功";
 
                         
                     }

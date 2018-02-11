@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "规则列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+    <a href="/Order/List" title="规则列表"> 规则</a>
+
+}
+@section SubMenu2{
+    列表
+}
+<link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Web/O2O/RuleList.js")"></script>
+<script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+
+<style type="text/css">
+
+</style>
+
+<h2>O2O规则列表</h2>
+<div id="ListArea">
+    <div id="ButtonList">
+        <ul class="UlHorizontal" style="margin:30px;">
+        
+            <li>
+                <button id="btnSearch" type="button" class="btn btn-warning" onclick="CreateNew();">新增规则</button>
+            </li>
+        </ul>
+    </div>
+    <div id="DataContainer">
+        @*<div style="width:92%;" id="Rule_1">
+            <ul class="UlHorizontal">
+                <li>规则ID：<input id="Rate" type="text" class="fieldControl" /></li>
+                <li>规则名字：<input id="Rate" type="text" class="fieldControl" /></li>
+             </ul>
+            <ul class="UlHorizontal">
+                <li>需要账户：<input id="Rate" type="checkbox" class="fieldControl_checkBox" /></li>
+                <li>需要短信验证：<input id="Rate" type="checkbox" class="fieldControl_checkBox" /></li>
+                <li>是否支持秒到：<input id="Rate" type="checkbox" class="fieldControl_checkBox" /></li>
+                <li>生成支付QR：<input id="Rate" type="checkbox" class="fieldControl_checkBox" /></li>
+            </ul>
+            <ul class="UlHorizontal" style="float:right;">
+                <li><button id="btnSearch" type="button" class="btn btn-success" onclick="CleanWaitOrder();">保存</button></li>
+                <li><button id="btnSearch" type="button" class="btn btn-danger" onclick="btnSearch();">删除</button></li>    
+            </ul>
+        </div>
+        <hr class="Hr_Tr" />*@
+    </div>
+</div>

@@ -11,12 +11,12 @@ namespace IQBCore.IQBPay.Models.OutParameter
         public OutAPIResult()
         {
             IsSuccess = true;
-            SuccessMsge = "成功";
+            SuccessMsg = "成功";
         }
         public bool IsSuccess { get; set; }
         public string ErrorMsg { get; set; }
 
-        public string SuccessMsge { get; set; }
+        public string SuccessMsg { get; set; }
 
        
     }

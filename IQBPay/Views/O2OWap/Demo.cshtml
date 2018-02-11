@@ -1,0 +1,139 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Demo</title>
+    <link href="~/Content/main.css" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
+   
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = "/O2O/MallListQuery"; 
+            $.ajax({
+                type: 'post',
+                data: "pageIndex=0&pageSize=20",
+                url: url,
+                success: function (data) {
+                    var arrLen = data.length;
+                    if (arrLen > 0) {  
+                        $("#selMall").empty();
+                        $("#selMall").append("<option value=0>全部</option>");
+                        $.each(data, function (i) {
+                            $("#selMall").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
+                        });
+                        
+                    }
+                },
+                error: function (xhr, type) {
+                    alert("系统错误！");
+                }
+            });
+
+
+            var url = "/O2O/PriceGroupListQuery";
+            $.ajax({
+                type: 'post',
+                data: "",
+                url: url,
+                success: function (data) {
+                    var arrLen = data.length;
+                    if (arrLen > 0) {
+                        $("#selPG").empty();
+                        $("#selPG").append("<option value=0>全部</option>");
+                        $.each(data, function (i) {
+                            $("#selPG").append("<option value=" + data[i].Id + ">" + data[i].Name + "</option>");
+                        });
+
+                    }
+                },
+                error: function (xhr, type) {
+                    alert("系统错误！");
+                }
+            });
+
+        });
+
+        //wap 调用的接口
+        //商城列表
+        function QueryMallList()
+        {
+            var url = "/O2OWap/QueryMallList";
+            
+            $.ajax({
+                type: 'post',
+                url: url,
+                success: function (data,s,res) {
+                    $("#ResCode").empty();
+                    $("#ResCode").text(res.responseText);
+                },
+                error: function (xhr, type) {
+                    alert("系统错误！");
+                }
+            });
+        }
+        //价格组列表，传入商城返回该商城所拥有的价格分栏，没有传或传入0则为所有的
+        function QueryPriceGroupList() {
+            var url = "/O2OWap/QueryPriceGrouplist";
+            var MallId = $("#selMall").val();
+            $.ajax({
+                type: 'post',
+                data: "MallId=" + MallId,
+                url: url,
+                success: function (data, s, res) {
+                    $("#ResCode").empty();
+                    $("#ResCode").text(res.responseText);
+                },
+                error: function (xhr, type) {
+                    alert("系统错误！");
+                }
+            });
+        }
+        //商品列表，商城，和价格组必须传
+        function QueryItemList() {
+            var url = "/O2OWap/QueryItemList";
+            var MallId = $("#selMall").val();
+            var PGId = $("#selPG").val();
+            $.ajax({
+                type: 'post',
+                data: "MallId=" + MallId + "&PGId=" + PGId,
+                url: url,
+                success: function (data, s, res) {
+                    $("#ResCode").empty();
+                    $("#ResCode").text(res.responseText);
+                },
+                error: function (xhr, type) {
+                    alert("系统错误！");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+   <div style="margin-bottom:20px;">
+       <ul class="UlHorizontal">
+           <li>商城: </li>
+           <li><select id="selMall"></select> </li>
+           <li>价格分栏: </li>
+           <li><select id="selPG"></select> </li>
+       </ul>
+       
+        
+   </div>
+
+    <div style="margin-bottom:20px;">   
+        <input type="button" value="商城列表" onclick="QueryMallList();"/>
+        <input type="button" value="价格分栏列表" onclick="QueryPriceGroupList();" />
+        <input type="button" value="商品列表" onclick="QueryItemList();" />
+    </div>
+    <div>
+        <textarea id="ResCode" style="width:800px; height:400px; overflow:auto"></textarea>
+    </div>
+</body>
+</html>
