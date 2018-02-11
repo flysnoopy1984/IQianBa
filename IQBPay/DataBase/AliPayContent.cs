@@ -266,6 +266,8 @@ namespace IQBPay.DataBase
 
         public DbSet<EO2OPriceGroup> DBO2OPriceGroup { get; set; }
 
+        public DbSet<EO2OOrder> DBO2OOrder { get; set; }
+
         #endregion
 
 

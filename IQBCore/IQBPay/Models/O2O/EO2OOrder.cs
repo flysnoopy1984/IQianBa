@@ -21,7 +21,8 @@ namespace IQBCore.IQBPay.Models.O2O
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-
+        [MaxLength(20)]
+        public string O2ONo { get; set; }
         public long RefOrderId { get; set; }
 
         [MaxLength(20)]

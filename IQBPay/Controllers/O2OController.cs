@@ -1,4 +1,5 @@
-﻿using IQBCore.IQBPay.Models.O2O;
+﻿using IQBCore.Common.Helper;
+using IQBCore.IQBPay.Models.O2O;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBPay.DataBase;
 using System;
@@ -447,6 +448,43 @@ namespace IQBPay.Controllers
         public ActionResult OrderListQuery()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateDemoData()
+        {
+            OutAPIResult result = new OutAPIResult();
+            using (AliPayContent db = new AliPayContent())
+            {
+                for(int i=0;i<10;i++)
+                {
+                    EO2OOrder order = new EO2OOrder()
+                    {
+                        O2ONo = StringHelper.GenerateO2ONo(),
+                        CreateDateTime = DateTime.Now,
+                        MallAccount = "yujie@hotmail.com",
+                        MallId = 3,
+                        MallOrderId = "HWxxxxxxx",
+                        MallPwd = "123456",
+                        MallSMSVerify = "",
+                        OrderImgUrl = "",
+                        O2OOrderStatus = IQBCore.IQBPay.BaseEnum.O2OOrderStatus.OpenOrder,
+                        RefOrderId = 0,
+                        UserAliPayAccount = "MyAliPay@hotmail.com",
+                        UserPhone = "18221882506",
+                    };
+                    if (i < 3) order.O2OOrderStatus = IQBCore.IQBPay.BaseEnum.O2OOrderStatus.OpenOrder;
+                    if(i ==3) order.O2OOrderStatus = IQBCore.IQBPay.BaseEnum.O2OOrderStatus.WaitingDeliver;
+                    if (i ==4) order.O2OOrderStatus = IQBCore.IQBPay.BaseEnum.O2OOrderStatus.WaitingUpload;
+                    if (i == 5) order.O2OOrderStatus = IQBCore.IQBPay.BaseEnum.O2OOrderStatus.Settlement;
+                    if (i == 6) order.O2OOrderStatus = IQBCore.IQBPay.BaseEnum.O2OOrderStatus.Payment;
+                    if (i == 7) order.O2OOrderStatus = IQBCore.IQBPay.BaseEnum.O2OOrderStatus.OrderReview;
+                    if (i == 8) order.O2OOrderStatus = IQBCore.IQBPay.BaseEnum.O2OOrderStatus.OrderRefused;
+                    if (i == 9) order.O2OOrderStatus = IQBCore.IQBPay.BaseEnum.O2OOrderStatus.Complete;
+                    db.Insert<EO2OOrder>(order);
+                }
+            }
+                return Json(result);
         }
         #endregion
     }

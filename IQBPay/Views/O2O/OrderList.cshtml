@@ -13,6 +13,8 @@
 
 <link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
 <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+<script src="@Url.Scrpit("~/scripts/Web/O2O/OrderList.js")"></script>
+
 <style type="text/css">
     #ListArea{
       
@@ -43,6 +45,9 @@
             <li>
                 <button id="btnAdd" type="button" class="btn btn-primary" onclick="Query()">查询</button>
             </li>
+            <li>
+                <button id="btnAdd" type="button" class="btn btn-warning" onclick="CreateDemoData()">DemoData</button>
+            </li>
         </ul>
     </div>
     <div id="DataContainer">
@@ -62,7 +67,7 @@
                 <th style="width:150px;">商城订单编号</th>     
                 <th style="width:150px;">商城订单编号</th>       
             </tr>
-            <tr style="display:-webkit-flex;">
+            @*<tr style="display:-webkit-flex;">
                 <th style="width:150px;">操作</th>
                 <td style="width:150px;">O2O编号</td>
                 <td style="width:150px;">用户手机</td>
@@ -76,7 +81,7 @@
                 <td style="width:150px;">商城订单编号</td>
                 <td style="width:150px;">商城订单编号</td>
                 <td style="width:150px;">商城订单编号</td>             
-            </tr>
+            </tr>*@
         </table>
     </div>
 </div>

@@ -41,6 +41,11 @@ namespace IQBCore.Common.Helper
             return "YJO" + DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(2,true,true,false,false,"");
         }
 
+        public static string GenerateO2ONo ()
+        {
+            return "O2O" + DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(2, true, true, false, false, "");
+        }
+
         public static string GenerateTransferNo(TransferTarget target)
         {
             string pix = "YJTO";
@@ -82,5 +87,7 @@ namespace IQBCore.Common.Helper
 
             return sd + r3;
         }
+
+       
     }
 }
