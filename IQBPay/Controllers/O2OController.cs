@@ -446,7 +446,7 @@ namespace IQBPay.Controllers
 
         public ActionResult OrderListQuery()
         {
-
+            return View();
         }
         #endregion
     }

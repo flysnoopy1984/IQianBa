@@ -17,7 +17,7 @@ namespace IQBCore.IQBPay.Models.O2O
         public long Id { get; set; }
         public long RefPreOrderId { get; set; }
 
-        public POStepStatus POStepStatus { get; set; }
+        public O2OStepStatus StepStatus { get; set; }
 
       
     }

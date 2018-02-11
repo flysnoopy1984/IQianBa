@@ -288,7 +288,14 @@ namespace IQBCore.IQBPay.BaseEnum
         QRHuge=1001,
     }
 
-    public enum PreOrderStatus
+    public enum O2OStepStatus
+    {
+        NotStart=0,
+        Process=5,
+        Complete=10,
+    }
+
+    public enum O2OOrderStatus
     {
         //初始化
         OpenOrder =0,

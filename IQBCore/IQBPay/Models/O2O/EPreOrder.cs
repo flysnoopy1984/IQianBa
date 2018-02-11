@@ -45,7 +45,7 @@ namespace IQBCore.IQBPay.Models.O2O
         [MaxLength(50)]
         public  string MallOrderId { get; set; }
 
-        public PreOrderStatus PreOrderStatus { get; set; }
+        public O2OOrderStatus PreOrderStatus { get; set; }
 
         public DateTime CreateDateTime { get; set; }
     }
