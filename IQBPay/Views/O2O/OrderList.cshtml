@@ -10,6 +10,7 @@
 @section SubMenu2{
     列表
 }
+
 <link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
 <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
 <style type="text/css">
@@ -17,13 +18,19 @@
       
     }
     #DataContainer{
-       width:1024px;
+       width:1124px;
        overflow-x:auto;   
     }
     #DataContainer table{
       
     }
     #DataContainer tr th{
+        border:1px solid black;
+        height:40px;
+        line-height:40px;
+        text-align:center;
+    }
+     #DataContainer tr td{
         border:1px solid black;
         height:40px;
         line-height:40px;
@@ -39,8 +46,9 @@
         </ul>
     </div>
     <div id="DataContainer">
-        <table >
+        <table>
             <tr style="display:-webkit-flex;">
+                <th style="width:150px;">操作</th>
                 <th style="width:150px;">O2O编号</th>
                 <th style="width:150px;">用户手机</th>
                 <th style="width:150px;">对应的订单编号</th> 
@@ -55,6 +63,7 @@
                 <th style="width:150px;">商城订单编号</th>       
             </tr>
             <tr style="display:-webkit-flex;">
+                <th style="width:150px;">操作</th>
                 <td style="width:150px;">O2O编号</td>
                 <td style="width:150px;">用户手机</td>
                 <td style="width:150px;">对应的订单编号</td>
@@ -66,19 +75,7 @@
                 <td style="width:150px;">商城订单编号</td>
                 <td style="width:150px;">商城订单编号</td>
                 <td style="width:150px;">商城订单编号</td>
-                <td style="">商城订单编号</td>       
-              @*<td>O2O编号</td>
-                <td>O2O编号</td>
-                <td>O2O编号</td>
-                <td>O2O编号</td>
-                <td>O2O编号</td>
-                <td>O2O编号</td>
-                <td>O2O编号</td>
-                <td>O2O编号</td>
-                <td>O2O编号</td>
-                <td>O2O编号</td>
-                <td>O2O编号</td>
-                <td>O2O编号</td>*@
+                <td style="width:150px;">商城订单编号</td>             
             </tr>
         </table>
     </div>
