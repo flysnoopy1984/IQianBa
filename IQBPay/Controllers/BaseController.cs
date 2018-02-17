@@ -13,6 +13,7 @@ using WxPayAPI;
 using IQBCore.Model;
 using System.Configuration;
 using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.IQBPay.Models.User;
 
 namespace IQBPay.Controllers
 {
@@ -152,6 +153,13 @@ namespace IQBPay.Controllers
             }
         }
 
+        protected void SetUserSession(EUserInfo ui)
+        {
+            UserSession userSession = new UserSession();
+            userSession.InitFromUser(ui);
+            Session["UserSession"] = userSession;
+        }
+
         protected UserSession GetUserSession()
         {
             UserSession userSession = Session["UserSession"] as UserSession;
@@ -220,8 +228,10 @@ namespace IQBPay.Controllers
             {
                 userSession = new UserSession();
                 userSession.UserRole = UserRole.NormalUser;
+                userSession.O2OUserRole = O2OUserRole.User;
             }
             ViewBag.UserRole = Convert.ToInt32(userSession.UserRole);
+            ViewBag.O2OUserRole = Convert.ToInt32(userSession.O2OUserRole);
             return PartialView("MenuList");
         }
 

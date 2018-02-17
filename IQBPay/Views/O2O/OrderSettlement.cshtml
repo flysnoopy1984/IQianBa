@@ -1,0 +1,109 @@
+﻿@model IQBCore.IQBPay.Models.O2O.EO2OOrder
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>OrderReview</title>
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/Content/Component/viewer.min.css" rel="stylesheet" />
+    <script src="~/scripts/Component/Viewer/viewer.min.js"></script>
+    <script src="@Url.Scrpit("~/scripts/Web/O2O/OrderSettlement.js")"></script>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/main.css")" rel="stylesheet" />
+    <style>
+        #MainContent {
+            margin: 50px;
+        }
+
+        #DataContent {
+            width: 1024px;
+        }
+
+        #DataContent ul {
+            width: 100%;
+            list-style: none;
+            height: 100%;
+            padding: 0px;
+        }
+
+        #DataContent ul li {
+            display: inline-block;
+            width: 49.8%;
+            height: 40px;
+        }
+
+        #DataContent ul li span {
+            display: inline-block;
+        }
+
+        .LeftSpan {
+            width: 150px;
+        }
+
+        #Title {
+            height: 80px;
+            width: 100%;
+            line-height: 80px;
+            font-size: 30px;
+        }
+
+        #Reason {
+            width: 550px;
+            height: 150px !important;
+            vertical-align: text-top;
+        }
+
+        .imgOrder {
+            width: 200px;
+            height: 400px;
+            cursor: zoom-in;
+        }
+
+        .form-control {
+            display: unset;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="MainContent">
+        <div id="Title">订单审核</div>
+        <hr class="HR1_Gray1" />
+        <div id="DataContent">
+            <ul>
+                <li>
+                    <span class="LeftSpan">商城订单编号：</span><span>@Model.MallOrderNo</span>
+                </li>   
+            </ul>
+            <ul>
+                <li>
+                    <span class="LeftSpan">下单时间：</span><span>@Model.CreateDateTime.ToString("yyyy-MM-dd hh:mm:ss")</span>
+                </li>
+                <li>
+                    <span class="LeftSpan">订单金额：</span><span>@Model.OrderAmount</span>
+                </li>
+            </ul>
+            <ul style="height:400px;">
+                <li>
+                    <span class="LeftSpan">上传的图片：</span>
+                    <span id="ImgSpan"><img class="imgOrder" id="imgOrder" src="@Model.OrderImgUrl" data-original="@Model.OrderImgUrl" /></span>
+                </li>
+            </ul>
+        </div>
+        <div id="buttonList">
+            <ul class="UlHorizontal" style="text-align:center; margin-top:20px;">
+                <li>
+                    <button id="btnSearch" type="button" class="btn btn-primary" onclick="Approval();">收货确认并打款</button>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

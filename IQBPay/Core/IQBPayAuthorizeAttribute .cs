@@ -23,12 +23,12 @@ namespace IQBPay.Core
                 return;
             }
 
-            if (BaseController.GlobalConfig.WebStatus == PayWebStatus.Stop && loginUser.UserRole != UserRole.Administrator)
-            {
-                var redirectUrl = "/Main/Login";
-                filterContext.Result = new RedirectResult(redirectUrl);
-                return;
-            }
+            //if (BaseController.GlobalConfig.WebStatus == PayWebStatus.Stop && loginUser.UserRole != UserRole.Administrator)
+            //{
+            //    var redirectUrl = "/Main/Login";
+            //    filterContext.Result = new RedirectResult(redirectUrl);
+            //    return;
+            //}
         }
     }
 }

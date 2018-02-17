@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Helper\CookieHelper.cs" />
     <Compile Include="Common\Helper\DateHelper.cs" />
     <Compile Include="Common\Helper\ImgHelper.cs" />
     <Compile Include="Common\Helper\IQBUrlHelper.cs" />
@@ -112,19 +113,28 @@
     <Compile Include="IQBPay\Models\AccountPayment\EPreTransfer.cs" />
     <Compile Include="IQBPay\Models\Error\EPrivilegeError.cs" />
     <Compile Include="IQBPay\Models\InParameter\InAgentOverview.cs" />
+    <Compile Include="IQBPay\Models\Json\InOrderReview.cs" />
+    <Compile Include="IQBPay\Models\O2O\EO2ODeliveryAddr.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OItemInfo.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OMall.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OPriceGroup.cs" />
+    <Compile Include="IQBPay\Models\O2O\EO2OTranscationWH.cs" />
     <Compile Include="IQBPay\Models\O2O\EOrderStep.cs" />
     <Compile Include="IQBPay\Models\O2O\EOrderUpload.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OOrder.cs" />
     <Compile Include="IQBPay\Models\O2O\EStepTemplate.cs" />
+    <Compile Include="IQBPay\Models\O2O\InO2OOrder.cs" />
+    <Compile Include="IQBPay\Models\O2O\InO2OTrans.cs" />
+    <Compile Include="IQBPay\Models\O2O\RO2ODeliveryAddr.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2OItemInfo.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2OMall.cs" />
+    <Compile Include="IQBPay\Models\O2O\RO2OOrder.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2ORule.cs" />
-    <Compile Include="IQBPay\Models\OutParameter\HashO2OMall_Rule.cs" />
-    <Compile Include="IQBPay\Models\OutParameter\HashO2ORule.cs" />
-    <Compile Include="IQBPay\Models\OutParameter\HashO2OMall.cs" />
+    <Compile Include="IQBPay\Models\O2O\HashO2OMall_Rule.cs" />
+    <Compile Include="IQBPay\Models\O2O\HashO2ORule.cs" />
+    <Compile Include="IQBPay\Models\O2O\HashO2OMall.cs" />
+    <Compile Include="IQBPay\Models\O2O\RO2OTranscationWH.cs" />
+    <Compile Include="IQBPay\Models\OutParameter\HashKeyValue.cs" />
     <Compile Include="IQBPay\Models\Report\RPAgentPerformance.cs" />
     <Compile Include="IQBPay\Models\Rules\EBenefitRule.cs" />
     <Compile Include="IQBPay\Models\InParameter\InDoTransfer.cs" />

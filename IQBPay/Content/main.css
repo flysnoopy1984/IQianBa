@@ -1,5 +1,5 @@
 body {
-font: 12px/1.5 'MicroSoft YaHei';
+font: 14px, 'MicroSoft YaHei';
 color: #333;
 width:100%
 }
@@ -222,9 +222,9 @@ border: 1px solid #E0E0E0;
 .ContentArea
 {
     border-radius:10px;
-    background-color:#FEFDEB;
+    background-color:#fffff9;
     width:84%;
-    overflow:auto;
+    /*overflow:auto;*/
     display: block !important;
     padding:10px;
 }
@@ -327,6 +327,7 @@ ul.topnav ul li {
 .HR3_Red{height:3px;border:none;border-top:3px solid red;}
 .HR3_668ff2{height:3px;border:none;border-top:3px solid #668ff2;}
 .HR3_00ff21{height:3px;border:none;border-top:3px solid #00ff21;}
+.HR2_ffd800{height:3px;border:none;border-top:2px solid #ffd800;}
 .HR2_Black{height:2px;border:none;border-top:2px solid #4f4e4e;}
 .HR1_Gray1{height:1px;border:none;border-top:1px inset #999;}
 

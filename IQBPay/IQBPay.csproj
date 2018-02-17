@@ -172,13 +172,16 @@
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.js" />
     <Content Include="Content\Component\jquery-confirm.css" />
+    <Content Include="Content\Component\jquery.pwstabs-1.2.1.min.css" />
     <Content Include="Content\Images\404_02.png" />
+    <Content Include="Content\Images\backgrounds\O2OLoginbg.jpg" />
     <Content Include="Content\Images\backgrounds\bg4.jpg" />
     <Content Include="Content\Images\800_01.png" />
     <Content Include="Content\Images\backgrounds\messageBK.png" />
     <Content Include="Content\Images\cancel.png" />
     <Content Include="Content\Images\PayHuge_ADLogo.png" />
     <Content Include="Content\Images\Tool\CouPonQRCode.png" />
+    <Content Include="Content\O2O\signin.css" />
     <Content Include="Content\QR\BK\ARUserBK1.jpg" />
     <Content Include="Content\QR\BK\bk_spring.jpg" />
     <Content Include="Content\QR\Logo_AR.png" />
@@ -469,6 +472,7 @@
     <Content Include="Content\Style\Web\List.css" />
     <Content Include="Content\Style\Web\User.css" />
     <Content Include="Content\Style\Web\WapInfo.css" />
+    <Content Include="Content\UploadFile\O2OOrder\Example.jpg" />
     <Content Include="Content\Wap\bg.jpg" />
     <Content Include="Content\Wap\WapPay.css" />
     <Content Include="Content\Wap\WAPbootstrap.css" />
@@ -481,21 +485,29 @@
     <Content Include="scripts\Component\FlyDiv.js" />
     <Content Include="scripts\Component\IQBTable.js" />
     <Content Include="scripts\Component\jquery-confirm.js" />
+    <Content Include="scripts\Component\jquery.pwstabs-1.2.1.min.js" />
     <Content Include="scripts\Component\Upload\jquery.fileupload.js" />
     <Content Include="scripts\Component\Upload\jquery.iframe-transport.js" />
     <Content Include="scripts\Component\Upload\jquery.ui.widget.js" />
     <Content Include="scripts\Component\Validform_v5.3.2_min.js" />
+    <Content Include="Content\Component\viewer.min.css" />
+    <Content Include="scripts\Component\Viewer\viewer.min.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\Wap\PayHuge.js" />
     <Content Include="scripts\Web\AgentOverView.js" />
     <Content Include="scripts\Web\DoTransfer.js" />
     <Content Include="scripts\Web\DoTransfer_OrderDetail.js" />
     <Content Include="scripts\Web\GlobalConfig.js" />
+    <Content Include="scripts\Web\O2O\AddrList.js" />
     <Content Include="scripts\Web\O2O\ItemList.js" />
     <Content Include="scripts\Web\O2O\MallList.js" />
+    <Content Include="scripts\Web\O2O\O2OLogin.js" />
     <Content Include="scripts\Web\O2O\OrderList.js" />
+    <Content Include="scripts\Web\O2O\OrderReview.js" />
+    <Content Include="scripts\Web\O2O\OrderSettlement.js" />
     <Content Include="scripts\Web\O2O\PriceGroup.js" />
     <Content Include="scripts\Web\O2O\RuleList.js" />
+    <Content Include="scripts\Web\O2O\TransactionForWarehouse.js" />
     <Content Include="scripts\Web\OrderViewTransfer.js" />
     <Content Include="scripts\Web\OrderMyList.js" />
     <Content Include="scripts\Web\Report_Store.js" />
@@ -656,6 +668,12 @@
     <Content Include="Views\O2OWap\Demo.cshtml" />
     <Content Include="Views\O2O\PriceGroupList.cshtml" />
     <Content Include="Views\O2O\OrderList.cshtml" />
+    <Content Include="Views\O2O\OrderReview.cshtml" />
+    <Content Include="Views\O2O\OrderSettlement.cshtml" />
+    <Content Include="Views\O2O\OrderListForSettlement.cshtml" />
+    <Content Include="Views\O2O\AddrList.cshtml" />
+    <Content Include="Views\O2O\Login.cshtml" />
+    <Content Include="Views\O2O\TransWH.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

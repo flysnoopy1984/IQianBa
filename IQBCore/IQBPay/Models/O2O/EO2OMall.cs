@@ -33,6 +33,8 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public RecordStatus RecordStatus { get; set; }
 
+        public double FeeRate { get; set; }
+
         public void InitFromUpdate(EO2OMall updateObj)
         {
             this.Name = updateObj.Name;
@@ -40,6 +42,8 @@ namespace IQBCore.IQBPay.Models.O2O
             this.Description = updateObj.Description;
             this.O2ORuleId = updateObj.O2ORuleId;
             this.RecordStatus = updateObj.RecordStatus;
+
+            this.FeeRate = updateObj.FeeRate;
         }
     }
 }

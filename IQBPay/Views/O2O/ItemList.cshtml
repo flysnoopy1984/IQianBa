@@ -13,6 +13,8 @@
 <link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
 <script src="@Url.Scrpit("~/scripts/Web/O2O/ItemList.js")"></script>
 <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+@*<link href="~/Content/Component/jquery.pwstabs-1.2.1.min.css" rel="stylesheet" />
+<script src="~/scripts/Component/jquery.pwstabs-1.2.1.min.js"></script>*@
 
 <style type="text/css">
 .ItemBlock{
@@ -23,17 +25,30 @@
     line-height:40px;
     color:dimgrey;
 }
+#Title{
+    font-size:28px;
+    margin-left:20px;
+}
 </style>
 <h2>O2O商品列表</h2>
 <div id="ListArea">
     <div id="ButtonList">
         <ul class="UlHorizontal" style="margin:30px;">
             <li>
-                <button id="btnAdd" type="button" class="btn btn-primary" onclick="CreateNew(null);">新增商品</button>
+                <button id="btnAdd" type="button" class="btn btn-warning" onclick="CreateNew(null);">新增商品</button>
             </li>
         </ul>
     </div>
-    <div id="DataContainer">
-      
+    <div id="MallList">
+        <ul class="UlHorizontal" style="margin:30px;" id="ulMallList">
+        
+        </ul>
     </div>
+   
+   
+    <div id="Title"></div>
+    <hr class="HR2_ffd800" />
+    <div id="AllTab">
+    </div>
+  
 </div>

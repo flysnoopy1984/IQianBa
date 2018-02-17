@@ -90,8 +90,15 @@ namespace IQBCore.IQBPay.Models.User
         /// </summary>
         public bool NeedFollowUp { get; set; }
 
+        [MaxLength(20)]
+        public string Pwd { get; set; }
 
+        [MaxLength(20)]
+        public string UserPhone { get; set; }
 
+        public O2OUserRole O2OUserRole { get; set; }
+
+        
         public void InitRegiser()
         {
             this.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.NormalUser;

@@ -24,5 +24,10 @@ namespace IQBCore.Common.Constant
         public const string SK_UserPayTime = "UserPayTime";
 
         /* Session Key end */
+
+        /* Cookie Key begin */
+
+        public const string ck_O2OUserPhone = "IQB_O2OUserPhone";
+        /* Cookie Key end */
     }
 }

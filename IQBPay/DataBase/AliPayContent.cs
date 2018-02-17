@@ -268,6 +268,10 @@ namespace IQBPay.DataBase
 
         public DbSet<EO2OOrder> DBO2OOrder { get; set; }
 
+        public DbSet<EO2ODeliveryAddr> DBO2ODeliveryAddr { get; set; }
+
+        public DbSet<EO2OTranscationWH> DBO2OTranscationWH { get; set; }
+
         #endregion
 
 

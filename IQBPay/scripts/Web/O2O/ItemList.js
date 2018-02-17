@@ -3,6 +3,12 @@ var pageSize = 40;
 var RuleData = null;
 var MallData = null;
 
+var MallId = -1;
+var RuleId = -1;
+var MallName = "";
+var DataPre = "DataContainer_";
+var DataCtrl = null;
+
 $(document).ready(function () {
 
     InitCondition();
@@ -21,19 +27,46 @@ function InitCondition()
         url: url,
         success: function (data) {
             RuleData = data.HashO2ORule;
-           
-
             MallData = data.HashO2OMall;
-            //$.each(RuleData, function (i) {
-            //    mallOp += "<option value=" + MallData[i].ID + " selected>" + MallData[i].Name + "</option>";
-            //});
+            var btnCtrl = "";
+           
+            $.each(MallData, function (i) {
+                btnCtrl = '<li><button type="button" class="btn btn-default" onclick=SelectMall("'+ MallData[i].Id+ '")>' + MallData[i].Name + '商城</button></li>';
+                $("#ulMallList").append(btnCtrl);
+
+                //dataContainer
+                $("#AllTab").append("<div id='" + DataPre + MallData[i].Id + "'></div>")
+            });
 
             $("#btnAdd").show();
-            Query(true, pageIndex + 1);
+         
         },
         error: function (xhr, type) {
             alert("系统错误！");
             $("#btnAdd").show();
+        }
+    });
+
+}
+
+function SelectMall(Id)
+{
+    MallId = Id;
+    DataCtrl = $("#" + DataPre + MallId);
+
+    //页面重置
+    pageIndex = -1;
+    Query(true, pageIndex + 1);
+
+    //隐藏其他商城div
+    $("#AllTab div").hide();
+    DataCtrl.show();
+
+    //设置Title
+    $.each(MallData, function (i) {
+        if (MallData[i].Id == MallId)
+        {
+            $("#Title").text(MallData[i].Name + "商城");
         }
     });
 }
@@ -43,7 +76,13 @@ function MallOption(updateData) {
     if (updateData == null)
     {
         $.each(MallData, function (i) {
-            mallOp += "<option ruleId=" + MallData[i].O2ORuleId + " value=" + MallData[i].Id + ">" + MallData[i].Name + "</option>";
+            if (MallId == MallData[i].Id)
+            {
+                mallOp += "<option ruleId=" + MallData[i].O2ORuleId + " value=" + MallData[i].Id + " selected>" + MallData[i].Name + "</option>";
+                RuleId = MallData[i].O2ORuleId;
+            }    
+            else
+                mallOp += "<option ruleId=" + MallData[i].O2ORuleId + " value=" + MallData[i].Id + ">" + MallData[i].Name + "</option>";
         });
     }
     else
@@ -64,8 +103,13 @@ function RuleOption(updateData)
 {
     var ruleOp = "";
     if (updateData == null) {
+      
+
         $.each(RuleData, function (i) {
-            ruleOp += "<option value=" + RuleData[i].Id + ">" + RuleData[i].Name + "</option>";
+            if (RuleId == RuleData[i].Id)
+                ruleOp += "<option value=" + RuleData[i].Id + " selected>" + RuleData[i].Name + "</option>";
+            else
+                ruleOp += "<option value=" + RuleData[i].Id + ">" + RuleData[i].Name + "</option>";
         });
     }
     else {
@@ -83,12 +127,18 @@ function RuleOption(updateData)
 
 function CreateNew(updateData)
 {
-    var ruleOp = RuleOption(updateData);
+    if (MallId == -1)
+    {
+        alert("请先选择商城");
+        return;
+    }
     var mallOp = MallOption(updateData);
+    var ruleOp = RuleOption(updateData);
+  
     var ctrl = GetCellHtml();
     if (updateData == null) {
 
-        ctrl = String.format(ctrl,"New", "", "", "1", "", "","","0", mallOp, ruleOp,"","");
+        ctrl = String.format(ctrl,"New_"+MallId, "", "", "1", "", "","","0", mallOp, ruleOp,"","");
     }
     else {
         ctrl = String.format(ctrl, "O_"+updateData.Id,
@@ -104,7 +154,7 @@ function CreateNew(updateData)
                                    updateData.ModifyDateTimeStr);
     }
 
-    $("#DataContainer").prepend(ctrl);
+    DataCtrl.prepend(ctrl);
     
     if(updateData != null)
     {
@@ -125,10 +175,12 @@ function CreateNew(updateData)
     }
     else
     {
-        var btn_Status = $("#New").find("#btn_Status");
+        var btn_Status = $("#New_"+MallId).find("#btn_Status");
         btn_Status.hide();
-        var btn_Delete = $("#New").find("#btn_Delete");
-        btn_Delete.on("click", { "ItemId": "0" }, DeleteItem);    
+        var btn_Delete = $("#New_" + MallId).find("#btn_Delete");
+        btn_Delete.on("click", { "ItemId": "0" }, DeleteItem);
+
+     
     }
     
 
@@ -158,8 +210,8 @@ function GetCellHtml() {
     ctrl += '<ul class="UlHorizontal">';
     ctrl += '<li class="CellTitle" style="width:300px;">创建时间:<span id="CreateDate" style="margin-left:10px;">{10}</span></li>';
     ctrl += '<li class="CellTitle">修改时间:<span id="ModifyDate" style="margin-left:10px;">{11}</span></li>';
-    ctrl += '<li style="float:right"><button  type="button" id="btn_Delete" class="btn btn-danger">删除</button></li>  ';
-    ctrl += '<li style="float:right"><button  type="button" id="btn_Status" class="btn btn-warning">下架</button></li>  ';
+  //  ctrl += '<li style="float:right"><button  type="button" id="btn_Delete" class="btn btn-danger">删除</button></li>  ';
+    ctrl += '<li style="float:right"><button  type="button" id="btn_Status" class="btn btn-danger">下架</button></li>  ';
     ctrl += '<li style="float:right"><button  type="button" class="btn btn-info" onclick="Save(this)">保存</button></li>';
    
     ctrl += '</ul>';
@@ -179,11 +231,11 @@ function Query(NeedClearn, _PageIndex) {
 
     var url = "/O2O/ItemListQuery";
     if (NeedClearn) {
-        $("#DataContainer").empty();
+        DataCtrl.empty();
     }
     $.ajax({
         type: 'post',
-        data: "pageIndex=" + _PageIndex + "&pageSize=" + pageSize,
+        data: "MallId="+MallId+"&pageIndex=" + _PageIndex + "&pageSize=" + pageSize,
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -199,6 +251,7 @@ function Query(NeedClearn, _PageIndex) {
         }
     });
 }
+
 function generateData(result) {
     var strCtrl = "";
 
@@ -319,6 +372,9 @@ function VerifyItem(pObj)
         qtyObj.focus();
         return false;
     }
+
+   // var RealAddress = pObj.find("#RealAddress").val();
+
     return true;
 }
 
@@ -359,7 +415,7 @@ function Save(obj) {
             if (data.IsSuccess) {
 
                 alert("操作成功！");
-                window.location.reload();
+               
             }
             else {
                 alert(data.ErrorMsg);

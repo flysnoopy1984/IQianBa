@@ -1,0 +1,125 @@
+﻿
+@{
+    ViewBag.Title = "O2O";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+    <a href="#" title="资金流水账">资金流水账 </a>
+
+}
+@section SubMenu2{
+    列表
+}
+<link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+<script src="@Url.Scrpit("~/scripts/Web/O2O/TransactionForWarehouse.js")"></script>
+
+<style type="text/css">
+
+    #DataContainer {
+        /*width:2000px;*/
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+        #DataContainer table {
+        }
+
+        #DataContainer tr th {
+            border: 1px solid black;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+
+        #DataContainer tr td {
+            border: 1px solid black;
+            height: 40px;
+            line-height: 40px;
+            padding: 4px;
+            text-align: right;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+    .OrderAction {
+        width: 100%;
+        ;
+        list-style: none;
+        padding: 0px;
+        height: 100%;
+    }
+
+    .OrderAction li {
+        display: inline-block;
+        width: 50%;
+    }
+     #Info{width:1024px; margin:10px;}
+    #Info ul{width:100%; list-style:none; height:100%; padding:0px;}
+    #Info ul li{display:inline-block;width:30%; height:20px;}
+    #Info ul li span{display:inline-block;}
+     .LeftSpan {
+            width: 150px;
+            font-size:18px;
+            font-weight:bold;
+        }
+</style>
+<div id="Info">
+    <ul>
+        <li>
+            <span class="LeftSpan">收款账户：</span><span></span>
+        </li>
+        @*<li>
+            <span class="LeftSpan">费率：</span><span></span>
+        </li>*@
+    </ul>
+</div>
+<hr class="HR2_ffd800" />
+<div id="ListArea">
+    <div class="ListCondition">
+        <ul class="UlHorizontal">
+            <li>
+                <div class="form-group">
+                    <label>商城订单编号：</label>
+                    <input id="cMallOrderNo" type="text" class="form-control ConditionField">
+                </div>
+            </li>
+            <li>
+                <label>日期：</label>
+                <select id="cBeforeDay" class="form-control ConditionField">
+                    <option value="0">今天</option>
+                    <option value="3">3天</option>
+                    <option value="7">7天</option>
+                    <option value="30">30天</option>
+                    <option value="99" selected>全部</option>
+                </select>
+            </li>
+
+        </ul>
+    </div>
+    <div id="ButtonList">
+        <ul class="UlHorizontal" style="margin:30px;">
+            <li>
+                <button id="btnAdd" type="button" class="btn btn-primary" onclick="btnQuery()">查询</button>
+            </li> 
+            <li>
+                <button id="btnAdd" type="button" class="btn btn-warning" onclick="CreateDemoData()">DemoData</button>
+            </li>
+        </ul>
+    </div>
+    <div id="DataContainer">
+        <table id="DataTable">
+            <tr id="header" style="display:-webkit-flex;">
+                <th style="width:150px;">商城</th>
+                <th style="width:200px;">商城订单编号</th>
+                <th style="width:150px;">金额</th>
+                <th style="width:150px;">费率</th>
+                <th style="width:150px;">账户</th>
+                <th style="width:150px;">打款时间</th>          
+            </tr>
+        </table>
+    </div>
+</div>
+
+

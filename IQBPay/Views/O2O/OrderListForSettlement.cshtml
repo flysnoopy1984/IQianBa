@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "O2O订单";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+    <a href="#" title="O2O订单">O2O订单 </a>
+
+}
+@section SubMenu2{
+    列表
+}
+
+<link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+<script src="@Url.Scrpit("~/scripts/Web/O2O/OrderList.js")"></script>
+
+<style type="text/css">
+    #ListArea {
+    }
+
+    #DataContainer {
+        /*width:2000px;*/
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+        #DataContainer table {
+        }
+
+        #DataContainer tr th {
+            border: 1px solid black;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+
+          #DataContainer tr td{ border:1px solid black;
+                          height:40px;line-height:40px;
+                          padding:4px;text-align:right; 
+                          white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+    }
+
+    .OrderAction {
+        width: 100%;
+        list-style: none;
+        padding: 0px;
+        height: 100%;
+    }
+
+        .OrderAction li {
+            display: inline-block;
+            width: 50%;
+        }
+</style>
+<h2>O2O订单</h2>
+<div id="ListArea">
+    <div class="ListCondition">
+        <ul class="UlHorizontal">
+            <li>
+                <div class="form-group">
+                    <label>商城订单编号：</label>
+                    <input id="cMallOrderNo" type="text" class="form-control ConditionField">
+                </div>
+            </li>
+            <li>
+                <label>订单状态：</label>
+                <select id="cO2OOrderStatus" class="form-control ConditionField">
+                    <option value="14">到货确认</option>
+                    <option value="18">已结算</option>
+                    <option value="1418">全部</option>
+                </select>
+            </li>
+            <li>
+                <label>日期：</label>
+                <select id="cBeforeDay" class="form-control ConditionField">
+                    <option value="0">今天</option>
+                    <option value="3">3天</option>
+                    <option value="7">7天</option>
+                    <option value="30">30天</option>
+                    <option value="99" selected>全部</option>
+                </select>
+            </li>
+
+        </ul>
+    </div>
+    <div id="ButtonList">
+        <ul class="UlHorizontal" style="margin:30px;">
+            <li>
+                <button id="btnAdd" type="button" class="btn btn-primary" onclick="btnQuery()">查询</button>
+            </li>
+        </ul>
+    </div>
+    <div id="DataContainer">
+        <table id="DataTable">
+            <tr id="header" style="display:-webkit-flex;">
+                <th style="width:100px;">操作</th>
+                <th style="width:200px;">商城订单编号</th>
+                <th style="width:100px;">订单状态</th>
+                <th style="width:150px;">创建时间</th>
+                <th style="width:150px;">商城</th>           
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+

@@ -25,6 +25,8 @@ namespace IQBCore.Model
 
         public bool HasPassInviteFee { get; set; }
 
+        public O2OUserRole O2OUserRole { get; set; }
+
         public void InitFromUser(EUserInfo ui)
         {
             HasQRHuge = ui.HasQRHuge;
@@ -35,6 +37,7 @@ namespace IQBCore.Model
             Name = ui.Name;
             HasPassInviteFee = ui.HasPassInviteFee;
             HasQRHuge = ui.HasQRHuge;
+            O2OUserRole = ui.O2OUserRole;
         }
 
 

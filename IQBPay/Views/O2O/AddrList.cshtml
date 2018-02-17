@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "地址列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+    <a href="/Order/List" title="地址列表"> 地址</a>
+
+}
+@section SubMenu2{
+    列表
+}
+<link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Web/O2O/AddrList.js")"></script>
+<script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+
+<style type="text/css">
+
+</style>
+
+<h2>O2O地址列表</h2>
+<div id="ListArea">
+    <div id="ButtonList">
+        <ul class="UlHorizontal" style="margin:30px;">
+            <li>
+                <button id="btnSearch" type="button" class="btn btn-warning" onclick="CreateNew(null);">新增地址</button>
+            </li>
+        </ul>
+    </div>
+    <div id="DataContainer">
+
+      
+    </div>
+</div>

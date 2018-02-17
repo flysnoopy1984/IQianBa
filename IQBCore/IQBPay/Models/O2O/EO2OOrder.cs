@@ -23,7 +23,9 @@ namespace IQBCore.IQBPay.Models.O2O
 
         [MaxLength(20)]
         public string O2ONo { get; set; }
-        public long RefOrderId { get; set; }
+
+        public long qrUserId { get; set; }
+        public long RefOrderNo { get; set; }
 
         [MaxLength(20)]
         public string UserPhone { get; set; }
@@ -45,8 +47,17 @@ namespace IQBCore.IQBPay.Models.O2O
         [MaxLength(255)]
         public string OrderImgUrl { get; set; }
 
+        public double OrderAmount { get; set; }
+
+        [MaxLength(200)]
+        public string MallOrderNo { get; set; }
+
         [MaxLength(50)]
-        public  string MallOrderId { get; set; }
+        public string RejectReason { get; set; }
+
+        public int AddrId { get; set; }
+
+        public double FeeRate { get; set; }
 
         public O2OOrderStatus O2OOrderStatus { get; set; }
 

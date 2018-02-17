@@ -58,7 +58,7 @@
                 <i class="icon-feed"></i>
                 <span>O2O商城</span>
             </a>
-            <ul>
+            <ul> 
                 <li>
                     <a class="tooltip-tip2 ajax-load" href="/O2O/RuleList" title="规则列表"><i class="icon icon-user"></i><span>规则列表</span></a>
                 </li>
@@ -66,9 +66,17 @@
                     <a class="tooltip-tip2 ajax-load" href="/O2O/MallList" title="商城列表"><i class="icon icon-user"></i><span>商城列表</span></a>
                 </li>
                 <li>
+                    <a class="tooltip-tip2 ajax-load" href="/O2O/PriceGroupList" title="价格组列表"><i class="icon icon-user"></i><span>价格组列表</span></a>
+                </li>   
+                <li>
+                    <a class="tooltip-tip2 ajax-load" href="/O2O/OrderList" title="订单列表"><i class="icon icon-user"></i><span>订单列表</span></a>
+                </li>
+                <li>
                     <a class="tooltip-tip2 ajax-load" href="/O2O/ItemList" title="商品列表"><i class="icon icon-user"></i><span>商品列表</span></a>
                 </li>
-
+                <li>
+                    <a class="tooltip-tip2 ajax-load" href="/O2O/AddrList" title="地址列表"><i class="icon icon-user"></i><span>地址列表</span></a>
+                </li>
             </ul>
         </li>
 
@@ -98,44 +106,32 @@
                 </li>
              
             </ul>
-        </li>
-        @*<li>
-            <a class="tooltip-tip ajax-load" href="#" title="二维码管理">
-                <i class="icon-document-edit"></i>
-                <span>二维码管理</span>
+        </li>  
+    }
+    @if (ViewBag.O2OUserRole == 10)
+    {
+        <li>
+            <a class="tooltip-tip ajax-load" href="#" title="O2O商城">
+                <i class="icon-feed"></i>
+                <span>O2O商城</span>
             </a>
             <ul>
                 <li>
-                        <a class="tooltip-tip2 ajax-load" href="/QR/ARDefaultInfo" title="平台默认授权码"><i class="icon icon-user"></i><span>平台默认授权码</span></a>
-                    </li>
-              
-
-            </ul>
-        </li>*@
-        @*<li>
-            <a class="tooltip-tip ajax-load" href="#" title="Media">
-                <i class="icon-camera"></i>
-                <span>代理管理</span>
-            </a>
-            <ul>
-               
+                    <a class="tooltip-tip2 ajax-load" href="/O2O/OrderListForSettlement" title="订单列表"><i class="icon icon-user"></i><span>订单列表</span></a>
+                </li>
                 <li>
-                    <a class="tooltip-tip2 ajax-load" href="/User/UserAdjustment" title="代理筛选"><i class="icon icon-user"></i><span>代理筛选</span></a>
+                    <a class="tooltip-tip2 ajax-load" href="/O2O/ItemList" title="商品列表"><i class="icon icon-user"></i><span>商品列表</span></a>
+                </li>
+                <li>
+                    <a class="tooltip-tip2 ajax-load" href="/O2O/AddrList" title="地址列表"><i class="icon icon-user"></i><span>地址列表</span></a>
+                </li>
+                <li>
+                    <a class="tooltip-tip2 ajax-load" href="/O2O/TransactionForWarehouse" title="资金流水账"><i class="icon icon-user"></i><span>资金流水账</span></a>
                 </li>
             </ul>
-        </li>*@
-        @*<li>
-            <a class="tooltip-tip ajax-load" href="#" title="Media">
-                <i class="icon-camera"></i>
-                <span>商户管理</span>
-            </a>
-            <ul>
-               
-            </ul>
-        </li>*@
-    
+        </li>
     }
-   @if (ViewBag.UserRole > 1)
+   @*@if (ViewBag.UserRole > 1)
    {
     <li>
         <a class="tooltip-tip ajax-load" href="#" title="用户自助">
@@ -155,5 +151,5 @@
          
         </ul>
     </li>
-   }
+   }*@
 </ul>

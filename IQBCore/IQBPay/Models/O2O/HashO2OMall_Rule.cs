@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IQBCore.IQBPay.Models.OutParameter
+namespace IQBCore.IQBPay.Models.O2O
 {
     public class HashO2OMall_Rule
     {
@@ -13,7 +13,7 @@ namespace IQBCore.IQBPay.Models.OutParameter
         {
             get {
                 if (_HashO2OMall == null)
-                    _HashO2OMall = new List<OutParameter.HashO2OMall>();
+                    _HashO2OMall = new List<HashO2OMall>();
                 return _HashO2OMall;
                 }
             set { _HashO2OMall = value; }
@@ -25,7 +25,7 @@ namespace IQBCore.IQBPay.Models.OutParameter
             get
             {
                 if (_HashO2ORule == null)
-                    _HashO2ORule = new List<OutParameter.HashO2ORule>();
+                    _HashO2ORule = new List<HashO2ORule>();
                 return _HashO2ORule;
             }
             set { _HashO2ORule = value; }

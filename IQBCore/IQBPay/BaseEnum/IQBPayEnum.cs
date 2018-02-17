@@ -7,6 +7,43 @@ namespace IQBCore.IQBPay.BaseEnum
 {
     public class IQBPayEnum
     {
+        public static string  GetO2OName(O2OOrderStatus os)
+        {
+            string O2OOrderStatusStr= "";
+
+            switch (os)
+            {
+                case O2OOrderStatus.All:
+                    O2OOrderStatusStr = "全部";
+                    break;
+                case O2OOrderStatus.Complete:
+                    O2OOrderStatusStr = "完成";
+                    break;
+                case O2OOrderStatus.OpenOrder:
+                    O2OOrderStatusStr = "初始化";
+                    break;
+                case O2OOrderStatus.OrderRefused:
+                    O2OOrderStatusStr = "审核拒绝";
+                    break;
+                case O2OOrderStatus.OrderReview:
+                    O2OOrderStatusStr = "等待审核";
+                    break;
+                case O2OOrderStatus.Payment:
+                    O2OOrderStatusStr = "等待支付用户";
+                    break;
+                case O2OOrderStatus.Settlement:
+                    O2OOrderStatusStr = "等待发货结算";
+                    break;
+                //case O2OOrderStatus.WaitingDeliver:
+                //    O2OOrderStatusStr = "等待发货";
+                //    break;
+                case O2OOrderStatus.WaitingUpload:
+                    O2OOrderStatusStr = "等待用户上传";
+                    break;
+            }
+            return O2OOrderStatusStr;
+        }
+
     }
 
     public enum PayWebStatus
@@ -26,6 +63,15 @@ namespace IQBCore.IQBPay.BaseEnum
         SUCCESS = 0,
         FAILED = 1,
         AUTHERROR =2,
+    }
+
+    public enum O2OUserRole
+    {
+        User =0,
+        
+        Mall =5,
+        
+        Shippment = 10,       
     }
 
     /// <summary>
@@ -250,6 +296,7 @@ namespace IQBCore.IQBPay.BaseEnum
         Internal =3,
         L3Agent = 4,
         MidStore = 5,
+        O2OWareHouse =20,
       
     }
 
@@ -305,11 +352,11 @@ namespace IQBCore.IQBPay.BaseEnum
 
         //审核驳回
         OrderRefused = 5,
-        //订单审核
+        //等待订单审核
         OrderReview=6,
 
-        //仓库等待到货
-        WaitingDeliver=10,
+        ////仓库等待到货
+        //WaitingDeliver=10,
 
         //到货结算
         Settlement=14,
@@ -319,6 +366,10 @@ namespace IQBCore.IQBPay.BaseEnum
 
         //订单完成
         Complete=50,
+
+        All = 99,
+
+        Settle_Payment=1418,
     }
 
    

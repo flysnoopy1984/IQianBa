@@ -20,30 +20,62 @@
       
     }
     #DataContainer{
-       width:1124px;
-       overflow-x:auto;   
+        /*width:2000px;*/
+      overflow-x:auto;   
+      overflow-y:hidden;
+       
     }
-    #DataContainer table{
-      
+    #DataContainer table{  
     }
-    #DataContainer tr th{
-        border:1px solid black;
-        height:40px;
-        line-height:40px;
-        text-align:center;
-    }
-     #DataContainer tr td{
-        border:1px solid black;
-        height:40px;
-        line-height:40px;
-    }
+    #DataContainer tr th{ border:1px solid black;height:40px; line-height:40px;text-align:center;}
+    #DataContainer tr td{ border:1px solid black;
+                          height:40px;line-height:40px;
+                          padding:4px;text-align:right; 
+                          white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+     .OrderAction {width:100%;;list-style: none;padding:0px; height:100%;}
+     .OrderAction li{ display:inline-block; width:50%}
 </style>
-<h2>O2O订单"</h2>
+<h2>O2O订单</h2>
 <div id="ListArea">
+    <div class="ListCondition">
+        <ul class="UlHorizontal">
+            <li>
+                <div class="form-group">
+                    <label>商城订单编号：</label>
+                    <input id="cMallOrderNo" type="text" class="form-control ConditionField">
+                </div>
+            </li>
+            <li>
+                <label>订单状态：</label>
+                <select id="cO2OOrderStatus" class="form-control ConditionField">
+                  
+                </select>
+            </li>
+
+            <li>
+                <label>日期：</label>
+                <select id="cBeforeDay" class="form-control ConditionField">
+                    <option value="0">今天</option>
+                    <option value="3">3天</option>
+                    <option value="7">7天</option>
+                    <option value="30">30天</option>
+                    <option value="99" selected>全部</option>
+                </select>
+            </li>
+           
+        </ul>
+        <ul class="UlHorizontal">
+            <li>
+                <label>网站订单号：</label>
+                <input id="cOrderNo" type="text" class="form-control ConditionField" style="width:300px;">
+            </li>
+
+        </ul>
+    </div>
     <div id="ButtonList">
         <ul class="UlHorizontal" style="margin:30px;">
             <li>
-                <button id="btnAdd" type="button" class="btn btn-primary" onclick="Query()">查询</button>
+                <button id="btnAdd" type="button" class="btn btn-primary" onclick="btnQuery()">查询</button>
             </li>
             <li>
                 <button id="btnAdd" type="button" class="btn btn-warning" onclick="CreateDemoData()">DemoData</button>
@@ -51,37 +83,19 @@
         </ul>
     </div>
     <div id="DataContainer">
-        <table>
-            <tr style="display:-webkit-flex;">
-                <th style="width:150px;">操作</th>
-                <th style="width:150px;">O2O编号</th>
+        <table id="DataTable">
+            <tr id="header" style="display:-webkit-flex;">
+                <th style="width:100px;">操作</th>
+                <th style="width:200px;">商城订单编号</th>  
                 <th style="width:150px;">用户手机</th>
-                <th style="width:150px;">对应的订单编号</th> 
-                <th style="width:150px;">订单状态</th>
+                <th style="width:100px;">订单状态</th>
                 <th style="width:150px;">创建时间</th>
                 <th style="width:150px;">商城</th>
                 <th style="width:150px;">商城登陆账户</th>
                 <th style="width:150px;">商城登陆密码</th>
-                <th style="width:150px;">商城订单编号</th>     
-                <th style="width:150px;">商城订单编号</th>   
-                <th style="width:150px;">商城订单编号</th>     
-                <th style="width:150px;">商城订单编号</th>       
+                <th style="width:150px;">O2O编号</th>
+                <th style="width:150px;">平台订单编号</th>         
             </tr>
-            @*<tr style="display:-webkit-flex;">
-                <th style="width:150px;">操作</th>
-                <td style="width:150px;">O2O编号</td>
-                <td style="width:150px;">用户手机</td>
-                <td style="width:150px;">对应的订单编号</td>
-                <td style="width:150px;">订单状态</td>
-                <td style="width:150px;">创建时间</td>
-                <td style="width:150px;">商城</td>
-                <td style="width:150px;">商城登陆账户</td>
-                <td style="width:150px;">商城登陆密码</td>
-                <td style="width:150px;">商城订单编号</td>
-                <td style="width:150px;">商城订单编号</td>
-                <td style="width:150px;">商城订单编号</td>
-                <td style="width:150px;">商城订单编号</td>             
-            </tr>*@
         </table>
     </div>
 </div>

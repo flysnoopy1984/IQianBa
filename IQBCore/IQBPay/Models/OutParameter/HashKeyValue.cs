@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace IQBCore.IQBPay.Models.OutParameter
 {
-
-    public class HashO2OMall
+    public class HashKeyValue
     {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public int O2ORuleId { get; set; }
+        public string Key { get; set; }
+        public string Value { get; set; }
     }
 }

@@ -77,6 +77,7 @@ function GetCellHtml() {
     ctrl += '</ul>';
     ctrl += '<ul class="UlHorizontal">';
     ctrl += '<li><span>规则选择：</span><select id="O2ORuleId" class="form-control">{4}</select>';
+    ctrl += '<li><span>费率：</span><input id="FeeRate" type="text" class="form-control" value="{5}" /></li>';
     ctrl += '</li>';
     ctrl += '</ul>';
     ctrl += '<ul class="UlHorizontal" style="float:right">';
@@ -93,11 +94,11 @@ function InitCellData(op, data) {
     var ctrl = GetCellHtml();
     if (data == null)
     {
-        ctrl = String.format(ctrl, "","", "", "", op);
+        ctrl = String.format(ctrl, "", "", "", "", op, 3);
     }
     else
     {
-        ctrl = String.format(ctrl, data.Id, data.Name,data.Code,data.Description, op);
+        ctrl = String.format(ctrl, data.Id, data.Name, data.Code, data.Description, op, data.FeeRate);
     }
   
     $("#DataContainer").append(ctrl);
@@ -147,12 +148,12 @@ function Save(obj) {
     var Name = pObj.find("#Name").val();
     var Description = pObj.find("#Description").val();
     var O2ORuleId = pObj.find("#O2ORuleId").val();
-
+    var FeeRate = pObj.find("#FeeRate").val();
 
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "Id": Id,"Code":Code, "Name": Name, "Description": Description, "O2ORuleId": O2ORuleId},
+        data: { "Id": Id,"Code":Code, "Name": Name,"FeeRate":FeeRate, "Description": Description, "O2ORuleId": O2ORuleId},
         url: url,
         success: function (data) {
 
