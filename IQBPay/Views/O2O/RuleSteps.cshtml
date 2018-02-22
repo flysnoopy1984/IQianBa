@@ -1,0 +1,63 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>RuleSteps</title>
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/main.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
+    <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+    <script src="@Url.Scrpit("~/scripts/Web/O2O/RuleSteps.js")"></script>
+    <style>
+        #MainContent {
+            margin: 20px;
+        }
+        #Title {
+            height: 80px;
+            width: 100%;
+            line-height: 80px;
+            font-size: 30px;
+        }
+
+        .form-control {
+            display: unset;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="MainContent">
+        <div id="Title">
+           RuleSteps
+        </div>
+        
+        <div id="ButtonList">
+            <ul class="UlHorizontal" style="margin:30px;">
+                <li>
+                    <div>
+                        RuleCode:
+                        <select id="RuleCode" onchange="SwitchRule();"></select>
+                    </div>     
+                </li>
+                <li>
+                    <button id="btnAdd" type="button" class="btn btn-warning" onclick="AddStep(null);">新增Step</button>
+                </li>
+                <li>
+                    <button id="btnAdd" type="button" class="btn btn-info" onclick="SaveSteps();">保存</button>
+                </li>
+            </ul>
+        </div>
+        <div id="DataContainer">
+          
+          
+        </div>  
+    </div>   
+</body>
+</html>

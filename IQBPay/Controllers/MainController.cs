@@ -181,10 +181,10 @@ namespace IQBPay.Controllers
                 base.ExitSession();
             }
 
-            if(BaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
-            {
-               return RedirectToAction("Message", "Main");
-            }
+            //if(BaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
+            //{
+            //   return RedirectToAction("Message", "Main");
+            //}
           
 
             string WXurl =  ConfigurationManager.AppSettings["IQBWX_SiteUrl"];

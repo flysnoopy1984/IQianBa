@@ -24,7 +24,7 @@ namespace IQBCore.IQBWX.BaseEnum
         OpenIdNotFound = 1003,
         
         /// <summary>
-        /// 系统刚维护
+        /// 系统维护
         /// </summary>
         SystemMaintain = 9999,
         

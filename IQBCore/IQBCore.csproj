@@ -114,15 +114,17 @@
     <Compile Include="IQBPay\Models\Error\EPrivilegeError.cs" />
     <Compile Include="IQBPay\Models\InParameter\InAgentOverview.cs" />
     <Compile Include="IQBPay\Models\Json\InOrderReview.cs" />
+    <Compile Include="IQBPay\Models\O2O\EO2OBuyer.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2ODeliveryAddr.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OItemInfo.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OMall.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OPriceGroup.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OTranscationWH.cs" />
-    <Compile Include="IQBPay\Models\O2O\EOrderStep.cs" />
     <Compile Include="IQBPay\Models\O2O\EOrderUpload.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OOrder.cs" />
-    <Compile Include="IQBPay\Models\O2O\EStepTemplate.cs" />
+    <Compile Include="IQBPay\Models\O2O\EO2OStep.cs" />
+    <Compile Include="IQBPay\Models\O2O\RelRuleStep.cs" />
+    <Compile Include="IQBPay\Models\O2O\HashO2ORuleStep.cs" />
     <Compile Include="IQBPay\Models\O2O\InO2OOrder.cs" />
     <Compile Include="IQBPay\Models\O2O\InO2OTrans.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2ODeliveryAddr.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="IQBPay\Models\O2O\HashO2OMall_Rule.cs" />
     <Compile Include="IQBPay\Models\O2O\HashO2ORule.cs" />
     <Compile Include="IQBPay\Models\O2O\HashO2OMall.cs" />
+    <Compile Include="IQBPay\Models\O2O\RO2OStep.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2OTranscationWH.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashKeyValue.cs" />
     <Compile Include="IQBPay\Models\Report\RPAgentPerformance.cs" />

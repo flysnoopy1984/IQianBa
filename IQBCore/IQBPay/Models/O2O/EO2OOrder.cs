@@ -25,6 +25,7 @@ namespace IQBCore.IQBPay.Models.O2O
         public string O2ONo { get; set; }
 
         public long qrUserId { get; set; }
+
         public long RefOrderNo { get; set; }
 
         [MaxLength(20)]
@@ -34,6 +35,8 @@ namespace IQBCore.IQBPay.Models.O2O
         public string UserAliPayAccount { get; set; }
 
         public int MallId { get; set; }
+
+        public int ItemId { get; set; }
 
         [MaxLength(50)]
         public string MallAccount { get; set; }

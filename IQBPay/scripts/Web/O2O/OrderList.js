@@ -175,6 +175,10 @@ function generateData(result)
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
         Ctrl += "<td style='" + tdWidth + "'>" + result[i].MallName + "</td>";
 
+        //商品
+        tdWidth = "width:" + $("#header th").eq(n++).css("width");
+        Ctrl += "<td style='" + tdWidth + "' title=" + result[i].ItemName + ">" + result[i].ItemName + "</td>";
+
         if (FromPage == 0) {
             //商城登陆账户
             tdWidth = "width:" + $("#header th").eq(n++).css("width");

@@ -18,6 +18,8 @@ namespace IQBCore.IQBPay.Models.OutParameter
 
         public string SuccessMsg { get; set; }
 
+        public  int IntMsg { get; set; }
+
        
     }
 }

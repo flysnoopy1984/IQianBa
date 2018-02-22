@@ -375,5 +375,74 @@ namespace IQBCore.IQBPay.BLL
 
         }
 
+        /// <summary>
+        /// 收款二维码
+        /// </summary>
+        public static EQRUser CreateO2OEntryQR(EQRUser qrUser)
+        {
+            try
+            {
+                string site = ConfigurationManager.AppSettings["Main_SiteUrl"];
+                string url = site + "/O2OWap/Index?qrUserId=" + qrUser.ID;
+
+                string filePath = "/Content/QR/O2O/";
+                string filename = "QRO2O_" + qrUser.ID + "_" + System.DateTime.Now.ToString("yyyyMMdd") + (new Random()).Next(1, 100).ToString()
+                + ".jpg";
+
+                filePath += filename;
+
+                qrUser.OrigQRFilePath = filePath;
+                //Create QR
+                filePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
+
+                //Logo
+                Image LogoImg = null;
+              
+                //O2O统一Logo
+                string LogoAddr = HttpContext.Current.Server.MapPath("/Content/QR/O2O_Logo.png");
+                LogoImg = new Bitmap(LogoAddr);
+
+                Bitmap qrImg = QRManager.CreateQR(url, filePath, LogoImg);
+
+
+                //BK
+                string bkAdree = HttpContext.Current.Server.MapPath("/Content/QR/BK/bk_O2O.jpg");
+                Bitmap bkImg = new Bitmap(bkAdree);
+
+                //添加文字
+                //using (Graphics g = Graphics.FromImage(bkImg))
+                //{
+                //    string s = "欢迎来到O2O特惠商城";
+                //    Font font = new Font("黑体", 12, FontStyle.Bold);
+
+                //    SolidBrush b = new SolidBrush(Color.FromArgb(50, 159, 250));
+
+                //    g.DrawString(s, font, b, new PointF(96, 125));
+                //}
+
+                Bitmap finImg = ImgHelper.ImageWatermark(bkImg, qrImg);
+
+                filePath = "/Content/QR/O2O/";
+                filename = "BK_" + qrUser.ID + "_" + filename;
+                filePath += filename;
+
+                finImg.Save(HttpContext.Current.Server.MapPath(filePath));
+                finImg.Dispose();
+                bkImg.Dispose();
+
+
+                qrUser.FilePath = filePath;
+                qrUser.TargetUrl = url;
+
+            }
+            catch (Exception ex)
+            {
+                IQBLog log = new IQBLog();
+                log.log("CreateUserUrlById Error:" + ex.Message);
+                throw ex;
+            }
+
+            return qrUser;
+        }
     }
 }

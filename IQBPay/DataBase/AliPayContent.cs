@@ -159,8 +159,6 @@ namespace IQBPay.DataBase
         }
         #endregion
 
-
-
         #region QRUser
         /// <summary>
         /// 
@@ -255,7 +253,6 @@ namespace IQBPay.DataBase
 
         #endregion
 
-
         #region O2O
 
         public DbSet<EO2OItemInfo> DBO2OItemInfo { get; set; }
@@ -271,6 +268,12 @@ namespace IQBPay.DataBase
         public DbSet<EO2ODeliveryAddr> DBO2ODeliveryAddr { get; set; }
 
         public DbSet<EO2OTranscationWH> DBO2OTranscationWH { get; set; }
+
+        public DbSet<EO2OBuyer> DBO2OBuyer { get; set; }
+
+        public DbSet<EO2OStep> DBO2OStep { get; set; }
+
+        public DbSet<RelRuleStep> DBO2ORelRuleStep { get; set; }
 
         #endregion
 

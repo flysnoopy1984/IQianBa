@@ -37,6 +37,11 @@ namespace IQBCore.IQBPay.Models.User
         public bool HasQRHuge { get; set; }
 
         /// <summary>
+        /// 是否有O2O码
+        /// </summary>
+        public bool HasQRO2O { get; set; }
+
+        /// <summary>
         /// 是否已经通过首单费
         /// </summary>
         public bool HasPassRegFee { get; set; }
@@ -45,6 +50,8 @@ namespace IQBCore.IQBPay.Models.User
         /// 队长是否已经刷满999开通邀请码
         /// </summary>
         public bool HasPassInviteFee { get; set; }
+
+       
 
         /// <summary>
         /// QRUser中的ID

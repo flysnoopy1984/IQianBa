@@ -183,8 +183,10 @@
     <Content Include="Content\Images\Tool\CouPonQRCode.png" />
     <Content Include="Content\O2O\signin.css" />
     <Content Include="Content\QR\BK\ARUserBK1.jpg" />
+    <Content Include="Content\QR\BK\bk_O2O.jpg" />
     <Content Include="Content\QR\BK\bk_spring.jpg" />
     <Content Include="Content\QR\Logo_AR.png" />
+    <Content Include="Content\QR\O2O_Logo.png" />
     <Content Include="Content\QR\QRHugeLogo.png" />
     <Content Include="Content\QR\ReceiveMoney_Logo.png" />
     <Content Include="Content\Style\Web\O2O\O2OList.css" />
@@ -507,6 +509,8 @@
     <Content Include="scripts\Web\O2O\OrderSettlement.js" />
     <Content Include="scripts\Web\O2O\PriceGroup.js" />
     <Content Include="scripts\Web\O2O\RuleList.js" />
+    <Content Include="scripts\Web\O2O\RuleSteps.js" />
+    <Content Include="scripts\Web\O2O\StepList.js" />
     <Content Include="scripts\Web\O2O\TransactionForWarehouse.js" />
     <Content Include="scripts\Web\OrderViewTransfer.js" />
     <Content Include="scripts\Web\OrderMyList.js" />
@@ -674,6 +678,10 @@
     <Content Include="Views\O2O\AddrList.cshtml" />
     <Content Include="Views\O2O\Login.cshtml" />
     <Content Include="Views\O2O\TransWH.cshtml" />
+    <Content Include="Views\O2O\O2OEntry.cshtml" />
+    <Content Include="Views\O2OWap\Index.cshtml" />
+    <Content Include="Views\O2O\RuleSteps.cshtml" />
+    <Content Include="Views\O2O\StepList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -688,6 +696,7 @@
     <Folder Include="Content\QR\ARUser\" />
     <Folder Include="Content\QR\AuthStore\" />
     <Folder Include="Content\QR\Invite\" />
+    <Folder Include="Content\QR\O2O\" />
     <Folder Include="Content\QR\QRHuge\" />
     <Folder Include="Content\QR\Tools\" />
     <Folder Include="Content\Style\Frame1\as\js\wizard\build\" />

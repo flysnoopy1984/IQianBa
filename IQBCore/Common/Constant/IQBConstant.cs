@@ -26,8 +26,19 @@ namespace IQBCore.Common.Constant
         /* Session Key end */
 
         /* Cookie Key begin */
-
+        /// <summary>
+        /// 后台仓库登陆使用
+        /// </summary>
         public const string ck_O2OUserPhone = "IQB_O2OUserPhone";
+
+        /// <summary>
+        /// 用户登陆O2O使用
+        /// </summary>
+        public const string ck_O2OBuyerPhone = "IQB_O2OBuyerPhone";
+
+        public const string ck_O2OReceiveAccount = "IQB_O2OReceiveAccount";
+
+        
         /* Cookie Key end */
     }
 }

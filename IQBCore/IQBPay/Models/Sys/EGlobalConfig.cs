@@ -22,6 +22,8 @@ namespace IQBCore.IQBPay.Models.Sys
 
         public QRHugeEntry QRHugeEntry { get; set; }
 
+        public PayWebStatus O2OEntry { get; set; }
+
         /// <summary>
         /// 大额码申请后可被扫码次数
         /// </summary>

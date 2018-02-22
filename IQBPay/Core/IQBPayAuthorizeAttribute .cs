@@ -14,14 +14,14 @@ namespace IQBPay.Core
     {
         public void OnAuthorization(AuthorizationContext filterContext)
         {
-            UserSession loginUser = filterContext.HttpContext.Session["UserSession"] as UserSession;
-            //When user has not login yet
-            if (loginUser == null || string.IsNullOrEmpty(loginUser.OpenId))
-            {
-                var redirectUrl = "/Main/Login?RedirectPath=" + filterContext.HttpContext.Request.Url+"&action="+ ExistAction.sessionlost.ToString();
-                filterContext.Result = new RedirectResult(redirectUrl);
-                return;
-            }
+            //UserSession loginUser = filterContext.HttpContext.Session["UserSession"] as UserSession;
+            ////When user has not login yet
+            //if (loginUser == null || string.IsNullOrEmpty(loginUser.OpenId))
+            //{
+            //    var redirectUrl = "/Main/Login?RedirectPath=" + filterContext.HttpContext.Request.Url+"&action="+ ExistAction.sessionlost.ToString();
+            //    filterContext.Result = new RedirectResult(redirectUrl);
+            //    return;
+            //}
 
             //if (BaseController.GlobalConfig.WebStatus == PayWebStatus.Stop && loginUser.UserRole != UserRole.Administrator)
             //{

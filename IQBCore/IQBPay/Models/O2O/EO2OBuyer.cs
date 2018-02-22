@@ -1,5 +1,4 @@
-﻿using IQBCore.IQBPay.BaseEnum;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,16 +8,22 @@ using System.Threading.Tasks;
 
 namespace IQBCore.IQBPay.Models.O2O
 {
-    [Table("O2OOrderStep")]
-    public class EO2OOrderStep
+    [Table("O2OBuyer")]
+    public class EO2OBuyer
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public long RefPreOrderId { get; set; }
 
-        public O2OStepStatus StepStatus { get; set; }
+        [MaxLength(20)]
+        public string Phone { get; set; }
 
-      
+        [MaxLength(100)]
+        public string ReceiveAccount { get; set; }
+
+        public int BuyCount { get; set; }
+
+        public DateTime LastBuyerDate { get; set; }
+
     }
 }

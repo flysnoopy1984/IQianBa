@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace IQBCore.IQBPay.Models.O2O
 {
-    public class HashO2ORule
+    public class HashO2ORuleStep
     {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
         public string Code { get; set; }
+
+        public string LeftName { get; set; }
     }
 }

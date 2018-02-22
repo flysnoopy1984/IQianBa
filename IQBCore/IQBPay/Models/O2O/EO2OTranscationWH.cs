@@ -21,6 +21,8 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public int MallId { get; set; }
 
+        public int ItemId { get; set; }
+
         [MaxLength(200)]
         public string MallOrderNo { get; set; }
 

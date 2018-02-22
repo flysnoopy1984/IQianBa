@@ -173,6 +173,8 @@ namespace IQBWX.Controllers
             if (!string.IsNullOrEmpty(code))
             {
                 Errorcode ec = (Errorcode)Enum.Parse(typeof(Errorcode), code);
+                if (ec == Errorcode.SystemMaintain)
+                    errorMsg = WXBaseController.GlobalConfig.Note;
                 data = jsonError.GetErrorObj(ec, errorMsg);
                 if(!string.IsNullOrEmpty(QRUserId))
                 {

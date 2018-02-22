@@ -106,6 +106,14 @@ namespace IQBCore.IQBPay.Models.QR
             return QRhuge;
         }
 
+        public static EQRUser CopyToQRUserForO2O(EQRUser qrSmall)
+        {
+            EQRUser QRhuge = CopyToQRUserForHuge(qrSmall);
+            QRhuge.QRType = QRType.O2O;
+         
+            return QRhuge;
+        }
+
 
 
 

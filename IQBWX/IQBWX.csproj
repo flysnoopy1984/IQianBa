@@ -432,6 +432,7 @@
     <Folder Include="Content\CatchSite\HJB\images\" />
     <Folder Include="Content\Html\" />
     <Folder Include="Models\IQBPay\" />
+    <Folder Include="Views\O2O\" />
     <Folder Include="Views\Valid\" />
   </ItemGroup>
   <ItemGroup>

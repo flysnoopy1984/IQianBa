@@ -15,6 +15,7 @@ using IQBCore.Common.Constant;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBWX.Models.WX.Template.InviteCode;
+using IQBCore.IQBPay.Models.User;
 
 namespace IQBPay.Controllers
 {
@@ -130,6 +131,82 @@ namespace IQBPay.Controllers
         public ActionResult ARInfo()
         {
             return View();
+        }
+
+        public ActionResult GetByType(QRType qrType,string openId)
+        {
+
+            try
+            {
+                EQRUser result = null;
+                using (AliPayContent db = new AliPayContent())
+                {
+                  
+                    result = db.DBQRUser.Where(a => a.QRType == qrType && a.OpenId == openId).FirstOrDefault();
+                    if (result == null)
+                        result = new EQRUser();
+                           
+                }
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult O2OCreateOrUpdate(string openId, float Rate, float marketRate)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.AR).First();
+                    EQRUser bQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.O2O).FirstOrDefault();
+                    if (bQRUser == null)
+                    {
+                        //O2O参数
+                        bQRUser = EQRUser.CopyToQRUserForO2O(sQRUser);
+                        bQRUser.Rate = Rate;
+                        bQRUser.MarketRate = marketRate;
+                        db.DBQRUser.Add(bQRUser);
+
+                        //用户大额标记修改
+                        EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == openId).First();
+                        ui.HasQRO2O = true;
+                        ui.O2OUserRole = O2OUserRole.Agent;
+                        db.SaveChanges();
+
+                        bQRUser = QRManager.CreateO2OEntryQR(bQRUser);
+                        db.Entry(bQRUser).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+
+                        result.SuccessMsg = "开通权限";
+                    }
+                    else
+                    {
+                        bQRUser.Rate = Rate;
+                        bQRUser.MarketRate = marketRate;
+
+                        result.SuccessMsg = "修改成功";
+                        db.SaveChanges();
+
+                    }
+                  
+
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
         }
 
         public ActionResult Get(long Id,QRType qrType)

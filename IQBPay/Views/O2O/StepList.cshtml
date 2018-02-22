@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "商城列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section SubMenu1{
+    <a href="/Order/List" title="步骤列表">步骤列表</a>
+
+}
+@section SubMenu2{
+    列表
+}
+<link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Web/O2O/StepList.js")"></script>
+<script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+
+<style type="text/css">
+      .LeftSpan {
+            width: 80px;
+        }
+      .TopSpan {
+           display:block !important;
+           margin-bottom:4px;
+          
+        }
+   .form-control_textarea_ext{
+  display:inline-block;
+  vertical-align:text-top;
+  height: 240px !important;
+  width:380px !important;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+</style>
+
+<h2>O2O步骤列表</h2>
+<div id="ListArea">
+    <div id="ButtonList">
+        <ul class="UlHorizontal" style="margin:30px;">
+            <li>
+                <button id="btnSearch" type="button" class="btn btn-warning" onclick="CreateNew(null);">新增Step</button>
+            </li>
+        </ul>
+    </div>
+    <div id="DataContainer">
+    </div>
+</div>

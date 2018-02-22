@@ -288,7 +288,7 @@ namespace IQBPay.Controllers
             List<HashO2ORule> result = new List<HashO2ORule>();
             using (AliPayContent db = new AliPayContent())
             {
-                result = db.Database.SqlQuery<HashO2ORule>("select Id,Name from O2ORule").ToList();
+                result = db.Database.SqlQuery<HashO2ORule>("select Id,Name,Code from O2ORule").ToList();
 
             }
             return Json(result);
@@ -323,6 +323,8 @@ namespace IQBPay.Controllers
 
             return Json(result);
         }
+
+       
 
        
         public ActionResult SaveRule(EO2ORule obj)
@@ -582,8 +584,9 @@ namespace IQBPay.Controllers
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    string sql = @"select o.*,m.Name as MallName from O2OOrder as o 
+                    string sql = @"select o.*,m.Name as MallName,i.Name as ItemName from O2OOrder as o 
 left join O2OMall as m on m.ID = o.MallId
+left join O2OItemInfo as i on i.Id = o.ItemId
 where o.CreateDateTime between cast('{0}' as datetime) and cast('{1}' as datetime) ";
 
                     string toDate = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
@@ -777,6 +780,197 @@ where o.O2ONo = '{0}'";
 
         #endregion
 
+        #region Step
+        public ActionResult RuleSteps()
+        {
+            return View();
+        }
+
+        public ActionResult StepList()
+        {
+            return View();
+        }
+
+        public ActionResult HashStep()
+        {
+            List<HashO2ORuleStep> result = null;
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    string sql = "select Code,LeftName from O2Ostep";
+                    result = db.Database.SqlQuery<HashO2ORuleStep>(sql).ToList();
+
+                }
+            }
+            catch(Exception ex)
+            {
+                
+            }
+            if (result == null)
+                result = new List<HashO2ORuleStep>();
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult StepListQuery()
+        {
+            var pageIndex = Convert.ToInt32(Request["pageIndex"]);
+            var pageSize = Convert.ToInt32(Request["pageSize"]);
+            List<RO2OStep> result = new List<RO2OStep>();
+            using (AliPayContent db = new AliPayContent())
+            {
+                var list = db.DBO2OStep.Select(o => new RO2OStep
+                {
+                    Id = o.Id,
+                    Code = o.Code,
+                    LeftName = o.LeftName,
+                    BeginContent = o.BeginContent,
+                    EndContent = o.EndContent,
+                    Seq = o.Seq,
+                });
+                if (pageIndex == 0)
+                {
+                    result = list.Take(pageSize).ToList();
+                }
+                else
+                {
+                    result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+                }
+            }
+
+            return Json(result);
+        }
+
+        public ActionResult SaveStep(EO2OStep obj)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    if (obj.Id > 0)
+                    {
+                        EO2OStep updateObj = db.DBO2OStep.Where(o => o.Id == obj.Id).FirstOrDefault();
+                        updateObj.InitFromUpdate(obj);
+                        db.Update<EO2OStep>(updateObj);
+                    }
+                    else
+                    {
+                        db.Insert<EO2OStep>(obj);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteStep()
+        {
+            int Id = Convert.ToInt32(Request["Id"]);
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    EO2OStep obj = db.DBO2OStep.Where(o => o.Id == Id).FirstOrDefault();
+
+                    db.Delete<EO2OStep>(obj);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+
+            return Json(result);
+        }
+
+        public ActionResult SaveRuleSteps(List<RelRuleStep> list)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    foreach (RelRuleStep rel in list)
+                    {
+                        if (rel.Id > 0)
+                        {
+                            RelRuleStep updateObj = db.DBO2ORelRuleStep.Where(o => o.Id == rel.Id).FirstOrDefault();
+                            updateObj.InitFromUpdate(rel);
+                            db.Update<RelRuleStep>(updateObj);
+                        }
+                        else
+                        {
+                            db.Insert<RelRuleStep>(rel);
+                        }
+                    }
+                }
+                  
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+
+            return Json(result);
+          
+        }
+
+        [HttpPost]
+        public ActionResult RuleStepsQuery()
+        {
+            string RuleCode = Request["RuleCode"];
+            List<RelRuleStep> result = null;
+            if (!string.IsNullOrEmpty(RuleCode))
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    result = db.DBO2ORelRuleStep.ToList();
+                }
+            }
+
+            if (result == null) result = new List<RelRuleStep>();
+            return Json(result);
+
+
+        }
+
+        [HttpPost]
+        public ActionResult DeleteRelRuleStep()
+        {
+            int Id = Convert.ToInt32(Request["Id"]);
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    RelRuleStep obj = db.DBO2ORelRuleStep.Where(o => o.Id == Id).FirstOrDefault();
+
+                    db.Delete<RelRuleStep>(obj);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+
+            return Json(result);
+        }
+        #endregion
+
 
         #region Transaction 财务资金
         public ActionResult TransWH()
@@ -792,8 +986,9 @@ where o.O2ONo = '{0}'";
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    string sql = @"select o.*,m.Name as MallName from O2OTranscationWH as o 
+                    string sql = @"select o.*,m.Name as MallName,i.Name as ItemName from O2OTranscationWH as o 
                     left join O2OMall as m on m.ID = o.MallId
+                    left join O2OItemInfo as i on i.Id = o.ItemId
                     where o.TransDateTime between cast('{0}' as datetime) and cast('{1}' as datetime) ";
 
                     string toDate = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
@@ -865,6 +1060,15 @@ where o.O2ONo = '{0}'";
                 }
             }
             return Json(result);
+        }
+
+        #endregion
+
+        #region O2OWap
+
+        public ActionResult O2OEntry()
+        {
+            return View();
         }
 
         #endregion

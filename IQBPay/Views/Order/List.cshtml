@@ -4,8 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section SubMenu1{
-<a href="/Order/List" title="单据管理"> 单据管理</a>
-   
+    <a href="/Order/List" title="单据管理"> 单据管理</a>
+
 }
 @section SubMenu2{
     列表
@@ -24,9 +24,61 @@
     <div id="Title" style="margin:0px; height:200px;">
         <span id="ListTitleName">订单列表</span>
         <hr />
-       
-        <ul class="UlHorizontal ListButtonRight" >
-            <li>             
+        <div class="ListCondition">
+            <ul class="UlHorizontal">
+                <li>
+                    <div class="form-group">
+                        <label>代理人：</label>
+                        <input id="cAgentName" type="text" class="form-control ConditionField">
+                    </div>
+                </li>
+                <li>
+                    <label>商户：</label>
+                    <select id="cStore" class="form-control ConditionField"></select>
+                </li>
+                <li>
+                    <label>日期：</label>
+                    <select id="cDateType" class="form-control ConditionField">
+                        <option value="1" selected>今天</option>
+                        <option value="2">本周</option>
+                        <option value="3">本月</option>
+                        <option value="99">全部</option>
+                    </select>
+                </li>
+                <li>
+                    <label>订单状态：</label>
+                    <select id="cOrderStatus" class="form-control ConditionField">
+                        <option value="-1">异常</option>
+                        <option value="0">用户未支付</option>
+                        <option value="-3">系统关闭交易</option>
+                        <option value="99" selected>全部</option>
+                    </select>
+                </li>
+                <li>
+                    <label>订单类型：</label>
+                    <select id="cOrderType" class="form-control ConditionField">
+                        <option value="99" selected>全部</option>
+                        <option value="4">大码</option>
+                        <option value="1">小码</option>
+                    </select>
+                </li>
+            </ul>
+            <ul class="UlHorizontal">
+                <li>
+                    <div class="form-group">
+                        <label>支付宝订单号：</label>
+                        <input id="AliPayOrderNo" type="text" class="form-control ConditionField" style="width:300px;">
+                    </div>
+                </li>
+                <li>
+                    <label>网站订单号：</label>
+                    <input id="OrderNo" type="text" class="form-control ConditionField" style="width:300px;">
+                </li>
+
+            </ul>
+        </div>
+        <ul class="UlHorizontal ListButtonRight">
+            <li>
                 <button id="btnSearch" type="button" class="btn btn-primary" onclick="btnSearch();">查询</button>
             </li>
 
@@ -61,25 +113,24 @@
                             @*<th style="width:100px;">商户类型</th>*@
                             @*<th style="width:50px;">商户佣金点率</th>*@
                             <th style="width:100px;">买家账户</th>
-                            <th style="width:200px;">订单编号</th> 
-                            <th style="width:250px;">支付宝订单编号</th>                           
+                            <th style="width:200px;">订单编号</th>
+                            <th style="width:250px;">支付宝订单编号</th>
                         </tr>
                         <tr>
-                            <td colspan="18" class="RecordSum" id="RecordSum"></td>  
+                            <td colspan="18" class="RecordSum" id="RecordSum"></td>
                         </tr>
                     </thead>
                 </table>
             </div>
 
-            <div id ="divTableBody" class="divB" style="height: 450px;" >
-                 <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden">       
-                 </table>
+            <div id="divTableBody" class="divB" style="height: 450px;">
+                <table id="trContainer" class="table table-hover table-bordered TableOverflowHidden"></table>
             </div>
 
             <div id="divProcess" style="height:450px;line-height:450px;text-align:center;display:none;">
                 数据加载中。。。
             </div>
-       </div>
+        </div>
         <div class="divNextButton" id="btnNext"><button type="button" class="btn btn-success" style="width:250px; height:60px;" onclick="Next();">加载更多</button></div>
     </div>
 </div>

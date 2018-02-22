@@ -68,6 +68,7 @@ namespace IQBCore.IQBPay.BaseEnum
     public enum O2OUserRole
     {
         User =0,
+        Agent = 1,
         
         Mall =5,
         
@@ -171,6 +172,7 @@ namespace IQBCore.IQBPay.BaseEnum
         /// </summary>
         ARAuth = 3,
         Temp =0,
+        O2O = 10,
        
     }
 

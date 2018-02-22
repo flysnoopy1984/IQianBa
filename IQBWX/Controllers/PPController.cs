@@ -1717,9 +1717,21 @@ group by o.AgentOpenId ,o.OrderType
             return View(result);
         }
 
-       
+
         #endregion
 
+        #region O2O
+        public ActionResult O2OQrEntry()
+        {
+
+            if (UserSession.O2OUserRole != O2OUserRole.Agent && UserSession.UserRole != UserRole.Administrator)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+
+            return View();
+        }
+        #endregion
 
 
     }

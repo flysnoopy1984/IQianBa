@@ -1,9 +1,9 @@
 ﻿var gStoreList;
 var gParentAgentList;
-
+var OpenId;
 $(document).ready(function () {
 
-    var OpenId = GetUrlParam("OpenId");
+     OpenId = GetUrlParam("OpenId");
 
     if (OpenId == null || OpenId == "" || OpenId == "undefined") {
         alert("无法识别OpenId");
@@ -92,6 +92,8 @@ function Init(OpenId) {
 
             AjaxInviteCode(data.QRInviteCode);
 
+            AjaxO2OQR();
+
         },
         error: function (xhr, type) {
 
@@ -100,6 +102,7 @@ function Init(OpenId) {
         }
     });
 }
+
 function CloseQRHuge()
 {
     var url = "/User/CloseQRHuge";
@@ -262,6 +265,59 @@ function Save() {
             }
             else {
                 alert(data);
+            }
+        },
+        error: function (xhr, type) {
+
+            alert(xhr.responseText);
+
+        }
+    });
+
+}
+
+function AjaxO2OQR() {
+    var url = "/QR/GetByType";
+
+    $.ajax({
+        type: 'post',
+        data: "openId=" + OpenId + "&qrType=10",
+        url: url,
+        success: function (data) {
+            $("#QRO2O_FeeRate").val(parseFloat(data.MarketRate) - parseFloat(data.Rate));
+            $("#QRO2O_MarketRate").val(data.MarketRate);
+        },
+        error: function (xhr, type) {
+
+            alert(xhr.responseText);
+
+        }
+    });
+}
+
+function CreateOrUpdateQRO2O() {
+    var url = "/QR/O2OCreateOrUpdate";
+    var OpenId = $("#OpenId").val();
+
+    var QRO2O_FeeRate = $("#QRO2O_FeeRate").val();
+    var QRO2O_MarketRate = $("#QRO2O_MarketRate").val();
+
+    var Rate = parseFloat(QRO2O_MarketRate) - parseFloat(QRO2O_FeeRate);
+    if (QRO2O_FeeRate == 0 || QRO2O_MarketRate == 0) {
+        alert("值不能为空或0");
+        return;
+    }
+    $.ajax({
+        type: 'post',
+        dataType: "json",
+        data: { "OpenId": OpenId, "Rate": Rate, "marketRate": QRO2O_MarketRate },
+        url: url,
+        success: function (data) {
+            if (data.IsSuccess) {
+                alert(data.SuccessMsg);
+            }
+            else {
+                alert(data.ErrorMsg);
             }
         },
         error: function (xhr, type) {

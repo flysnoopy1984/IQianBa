@@ -1,8 +1,11 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.O2O;
+using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.IQBWX.BaseEnum;
 using IQBPay.DataBase;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,7 +17,29 @@ namespace IQBPay.Controllers
         // GET: O2OWap
         public ActionResult Index()
         {
-            return View();
+            string reqQrO2OId = Request.QueryString["qrUserId"];
+
+            //string wxSite = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
+            //string ErrorUrl = wxSite + "Home/ErrorMessage?code={0}&ErrorMsg=";
+
+            //if (BaseController.GlobalConfig.WebStatus == PayWebStatus.Stop)
+            //{
+            //    ErrorUrl = string.Format(ErrorUrl,9999);
+            //    return Redirect(ErrorUrl);
+            //}
+            //if (BaseController.GlobalConfig.O2OEntry == PayWebStatus.Stop)
+            //{
+            //    ErrorUrl += "O2O通道维护中，请稍后进入！";
+            //    return Redirect(ErrorUrl);
+
+            //}
+            using (AliPayContent db = new AliPayContent())
+            {
+               
+            }
+
+
+                return View();
         }
 
         public ActionResult Demo()
@@ -99,11 +124,48 @@ namespace IQBPay.Controllers
             return Json(result);
         }
 
-        #region PreOrder
-        public ActionResult PreOrder()
+        #region O2OOrder
+
+
+        public ActionResult CheckBuyerPhone()
         {
-            return View();
+            string rPhone = Request["Phone"];
+            OutAPIResult result = new OutAPIResult();
+            int n = 0;
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    n = db.DBO2OBuyer.Where(o => o.Phone == rPhone).Count();
+                    result.IntMsg = n;
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+       
+            return Json(result);
+        }
+
+        public void InitO2OOrder()
+        {
+            string rPhone = Request["Phone"];
+            string rReceiveAccount = Request["ReceiveAccount"];
+          //  string rItemId = 
+
         }
         #endregion
+
+        #region Data
+        public EO2OOrder GetO2OOrder()
+        {
+            EO2OOrder order = new EO2OOrder();
+            return order;
+        }
+        #endregion
+
+
     }
 }

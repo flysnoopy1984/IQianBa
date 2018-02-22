@@ -38,6 +38,9 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public RecordStatus RecordStatus { get; set; }
 
+       
+
+
         public void InitFromUpdate(EO2ORule updateObj)
         {
             this.Name = updateObj.Name;

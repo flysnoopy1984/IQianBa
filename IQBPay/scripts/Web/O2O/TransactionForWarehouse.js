@@ -88,6 +88,11 @@ function generateData(result) {
         //商城订单编号
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
         Ctrl += "<td style='" + tdWidth + "' title=" + result[i].MallOrderNo + ">" + result[i].MallOrderNo + "</td>";
+
+        //商品
+        tdWidth = "width:" + $("#header th").eq(n++).css("width");
+        Ctrl += "<td style='" + tdWidth + "' title=" + result[i].ItemName + ">" + result[i].ItemName + "</td>";
+
     
         //金额
         tdWidth = "width:" + $("#header th").eq(n++).css("width");

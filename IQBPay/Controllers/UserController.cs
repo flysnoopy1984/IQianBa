@@ -63,7 +63,8 @@ namespace IQBPay.Controllers
 
         public ActionResult Get(string  OpenId)
         {
-            string sql = @"select ui.Id,ui.Name,ui.UserStatus,ui.UserRole,ui.IsAutoTransfer,ui.CDate,ui.MDate,ui.UserRole,ui.Headimgurl,ui.AliPayAccount,ui.QRInviteCode,ui.NeedFollowUp,
+            string sql = @"select ui.Id,ui.Name,ui.UserStatus,ui.UserRole,ui.IsAutoTransfer,ui.CDate,ui.MDate,
+                            ui.UserRole,ui.Headimgurl,ui.AliPayAccount,ui.QRInviteCode,ui.NeedFollowUp,
                             CONVERT(varchar(100), ui.RegisterDate, 111) as RegisterDate,
                            qruser.MarketRate,qruser.ID as qrUserId,QRUser.Rate,qruser.FilePath as QRFilePath,qruser.ParentCommissionRate,qruser.OrigQRFilePath,
                            qrUser.parentOpenId as ParentAgentOpenId,qrUser.ParentName as ParentAgent,
@@ -408,6 +409,7 @@ namespace IQBPay.Controllers
                         //用户大额标记修改
                         EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == openId).First();
                         ui.HasQRHuge = true;
+
 
                         result.SuccessMsg = "开通权限";
                     }
