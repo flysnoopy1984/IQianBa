@@ -376,14 +376,14 @@ namespace IQBCore.IQBPay.BLL
         }
 
         /// <summary>
-        /// 收款二维码
+        /// O2O入口
         /// </summary>
         public static EQRUser CreateO2OEntryQR(EQRUser qrUser)
         {
             try
             {
                 string site = ConfigurationManager.AppSettings["Main_SiteUrl"];
-                string url = site + "/O2OWap/Index?qrUserId=" + qrUser.ID;
+                string url = site + "/O2OWap/Index?aoId=" + qrUser.OpenId;
 
                 string filePath = "/Content/QR/O2O/";
                 string filename = "QRO2O_" + qrUser.ID + "_" + System.DateTime.Now.ToString("yyyyMMdd") + (new Random()).Next(1, 100).ToString()

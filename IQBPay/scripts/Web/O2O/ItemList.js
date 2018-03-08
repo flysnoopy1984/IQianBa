@@ -107,17 +107,17 @@ function RuleOption(updateData)
 
         $.each(RuleData, function (i) {
             if (RuleId == RuleData[i].Id)
-                ruleOp += "<option value=" + RuleData[i].Id + " selected>" + RuleData[i].Name + "</option>";
+                ruleOp += "<option value=" + RuleData[i].Code + " selected>" + RuleData[i].Name + "</option>";
             else
-                ruleOp += "<option value=" + RuleData[i].Id + ">" + RuleData[i].Name + "</option>";
+                ruleOp += "<option value=" + RuleData[i].Code + ">" + RuleData[i].Name + "</option>";
         });
     }
     else {
         $.each(RuleData, function (i) {
-            if (updateData.O2ORuleId == RuleData[i].Id)
-                ruleOp += "<option value=" + RuleData[i].Id + " selected>" + RuleData[i].Name + "</option>";
+            if (updateData.O2ORuleCode == RuleData[i].Code)
+                ruleOp += "<option value=" + RuleData[i].Code + " selected>" + RuleData[i].Name + "</option>";
             else
-                ruleOp += "<option value=" + RuleData[i].Id + ">" + RuleData[i].Name + "</option>";
+                ruleOp += "<option value=" + RuleData[i].Code + ">" + RuleData[i].Name + "</option>";
         });
 
     }
@@ -390,7 +390,7 @@ function Save(obj) {
     var RealAddress = pObj.find("#RealAddress").val();
     var ImgUrl = pObj.find("#ImgUrl").val();
     var RecordStatus = pObj.find("#RecordStatus").val();
-    var O2ORuleId = pObj.find("#O2ORuleId").val();
+    var O2ORuleCode = pObj.find("#O2ORuleId").val();
     var MallId = pObj.find("#MallId").val();
 
     if (!VerifyItem(pObj)) return;
@@ -405,7 +405,7 @@ function Save(obj) {
             "ImgUrl":ImgUrl,
             "Qty": Qty,
             "RealAddress": RealAddress,
-            "O2ORuleId": O2ORuleId,
+            "O2ORuleCode": O2ORuleCode,
             "MallId": MallId,
             "RecordStatus":RecordStatus,
         },
@@ -418,7 +418,12 @@ function Save(obj) {
                
             }
             else {
-                alert(data.ErrorMsg);
+                if (data.IntMsg == -1) {
+                    alert("未识别当前用户，请重新登录");
+                    window.location.hre = "/O2O/Login";
+                }
+                else
+                    alert(data.ErrorMsg);
             }
         },
         error: function (xhr, type) {

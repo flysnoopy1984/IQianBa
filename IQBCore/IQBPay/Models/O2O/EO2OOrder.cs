@@ -15,6 +15,7 @@ namespace IQBCore.IQBPay.Models.O2O
         public EO2OOrder()
         {
             CreateDateTime = DateTime.Now;
+            SettlementDateTime = DateTime.Now;
         }
 
         [Key]
@@ -25,6 +26,27 @@ namespace IQBCore.IQBPay.Models.O2O
         public string O2ONo { get; set; }
 
         public long qrUserId { get; set; }
+
+
+        /// <summary>
+        /// 费率
+        /// </summary>
+        public double FeeRate { get; set; }
+
+        /// <summary>
+        /// 用户手续费
+        /// </summary>
+        public double MarketRate { get; set; }
+
+        /// <summary>
+        /// 出库商UserId
+        /// </summary>
+        public int WHUserId { get; set; }
+
+        /// <summary>
+        /// 出库商佣金
+        /// </summary>
+        public double WHRate { get; set; }
 
         public long RefOrderNo { get; set; }
 
@@ -60,10 +82,15 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public int AddrId { get; set; }
 
-        public double FeeRate { get; set; }
 
         public O2OOrderStatus O2OOrderStatus { get; set; }
 
+       
+
         public DateTime CreateDateTime { get; set; }
+
+      
+        public int SettlementUserId { get; set; }
+        public DateTime SettlementDateTime { get; set; }
     }
 }

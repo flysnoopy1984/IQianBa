@@ -16,6 +16,8 @@ using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBWX.Models.WX.Template.InviteCode;
 using IQBCore.IQBPay.Models.User;
+using IQBCore.IQBPay.Models.O2O;
+using System.Data.Entity.Migrations;
 
 namespace IQBPay.Controllers
 {
@@ -166,17 +168,16 @@ namespace IQBPay.Controllers
                 {
                     EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.AR).First();
                     EQRUser bQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.O2O).FirstOrDefault();
+                    EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == openId).First();
                     if (bQRUser == null)
                     {
                         //O2O参数
                         bQRUser = EQRUser.CopyToQRUserForO2O(sQRUser);
                         bQRUser.Rate = Rate;
                         bQRUser.MarketRate = marketRate;
-                        db.DBQRUser.Add(bQRUser);
+                        db.DBQRUser.AddOrUpdate(bQRUser);
 
-                        //用户大额标记修改
-                        EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == openId).First();
-                        ui.HasQRO2O = true;
+                        //ui.HasQRO2O = true;
                         ui.O2OUserRole = O2OUserRole.Agent;
                         db.SaveChanges();
 
@@ -193,10 +194,29 @@ namespace IQBPay.Controllers
                         bQRUser.MarketRate = marketRate;
 
                         result.SuccessMsg = "修改成功";
-                        db.SaveChanges();
-
+                       
                     }
-                  
+                    //O2O代理费率配置表
+                    List<EO2OMall> mallList = db.DBO2OMall.ToList();
+                    foreach (EO2OMall mall in mallList)
+                    {
+                        EO2OAgentFeeRate rate = new EO2OAgentFeeRate
+                        {
+                            MallId = mall.Id,
+                            MarketRate = 8,
+                            DiffFeeRate = 0,
+                            OpenId = bQRUser.OpenId,
+                            //QrUserId = bQRUser.ID,
+                            // UserId = ui.Id
+                        };
+                        EO2OAgentFeeRate dbRate =  db.DBO2OAgentFeeRate.Where(a => a.OpenId == rate.OpenId && a.MallId == rate.MallId).FirstOrDefault();
+                        if (dbRate == null)
+                            db.DBO2OAgentFeeRate.Add(rate);
+                        dbRate = rate;
+                            
+                    }
+                    db.SaveChanges();
+
 
 
 

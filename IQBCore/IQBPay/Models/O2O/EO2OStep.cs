@@ -24,10 +24,10 @@ namespace IQBCore.IQBPay.Models.O2O
         [MaxLength(50)]
         public string LeftName { get; set; }
 
-        [DataType(DataType.Text)]
+        [DataType(DataType.Html)]
         public string BeginContent { get; set; }
 
-        [DataType(DataType.Text)]
+        [DataType(DataType.Html)]
         public string EndContent { get; set; }
 
         public void InitFromUpdate(EO2OStep obj)

@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "AgentFeeRate";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
+}
+<link href="@Url.Scrpit("~/Content/Css/O2O/O2OMain.css")" rel="stylesheet" />
+
+<style type="text/css">
+    #Title{
+        text-align:center;
+        height:80px;
+        width:100%;
+    }
+    #btnSaveMarket{float:right;}
+    .btnList{display: -webkit-flex; display:flex; align-items:center; height:50px;justify-content:flex-end;}
+    .table>tbody>tr>th{border:none; text-align:center;}
+    .table>tbody>tr>td{ text-align:center;}
+    .martketText {width:40px;} 
+</style>
+<script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
+<script src="@Url.Scrpit("~/Content/Script/IQBPay/O2O/AgentFeeRate.js")"></script>
+<header class="o2o_header">当前商城费率</header>
+
+<div class="o2o_content">
+    <div id="btnList" class="btnList">
+        <button type="button" class="mgz btn btn-warning" id="btnSaveMarket">保存用户手续费</button>
+    </div>
+    <table class="table mgz2  large-only" id="trContainer">
+        <tr>
+            <th width="45%">商城</th>
+            <th width="25%">费率</th>
+            <th width="30%">用户手续费</th>
+        </tr>
+        
+    </table>
+
+</div>
+

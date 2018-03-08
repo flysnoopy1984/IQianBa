@@ -1,0 +1,53 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TestSMS</title>
+    <script src="~/Content/Script/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        function SendSMS()
+        {
+            var url = "/API/SMS/SentSMS_IQBPay_BuyerOrder";
+
+            $.ajax({
+                type: 'get',
+                dataType: "json",
+                data: { "mobilePhone": 13482710060, "IntervalSec": 90, "SMSEvent": 200 },
+                url: url,
+                success: function (data) {
+                    if (data.SMSVerifyStatus == 2) {
+                        alert("ok");
+
+                    }
+                    else if (data.SMSVerifyStatus == 1) {
+
+                        alert("请不要重复发送");
+                       // countDown = data.RemainSec;
+                       // Inter = setInterval(countdown, 1000);
+
+                    }
+                    else {
+
+                    }
+                },
+                error: function (xhr, type) {
+
+                    alert(xhr.responseText);
+
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div> 
+        <input type="button" value="发送短信" onclick="SendSMS();" />
+    </div>
+</body>
+</html>

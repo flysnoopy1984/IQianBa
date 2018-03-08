@@ -40,6 +40,7 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public string MallName { get; set; }
 
+
         public string Address { get; set; }
 
         public string ItemName { get; set; }

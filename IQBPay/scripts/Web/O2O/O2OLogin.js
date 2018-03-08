@@ -1,5 +1,25 @@
 ﻿$(document).ready(function () {
 
+    var action = GetUrlParam("action");
+           
+    if(action == "sessionlost")
+    {
+        $.alert({
+            theme: 'dark',
+            title: '错误',
+            content: 'Session 失效，重新登陆！'
+        }); 
+    }
+   
+    if (action == "noRegister") {
+        $.alert({
+            theme: 'dark',
+            title: '错误',
+            content: '网站已经关闭！'
+        });
+              
+    }
+
     $("#btnLogin").on("click", O2OLogin);
 
     $(document).keydown(function (event) {

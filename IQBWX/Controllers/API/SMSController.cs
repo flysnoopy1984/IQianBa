@@ -62,7 +62,7 @@ namespace IQBWX.Controllers.API
 
             using (AliPayContent db = new AliPayContent())
             {
-                var sms = db.DBSMSBuyerOrder.Where(s => s.ID == sId).FirstOrDefault();
+                var sms = db.DBSMSVerification.Where(s => s.ID == sId).FirstOrDefault();
                 if(sms == null)
                 {
                     OutSMS.SMSVerifyStatus = SMSVerifyStatus.UnKnown;
@@ -103,19 +103,21 @@ namespace IQBWX.Controllers.API
        /// <param name="mobilePhone"></param>
        /// <param name="IntervalSec"></param>
        /// <returns></returns>
-        public OutSMS IQBPay_GetVerifyingSec(string mobilePhone, int IntervalSec)
+        public OutSMS IQBPay_GetVerifyingSec(string mobilePhone, int IntervalSec, SMSEvent SMSEvent = SMSEvent.O2O_BuyerPhoneVerify)
         {
             OutSMS OutSMS = new OutSMS();
             try
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    var sms = db.DBSMSBuyerOrder.Where(s => s.MobilePhone == mobilePhone
-                    && s.SMSEvent == SMSEvent.IQB_PayOrder
+                    //获取已发送的SMS
+                    var sms = db.DBSMSVerification.Where(s => s.MobilePhone == mobilePhone
+                    && s.SMSEvent == SMSEvent
                     && s.SMSVerifyStatus == SMSVerifyStatus.Sent).OrderByDescending(s => s.SendDateTime).FirstOrDefault();
 
                     OutSMS.RemainSec = -1;
 
+                    //存在
                     if (sms != null)
                     {
                         OutSMS.SmsID = sms.ID;
@@ -124,6 +126,7 @@ namespace IQBWX.Controllers.API
                         TimeSpan nowtimespan = new TimeSpan(DateTime.Now.Ticks);
                         TimeSpan endtimespan = new TimeSpan(sms.SendDateTime.Ticks);
                         TimeSpan timespan = nowtimespan.Subtract(endtimespan).Duration();
+                        //是否超过倒计时最大值（比如90秒后重新发送，90秒为最大值）
                         int CurSec = Convert.ToInt32(timespan.TotalSeconds);
                         if (CurSec > IntervalSec)
                         {
@@ -149,13 +152,17 @@ namespace IQBWX.Controllers.API
         }
 
         [HttpGet]
-        public OutSMS SentSMS_IQBPay_BuyerOrder(string mobilePhone, int IntervalSec)
+        public OutSMS SentSMS_IQBPay_BuyerOrder(string mobilePhone, int IntervalSec, SMSEvent SMSEvent = SMSEvent.O2O_BuyerPhoneVerify)
         {
+
+
+
             OutSMS OutSMS = new OutSMS();
             try
             {
                 OutSMS = IQBPay_GetVerifyingSec(mobilePhone, IntervalSec);
 
+                //说明可以重新发送短信（不在短信重新发送倒计时内）
                 if (OutSMS.RemainSec == -1)
                 {
                     string VerifyCode = StringHelper.GenerateVerifyCode();
@@ -166,11 +173,11 @@ namespace IQBWX.Controllers.API
                     inSMS.PhoneNumber = mobilePhone;
                     inSMS.Parameters = VerifyCode;
 
-                    if (!this.DoSMS(inSMS))
-                    {
-                        OutSMS.SMSVerifyStatus = SMSVerifyStatus.SentFailure;
-                        return OutSMS;
-                    }
+                    //if (!this.DoSMS(inSMS))
+                    //{
+                    //    OutSMS.SMSVerifyStatus = SMSVerifyStatus.SentFailure;
+                    //    return OutSMS;
+                    //}
 
                     using (AliPayContent db = new AliPayContent())
                     {
@@ -181,9 +188,9 @@ namespace IQBWX.Controllers.API
                           
                             SendDateTime = DateTime.Now,
                             SMSVerifyStatus = SMSVerifyStatus.Sent,
-                            SMSEvent = SMSEvent.IQB_PayOrder,
+                            SMSEvent = SMSEvent,
                         };
-                        db.DBSMSBuyerOrder.Add(sms);
+                        db.DBSMSVerification.Add(sms);
                         db.SaveChanges();
                         OutSMS.SmsID = sms.ID;
                     }

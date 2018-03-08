@@ -14,6 +14,8 @@ using IQBCore.Model;
 using System.Configuration;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.User;
+using IQBCore.IQBPay.Models.O2O;
+using IQBCore.Common.Constant;
 
 namespace IQBPay.Controllers
 {
@@ -142,7 +144,61 @@ namespace IQBPay.Controllers
         {
             
         }
+        #region O2O
 
+        public string GetBuyerPhone()
+        {
+            string buyerPhone = null;
+            O2OBuyerSession buyerSession = Session["BuyerSession"] as O2OBuyerSession;
+            if (buyerSession == null)
+            {
+                buyerPhone = CookieHelper.getCookie(IQBConstant.ck_O2OBuyerPhone);
+                return buyerPhone;
+
+            }
+            else
+                return buyerSession.Phone;
+
+        }
+
+        public string GetCurrentOrder(string BuyerPhone, AliPayContent db=null)
+        {
+            var sql = @"select top 1 o.O2ONo from O2OOrder as o
+	                where o.UserPhone = '{0}'
+	                order by o.CreateDateTime desc";
+
+            sql = string.Format(sql, BuyerPhone);
+            string OrderNo = null;
+            if(db == null)
+            {
+                db = new AliPayContent();
+              
+            }
+            OrderNo = db.Database.SqlQuery<string>(sql).FirstOrDefault();
+            db.Dispose();
+
+
+            return OrderNo;
+
+
+        }
+        #endregion
+
+
+        public  void SetBuyerCookie(EO2OBuyer buyer)
+        {
+            CookieHelper.setCookie(IQBConstant.ck_O2OBuyerPhone, buyer.Phone);
+            CookieHelper.setCookie(IQBConstant.ck_O2OReceiveAccount, buyer.ReceiveAccount);
+        }
+        public void SetBuyerSession(EO2OBuyer buyer)
+        {
+            O2OBuyerSession buyerSession = new O2OBuyerSession();
+            buyerSession.AliPayAccount = buyer.ReceiveAccount;
+            buyerSession.Phone = buyer.Phone;
+            buyerSession.BuyerId = buyer.Id;
+            Session["BuyerSession"] = buyerSession;
+        }
+       
         protected void SetUserSession(string openId)
         {
             using (AliPayContent db = new AliPayContent())
@@ -163,6 +219,12 @@ namespace IQBPay.Controllers
         protected UserSession GetUserSession()
         {
             UserSession userSession = Session["UserSession"] as UserSession;
+            if (userSession == null)
+            {
+                userSession = new UserSession();
+                userSession.UserRole = UserRole.NormalUser;
+                userSession.O2OUserRole = O2OUserRole.User;
+            }
             return userSession;
         }
 
@@ -224,12 +286,7 @@ namespace IQBPay.Controllers
         public ActionResult MenuList()
         {
             UserSession userSession = GetUserSession();
-            if (userSession == null)
-            {
-                userSession = new UserSession();
-                userSession.UserRole = UserRole.NormalUser;
-                userSession.O2OUserRole = O2OUserRole.User;
-            }
+            
             ViewBag.UserRole = Convert.ToInt32(userSession.UserRole);
             ViewBag.O2OUserRole = Convert.ToInt32(userSession.O2OUserRole);
             return PartialView("MenuList");

@@ -16,6 +16,11 @@ namespace IQBCore.IQBPay.Models.O2O
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        /// <summary>
+        /// 地址属于哪个供应商
+        /// </summary>
+        public int UserId { get; set; }
+
         [MaxLength(20)]
         public string Code { get; set; }
 

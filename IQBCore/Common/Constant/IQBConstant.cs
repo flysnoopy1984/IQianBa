@@ -23,6 +23,13 @@ namespace IQBCore.Common.Constant
         /// </summary>
         public const string SK_UserPayTime = "UserPayTime";
 
+        /// <summary>
+        /// O2O对应的代理QrUserId
+        /// </summary>
+        public const string SK_O2OQrUserId = "O2OQrUserId";
+
+        public const string SK_O2OAgentOpenId = "O2OAgentOpenId";
+
         /* Session Key end */
 
         /* Cookie Key begin */
@@ -32,11 +39,13 @@ namespace IQBCore.Common.Constant
         public const string ck_O2OUserPhone = "IQB_O2OUserPhone";
 
         /// <summary>
-        /// 用户登陆O2O使用
+        /// 买家登陆O2O使用
         /// </summary>
         public const string ck_O2OBuyerPhone = "IQB_O2OBuyerPhone";
 
         public const string ck_O2OReceiveAccount = "IQB_O2OReceiveAccount";
+
+      
 
         
         /* Cookie Key end */

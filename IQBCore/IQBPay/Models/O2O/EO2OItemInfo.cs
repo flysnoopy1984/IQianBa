@@ -23,6 +23,14 @@ namespace IQBCore.IQBPay.Models.O2O
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+      
+        /// <summary>
+        /// 商品属于哪个供应商
+        /// </summary>
+        public int UserId { get; set; }
+
+        
+
         [DefaultValue("")]
         [MaxLength(50)]
         public string Name { get; set; }
@@ -41,7 +49,8 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public int Qty { get; set; }
 
-        public int O2ORuleId { get; set; }
+        [MaxLength(20)]
+        public string O2ORuleCode { get; set; }
 
         public RecordStatus RecordStatus { get; set; }
 
@@ -57,18 +66,18 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public void InitFromUpdate(EO2OItemInfo updateObj)
         {
-            this.Name = updateObj.Name;
+            //this.Name = updateObj.Name;
           
-            this.MallId = updateObj.MallId;
-            this.RealAddress = updateObj.RealAddress;
-            this.ImgUrl = updateObj.ImgUrl;
-            this.Amount = updateObj.Amount;
-            this.Qty = updateObj.Qty;
-            this.O2ORuleId = updateObj.O2ORuleId;
-            this.RecordStatus = updateObj.RecordStatus;
-            this.CreateDateTime = DateTime.Now;
-            this.ModifyDateTime = DateTime.Now;
-            this.PriceGroupId = updateObj.PriceGroupId;
+            //this.MallId = updateObj.MallId;
+            //this.RealAddress = updateObj.RealAddress;
+            //this.ImgUrl = updateObj.ImgUrl;
+            //this.Amount = updateObj.Amount;
+            //this.Qty = updateObj.Qty;
+            //this.O2ORuleId = updateObj.O2ORuleId;
+            //this.RecordStatus = updateObj.RecordStatus;
+            //this.CreateDateTime = DateTime.Now;
+            //this.ModifyDateTime = DateTime.Now;
+            //this.PriceGroupId = updateObj.PriceGroupId;
         }
     }
 }

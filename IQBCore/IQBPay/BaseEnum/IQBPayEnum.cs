@@ -67,11 +67,13 @@ namespace IQBCore.IQBPay.BaseEnum
 
     public enum O2OUserRole
     {
+        //没有O2O入口权限
         User =0,
+        //有O2O入口权限
         Agent = 1,
         
         Mall =5,
-        
+        //出库商
         Shippment = 10,       
     }
 
@@ -299,6 +301,13 @@ namespace IQBCore.IQBPay.BaseEnum
         L3Agent = 4,
         MidStore = 5,
         O2OWareHouse =20,
+
+       /// <summary>
+       /// 资金转给自己
+       /// </summary>
+        Self = 40,
+
+        PP =100,
       
     }
 
@@ -346,7 +355,7 @@ namespace IQBCore.IQBPay.BaseEnum
 
     public enum O2OOrderStatus
     {
-        //初始化
+        //商品已选择
         OpenOrder =0,
 
         //真实订单上传
@@ -366,6 +375,8 @@ namespace IQBCore.IQBPay.BaseEnum
         //支付用户
         Payment=18,
 
+        UserClose = -2,
+
         //订单完成
         Complete=50,
 
@@ -374,6 +385,15 @@ namespace IQBCore.IQBPay.BaseEnum
         Settle_Payment=1418,
     }
 
-   
+    public enum UserAccountType
+    {
+        /// <summary>
+        /// 出库商
+        /// </summary>
+        O2OShippment = 10,
+
+    }
+
+
 
 }

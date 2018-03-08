@@ -1,10 +1,12 @@
-﻿using IQBCore.Common.Constant;
+﻿using EntityFramework.Extensions;
+using IQBCore.Common.Constant;
 using IQBCore.Common.Helper;
 using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.Json;
 using IQBCore.IQBPay.Models.O2O;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.User;
+using IQBCore.Model;
 using IQBPay.Core;
 using IQBPay.DataBase;
 using System;
@@ -12,6 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
+
 
 namespace IQBPay.Controllers
 {
@@ -25,6 +29,7 @@ namespace IQBPay.Controllers
 
         #region Item
 
+        [O2OShipment()]
         public ActionResult ItemList()
         {
             return View();
@@ -36,6 +41,8 @@ namespace IQBPay.Controllers
             var pageIndex = Convert.ToInt32(Request["pageIndex"]);
             var pageSize = Convert.ToInt32(Request["pageSize"]);
             var MallId =  Convert.ToInt32(Request["MallId"]);
+
+            int UserId = base.GetUserSession().Id;
 
             List<RO2OItemInfo> result = new List<RO2OItemInfo>();
             using (AliPayContent db = new AliPayContent())
@@ -49,13 +56,16 @@ namespace IQBPay.Controllers
                     ImgUrl = o.ImgUrl,
                     Qty = o.Qty,
                     RealAddress = o.RealAddress,
-                    O2ORuleId = o.O2ORuleId,
+                    O2ORuleCode = o.O2ORuleCode,
                     RecordStatus = o.RecordStatus,
                     CreateDateTime = o.CreateDateTime,
                     ModifyDateTime = o.ModifyDateTime,
+                    UserId = o.UserId,
                   
                 });
-                if(MallId>0)
+                if (base.GetUserSession().UserRole != UserRole.Administrator)
+                    list = list.Where(o => o.UserId == UserId);
+                if (MallId>0)
                 {
                     list = list.Where(o => o.MallId == MallId);
                 }
@@ -69,10 +79,7 @@ namespace IQBPay.Controllers
                     result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
                 }
             }
-
             return Json(result);
-
-           
         }
 
 
@@ -89,15 +96,40 @@ namespace IQBPay.Controllers
                     {
                        return ErrorResult("没有找到对应的金额价格组,请联系管理员");
                     }
-                    obj.PriceGroupId = pg.Id;
+                    
                     if (obj.Id > 0)
                     {
-                        EO2OItemInfo updateObj = db.DBO2OItemInfo.Where(o => o.Id == obj.Id).FirstOrDefault();
-                        updateObj.InitFromUpdate(obj);
-                        db.Update<EO2OItemInfo>(updateObj);
+                        db.DBO2OItemInfo.Where(o => o.Id == obj.Id).Update(s => new EO2OItemInfo
+                        {
+                            Name = obj.Name,
+                            Amount = obj.Amount,
+                            ImgUrl = obj.ImgUrl,
+                            Qty = obj.Qty,
+                            RealAddress = obj.RealAddress,
+                            MallId = obj.MallId,
+                        
+                            O2ORuleCode = obj.O2ORuleCode,
+                            RecordStatus = obj.RecordStatus,
+                          
+                            ModifyDateTime = DateTime.Now,
+                            PriceGroupId = pg.Id,
+                    });
+                     //   db.SaveChanges();
+                      //  db.DBO2OItemInfo.Where(o => o.Id == obj.Id
+                        //EO2OItemInfo updateObj = 
+                        //updateObj.InitFromUpdate(obj);
+                        //db.Update<EO2OItemInfo>(updateObj);
                     }
                     else
                     {
+                        
+                        obj.UserId =base.GetUserSession().Id;
+                        if (base.GetUserSession().Id == 0)
+                        {
+                            result.IsSuccess = false;
+                            result.IntMsg = -1;
+                            return Json(result);
+                        }
                         db.Insert<EO2OItemInfo>(obj);
                     }
                 }
@@ -176,7 +208,7 @@ namespace IQBPay.Controllers
             HashO2OMall_Rule result = new HashO2OMall_Rule();
             using (AliPayContent db = new AliPayContent())
             {
-                var rule = db.Database.SqlQuery<HashO2ORule>("select Id,Name from O2ORule").ToList();
+                var rule = db.Database.SqlQuery<HashO2ORule>("select Id,Name,Code from O2ORule").ToList();
                 if (rule != null)
                     result.HashO2ORule = rule;
                 var mall = db.Database.SqlQuery<HashO2OMall>("select Id,Name,O2ORuleId from O2OMall").ToList();
@@ -456,8 +488,11 @@ namespace IQBPay.Controllers
         #endregion
 
         #region Address
+
+        [O2OShipment()]
         public ActionResult AddrList()
         {
+            
             return View();
         }
 
@@ -476,6 +511,14 @@ namespace IQBPay.Controllers
                     }
                     else
                     {
+                        obj.UserId = base.GetUserSession().Id;
+                        if(base.GetUserSession().Id ==0)
+                        {
+                            result.IsSuccess = false;
+                            result.IntMsg = -1;
+                            return Json(result);
+
+                        }
                         db.Insert<EO2ODeliveryAddr>(obj);
                     }
                 }
@@ -494,7 +537,7 @@ namespace IQBPay.Controllers
             var pageIndex = Convert.ToInt32(Request["pageIndex"]);
             var pageSize = Convert.ToInt32(Request["pageSize"]);
             List<RO2ODeliveryAddr> result = new List<RO2ODeliveryAddr>();
-
+            int UserId = base.GetUserSession().Id;
             using (AliPayContent db = new AliPayContent())
             {
                 var list = db.DBO2ODeliveryAddr.Select(o => new RO2ODeliveryAddr
@@ -505,7 +548,11 @@ namespace IQBPay.Controllers
                     Address = o.Address,
                     City = o.City,
                     RecordStatus = o.RecordStatus,
+                    UserId = o.UserId,
                 });
+                if(base.GetUserSession().UserRole != UserRole.Administrator)
+                    list = list.Where(o=>o.UserId == UserId);
+
                 list = list.OrderByDescending(o => o.Id);
                 if (pageIndex == 0)
                 {
@@ -525,9 +572,9 @@ namespace IQBPay.Controllers
         public ActionResult Login()
         {
             string UserPhone = CookieHelper.getCookie(IQBConstant.ck_O2OUserPhone);
-            if(!string.IsNullOrEmpty(UserPhone))
+            if (!string.IsNullOrEmpty(UserPhone))
                 ViewBag.O2OUserPhone = UserPhone;
-            
+
             return View();
         }
 
@@ -578,8 +625,15 @@ namespace IQBPay.Controllers
         [HttpPost]
         public ActionResult OrderListQuery(InO2OOrder InO2OOrder)
         {
-
-            List<RO2OOrder> result = new List<RO2OOrder>();
+            UserSession userSession = GetUserSession();
+            NResult<RO2OOrder> result = new NResult<RO2OOrder>();
+            if(userSession.Id == 0)
+            {
+                result.IsSuccess = false;
+                result.IntMsg = -1;
+                return Json(result);
+            }
+          
             try
             {
                 using (AliPayContent db = new AliPayContent())
@@ -621,17 +675,22 @@ where o.CreateDateTime between cast('{0}' as datetime) and cast('{1}' as datetim
                         else
                             sql += string.Format(" and o.O2OOrderStatus ={0}", Convert.ToInt32(InO2OOrder.O2OOrderStatus));
                     }
+                    if(userSession.UserRole != UserRole.Administrator)
+                    {
+                        sql  += string.Format(" and o.WHUserId ={0}", userSession.Id);
+                    }
+
                     sql += " order by o.CreateDateTime desc";
 
                     var list = db.Database.SqlQuery<RO2OOrder>(sql);
 
                     if (InO2OOrder.pageIndex == 0)
                     {
-                        result = list.Take(InO2OOrder.pageSize).ToList();
+                        result.resultList = list.Take(InO2OOrder.pageSize).ToList();
                     }
                     else
                     {
-                        result = list.Skip(InO2OOrder.pageIndex * InO2OOrder.pageSize).Take(InO2OOrder.pageSize).ToList();
+                        result.resultList = list.Skip(InO2OOrder.pageIndex * InO2OOrder.pageSize).Take(InO2OOrder.pageSize).ToList();
                     }
                 }
             }
@@ -712,21 +771,26 @@ where o.O2ONo = '{0}'";
             }
             return Json(result);
 
-
         }
+
+
 
         public ActionResult OrderListForSettlement()
         {
             return View();
         }
 
+      
         public ActionResult OrderSettlement()
         {
             string O2ONo = Request.QueryString["O2ONo"];
             EO2OOrder obj = null;
+            int UserId = base.GetUserSession().Id;
+            ViewBag.UserId = UserId;
+
             if (string.IsNullOrEmpty(O2ONo))
             {
-
+               
             }
             else
             {
@@ -738,6 +802,112 @@ where o.O2ONo = '{0}'";
             if (obj == null)
                 obj = new EO2OOrder();
             return View(obj);
+        }
+
+        /// <summary>
+        /// 修改订单状态从结算到待支付给用户
+        /// -4 订单状态不正确无法结算
+        /// -3 出库商账户没有设置
+        /// -2 订单号未获取
+        /// -1 session失效
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult OrderSettlementToPP()
+        {
+            string O2ONo = Request["O2ONo"];
+            OutAPIResult result = new OutAPIResult();
+            int UserId = GetUserSession().Id;
+            try
+            {
+                if (string.IsNullOrEmpty(O2ONo))
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMsg = "订单号未获取";
+                    result.IntMsg = -2;
+                    return Json(result);
+                }
+                if (UserId == 0)
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMsg = "session失效";
+                    result.IntMsg = -1;
+                    return Json(result);
+                }
+                using (AliPayContent db = new AliPayContent())
+                {
+                    //修改订单状态
+                    EO2OOrder order = db.DBO2OOrder.Where(o => o.O2ONo == O2ONo).FirstOrDefault();
+                    if (order.O2OOrderStatus != O2OOrderStatus.Settlement)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = "订单状态不正确无法结算";
+                        result.IntMsg = -4;
+                        return Json(result);
+                    }
+                    order.O2OOrderStatus = O2OOrderStatus.Payment;
+                    order.SettlementDateTime = DateTime.Now;
+                    order.SettlementUserId = UserId;
+                    
+                  
+                    EUserAccountBalance ub = db.DBUserAccountBalance.Where(a => a.UserId == order.WHUserId && 
+                                                                          a.UserAccountType == UserAccountType.O2OShippment).FirstOrDefault();
+                    if(ub == null || string.IsNullOrEmpty(ub.AliPayAccount))
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = "出库商账户没有设置";
+                        result.IntMsg = -3;
+                        return Json(result);
+                    }
+                  //  EUserInfo ui = db.DBUserInfo.Where(a => a.Id == order.WHUserId).FirstOrDefault();
+                    /*创建结算单明细
+                     * PP :转账给平台（从押金扣除）
+                    */
+                    EO2OTranscationWH trans = new EO2OTranscationWH
+                    {
+                        ItemId = order.ItemId,
+                        O2ONo = order.O2ONo,
+                        MallId = order.MallId,
+                        MallOrderNo = order.MallOrderNo,
+                        TransferTarget = TransferTarget.PP,
+                        ReceiveAccount = ub.AliPayAccount,
+                        TransDateTime = DateTime.Now,
+                        FeeRate = order.WHRate,
+                        TransferAmount = -order.OrderAmount * ((100-order.WHRate)/100),
+                    };
+                    db.DBO2OTranscationWH.Add(trans);
+
+                    /*创建结算单明细
+                    * O2OWareHouse :转账给出库商（）
+                    */
+                    trans = new EO2OTranscationWH
+                    {
+                        ItemId = order.ItemId,
+                        O2ONo = order.O2ONo,
+                        MallId = order.MallId,
+                        MallOrderNo = order.MallOrderNo,
+                        TransferTarget = TransferTarget.O2OWareHouse,
+                        ReceiveAccount = ub.AliPayAccount,
+                        TransDateTime = DateTime.Now,
+                        FeeRate = order.WHRate,
+                        TransferAmount = order.OrderAmount * (order.WHRate/100),
+                    };
+                    db.DBO2OTranscationWH.Add(trans);
+
+
+                    db.SaveChanges();
+
+                  
+
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+               
+            }
+         
+            return Json(result);
         }
 
         [HttpPost]
@@ -842,8 +1012,11 @@ where o.O2ONo = '{0}'";
             return Json(result);
         }
 
+        [ValidateInput(false)]
         public ActionResult SaveStep(EO2OStep obj)
         {
+           
+
             OutAPIResult result = new OutAPIResult();
             try
             {
@@ -936,7 +1109,7 @@ where o.O2ONo = '{0}'";
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    result = db.DBO2ORelRuleStep.ToList();
+                    result = db.DBO2ORelRuleStep.OrderBy(a=>a.Seq).ToList();
                 }
             }
 
@@ -1034,6 +1207,8 @@ where o.O2ONo = '{0}'";
             }
             return Json(result);
          }
+
+         
 
         [HttpPost]
         public ActionResult CreateTransData()

@@ -17,6 +17,7 @@ using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.InParameter;
 using System.Configuration;
+using IQBCore.Model;
 
 namespace IQBPay.Controllers
 {
@@ -481,5 +482,59 @@ namespace IQBPay.Controllers
         {
             return View();
         }
+
+        #region 账户余额
+       
+        public ActionResult ReChargeUserAccountBalance()
+        {
+            UserSession us = this.GetUserSession();
+            ViewBag.CurrentUserId = us.Id;
+            ViewBag.IsAdmin = us.UserRole == UserRole.Administrator ? true : false;
+            return View();
+
+        }
+
+        /// <summary>
+        /// 获取所有出货商账户
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetShipmentAccount()
+        {
+            NResult<RUserAccountBalance> result = new NResult<RUserAccountBalance>(); 
+            try
+            {
+                UserSession us = GetUserSession();
+                using (AliPayContent db = new AliPayContent())
+                {
+                    string sql = @"select b.Id,b.UserId,ui.OpenId,b.AliPayAccount,b.UserAccountType,ui.Name as UserName,b.O2OShipBalance,o.O2OOnOrderAmount from UserAccountBalance as b
+join  UserInfo as ui on b.UserId = ui.Id
+join 
+(
+select sum(o.OrderAmount) as O2OOnOrderAmount,o.WHUserId from O2OOrder as o
+group by o.WHUserId
+) as o on o.WHUserId = ui.Id
+where ui.O2OUserRole = {0}";
+                    if(us.UserRole != UserRole.Administrator)
+                    {
+                        sql += " and b.UserId =" + us.Id;
+                    }
+                    sql = string.Format(sql, Convert.ToInt32(O2OUserRole.Shippment));
+
+                    List<RUserAccountBalance> list = db.Database.SqlQuery<RUserAccountBalance>(sql).ToList();
+
+
+                    result.resultList = list;
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+           
+            return Json(result);
+        }
+        #endregion
     }
 }

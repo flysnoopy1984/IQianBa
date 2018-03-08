@@ -16,7 +16,7 @@ function Review(act)
     var IsApprove = true;
     if (act == 0)
     {
-        if (O2ONo = "" || MallOrderNo == "" || OrderAmount == 0) {
+        if (O2ONo == "" || MallOrderNo == "" || OrderAmount == 0) {
             alert("必要字段没有填写");
             return;
         }
@@ -24,7 +24,7 @@ function Review(act)
     else
     {
         IsApprove = false;
-        if (O2ONo = "" || Reason == "") {
+        if (O2ONo == "" || Reason == "") {
             alert("必要字段没有填写");
             return;
         }
@@ -34,7 +34,7 @@ function Review(act)
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "O2ONo": O2ONo, "Reason": Reason, "MallOrderNo": MallOrderNo, "OrderAmount": OrderAmount, "IsApprove": IsApprove },
+        data: { "O2ONo": O2ONo, "RejectReason": Reason, "MallOrderNo": MallOrderNo, "OrderAmount": OrderAmount, "IsApprove": IsApprove },
         url: url,
         success: function (data) {
             if (data.IsSuccess) {

@@ -113,6 +113,12 @@ function Save(obj) {
                 alert("操作成功！");
             }
             else {
+                if (data.IntMsg == -1)
+                {
+                    alert("未识别当前用户，请重新登录");
+                    window.location.hre = "/O2O/Login";
+                }
+                else
                 alert(data.ErrorMsg);
             }
         },

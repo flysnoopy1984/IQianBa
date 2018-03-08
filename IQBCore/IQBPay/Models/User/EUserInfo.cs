@@ -36,10 +36,10 @@ namespace IQBCore.IQBPay.Models.User
         /// </summary>
         public bool HasQRHuge { get; set; }
 
-        /// <summary>
-        /// 是否有O2O码
-        /// </summary>
-        public bool HasQRO2O { get; set; }
+        ///// <summary>
+        ///// 是否有O2O码
+        ///// </summary>
+        //public bool HasQRO2O { get; set; }
 
         /// <summary>
         /// 是否已经通过首单费
@@ -105,6 +105,8 @@ namespace IQBCore.IQBPay.Models.User
 
         public O2OUserRole O2OUserRole { get; set; }
 
+
+       
         
         public void InitRegiser()
         {

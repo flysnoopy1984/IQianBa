@@ -1,5 +1,6 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.AccountPayment;
+using IQBCore.IQBPay.Models.O2O;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.SMS;
@@ -34,7 +35,7 @@ namespace IQBWX.DataBase.IQBPay
 
         public DbSet<ESMSLog> DBSMSLog { get; set; }
 
-        public DbSet<ESMSVerification> DBSMSBuyerOrder { get; set; }
+        public DbSet<ESMSVerification> DBSMSVerification { get; set; }
         public DbSet<EUserInfo> DBUserInfo { get; set; }
 
         public DbSet<EStoreInfo> DBStoreInfo { get; set; }
@@ -110,8 +111,63 @@ namespace IQBWX.DataBase.IQBPay
         }
         #endregion
 
-      
+        #region O2O
+        public DbSet<EO2OItemInfo> DBO2OItemInfo { get; set; }
 
-     
+        public DbSet<EO2OMall> DBO2OMall { get; set; }
+
+        public DbSet<EO2ORule> DBO2ORule { get; set; }
+
+        public DbSet<EO2OPriceGroup> DBO2OPriceGroup { get; set; }
+
+        public DbSet<EO2OOrder> DBO2OOrder { get; set; }
+
+        public DbSet<EO2ODeliveryAddr> DBO2ODeliveryAddr { get; set; }
+
+        public DbSet<EO2OTranscationWH> DBO2OTranscationWH { get; set; }
+
+        public DbSet<EO2OBuyer> DBO2OBuyer { get; set; }
+
+        public DbSet<EO2OStep> DBO2OStep { get; set; }
+
+        public DbSet<RelRuleStep> DBO2ORelRuleStep { get; set; }
+
+        public DbSet<EO2OAgentFeeRate> DBO2OAgentFeeRate { get; set; }
+
+        public DbSet<EO2ORoleCharge> DBO2ORoleCharge { get; set; }
+
+        public DbSet<EO2OBuyerReceiveAddr> DBO2OBuyerReceiveAddr { get; set; }
+
+        #endregion
+
+        #region Interface
+        public T Update<T>(T entity) where T : class
+        {
+            var set = this.Set<T>();
+            set.Attach(entity);
+            this.Entry<T>(entity).State = EntityState.Modified;
+            this.SaveChanges();
+            return entity;
+        }
+
+        public T Insert<T>(T entity) where T : class
+        {
+            this.Set<T>().Add(entity);
+
+            this.SaveChanges();
+            return entity;
+        }
+
+        public void Delete<T>(T entity) where T : class
+        {
+            this.Entry<T>(entity).State = EntityState.Deleted;
+            this.SaveChanges();
+        }
+
+      
+       
+        #endregion
+
+
     }
 }

@@ -1,0 +1,27 @@
+﻿body {
+  overflow: hidden;
+}
+
+.o2o_header {
+  height: 50px;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  text-align: center;
+  line-height: 50px;
+  border: 1px solid #f1f1f1;
+  font-size: 21px;
+}
+
+.o2o_content {
+  width: 100%;
+  position: absolute;
+  top: 50px;
+  height: 100%;
+  padding: 0 15px;
+}
+
+.HR3_Red{height:3px;border:none;border-top:3px double red;}
+.HR3_668ff2{height:3px;border:none;border-top:3px double #668ff2;}
+.HR3_00ff21{height:3px;border:none;border-top:3px double #00ff21;}
+.HR2_Black{height:2px;border:none;border-top:2px double #4f4e4e;}

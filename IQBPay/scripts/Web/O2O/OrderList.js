@@ -90,11 +90,23 @@ function Query(NeedClearn,_PageIndex)
         },
         url: url,
         success: function (data) {
-            var arrLen = data.length;
-            if (arrLen > 0) {
-                generateData(data);
-                pageIndex++;            
+            if (data.IsSuccess)
+            {
+                var arrLen = data.resultList.length;
+                if (arrLen > 0) {
+                    generateData(data.resultList);
+                    pageIndex++;
+                }
             }
+            else
+            {
+                if(data.IntMsg == -1)
+                {
+                    alert("Session 失效");
+                    window.location.href = "/O2O/Login";
+                }
+            }
+          
         },
         error: function (xhr, type) {
 
@@ -103,6 +115,11 @@ function Query(NeedClearn,_PageIndex)
 
         }
     });
+}
+
+function OpenWin(url)
+{
+    window.open(url);
 }
 
 function generateData(result)
@@ -130,13 +147,13 @@ function generateData(result)
         var op = '<ul class="OrderAction">';
         if (FromPage == 0)
         {
-            if (result[i].O2OOrderStatus ==6)
-                op += '<li><a href="/O2O/OrderReview?O2ONo=' + result[i].O2ONo + '">审核</a></li>';
+           // if (result[i].O2OOrderStatus ==6)
+            op += '<li><a href=javascript:OpenWin("/O2O/OrderReview?O2ONo=' + result[i].O2ONo + '")>审核</a></li>';
         }
         if (FromPage == 1)
         {
             if (result[i].O2OOrderStatus == 14)
-                op += '<li><a href="/O2O/OrderSettlement?O2ONo=' + result[i].O2ONo + '">结算</a></li>';
+                op += '<li><a href=javascript:OpenWin("/O2O/OrderSettlement?O2ONo=' + result[i].O2ONo + '")>结算</a></li>';
         }
         op+='</ul>';
         //操作

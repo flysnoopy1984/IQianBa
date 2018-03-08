@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "MallList";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
+}
+<link href="@Url.Scrpit("~/Content/Wap/O2O/MallList.css")" rel="stylesheet" />
+
+<script src="@Url.Scrpit("~/scripts/Wap/O2O/MallList.js")"></script>
+
+<header class="o2o_header">
+    @*<div class="header_back" onclick="historyBack();"></div>*@
+    <div class="header_title">o2o商城</div>
+</header>
+<div class="o2o_content">
+    <div id="shop_list">
+    </div>
+</div>
+  <!-- Modal -->
+<div class="o2o_modal">
+    <div class="o2o_modal_content" onclick="cancelBubble(event);">
+        <div class="o2o_modal_content_body">
+            <div class="o2o_modal_content_header">请先登陆<span id="header"></span>账号</div>
+            <div class="o2o_modal_content_container">
+                <input id="name" type="text" placeholder="请输入账户" class="form-control get_phone_check_input" />
+                <input id="password" type="password" placeholder="请输入密码" class="form-control get_phone_check_input" />
+            </div>
+            <div class="o2o_modal_content_btn" onclick="login();">确认并开始购物</div>
+        </div>
+        <div class="o2o_modal_close">
+            <div class="o2o_modal_close_body" onclick="closeModal();"></div>
+        </div>
+    </div>
+</div>

@@ -1,3 +1,0 @@
-1.所有Session查询
-2 所有js查询，主要查询Url需要包含/IQB
-3.getOpenId查询是否有Test

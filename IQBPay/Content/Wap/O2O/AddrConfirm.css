@@ -1,0 +1,122 @@
+html, body {
+  overflow: hidden;
+}
+
+.header_back {
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-image: url('../../Images/O2O/back.png');
+  position: absolute;
+  display: inline-block;
+  z-index: 888;
+  margin-top: 15px;
+  left: 10px;
+}
+
+.header_title {
+  text-align: center;
+}
+
+.o2o_header {
+  height: 50px;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  text-align: center;
+  line-height: 50px;
+  border: 1px solid #f1f1f1;
+  font-size: 21px;
+}
+
+.o2o_content {
+  width: 100%;
+  position: absolute;
+  top: 50px;
+  height: 90%;
+  overflow-y: scroll;
+}
+
+.o2o_warn {
+  background-color: #ffe1d5;
+  font-size: 12px;
+  color: #333333;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 10px;
+}
+.o2o_notice_list {
+  position: relative;
+}
+.o2o_notice {
+  display:none;
+}
+#o2o_notice_0 {
+  display: block;
+}
+.o2o_notice_title {
+  display: inline-flex;
+  font-size:16px;
+  width: 95%;
+  vertical-align: middle;
+  padding: 8px;
+}
+
+.o2o_notice_btn {
+  /*display: inline-flex;*/
+  width: 98%;
+  vertical-align: middle;
+  justify-content: center;
+  text-align:right;
+  padding:8px;  
+}
+
+.gap_border {
+  height: 8px;
+  width: 100%;
+  background-image: url('../../Images/O2O/border.png');
+}
+
+.confirm_btn {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm_btn > button {
+  background-color: #999999;
+  color: #ffffff;
+  -moz-box-shadow: 0px 8px 15px rgba(255, 75, 89, 0.2);
+  /* 老的 Firefox */
+  box-shadow: 0px 8px 15px rgba(255, 75, 89, 0.2);
+  width: 80%;
+  height: 45px;
+  margin: 0 auto;
+  line-height: 45px;
+  text-align: center;
+  border-color: #ffffff;
+}
+
+
+.confirm_iframe_wrapper { /* v3 iframe在iphone不能滚动的问题解决，在iframe外面加一个包裹的div*/ /*v4.废弃iframe*/
+  -webkit-overflow-scrolling:touch;
+  overflow:auto;
+  width:100%;
+  height: 75%;
+  position: relative;
+}
+
+#confirm_iframe { /*v4.废弃iframe*/
+  position: absolute;
+  /* width: 200px !important; */
+  width: 1px;
+  min-width: 100%;
+  *width: 100%; /*v4. 适应宽度*/
+
+  height: 100%;
+  border: 0;
+}

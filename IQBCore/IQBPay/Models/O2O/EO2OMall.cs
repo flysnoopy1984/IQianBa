@@ -35,6 +35,9 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public double FeeRate { get; set; }
 
+        [MaxLength(100)]
+        public string MallLogoPath { get; set; }
+
         public void InitFromUpdate(EO2OMall updateObj)
         {
             this.Name = updateObj.Name;
@@ -42,6 +45,7 @@ namespace IQBCore.IQBPay.Models.O2O
             this.Description = updateObj.Description;
             this.O2ORuleId = updateObj.O2ORuleId;
             this.RecordStatus = updateObj.RecordStatus;
+           // this.MallLogoPath = updateObj.MallLogoPath;
 
             this.FeeRate = updateObj.FeeRate;
         }

@@ -19,6 +19,7 @@ function ConfigUploadFile(n)
     $("#IdCardFile"+n).fileupload({
         autoUpload: true,
         url: url,
+       formdata:"",
         dataType: 'json',
         allowedTypes: /(.|\/)(jpeg|png|jpg)$/i,
         showStop: true,

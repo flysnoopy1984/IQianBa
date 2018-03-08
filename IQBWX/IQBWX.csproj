@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -24,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -146,6 +148,7 @@
     <Content Include="Content\Css\List.css" />
     <Content Include="Content\Css\MainCss.css" />
     <Content Include="Content\Css\idangerous.swiper.css" />
+    <Content Include="Content\Css\O2O\O2OMain.css" />
     <Content Include="Content\Css\PP.css" />
     <Content Include="Content\Css\DoTransfer.css" />
     <Content Include="Content\Css\ReceiveOrder.css" />
@@ -228,6 +231,7 @@
     <Content Include="Content\Script\IQBPay\DoTransfer.js" />
     <Content Include="Content\Script\IQBPay\InviteCode.js" />
     <Content Include="Content\Script\IQBPay\News.js" />
+    <Content Include="Content\Script\IQBPay\O2O\AgentFeeRate.js" />
     <Content Include="Content\Script\IQBPay\Pay2.js" />
     <Content Include="Content\Script\IQBPay\PayWithAccount.js" />
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
@@ -286,8 +290,10 @@
     <Compile Include="Controllers\Html5Controller.cs" />
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\IQBAsyncController.cs" />
+    <Compile Include="Controllers\O2OWapController.cs" />
     <Compile Include="Controllers\PartyStoreController.cs" />
     <Compile Include="Controllers\PPController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\ValidController.cs" />
     <Compile Include="Controllers\WXBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -419,6 +425,10 @@
     <Content Include="Views\PP\News.cshtml" />
     <Content Include="Views\PartyStore\Tmall.cshtml" />
     <Content Include="Views\HOME\PrivilegeError.cshtml" />
+    <Content Include="Views\Test\TestSMS.cshtml" />
+    <Content Include="Views\Shared\_O2OLayout.cshtml" />
+    <Content Include="Views\O2OWap\EntryAgent.cshtml" />
+    <Content Include="Views\O2OWap\AgentFeeRate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -432,7 +442,6 @@
     <Folder Include="Content\CatchSite\HJB\images\" />
     <Folder Include="Content\Html\" />
     <Folder Include="Models\IQBPay\" />
-    <Folder Include="Views\O2O\" />
     <Folder Include="Views\Valid\" />
   </ItemGroup>
   <ItemGroup>
@@ -444,11 +453,15 @@
       <Name>IQBCore</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>

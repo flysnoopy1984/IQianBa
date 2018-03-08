@@ -1,0 +1,196 @@
+body {
+  overflow: hidden;
+}
+
+.header_title {
+  text-align: center;
+}
+
+.o2o_header {
+  height: 50px;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  text-align: center;
+  line-height: 50px;
+  border: 1px solid #f1f1f1;
+  font-size: 16px;
+}
+
+.o2o_content {
+  width: 100%;
+  position: absolute;
+  top: 50px;
+  display: flex;
+  height: 90%;
+}
+
+#upload_list {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.upload_order {
+  padding: 10px;
+  border: 1px solid #f1f1f1;
+  border-bottom: 10px solid #f1f1f1;
+}
+
+.upload_order_title {
+  font-size: 15px;
+  color: #333333;
+  width: 30%;
+  display: inline-block;
+}
+
+.upload_order_input {
+  display: inline-block;
+  width: 68%;
+}
+.order_input {
+  display: inline-block;
+  vertical-align: middle;
+  border: 0px;
+  text-align: right;
+}
+
+::-webkit-input-placeholder {
+  color: #dddddd !important;
+  font-size: 15px !important;
+}
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #dddddd !important;
+  font-size: 15px !important;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #dddddd !important;
+  font-size: 15px !important;
+}
+
+:-ms-input-placeholder {
+  color: #dddddd !important;
+  font-size: 15px !important;
+}
+
+input:focus {
+  outline: none !important;
+  border-color: #cfdc00 !important;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.4) !important;
+  border-radius: 5px !important;
+}
+
+.upload_order_image_title {
+  font-size: 15px;
+  color: #333333;
+  padding: 10px;
+  border: 1px solid #f1f1f1;
+  text-align:center;
+}
+
+.upload_order_image_list {
+  padding: 20px;
+}
+
+.upload_order_image_done {
+  padding: 0px 0 20px 0;
+  width: 100%;
+  position: relative;
+}
+
+.upload_order_image_done > img{
+  width: 100%;
+}
+
+.upload_order_delete_btn {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  z-index: 99;
+  right: -12px;
+  top: -10px;
+  background-image: url('../../Images/O2O/delete.png');
+  background-size: 100%;
+}
+
+.upload_order_image_doing {
+  margin-bottom: 20px;
+  width: 100%;
+  position: relative;
+}
+
+.upload_order_image_doing > img{
+  width: 100%;
+}
+
+.upload_order_image_doing > .upload_order_cover {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  top: 0;
+  z-index: 99;
+}
+
+.upload_progress {
+  width: 260px;
+  height: 10px;
+  background-color: #dddddd;
+  margin: auto;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.upload_progress_percent {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  background-color: #64c3df;
+}
+
+.submit_btn {
+  width: 100%;
+  height: 60px;
+  border: 1px dashed #dddddd;
+  background-image: url('../../Images/O2O/plus.png');
+  background-size: 25px;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor:pointer;
+}
+
+.upload_btn_group {
+  width: 100%;
+  background-color: #f1f1f1;
+  position: relative;
+  padding: 20px 30px;
+}
+.upload_btn {
+  width: 100%;
+  height: 50px;
+  margin-bottom: 8px;
+  text-align: center;
+  line-height: 50px;
+}
+
+.upload_submit {
+  background-color: #ff4b59;
+  color: #ffffff;
+  -moz-box-shadow: 0px 8px 15px rgba(255, 75, 89, 0.2);
+  /* 老的 Firefox */
+  box-shadow: 0px 8px 15px rgba(255, 75, 89, 0.2);
+  cursor:pointer;
+}
+
+.upload_back {
+   border: 1px solid #000000;
+   cursor:pointer;
+}

@@ -32,5 +32,7 @@ namespace IQBCore.IQBPay.BaseEnum
         UpdateMember=1,
 
         IQB_PayOrder=100,
+
+        O2O_BuyerPhoneVerify = 200,
     }
 }

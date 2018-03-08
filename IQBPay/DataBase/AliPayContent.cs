@@ -42,10 +42,7 @@ namespace IQBPay.DataBase
 
         public DbSet<EAgentCommission> DBAgentCommission { get; set; }
 
-        public DbSet<ESMSLog> DBSMSLog { get; set; }
 
-        public DbSet<ESMSVerification> DBSMSBuyerOrder { get; set; }
-        public DbSet<EUserInfo> DBUserInfo { get; set; }
 
         public DbSet<EStoreInfo> DBStoreInfo { get; set; }
 
@@ -85,7 +82,8 @@ namespace IQBPay.DataBase
         public T Insert<T>(T entity) where T : class
         {
             this.Set<T>().Add(entity);
-            this.SaveChanges();
+           
+                this.SaveChanges();
             return entity;
         }
 
@@ -110,12 +108,18 @@ namespace IQBPay.DataBase
         #endregion
 
         #region User  
+
+        public DbSet<EUserInfo> DBUserInfo { get; set; }
+
         public Boolean IsExistUser(string openId)
         {
             int i = DBUserInfo.Count(u => u.OpenId == openId);
             return (i > 0);
 
         }
+
+        public DbSet<EUserAccountBalance> DBUserAccountBalance { get; set; }
+
         #endregion
 
         #region Store
@@ -275,7 +279,24 @@ namespace IQBPay.DataBase
 
         public DbSet<RelRuleStep> DBO2ORelRuleStep { get; set; }
 
+        public DbSet<EO2OAgentFeeRate> DBO2OAgentFeeRate { get; set; }
+
+        public DbSet<EO2ORoleCharge> DBO2ORoleCharge { get; set; }
+
+        public DbSet<EO2OBuyerReceiveAddr> DBO2OBuyerReceiveAddr { get; set; }
+
+        
+
         #endregion
+
+        #region SMS
+
+
+        public DbSet<ESMSVerification> DBSMSVerification { get; set; }
+
+        public DbSet<ESMSLog> DBSMSLog { get; set; }
+        #endregion
+
 
 
 

@@ -10,7 +10,7 @@ namespace IQBCore.Common.Helper
     public class CookieHelper
     {
         
-        public static HttpCookie setCookie(string key, string value)
+        public static HttpCookie setCookie(string key, string value,int days=30)
         {
             HttpCookie cookie = null;
             if (HttpContext.Current.Request.Cookies[key] == null)
@@ -23,7 +23,7 @@ namespace IQBCore.Common.Helper
                 cookie = HttpContext.Current.Response.Cookies[key];
 
             cookie.Value = value;
-            cookie.Expires = DateTime.Now.AddDays(30);
+            cookie.Expires = DateTime.Now.AddDays(days);
             
 
             return cookie;

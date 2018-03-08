@@ -16,12 +16,15 @@ namespace IQBCore.IQBPay.Models.O2O
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        TransferTarget TransferTarget { get; set; }
+        public TransferTarget TransferTarget { get; set; }
 
 
         public int MallId { get; set; }
 
         public int ItemId { get; set; }
+
+        [MaxLength(20)]
+        public string O2ONo { get; set; }
 
         [MaxLength(200)]
         public string MallOrderNo { get; set; }

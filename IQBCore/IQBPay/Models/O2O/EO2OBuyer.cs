@@ -25,5 +25,11 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public DateTime LastBuyerDate { get; set; }
 
+        public EO2OBuyer()
+        {
+            LastBuyerDate = DateTime.Now;
+           
+        }
+
     }
 }

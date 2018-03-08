@@ -31,7 +31,10 @@ function GetCellHtml() {
     ctrl += '<li><span><class="LeftSpan">LeftName：</span><input id="LeftName" type="text" class="form-control" value="{2}" /></li>';
     ctrl += '</ul>';
     ctrl += '<ul class="UlHorizontal">';
-    ctrl += '<li><span class="TopSpan">BeginContent：</span><textarea id="BeginContent" style="" class="form-control_textarea_ext">{3}</textarea></li>';
+    ctrl += '<li><span class="TopSpan">BeginContent：</span><textarea id="BeginContent" style="" class="form-control_textarea_ext">{3}</textarea></li>'; 
+    ctrl += '</li>';
+    ctrl += '</ul>';
+    ctrl += '<ul class="UlHorizontal">';
     ctrl += '<li><span class="TopSpan">EndContent：</span><textarea id="EndContent" style="" class="form-control_textarea_ext">{4}</textarea></li>';
     ctrl += '</li>';
     ctrl += '</ul>';

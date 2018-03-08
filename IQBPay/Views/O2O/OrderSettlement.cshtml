@@ -70,6 +70,19 @@
             width: auto;
         }
     </style>
+    <script type="text/javascript">
+        function CheckPage()
+        {
+            if(@ViewBag.UserId == 0)
+            {
+                return -1;
+            }
+            if(@Model.Id ==0)
+                return -2;
+            return 0;
+        }
+    </script>
+
 </head>
 <body>
     <div id="MainContent">
@@ -99,11 +112,12 @@
         <div id="buttonList">
             <ul class="UlHorizontal" style="text-align:center; margin-top:20px;">
                 <li>
-                    <button id="btnSearch" type="button" class="btn btn-primary" onclick="Approval();">收货确认并打款</button>
+                    <button id="btnConfirm" type="button" class="btn btn-primary" onclick="ConfirmWithPay();">收货确认并打款</button>
                 </li>
 
             </ul>
         </div>
+      <input type="hidden" id="O2ONo" value="@Model.O2ONo" />
     </div>
 </body>
 </html>

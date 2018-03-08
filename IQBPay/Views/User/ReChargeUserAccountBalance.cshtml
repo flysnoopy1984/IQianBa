@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "ReChargeUserAccountBalance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section SubMenu1{
+   出货商户
+}
+@section SubMenu2{
+    账户余额
+}
+<link href="@Url.Scrpit("~/Content/Style/Web/Info.css")" rel="stylesheet" />
+<style type="text/css">
+    .form-control{
+        width:200px;
+        display:inline-block;
+    }
+    #BalanceArea div{
+        margin-bottom:10px;
+        margin-top:10px;
+    }
+</style>
+<script src="@Url.Scrpit("~/scripts/Web/ReChargeUserAccountBalance.js")"></script>
+
+
+
+<div>
+    出库商：<select id="shipmentList"></select>
+</div>
+<div id="BalanceArea">
+    <div>账户余额：<input type="text" id="O2OShipBalance" class="form-control" /></div>
+    <div>在单金额：<input type="text" id="O2OOnOrderAmount" class="form-control"  /></div>
+</div>
+
+<div>
+    <input type="hidden" id="CurrentUserId" value="@ViewBag.CurrentUserId" />
+    <input type="hidden" id="IsAdmin" value="@ViewBag.IsAdmin" />
+</div>
