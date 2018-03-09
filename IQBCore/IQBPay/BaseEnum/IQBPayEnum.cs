@@ -301,11 +301,13 @@ namespace IQBCore.IQBPay.BaseEnum
         L3Agent = 4,
         MidStore = 5,
         O2OWareHouse =20,
+     
+
 
        /// <summary>
        /// 资金转给自己
        /// </summary>
-        Self = 40,
+        Self = 50,
 
         PP =100,
       
@@ -375,7 +377,11 @@ namespace IQBCore.IQBPay.BaseEnum
         //支付用户
         Payment=18,
 
-        UserClose = -2,
+        Payment_UserClose = 1845,
+
+        Settle_Payment_UserClose = 141845,
+
+        UserClose = 45,
 
         //订单完成
         Complete=50,

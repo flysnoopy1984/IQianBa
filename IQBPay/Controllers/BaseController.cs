@@ -119,6 +119,9 @@ namespace IQBPay.Controllers
             }
         }
 
+        /// <summary>
+        /// 转账的App应用
+        /// </summary>
         public static EAliPayApplication SubApp
         {
             get

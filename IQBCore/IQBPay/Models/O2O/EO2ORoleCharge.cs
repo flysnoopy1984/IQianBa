@@ -27,8 +27,10 @@ namespace IQBCore.IQBPay.Models.O2O
         public O2OUserRole O2OUserRole { get; set; }
 
         /// <summary>
-        /// 佣金费
+        /// 佣金费率
         /// </summary>
         public double ChargeFee { get; set; }
+
+        
     }
 }

@@ -32,8 +32,23 @@ InitPage();
    * [跳转到我要购物页面]
    */
 orderPdt = function () {
-   
-      window.location.href = "/O2OWap/MallList?aoId=" + aoId;
+     var url = "/O2OWap/HasBuyerOrder";
+     $.ajax({
+         type: 'post', 
+         url: url,
+         success: function (data) {
+             if (data == true) {
+                 alert("您有未完成的订单，请先处理");
+                 lookOrderList();
+             }
+             else
+                 window.location.href = "/O2OWap/MallList?aoId=" + aoId;
+         },
+         error: function (xhr, type) {
+             alert("error");
+         }
+     });
+    
   };
 
   /**

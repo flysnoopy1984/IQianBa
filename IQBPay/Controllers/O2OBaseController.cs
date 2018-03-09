@@ -9,17 +9,18 @@ namespace IQBPay.Controllers
 {
     public class O2OBaseController : BaseController
     {
-        public bool CheckaoId()
+        public string CheckaoId()
         {
             string aoId = Request.QueryString["aoId"];
-            if (!string.IsNullOrEmpty(aoId))
-            {
+            
+            if (string.IsNullOrEmpty(aoId))
+                aoId = Request["aoId"];
+            if(!string.IsNullOrEmpty(aoId))
                 Session[IQBConstant.SK_O2OAgentOpenId] = aoId;
-            }
-            else
-                return false;
 
-            return true;
+            return aoId;
+
+           
         }
     }
 }

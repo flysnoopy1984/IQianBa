@@ -20,12 +20,52 @@ function CreateDemoData() {
 $(document).ready(function () {
 
  
-    InitCondition();
+    Init();
 
 });
 
-function InitCondition() {
+function Init() {
   
+    var url = "/User/GetShipmentAccount";
+
+    $.ajax({
+        type: 'post',
+        url: url,
+        data: {},
+        success: function (res) {
+            if (res.IsSuccess) {
+                shipAccountList = res.resultList;
+                if (shipAccountList.length == 0) {
+                    alert("没有找到您的账户余额！");
+                    return;
+                }
+                else {
+                    var obj = shipAccountList[0];
+                  
+                    $("#AliPayAccount").text(obj.AliPayAccount);
+                    $("#O2OShipBalance").text(obj.O2OShipBalance);
+                    if (obj.O2OOnOrderAmount == null)
+                        obj.O2OOnOrderAmount = 0;
+                    $("#O2OOnOrderAmount").text(obj.O2OOnOrderAmount);
+                }
+
+            }
+            else {
+                if (res.IntMsg == -1)
+                {
+                    window.location.href = "/O2O/Login?action=sessionlost";
+                }
+                else
+                alert(res.ErrorMsg);
+
+            }
+
+
+        },
+        error: function (xhr, type) {
+            alert("系统错误！");
+        }
+    });
 
 }
 

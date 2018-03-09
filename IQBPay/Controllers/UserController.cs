@@ -505,11 +505,18 @@ namespace IQBPay.Controllers
             try
             {
                 UserSession us = GetUserSession();
+                //没有登陆
+                if(us.Id ==0 )
+                {
+                    result.IsSuccess = false;
+                    result.IntMsg = -1;
+                    return Json(result);
+                }
                 using (AliPayContent db = new AliPayContent())
                 {
                     string sql = @"select b.Id,b.UserId,ui.OpenId,b.AliPayAccount,b.UserAccountType,ui.Name as UserName,b.O2OShipBalance,o.O2OOnOrderAmount from UserAccountBalance as b
 join  UserInfo as ui on b.UserId = ui.Id
-join 
+left join 
 (
 select sum(o.OrderAmount) as O2OOnOrderAmount,o.WHUserId from O2OOrder as o
 group by o.WHUserId

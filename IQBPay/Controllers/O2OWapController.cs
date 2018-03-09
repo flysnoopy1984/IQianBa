@@ -83,17 +83,17 @@ namespace IQBPay.Controllers
 
         public ActionResult OrderDetail()
         {
-            base.CheckaoId();
+            string aoid = base.CheckaoId();
 
             string Phone = this.GetBuyerPhone();
             if (string.IsNullOrEmpty(Phone))
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index",new {aoid = aoid });
             }
             string Order = this.GetCurrentOrder(Phone);
             if (string.IsNullOrEmpty(Order))
             {
-                return RedirectToAction("MallList");
+                return RedirectToAction("MallList", new { aoid = aoid });
             }
 
             return View();
@@ -302,6 +302,25 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.UserId = 
             return Json(result);
         }
 
+        [HttpPost]
+        public ActionResult HasBuyerOrder()
+        {
+           
+            string Phone = GetBuyerPhone();
+            int orderNum;
+            using (AliPayContent db = new AliPayContent())
+            {
+                orderNum = db.DBO2OOrder.Where(o => o.UserPhone == Phone
+                                           && (o.O2OOrderStatus != O2OOrderStatus.Complete && o.O2OOrderStatus != O2OOrderStatus.UserClose)).Count();
+                if(orderNum>0)
+                {
+                    return Json(true);
+                }
+            }
+            return Json(false);
+               
+        }
+
         public double GetOnOrderAmount(int whUserId)
         {
             double result;
@@ -336,7 +355,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.UserId = 
             string Phone = base.GetBuyerPhone();
             string reqItemId = Request["ItemId"];
             string reqAddrId = Request["AddrId"];
-            string reqQrO2OId = Session[IQBConstant.SK_O2OQrUserId] as string;//Request.QueryString["qrUserId"];
+            string AgentOpenId = CheckaoId();//Request.QueryString["qrUserId"];
             if (string.IsNullOrEmpty(Phone))
             {
                 result.IsSuccess = false;
@@ -355,7 +374,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.UserId = 
                 result.IntMsg = -3;
                 return result;
             }
-            if (string.IsNullOrEmpty(reqQrO2OId))
+            if (string.IsNullOrEmpty(AgentOpenId))
             {
                 result.IsSuccess = false;
                 result.IntMsg = -4;
@@ -369,13 +388,13 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.UserId = 
         ///  -1 手机号为空，重新登陆
         /// -2 ItemId未获取，系统错误
         /// -3 AddrId 未获取，系统错误
-        /// -4 代理qrUserId,重新登陆 
+        /// -4 代理码失效,重新登陆 
         /// -5 代理费率没有配置.
         /// -6 出货商没有配置
         /// -7 出库商余额未配置，请联系管理员
         /// -8 出库商余额不足
         /// -9 商品已下架
-        /// -10 代理码失效
+        /// -10 订单已创建，请勿重复提交
         /// </summary>
         /// <returns></returns>
         public ActionResult CreateO2OOrder()
@@ -383,7 +402,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.UserId = 
             string Phone = base.GetBuyerPhone();   
             int ItemId = 0;
             int AddrId = 0;
-            long qrUserId = 0;
+          //  long qrUserId = 0;
             OutAPIResult result = null;
             try
             {
@@ -394,21 +413,24 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.UserId = 
                 ItemId = Convert.ToInt32(Request["ItemId"]);
                 AddrId = Convert.ToInt32(Request["AddrId"]);
 
-                string sk_qrUserId = Session[IQBConstant.SK_O2OQrUserId] as string;//Convert.ToInt64(Request["qrUserId"]);
+               // string sk_qrUserId = Session[IQBConstant.SK_O2OQrUserId] as string;//Convert.ToInt64(Request["qrUserId"]);
 
-                this.CheckaoId();
-                string AgentOpenId = Session[IQBConstant.SK_O2OAgentOpenId] as string;
-                if(string.IsNullOrEmpty(AgentOpenId))
-                {
-                    result.IsSuccess = false;
-                    result.IntMsg = -10;
-                    return Json(result);
-                }
-            //    qrUserId = Convert.ToInt64(sk_qrUserId);
+                
+                string AgentOpenId = this.CheckaoId(); 
 
                 using (AliPayContent db = new AliPayContent())
                 {
+                    int orderNum = db.DBO2OOrder.Where(o => o.UserPhone == Phone
+                                         && (o.O2OOrderStatus != O2OOrderStatus.Complete && o.O2OOrderStatus != O2OOrderStatus.UserClose)).Count();
+                   
+                    if(orderNum>0)
+                    {
+                        result.IsSuccess = false;
+                        result.IntMsg = -10;
+                        return Json(result); 
+                    }
                     EO2OItemInfo Item = db.DBO2OItemInfo.Where(o => o.Id == ItemId).FirstOrDefault();
+                    EUserInfo whUser = db.DBUserInfo.Where(o => o.OpenId == AgentOpenId).FirstOrDefault();
                   //  EQRUser qrUser = db.DBQRUser.Where(a => a.ID == qrUserId);
                     if (Item.RecordStatus == RecordStatus.Blocked)
                     {
@@ -453,7 +475,9 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.UserId = 
                         result.IntMsg = -6;
                         return Json(result);
                     }
+
                   
+
 
                     EO2OOrder order = new EO2OOrder
                     {
@@ -465,25 +489,27 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.UserId = 
                         UserPhone = Phone,
                        
                         //代理信息
-                        qrUserId = qrUserId,  
+                        AgentOpenId = AgentOpenId,  
                         FeeRate = Mall.FeeRate,
                         MarketRate = AgentFeeRate.MarketRate,
 
                         //出货商户信息
                         WHUserId = Item.UserId,
                         WHRate = RoleCharge.ChargeFee,
+                        WHAliPayAccount = whUser.AliPayAccount,
 
                         //订单信息
                         AddrId = AddrId,
                         O2OOrderStatus = O2OOrderStatus.WaitingUpload,
                         O2ONo = StringHelper.GenerateO2ONo(),
                         MallId = MallId,
+                        MallFeeRate = Mall.FeeRate,
                         CreateDateTime = DateTime.Now,
                     };
 
                     db.DBO2OOrder.Add(order);
 
-                   
+                    db.SaveChanges();
 
                     ////供应商预扣
                     //balance.O2OOnOrderAmount += Item.Amount;
@@ -549,6 +575,29 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.UserId = 
                 result.ErrorMsg = ex.Message;
             }
 
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult OrderClose()
+        {
+            OutAPIResult result = new OutAPIResult();
+            string O2ONo = Request["O2ONo"];
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    db.DBO2OOrder.Where(a => a.O2ONo == O2ONo).Update(a => new EO2OOrder
+                    {
+                        O2OOrderStatus = O2OOrderStatus.UserClose
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
             return Json(result);
         }
 
@@ -658,6 +707,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.UserId = 
             string OrderNo = Request["OrderNo"];
             string imgUpload1 = Request["imgUpload1"];
             string ReceiveAccount = Request["ReceiveAccount"];
+            string MallOrderNo = Request["MallOrderNo"];
             OutAPIResult result = new OutAPIResult();
             try
             {
@@ -686,6 +736,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.UserId = 
                         OrderImgUrl = imgUpload1,
                         O2OOrderStatus = O2OOrderStatus.OrderReview,
                         UserAliPayAccount = ReceiveAccount,
+                        MallOrderNo = MallOrderNo,
 
                     });   
                 }
@@ -739,6 +790,8 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.UserId = 
         [HttpPost]
         public ActionResult CloseOrder()
         {
+           
+
             return View();
         }
 

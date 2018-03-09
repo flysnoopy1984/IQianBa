@@ -1,6 +1,8 @@
 $(function () {
     var httpUrl = 'http://pp.iqianba.cn';
     var OrderNo = '';
+    var aoId = null;
+    var OrderStatus = null;
   /**
    * [删除已经上传的图片]
    * @return {[type]} [description]
@@ -42,20 +44,22 @@ $(function () {
           return;
       }
 
+      var MallOrderNo = $("#order_num").val();
+
       var url = "/O2OWap/SubmitUpload";
       $.ajax({
           type: 'post',
           url: url,
-          data: { "imgUpload1": imgUpload1, "OrderNo": OrderNo, "ReceiveAccount": ReceiveAccount },
+          data: { "imgUpload1": imgUpload1,"MallOrderNo":MallOrderNo, "OrderNo": OrderNo, "ReceiveAccount": ReceiveAccount },
           success: function (res) {
               if (res.IsSuccess) {
                   alert("提交成功！");
-                  window.location.href = "/O2OWap/OrderDetail";
+                  window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
               }
               else {
                   if (res.IntMsg == -1) {
                       alert("订单编号未获取!");
-                      window.location.href = "/O2OWap/OrderDetail";
+                      window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
                       return;
                   }
                   if (res.IntMsg == -2) {
@@ -83,11 +87,13 @@ $(function () {
   };
 
   InitData = function () {
+      
       OrderNo = GetUrlParam("OrderNo");
+      
 
       if (OrderNo == "" || OrderNo == undefined) {
           alert("订单未获取");
-          window.location.href = "/O2OWap/OrderDetail";
+          window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
           return;
       }
       var url = "/O2OWap/UploadOrderQuery";
@@ -108,7 +114,7 @@ $(function () {
               else {
                   if (res.IntMsg == -1) {
                       alert("订单编号未获取!");
-                      window.location.href = "/O2OWap/OrderDetail";
+                      window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
                       return;
                   }
                  
@@ -128,11 +134,16 @@ $(function () {
       $("#btnUpload1").show();
   }
   Init = function () {
+
+      aoId = GetUrlParam("aoId");
+      OrderStatus = GetUrlParam("OrderStatus");
+
       InitOterControl();
 
       this.InitUploadControl();
 
-      this.InitData();
+      if (OrderStatus !=2)
+        this.InitData();
   }
 
     /*
@@ -168,13 +179,13 @@ $(function () {
                           alert("文件过大"); break;
                       case -2:
                           alert("手机号未获取,请重新提交");
-                          window.location.href = "/O2OWap/Index";
+                          window.location.href = "/O2OWap/Index?aoId=" + aoId;
                           break;
                       case -3:
                           alert("文件格式不正确"); break;
                       case -4:
                           alert("订单编号未获取");
-                          window.location.href = "/O2OWap/OrderDetail";
+                          window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
                           break;
 
                   }

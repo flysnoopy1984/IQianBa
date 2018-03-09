@@ -57,7 +57,7 @@
     }
      #Info{width:1024px; margin:10px;}
     #Info ul{width:100%; list-style:none; height:100%; padding:0px;}
-    #Info ul li{display:inline-block;width:30%; height:20px;}
+  
     #Info ul li span{display:inline-block;}
      .LeftSpan {
             width: 150px;
@@ -68,12 +68,25 @@
 <div id="Info">
     <ul>
         <li>
-            <span class="LeftSpan">收款账户：</span><span></span>
+            <span class="LeftSpan">收款账户：</span><span id="AliPayAccount"></span>
+        </li>
+    </ul>
+    <ul>
+
+        <li>
+            <span class="LeftSpan">账户余额：</span><span id="O2OShipBalance"></span>
+
+        </li>
+        <li>
+            <span class="LeftSpan">在单金额：</span><span id="O2OOnOrderAmount"></span>
+
         </li>
         @*<li>
             <span class="LeftSpan">费率：</span><span></span>
         </li>*@
     </ul>
+       
+    
 </div>
 <hr class="HR2_ffd800" />
 <div id="ListArea">

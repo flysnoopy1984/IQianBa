@@ -1,6 +1,7 @@
 $(function () {
     var httpUrl = 'http://pp.iqianba.cn';
     var OrderObj = null;
+    var aoId = null;
 
     //var stepTmp = ' <div class="order_item">'
     //stepTmp += '<div class="{0}">';
@@ -23,7 +24,7 @@ $(function () {
   };
 
   InitOrder = function () {
-
+      aoId = GetUrlParam("aoId");
       var url = "/O2OWap/OrderDetailQuery";
       $.ajax({
           type: 'post',
@@ -32,9 +33,10 @@ $(function () {
               if (res.IsSuccess) {
                   if (res.resultList.length > 0) {
                       OrderObj = res.resultObj;
-                      alert(OrderObj.O2OOrderStatus);
+                   
                       $("#number").text(OrderObj.OrderAmount);
                       generateSteps(res.resultList);
+                      switchControlByOrderStatus();
                   }
               }
               else {
@@ -53,6 +55,15 @@ $(function () {
           }
       });
   };
+   // 根据订单状态修改一些按钮或超链接状态
+  switchControlByOrderStatus= function()
+  {
+      if (OrderObj.O2OOrderStatus == 45 || OrderObj.O2OOrderStatus == 50)
+          $("#btnCloseOrder").hide();
+     
+     
+
+  }
 
    //List：所有步骤
   generateSteps = function (list) {
@@ -70,6 +81,13 @@ $(function () {
                   var rt = $("#RejectArea").find("#Reason").text();
                   $("#RejectArea").find("#Reason").text(rt + OrderObj.RejectReason);
                   $("#PassArea").hide();
+              }
+              //如果用户关闭
+              if (OrderObj.O2OOrderStatus == 45 && step.Code == "StepComplete") {
+                 
+                  $("#StepComplete").find(".step_desc_title").text("用户关闭");
+                  $("#StepUpload").find("a").hide();
+                 
               }
           }
               
@@ -136,6 +154,13 @@ $(function () {
                   if (step.Code == "StepPayment")
                       ctrl = replaceStepToPrcess(ctrl,0);
                   break;
+              case 45:
+                  ctrl = step.BeginContent;
+                  if (step.Code == "StepComplete")
+                      ctrl = step.EndContent;
+
+                  break;
+
               //完成  
               case 50:
                   ctrl = step.EndContent;
@@ -164,6 +189,60 @@ $(function () {
 
   InitOrder();
 
+   
+
+  DoCloseOrder = function () {
+
+      var url = "/O2OWap/OrderClose";
+      $.ajax({
+          type: 'post',
+          data: { "O2ONo": OrderObj.O2ONo },
+          url: url,
+          success: function (res) {
+              if (res.IsSuccess) {
+                  alert("您将返回商品列表");
+                  window.location.href="/O2OWap/MallList?aoId="+aoId;
+                 
+              }
+              else {
+
+              }
+
+          },
+
+          error: function (xhr, type) {
+              alert("系统错误！");
+          }
+      });
+
+  };
+
+  CloseOrder = function (skipWarn) {
+
+      $.confirm({
+          type: "red",
+          theme: 'material',
+          title: '谨慎确认!',
+          content: '如果您已经去商城支付，【关闭订单】/【重选商品】将无法收到回款，是否继续？',
+          buttons: {
+
+              cancel: {
+                  text: '不了',
+                  btnClass: 'btn-info',
+
+              },
+              confirm: {
+                  btnClass: 'btn-danger',
+                  text: '我很确定',
+                  action: function () {
+                      DoCloseOrder();
+                  }
+              }
+          }
+      });
+     
+  };
+
   /**
    * [按钮模拟图片上传input]
    * @return {[type]} [description]
@@ -171,7 +250,7 @@ $(function () {
   upLoadOrder = function () {
       if (OrderObj.O2OOrderStatus >= 2)
       {
-          window.location.href = "/O2OWap/UploadOrder?OrderNo=" + OrderObj.O2ONo;
+          window.location.href = "/O2OWap/UploadOrder?aoId=" + aoId + "&OrderNo=" + OrderObj.O2ONo + "&OrderStatus=" + OrderObj.O2OOrderStatus;
       }
       else
       {
@@ -179,5 +258,13 @@ $(function () {
       }
     
   };
+
+  reSelectItem=function()
+  {
+     
+    //  window.open("http://m.baidu.com", "_blank");
+      CloseOrder();
+     // window.location.href = "/O2OWap/MallList?aoId=" + aoId;
+  }
 
 });

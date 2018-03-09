@@ -176,6 +176,7 @@
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.js" />
     <Content Include="Content\Component\jquery-confirm.css" />
+    <Content Include="Content\Component\jquery-confirm.min.css" />
     <Content Include="Content\Component\jquery.pwstabs-1.2.1.min.css" />
     <Content Include="Content\Images\404_02.png" />
     <Content Include="Content\Images\backgrounds\O2OLoginbg.jpg" />
@@ -518,6 +519,7 @@
     <Content Include="scripts\Component\FlyDiv.js" />
     <Content Include="scripts\Component\IQBTable.js" />
     <Content Include="scripts\Component\jquery-confirm.js" />
+    <Content Include="scripts\Component\jquery-confirm.min.js" />
     <Content Include="scripts\Component\jquery.cookie.js" />
     <Content Include="scripts\Component\jquery.pwstabs-1.2.1.min.js" />
     <Content Include="scripts\Component\Upload\jquery.fileupload-process.js" />
@@ -529,7 +531,6 @@
     <Content Include="Content\Component\viewer.min.css" />
     <Content Include="scripts\Component\Viewer\viewer.min.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
-    <Content Include="scripts\Wap\O2O\check.js" />
     <Content Include="scripts\Wap\O2O\AddrConfirm.js" />
     <Content Include="scripts\Wap\O2O\index.js" />
     <Content Include="scripts\Wap\O2O\OrderDetail.js" />

@@ -13,6 +13,6 @@ namespace IQBCore.IQBPay.Models.Result
     {
         public string UserName { get; set; }
 
-        public double O2OOnOrderAmount { get; set; }
+        public double? O2OOnOrderAmount { get; set; }
     }
 }

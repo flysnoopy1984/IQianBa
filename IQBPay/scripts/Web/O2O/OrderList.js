@@ -148,12 +148,12 @@ function generateData(result)
         if (FromPage == 0)
         {
            // if (result[i].O2OOrderStatus ==6)
-            op += '<li><a href=javascript:OpenWin("/O2O/OrderReview?O2ONo=' + result[i].O2ONo + '")>审核</a></li>';
+            op += '<li><a href=javascript:OpenWin("/O2O/OrderReview?O2ONo=' + result[i].O2ONo + '")>详情操作</a></li>';
         }
         if (FromPage == 1)
         {
-            if (result[i].O2OOrderStatus == 14)
-                op += '<li><a href=javascript:OpenWin("/O2O/OrderSettlement?O2ONo=' + result[i].O2ONo + '")>结算</a></li>';
+           // if (result[i].O2OOrderStatus == 14)
+                op += '<li><a href=javascript:OpenWin("/O2O/OrderSettlement?O2ONo=' + result[i].O2ONo + '")>详情操作</a></li>';
         }
         op+='</ul>';
         //操作

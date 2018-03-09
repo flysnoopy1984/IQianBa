@@ -64,6 +64,7 @@ namespace IQBCore.IQBPay.BLL
             return response;
         }
        
+       
 
         /// <summary>
         /// 转账
@@ -168,7 +169,7 @@ namespace IQBCore.IQBPay.BLL
 
                 //转账记录开始
                 transfer.TransferStatus = TransferStatus.Success;
-                transfer.Log += string.Format("[Transfer to {2}] Code:{0};msg:{1}", res.Code, res.Msg, target.ToString());
+             //   transfer.Log += string.Format("[Transfer to {2}] Code:{0};msg:{1}", res.Code, res.Msg, target.ToString());
 
                
             }
@@ -666,6 +667,45 @@ namespace IQBCore.IQBPay.BLL
             return response;
         }
 
-        
+        #region O2O
+        /// <summary>
+        /// O2O转账
+        /// </summary>
+        /// <param name="initedTrans">已初始化的Transfer对象</param>
+        /// <returns></returns>
+        public ETransferAmount O2OTransferHandler(ETransferAmount initedTransfer, EAliPayApplication app, EAliPayApplication subApp)
+        {
+            try
+            {
+                AlipayFundTransToaccountTransferResponse res = null;
+
+                string TransferId = "";
+
+                res =  DoTransferAmount(initedTransfer.TransferTarget, 
+                                 subApp,
+                                 initedTransfer.TargetAccount,
+                                 initedTransfer.TransferAmount.ToString("0.00"), 
+                                 PayTargetMode.AliPayAccount, out TransferId);
+                initedTransfer.TransferId = TransferId;
+                if (res.Code == "10000")
+                {
+                    initedTransfer.TransferStatus = TransferStatus.Success;
+                }
+                else
+                {
+
+                    initedTransfer.TransferStatus = TransferStatus.Failure;
+                    initedTransfer.Log += string.Format("[Transfer to {2}] SubCode:{0};Submsg:{1}", res.SubCode, res.SubMsg, initedTransfer.TransferTarget.ToString());
+
+                }
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return initedTransfer;
+        }
+        #endregion
     }
 }

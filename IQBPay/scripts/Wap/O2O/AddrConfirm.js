@@ -7,6 +7,7 @@ $(function () {
     ///出货商Id
     var UserId = null;
     var RealAddr = null;
+    var aoId = null;
     /**
      * [返回]
      */
@@ -19,6 +20,7 @@ $(function () {
         ItemId = GetUrlParam("ItemId");
         MallId = GetUrlParam("MallId");
         UserId = GetUrlParam("UserId");
+        aoId = GetUrlParam("aoId");
         if (ItemId == null || ItemId == undefined || MallId == null || MallId == undefined || UserId == null || UserId == undefined)
         {
             alert("未获取指定的商品，请选择商品");
@@ -120,10 +122,11 @@ $(function () {
             $.ajax({
                 type: 'post',
                 url: url,
-                data: { "ItemId": ItemId, "AddrId": AddrId },
+                data: { "ItemId": ItemId, "AddrId": AddrId, "aoId": aoId },
                 success: function (res) {
                     if (res.IsSuccess) {
-                        window.open(RealAddr, "_blank", "menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1");
+                        window.location.href = RealAddr;
+                       // window.open(RealAddr, "menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1");
                     }
                     else {
                         switch(res.IntMsg)
@@ -131,11 +134,11 @@ $(function () {
                             //手机号为空，重新登陆
                             case -1:
                                 alert("手机号未获取，请返回首页重新操作");
-                                window.location.href = "/O2OWap/Index";
+                                window.location.href = "/O2OWap/Index?aoId=" + aoId;
                                 break;
                             case -2:
                                 alert("商品未获取，请返回重新选择商品");
-                                window.location.href = "/O2OWap/MallList";
+                                window.location.href = "/O2OWap/MallList?aoId=" + aoId;
                                 break;
                             case -3:
                                 alert("收货地址未获取，请联系管理员");
@@ -143,7 +146,7 @@ $(function () {
                                 break;
                             case -4:
                                 alert("中介信息未获取，可能等待时间过长，请返回首页重新操作");
-                                window.location.href = "/O2OWap/Index";
+                                window.location.href = "/O2OWap/Index?aoId=" + aoId;
                                 break;
                             case -5:
                                 alert("中介费率未配置，请联系您的中介");
@@ -163,12 +166,15 @@ $(function () {
                                 break;
                             case -9:
                                // alert(res.ErrorMsg);
-                                window.location.href = "/O2OWap/ErrorPage?ec=40001";
+                                window.location.href = "/O2OWap/ErrorPage?ec=40001&aoId=" + aoId;
                                 break;
                             case -10:
-                                // alert(res.ErrorMsg);
-                                window.location.href = "/O2OWap/ErrorPage?ec=1";
+                               // alert("订单已创建，请勿重复提交");
+                              //  $("#bnConfirmToShop").hide();
+                                window.location.href = RealAddr;
                                 break;
+
+                          
                             default:
                                 alert(res.ErrorMsg);
                            

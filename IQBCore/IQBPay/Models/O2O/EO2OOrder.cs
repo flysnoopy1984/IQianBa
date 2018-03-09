@@ -25,8 +25,9 @@ namespace IQBCore.IQBPay.Models.O2O
         [MaxLength(20)]
         public string O2ONo { get; set; }
 
-        public long qrUserId { get; set; }
-
+        //   public long qrUserId { get; set; }
+        [MaxLength(32)]
+        public string AgentOpenId { get; set; }
 
         /// <summary>
         /// 费率
@@ -43,6 +44,9 @@ namespace IQBCore.IQBPay.Models.O2O
         /// </summary>
         public int WHUserId { get; set; }
 
+        [MaxLength(100)]
+        public string WHAliPayAccount { get; set; }
+
         /// <summary>
         /// 出库商佣金
         /// </summary>
@@ -55,8 +59,11 @@ namespace IQBCore.IQBPay.Models.O2O
 
         [MaxLength(100)]
         public string UserAliPayAccount { get; set; }
+     
 
         public int MallId { get; set; }
+
+        public double MallFeeRate { get; set; }
 
         public int ItemId { get; set; }
 
@@ -89,7 +96,10 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public DateTime CreateDateTime { get; set; }
 
-      
+       
+        /// <summary>
+        /// 操作者
+        /// </summary>
         public int SettlementUserId { get; set; }
         public DateTime SettlementDateTime { get; set; }
     }

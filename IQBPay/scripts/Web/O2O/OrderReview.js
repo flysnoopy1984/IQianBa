@@ -6,6 +6,29 @@
     });
 });
 
+function PaymentOrder()
+{
+    var O2ONo = $("#O2ONo").val();
+    var url = "/O2O/OrderPaymentToUser_Agent";
+    $.ajax({
+        type: 'post',
+        dataType: "json",
+        data: { "O2ONo": O2ONo},
+        url: url,
+        success: function (data) {
+            if (data.IsSuccess) {
+                alert("操作成功！");
+            }
+            else {
+                alert(data.ErrorMsg);
+            }
+        },
+        error: function (xhr, type) {
+            alert("System Error!");
+        }
+    });
+}
+
 //act =0 通过 act=1 驳回
 function Review(act)
 {

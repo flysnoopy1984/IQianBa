@@ -2,6 +2,8 @@
 using IQBCore.Common.Constant;
 using IQBCore.Common.Helper;
 using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.BLL;
+using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Json;
 using IQBCore.IQBPay.Models.O2O;
 using IQBCore.IQBPay.Models.OutParameter;
@@ -672,6 +674,20 @@ where o.CreateDateTime between cast('{0}' as datetime) and cast('{1}' as datetim
                                 Convert.ToInt32(O2OOrderStatus.Settlement),
                                 Convert.ToInt32(O2OOrderStatus.Payment));
                         }
+                        else if (InO2OOrder.O2OOrderStatus == O2OOrderStatus.Settle_Payment_UserClose)
+                        {
+                            sql += string.Format(" and (o.O2OOrderStatus ={0} or o.O2OOrderStatus={1} or o.O2OOrderStatus={2})",
+                              Convert.ToInt32(O2OOrderStatus.Settlement),
+                              Convert.ToInt32(O2OOrderStatus.Payment),
+                              Convert.ToInt32(O2OOrderStatus.Complete));
+                        }
+                        else if (InO2OOrder.O2OOrderStatus == O2OOrderStatus.Payment_UserClose)
+                        {
+                            sql += string.Format(" and (o.O2OOrderStatus ={0} or o.O2OOrderStatus={1})",
+                            Convert.ToInt32(O2OOrderStatus.UserClose),
+                            Convert.ToInt32(O2OOrderStatus.Payment)
+                            );
+                        }
                         else
                             sql += string.Format(" and o.O2OOrderStatus ={0}", Convert.ToInt32(InO2OOrder.O2OOrderStatus));
                     }
@@ -719,6 +735,10 @@ where o.CreateDateTime between cast('{0}' as datetime) and cast('{1}' as datetim
         public ActionResult OrderReview()
         {
             string O2ONo = Request.QueryString["O2ONo"];
+
+            int UserId = base.GetUserSession().Id;
+            ViewBag.UserId = UserId;
+
             RO2OOrder obj = null;
             if (string.IsNullOrEmpty(O2ONo))
             {
@@ -817,6 +837,7 @@ where o.O2ONo = '{0}'";
             string O2ONo = Request["O2ONo"];
             OutAPIResult result = new OutAPIResult();
             int UserId = GetUserSession().Id;
+            AliPayManager payManager = new AliPayManager();
             try
             {
                 if (string.IsNullOrEmpty(O2ONo))
@@ -833,6 +854,7 @@ where o.O2ONo = '{0}'";
                     result.IntMsg = -1;
                     return Json(result);
                 }
+
                 using (AliPayContent db = new AliPayContent())
                 {
                     //修改订单状态
@@ -851,7 +873,8 @@ where o.O2ONo = '{0}'";
                   
                     EUserAccountBalance ub = db.DBUserAccountBalance.Where(a => a.UserId == order.WHUserId && 
                                                                           a.UserAccountType == UserAccountType.O2OShippment).FirstOrDefault();
-                    if(ub == null || string.IsNullOrEmpty(ub.AliPayAccount))
+                   
+                    if (ub == null || string.IsNullOrEmpty(ub.AliPayAccount))
                     {
                         result.IsSuccess = false;
                         result.ErrorMsg = "出库商账户没有设置";
@@ -871,15 +894,18 @@ where o.O2ONo = '{0}'";
                         TransferTarget = TransferTarget.PP,
                         ReceiveAccount = ub.AliPayAccount,
                         TransDateTime = DateTime.Now,
-                        FeeRate = order.WHRate,
+                        FeeRate = 100 - order.WHRate,
                         TransferAmount = -order.OrderAmount * ((100-order.WHRate)/100),
                     };
                     db.DBO2OTranscationWH.Add(trans);
+                    //ub.O2OShipBalance -= trans.TransferAmount;
 
-                    /*创建结算单明细
-                    * O2OWareHouse :转账给出库商（）
-                    */
-                    trans = new EO2OTranscationWH
+
+
+                   /*创建结算单明细
+                   * O2OWareHouse :转账给出库商（）
+                   */
+                   trans = new EO2OTranscationWH
                     {
                         ItemId = order.ItemId,
                         O2ONo = order.O2ONo,
@@ -893,11 +919,22 @@ where o.O2ONo = '{0}'";
                     };
                     db.DBO2OTranscationWH.Add(trans);
 
+                    //账户余额变动（-订单金额+佣金）
+                    ub.O2OShipBalance = order.OrderAmount + trans.TransferAmount;
+                    
+                    ETransferAmount AliTrans = new ETransferAmount();
+                    AliTrans.O2OInitForShipment(order);
+
+                    AliTrans.TransferAmount = (float)trans.TransferAmount;
+                    AliTrans = payManager.O2OTransferHandler(AliTrans, BaseController.SubApp, BaseController.SubApp);
+                    if (AliTrans.TransferStatus == TransferStatus.Failure)
+                        return base.ErrorResult("转账失败：" + AliTrans.Log);
+                    else
+                        db.DBTransferAmount.Add(AliTrans);
+
 
                     db.SaveChanges();
-
                   
-
                 }
             }
             catch(Exception ex)
@@ -907,6 +944,108 @@ where o.O2ONo = '{0}'";
                
             }
          
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult OrderPaymentToUser_Agent()
+        {
+            string O2ONo = Request["O2ONo"];
+            OutAPIResult result = new OutAPIResult();
+            int UserId = GetUserSession().Id;
+            EO2OOrder order = null;
+            EUserInfo agentUi,parentUi = null;
+            AliPayManager payManager = new AliPayManager();
+            EO2OAgentFeeRate agentFee = null;
+           // EO2OMall mall = null;
+            double parentCommRate = 0.2;
+            try
+            {
+                if (string.IsNullOrEmpty(O2ONo))
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMsg = "订单号未获取";
+                    result.IntMsg = -2;
+                    return Json(result);
+                }
+                if (UserId == 0)
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMsg = "session失效";
+                    result.IntMsg = -1;
+                    return Json(result);
+                }
+
+                using (AliPayContent db = new AliPayContent())
+                {
+                    order = db.DBO2OOrder.Where(a => a.O2ONo == O2ONo).FirstOrDefault();
+
+                    if (order.O2OOrderStatus != O2OOrderStatus.Payment)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = "订单状态不正确无法结算";
+                        result.IntMsg = -3;
+                        return Json(result);
+                    }
+
+                    agentUi = db.DBUserInfo.Where(a => a.OpenId == order.AgentOpenId).FirstOrDefault();
+                    agentFee = db.DBO2OAgentFeeRate.Where(a => a.MallId == order.MallId && a.OpenId == order.AgentOpenId).FirstOrDefault();
+                  //  mall = db.DBO2OMall.Where(a => a.Id == order.MallId).FirstOrDefault();
+                    //ToAgent      
+                    ETransferAmount AliTrans = new ETransferAmount();
+                    AliTrans.O2OInitForAgent(order, agentUi);
+                    //Agent Amount
+                    AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * ((agentFee.MarketRate - order.MallFeeRate) / 100));
+                    AliTrans = payManager.O2OTransferHandler(AliTrans, BaseController.SubApp, BaseController.SubApp);
+                    if (AliTrans.TransferStatus == TransferStatus.Failure)
+                        return base.ErrorResult("转账失败：" + AliTrans.Log);
+                    else
+                        db.DBTransferAmount.Add(AliTrans);
+                    //ToParent
+                    if(string.IsNullOrEmpty(agentUi.parentOpenId))
+                    {
+                        parentUi = db.DBUserInfo.Where(a => a.OpenId == agentUi.parentOpenId).FirstOrDefault();
+                        AliTrans = new ETransferAmount();
+                        AliTrans.O2OInitForAgent(order, parentUi);
+                        //Parent Amount
+                        AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * ((agentFee.MarketRate - order.MallFeeRate) * parentCommRate / 100));
+                        AliTrans = payManager.O2OTransferHandler(AliTrans, BaseController.SubApp, BaseController.SubApp);
+                        if (AliTrans.TransferStatus == TransferStatus.Failure)
+                            return base.ErrorResult("转账失败：" + AliTrans.Log);
+                        else
+                            db.DBTransferAmount.Add(AliTrans);
+                    }
+
+                    //ToUser
+                    AliTrans = new ETransferAmount();
+                    AliTrans.O2OInitForUser(order);
+                    //User Amount
+                    AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * ((100-agentFee.MarketRate) / 100));
+                    AliTrans = payManager.O2OTransferHandler(AliTrans, BaseController.SubApp, BaseController.SubApp);
+                    if (AliTrans.TransferStatus == TransferStatus.Failure)
+                        return base.ErrorResult("转账失败：" + AliTrans.Log);
+                    else
+                        db.DBTransferAmount.Add(AliTrans);
+
+                    order.O2OOrderStatus = O2OOrderStatus.Complete;
+
+
+                    db.SaveChanges();
+
+                }
+                         
+               
+
+                 
+                // AliTrans.
+                //ToUser
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+
             return Json(result);
         }
 

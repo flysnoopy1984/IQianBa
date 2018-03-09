@@ -43,8 +43,8 @@
         },
         {
           "type": "view",
-          "name": "新产品",
-          "url": "http://wx.iqianba.cn/PP/QRHugeEntry"
+          "name": "O2O商城",
+          "url": "http://wx.iqianba.cn/O2OWap/EntryAgent"
         }
       ]
     },

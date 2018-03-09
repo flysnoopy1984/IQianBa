@@ -1,4 +1,5 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.Models.O2O;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.User;
 using System;
@@ -96,5 +97,42 @@ namespace IQBCore.IQBPay.Models.AccountPayment
         [NotMapped]
         [DefaultValue(0)]
         public int TotalCount { get; set; }
+
+        [MaxLength(20)]
+        public string O2ONo { get; set; }
+
+        public void O2OInitForShipment(EO2OOrder O2OOrder)
+        {
+            this.O2OInitForUser(O2OOrder);
+            this.TargetAccount = O2OOrder.WHAliPayAccount;
+            this.TransferTarget = TransferTarget.O2OWareHouse;
+          //  this
+        }
+
+        public void O2OInitForAgent(EO2OOrder O2OOrder, EUserInfo ui)
+        {
+           
+            this.AgentOpenId = ui.OpenId;
+            this.AgentName = ui.Name;
+            this.O2ONo = O2OOrder.O2ONo;
+            this.TargetAccount = ui.AliPayAccount;
+            this.TransDate = DateTime.Now;
+            this.TransDateStr = DateTime.Now.ToShortDateString();
+            this.TransferStatus = TransferStatus.Open;
+            this.TransferTarget = TransferTarget.Agent;
+           
+        }
+
+
+
+        public void O2OInitForUser(EO2OOrder O2OOrder)
+        {
+            this.O2ONo = O2OOrder.O2ONo;
+            this.TargetAccount = O2OOrder.UserAliPayAccount;
+            this.TransDate = DateTime.Now;
+            this.TransDateStr = DateTime.Now.ToShortDateString();
+            this.TransferStatus = TransferStatus.Open;
+            this.TransferTarget = TransferTarget.User;
+        }
     }
 }
