@@ -92,7 +92,9 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public O2OOrderStatus O2OOrderStatus { get; set; }
 
-       
+        public TransferStatus O2OTransferStatus { get; set; } 
+
+
 
         public DateTime CreateDateTime { get; set; }
 

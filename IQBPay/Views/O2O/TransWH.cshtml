@@ -23,17 +23,20 @@
     }
 
         #DataContainer table {
+            border-collapse:collapse;
+
         }
 
         #DataContainer tr th {
-            border: 1px solid black;
+            border: 1px solid #ddd;
             height: 40px;
             line-height: 40px;
             text-align: center;
+            border-collapse:collapse;
         }
 
         #DataContainer tr td {
-            border: 1px solid black;
+            border: 1px solid #ddd;
             height: 40px;
             line-height: 40px;
             padding: 4px;
@@ -41,11 +44,12 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            text-align: center;
+            border-collapse:collapse;
         }
 
     .OrderAction {
         width: 100%;
-        ;
         list-style: none;
         padding: 0px;
         height: 100%;
@@ -70,16 +74,17 @@
         <li>
             <span class="LeftSpan">收款账户：</span><span id="AliPayAccount"></span>
         </li>
+        <li>
+            <span class="LeftSpan">费率：</span><span id="FeeRate"></span>
+        </li>
     </ul>
     <ul>
-
         <li>
             <span class="LeftSpan">账户余额：</span><span id="O2OShipBalance"></span>
 
         </li>
         <li>
             <span class="LeftSpan">在单金额：</span><span id="O2OOnOrderAmount"></span>
-
         </li>
         @*<li>
             <span class="LeftSpan">费率：</span><span></span>
@@ -108,7 +113,14 @@
                     <option value="99" selected>全部</option>
                 </select>
             </li>
-
+            <li>
+                <label>类型：</label>
+                <select id="cTransferTarget" class="form-control ConditionField">
+                    <option value="20" selected>获得佣金</option>
+                    <option value="100">扣减押金</option>
+                    <option value="999">全部</option>
+                </select>
+            </li>
         </ul>
     </div>
     <div id="ButtonList">
@@ -122,14 +134,15 @@
         </ul>
     </div>
     <div id="DataContainer">
-        <table id="DataTable">
+        <table id="DataTable" class="">
             <tr id="header" style="display:-webkit-flex;">
-                <th style="width:150px;">商城</th>
-                <th style="width:200px;">商城订单编号</th>
-                <th style="width:150px;">商品</th>
-                <th style="width:150px;">金额</th>
-                <th style="width:150px;">费率</th>
-                <th style="width:150px;">账户</th>
+                <th style="width:80px;">类型</th>
+                <th style="width:50px;">商城</th>
+                <th style="width:250px;">商城订单编号</th>
+                <th style="width:350px;">商品</th>
+                <th style="width:80px;">金额</th>
+                @*<th style="width:50px;">费率</th>
+                <th style="width:250px;">账户</th>*@
                 <th style="width:150px;">打款时间</th>          
             </tr>
         </table>

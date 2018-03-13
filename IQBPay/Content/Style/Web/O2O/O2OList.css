@@ -58,3 +58,10 @@
 }
 
 .Hr_Tr{ width:92%; border-top:1px solid #ccc;}
+.FontAmount{
+     font-family: arial,"Hiragino Sans GB","Microsoft Yahei",sans-serif;
+     font-weight:bold;
+}
+.Color_AmountIn{
+    color:#F19659;
+}

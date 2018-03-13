@@ -7,7 +7,7 @@ html, body {
   height: 20px;
   background-repeat: no-repeat;
   background-size: 100%;
-  background-image: url('../../Images/O2O/back.png');
+  background-image: url('../../Images/O2O/Home.png');
   position: absolute;
   display: inline-block;
   z-index: 888;
@@ -119,4 +119,17 @@ html, body {
 
   height: 100%;
   border: 0;
+}
+
+.div_UserInfo{
+        
+    font-size:9px;
+    position:absolute;
+    right:10px;
+    z-index:999;
+}
+ .o2o_header div
+{
+    display:inline-block;
+
 }

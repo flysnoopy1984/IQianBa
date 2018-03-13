@@ -86,7 +86,7 @@
 </head>
 <body>
     <div id="MainContent">
-        <div id="Title">订单审核</div>
+        <div id="Title">订单详情</div>
         <hr class="HR1_Gray1" />
         <div id="DataContent">
             <ul>
@@ -111,11 +111,15 @@
         </div>
         <div id="buttonList">
             <ul class="UlHorizontal" style="text-align:center; margin-top:20px;">
-                <li>
-                    <button id="btnConfirm" type="button" class="btn btn-primary" onclick="ConfirmWithPay();">收货确认并打款</button>
-                </li>
-
+                @if (Model.O2OOrderStatus == IQBCore.IQBPay.BaseEnum.O2OOrderStatus.Settlement)
+                {
+                    <li>
+                        <button id="btnConfirm" type="button" class="btn btn-primary" onclick="ConfirmWithPay();">收货确认并打款</button>
+                    </li>
+                }
+              
             </ul>
+           
         </div>
       <input type="hidden" id="O2ONo" value="@Model.O2ONo" />
     </div>

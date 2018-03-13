@@ -1,14 +1,60 @@
 ﻿var Id = GetUrlParam("id");
+var OrderType = GetUrlParam("OrderType");
 var type = GetUrlParam("type");
+var O2ONo = GetUrlParam("O2ONo");
 
 $(document).ready(function () {
 
-    if (Id == null || Id == "" || Id == undefined) {
-        alert("未获取参数");
-        window.close();
+    
+    if (OrderType == null || OrderType == "" || OrderType == undefined) {
+        OrderType = "N";
+        if (Id == null || Id == "" || Id == undefined) {
+            alert("未获取参数 Id");
+            window.close();
+        }
     }
-    Query(Id,type);
+    else {
+        OrderType = "O2O";
+        if (O2ONo == null || O2ONo == "" || O2ONo == undefined) {
+            alert("未获取参数 O2ONo");
+            window.close();
+        }
+    }
+    if (OrderType == "O2O")
+    {
+        QueryO2O();
+        type = 1;
+    }
+       
+    else
+        Query(Id,type);
 });
+
+/*O2O begin */
+function  QueryO2O()
+{
+    var url = "/O2O/GetTransferByO2ONo";
+    $.ajax({
+        type: 'post',
+        data: { "O2ONo": O2ONo },
+        url: url,
+        success: function (data) {
+
+            if (data.TransferList.length == 0)
+                alert("没有找到数据");
+            else {
+                generateData(data);
+            }
+
+        },
+        error: function (xhr, type) {
+
+            alert('Ajax error!');
+
+        }
+    });
+}
+/*O2O end */
 
 function AdvAlert(result) {
 
@@ -71,6 +117,9 @@ function generateData(result) {
                     break;
                 case 2:
                     target = "上级代理佣金";
+                    break;
+                case 20:
+                    target = "出库商佣金";
                     break;
             }
 

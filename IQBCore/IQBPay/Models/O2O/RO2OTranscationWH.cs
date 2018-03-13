@@ -18,7 +18,7 @@ namespace IQBCore.IQBPay.Models.O2O
             set
             {
                 _TransDateTime = value;
-                TransDateTimeStr = _TransDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                TransDateTimeStr = _TransDateTime.ToString("yy-MM-dd HH:mm:ss");
             }
         }
 

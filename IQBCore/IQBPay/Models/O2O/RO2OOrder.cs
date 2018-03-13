@@ -45,5 +45,13 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public string ItemName { get; set; }
 
+        public string AgentName { get; set; }
+
+        public string AgentAccount { get; set; }
+
+        public string WHName { get; set; }
+
+        public string WHAccount { get; set; }
+
     }
 }

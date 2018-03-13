@@ -65,6 +65,8 @@ function Review(act)
             }
             else {
                 alert(data.ErrorMsg);
+                return;
+
             }
         },
         error: function (xhr, type) {

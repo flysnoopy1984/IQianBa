@@ -22,5 +22,12 @@ namespace IQBPay.Controllers
 
            
         }
+
+        public void InitO2OPage()
+        {
+            CheckaoId();
+            string Phone = GetBuyerPhone();
+            ViewBag.BuyerPhone = Phone;
+        }
     }
 }

@@ -41,19 +41,20 @@ body {
 .upload_order_title {
   font-size: 15px;
   color: #333333;
-  width: 30%;
+  width: 25%;
   display: inline-block;
 }
 
 .upload_order_input {
   display: inline-block;
-  width: 68%;
+  width: 73%;
 }
 .order_input {
   display: inline-block;
   vertical-align: middle;
   border: 0px;
-  text-align: right;
+  /*text-align: right;*/
+  font-size:14px !important;
 }
 
 ::-webkit-input-placeholder {
@@ -193,4 +194,17 @@ input:focus {
 .upload_back {
    border: 1px solid #000000;
    cursor:pointer;
+}
+
+.div_UserInfo{
+        
+    font-size:9px;
+    position:absolute;
+    right:10px;
+    z-index:999;
+}
+ .o2o_header div
+{
+    display:inline-block;
+
 }

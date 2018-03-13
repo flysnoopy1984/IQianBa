@@ -35,6 +35,9 @@
 
         #buttonList{text-align:center;}
         #buttonList button{margin-left:15px; margin-right:15px;}
+        .OrderStatus{
+            color:darkorange;
+        }
     </style>
     <script type="text/javascript">
         function CheckPage()
@@ -51,7 +54,7 @@
 </head>
 <body>
     <div id="MainContent">
-        <div id="Title">订单审核</div>
+        <div id="Title">订单审核(<span id="OrderStatus" class="OrderStatus">@Model.O2OOrderStatusStr</span>)</div>
         <hr class="HR1_Gray1" />
         <div id="DataContent">
             <ul>
@@ -59,25 +62,52 @@
                     <span class="LeftSpan">用户手机：</span><span>@Model.UserPhone</span>
                 </li>
                 <li>
-                    <span class="LeftSpan">下单时间：</span><span>@Model.CreateDateTime.ToString("yyyy-MM-dd hh:mm:ss")</span>
+                    <span class="LeftSpan">用户账户：</span><span>@Model.UserAliPayAccount</span>
+                </li>
+            </ul>
+           
+            <ul>
+                <li>
+                    <span class="LeftSpan">商城订单编号：</span>@*<span>@Model.MallOrderNo</span>*@<input id="MallOrderNo" type="text" style="width:300px;" value="@Model.MallOrderNo" class="form-control" />
+                </li>
+                <li>
+                    <span class="LeftSpan">订单金额：</span>@*<span>@Model.OrderAmount</span>*@<input id="OrderAmount" type="text" value="@Model.OrderAmount" class="form-control" />
                 </li>
             </ul>
             <ul>
+                <li>
+                    <span class="LeftSpan">代理名：</span><span>@Model.AgentName</span>@*<input id="AgentName" type="text" style="width:300px;" value="@Model.AgentName" class="form-control" />*@
+                </li>
+                <li>
+                    <span class="LeftSpan">代理账号：</span><span>@Model.AgentAccount</span>@*<input id="AgentAccount" type="text" value="@Model.AgentAccount" class="form-control" />*@
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <span class="LeftSpan">出库商名：</span><span>@Model.WHName</span>@*<input id="WHName" type="text" style="width:300px;" value="@Model.WHName" class="form-control" />*@
+                </li>
+                <li>
+                    <span class="LeftSpan">出库商账号：</span><span>@Model.WHAliPayAccount</span>@*<input id="WHAccount" type="text" value="" class="form-control" />*@
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <span class="LeftSpan">订单费率：</span><span>@Model.FeeRate</span>
+                </li>
+                <li>
+                    <span class="LeftSpan">下单时间：</span><span>@Model.CreateDateTime.ToString("yyyy-MM-dd hh:mm:ss")</span>
+                </li>
+            </ul>
+          
+            @*<ul>
                 <li>
                     <span class="LeftSpan">商城账户：</span><span>@Model.MallAccount</span>
                 </li>
                 <li>
                     <span class="LeftSpan">商城密码：</span><span>@Model.MallPwd</span>
                 </li>
-            </ul>
-            <ul>
-                <li>
-                    <span class="LeftSpan">商城订单编号：</span><input id="MallOrderNo" type="text" style="width:300px;" value="@Model.MallOrderNo" class="form-control" />
-                </li>
-                <li>
-                    <span class="LeftSpan">订单金额：</span><input id="OrderAmount" type="text" value="@Model.OrderAmount" class="form-control" />
-                </li>
-            </ul>
+            </ul>*@
+           
             <ul style="height:110px;">
                 <li style="width:100%;">
                     <span class="LeftSpan">地址：</span><textarea id="Address" style="height:100px !important; width:480px!important;" class="form-control_textarea">@Model.Address</textarea>

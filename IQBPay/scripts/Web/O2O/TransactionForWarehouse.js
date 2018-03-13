@@ -77,12 +77,11 @@ function btnQuery() {
 function Query(NeedClearn, _PageIndex) {
     if (NeedClearn) {
         $("#DataTable tr:gt(0)").empty();
-
     }
     var BeforeDay = $("#cBeforeDay").val();
     var MallOrderNo = $("#cMallOrderNo").val();
+    var TransferTarget = $("#cTransferTarget").val();
    
-
     var url = "/O2O/TransWHQuery";
 
     $.ajax({
@@ -93,7 +92,7 @@ function Query(NeedClearn, _PageIndex) {
             "pageSize": pageSize,
             "BeforeDay": BeforeDay,
             "MallOrderNo": MallOrderNo,
-          
+            "TransferTarget": TransferTarget,
         },
         url: url,
         success: function (data) {
@@ -117,9 +116,29 @@ function generateData(result) {
     var thWidth;
     var n = 0;
     $.each(result, function (i) {
-    
+        
+        
         n = 0;
         Ctrl = '<tr style="display:-webkit-flex;">';
+        //类型
+        var transType = result[i].TransferTarget;
+        var AmountClass = "FontAmount";
+        var AmountValue = "";
+        var des = "";
+        if (transType == 100)
+        {
+            des = "扣减押金";
+            AmountValue ="-"+result[i].TransferAmount;
+        }
+        else if (transType == 20)
+        {
+            des = "获得佣金";
+            AmountClass += " Color_AmountIn";
+            AmountValue ="+"+result[i].TransferAmount;
+        }
+
+        tdWidth = "width:" + $("#header th").eq(n++).css("width");
+        Ctrl += "<td style='" + tdWidth + "'>" + des + "</td>";
 
         //商城
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
@@ -133,22 +152,21 @@ function generateData(result) {
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
         Ctrl += "<td style='" + tdWidth + "' title=" + result[i].ItemName + ">" + result[i].ItemName + "</td>";
 
-    
         //金额
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
-        Ctrl += "<td style='" + tdWidth + "'>" + result[i].TransferAmount + "</td>";
+        Ctrl += "<td style='" + tdWidth + "' class='" + AmountClass + " '>" + AmountValue + "</td>";
 
-        //费率
-        tdWidth = "width:" + $("#header th").eq(n++).css("width");
-        Ctrl += "<td style='" + tdWidth + "'>" + result[i].FeeRate + "</td>";
+        ////费率
+        //tdWidth = "width:" + $("#header th").eq(n++).css("width");
+        //Ctrl += "<td style='" + tdWidth + "'>" + result[i].FeeRate + "</td>";
 
-        //账户
-        tdWidth = "width:" + $("#header th").eq(n++).css("width");
-        Ctrl += "<td style='" + tdWidth + "'>" + result[i].ReceiveAccount + "</td>";
+        ////账户
+        //tdWidth = "width:" + $("#header th").eq(n++).css("width");
+        //Ctrl += "<td style='" + tdWidth + "'>" + result[i].ReceiveAccount + "</td>";
 
         //打款时间
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
-        Ctrl += "<td style='" + tdWidth + "' title=" + result[i].TransDateTime + ">" + result[i].TransDateTime + "</td>";
+        Ctrl += "<td style='" + tdWidth + "' title=" + result[i].TransDateTimeStr + ">" + result[i].TransDateTimeStr + "</td>";
 
         Ctrl += "</tr>";
 

@@ -7,6 +7,7 @@ $(function () {
     var popModel = null;
     var aoId = null;
     var HasOrder = false;
+    var ck_IQB_O2OBuyerPhone = "IQB_O2OBuyerPhone";
 
     function  InitPage()
     {
@@ -19,12 +20,11 @@ $(function () {
             window.location.href = "/O2OWap/ErrorPage?ec=1";
             return;
         }
-        var phone = $.cookie('IQB_O2OBuyerPhone');
+        var phone = $.cookie(ck_IQB_O2OBuyerPhone);
         if (phone != undefined && phone!="")
         {
             ShowActionArea(1);
         }
-   
     }
 
 InitPage();
@@ -91,7 +91,7 @@ orderPdt = function () {
       $("#ActionArea").show();
       if(userStatus ==0)
       {
-          $("#o2o_btn__look").hide();
+          $("#o2o_btn__look").attr("disabled",true);
       }
   }
   function CloseSMSModel()
@@ -312,6 +312,12 @@ orderPdt = function () {
           alert("请正确填写手机号");
           $('#phone_num').focus();
       }
+  }
+
+    //切换用户
+  switchUser = function () {
+      $.cookie(ck_IQB_O2OBuyerPhone, '');
+      window.location.href = "/O2OWap/Index?aoId=" + aoId+"&act=switchUser";
   }
 
     /**

@@ -192,6 +192,7 @@
     <Content Include="Content\Images\O2O\delete.png" />
     <Content Include="Content\Images\O2O\done.png" />
     <Content Include="Content\Images\O2O\guomei.png" />
+    <Content Include="Content\Images\O2O\Home.png" />
     <Content Include="Content\Images\O2O\huawei.png" />
     <Content Include="Content\Images\O2O\jingdong.png" />
     <Content Include="Content\Images\O2O\left.png" />
@@ -205,8 +206,8 @@
     <Content Include="Content\Images\O2O\x.png" />
     <Content Include="Content\Images\PayHuge_ADLogo.png" />
     <Content Include="Content\Images\Tool\CouPonQRCode.png" />
+    <Content Include="Content\IQBFonts.css" />
     <Content Include="Content\Style\IQBFonts.css" />
-    <Content Include="Content\Wap\O2O\check.css" />
     <Content Include="Content\Wap\O2O\AddrConfirm.css" />
     <Content Include="Content\Wap\O2O\index.css" />
     <Content Include="Content\Wap\O2O\OrderDetail.css" />

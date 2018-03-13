@@ -11,8 +11,8 @@ $(function () {
     /**
      * [返回]
      */
-    historyBack = function () {
-        window.history.back();
+    backToHome = function () {
+        window.location.href = "/O2OWap/Index?aoId=" + aoId;
     };
 
     Init = function()
@@ -21,10 +21,16 @@ $(function () {
         MallId = GetUrlParam("MallId");
         UserId = GetUrlParam("UserId");
         aoId = GetUrlParam("aoId");
+
+        if (aoId == "" || aoId == "null" || aoId == undefined) {
+            window.location.href = "/O2OWap/ErrorPage?ec=1";
+            return;
+        }
+
         if (ItemId == null || ItemId == undefined || MallId == null || MallId == undefined || UserId == null || UserId == undefined)
         {
             alert("未获取指定的商品，请选择商品");
-            window.location.href = "/O2OWap/MallList";
+            window.location.href = "/O2OWap/MallList?aoId="+aoId;
             return;
         }
           
@@ -51,12 +57,12 @@ $(function () {
                     if(res.IntMsg == -1)
                     {
                         alert("未获取用户信息，需重新提交手机号");
-                        window.location.href = "/O2OWap/Index";
+                        window.location.href = "/O2OWap/Index?aoId=" + aoId;
                         return;
                     }
                     if (res.IntMsg == -2) {
                         alert("此商品收货地址没有设置，请联系管理员");
-                        window.location.href = "/O2OWap/Index";
+                        window.location.href = "/O2OWap/Index?aoId=" + aoId;
                         return;
                     }
                 }
@@ -146,7 +152,7 @@ $(function () {
                                 break;
                             case -4:
                                 alert("中介信息未获取，可能等待时间过长，请返回首页重新操作");
-                                window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                                window.location.href = "/O2OWap/ErrorPage?ec=1";
                                 break;
                             case -5:
                                 alert("中介费率未配置，请联系您的中介");

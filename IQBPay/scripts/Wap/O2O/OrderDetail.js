@@ -14,6 +14,50 @@ $(function () {
     //stepTmp +='<div class="{5}">{7}</div>';
     //stepTmp +='</div>';
     //stepTmp +='</div>';
+    //初始化函数
+    InitOrder = function () {
+        aoId = GetUrlParam("aoId");
+     
+        if (aoId == "" || aoId == "null" || aoId == undefined) {
+            window.location.href = "/O2OWap/ErrorPage?ec=1";
+            return;
+        }
+
+        var url = "/O2OWap/OrderDetailQuery";
+        $.ajax({
+            type: 'post',
+            url: url,
+            success: function (res) {
+                if (res.IsSuccess) {
+                    if (res.resultList.length > 0) {
+                        OrderObj = res.resultObj;
+
+                        $("#number").text(OrderObj.OrderAmount);
+                        generateSteps(res.resultList);
+                        switchControlByOrderStatus();
+                    }
+                }
+                else {
+                    if (res.IntMsg == -1) {
+                        alert("用户信息未获取，请重新提交手机号");
+                        window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                    }
+                    else if (res.IntMsg == -2) {
+
+                        alert("您还没有订单，请先创建");
+                        window.location.href = "/O2OWap/MallList?aoId=" + aoId;
+                    }
+                    else {
+                        alert(res.ErrorMsg);
+                    }
+                }
+
+            },
+            error: function (xhr, type) {
+                alert("系统错误！");
+            }
+        });
+    };
 
   /**
    * [返回订单查询页]
@@ -23,46 +67,16 @@ $(function () {
     window.history.back();
   };
 
-  InitOrder = function () {
-      aoId = GetUrlParam("aoId");
-      var url = "/O2OWap/OrderDetailQuery";
-      $.ajax({
-          type: 'post',
-          url: url,
-          success: function (res) {
-              if (res.IsSuccess) {
-                  if (res.resultList.length > 0) {
-                      OrderObj = res.resultObj;
-                   
-                      $("#number").text(OrderObj.OrderAmount);
-                      generateSteps(res.resultList);
-                      switchControlByOrderStatus();
-                  }
-              }
-              else {
-                  if (res.IntMsg == -1) {
-                      alert("用户信息未获取，请重新提交手机号");
-                      window.location.href = "/O2OWap/Index";
-                  }
-                  else {
-                      alert(res.ErrorMsg);
-                  }
-              }
-
-          },
-          error: function (xhr, type) {
-              alert("系统错误！");
-          }
-      });
+  backToHome = function () {
+      window.location.href = "/O2OWap/Index?aoId=" + aoId;
   };
+
+
    // 根据订单状态修改一些按钮或超链接状态
   switchControlByOrderStatus= function()
   {
       if (OrderObj.O2OOrderStatus == 45 || OrderObj.O2OOrderStatus == 50)
           $("#btnCloseOrder").hide();
-     
-     
-
   }
 
    //List：所有步骤
@@ -88,6 +102,13 @@ $(function () {
                   $("#StepComplete").find(".step_desc_title").text("用户关闭");
                   $("#StepUpload").find("a").hide();
                  
+              }
+              //已经不能上传照片(>Settlement),不能重新选择商品
+              if(OrderObj.O2OOrderStatus>=14 && (step.Code == "StepUpload" || step.Code =="StepReSelectItem"))
+              {
+                  $("#linkToupload").text("查看订单");
+                  $("#LinkToSelItem").hide();
+
               }
           }
               
@@ -189,8 +210,6 @@ $(function () {
 
   InitOrder();
 
-   
-
   DoCloseOrder = function () {
 
       var url = "/O2OWap/OrderClose";
@@ -201,11 +220,12 @@ $(function () {
           success: function (res) {
               if (res.IsSuccess) {
                   alert("您将返回商品列表");
-                  window.location.href="/O2OWap/MallList?aoId="+aoId;
-                 
+                  window.location.href="/O2OWap/MallList?aoId="+aoId; 
               }
               else {
-
+                  alert(res.ErrorMsg);
+                  if (res.IntMsg == -1)//"订单未获取！请联系中介";
+                  window.location.href = "/O2OWap/Index?aoId=" + aoId;
               }
 
           },

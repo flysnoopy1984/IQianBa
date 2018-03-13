@@ -514,14 +514,17 @@ namespace IQBPay.Controllers
                 }
                 using (AliPayContent db = new AliPayContent())
                 {
-                    string sql = @"select b.Id,b.UserId,ui.OpenId,b.AliPayAccount,b.UserAccountType,ui.Name as UserName,b.O2OShipBalance,o.O2OOnOrderAmount from UserAccountBalance as b
-join  UserInfo as ui on b.UserId = ui.Id
-left join 
-(
-select sum(o.OrderAmount) as O2OOnOrderAmount,o.WHUserId from O2OOrder as o
-group by o.WHUserId
-) as o on o.WHUserId = ui.Id
-where ui.O2OUserRole = {0}";
+                    string sql = @"select b.Id,b.UserId,ui.OpenId,b.AliPayAccount,b.UserAccountType,ui.Name as UserName,
+                    ROUND(b.O2OShipBalance, 2) as O2OShipBalance,o.O2OOnOrderAmount from UserAccountBalance as b
+                    join  UserInfo as ui on b.UserId = ui.Id
+                    left join 
+                    (
+                    select sum(o.OrderAmount) as O2OOnOrderAmount,o.WHUserId 
+                    from O2OOrder as o 
+                    where o.O2OOrderStatus <18
+                    group by o.WHUserId
+                    ) as o on o.WHUserId = ui.Id
+                    where ui.O2OUserRole = {0}";
                     if(us.UserRole != UserRole.Administrator)
                     {
                         sql += " and b.UserId =" + us.Id;

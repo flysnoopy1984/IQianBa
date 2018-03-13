@@ -8,8 +8,8 @@ $(function () {
   /**
    * [返回]
    */
-  BackToMallList = function () {
-      window.location.href = "/O2OWap/MallList";
+  backToHome = function () {
+      window.location.href = "/O2OWap/Index?aoId=" + aoId;
   };
 
   function GetRequest(key) {

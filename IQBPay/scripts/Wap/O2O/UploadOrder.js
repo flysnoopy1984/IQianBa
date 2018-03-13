@@ -50,7 +50,7 @@ $(function () {
       $.ajax({
           type: 'post',
           url: url,
-          data: { "imgUpload1": imgUpload1,"MallOrderNo":MallOrderNo, "OrderNo": OrderNo, "ReceiveAccount": ReceiveAccount },
+          data: { "imgUpload1": imgUpload1, "MallOrderNo": MallOrderNo, "OrderNo": OrderNo, "ReceiveAccount": ReceiveAccount, "OrderStatus": OrderStatus },
           success: function (res) {
               if (res.IsSuccess) {
                   alert("提交成功！");
@@ -68,6 +68,10 @@ $(function () {
                   }
                   if (res.IntMsg == -3) {
                       alert("收款账户未填写");
+                      return;
+                  }
+                  if (res.IntMsg == -4) {
+                      alert("订单状态不正确，无法上传图片");
                       return;
                   }
               }
@@ -88,14 +92,7 @@ $(function () {
 
   InitData = function () {
       
-      OrderNo = GetUrlParam("OrderNo");
-      
-
-      if (OrderNo == "" || OrderNo == undefined) {
-          alert("订单未获取");
-          window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
-          return;
-      }
+     
       var url = "/O2OWap/UploadOrderQuery";
       $.ajax({
           type: 'post',
@@ -129,20 +126,47 @@ $(function () {
 
   InitOterControl = function () {
 
-      $("#imgUpload1").attr({ src:""});
+      $("#imgUpload1").attr({ src: "" });
       $("#imgContainer1").hide();
       $("#btnUpload1").show();
+      //Settlement 等待到货结算之前,提交按钮显示
+      if (OrderStatus < 14) {
+          $("#btnDelImg").show();
+          $("#btnSubmit").show();
+      }
+
+      else {
+          $("#btnDelImg").hide();
+          $("#btnSubmit").hide();
+      }
+         
+
+      
   }
   Init = function () {
 
       aoId = GetUrlParam("aoId");
+      if (aoId == "" || aoId == undefined)
+      {
+          window.location.href = "/O2OWap/ErrorPage?ec=1";
+          return;
+      }
+
+      OrderNo = GetUrlParam("OrderNo");
+      if (OrderNo == "" || OrderNo == undefined) {
+          alert("订单未获取");
+          window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
+          return;
+      }
+     
       OrderStatus = GetUrlParam("OrderStatus");
 
       InitOterControl();
 
       this.InitUploadControl();
 
-      if (OrderStatus !=2)
+      //2:WaitingUpload
+      if (OrderStatus >2)
         this.InitData();
   }
 
@@ -152,7 +176,7 @@ $(function () {
     */
   InitUploadControl = function () {
       var url = "/O2OWap/UploadOrderInfo";
-      OrderNo = GetUrlParam("OrderNo");
+    
     
 
       $("#upload_OrderInfo").fileupload({

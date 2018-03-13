@@ -40,6 +40,9 @@ namespace IQBCore.IQBPay.BaseEnum
                 case O2OOrderStatus.WaitingUpload:
                     O2OOrderStatusStr = "等待用户上传";
                     break;
+                case O2OOrderStatus.UserClose:
+                    O2OOrderStatusStr = "用户关闭";
+                    break;
             }
             return O2OOrderStatusStr;
         }
@@ -302,15 +305,17 @@ namespace IQBCore.IQBPay.BaseEnum
         MidStore = 5,
         O2OWareHouse =20,
      
-
-
        /// <summary>
-       /// 资金转给自己
+       /// 资金转给自己（暂时没用到）
        /// </summary>
         Self = 50,
-
+        /// <summary>
+        /// 从押金中扣除
+        /// </summary>
         PP =100,
-      
+
+        /*查询使用*/
+        All = 999, 
     }
 
     public enum PayTargetMode
@@ -348,6 +353,8 @@ namespace IQBCore.IQBPay.BaseEnum
         QRHuge=1001,
     }
 
+    /* O2O begin */
+  
     public enum O2OStepStatus
     {
         NotStart=0,
@@ -371,15 +378,13 @@ namespace IQBCore.IQBPay.BaseEnum
         ////仓库等待到货
         //WaitingDeliver=10,
 
-        //到货结算
-        Settlement=14,
+        //等待到货结算
+        Settlement = 14,
 
         //支付用户
         Payment=18,
 
-        Payment_UserClose = 1845,
-
-        Settle_Payment_UserClose = 141845,
+       
 
         UserClose = 45,
 
@@ -388,9 +393,14 @@ namespace IQBCore.IQBPay.BaseEnum
 
         All = 99,
 
+        /* 订单过滤查询使用 */
         Settle_Payment=1418,
+        Payment_UserClose = 1845,
+        Settle_Payment_UserClose = 141845,
     }
 
+
+    /* O2O end */
     public enum UserAccountType
     {
         /// <summary>

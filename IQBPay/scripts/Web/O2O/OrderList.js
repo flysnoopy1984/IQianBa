@@ -97,6 +97,10 @@ function Query(NeedClearn,_PageIndex)
                     generateData(data.resultList);
                     pageIndex++;
                 }
+                else
+                {
+                    alert("没有数据");
+                }
             }
             else
             {
@@ -147,13 +151,15 @@ function generateData(result)
         var op = '<ul class="OrderAction">';
         if (FromPage == 0)
         {
+            //<a href=/Transfer/Info_Win?id=" + result[i].OrderNo + "&type=1  target='_blank' class='td'>转账信息</a>
            // if (result[i].O2OOrderStatus ==6)
-            op += '<li><a href=javascript:OpenWin("/O2O/OrderReview?O2ONo=' + result[i].O2ONo + '")>详情操作</a></li>';
+            op += '<li><a href=javascript:OpenWin("/O2O/OrderReview?O2ONo=' + result[i].O2ONo + '")>操作</a></li>';
+            op += '<li><a href=javascript:OpenWin("/Transfer/Info_Win?O2ONo=' + result[i].O2ONo + '&OrderType=O2O")>转账记录</a></li>';
         }
         if (FromPage == 1)
         {
            // if (result[i].O2OOrderStatus == 14)
-                op += '<li><a href=javascript:OpenWin("/O2O/OrderSettlement?O2ONo=' + result[i].O2ONo + '")>详情操作</a></li>';
+            op += '<li><a href=javascript:OpenWin("/O2O/OrderSettlement?O2ONo=' + result[i].O2ONo + '")>详情操作</a></li>';
         }
         op+='</ul>';
         //操作

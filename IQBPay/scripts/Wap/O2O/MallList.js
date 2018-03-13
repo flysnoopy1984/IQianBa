@@ -7,14 +7,15 @@ $(function () {
   /**
    * [返回]
    */
-  historyBack = function() {
-  //  window.history.back();
+  backToHome = function () {
+      window.location.href = "/O2OWap/Index?aoId=" + aoId;
   };
 
   // 获取商城列表
   function getShopList() {
 
       aoId = GetUrlParam("aoId");
+     
       if (aoId == "" || aoId == "null" || aoId == undefined) {
           window.location.href = "/O2OWap/ErrorPage?ec=1";
           return;

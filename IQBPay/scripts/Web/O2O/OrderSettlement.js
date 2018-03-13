@@ -28,7 +28,10 @@ function ConfirmWithPay()
         window.open("about:blank", "_self").close();
     }
     $("#btnConfirm").hide();
-
+    self.opener.location.reload();
+    window.open("about:blank", "_self").close();
+   
+    
     $.ajax({
         type: 'post',
         dataType: "json",
@@ -38,6 +41,7 @@ function ConfirmWithPay()
             if (data.IsSuccess) {
                 alert("结算成功！");
                 window.open("about:blank", "_self").close();
+                window.opener.location.reload();
             }
             else {
                 alert(data.ErrorMsg);
@@ -49,10 +53,8 @@ function ConfirmWithPay()
 
         },
         error: function (xhr, type) {
-
             alert('Ajax error!');
-
-
         }
     });
+    
 }

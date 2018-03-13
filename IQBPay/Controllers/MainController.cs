@@ -178,6 +178,10 @@ namespace IQBPay.Controllers
             string action = Request.QueryString["action"];
             if(action == "exit")
             {
+                if(GetUserSession().UserRole != UserRole.Administrator)
+                {
+                    return Redirect("/O2O/Login?action=exit");
+                }
                 base.ExitSession();
             }
 

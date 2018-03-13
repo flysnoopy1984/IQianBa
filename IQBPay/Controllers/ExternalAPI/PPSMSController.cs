@@ -158,11 +158,11 @@ namespace IQBPay.Controllers.ExternalAPI
                 inSMS.Parameters = VerifyCode;
 
                 /*调用第三方短信接口*/
-                if (!this.DoSMS(inSMS))
-                {
-                    OutSMS.SMSVerifyStatus = SMSVerifyStatus.SentFailure;
-                    return OutSMS;
-                }
+                //if (!this.DoSMS(inSMS))
+                //{
+                //    OutSMS.SMSVerifyStatus = SMSVerifyStatus.SentFailure;
+                //    return OutSMS;
+                //}
 
                 using (AliPayContent db = new AliPayContent())
                 {
