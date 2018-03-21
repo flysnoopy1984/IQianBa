@@ -36,6 +36,17 @@
         <ul class="UlHorizontal" style="margin:30px;">
             <li>
                 <button id="btnAdd" type="button" class="btn btn-warning" onclick="CreateNew(null);">新增商品</button>
+              
+            </li>
+            <li>商品状态
+                <select id="cItemStatus" onchange="SelectStatus();">
+                    <option value="0" selected>上架</option>
+                    <option value="1">下架</option>
+                    <option value="99">全部</option>
+                </select>
+            </li>
+            <li>
+                <button id="btnImport" type="button" class="btn btn-info" onclick="ImportItem();">导入</button>
             </li>
         </ul>
     </div>

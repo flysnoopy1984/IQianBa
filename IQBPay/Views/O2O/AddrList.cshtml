@@ -15,7 +15,9 @@
 <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
 
 <style type="text/css">
-
+    .ObjBlock{
+    background-color:#cecbcb;
+}
 </style>
 
 <h2>O2O地址列表</h2>
@@ -24,6 +26,14 @@
         <ul class="UlHorizontal" style="margin:30px;">
             <li>
                 <button id="btnSearch" type="button" class="btn btn-warning" onclick="CreateNew(null);">新增地址</button>
+            </li>
+            <li>
+                地址状态：
+                <select id="cRecordStatus" onchange="SelectStatus();">
+                    <option value="0" selected>启用</option>
+                    <option value="1">禁用</option>
+                    <option value="99">全部</option>
+                </select>
             </li>
         </ul>
     </div>

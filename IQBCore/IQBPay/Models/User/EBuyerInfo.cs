@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IQBCore.IQBPay.BaseEnum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -32,5 +33,7 @@ namespace IQBCore.IQBPay.Models.User
         public string AliPayAccount { get; set; }
 
         public DateTime TransDate { get; set; }
+
+        public BuyerType BuyerType { get; set; }
     }
 }

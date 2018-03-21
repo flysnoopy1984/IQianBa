@@ -7,7 +7,7 @@
     <title>玉杰商务-服务平台</title>
     <script src="~/scripts/jquery-1.10.2.min.js"></script>
     <link href="@Url.Scrpit("~/Content/Style/Frame1/style.css")" rel="stylesheet" />
-    <link href="@Url.Scrpit("~/Content/Style/Frame1/bootstrap.css")" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="@Url.Scrpit("~/Content/Style/Frame1/loader-style.css")" rel="stylesheet" />
     <link href="@Url.Scrpit("~/Content/main.css")" rel="stylesheet" />
 
@@ -68,13 +68,13 @@
                         if (userSession != null)
                         {
                             <img class="img-profile" src="@userSession.Headimgurl" />
-                            <span>Hi @userSession.Name 你好！</span>
+                            <span style="width:200px;">Hi @userSession.Name 你好！</span>
                         }
                     }    
                 </li>
                 <li>
                     <a href="#" onclick="javascript:ExitWeb();">
-                        <span class="icon-gear"></span>&nbsp;&nbsp;退出
+                        @*<span class="icon-gear"></span>*@&nbsp;&nbsp;退出
                     </a>
                 </li>
             </ul>

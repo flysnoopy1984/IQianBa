@@ -221,8 +221,8 @@ namespace IQBWX.Controllers
 
         public ActionResult IndexWxLogin()
         {
-            return Redirect("http://m.yujiept.icoc.me/");
-          //  return View();
+          //  return Redirect("http://m.yujiept.icoc.me/");
+            return View();
         }
 
 

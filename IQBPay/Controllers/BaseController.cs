@@ -164,6 +164,26 @@ namespace IQBPay.Controllers
 
         }
 
+        public O2OBuyerSession O2OBuyerSession
+        {
+            get
+            {
+                O2OBuyerSession buyerSession = Session["BuyerSession"] as O2OBuyerSession;
+                if (buyerSession == null)
+                {
+                    buyerSession = new O2OBuyerSession();
+
+                    buyerSession.Phone = CookieHelper.getCookie(IQBConstant.ck_O2OBuyerPhone);
+                    return buyerSession;
+
+                }
+                else
+                    return buyerSession;
+            }
+        }
+
+
+
         public string GetCurrentOrder(string BuyerPhone, AliPayContent db=null)
         {
             var sql = @"select top 1 o.O2ONo from O2OOrder as o
@@ -199,6 +219,7 @@ namespace IQBPay.Controllers
             buyerSession.AliPayAccount = buyer.ReceiveAccount;
             buyerSession.Phone = buyer.Phone;
             buyerSession.BuyerId = buyer.Id;
+           
             Session["BuyerSession"] = buyerSession;
         }
        

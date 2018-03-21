@@ -140,6 +140,7 @@ function generateData(result)
             case 6:
                 bkColor = "background-color:chartreuse;";
                 break;
+        
             //等待结算
             case 14:
                 bkColor = "background-color:gold;";
@@ -166,6 +167,15 @@ function generateData(result)
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
         Ctrl += "<td style='" + tdWidth + "'>" + op + "</td>";
        
+        if (FromPage == 1) {
+            var IsSign = "是";
+            if (result[i].O2OOrderStatus == 10)
+                IsSign = "否";
+            //是否签收
+            tdWidth = "width:" + $("#header th").eq(n++).css("width");
+            Ctrl += "<td style='" + tdWidth + "'>" + IsSign + "</td>";
+        }
+
 
         //商城订单编号
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
@@ -186,6 +196,14 @@ function generateData(result)
                 result[i].O2OOrderStatusStr = "已结算";
             }
         }
+        //商品
+        tdWidth = "width:" + $("#header th").eq(n++).css("width");
+        Ctrl += "<td style='" + tdWidth + "' title=" + result[i].ItemName + ">" + result[i].ItemName + "</td>";
+
+        //金额
+        tdWidth = "width:" + $("#header th").eq(n++).css("width");
+        Ctrl += "<td style='" + tdWidth + "' title=" + result[i].OrderAmount + ">" + result[i].OrderAmount + "</td>";
+
         //订单状态
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
         Ctrl += "<td style='" + tdWidth + "'>" + result[i].O2OOrderStatusStr + "</td>";
@@ -198,9 +216,7 @@ function generateData(result)
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
         Ctrl += "<td style='" + tdWidth + "'>" + result[i].MallName + "</td>";
 
-        //商品
-        tdWidth = "width:" + $("#header th").eq(n++).css("width");
-        Ctrl += "<td style='" + tdWidth + "' title=" + result[i].ItemName + ">" + result[i].ItemName + "</td>";
+      
 
         if (FromPage == 0) {
             //商城登陆账户

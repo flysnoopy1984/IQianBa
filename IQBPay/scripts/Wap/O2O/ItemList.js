@@ -71,8 +71,9 @@ $(function () {
               pdts = res;
               var itemStr = '';
               for (var p = 0; p < res.length; p++) {
-                  itemStr += '<div id="' + res[p].Id + '_item_' + res[p].UserId + '" class="pdt_list_content_item">';
-                  if (res[p].ImgUrl != "" && res[p].ImgUrl!=null)
+                  itemStr += '<div id="' + res[p].Id + '_item_' + res[p].OpenId + '" class="pdt_list_content_item">';
+                  itemStr += '<input id="OpenId" type="hidden" value="' + res[p].OpenId + '" />';
+                  if (res[p].ImgUrl != "" && res[p].ImgUrl != null && res[p].ImgUrl != "null")
                     itemStr += '<img width="175" height="175" src="' + res[p].ImgUrl + '"></img>';
                   itemStr += '<div class="pdt-price"><span class="price_symbal">￥</span><span class="price">' + res[p].Amount + '</span></div>';
                   itemStr += ' <div class="pdt-label">' + res[p].Name + '</div>';
@@ -111,7 +112,8 @@ $(function () {
 
   //选择价格
   $(document).on("click",".price_item",function(e){
-    $('.price_item').removeClass('price_active');
+      $('.price_item').removeClass('price_active');
+
     var id = e.currentTarget.id.split('_')[0];
     var code = e.currentTarget.id.split('_')[1];
     $('#' + id + '_'+ code + '_price_item').addClass('price_active');
@@ -122,7 +124,8 @@ $(function () {
   // 点击商品
   $(document).on("click", ".pdt_list_content_item", function(e) {
       var idx = e.currentTarget.id.split('_')[0];
-      var userId = e.currentTarget.id.split('_')[2];
+      //var OpenId = e.currentTarget.id.split('_')[2];
+      var OpenId = $(e.currentTarget).find("#OpenId").val();
     //pdtIdx = idx;
     //$('.o2o_modal').css("display", "flex");
     //var modalPdt = '';
@@ -136,11 +139,11 @@ $(function () {
     //modalPdt += '</div></div>';
       //$('.o2o_modal_content_container').html(modalPdt);
 
-      confirm(idx, userId);
+      confirm(idx, OpenId);
   });
 
-  confirm = function (ItemId, userId) {
-      window.location.href = '/O2OWap/AddrConfirm?ItemId=' + ItemId + '&UserId=' + userId + '&MallId=' + shopId + '&aoId=' + aoId;
+  confirm = function (ItemId, OpenId) {
+      window.location.href = '/O2OWap/AddrConfirm?ItemId=' + ItemId + '&OpenId=' + OpenId + '&MallId=' + shopId + '&aoId=' + aoId;
   }
 
   /**

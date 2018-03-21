@@ -42,7 +42,8 @@ namespace IQBCore.IQBPay.Models.O2O
         /// <summary>
         /// 出库商UserId
         /// </summary>
-        public int WHUserId { get; set; }
+        [MaxLength(32)]
+        public string WHOpenId { get; set; }
 
         [MaxLength(100)]
         public string WHAliPayAccount { get; set; }

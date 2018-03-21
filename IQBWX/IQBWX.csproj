@@ -192,6 +192,10 @@
     <Content Include="Content\images\money1.png" />
     <Content Include="Content\images\PayError1.jpg" />
     <Content Include="Content\images\PeopleGroup.png" />
+    <Content Include="Content\images\Proj\cc.jpg" />
+    <Content Include="Content\images\Proj\KK.jpg" />
+    <Content Include="Content\images\Proj\PMY.jpg" />
+    <Content Include="Content\images\Proj\WTPay.jpg" />
     <Content Include="Content\images\qrLoading.gif" />
     <Content Include="Content\images\right.png" />
     <Content Include="Content\images\shengjihuiyuan_02.jpg" />
@@ -216,6 +220,10 @@
     <Content Include="Content\Script\Component\iscroll.js" />
     <Content Include="Content\Script\Component\jquery-confirm.js" />
     <Content Include="Content\Script\Component\jquery.mobile-1.4.5.min.js" />
+    <Content Include="Content\Script\Component\PageScroll\iscroll.min.js" />
+    <Content Include="Content\Script\Component\PageScroll\listloading.min.js" />
+    <Content Include="Content\Script\Component\PageScroll\zepto.min.js" />
+    <Content Include="Content\Script\Component\pullToRefresh.mini.js" />
     <Content Include="Content\Script\Component\Validform_v5.3.2_min.js" />
     <Content Include="Content\Script\Detail.js" />
     <Content Include="Content\Script\dropload.js" />
@@ -294,6 +302,7 @@
     <Compile Include="Controllers\PartyStoreController.cs" />
     <Compile Include="Controllers\PPController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\UnionController.cs" />
     <Compile Include="Controllers\ValidController.cs" />
     <Compile Include="Controllers\WXBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -361,8 +370,8 @@
     <Content Include="Content\json\Test.json" />
     <Content Include="Content\json\Cities.json" />
     <Content Include="Content\json\SendMsg.json" />
-    <Content Include="Content\json\Menus - 复制.json" />
     <Content Include="Content\json\json.json" />
+    <Content Include="Content\json\Menus - OldYJ.json" />
     <None Include="Properties\PublishProfiles\IQBWX.pubxml" />
     <Content Include="Views\Pay\Index.cshtml" />
     <Content Include="Views\Pay\Test.cshtml" />
@@ -429,6 +438,11 @@
     <Content Include="Views\Shared\_O2OLayout.cshtml" />
     <Content Include="Views\O2OWap\EntryAgent.cshtml" />
     <Content Include="Views\O2OWap\AgentFeeRate.cshtml" />
+    <Content Include="Views\Shared\_UnionLayout.cshtml" />
+    <Content Include="Views\Union\ProjPMY.cshtml" />
+    <Content Include="Views\Union\ProjKK.cshtml" />
+    <Content Include="Views\Union\ProjWTP.cshtml" />
+    <Content Include="Views\Union\CC.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -31,13 +31,13 @@ function CreateNew(updateData) {
                 $.each(RuleData, function (i) {
                     if (updateData != null)
                     {
-                        if (updateData.O2ORuleId == RuleData[i].Id)
-                            op += "<option value=" + RuleData[i].Id + " selected>" + RuleData[i].Name + "</option>";
+                        if (updateData.O2ORuleCode == RuleData[i].Code)
+                            op += "<option value=" + RuleData[i].Code + " selected>" + RuleData[i].Name + "</option>";
                         else
-                            op += "<option value=" + RuleData[i].Id + ">" + RuleData[i].Name + "</option>";
+                            op += "<option value=" + RuleData[i].Code + ">" + RuleData[i].Name + "</option>";
                     }
                     else
-                        op += "<option value=" + RuleData[i].Id + ">" + RuleData[i].Name + "</option>";
+                        op += "<option value=" + RuleData[i].Code + ">" + RuleData[i].Name + "</option>";
                 });
                 InitCellData(op, updateData);
             },
@@ -49,13 +49,13 @@ function CreateNew(updateData) {
     else {
         $.each(RuleData, function (i) {
             if (updateData != null) {
-                if (updateData.O2ORuleId == RuleData[i].Id)
-                    op += "<option value=" + RuleData[i].Id + " selected>" + RuleData[i].Name + "</option>";
+                if (updateData.O2ORuleCode == RuleData[i].Code)
+                    op += "<option value=" + RuleData[i].Code + " selected>" + RuleData[i].Name + "</option>";
                 else
-                    op += "<option value=" + RuleData[i].Id + " selected>" + RuleData[i].Name + "</option>";
+                    op += "<option value=" + RuleData[i].Code + " selected>" + RuleData[i].Name + "</option>";
             }
             else
-                op += "<option value=" + RuleData[i].Id + ">" + RuleData[i].Name + "</option>";
+                op += "<option value=" + RuleData[i].Code + ">" + RuleData[i].Name + "</option>";
         });
         InitCellData(op, updateData);
     }
@@ -76,7 +76,7 @@ function GetCellHtml() {
     ctrl += '<li><span>描述：</span><input id="Description" type="text" class="form-control" value="{3}" /></li>';
     ctrl += '</ul>';
     ctrl += '<ul class="UlHorizontal">';
-    ctrl += '<li><span>规则选择：</span><select id="O2ORuleId" class="form-control">{4}</select>';
+    ctrl += '<li><span>规则选择：</span><select id="O2ORuleCode" class="form-control">{4}</select>';
     ctrl += '<li><span>费率：</span><input id="FeeRate" type="text" class="form-control" value="{5}" /></li>';
     ctrl += '</li>';
     ctrl += '</ul>';
@@ -147,13 +147,13 @@ function Save(obj) {
     var Code = pObj.find("#Code").val();
     var Name = pObj.find("#Name").val();
     var Description = pObj.find("#Description").val();
-    var O2ORuleId = pObj.find("#O2ORuleId").val();
+    var O2ORuleCode = pObj.find("#O2ORuleCode").val();
     var FeeRate = pObj.find("#FeeRate").val();
 
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "Id": Id,"Code":Code, "Name": Name,"FeeRate":FeeRate, "Description": Description, "O2ORuleId": O2ORuleId},
+        data: { "Id": Id, "Code": Code, "Name": Name, "FeeRate": FeeRate, "Description": Description, "O2ORuleCode": O2ORuleCode },
         url: url,
         success: function (data) {
 

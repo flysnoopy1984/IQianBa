@@ -1,9 +1,15 @@
 ﻿$(document).ready(function () {
 
-    $("#ImgSpan").viewer({
-        navbar: false,
-        toolbar:false,
-    });
+    var page = window.location.pathname.toLowerCase();
+    if (page == "/O2O/OrderReview".toLowerCase()) {
+
+        $("#ImgSpan").viewer({
+            navbar: false,
+            toolbar: false,
+        });
+    }
+
+   
 });
 
 function PaymentOrder()

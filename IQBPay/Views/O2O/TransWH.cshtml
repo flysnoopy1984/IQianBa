@@ -59,12 +59,15 @@
         display: inline-block;
         width: 50%;
     }
-     #Info{width:1024px; margin:10px;}
-    #Info ul{width:100%; list-style:none; height:100%; padding:0px;}
+    #Info{width:1024px; margin:10px;}
+    #Info ul{width:100%; list-style:none; height:30px; padding:0px; clear:both;}
   
-    #Info ul li span{display:inline-block;}
-     .LeftSpan {
-            width: 150px;
+    #Info ul li{float:left}
+   #Info ul>li{
+       width:35%;
+   }
+    .LeftSpan {
+            width: 110px;
             font-size:18px;
             font-weight:bold;
         }
@@ -80,16 +83,21 @@
     </ul>
     <ul>
         <li>
-            <span class="LeftSpan">账户余额：</span><span id="O2OShipBalance"></span>
-
-        </li>
+            <span class="LeftSpan">支出：</span><span id="O2OShipOutCome"></span>
+        </li>  
+        <li>
+            <span class="LeftSpan">收入：</span><span id="O2OShipInCome"></span>
+        </li>  
+    </ul>
+    <ul>
+        <li>
+            <span class="LeftSpan">账户余额(不包含收入)：</span><span id="O2OShipBalance"></span>
+        </li>    
         <li>
             <span class="LeftSpan">在单金额：</span><span id="O2OOnOrderAmount"></span>
         </li>
-        @*<li>
-            <span class="LeftSpan">费率：</span><span></span>
-        </li>*@
     </ul>
+   
        
     
 </div>
@@ -128,9 +136,9 @@
             <li>
                 <button id="btnAdd" type="button" class="btn btn-primary" onclick="btnQuery()">查询</button>
             </li> 
-            <li>
+            @*<li>
                 <button id="btnAdd" type="button" class="btn btn-warning" onclick="CreateDemoData()">DemoData</button>
-            </li>
+            </li>*@
         </ul>
     </div>
     <div id="DataContainer">

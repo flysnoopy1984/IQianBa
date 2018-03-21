@@ -32,31 +32,36 @@ InitPage();
    * [跳转到我要购物页面]
    */
 orderPdt = function () {
-     var url = "/O2OWap/HasBuyerOrder";
-     $.ajax({
-         type: 'post', 
-         url: url,
-         success: function (data) {
-             if (data == true) {
-                 alert("您有未完成的订单，请先处理");
-                 lookOrderList();
-             }
-             else
-                 window.location.href = "/O2OWap/MallList?aoId=" + aoId;
-         },
-         error: function (xhr, type) {
-             alert("error");
-         }
-     });
+    window.location.href = "/O2OWap/MallList?aoId=" + aoId;
+     //var url = "/O2OWap/HasBuyerOrder";
+     //$.ajax({
+     //    type: 'post', 
+     //    url: url,
+     //    success: function (data) {
+     //        if (data == true) {
+     //            alert("您有未完成的订单，请先处理");
+     //            lookOrderList();
+     //        }
+     //        else
+     //            window.location.href = "/O2OWap/MallList?aoId=" + aoId;
+     //    },
+     //    error: function (xhr, type) {
+     //        alert("error");
+     //    }
+     //});
     
   };
 
   /**
    * [跳转到我要查看我的订单页面]
    */
-  lookOrderList = function() {
+lookOrderDetail = function () {
       window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
-  };
+};
+
+lookOrderList = function () {
+    window.location.href = "/O2OWap/OrderList?aoId=" + aoId;
+};
 
   $('#phone_num').keypress(function () {
       var phone = $('#phone_num').val();

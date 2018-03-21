@@ -37,5 +37,8 @@ namespace IQBCore.IQBPay.Models.O2O
         public double TransferAmount { get; set;}
 
         public DateTime TransDateTime { get; set; }
+
+        [MaxLength(32)]
+        public string OpenId { get; set; }
     }
 }

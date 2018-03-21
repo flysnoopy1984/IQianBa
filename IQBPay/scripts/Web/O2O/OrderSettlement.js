@@ -28,8 +28,7 @@ function ConfirmWithPay()
         window.open("about:blank", "_self").close();
     }
     $("#btnConfirm").hide();
-    self.opener.location.reload();
-    window.open("about:blank", "_self").close();
+   
    
     
     $.ajax({
@@ -40,8 +39,8 @@ function ConfirmWithPay()
         success: function (data) {
             if (data.IsSuccess) {
                 alert("结算成功！");
+                self.opener.location.reload();
                 window.open("about:blank", "_self").close();
-                window.opener.location.reload();
             }
             else {
                 alert(data.ErrorMsg);

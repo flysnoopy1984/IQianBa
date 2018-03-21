@@ -28,17 +28,20 @@ namespace IQBCore.IQBPay.BaseEnum
                 case O2OOrderStatus.OrderReview:
                     O2OOrderStatusStr = "等待审核";
                     break;
+                case O2OOrderStatus.ComfirmSign:
+                    O2OOrderStatusStr = "等待确认签收";
+                    break;
                 case O2OOrderStatus.Payment:
                     O2OOrderStatusStr = "等待支付用户";
                     break;
                 case O2OOrderStatus.Settlement:
-                    O2OOrderStatusStr = "等待发货结算";
+                    O2OOrderStatusStr = "等待平台结算";
                     break;
                 //case O2OOrderStatus.WaitingDeliver:
                 //    O2OOrderStatusStr = "等待发货";
                 //    break;
                 case O2OOrderStatus.WaitingUpload:
-                    O2OOrderStatusStr = "等待用户上传";
+                    O2OOrderStatusStr = "等待订单上传";
                     break;
                 case O2OOrderStatus.UserClose:
                     O2OOrderStatusStr = "用户关闭";
@@ -375,8 +378,8 @@ namespace IQBCore.IQBPay.BaseEnum
         //等待订单审核
         OrderReview=6,
 
-        ////仓库等待到货
-        //WaitingDeliver=10,
+        //用户确认签收
+        ComfirmSign=10,
 
         //等待到货结算
         Settlement = 14,
@@ -394,7 +397,12 @@ namespace IQBCore.IQBPay.BaseEnum
         All = 99,
 
         /* 订单过滤查询使用 */
-        Settle_Payment=1418,
+        //出库商过滤使用，到货确认
+        Sign_Settle = 1014,
+        Payment_Complete = 1850,
+        Sign_Settle_Payment_Complete = 10141850,
+
+        Sign_Settle_Payment = 101418,
         Payment_UserClose = 1845,
         Settle_Payment_UserClose = 141845,
     }
@@ -408,6 +416,18 @@ namespace IQBCore.IQBPay.BaseEnum
         /// </summary>
         O2OShippment = 10,
 
+    }
+
+    public enum BuyerType
+    {
+        /// <summary>
+        /// O2O用户
+        /// </summary>
+        O2O =10,
+        /// <summary>
+        /// 小额码
+        /// </summary>
+        QR =1,
     }
 
 

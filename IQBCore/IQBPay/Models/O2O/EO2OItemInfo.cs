@@ -23,13 +23,14 @@ namespace IQBCore.IQBPay.Models.O2O
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-      
+
         /// <summary>
         /// 商品属于哪个供应商
         /// </summary>
-        public int UserId { get; set; }
+        [MaxLength(32)]
+        public string OpenId { get; set; }
 
-        
+
 
         [DefaultValue("")]
         [MaxLength(50)]
@@ -53,6 +54,11 @@ namespace IQBCore.IQBPay.Models.O2O
         public string O2ORuleCode { get; set; }
 
         public RecordStatus RecordStatus { get; set; }
+
+        /// <summary>
+        /// 出库商的费率
+        /// </summary>
+        public double ShipFeeRate { get; set; }
 
         public int PriceGroupId { get; set; }
 

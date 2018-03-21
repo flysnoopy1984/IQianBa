@@ -13,7 +13,10 @@ function Init() {
         url: url,
         success: function (data) {
             if (data.QueryResult == false)
+            {
                 window.location.href = "/Main/Login";
+            }
+               
             else
                 InitFormData(data);
         },

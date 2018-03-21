@@ -1,8 +1,20 @@
+
+
 $(function () {
     var httpUrl = 'http://pp.iqianba.cn';
     var OrderNo = '';
     var aoId = null;
     var OrderStatus = null;
+    var IsPassAccount = false;
+    var jqXHR = null;
+
+    $(window).bind('beforeunload', function () {
+        if(jqXHR!=null)
+        {
+            jqXHR.abort();
+        }
+    });
+  
   /**
    * [删除已经上传的图片]
    * @return {[type]} [description]
@@ -31,18 +43,24 @@ $(function () {
    * @return {[type]} [description]
    */
   submitUpload = function () {
-      var imgUpload1 = $("#imgUpload1").attr("src");
-      if (imgUpload1 == null || imgUpload1 == "" || imgUpload1 == undefined)
-      {
-          alert("请先上传图片");
-          return;
-      }
+
       var ReceiveAccount = $("#ReceiveAccount").val();
       if (ReceiveAccount == null || ReceiveAccount == "" || ReceiveAccount == undefined) {
           alert("请输入收款账户");
           $("#ReceiveAccount").focus();
           return;
       }
+      if (!IsPassAccount) {
+          alert("请点击按钮,先验证账户");
+          return;
+      }
+      var imgUpload1 = $("#imgUpload1").attr("src");
+      if (imgUpload1 == null || imgUpload1 == "" || imgUpload1 == undefined)
+      {
+          alert("请先上传图片");
+          return;
+      }
+      
 
       var MallOrderNo = $("#order_num").val();
 
@@ -67,6 +85,7 @@ $(function () {
                       return;
                   }
                   if (res.IntMsg == -3) {
+                      $("#ReceiveAccount").focus();
                       alert("收款账户未填写");
                       return;
                   }
@@ -89,6 +108,42 @@ $(function () {
       window.history.back();
       
   };
+
+  VerifyAccount = function () {
+      var url = "/O2OWap/VerifyAliPayAccount";
+      var AliPayAccount =$.trim($("#ReceiveAccount").val());
+      if(AliPayAccount =="")
+      {
+          alert("收款账户不能为空");
+          $("#ReceiveAccount").focus();
+          return;
+      }
+      $.ajax({
+          type: 'post',
+          url: url,
+          data: { "AliPayAccount": AliPayAccount },
+          success: function (res) {
+              if (res.IsSuccess) {
+                  alert("验证通过");
+                  $("#ReceiveAccount").attr("disabled", true);
+                  $("#btnVerifyAccount").hide();
+                  IsPassAccount = true;
+              }
+              else {
+                  alert(res.ErrorMsg);
+                  if (res.IntMsg == -1) {  
+                      window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                      return;
+                  }
+
+              }
+          },
+          error: function (xhr, type) {
+              alert("系统错误！");
+          }
+      });
+      
+  }
 
   InitData = function () {
       
@@ -129,6 +184,12 @@ $(function () {
       $("#imgUpload1").attr({ src: "" });
       $("#imgContainer1").hide();
       $("#btnUpload1").show();
+
+      //进度条
+    //  $("upload_progress1").css("width", "0%");
+    //  $("#ProcessArea1").hide();
+     // $("#ProcessArea1").removeClass("active");
+
       //Settlement 等待到货结算之前,提交按钮显示
       if (OrderStatus < 14) {
           $("#btnDelImg").show();
@@ -143,6 +204,7 @@ $(function () {
 
       
   }
+
   Init = function () {
 
       aoId = GetUrlParam("aoId");
@@ -158,8 +220,17 @@ $(function () {
           window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
           return;
       }
-     
       OrderStatus = GetUrlParam("OrderStatus");
+      //如果是管理员打开审核面板
+      var IsAdmin = $("#IsAdmin").val();
+      if (IsAdmin)
+      {
+          $("#ReviewArea").show();
+          $("#O2ONo").val(OrderNo);
+          $("#OrderStatus").val(OrderStatus);
+      }
+     
+     
 
       InitOterControl();
 
@@ -176,8 +247,6 @@ $(function () {
     */
   InitUploadControl = function () {
       var url = "/O2OWap/UploadOrderInfo";
-    
-    
 
       $("#upload_OrderInfo").fileupload({
           autoUpload: true,
@@ -189,7 +258,9 @@ $(function () {
           maxFileSize: 10480,
           maxNumberOfFiles: 1,
           recalculateProgress: true,
+          forceIframeTransport:true,
           done: function (e, data) {
+              $.unblockUI();
               if(data.result.IsSuccess == true)
               {
                   $("#imgContainer1").show();
@@ -215,6 +286,7 @@ $(function () {
                   }
                   InitOterControl();
               }
+
               //$("#uploadImg" + n).attr({ src: data.result.ImgSrc });
               //$("#uploadImg" + n).css({ width: "290px", height: "218px" });
               //IdCardFile1Done = true;
@@ -222,14 +294,32 @@ $(function () {
           add: function (e, data) {
 
               //$("#Progress" + n).show();
-            
-              $("#btnUpload1").hide();
-              ////   alert(data.files[0].name);
+            //  $("#ProcessArea1").show();
+             // $("#ProcessArea1").addClass("active");
 
-              var jqXHR;
+              $("#btnUpload1").hide();
+
+              var msg = ' <div id="ProcessArea1" class="progress progress-striped active">';
+              msg+='<div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">';
+              msg+='<span class="sr-only">正在上传请耐心等待...</span>';
+              msg+='</div>';
+              msg+='</div>';
+            
+              ////   alert(data.files[0].name);
+              $.blockUI({
+                  message: msg,
+                  css: {
+                      border: 'none',
+                      width: '90%',
+                      height:'20px',
+                      left: '20px',
+                      'border-radius':'4px',
+                  }
+              });
+              
               data.process().done(function () {
                   jqXHR = data.submit();
-
+                  
               });
 
               //$("#cancel_IdCardFile" + n).click(function () {
@@ -243,18 +333,21 @@ $(function () {
           },
           fail: function (e, data) {
               if (data.errorThrown == "abort") {
+                  InitOterControl();
+                  this.InitUploadControl();
                //   InitUploadFile(n);
               }
               $("#imgContainer1").hide();
               $("#btnUpload1").show();
+              $.unblockUI();
           },
 
 
           progressall: function (e, data) {
 
-              //var progress = parseInt(data.loaded / data.total * 100, 10);
-              //$('#ProcessBar' + n).css("width", progress + "%");
-              //    $('.ProcessBar').text(progress + "%");
+              var progress = parseInt(data.loaded / data.total * 100, 10);
+              $('#upload_progress1').css("width", progress + "%");
+              
 
           },
         

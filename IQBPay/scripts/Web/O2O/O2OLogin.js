@@ -43,10 +43,10 @@ function O2OLogin()
         },
         url: url,
         success: function (data) {
-
+          
             if (data.IsSuccess) {
 
-                window.location.href = "/User/Profile";
+                window.location.href = "/O2O/OrderListForSettlement";
 
             }
             else {

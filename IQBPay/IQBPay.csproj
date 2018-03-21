@@ -171,10 +171,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-checkbox.css" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.js" />
+    <Content Include="Content\Component\IQBScroll.css" />
     <Content Include="Content\Component\jquery-confirm.css" />
     <Content Include="Content\Component\jquery-confirm.min.css" />
     <Content Include="Content\Component\jquery.pwstabs-1.2.1.min.css" />
@@ -196,6 +203,7 @@
     <Content Include="Content\Images\O2O\huawei.png" />
     <Content Include="Content\Images\O2O\jingdong.png" />
     <Content Include="Content\Images\O2O\left.png" />
+    <Content Include="Content\Images\O2O\loading1.gif" />
     <Content Include="Content\Images\O2O\orderLogo.png" />
     <Content Include="Content\Images\O2O\plus.png" />
     <Content Include="Content\Images\O2O\right.png" />
@@ -207,6 +215,9 @@
     <Content Include="Content\Images\PayHuge_ADLogo.png" />
     <Content Include="Content\Images\Tool\CouPonQRCode.png" />
     <Content Include="Content\IQBFonts.css" />
+    <Content Include="Content\Style\Frame1\bootstrap-theme.css" />
+    <Content Include="Content\Style\Frame1\bootstrap-theme.min.css" />
+    <Content Include="Content\Style\Frame1\bootstrap.min.css" />
     <Content Include="Content\Style\IQBFonts.css" />
     <Content Include="Content\Wap\O2O\AddrConfirm.css" />
     <Content Include="Content\Wap\O2O\index.css" />
@@ -222,6 +233,7 @@
     <Content Include="Content\QR\QRHugeLogo.png" />
     <Content Include="Content\QR\ReceiveMoney_Logo.png" />
     <Content Include="Content\Style\Web\O2O\O2OList.css" />
+    <Content Include="Content\Wap\O2O\OrderList.css" />
     <Content Include="Content\Wap\O2O\UploadOrder.css" />
     <Content Include="Content\Style\Web\ULList.css" />
     <Content Include="Content\Style\Web\FixTableList.css" />
@@ -519,10 +531,15 @@
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="scripts\Component\FlyDiv.js" />
     <Content Include="scripts\Component\IQBTable.js" />
+    <Content Include="scripts\Component\IQB\IQBScroll.js" />
     <Content Include="scripts\Component\jquery-confirm.js" />
     <Content Include="scripts\Component\jquery-confirm.min.js" />
+    <Content Include="scripts\Component\jquery.blockUI.min.js" />
     <Content Include="scripts\Component\jquery.cookie.js" />
     <Content Include="scripts\Component\jquery.pwstabs-1.2.1.min.js" />
+    <Content Include="scripts\Component\PageScroll\iscroll.min.js" />
+    <Content Include="scripts\Component\PageScroll\listloading.min.js" />
+    <Content Include="scripts\Component\PageScroll\zepto.min.js" />
     <Content Include="scripts\Component\Upload\jquery.fileupload-process.js" />
     <Content Include="scripts\Component\Upload\jquery.fileupload-validate.js" />
     <Content Include="scripts\Component\Upload\jquery.fileupload.js" />
@@ -535,6 +552,7 @@
     <Content Include="scripts\Wap\O2O\AddrConfirm.js" />
     <Content Include="scripts\Wap\O2O\index.js" />
     <Content Include="scripts\Wap\O2O\OrderDetail.js" />
+    <Content Include="scripts\Wap\O2O\OrderList.js" />
     <Content Include="scripts\Wap\PayHuge.js" />
     <Content Include="scripts\Wap\O2O\ItemList.js" />
     <Content Include="scripts\Wap\O2O\MallList.js" />
@@ -739,6 +757,20 @@
     <Content Include="Views\O2OWap\UploadOrder - 复制.cshtml" />
     <Content Include="Views\User\ReChargeUserAccountBalance.cshtml" />
     <Content Include="Views\O2OWap\ErrorPage.cshtml" />
+    <Content Include="Content\Style\Frame1\bootstrap-theme.css.map" />
+    <Content Include="Content\Style\Frame1\bootstrap-theme.min.css.map" />
+    <Content Include="Content\Style\Frame1\bootstrap.css.map" />
+    <Content Include="Content\Style\Frame1\bootstrap.min.css.map" />
+    <Content Include="Views\O2OWap\OrderList.cshtml" />
+    <Content Include="Views\Shared\_O2OLayout_Responsive.cshtml" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

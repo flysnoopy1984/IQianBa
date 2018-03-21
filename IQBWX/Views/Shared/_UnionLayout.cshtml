@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <style type="text/css">
+
+        .o2o_content {
+  width: 100%;
+  position: absolute;
+  top: 50px;
+  display: flex;
+  height: 100%;
+  padding: 0 15px;
+}
+        .box {
+  width: 100%;
+ 
+ 
+  text-align: center;
+}
+    </style>
+
+</head>
+<body>
+    <div class="o2o_content">
+        <div class="box">
+            @RenderBody()
+        </div>
+     </div>
+</body>
+</html>

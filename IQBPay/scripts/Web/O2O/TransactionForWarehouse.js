@@ -44,6 +44,9 @@ function Init() {
                   
                     $("#AliPayAccount").text(obj.AliPayAccount);
                     $("#O2OShipBalance").text(obj.O2OShipBalance);
+                    $("#O2OShipOutCome").text(obj.O2OShipOutCome);
+                    $("#O2OShipInCome").text(obj.O2OShipInCome);
+
                     if (obj.O2OOnOrderAmount == null)
                         obj.O2OOnOrderAmount = 0;
                     $("#O2OOnOrderAmount").text(obj.O2OOnOrderAmount);

@@ -1,75 +1,26 @@
 ﻿{
   "button": [
     {
-      "name": "玉杰服务",
+      "name": "最新项目",
       "sub_button": [
         {
-          "type": "click",
-          "name": "使用手册",
-          "key": "wx_101"
+          "type": "view",
+          "name": "卡卡收银台",
+          "url": "http://wx.iqianba.cn/Union/ProjKK"
         },
         {
           "type": "view",
-          "name": "大事件",
-          "url": "http://wx.iqianba.cn/PP/News"
+          "name": "胖蚂蚁收银台",
+          "url": "http://wx.iqianba.cn/Union/ProjPMY"
         },
         {
           "type": "view",
-          "name": "我的账户",
-          "url": "http://wx.iqianba.cn/PP/AliPayAccount"
-        }
-
-      ]
-    },
-    {
-      "name": "用户中心",
-      "sub_button": [
-
-
-        {
-          "type": "view",
-          "name": "我的业绩",
-          "url": "http://wx.iqianba.cn/PP/OrderList"
-        },
-        {
-          "type": "view",
-          "name": "设置二维码",
-          "url": "http://wx.iqianba.cn/PP/Agent_QR_ARList"
-        },
-        {
-          "type": "click",
-          "name": "我的二维码",
-          "key": "pay_101"
-        },
-        {
-          "type": "view",
-          "name": "O2O商城",
-          "url": "http://wx.iqianba.cn/O2OWap/EntryAgent"
-        }
-      ]
-    },
-    {
-      "name": "团队管理",
-      "sub_button": [
-         {
-          "type": "view",
-          "name": "我的团队",
-          "url": "http://wx.iqianba.cn/PP/AgentList"
-        },
-        {
-          "type": "view",
-          "name": "邀请码",
-          "url": "http://wx.iqianba.cn/PP/InviteCode"
+          "name": "温特pay",
+          "url": "http://wx.iqianba.cn/Union/ProjWTP"
         }
 
       ]
     }
-
+   
   ]
 }
-
-  //{
-          //  "type": "view",
-          //  "name": "我的反佣",
-          //  "url": "http://wx.iqianba.cn/PP/AgentCommList"
-          //},

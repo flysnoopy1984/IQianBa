@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IQBCore.IQBPay.BaseEnum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,14 @@ namespace IQBCore.Model
         public string AliPayAccount { get; set; }
 
         public long QRUserId { get; set; }
+
+       
+       public bool IsAdmin
+        {
+            get {
+                return Phone == "13482710060";
+            }
+        }
 
       //  public string O2ONo { get; set; }
     }

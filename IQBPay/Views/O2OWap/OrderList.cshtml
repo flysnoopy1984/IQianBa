@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "OrderList";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
+}
+
+
+<link href="@Url.Scrpit("~/Content/Component/IQBScroll.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Component/IQB/IQBScroll.js")"></script>
+<script src="~/scripts/Component/jquery.blockUI.min.js"></script>
+
+<link href="@Url.Scrpit("~/Content/Wap/O2O/OrderList.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+<script src="@Url.Scrpit("~/scripts/Wap/O2O/OrderList.js")"></script>
+
+<style>
+    .table td{
+        border-top:none;
+        border-bottom:1px solid #ecf0f5;
+        padding-top:4px;
+        padding-bottom:0px;
+    }
+    #Info{
+        width:100%;
+        height:30px;
+
+    }
+
+</style>
+
+<header class="o2o_header">
+    <div class="header_back" onclick="backToHome();"></div>
+    <div class="header_title"><span>订单列表</span></div>
+    <div class="div_UserInfo"><a href="#">@ViewBag.BuyerPhone</a></div>
+</header>
+<div id="Condition" class="Condition">
+    订单状态：
+    <select style="width:200px;" onchange="" id="selCondition" class="selectpicker" data-style="btn-info">
+      <option value="0" selected>处理中</option>
+      <option value="10">已完成</option>
+      <option value="99">全部</option>
+    </select>
+</div>
+
+<div id="listloading" class="o2o_content">
+  
+    <table class="table" id="DataTable">
+       
+        <tbody>
+            @*<tr>
+                <td class="td_Width_70Per">
+                    <ul class="list-inline">
+                        <li class="list-inline-item List_Title_Font">京东路由器 aksidkska </li>                     
+                    </ul>
+                    <ul class="list-inline">
+                      
+                        <li class="list-inline-item List_Item_style1">金额：10021</li>
+                        <li class="list-inline-item List_Item_style1">下单时间：2018-3-12</li>
+                    </ul>
+                </td>
+                <td>
+                    <div>已送达<span class="Arror">></span></div>
+                </td>
+            </tr>*@
+        
+        </tbody>
+    </table>
+    @*<div class="LoadBar">数据加载中</div>*@
+    <input type="hidden"  id="IsAdmin" value="@ViewBag.IsAdmin" />
+</div>
+

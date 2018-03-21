@@ -187,7 +187,48 @@ namespace IQBCore.IQBPay.BLL
 
        // public bool
 
-        public AlipayFundTransToaccountTransferResponse DoTransferAmount(TransferTarget target,EAliPayApplication app,string toAliPayAccount,string Amount, PayTargetMode PayTargetMode,out string TransferId, EOrderInfo order = null)
+         /// <summary>
+         /// 通过转账验证账户
+         /// </summary>
+         /// <returns></returns>
+        public OutAPIResult TestAccountByTransfer(string AliPayAccount, EAliPayApplication app)
+        {
+        
+            OutAPIResult result = new OutAPIResult();
+            string tId;
+            try
+            {
+                
+              
+                AlipayFundTransToaccountTransferResponse res = DoTransferAmount(TransferTarget.User, 
+                    app, AliPayAccount, "0.1", 
+                    PayTargetMode.AliPayAccount, 
+                    out tId,null,"账户校验");
+                if(res.Code != "10000")
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMsg = res.Msg+"--"+res.SubMsg;
+                }
+               
+                return result;
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+          
+            return result;
+        }
+
+        public AlipayFundTransToaccountTransferResponse DoTransferAmount(TransferTarget target,
+                                                                EAliPayApplication app,
+                                                                string toAliPayAccount,
+                                                                string Amount, 
+                                                                PayTargetMode PayTargetMode,
+                                                                out string TransferId, 
+                                                                EOrderInfo order = null,
+                                                                string ShowName =null)
         {
           
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
@@ -205,18 +246,26 @@ namespace IQBCore.IQBPay.BLL
                 model.PayeeType = "ALIPAY_USERID";
           
             model.PayeeAccount = toAliPayAccount;
-            string profix = "";
-            if (target == TransferTarget.ParentAgent)
-                profix = "(上级佣金)";
-            else if (target == TransferTarget.Agent)
-                profix = "(代理费)";
-            else if (target == TransferTarget.User)
-                profix = "(打款)";
-            else if (target == TransferTarget.L3Agent)
-                profix = "(三级)";
-            else if (target == TransferTarget.MidStore)
-                profix = "(码商)";
-            model.PayerShowName = profix+"服务费";
+            if(!string.IsNullOrEmpty(ShowName))
+            {
+                model.PayerShowName = ShowName;
+            }
+            else
+            {
+                string profix = "";
+                if (target == TransferTarget.ParentAgent)
+                    profix = "(上级佣金)";
+                else if (target == TransferTarget.Agent)
+                    profix = "(代理费)";
+                else if (target == TransferTarget.User)
+                    profix = "(打款)";
+                else if (target == TransferTarget.L3Agent)
+                    profix = "(三级)";
+                else if (target == TransferTarget.MidStore)
+                    profix = "(码商)";
+                model.PayerShowName = profix + "服务费";
+            }
+           
             if(order!=null)
                 model.Remark = string.Format("#{0}-订单金额：{1}-订单ID：{2}",order.AgentName,order.TotalAmount,order.OrderNo);
           

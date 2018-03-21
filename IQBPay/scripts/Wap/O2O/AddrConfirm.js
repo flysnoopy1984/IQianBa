@@ -5,7 +5,7 @@ $(function () {
     var AddrId = null;
     var MallId = null;
     ///出货商Id
-    var UserId = null;
+    var OpenId = null;
     var RealAddr = null;
     var aoId = null;
     /**
@@ -19,7 +19,7 @@ $(function () {
     {
         ItemId = GetUrlParam("ItemId");
         MallId = GetUrlParam("MallId");
-        UserId = GetUrlParam("UserId");
+        OpenId = GetUrlParam("OpenId");
         aoId = GetUrlParam("aoId");
 
         if (aoId == "" || aoId == "null" || aoId == undefined) {
@@ -27,10 +27,15 @@ $(function () {
             return;
         }
 
-        if (ItemId == null || ItemId == undefined || MallId == null || MallId == undefined || UserId == null || UserId == undefined)
+        if (ItemId == null || ItemId == undefined || MallId == null || MallId == undefined || OpenId == null || OpenId == undefined)
         {
             alert("未获取指定的商品，请选择商品");
             window.location.href = "/O2OWap/MallList?aoId="+aoId;
+            return;
+        }
+        if (OpenId == null || OpenId == undefined) {
+            alert("商品供应商未获取，请联系管理员");
+            window.location.href = "/O2OWap/Index?aoId=" + aoId;
             return;
         }
           
@@ -39,7 +44,7 @@ $(function () {
         $.ajax({
             type: 'post',
             url: url,
-            data:{"ItemId":ItemId,"MallId":MallId,"UserId":UserId},
+            data: { "ItemId": ItemId, "MallId": MallId, "OpenId": OpenId },
             success: function (res) {
                 if (res.IsSuccess)
                 {
@@ -54,17 +59,19 @@ $(function () {
                 }
                 else
                 {
-                    if(res.IntMsg == -1)
-                    {
+                    if (res.IntMsg == -1) {
                         alert("未获取用户信息，需重新提交手机号");
                         window.location.href = "/O2OWap/Index?aoId=" + aoId;
                         return;
                     }
-                    if (res.IntMsg == -2) {
+                    else if (res.IntMsg == -2) {
                         alert("此商品收货地址没有设置，请联系管理员");
                         window.location.href = "/O2OWap/Index?aoId=" + aoId;
                         return;
                     }
+                    else
+                        alert(res.ErrorMsg);
+
                 }
              
 

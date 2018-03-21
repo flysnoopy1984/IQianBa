@@ -19,7 +19,8 @@ namespace IQBCore.IQBPay.Models.O2O
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int UserId { get; set; }
+        [MaxLength(32)]
+        public string  UserOpenId { get; set; }
 
         /// <summary>
         /// 可能是商户，可能是出库商，或之后扩充

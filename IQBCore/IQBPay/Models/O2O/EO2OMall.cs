@@ -29,7 +29,8 @@ namespace IQBCore.IQBPay.Models.O2O
         [MaxLength(100)]
         public string Description { get; set; }
 
-        public int O2ORuleId { get; set; }
+        [MaxLength(20)]
+        public string O2ORuleCode { get; set; }
 
         public RecordStatus RecordStatus { get; set; }
 
@@ -38,16 +39,16 @@ namespace IQBCore.IQBPay.Models.O2O
         [MaxLength(100)]
         public string MallLogoPath { get; set; }
 
-        public void InitFromUpdate(EO2OMall updateObj)
-        {
-            this.Name = updateObj.Name;
-            this.Code = updateObj.Code;
-            this.Description = updateObj.Description;
-            this.O2ORuleId = updateObj.O2ORuleId;
-            this.RecordStatus = updateObj.RecordStatus;
-           // this.MallLogoPath = updateObj.MallLogoPath;
+        //public void InitFromUpdate(EO2OMall updateObj)
+        //{
+        //    this.Name = updateObj.Name;
+        //    this.Code = updateObj.Code;
+        //    this.Description = updateObj.Description;
+        //    this.O2ORuleId = updateObj.O2ORuleId;
+        //    this.RecordStatus = updateObj.RecordStatus;
+        //   // this.MallLogoPath = updateObj.MallLogoPath;
 
-            this.FeeRate = updateObj.FeeRate;
-        }
+        //    this.FeeRate = updateObj.FeeRate;
+        //}
     }
 }

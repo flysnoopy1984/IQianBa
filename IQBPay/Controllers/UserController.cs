@@ -73,7 +73,7 @@ namespace IQBPay.Controllers
                            from userinfo as ui 
                            left join qrUser on qruser.OpenId = ui.OpenId 
                            left join StoreInfo as si on si.ID = qruser.ReceiveStoreId                  
-                           where ui.openId = '{0}' and QRUser.IsCurrent ='true'
+                           where ui.openId = '{0}'
                         ";
 
             sql = string.Format(sql, OpenId);
@@ -514,20 +514,20 @@ namespace IQBPay.Controllers
                 }
                 using (AliPayContent db = new AliPayContent())
                 {
-                    string sql = @"select b.Id,b.UserId,ui.OpenId,b.AliPayAccount,b.UserAccountType,ui.Name as UserName,
+                    string sql = @"select b.Id,ui.OpenId,b.AliPayAccount,b.UserAccountType,ui.Name as UserName,
                     ROUND(b.O2OShipBalance, 2) as O2OShipBalance,o.O2OOnOrderAmount from UserAccountBalance as b
-                    join  UserInfo as ui on b.UserId = ui.Id
+                    join  UserInfo as ui on b.OpenId = ui.OpenId
                     left join 
                     (
-                    select sum(o.OrderAmount) as O2OOnOrderAmount,o.WHUserId 
+                    select sum(o.OrderAmount) as O2OOnOrderAmount,o.WHOpenId 
                     from O2OOrder as o 
                     where o.O2OOrderStatus <18
-                    group by o.WHUserId
-                    ) as o on o.WHUserId = ui.Id
+                    group by o.WHOpenId
+                    ) as o on o.WHOpenId = ui.OpenId
                     where ui.O2OUserRole = {0}";
                     if(us.UserRole != UserRole.Administrator)
                     {
-                        sql += " and b.UserId =" + us.Id;
+                        sql += " and b.OpenId ='" + us.OpenId+"'";
                     }
                     sql = string.Format(sql, Convert.ToInt32(O2OUserRole.Shippment));
 

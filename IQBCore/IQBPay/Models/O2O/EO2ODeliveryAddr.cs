@@ -19,7 +19,8 @@ namespace IQBCore.IQBPay.Models.O2O
         /// <summary>
         /// 地址属于哪个供应商
         /// </summary>
-        public int UserId { get; set; }
+        [MaxLength(32)]
+        public string OpenId { get; set; }
 
         [MaxLength(20)]
         public string Code { get; set; }

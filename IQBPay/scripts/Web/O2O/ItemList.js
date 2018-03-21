@@ -49,6 +49,12 @@ function InitCondition()
 
 }
 
+function SelectStatus()
+{
+    pageIndex = -1;
+    Query(true, pageIndex + 1);
+}
+
 function SelectMall(Id)
 {
     MallId = Id;
@@ -78,20 +84,20 @@ function MallOption(updateData) {
         $.each(MallData, function (i) {
             if (MallId == MallData[i].Id)
             {
-                mallOp += "<option ruleId=" + MallData[i].O2ORuleId + " value=" + MallData[i].Id + " selected>" + MallData[i].Name + "</option>";
+                mallOp += "<option ruleId=" + MallData[i].O2ORuleCode + " value=" + MallData[i].Id + " selected>" + MallData[i].Name + "</option>";
                 RuleId = MallData[i].O2ORuleId;
             }    
             else
-                mallOp += "<option ruleId=" + MallData[i].O2ORuleId + " value=" + MallData[i].Id + ">" + MallData[i].Name + "</option>";
+                mallOp += "<option ruleId=" + MallData[i].O2ORuleCode + " value=" + MallData[i].Id + ">" + MallData[i].Name + "</option>";
         });
     }
     else
     {
         $.each(MallData, function (i) {
             if (updateData.MallId == MallData[i].Id)
-                mallOp += "<option ruleId=" + MallData[i].O2ORuleId + " value=" + MallData[i].Id + " selected>" + MallData[i].Name + "</option>";
+                mallOp += "<option ruleId=" + MallData[i].O2ORuleCode + " value=" + MallData[i].Id + " selected>" + MallData[i].Name + "</option>";
             else
-                mallOp += "<option ruleId=" + MallData[i].O2ORuleId + " value=" + MallData[i].Id + ">" + MallData[i].Name + "</option>";
+                mallOp += "<option ruleId=" + MallData[i].O2ORuleCode + " value=" + MallData[i].Id + ">" + MallData[i].Name + "</option>";
         });
         
     }
@@ -144,7 +150,7 @@ function CreateNew(updateData)
         ctrl = String.format(ctrl, "O_"+updateData.Id,
                                    updateData.Id,
                                    updateData.Amount,
-                                   updateData.Qty,
+                                   updateData.ShipFeeRate,
                                    updateData.Name,
                                    updateData.RealAddress,
                                    updateData.ImgUrl,
@@ -190,9 +196,11 @@ function GetCellHtml() {
   
     var ctrl = '<div style="width:92%;" Id="{0}">';
     ctrl += '<ul class="UlHorizontal">';
-    ctrl += '<li><span>商品ID：</span><input id="Id" type="text" style="width:50px;" class="form-control" disabled value="{1}" /></li>';
+    ctrl += '<li><span>商品ID：</span><input id="Id" type="text" style="width:50px;" class="form-control" disabled value="{1}" /></li>';  
+    ctrl += '</ul>';
+    ctrl += '<ul class="UlHorizontal">';
     ctrl += '<li><span>金额：</span><input id="Amount" type="text" onkeyup="OnlyNumber(this);" class="form-control" value="{2}" /></li>';
-    ctrl += '<li><span>数量：</span><input id="Qty" type="number" step="1" class="form-control" value="{3}" /></li>';
+    ctrl += '<li><span>费率：</span><input id="FeeRate" type="number" step="1" class="form-control" value="{3}" /></li>';
     ctrl += '</ul>';
     ctrl += '<ul class="UlHorizontal">';
     ctrl += '<li><span>商城：</span><select id="MallId" class="form-control" onchange="MallChanged(this);">{8}</select></li>';
@@ -230,12 +238,14 @@ function OnlyNumber(obj)
 function Query(NeedClearn, _PageIndex) {
 
     var url = "/O2O/ItemListQuery";
+    var ItemStatus = $("#cItemStatus").val();
+
     if (NeedClearn) {
         DataCtrl.empty();
     }
     $.ajax({
         type: 'post',
-        data: "MallId="+MallId+"&pageIndex=" + _PageIndex + "&pageSize=" + pageSize,
+        data: "MallId=" + MallId + "&pageIndex=" + _PageIndex + "&pageSize=" + pageSize + "&ItemStatus=" + ItemStatus,
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -365,13 +375,13 @@ function VerifyItem(pObj)
         return false;
     }
 
-    var qtyObj = pObj.find("#Qty");
-    var qty = parseFloat(qtyObj.val());
-    if (qty <= 0 || qty >= 1000) {
-        alert("数量必须大于0且小于1000");
-        qtyObj.focus();
-        return false;
-    }
+    //var qtyObj = pObj.find("#Fee");
+    //var qty = parseFloat(qtyObj.val());
+    //if (qty <= 0 || qty >= 1000) {
+    //    alert("数量必须大于0且小于1000");
+    //    qtyObj.focus();
+    //    return false;
+    //}
 
    // var RealAddress = pObj.find("#RealAddress").val();
 
@@ -386,7 +396,7 @@ function Save(obj) {
     var Id = pObj.find("#Id").val();
     var Name = pObj.find("#Name").val();
     var Amount = pObj.find("#Amount").val();
-    var Qty = pObj.find("#Qty").val();
+    var FeeRate = pObj.find("#FeeRate").val();
     var RealAddress = pObj.find("#RealAddress").val();
     var ImgUrl = pObj.find("#ImgUrl").val();
     var RecordStatus = pObj.find("#RecordStatus").val();
@@ -403,7 +413,7 @@ function Save(obj) {
             "Name": Name,
             "Amount": Amount,
             "ImgUrl":ImgUrl,
-            "Qty": Qty,
+            "ShipFeeRate": FeeRate,
             "RealAddress": RealAddress,
             "O2ORuleCode": O2ORuleCode,
             "MallId": MallId,
@@ -415,6 +425,7 @@ function Save(obj) {
             if (data.IsSuccess) {
 
                 alert("操作成功！");
+                window.location.reload();
                
             }
             else {
@@ -430,4 +441,9 @@ function Save(obj) {
             alert("System Error!");
         }
     });
+}
+
+function ImportItem()
+{
+    alert("暂时未开通");
 }

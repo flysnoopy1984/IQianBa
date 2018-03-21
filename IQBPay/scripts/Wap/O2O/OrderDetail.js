@@ -2,6 +2,27 @@ $(function () {
     var httpUrl = 'http://pp.iqianba.cn';
     var OrderObj = null;
     var aoId = null;
+    var O2ONo = null;
+
+    ShowBlock = function () {
+
+        var msg = ' <div id="ProcessArea1" class="progress progress-striped active">';
+        msg += '<div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%; height:40px;">';
+        msg += '<span class="sr-only">数据加载中...</span>';
+        msg += '</div>';
+        msg += '</div>';
+
+        $.blockUI({
+            message: msg,
+            css: {
+                border: 'none',
+                width: '90%',
+                height: '40px',
+                left: '20px',
+                'border-radius': '20px',
+            }
+        });
+    }
 
     //var stepTmp = ' <div class="order_item">'
     //stepTmp += '<div class="{0}">';
@@ -17,15 +38,18 @@ $(function () {
     //初始化函数
     InitOrder = function () {
         aoId = GetUrlParam("aoId");
-     
         if (aoId == "" || aoId == "null" || aoId == undefined) {
             window.location.href = "/O2OWap/ErrorPage?ec=1";
             return;
         }
+        ShowBlock();
+
+        O2ONo = GetUrlParam("O2ONo");
 
         var url = "/O2OWap/OrderDetailQuery";
         $.ajax({
             type: 'post',
+            data: { "O2ONo": O2ONo },
             url: url,
             success: function (res) {
                 if (res.IsSuccess) {
@@ -36,8 +60,10 @@ $(function () {
                         generateSteps(res.resultList);
                         switchControlByOrderStatus();
                     }
+                    $.unblockUI();
                 }
                 else {
+                    $.unblockUI();
                     if (res.IntMsg == -1) {
                         alert("用户信息未获取，请重新提交手机号");
                         window.location.href = "/O2OWap/Index?aoId=" + aoId;
@@ -55,6 +81,7 @@ $(function () {
             },
             error: function (xhr, type) {
                 alert("系统错误！");
+                $.unblockUI();
             }
         });
     };
@@ -75,7 +102,7 @@ $(function () {
    // 根据订单状态修改一些按钮或超链接状态
   switchControlByOrderStatus= function()
   {
-      if (OrderObj.O2OOrderStatus == 45 || OrderObj.O2OOrderStatus == 50)
+      if (OrderObj.O2OOrderStatus >10)
           $("#btnCloseOrder").hide();
   }
 
@@ -85,6 +112,7 @@ $(function () {
       $.each(list, function (i) {
           var step = list[i];
           var ctrl = AnalyStepByOrderStatus(step);
+
           if (ctrl != null && ctrl != "null")
           {
               $("#order_list").append(ctrl);
@@ -103,6 +131,13 @@ $(function () {
                   $("#StepUpload").find("a").hide();
                  
               }
+
+              //签收状态，需要显示签收按钮
+              if (OrderObj.O2OOrderStatus == 10 && step.Code == "StepConfirmSign" ) {
+                  $("#StepConfirmSign").find("#linkToSignConfirm").show();
+              }
+             
+
               //已经不能上传照片(>Settlement),不能重新选择商品
               if(OrderObj.O2OOrderStatus>=14 && (step.Code == "StepUpload" || step.Code =="StepReSelectItem"))
               {
@@ -110,6 +145,7 @@ $(function () {
                   $("#LinkToSelItem").hide();
 
               }
+             
           }
               
       });
@@ -153,22 +189,23 @@ $(function () {
                       ctrl = replaceStepToPrcess(ctrl,0);
 
                   break;
-              //等待货物处理
-              case 14:
+              //签收确认
+              case 10:
                   if (step.Code == "StepReSelectItem" ||
                       step.Code == "StepUpload" ||
                       step.Code == "StepReviewOrder")
                       ctrl = step.EndContent;
                   else ctrl = step.BeginContent;
-
-                  if (step.Code == "StepWaitingReceive")
+                  if (step.Code == "StepConfirmSign")
                       ctrl = replaceStepToPrcess(ctrl,0);
                   break;
-              //等待结算回款  
+              //等待结算回款
+              case 14:
               case 18:
                   if (step.Code == "StepReSelectItem" ||
                       step.Code == "StepUpload" ||
                       step.Code == "StepReviewOrder" ||
+                      step.Code == "StepConfirmSign" ||
                       step.Code == "StepWaitingReceive")
                       ctrl = step.EndContent;
                   else ctrl = step.BeginContent;
@@ -285,6 +322,54 @@ $(function () {
     //  window.open("http://m.baidu.com", "_blank");
       CloseOrder();
      // window.location.href = "/O2OWap/MallList?aoId=" + aoId;
+  }
+
+  SignConfirm =function()
+  {
+      $.confirm({
+          theme: "light",
+          title: '签收确认',
+          type: 'red',
+          content: "注意请不要提前确认签收,否则将被处罚停单！",
+          buttons: {
+              know: {  
+                  text: "签收",
+                  btnClass: "btn-red",
+                  action: function () {
+                      DoSignConfirm();
+                  },
+              },
+              cancel: {
+                  text: "再确认下",
+              }
+
+          }
+      });
+  }
+  DoSignConfirm = function()
+  {
+      var url = "/O2OWap/OrderSignConfirm";
+      $.ajax({
+          type: 'post',
+          data: { "O2ONo": OrderObj.O2ONo },
+          url: url,
+          success: function (res) {
+              if (res.IsSuccess) {
+                  alert("签收已确认，请等待回款结算");
+                  window.location.reload();
+              }
+              else {
+                  alert(res.ErrorMsg);
+                  if (res.IntMsg == -1)//"订单未获取！请联系中介";
+                      window.location.href = "/O2OWap/Index?aoId=" + aoId;
+              }
+
+          },
+
+          error: function (xhr, type) {
+              alert("系统错误！");
+          }
+      });
   }
 
 });

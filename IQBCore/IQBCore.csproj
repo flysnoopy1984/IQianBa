@@ -136,6 +136,7 @@
     <Compile Include="IQBPay\Models\O2O\RO2OItemInfo.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2OMall.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2OOrder.cs" />
+    <Compile Include="IQBPay\Models\O2O\RO2OOrder_ForAgent.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2ORule.cs" />
     <Compile Include="IQBPay\Models\O2O\HashO2OMall_Rule.cs" />
     <Compile Include="IQBPay\Models\O2O\HashO2ORule.cs" />
@@ -215,6 +216,8 @@
     <Compile Include="IQBWX\Models\OutParameter\OutSMS.cs" />
     <Compile Include="IQBWX\Models\OutParameter\SSOQR.cs" />
     <Compile Include="IQBWX\Models\WX\Template\BaseTemplate.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\ConfirmSign\PPConfirmSignNT.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\ConfirmSign\PPConfirmSignTemplate.cs" />
     <Compile Include="IQBWX\Models\WX\Template\InviteCode\PPInviteCodeNT.cs" />
     <Compile Include="IQBWX\Models\WX\Template\InviteCode\PPInviteCodeTemplate.cs" />
     <Compile Include="IQBWX\Models\WX\Template\Notification.cs" />
