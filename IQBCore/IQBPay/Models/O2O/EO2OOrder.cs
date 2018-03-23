@@ -16,6 +16,7 @@ namespace IQBCore.IQBPay.Models.O2O
         {
             CreateDateTime = DateTime.Now;
             SettlementDateTime = DateTime.Now;
+            ReviewDateTime = DateTime.Now;
         }
 
         [Key]
@@ -30,9 +31,9 @@ namespace IQBCore.IQBPay.Models.O2O
         public string AgentOpenId { get; set; }
 
         /// <summary>
-        /// 费率
+        /// 代理费率
         /// </summary>
-        public double FeeRate { get; set; }
+        public double AgentFeeRate { get; set; }
 
         /// <summary>
         /// 用户手续费
@@ -64,7 +65,6 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public int MallId { get; set; }
 
-        public double MallFeeRate { get; set; }
 
         public int ItemId { get; set; }
 
@@ -105,5 +105,10 @@ namespace IQBCore.IQBPay.Models.O2O
         /// </summary>
         public int SettlementUserId { get; set; }
         public DateTime SettlementDateTime { get; set; }
+
+        /// <summary>
+        /// 审核时间
+        /// </summary>
+        public DateTime ReviewDateTime { get; set; }
     }
 }

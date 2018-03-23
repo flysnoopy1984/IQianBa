@@ -1,26 +1,23 @@
 ﻿{
   "button": [
     {
-      "name": "最新项目",
+      "name": "玉杰服务",
       "sub_button": [
+       
         {
           "type": "view",
-          "name": "卡卡收银台",
-          "url": "http://wx.iqianba.cn/Union/ProjKK"
-        },
-        {
-          "type": "view",
-          "name": "胖蚂蚁收银台",
-          "url": "http://wx.iqianba.cn/Union/ProjPMY"
-        },
-        {
-          "type": "view",
-          "name": "温特pay",
-          "url": "http://wx.iqianba.cn/Union/ProjWTP"
+          "name": "大事件",
+          "url": "http://wx.iqianba.cn/PP/News"
         }
 
       ]
     }
-   
+  
   ]
 }
+
+  //{
+          //  "type": "view",
+          //  "name": "我的反佣",
+          //  "url": "http://wx.iqianba.cn/PP/AgentCommList"
+          //},

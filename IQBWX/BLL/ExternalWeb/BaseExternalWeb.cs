@@ -25,6 +25,7 @@ namespace IQBWX.BLL.ExternalWeb
         {
             switch(appId)
             {
+                case "o2o":
                 case "pp":
                     return GetExternalWeb(IQBCore.IQBWX.BaseEnum.ExternalWeb.Pay);
                 default:

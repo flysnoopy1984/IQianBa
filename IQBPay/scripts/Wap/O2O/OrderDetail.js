@@ -139,7 +139,7 @@ $(function () {
              
 
               //已经不能上传照片(>Settlement),不能重新选择商品
-              if(OrderObj.O2OOrderStatus>=14 && (step.Code == "StepUpload" || step.Code =="StepReSelectItem"))
+              if(OrderObj.O2OOrderStatus>=10 && (step.Code == "StepUpload" || step.Code =="StepReSelectItem"))
               {
                   $("#linkToupload").text("查看订单");
                   $("#LinkToSelItem").hide();
@@ -346,6 +346,7 @@ $(function () {
           }
       });
   }
+
   DoSignConfirm = function()
   {
       var url = "/O2OWap/OrderSignConfirm";

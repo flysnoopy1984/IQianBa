@@ -1,5 +1,5 @@
 body {
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .header_title {
@@ -9,7 +9,7 @@ body {
 .o2o_header {
   height: 50px;
   width: 100%;
-  position: absolute;
+  /*position: absolute;*/
   top: 0px;
   text-align: center;
   line-height: 50px;
@@ -19,10 +19,11 @@ body {
 
 .o2o_content {
   width: 100%;
-  position: absolute;
+  /*position: absolute;*/
   top: 50px;
   display: flex;
   height: 90%;
+  overflow-y:hidden;
 }
 
 #upload_list {

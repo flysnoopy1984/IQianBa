@@ -1,5 +1,7 @@
-﻿using System;
+﻿using IQBCore.IQBPay.Models.O2O;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,26 +19,26 @@ namespace IQBCore.IQBWX.Models.WX.Template.ConfirmSign
         public object data;
 
 
-        public PPConfirmSignTemplate GenerateData(string toUserOpenId, IQBCore.IQBPay.Models.Order.EOrderInfo ppOrder)
+        public PPConfirmSignTemplate GenerateData(string toUserOpenId, RO2OOrder o2oOrder)
         {
-            string first = string.Format("用户扫描了您的收款二维码");
-            string remark = string.Format("支付宝流水号：{0} \n买家账号：{1} \n实际收款：{2}",
-                                         ppOrder.AliPayOrderNo,
-                                         ppOrder.BuyerAliPayLoginId,
-                                         // ppOrder.Rate,
-                                         ppOrder.RateAmount);
+            string first = string.Format("有订单已签收，请及时发货！");
+            string remark = string.Format("订单金额:{0}\n订单创建时间:{1}", 
+                                         o2oOrder.OrderAmount,
+                                         o2oOrder.CreateDateTimeStr
+                                         );
             var data = new
             {
                 first = new TemplateField() { value = first, color = "#EB6B13" },
-                keyword1 = new TemplateField() { value = ppOrder.TransDate.ToString() },
-                keyword2 = new TemplateField() { value = "码商提供" },
-                keyword3 = new TemplateField() { value = ppOrder.TotalAmount.ToString() },
-                keyword4 = new TemplateField() { value = ppOrder.OrderNo.ToString() },
-                keyword5 = new TemplateField() { value = "" },
+                keyword1 = new TemplateField() { value = o2oOrder.MallOrderNo },
+                keyword2 = new TemplateField() { value = o2oOrder.ItemName },
+
                 remark = new TemplateField { value = remark, color = "#007ACC" },
             };
+          //  string url = ConfigurationManager.AppSettings["Main_SiteUrl"] + "/O2OWap/UploadOrder?aoId={0}&OrderNo={1}&OrderStatus={2}";
 
-            PPConfirmSignTemplate obj = base.InitObject(toUserOpenId, "", "94I1M_Tszb8y_orzdzeXjPrSc4A3giS4cEXhgv6btCg");
+         //   url = string.Format(url, o2oOrder.AgentOpenId, o2oOrder.O2ONo, Convert.ToInt32(o2oOrder.O2OOrderStatus));
+
+            PPConfirmSignTemplate obj = base.InitObject(toUserOpenId, "", "Hwfh8EsQtI-az0dorSBZEVi3iuvg3lh8dpCznayXHdg");
             obj.data = data;
             return obj;
 

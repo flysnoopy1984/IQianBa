@@ -10,6 +10,7 @@ namespace IQBCore.IQBWX.Models.WX.Template
     {
         IQBCore.IQBPay.Models.Order.EOrderInfo _ppOrder;
         string _OpenId;
+
         public PPOrderPayNT(string accessToken,
                             string OpenId,
                             IQBCore.IQBPay.Models.Order.EOrderInfo ppOrder) : base(accessToken)

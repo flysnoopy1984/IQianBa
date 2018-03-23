@@ -60,9 +60,9 @@ $(function () {
           alert("请先上传图片");
           return;
       }
-      
+      StartBlockUI("数据处理中...",100);
 
-      var MallOrderNo = $("#order_num").val();
+      var MallOrderNo = $("#MallOrderNo").val();
 
       var url = "/O2OWap/SubmitUpload";
       $.ajax({
@@ -70,14 +70,16 @@ $(function () {
           url: url,
           data: { "imgUpload1": imgUpload1, "MallOrderNo": MallOrderNo, "OrderNo": OrderNo, "ReceiveAccount": ReceiveAccount, "OrderStatus": OrderStatus },
           success: function (res) {
+              $.unblockUI();
               if (res.IsSuccess) {
                   alert("提交成功！");
-                  window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
+                  
+                  window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId + "&O2ONo=" + OrderNo;
               }
               else {
                   if (res.IntMsg == -1) {
                       alert("订单编号未获取!");
-                      window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
+                      window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId + "&O2ONo=" + OrderNo;
                       return;
                   }
                   if (res.IntMsg == -2) {
@@ -96,6 +98,7 @@ $(function () {
               }
           },
           error: function (xhr, type) {
+              $.unblockUI();
               alert("系统错误！");
           }
       });
@@ -157,10 +160,18 @@ $(function () {
               if (res.IsSuccess) {
                   if (res.resultObj!=null)
                   {
-                      $("#imgContainer1").show();
-                      $("#imgUpload1").attr({ src: res.resultObj.v1 });
+                      if (res.resultObj.v1 != null)
+                      {
+                          $("#imgContainer1").show();
+                          $("#imgUpload1").attr({ src: res.resultObj.v1 });
+                          $("#btnUpload1").hide();
+                      }
+                    
+                   
                       $("#ReceiveAccount").val(res.resultObj.v2);
-                      $("#btnUpload1").hide();
+                      $("#MallOrderNo").val(res.resultObj.v3);
+                      $("#OrderAmount").val(res.resultObj.v4);
+                      
                   }
               }
               else {
@@ -168,6 +179,10 @@ $(function () {
                       alert("订单编号未获取!");
                       window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
                       return;
+                  }
+                  else
+                  {
+                      alert(res.ErrorMsg);
                   }
                  
               }
@@ -191,7 +206,7 @@ $(function () {
      // $("#ProcessArea1").removeClass("active");
 
       //Settlement 等待到货结算之前,提交按钮显示
-      if (OrderStatus < 14) {
+      if (OrderStatus < 10) {
           $("#btnDelImg").show();
           $("#btnSubmit").show();
       }
@@ -200,9 +215,7 @@ $(function () {
           $("#btnDelImg").hide();
           $("#btnSubmit").hide();
       }
-         
 
-      
   }
 
   Init = function () {
@@ -229,17 +242,22 @@ $(function () {
           $("#O2ONo").val(OrderNo);
           $("#OrderStatus").val(OrderStatus);
       }
-     
-     
 
       InitOterControl();
 
       this.InitUploadControl();
 
       //2:WaitingUpload
-      if (OrderStatus >2)
-        this.InitData();
+    //  if (OrderStatus >2)
+          this.InitData();
+
   }
+
+  //$(document).on("touchmove", function (e) {
+  //    e.preventDefault();
+  //   // e.stopPropagation();
+  //},false);
+ 
 
     /*
     *初始化上传控件
@@ -298,30 +316,16 @@ $(function () {
              // $("#ProcessArea1").addClass("active");
 
               $("#btnUpload1").hide();
+              var s = $("#btnUpload1");
+           
+              var fd = data.files[0];
 
-              var msg = ' <div id="ProcessArea1" class="progress progress-striped active">';
-              msg+='<div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">';
-              msg+='<span class="sr-only">正在上传请耐心等待...</span>';
-              msg+='</div>';
-              msg+='</div>';
-            
-              ////   alert(data.files[0].name);
-              $.blockUI({
-                  message: msg,
-                  css: {
-                      border: 'none',
-                      width: '90%',
-                      height:'20px',
-                      left: '20px',
-                      'border-radius':'4px',
-                  }
-              });
-              
               data.process().done(function () {
                   jqXHR = data.submit();
                   
               });
-
+              //正在上传请耐心等待...
+              StartBlockUI("正在上传请耐心等待...");
               //$("#cancel_IdCardFile" + n).click(function () {
               //    if (IdCardFile1Done) {
               //        InitUploadFile(n);
@@ -332,9 +336,10 @@ $(function () {
               //})
           },
           fail: function (e, data) {
+              alert("failure upload");
               if (data.errorThrown == "abort") {
                   InitOterControl();
-                  this.InitUploadControl();
+                  InitUploadControl();
                //   InitUploadFile(n);
               }
               $("#imgContainer1").hide();
@@ -356,5 +361,28 @@ $(function () {
   }
 
   Init();
+
+  StartBlockUI = function (txt,w) {
+
+      if (w == undefined)
+          w = 45;
+      var msg = ' <div id="ProcessArea1" class="progress progress-striped active">';
+      msg += '<div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+w+'%;">';
+      msg += '<span class="sr-only">'+txt+'</span>';
+      msg += '</div>';
+      msg += '</div>';
+
+      ////   alert(data.files[0].name);
+      $.blockUI({
+          message: msg,
+          css: {
+              border: 'none',
+              width: '90%',
+              height: '20px',
+              left: '20px',
+              'border-radius': '4px',
+          }
+      });
+  }
 
 });

@@ -12,7 +12,7 @@ $(document).ready(function () {
     if (appId == null)
     {
         //指向平台
-        appId = "pp";
+        appId = "o2o";
     }
   
     $("#imgQR").attr('src', '/Content/images/qrloading.gif');
@@ -54,7 +54,7 @@ function waitingScan(ssoToken,appId)
                     window.location.href = result.ReturnUrl;
                     return;
                 }
-                window.location.href = result.ReturnUrl + "?openId=" + result.OpenId;
+                window.location.href = result.ReturnUrl;
                 return;
                
             }

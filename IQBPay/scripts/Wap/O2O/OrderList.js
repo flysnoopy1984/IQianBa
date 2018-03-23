@@ -40,7 +40,7 @@
     }
 
     CloseBlock = function () {
-        if (pageIndex == 1)
+      //  if (pageIndex == 1)
             $.unblockUI();
     }
 

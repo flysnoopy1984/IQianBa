@@ -111,7 +111,8 @@
         </div>
         <div id="buttonList">
             <ul class="UlHorizontal" style="text-align:center; margin-top:20px;">
-                @if (Model.O2OOrderStatus == IQBCore.IQBPay.BaseEnum.O2OOrderStatus.Settlement)
+                @if (Model.O2OOrderStatus == IQBCore.IQBPay.BaseEnum.O2OOrderStatus.Settlement ||
+                    Model.O2OOrderStatus == IQBCore.IQBPay.BaseEnum.O2OOrderStatus.ComfirmSign)
                 {
                     <li>
                         <button id="btnConfirm" type="button" class="btn btn-primary" onclick="ConfirmWithPay();">收货确认并打款</button>

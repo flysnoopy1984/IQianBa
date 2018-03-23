@@ -11,6 +11,7 @@
 <script src="~/scripts/Component/Upload/jquery.fileupload.js"></script>
 <script src="~/scripts/Component/Upload/jquery.iframe-transport.js"></script>
 <script src="~/scripts/Component/Upload/jquery.fileupload-process.js"></script>
+<script src="~/scripts/Component/jquery.imagecompress.js"></script>
 
 
 
@@ -46,7 +47,7 @@
         <div class="upload_order">
             <div class="upload_order_title">订单编号</div>
             <div class="upload_order_input">
-                <input id="order_num" type="text" placeholder="请输入订单编号" class="form-control order_input FontAmount" />
+                <input id="MallOrderNo" type="text" placeholder="请输入订单编号" class="form-control order_input FontAmount" />
             </div>
         </div>
         <div class="upload_order">
@@ -99,9 +100,9 @@
               
             </ul>
             <ul class="list-group">
-                <li class="list-group-item">
+                @*<li class="list-group-item">
                     <span class="LeftSpan">商城订单编号：</span><input id="MallOrderNo" type="text" class="form-control" />
-                </li>
+                </li>*@
                 <li class="list-group-item">
                     <span class="LeftSpan">订单金额：</span><input id="OrderAmount" type="text"  class="form-control" />
                 </li>

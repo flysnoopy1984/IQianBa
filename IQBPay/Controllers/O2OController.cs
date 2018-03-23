@@ -9,6 +9,7 @@ using IQBCore.IQBPay.Models.O2O;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.User;
+using IQBCore.IQBWX.Models.WX.Template.ReviewResult;
 using IQBCore.Model;
 using IQBPay.Core;
 using IQBPay.DataBase;
@@ -841,9 +842,19 @@ where o.O2ONo = '{0}'";
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                   
-                    EO2OOrder order = db.DBO2OOrder.Where(o => o.O2ONo == InOrderReview.O2ONo).FirstOrDefault();
-                    if(order.O2OOrderStatus != O2OOrderStatus.OrderReview && order.O2OOrderStatus != O2OOrderStatus.OrderRefused)
+
+                    string sql = @"select i.Name as ItemName,agent.Name as AgentName,o.Id,o.UserPhone,o.AgentOpenId,o.WHOpenId,o.CreateDateTime,o.OrderAmount,o.O2ONo,o.O2OOrderStatus 
+                    from O2OOrder as o
+                    join UserInfo as agent on agent.OpenId = o.AgentOpenId
+					join O2OItemInfo as i on i.Id = o.ItemId
+                    where o.O2ONo = '{0}'
+";
+                    sql = string.Format(sql, InOrderReview.O2ONo);
+                    RO2OOrder order = db.Database.SqlQuery<RO2OOrder>(sql).FirstOrDefault();
+                    
+
+                   // EO2OOrder order = db.DBO2OOrder.Where(o => o.O2ONo == InOrderReview.O2ONo).FirstOrDefault();
+                    if (order.O2OOrderStatus != O2OOrderStatus.OrderReview && order.O2OOrderStatus != O2OOrderStatus.OrderRefused)
                     {
                         result.IsSuccess = false;
                         result.IntMsg = -2;
@@ -853,18 +864,34 @@ where o.O2ONo = '{0}'";
                     }
                     if (InOrderReview.IsApprove)
                     {
-                        order.MallOrderNo = InOrderReview.MallOrderNo;
-                        order.OrderAmount = InOrderReview.OrderAmount;
-                       
-                        //下一个状态签收
+                        db.DBO2OOrder.Where(a => a.O2ONo == InOrderReview.O2ONo).Update(a => new EO2OOrder
+                        {
+                            MallOrderNo = InOrderReview.MallOrderNo,
+                            OrderAmount = InOrderReview.OrderAmount,
+                            O2OOrderStatus = O2OOrderStatus.ComfirmSign,
+                            ReviewDateTime = DateTime.Now
+
+                          });
                         order.O2OOrderStatus = O2OOrderStatus.ComfirmSign;
                     }
                     else
                     {
+                        db.DBO2OOrder.Where(a => a.O2ONo == InOrderReview.O2ONo).Update(a => new EO2OOrder
+                        {
+                            RejectReason = InOrderReview.RejectReason,
+                            O2OOrderStatus = O2OOrderStatus.OrderRefused,
+                            ReviewDateTime = DateTime.Now
+
+                        });
                         order.RejectReason = InOrderReview.RejectReason;
                         order.O2OOrderStatus = O2OOrderStatus.OrderRefused;
                     }
-                    db.Update<EO2OOrder>(order);
+
+                    order.ReviewDateTime = DateTime.Now;
+                    //微信通知审核结果
+                    string accessToken = this.getAccessToken(true);
+                    PPReviewResultNT notice = new PPReviewResultNT(accessToken, order);
+                    notice.Push();
 
                 }
             }
@@ -1082,7 +1109,7 @@ where o.O2ONo = '{0}'";
                     ETransferAmount AliTrans = new ETransferAmount();
                     AliTrans.O2OInitForAgent(order, agentUi);
                     //Agent Amount
-                    AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * ((agentFee.MarketRate - order.MallFeeRate) / 100));
+                    AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * ((agentFee.MarketRate - order.AgentFeeRate) / 100));
                     AliTrans = payManager.O2OTransferHandler(AliTrans, BaseController.SubApp, BaseController.SubApp);
                     if (AliTrans.TransferStatus == TransferStatus.Failure)
                         hasError++;
@@ -1096,7 +1123,7 @@ where o.O2ONo = '{0}'";
                         AliTrans = new ETransferAmount();
                         AliTrans.O2OInitForAgent(order, parentUi);
                         //Parent Amount
-                        AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * ((agentFee.MarketRate - order.MallFeeRate) * parentCommRate / 100));
+                        AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * ((agentFee.MarketRate - order.AgentFeeRate) * parentCommRate / 100));
                         AliTrans = payManager.O2OTransferHandler(AliTrans, BaseController.SubApp, BaseController.SubApp);
                         if (AliTrans.TransferStatus == TransferStatus.Failure)
                             // return base.ErrorResult("转账失败：" + AliTrans.Log);

@@ -18,6 +18,8 @@ using EntityFramework.Extensions;
 using IQBCore.IQBPay.Models.User;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.BLL;
+using IQBCore.IQBWX.Models.WX.Template.ReviewRemind;
+using IQBCore.IQBWX.Models.WX.Template.ConfirmSign;
 
 namespace IQBPay.Controllers
 {
@@ -452,7 +454,11 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                 using (AliPayContent db = new AliPayContent())
                 {
                     int orderNum = db.DBO2OOrder.Where(o => o.UserPhone == Phone
-                                         && (o.O2OOrderStatus != O2OOrderStatus.Complete && o.O2OOrderStatus != O2OOrderStatus.UserClose)).Count();
+                                         && o.O2OOrderStatus != O2OOrderStatus.Complete 
+                                         && o.O2OOrderStatus != O2OOrderStatus.UserClose
+                                         && o.ItemId == ItemId 
+                                         && o.AddrId == AddrId
+                                         && o.O2OOrderStatus == O2OOrderStatus.OpenOrder).Count();
                    
                     if(orderNum>0)
                     {
@@ -461,6 +467,8 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                         return Json(result); 
                     }
                     EO2OItemInfo Item = db.DBO2OItemInfo.Where(o => o.Id == ItemId).FirstOrDefault();
+
+                    
                     EUserInfo whUser = db.DBUserInfo.Where(o => o.OpenId == AgentOpenId).FirstOrDefault();
                   //  EQRUser qrUser = db.DBQRUser.Where(a => a.ID == qrUserId);
                     if (Item.RecordStatus == RecordStatus.Blocked)
@@ -469,7 +477,15 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                         result.IntMsg = -9;
                         return Json(result);
                     }
+                    //费率通过寻找商城中最大费率商品获得。
+                    string sql = @"select max(i.ShipFeeRate) as ShipFee
+from O2OItemInfo as i
+where i.RecordStatus = 0 and i.MallId = '{0}'";
+                    sql = string.Format(sql, Item.MallId);
 
+                   double agentFee = db.Database.SqlQuery<double>(sql).FirstOrDefault();
+
+                    //
                     ////出库商余额是否足够
                     //EUserAccountBalance balance = db.DBUserAccountBalance.Where(a => a.OpenId == Item.OpenId).FirstOrDefault();
                     //if (balance == null)
@@ -487,18 +503,18 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                     //        Math.Round((balance.O2OShipBalance - onOrderAmt),2));
                     //    return Json(result);
                     //}
-                    int MallId = Item.MallId;
+                    //int MallId = Item.MallId;
 
-                    EO2OMall Mall = db.DBO2OMall.Where(a => a.Id == Item.MallId).FirstOrDefault();
+                    //EO2OMall Mall = db.DBO2OMall.Where(a => a.Id == Item.MallId).FirstOrDefault();
 
-                    EO2OAgentFeeRate AgentFeeRate = db.DBO2OAgentFeeRate.Where(o => o.MallId == MallId && o.OpenId == AgentOpenId).FirstOrDefault();
+                    EO2OAgentFeeRate AgentFeeRate = db.DBO2OAgentFeeRate.Where(o => o.MallId == Item.MallId && o.OpenId == AgentOpenId).FirstOrDefault();
                     if (AgentFeeRate == null)
                     {
                         result.IsSuccess = false;
                         result.IntMsg = -5;
                         return Json(result);
                     }
-
+                    agentFee += AgentFeeRate.DiffFeeRate;
                     //EO2ORoleCharge RoleCharge = db.DBO2ORoleCharge.Where(o => o.UserOpenId == Item.OpenId && o.O2OUserRole == O2OUserRole.Shippment).FirstOrDefault();
                     //if (RoleCharge == null)
                     //{
@@ -507,7 +523,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                     //    return Json(result);
                     //}
 
-                  
+
 
 
                     EO2OOrder order = new EO2OOrder
@@ -521,7 +537,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                        
                         //代理信息
                         AgentOpenId = AgentOpenId,  
-                        FeeRate = Mall.FeeRate,
+                        AgentFeeRate = agentFee,
                         MarketRate = AgentFeeRate.MarketRate,
 
                         //出货商户信息
@@ -533,8 +549,8 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                         AddrId = AddrId,
                         O2OOrderStatus = O2OOrderStatus.WaitingUpload,
                         O2ONo = StringHelper.GenerateO2ONo(),
-                        MallId = MallId,
-                        MallFeeRate = Mall.FeeRate,
+                        MallId = Item.MallId,
+                      
                         CreateDateTime = DateTime.Now,
                     };
 
@@ -713,6 +729,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                     { 
                         if(order.O2OOrderStatus> O2OOrderStatus.ComfirmSign)
                         {
+                            result.IsSuccess = false;
                             result.IntMsg = -2;
                             result.ErrorMsg = "状态不对，订单不能关闭！";
                             return Json(result);
@@ -722,6 +739,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                     }
                     else
                     {
+                        result.IsSuccess = false;
                         result.IntMsg = -1;
                         result.ErrorMsg = "订单未获取！请联系中介";
                         return Json(result);
@@ -750,26 +768,48 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
 
                 using (AliPayContent db = new AliPayContent())
                 {
-                    EO2OOrder order = db.DBO2OOrder.Where(a => a.O2ONo == O2ONo).FirstOrDefault();
+                  //  EO2OOrder order = db.DBO2OOrder.Where(a => a.O2ONo == O2ONo).FirstOrDefault();
+
+                    string sql = @"select i.Name as ItemName,o.Id,o.MallOrderNo,
+                    o.WHOpenId,o.CreateDateTime,o.OrderAmount,o.O2OOrderStatus
+                    from O2OOrder as o
+					join O2OItemInfo as i on i.Id = o.ItemId
+                    where o.O2ONo = '{0}'
+";
+                    sql = string.Format(sql, O2ONo);
+
+                    RO2OOrder order = db.Database.SqlQuery<RO2OOrder>(sql).FirstOrDefault();
+
                     if (order != null)
                     {
                         if (order.O2OOrderStatus != O2OOrderStatus.ComfirmSign)
                         {
+                            result.IsSuccess = false;
                             result.IntMsg = -2;
                             result.ErrorMsg = "状态不对，订单不能签收！";
                             return Json(result);
                         }
-                        order.O2OOrderStatus = O2OOrderStatus.Settlement;
-                        db.SaveChanges();
+                        db.DBO2OOrder.Update(a => new EO2OOrder
+                        {
+                            O2OOrderStatus = O2OOrderStatus.Settlement
+                        });
+
+                        //签收通知
+                        string accessToken = this.getAccessToken(true);
+                        PPConfirmSignNT notice = new PPConfirmSignNT(accessToken, order);
+                        notice.Push();
+
                     }
                     else
                     {
+                        result.IsSuccess = false;
                         result.IntMsg = -1;
                         result.ErrorMsg = "订单未获取！请联系中介";
                         return Json(result);
                     }
 
                 }
+
             }
             catch (Exception ex)
             {
@@ -780,7 +820,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
         }
 
         /// <summary>
-        /// -1 图片大于20M
+        /// -1 图片大于2M
         /// -2 手机号未获取
         /// -3 文件格式不正确
         /// -4 订单没有获取
@@ -809,7 +849,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
 
                 HttpPostedFileBase file0 = Request.Files[0];
                 int size = file0.ContentLength / 1024; //文件大小KB
-                if (size > 10480)
+                if (size > 2048)
                 {
                     result.IsSuccess = false;
                     result.IntMsg = -1;
@@ -911,7 +951,10 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                     return Json(result);
                 }
 
-                if (string.IsNullOrEmpty(reqOS) || (OrderStatus != O2OOrderStatus.WaitingUpload && OrderStatus!= O2OOrderStatus.OrderRefused))
+                if (string.IsNullOrEmpty(reqOS) || (OrderStatus != O2OOrderStatus.WaitingUpload &&
+                                                    OrderStatus != O2OOrderStatus.OrderRefused && 
+                                                    OrderStatus != O2OOrderStatus.OrderReview)
+                  )
                 {
                     result.IsSuccess = false;
                     result.IntMsg = -4; //订单状态不正确
@@ -921,14 +964,37 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
 
                 using (AliPayContent db = new AliPayContent())
                 {
-                  
-                    db.DBO2OOrder.Where(a => a.O2ONo == OrderNo).Update(a => new EO2OOrder {
+
+                   
+
+                    string sql = @"select agent.Name as AgentName,w.Name as WHName,o.Id,o.UserPhone,o.AgentOpenId,o.WHOpenId,o.CreateDateTime,o.OrderAmount,o.O2ONo,o.O2OOrderStatus 
+                    from O2OOrder as o
+                    join UserInfo as agent on agent.OpenId = o.AgentOpenId
+                    join UserInfo as w on w.OpenId = o.WHOpenId
+                    where o.O2ONo = '{0}'";
+                    sql = string.Format(sql, OrderNo);
+
+                    RO2OOrder ROrder = db.Database.SqlQuery<RO2OOrder>(sql).FirstOrDefault();
+           
+
+
+                    db.DBO2OOrder.Where(a => a.Id == ROrder.Id).Update(a => new EO2OOrder
+                    {
                         OrderImgUrl = imgUpload1,
                         O2OOrderStatus = O2OOrderStatus.OrderReview,
                         UserAliPayAccount = ReceiveAccount,
-                        MallOrderNo = MallOrderNo,
+                        MallOrderNo = MallOrderNo
+                    });
+                     
+                     //微信提醒：
+                    string accessToken = this.getAccessToken(true);
+                    foreach(string openId in O2OBaseController.ReviewOpenIdGroup)
+                    {
 
-                    });   
+                        PPReviewRemindNT notice = new PPReviewRemindNT(accessToken,openId, ROrder);
+                        notice.Push();
+                    }
+                    
                 }
             }
             catch(Exception ex)
@@ -960,13 +1026,12 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                     {
                         v1 = b.OrderImgUrl,
                         v2 = b.UserAliPayAccount,
+                        v3 = b.MallOrderNo,
+                        v4 = b.OrderAmount.ToString(),
 
                     }).FirstOrDefault();
                     //if (result.resultObj == null)
                     //    result.resultObj = new RSimpleEntity();
-
-
-
                 }
             }
             catch(Exception ex)

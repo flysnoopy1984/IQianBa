@@ -192,7 +192,7 @@ namespace IQBPay.Controllers
           
 
             string WXurl =  ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
-            ViewData["WXUrl"] = WXurl+ "?logintype=pp";
+            ViewData["WXUrl"] = WXurl+ "?logintype=o2o";
             return View();
         }
 

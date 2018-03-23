@@ -10,5 +10,9 @@ namespace IQBCore.IQBPay.Models.O2O
     {
         public string v1 { get; set; }
         public string v2 { get; set; }
+
+        public string v3 { get; set; }
+
+        public string v4 { get; set; }
     }
 }

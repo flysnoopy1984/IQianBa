@@ -223,6 +223,10 @@
     <Compile Include="IQBWX\Models\WX\Template\Notification.cs" />
     <Compile Include="IQBWX\Models\WX\Template\PPOrderPayNT.cs" />
     <Compile Include="IQBWX\Models\WX\Template\PPOrderPayTemplate.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\ReviewRemind\PPReviewRemindNT.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\ReviewRemind\PPReviewRemindTemplate.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\ReviewResult\PPReviewResultNT.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\ReviewResult\PPReviewResultTemplate.cs" />
     <Compile Include="IQBWX\Models\WX\Template\TemplateData.cs" />
     <Compile Include="IQBWX\Models\WX\Template\TemplateField.cs" />
     <Compile Include="Model\BaseModel.cs" />

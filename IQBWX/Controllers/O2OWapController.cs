@@ -47,9 +47,13 @@ namespace IQBWX.Controllers
                 }
                    
             }
+            string ppUrl = ConfigurationManager.AppSettings["Site_IQBPay"];
+            ViewBag.ConfirmJquery = ppUrl+ "scripts/Component/jquery-confirm.js";
+            ViewBag.ConfirmCss = ppUrl+ "Content/Component/jquery-confirm.min.css";
+            ViewBag.ppUrl = ppUrl;
 
                 // InitProfilePage();
-              return View(qrUser);
+            return View(qrUser);
         }
 
         public ActionResult AgentFeeRate()
@@ -69,10 +73,21 @@ namespace IQBWX.Controllers
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    string sql = @"select r.Id,r.MarketRate,m.FeeRate,m.Name as MallName from O2OAgentFeeRate as r
-                                join O2OMall as m on m.ID = r.MallId
-                                where r.OpenId='{0}'";
-                    sql = string.Format(sql, UserSession.OpenId);
+                    string sql = @"select r.Id,r.MarketRate,i.ShipFee+{1} as FeeRate,m.Name as MallName
+from O2OAgentFeeRate as r
+join
+(
+
+select max(i.ShipFeeRate) as ShipFee,i.MallId
+from O2OItemInfo as i
+where i.RecordStatus = 0
+group by i.MallId
+
+) as i on i.MallId = r.MallId
+join O2OMall as m on m.ID = r.MallId
+where r.OpenId = '{0}'";
+
+                    sql = string.Format(sql, UserSession.OpenId,GlobalConfig.AgentFeeBasedShipFee);
                     result.resultList = db.Database.SqlQuery<RO2OAgentFeeRate>(sql).ToList();
                     if (result.resultList == null) result.resultList = new List<RO2OAgentFeeRate>();
                 }
