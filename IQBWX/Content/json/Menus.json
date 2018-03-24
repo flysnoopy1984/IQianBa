@@ -3,13 +3,26 @@
     {
       "name": "玉杰服务",
       "sub_button": [
-       
+
         {
           "type": "view",
           "name": "大事件",
           "url": "http://wx.iqianba.cn/PP/News"
         }
 
+      ]
+    },
+     {
+      "name": "用户中心",
+      "sub_button": [
+
+
+     
+        {
+          "type": "view",
+          "name": "O2O商城",
+          "url": "http://wx.iqianba.cn/O2OWap/EntryAgent"
+        }
       ]
     }
   

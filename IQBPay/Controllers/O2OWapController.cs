@@ -789,7 +789,7 @@ where i.RecordStatus = 0 and i.MallId = '{0}'";
                             result.ErrorMsg = "状态不对，订单不能签收！";
                             return Json(result);
                         }
-                        db.DBO2OOrder.Update(a => new EO2OOrder
+                        db.DBO2OOrder.Where(a=>a.O2ONo == O2ONo).Update(a => new EO2OOrder
                         {
                             O2OOrderStatus = O2OOrderStatus.Settlement
                         });

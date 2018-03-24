@@ -52,6 +52,9 @@
             display: inline-block;
             width: 50%;
         }
+        .LeftLable{
+            width:100px;
+        }
 </style>
 <h2>O2O订单</h2>
 <div id="ListArea">
@@ -59,12 +62,12 @@
         <ul class="UlHorizontal">
             <li>
                 <div class="form-group">
-                    <label>商城订单编号：</label>
+                    <label class="LeftLable">商城订单编号：</label>
                     <input id="cMallOrderNo" type="text" class="form-control ConditionField">
                 </div>
             </li>
             <li>
-                <label>订单状态：</label>
+                <label class="LeftLable">订单状态：</label>
                 <select id="cO2OOrderStatus" class="form-control ConditionField">
                     <option value="1014">到货确认</option>
                     <option value="1850">已结算</option>
@@ -72,7 +75,12 @@
                 </select>
             </li>
             <li>
-                <label>日期：</label>
+                <input id="IsSign" checked type="checkbox" class="bootstrap-checkbox" style="vertical-align:text-bottom; margin-right:10px;"><label for="IsSign">是否签收</label>
+            </li>
+            </ul>
+        <ul class="UlHorizontal">
+            <li>
+                <label class="LeftLable">日期：</label>
                 <select id="cBeforeDay" class="form-control ConditionField">
                     <option value="0">今天</option>
                     <option value="3">3天</option>

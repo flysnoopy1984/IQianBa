@@ -14,6 +14,8 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public O2OOrderStatus O2OOrderStatus { get; set; }
 
+        public bool IsSign { get; set; }
+
         public int pageIndex { get; set; }
 
         public int pageSize { get; set; }

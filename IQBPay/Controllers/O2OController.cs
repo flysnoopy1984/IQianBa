@@ -734,9 +734,17 @@ where o.CreateDateTime between cast('{0}' as datetime) and cast('{1}' as datetim
                         //到货确认(供应商)
                         if (InO2OOrder.O2OOrderStatus == O2OOrderStatus.Sign_Settle)
                         {
-                            sql += string.Format(" and (o.O2OOrderStatus ={0} or o.O2OOrderStatus={1})",
-                                Convert.ToInt32(O2OOrderStatus.Settlement),
-                                Convert.ToInt32(O2OOrderStatus.ComfirmSign));
+                            if(InO2OOrder.IsSign)
+                            {
+                                sql += string.Format(" and (o.O2OOrderStatus={0})",Convert.ToInt32(O2OOrderStatus.Settlement));
+                            }
+                            else
+                            {
+                                sql += string.Format(" and (o.O2OOrderStatus ={0} or o.O2OOrderStatus={1})",
+                               Convert.ToInt32(O2OOrderStatus.Settlement),
+                               Convert.ToInt32(O2OOrderStatus.ComfirmSign));
+                            }
+                           
                         }
                         //已结算(供应商)
                         else if (InO2OOrder.O2OOrderStatus == O2OOrderStatus.Payment_Complete)
@@ -748,7 +756,7 @@ where o.CreateDateTime between cast('{0}' as datetime) and cast('{1}' as datetim
                         //全部(供应商)
                         else if (InO2OOrder.O2OOrderStatus == O2OOrderStatus.Sign_Settle_Payment_Complete)
                         {
-                            sql += string.Format(" and (o.O2OOrderStatus ={0} or o.O2OOrderStatus={1} or o.O2OOrderStatus={2})",
+                            sql += string.Format(" and (o.O2OOrderStatus ={0} or o.O2OOrderStatus={1} or o.O2OOrderStatus={2} or o.O2OOrderStatus={3})",
                               Convert.ToInt32(O2OOrderStatus.Settlement),
                               Convert.ToInt32(O2OOrderStatus.Payment),
                               Convert.ToInt32(O2OOrderStatus.Complete),

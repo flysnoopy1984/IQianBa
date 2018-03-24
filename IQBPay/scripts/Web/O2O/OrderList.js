@@ -75,6 +75,7 @@ function Query(NeedClearn,_PageIndex)
     var BeforeDay = $("#cBeforeDay").val();
     var MallOrderNo = $("#cMallOrderNo").val();
     var O2OOrderStatus = $("#cO2OOrderStatus").val();
+    var IsSign = $("#IsSign").get(0).checked;
 
     var url = "/O2O/OrderListQuery";
 
@@ -86,7 +87,8 @@ function Query(NeedClearn,_PageIndex)
             "pageSize": pageSize,
             "BeforeDay": BeforeDay,
             "MallOrderNo": MallOrderNo,
-            "O2OOrderStatus": O2OOrderStatus
+            "O2OOrderStatus": O2OOrderStatus,
+            "IsSign": IsSign
         },
         url: url,
         success: function (data) {

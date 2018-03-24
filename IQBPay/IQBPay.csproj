@@ -554,6 +554,7 @@
     <Content Include="scripts\Wap\O2O\index.js" />
     <Content Include="scripts\Wap\O2O\OrderDetail.js" />
     <Content Include="scripts\Wap\O2O\OrderList.js" />
+    <Content Include="scripts\Wap\O2O\UploadOrder - 复制.js" />
     <Content Include="scripts\Wap\PayHuge.js" />
     <Content Include="scripts\Wap\O2O\ItemList.js" />
     <Content Include="scripts\Wap\O2O\MallList.js" />
