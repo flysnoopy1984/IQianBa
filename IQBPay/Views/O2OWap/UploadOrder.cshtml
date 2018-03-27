@@ -7,11 +7,11 @@
 <link href="@Url.Scrpit("~/Content/Wap/O2O/UploadOrder.css")" rel="stylesheet" />
 <script src="~/scripts/Component/jquery.blockUI.min.js"></script>
 
-<script src="~/scripts/Component/Upload/jquery.ui.widget.js"></script>
+@*<script src="~/scripts/Component/Upload/jquery.ui.widget.js"></script>
 <script src="~/scripts/Component/Upload/jquery.fileupload.js"></script>
 <script src="~/scripts/Component/Upload/jquery.iframe-transport.js"></script>
 <script src="~/scripts/Component/Upload/jquery.fileupload-process.js"></script>
-<script src="~/scripts/Component/jquery.imagecompress.js"></script>
+<script src="~/scripts/Component/jquery.imagecompress.js"></script>*@
 
 
 
@@ -69,7 +69,7 @@
                 </div>
                 <!-- 上传按钮 -->
                 <div class="submit_btn" id="btnUpload1" onclick="fileSelect();"></div>
-                <input type="file" name="fileToUpload" id="upload_OrderInfo" onchange="fileSelected(event);" style="display:none;">
+                <input type="file" name="fileToUpload" id="upload_OrderInfo"  style="display:none;">
                 <!--进度条-->
                 @*<div id="ProcessArea1" class="progress progress-striped">
                     <div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar"

@@ -21,7 +21,7 @@ $(function () {
    */
   deleteImage = function() {
       InitOterControl();
-      this.InitUploadControl();
+     // this.InitUploadControl();
   };
   /**
    * [按钮模拟图片上传input]
@@ -30,14 +30,14 @@ $(function () {
   fileSelect = function() {
       $('#upload_OrderInfo').click();
   };
-  /**
-   * [选择上传的图片信息]
-   * @param  {[type]} e [上传的图片信息]
-   * @return {[type]}   [description]
-   */
-  fileSelected = function(e) {
-    console.log(e);
-  };
+  ///**
+  // * [选择上传的图片信息]
+  // * @param  {[type]} e [上传的图片信息]
+  // * @return {[type]}   [description]
+  // */
+  //fileSelected = function(e) {
+  //  console.log(e);
+  //};
   /**
    * [提交]
    * @return {[type]} [description]
@@ -121,11 +121,14 @@ $(function () {
           $("#ReceiveAccount").focus();
           return;
       }
+      StartBlockUI("验证账户中，请等待...", 100);
       $.ajax({
           type: 'post',
           url: url,
           data: { "AliPayAccount": AliPayAccount },
           success: function (res) {
+              $.unblockUI();
+
               if (res.IsSuccess) {
                   alert("验证通过");
                   $("#ReceiveAccount").attr("disabled", true);
@@ -142,6 +145,8 @@ $(function () {
               }
           },
           error: function (xhr, type) {
+              $.unblockUI();
+
               alert("系统错误！");
           }
       });
@@ -150,13 +155,14 @@ $(function () {
 
   InitData = function () {
       
-     
+      StartBlockUI("数据加载中，请等待...", 100);
       var url = "/O2OWap/UploadOrderQuery";
       $.ajax({
           type: 'post',
           url: url,
           data: { "OrderNo": OrderNo },
           success: function (res) {
+              $.unblockUI();
               if (res.IsSuccess) {
                   if (res.resultObj!=null)
                   {
@@ -188,6 +194,7 @@ $(function () {
               }
           },
           error: function (xhr, type) {
+              $.unblockUI();
               alert("系统错误！");
           }
       });
@@ -245,11 +252,11 @@ $(function () {
 
       InitOterControl();
 
-      this.InitUploadControl();
-
+     // this.InitUploadControl();
+      InitNewUpload();
       //2:WaitingUpload
     //  if (OrderStatus >2)
-          this.InitData();
+      this.InitData();
 
   }
 
@@ -259,107 +266,72 @@ $(function () {
   //},false);
  
 
-    /*
-    *初始化上传控件
-    *
-    */
-  InitUploadControl = function () {
+
+
+  InitNewUpload = function () {
+      var uploading = false;
       var url = "/O2OWap/UploadOrderInfo";
 
-      $("#upload_OrderInfo").fileupload({
-          autoUpload: true,
-          url: url,
-          dataType: 'json',
-          formData: { "OrderNo": OrderNo },
-          allowedTypes: /(.|\/)(jpeg|png|jpg|bmp)$/i,
-          showStop: true,
-          maxFileSize: 10480,
-          maxNumberOfFiles: 1,
-          recalculateProgress: true,
-          forceIframeTransport:true,
-          done: function (e, data) {
-              $.unblockUI();
-              if(data.result.IsSuccess == true)
-              {
-                  $("#imgContainer1").show();
-                  $("#imgUpload1").attr({ src: data.result.resultObj });
-              }
-              else
-              {
-                  switch(data.result.IntMsg)
-                  {
-                      case -1:
-                          alert("文件过大"); break;
-                      case -2:
-                          alert("手机号未获取,请重新提交");
-                          window.location.href = "/O2OWap/Index?aoId=" + aoId;
-                          break;
-                      case -3:
-                          alert("文件格式不正确"); break;
-                      case -4:
-                          alert("订单编号未获取");
-                          window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
-                          break;
-
-                  }
-                  InitOterControl();
-              }
-
-              //$("#uploadImg" + n).attr({ src: data.result.ImgSrc });
-              //$("#uploadImg" + n).css({ width: "290px", height: "218px" });
-              //IdCardFile1Done = true;
-          },
-          add: function (e, data) {
-
-              //$("#Progress" + n).show();
-            //  $("#ProcessArea1").show();
-             // $("#ProcessArea1").addClass("active");
-
-              $("#btnUpload1").hide();
-              var s = $("#btnUpload1");
-           
-              var fd = data.files[0];
-
-              data.process().done(function () {
-                  jqXHR = data.submit();
-                  
-              });
-              //正在上传请耐心等待...
-              StartBlockUI("正在上传请耐心等待...");
-              //$("#cancel_IdCardFile" + n).click(function () {
-              //    if (IdCardFile1Done) {
-              //        InitUploadFile(n);
-              //    }
-              //    if (jqXHR)
-              //        jqXHR.abort();
-
-              //})
-          },
-          fail: function (e, data) {
-              alert("failure upload");
-              if (data.errorThrown == "abort") {
-                  InitOterControl();
-                  InitUploadControl();
-               //   InitUploadFile(n);
-              }
-              $("#imgContainer1").hide();
-              $("#btnUpload1").show();
-              $.unblockUI();
-          },
-
-
-          progressall: function (e, data) {
-
-              var progress = parseInt(data.loaded / data.total * 100, 10);
-              $('#upload_progress1').css("width", progress + "%");
-              
-
-          },
+     
+      $("#upload_OrderInfo").on("change", function () {
+          
+          var formData = new FormData();
         
-              
+          formData.append("file", $("#upload_OrderInfo")[0].files[0]);
+          formData.append("OrderNo", OrderNo);
+
+          //if (uploading) {
+          //    alert("文件正在上传中，请稍候");
+          //    return false;
+          //}
+
+          StartBlockUI("正在上传请耐心等待...",100);
+
+          $.ajax({
+              url: url,
+              type: 'POST',
+              cache: false, 
+              data: formData,
+              processData: false,
+              contentType: false,
+              dataType: "json",
+              beforeSend: function () {
+                  uploading = true;
+              },
+              success: function (data) {
+                
+                  if (data.IsSuccess == true) {
+                      $("#imgContainer1").show();
+                      $("#imgUpload1").attr({ src: data.resultObj });
+                      $("#btnUpload1").hide();
+                  }
+                  else {
+                      switch (data.IntMsg) {
+                          case -1:
+                              alert("文件过大"); break;
+                          case -2:
+                              alert("手机号未获取,请重新提交");
+                              window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                              break;
+                          case -3:
+                              alert("文件格式不正确"); break;
+                          case -4:
+                              alert("订单编号未获取");
+                              window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
+                              break;
+
+                      }
+                      InitOterControl();
+                  }
+                  $.unblockUI();
+              },
+              error: function (xhr, type) {
+                  $.unblockUI();
+              alert("系统错误！");
+          }
+          });
       });
   }
-
   Init();
 
   StartBlockUI = function (txt,w) {
