@@ -7,6 +7,23 @@ namespace IQBCore.IQBPay.BaseEnum
 {
     public class IQBPayEnum
     {
+        public static string GetPayMethod(PayMethod pm)
+        {
+            string result = "";
+            switch(pm)
+            {
+                case PayMethod.HuaBei:
+                    result = "花呗";
+                    break;
+                case PayMethod.BaiTiao:
+                    result = "京东白条";
+                    break;
+                case PayMethod.HuaBei_FK:
+                    result = "花呗(跳风控)";
+                    break;
+            }
+            return result;
+        }
         public static string  GetO2OName(O2OOrderStatus os)
         {
             string O2OOrderStatusStr= "";
@@ -430,6 +447,24 @@ namespace IQBCore.IQBPay.BaseEnum
         QR =1,
     }
 
+    /// <summary>
+    /// 支付方式，花呗，白条
+    /// </summary>
+    public enum PayMethod
+    {
+        /// <summary>
+        /// 花呗
+        /// </summary>
+        HuaBei=0,
+        /// <summary>
+        /// 花呗风控
+        /// </summary>
+        HuaBei_FK =1,
+        /// <summary>
+        /// 京东白条
+        /// </summary>
+        BaiTiao=10,
+    }
 
 
 }

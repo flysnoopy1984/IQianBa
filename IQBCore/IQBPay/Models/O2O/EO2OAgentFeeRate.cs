@@ -35,7 +35,9 @@ namespace IQBCore.IQBPay.Models.O2O
         /// 不同商城不同手续费
         /// </summary>
        
-        public int MallId { get; set; }
+        public string MallCode { get; set; }
+
+        public int ItemId { get; set; }
 
 
         /// <summary>

@@ -13,8 +13,22 @@
     #btnSaveMarket{float:right;}
     .btnList{display: -webkit-flex; display:flex; align-items:center; height:50px;justify-content:flex-end;}
     .table>tbody>tr>th{border:none; text-align:center;}
-    .table>tbody>tr>td{ text-align:center;}
-    .martketText {width:40px;} 
+    .table>tbody>tr>td{ text-align:center; padding:8px 3px;}
+    .martketText {width:40px; height:20px;  } 
+    .td_item{
+        word-break:break-word;
+        width:80%;
+        text-align:left!important;
+        border-top:none !important;
+       
+    }
+    .td_operater{
+        border-top:none !important;
+    }
+    .o2o_content
+    {
+        padding:0 8px;
+    }
 </style>
 <script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
 <script src="@Url.Scrpit("~/Content/Script/IQBPay/O2O/AgentFeeRate.js")"></script>
@@ -25,12 +39,40 @@
         <button type="button" class="mgz btn btn-warning" id="btnSaveMarket">保存用户手续费</button>
     </div>
     <table class="table mgz2  large-only" id="trContainer">
-        <tr>
-            <th width="45%">商城</th>
-            <th width="25%">费率</th>
+        @*<tr>
+            <th width="25%">金额</th>
+            <th width="25%">商品</th>
             <th width="30%">用户手续费</th>
+        </tr>*@
+        <tr>
+            <th colspan="3">花呗</th>
+        </tr>
+        <tr>
+            <td class="">
+                金额：10000
+            </td>
+            <td class="">
+                费率：51%
+            </td>
+            <td class="">手续费：<input id="MarketRate" type="number" class="martketText" value={3} onkeyup="NumInput();" />%
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="td_item">
+                <ul>
+                    <li>
+                        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxaaaaaaaaaaaaaaaaaaaaaa
+                    </li>
+                    <li>
+
+                    </li>
+                </ul>
+               
+            </td>
+         
         </tr>
         
+       
     </table>
 
 </div>

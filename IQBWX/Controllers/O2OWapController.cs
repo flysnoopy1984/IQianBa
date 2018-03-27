@@ -101,6 +101,34 @@ where r.OpenId = '{0}'";
             return Json(result);
         }
 
+        public ActionResult AgentFeeRateQuery2()
+        {
+            NResult<RO2OAgentFeeRate> result = new NResult<RO2OAgentFeeRate>();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    string sql = @"select i.Id,i.Name,i.Amount,i.ShipFeeRate+{1},i.PayMethod,i.IsLightReceive,m.Name
+from O2OItemInfo as i
+left join O2OAgentFeeRate as agent on agent.ItemId = i.Id
+join O2OMall as m on m.ID = i.MallId
+where agent.OpenId = '{0}'
+";
+
+                    sql = string.Format(sql, UserSession.OpenId, GlobalConfig.AgentFeeBasedShipFee);
+                    result.resultList = db.Database.SqlQuery<RO2OAgentFeeRate>(sql).ToList();
+                    if (result.resultList == null) result.resultList = new List<RO2OAgentFeeRate>();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+
+            return Json(result);
+        }
+
         public ActionResult AgentFeeRateSave(List<EO2OAgentFeeRate> list)
         {
             OutAPIResult result = new OutAPIResult();

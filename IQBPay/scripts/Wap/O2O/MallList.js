@@ -65,7 +65,7 @@ $(function () {
   //  $('.o2o_modal').css("display", "flex");
     $('#header').text(name);
     selectedName = name;
-    selectedId = id;
+    selectedId = code;
    
     login();
    

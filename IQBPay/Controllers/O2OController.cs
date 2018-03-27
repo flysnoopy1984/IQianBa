@@ -44,7 +44,7 @@ namespace IQBPay.Controllers
         {
             var pageIndex = Convert.ToInt32(Request["pageIndex"]);
             var pageSize = Convert.ToInt32(Request["pageSize"]);
-            var MallId =  Convert.ToInt32(Request["MallId"]);
+            var MallCode =  Convert.ToString(Request["MallCode"]);
             RecordStatus ItemStatus = (RecordStatus)Enum.Parse(typeof(RecordStatus),Convert.ToString(Request["ItemStatus"]));
 
             string UserOpenId = base.GetUserSession().OpenId;
@@ -57,7 +57,7 @@ namespace IQBPay.Controllers
                     Id = o.Id,
                     Name = o.Name,
                     Amount = o.Amount,
-                    MallId = o.MallId,
+                    MallCode = o.MallCode,
                     ImgUrl = o.ImgUrl,
                     Qty = o.Qty,
                     ShipFeeRate = o.ShipFeeRate,
@@ -67,13 +67,15 @@ namespace IQBPay.Controllers
                     CreateDateTime = o.CreateDateTime,
                     ModifyDateTime = o.ModifyDateTime,
                     OpenId = o.OpenId,
+                    IsLightReceive = o.IsLightReceive,
+                    PayMethod = o.PayMethod,
                   
                 });
                 if (base.GetUserSession().UserRole != UserRole.Administrator)
                     list = list.Where(o => o.OpenId == UserOpenId);
-                if (MallId>0)
+                if (!string.IsNullOrEmpty(MallCode))
                 {
-                    list = list.Where(o => o.MallId == MallId);
+                    list = list.Where(o => o.MallCode == MallCode);
                 }
                 if(ItemStatus !=  RecordStatus.All)
                 {
@@ -121,14 +123,15 @@ namespace IQBPay.Controllers
                             ImgUrl = obj.ImgUrl,
                             Qty = obj.Qty,
                             RealAddress = obj.RealAddress,
-                            MallId = obj.MallId,
-                        
+                            MallCode = obj.MallCode, 
                             O2ORuleCode = obj.O2ORuleCode,
                             RecordStatus = obj.RecordStatus,
                             ShipFeeRate = obj.ShipFeeRate,
                             ModifyDateTime = DateTime.Now,
                             PriceGroupId = obj.PriceGroupId,
-                    });
+                            PayMethod = obj.PayMethod,
+                            IsLightReceive = obj.IsLightReceive,
+                        });
                      //   db.SaveChanges();
                       //  db.DBO2OItemInfo.Where(o => o.Id == obj.Id
                         //EO2OItemInfo updateObj = 
@@ -226,7 +229,7 @@ namespace IQBPay.Controllers
                 var rule = db.Database.SqlQuery<HashO2ORule>("select Id,Name,Code from O2ORule").ToList();
                 if (rule != null)
                     result.HashO2ORule = rule;
-                var mall = db.Database.SqlQuery<HashO2OMall>("select Id,Name,O2ORuleCode from O2OMall").ToList();
+                var mall = db.Database.SqlQuery<HashO2OMall>("select Id,Name,Code,O2ORuleCode from O2OMall").ToList();
                 if (mall != null)
                     result.HashO2OMall = mall;
 
@@ -704,7 +707,7 @@ namespace IQBPay.Controllers
                 using (AliPayContent db = new AliPayContent())
                 {
                     string sql = @"select o.*,m.Name as MallName,i.Name as ItemName from O2OOrder as o 
-left join O2OMall as m on m.ID = o.MallId
+left join O2OMall as m on m.Code = o.MallCode
 left join O2OItemInfo as i on i.Id = o.ItemId
 where o.CreateDateTime between cast('{0}' as datetime) and cast('{1}' as datetime) ";
 
@@ -1029,7 +1032,7 @@ where o.O2ONo = '{0}'";
                     {
                         ItemId = order.ItemId,
                         O2ONo = order.O2ONo,
-                        MallId = order.MallId,
+                        MallCode = order.MallCode,
                         MallOrderNo = order.MallOrderNo,
                         TransferTarget = TransferTarget.O2OWareHouse,
                         ReceiveAccount = ub.AliPayAccount,
@@ -1111,7 +1114,7 @@ where o.O2ONo = '{0}'";
                     }
 
                     agentUi = db.DBUserInfo.Where(a => a.OpenId == order.AgentOpenId).FirstOrDefault();
-                    agentFee = db.DBO2OAgentFeeRate.Where(a => a.MallId == order.MallId && a.OpenId == order.AgentOpenId).FirstOrDefault();
+                    agentFee = db.DBO2OAgentFeeRate.Where(a => a.MallCode == order.MallCode && a.OpenId == order.AgentOpenId).FirstOrDefault();
                   //  mall = db.DBO2OMall.Where(a => a.Id == order.MallId).FirstOrDefault();
                     //ToAgent      
                     ETransferAmount AliTrans = new ETransferAmount();
@@ -1210,7 +1213,7 @@ where o.O2ONo = '{0}'";
                         O2ONo = StringHelper.GenerateO2ONo(),
                         CreateDateTime = DateTime.Now,
                         MallAccount = "yujie@hotmail.com",
-                        MallId = 3,
+                        MallCode = "JD",
                         MallOrderNo = "HWxxxxxxx",
                         MallPwd = "123456",
                         MallSMSVerify = "",
@@ -1450,7 +1453,7 @@ where o.O2ONo = '{0}'";
                 using (AliPayContent db = new AliPayContent())
                 {
                     string sql = @"select o.*,m.Name as MallName,i.Name as ItemName from O2OTranscationWH as o 
-                    left join O2OMall as m on m.ID = o.MallId
+                    left join O2OMall as m on m.Code = o.MallCode
                     left join O2OItemInfo as i on i.Id = o.ItemId
                     where o.TransDateTime between cast('{0}' as datetime) and cast('{1}' as datetime) ";
 
@@ -1521,7 +1524,7 @@ where o.O2ONo = '{0}'";
                     EO2OTranscationWH trans = new EO2OTranscationWH()
                     {
                         FeeRate = 3,
-                        MallId = 3,
+                        MallCode = "JD",
                         MallOrderNo = "dddddd",
                         ReceiveAccount = "aaaa@12",
                         TransDateTime=DateTime.Now,

@@ -2,8 +2,9 @@
 var pageSize = 40;
 var RuleData = null;
 var MallData = null;
+var PayData = null;
 
-var MallId = -1;
+var MallCode = "";
 var RuleId = -1;
 var MallName = "";
 var DataPre = "DataContainer_";
@@ -15,6 +16,28 @@ $(document).ready(function () {
  
 });
 
+function SetPayMethod(mCode)
+{
+    PayData = new Array();
+    if (mCode == "JD") {
+        var obj = { "Name": "京东白条", "Value": 10 };
+        PayData.push(obj);
+    }
+    else
+    {
+        var obj;
+        if (mCode == "Tmall")
+        {
+            obj = { "Name": "花呗风控", "Value": 1 };
+            PayData.push(obj);
+        }
+        obj = { "Name": "花呗", "Value": 0 };
+        PayData.push(obj);
+    }
+    
+    
+    
+}
 
 function InitCondition()
 {
@@ -28,14 +51,16 @@ function InitCondition()
         success: function (data) {
             RuleData = data.HashO2ORule;
             MallData = data.HashO2OMall;
+
+          
             var btnCtrl = "";
            
             $.each(MallData, function (i) {
-                btnCtrl = '<li><button type="button" class="btn btn-default" onclick=SelectMall("'+ MallData[i].Id+ '")>' + MallData[i].Name + '商城</button></li>';
+                btnCtrl = '<li><button type="button" class="btn btn-default" onclick=SelectMall("'+ MallData[i].Code+ '")>' + MallData[i].Name + '商城</button></li>';
                 $("#ulMallList").append(btnCtrl);
 
                 //dataContainer
-                $("#AllTab").append("<div id='" + DataPre + MallData[i].Id + "'></div>")
+                $("#AllTab").append("<div id='" + DataPre + MallData[i].Code + "'></div>")
             });
 
             $("#btnAdd").show();
@@ -55,10 +80,13 @@ function SelectStatus()
     Query(true, pageIndex + 1);
 }
 
-function SelectMall(Id)
+function SelectMall(Code)
 {
-    MallId = Id;
-    DataCtrl = $("#" + DataPre + MallId);
+    MallCode = Code;
+
+    SetPayMethod(MallCode);
+
+    DataCtrl = $("#" + DataPre + MallCode);
 
     //页面重置
     pageIndex = -1;
@@ -66,11 +94,12 @@ function SelectMall(Id)
 
     //隐藏其他商城div
     $("#AllTab div").hide();
+
     DataCtrl.show();
 
     //设置Title
     $.each(MallData, function (i) {
-        if (MallData[i].Id == MallId)
+        if (MallData[i].MallCode == MallCode)
         {
             $("#Title").text(MallData[i].Name + "商城");
         }
@@ -82,22 +111,22 @@ function MallOption(updateData) {
     if (updateData == null)
     {
         $.each(MallData, function (i) {
-            if (MallId == MallData[i].Id)
+            if (MallCode == MallData[i].Code)
             {
-                mallOp += "<option ruleId=" + MallData[i].O2ORuleCode + " value=" + MallData[i].Id + " selected>" + MallData[i].Name + "</option>";
+                mallOp += "<option ruleId=" + MallData[i].O2ORuleCode + " value=" + MallData[i].Code + " selected>" + MallData[i].Name + "</option>";
                 RuleId = MallData[i].O2ORuleId;
             }    
             else
-                mallOp += "<option ruleId=" + MallData[i].O2ORuleCode + " value=" + MallData[i].Id + ">" + MallData[i].Name + "</option>";
+                mallOp += "<option ruleId=" + MallData[i].O2ORuleCode + " value=" + MallData[i].Code + ">" + MallData[i].Name + "</option>";
         });
     }
     else
     {
         $.each(MallData, function (i) {
-            if (updateData.MallId == MallData[i].Id)
-                mallOp += "<option ruleId=" + MallData[i].O2ORuleCode + " value=" + MallData[i].Id + " selected>" + MallData[i].Name + "</option>";
+            if (updateData.MallCode == MallData[i].Code)
+                mallOp += "<option ruleId=" + MallData[i].O2ORuleCode + " value=" + MallData[i].Code + " selected>" + MallData[i].Name + "</option>";
             else
-                mallOp += "<option ruleId=" + MallData[i].O2ORuleCode + " value=" + MallData[i].Id + ">" + MallData[i].Name + "</option>";
+                mallOp += "<option ruleId=" + MallData[i].O2ORuleCode + " value=" + MallData[i].Code + ">" + MallData[i].Name + "</option>";
         });
         
     }
@@ -131,20 +160,46 @@ function RuleOption(updateData)
     return ruleOp;
 }
 
+function PayOption(updateData)
+{
+    var payop = "";
+    if (updateData == null) {
+
+
+        $.each(PayData, function (i) {
+            payop += "<option value=" + PayData[i].Value + " selected>" + PayData[i].Name + "</option>";
+        });
+    }
+    else {
+        $.each(PayData, function (i) {
+            if (updateData.PayMethod == PayData[i].Value)
+                payop += "<option value=" + PayData[i].Value + " selected>" + PayData[i].Name + "</option>";
+            else
+                payop += "<option value=" + PayData[i].Value + ">" + PayData[i].Name + "</option>";
+        });
+
+    }
+
+    return payop;
+}
+
 function CreateNew(updateData)
 {
-    if (MallId == -1)
+    if (MallCode == "")
     {
         alert("请先选择商城");
         return;
     }
+    
     var mallOp = MallOption(updateData);
     var ruleOp = RuleOption(updateData);
+    var payOP = PayOption(updateData);
+    
   
     var ctrl = GetCellHtml();
     if (updateData == null) {
 
-        ctrl = String.format(ctrl,"New_"+MallId, "", "", "1", "", "","","0", mallOp, ruleOp,"","");
+        ctrl = String.format(ctrl, "New_" + MallCode, "", "", "1", "", "", "", "0", mallOp, ruleOp, "", "", payOP);
     }
     else {
         ctrl = String.format(ctrl, "O_"+updateData.Id,
@@ -157,7 +212,8 @@ function CreateNew(updateData)
                                    updateData.RecordStatus,
                                    mallOp, ruleOp,
                                    updateData.CreateDateTimeStr,
-                                   updateData.ModifyDateTimeStr);
+                                   updateData.ModifyDateTimeStr,
+                                   payOP);
     }
 
     DataCtrl.prepend(ctrl);
@@ -178,12 +234,19 @@ function CreateNew(updateData)
 
         var btn_Delete = $("#O_" + updateData.Id).find("#btn_Delete");
         btn_Delete.on("click", { "ItemId": updateData.Id }, DeleteItem);
+
+        var IsLightReceive = $("#O_" + updateData.Id).find("#IsLightReceive");
+        if(updateData.IsLightReceive)
+        {
+            IsLightReceive.attr("checked", true);
+        }
+
     }
     else
     {
-        var btn_Status = $("#New_"+MallId).find("#btn_Status");
+        var btn_Status = $("#New_" + MallCode).find("#btn_Status");
         btn_Status.hide();
-        var btn_Delete = $("#New_" + MallId).find("#btn_Delete");
+        var btn_Delete = $("#New_" + MallCode).find("#btn_Delete");
         btn_Delete.on("click", { "ItemId": "0" }, DeleteItem);
 
      
@@ -200,11 +263,13 @@ function GetCellHtml() {
     ctrl += '</ul>';
     ctrl += '<ul class="UlHorizontal">';
     ctrl += '<li><span>金额：</span><input id="Amount" type="text" onkeyup="OnlyNumber(this);" class="form-control" value="{2}" /></li>';
-    ctrl += '<li><span>费率：</span><input id="FeeRate" type="number" step="1" class="form-control" value="{3}" /></li>';
+    ctrl += '<li><span>费率：</span><input id="FeeRate" style="width:60px;" type="number" step="1" class="form-control" value="{3}" /></li>';
+    ctrl += '<li><span>商城：</span><select id="MallCode" class="form-control" onchange="MallChanged(this);">{8}</select></li>';
     ctrl += '</ul>';
     ctrl += '<ul class="UlHorizontal">';
-    ctrl += '<li><span>商城：</span><select id="MallId" class="form-control" onchange="MallChanged(this);">{8}</select></li>';
-    ctrl += '<li><span>规则：</span><select id="O2ORuleId" class="form-control">{9}</select></li>';
+    ctrl += '<li><span>规则：</span><select id="O2ORuleId" style="width:120px;" class="form-control">{9}</select></li>';
+    ctrl += '<li><span>支持秒到：</span><input id="IsLightReceive"  type="checkbox" class="CheckBox_Control" /></li>';
+    ctrl += '<li><span>套现方式：</span><select class="form-control" id="PayMethod">{12}</select></li>';
     ctrl += '</ul>';
     ctrl += '<ul class="UlHorizontal">';
     ctrl += '<li><span>名称描述：</span><input id="Name" type="text" class="form-control" style="width:680px;" value="{4}" /></li>';
@@ -245,7 +310,7 @@ function Query(NeedClearn, _PageIndex) {
     }
     $.ajax({
         type: 'post',
-        data: "MallId=" + MallId + "&pageIndex=" + _PageIndex + "&pageSize=" + pageSize + "&ItemStatus=" + ItemStatus,
+        data: "MallCode=" + MallCode + "&pageIndex=" + _PageIndex + "&pageSize=" + pageSize + "&ItemStatus=" + ItemStatus,
         url: url,
         success: function (data) {
             var arrLen = data.length;
@@ -410,8 +475,9 @@ function Save(obj) {
     var ImgUrl = pObj.find("#ImgUrl").val();
     var RecordStatus = pObj.find("#RecordStatus").val();
     var O2ORuleCode = pObj.find("#O2ORuleId").val();
-    var MallId = pObj.find("#MallId").val();
-
+    var mCode = pObj.find("#MallCode").val();
+    var IsLightReceive = pObj.find("#IsLightReceive").get(0).checked;
+    var PayMethod = pObj.find("#PayMethod").val();
     if (!VerifyItem(pObj)) return;
    
     $.ajax({
@@ -425,8 +491,10 @@ function Save(obj) {
             "ShipFeeRate": FeeRate,
             "RealAddress": RealAddress,
             "O2ORuleCode": O2ORuleCode,
-            "MallId": MallId,
-            "RecordStatus":RecordStatus,
+            "MallCode": mCode,
+            "RecordStatus": RecordStatus,
+            "IsLightReceive": IsLightReceive,
+            "PayMethod": PayMethod,
         },
         url: url,
         success: function (data) {

@@ -202,14 +202,14 @@ namespace IQBPay.Controllers
                     {
                         EO2OAgentFeeRate rate = new EO2OAgentFeeRate
                         {
-                            MallId = mall.Id,
+                            MallCode = mall.Code,
                             MarketRate = 8,
                             DiffFeeRate = 0,
                             OpenId = bQRUser.OpenId,
                             //QrUserId = bQRUser.ID,
                             // UserId = ui.Id
                         };
-                        EO2OAgentFeeRate dbRate =  db.DBO2OAgentFeeRate.Where(a => a.OpenId == rate.OpenId && a.MallId == rate.MallId).FirstOrDefault();
+                        EO2OAgentFeeRate dbRate =  db.DBO2OAgentFeeRate.Where(a => a.OpenId == rate.OpenId && a.MallCode == rate.MallCode).FirstOrDefault();
                         if (dbRate == null)
                             db.DBO2OAgentFeeRate.Add(rate);
                         dbRate = rate;

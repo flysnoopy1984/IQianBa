@@ -13,6 +13,8 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public string Name { get; set; }
 
+        public string Code { get; set; }
+
         public string O2ORuleCode { get; set; }
     }
 }

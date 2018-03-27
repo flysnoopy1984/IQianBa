@@ -19,7 +19,7 @@ body {
     min-height: 100%;
     z-index: -2;
     margin: 0px !important;
-    background: url('../Images/backgrounds/O2OLoginbg.jpg') no-repeat top center fixed;
+    background: url('../../../Images/backgrounds/O2OLoginbg.jpg') no-repeat top center fixed;
     -moz-background-size: cover;
     -webkit-background-size: cover;
     -o-background-size: cover;

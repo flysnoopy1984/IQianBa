@@ -65,3 +65,11 @@
 .Color_AmountIn{
     color:#F19659;
 }
+.CheckBox_Control{
+    width: 22px;
+    height: 22px;
+    border:1px solid #ccc;
+    background: #f00;border-color: #f00;
+    vertical-align:text-bottom;
+
+}

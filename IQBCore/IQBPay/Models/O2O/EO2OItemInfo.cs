@@ -36,7 +36,7 @@ namespace IQBCore.IQBPay.Models.O2O
         [MaxLength(50)]
         public string Name { get; set; }
 
-        public int MallId { get; set; }
+        public string MallCode { get; set; }
 
         [DefaultValue("")]
         [MaxLength(500)]
@@ -70,20 +70,34 @@ namespace IQBCore.IQBPay.Models.O2O
         [DefaultValue("")]
         public string ModifyUser { get; set; }
 
-        public void InitFromUpdate(EO2OItemInfo updateObj)
-        {
-            //this.Name = updateObj.Name;
+        
+
+
+        /// <summary>
+        /// 秒到
+        /// </summary>
+       public bool IsLightReceive { get; set; }
+
+
+        /// <summary>
+        /// 套现方式 花呗，白条
+        /// </summary>
+       public PayMethod PayMethod { get; set; }
+
+    public void InitFromUpdate(EO2OItemInfo updateObj)
+    {
+        //this.Name = updateObj.Name;
           
-            //this.MallId = updateObj.MallId;
-            //this.RealAddress = updateObj.RealAddress;
-            //this.ImgUrl = updateObj.ImgUrl;
-            //this.Amount = updateObj.Amount;
-            //this.Qty = updateObj.Qty;
-            //this.O2ORuleId = updateObj.O2ORuleId;
-            //this.RecordStatus = updateObj.RecordStatus;
-            //this.CreateDateTime = DateTime.Now;
-            //this.ModifyDateTime = DateTime.Now;
-            //this.PriceGroupId = updateObj.PriceGroupId;
-        }
+        //this.MallId = updateObj.MallId;
+        //this.RealAddress = updateObj.RealAddress;
+        //this.ImgUrl = updateObj.ImgUrl;
+        //this.Amount = updateObj.Amount;
+        //this.Qty = updateObj.Qty;
+        //this.O2ORuleId = updateObj.O2ORuleId;
+        //this.RecordStatus = updateObj.RecordStatus;
+        //this.CreateDateTime = DateTime.Now;
+        //this.ModifyDateTime = DateTime.Now;
+        //this.PriceGroupId = updateObj.PriceGroupId;
+    }
     }
 }

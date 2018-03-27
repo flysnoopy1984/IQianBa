@@ -63,7 +63,7 @@ namespace IQBCore.IQBPay.Models.O2O
         public string UserAliPayAccount { get; set; }
      
 
-        public int MallId { get; set; }
+        public string MallCode { get; set; }
 
 
         public int ItemId { get; set; }

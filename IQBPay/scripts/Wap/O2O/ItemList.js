@@ -23,13 +23,13 @@ $(function () {
      return result ? decodeURIComponent(result[2]) : null;
   };
   // 获取价格列表
-  function getPriceList(MallId) {
+  function getPriceList(MallCode) {
 
       var url = "/O2OWap/QueryPriceGrouplist";
      
       $.ajax({
           type: 'post',
-          data: { 'MallId': MallId },
+          data: { 'MallCode': MallCode },
           url: url,
           success: function (res) {
               var str = "";
@@ -43,7 +43,7 @@ $(function () {
                   $('#' + res[0].Id + '_' + res[0].Code + '_price_item').addClass('price_active');
               }
               $('#header-title').text(res[0].Code);
-              pdtList(MallId, res[0].Id);
+              pdtList(MallCode, res[0].Id);
           },
           error: function (xhr, type) {
               alert("系统错误！");
@@ -59,13 +59,13 @@ $(function () {
    * @param  {[type]} PGId   [价格Id]
    * @return {[type]}        [description]
    */
-  function pdtList(MallId, PGId) {
+  function pdtList(MallCode, PGId) {
       $('.pdt_list_content').empty();
       var url = "/O2OWap/QueryItemList";
       $.ajax({
           type: 'post',
           // data: "MallId=" + MallId + "&PGId=" + PGId,
-          data: { 'MallId': MallId, 'PGId': PGId },
+          data: { 'MallCode': MallCode, 'PGId': PGId },
           url: url,
           success: function (res) {
               pdts = res;

@@ -163,7 +163,7 @@ namespace IQBPay.Controllers
                 }
                 int ItemId = Convert.ToInt32(Request["ItemId"]);
               
-                string MallId = Request["MallId"];
+                string MallICode = Request["MallICode"];
                 //出货商Id
                 string OpenId = Request["OpenId"];
 
@@ -220,7 +220,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
         [HttpPost]
         public ActionResult QueryItemList()
         {
-            int MallId =Convert.ToInt32(Request["MallId"]);
+            string MallCode = Convert.ToString(Request["MallCode"]);
             int PGId = Convert.ToInt32(Request["PGId"]);
 
             List<RO2OItemInfo> result = new List<RO2OItemInfo>();
@@ -231,7 +231,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                     Id = o.Id,
                     Name = o.Name,
                     Amount = o.Amount,
-                    MallId = o.MallId,
+                    MallCode = o.MallCode,
                     ImgUrl = o.ImgUrl,
                     Qty = o.Qty,
                     O2ORuleCode = o.O2ORuleCode,
@@ -243,8 +243,8 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                 }).Where(o=>o.RecordStatus == RecordStatus.Normal);
                 if (PGId > 0)
                     list = list.Where(o=>o.PriceGroupId == PGId);
-                if(MallId>0)
-                    list = list.Where(o => o.MallId == MallId);
+                if(!string.IsNullOrEmpty(MallCode))
+                    list = list.Where(o => o.MallCode == MallCode);
                 result = list.ToList();
 
 
@@ -259,21 +259,20 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
         public ActionResult QueryPriceGrouplist()
         {
             List<EO2OPriceGroup> result = new List<EO2OPriceGroup>();
-            string reqMallId = Request["MallId"];
-            int MallId = 0;
-            if(!string.IsNullOrEmpty(reqMallId))
-                MallId = Convert.ToInt32(reqMallId);
+            string MallCode = Request["MallCode"];
+          
+          
             using (AliPayContent db = new AliPayContent())
             {
                 var list = db.DBO2OPriceGroup;
-                if (MallId > 0)
+                if (!string.IsNullOrEmpty(MallCode))
                 {
                     string sql = @"select * from O2OPriceGroup
                             where Id in 
                             (
-                                select PriceGroupId from O2OItemInfo where MallId = '{0}'
+                                select PriceGroupId from O2OItemInfo where MallCode = '{0}'
                             )";
-                    sql = string.Format(sql, MallId);
+                    sql = string.Format(sql, MallCode);
                     result = db.Database.SqlQuery<EO2OPriceGroup>(sql).ToList();
                 }
                 else
@@ -297,9 +296,9 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
             using (AliPayContent db = new AliPayContent())
             {
                 string sql = @"select * from O2OMall
-                            where Id in 
+                            where Code in 
                             (
-                              select MallId from O2OItemInfo where O2OItemInfo.RecordStatus = 0
+                             select MallCode from O2OItemInfo where O2OItemInfo.RecordStatus = 0
                             ) and RecordStatus = 0
                             ";
                 result = db.Database.SqlQuery<RO2OMall>(sql).ToList();
@@ -477,13 +476,15 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                         result.IntMsg = -9;
                         return Json(result);
                     }
-                    //费率通过寻找商城中最大费率商品获得。
-                    string sql = @"select max(i.ShipFeeRate) as ShipFee
-from O2OItemInfo as i
-where i.RecordStatus = 0 and i.MallId = '{0}'";
-                    sql = string.Format(sql, Item.MallId);
+                    //                    //费率通过寻找商城中最大费率商品获得。
+                    //                    string sql = @"select max(i.ShipFeeRate) as ShipFee
+                    //from O2OItemInfo as i
+                    //where i.RecordStatus = 0 and i.MallId = '{0}'";
+                    //                    sql = string.Format(sql, Item.MallId);
 
-                   double agentFee = db.Database.SqlQuery<double>(sql).FirstOrDefault();
+                    //string sql = "select ShipFeeRate from from O2OItemInfo where i.RecordStatus = 0";
+
+                    //double agentFee = db.Database.SqlQuery<double>(sql).FirstOrDefault();
 
                     //
                     ////出库商余额是否足够
@@ -507,14 +508,17 @@ where i.RecordStatus = 0 and i.MallId = '{0}'";
 
                     //EO2OMall Mall = db.DBO2OMall.Where(a => a.Id == Item.MallId).FirstOrDefault();
 
-                    EO2OAgentFeeRate AgentFeeRate = db.DBO2OAgentFeeRate.Where(o => o.MallId == Item.MallId && o.OpenId == AgentOpenId).FirstOrDefault();
-                    if (AgentFeeRate == null)
+                    EO2OAgentFeeRate AgentFeeRate = db.DBO2OAgentFeeRate
+                                                      .Where(o => o.ItemId == Item.Id && o.OpenId == AgentOpenId)
+                                                      .FirstOrDefault();
+                    if (AgentFeeRate == null || AgentFeeRate.MarketRate == 0)
                     {
+                        result.ErrorMsg = string.Format("代理没有对{0}的商品做用户手续费配置", Item.Name);
                         result.IsSuccess = false;
                         result.IntMsg = -5;
                         return Json(result);
                     }
-                    agentFee += AgentFeeRate.DiffFeeRate;
+                    double agentFee = Item.ShipFeeRate+ GlobalConfig.AgentFeeBasedShipFee+ AgentFeeRate.DiffFeeRate;
                     //EO2ORoleCharge RoleCharge = db.DBO2ORoleCharge.Where(o => o.UserOpenId == Item.OpenId && o.O2OUserRole == O2OUserRole.Shippment).FirstOrDefault();
                     //if (RoleCharge == null)
                     //{
@@ -549,7 +553,7 @@ where i.RecordStatus = 0 and i.MallId = '{0}'";
                         AddrId = AddrId,
                         O2OOrderStatus = O2OOrderStatus.WaitingUpload,
                         O2ONo = StringHelper.GenerateO2ONo(),
-                        MallId = Item.MallId,
+                        MallCode = Item.MallCode,
                       
                         CreateDateTime = DateTime.Now,
                     };

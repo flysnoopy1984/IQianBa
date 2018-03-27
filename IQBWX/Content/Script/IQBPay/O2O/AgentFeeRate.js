@@ -22,8 +22,6 @@
                 else {
                     alert(res.ErrorMsg);
                 }
-
-
             },
             error: function (xhr, type) {
                 alert("系统错误！");
@@ -32,21 +30,20 @@
     }
     generateData = function (data) {
 
-       
-        var ctrl = "";
-        $.each(data, function (i) {
-            ctrl = "";
-            ctrl += "<tr id='tr_{0}'>";
-            ctrl += "<td>{1}</td>";
-            ctrl += "<td>{2}%</td>";
-            ctrl += '<td><input id="MarketRate" type="number" class="martketText" value={3} onkeyup="NumInput();" />%</td>';
-            ctrl += "</tr>";
-            ctrl = String.format(ctrl,data[i].Id, data[i].MallName, data[i].FeeRate, data[i].MarketRate);
+        //var ctrl = "";
+        //$.each(data, function (i) {
+        //    ctrl = "";
+        //    ctrl += "<tr id='tr_{0}'>";
+        //    ctrl += "<td>金额：{1}</td>";
+        //    ctrl += "<td>费率：{2}%</td>";
+        //    ctrl += '<td><input id="MarketRate" type="number" class="martketText" value={3} onkeyup="NumInput();" />%</td>';
+        //    ctrl += "</tr>";
 
+        //    ctrl = String.format(ctrl,data[i].Id, data[i].MallName, data[i].FeeRate, data[i].MarketRate);
 
-            $("#trContainer").append(ctrl);
+        //    $("#trContainer").append(ctrl);
 
-        });
+        //});
     }
 
     SaveMarket = function () {
@@ -84,7 +81,7 @@
   
     }
 
-    Init();
+//    Init();
 
     $("#btnSaveMarket").on("click",SaveMarket);
 });

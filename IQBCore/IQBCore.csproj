@@ -115,6 +115,7 @@
     <Compile Include="IQBPay\Models\InParameter\InAgentOverview.cs" />
     <Compile Include="IQBPay\Models\Json\HashO2ODeliveryAddr.cs" />
     <Compile Include="IQBPay\Models\Json\InOrderReview.cs" />
+    <Compile Include="IQBPay\Models\O2O\EO2OMallPayMethod.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OAgentFeeRate.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OBuyer.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2ODeliveryAddr.cs" />

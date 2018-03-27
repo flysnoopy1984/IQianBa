@@ -73,15 +73,15 @@ namespace IQBCore.IQBPay.Models.Sys
         /// </summary>
         public int MaxNumChildAgent { get; set; }
 
-        /*O2O begin */
+     
+
+
+           /*O2O begin */
         /// <summary>
         /// 根据出库商的费率，决定代理费率，两者差值
         /// </summary>
-        public int AgentFeeBasedShipFee { get; set; } 
+        public double AgentFeeBasedShipFee { get; set; } 
         /*O2O end */
-
-
-
 
 
 
