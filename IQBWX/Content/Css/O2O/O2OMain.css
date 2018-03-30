@@ -1,11 +1,11 @@
 ﻿body {
-  overflow: hidden;
+
 }
 
 .o2o_header {
-  height: 50px;
+
   width: 100%;
-  position: absolute;
+
   top: 0px;
   text-align: center;
   line-height: 50px;
@@ -15,8 +15,7 @@
 
 .o2o_content {
   width: 100%;
-  position: absolute;
-  top: 50px;
+
   height: 100%;
   padding: 0 15px;
 }

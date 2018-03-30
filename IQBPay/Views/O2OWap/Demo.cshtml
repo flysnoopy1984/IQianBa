@@ -11,8 +11,10 @@
     <title>Demo</title>
     <link href="~/Content/main.css" rel="stylesheet" />
     <link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
-   
     <script src="~/scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/scripts/Component/clipboard.min.js"></script>
+ 
+   
     <script type="text/javascript">
         $(document).ready(function () {
             var url = "/O2O/MallListQuery"; 
@@ -34,7 +36,11 @@
                 error: function (xhr, type) {
                     alert("系统错误！");
                 }
+
+
             });
+
+           
 
 
             var url = "/O2O/PriceGroupListQuery";
@@ -58,7 +64,17 @@
                 }
             });
 
+
+            var clipboard = new ClipboardJS('.btn', {
+                text: function () {
+                    return '啊啊啊';
+                }
+            });
+
+
         });
+
+      
 
         //wap 调用的接口
         //商城列表
@@ -135,5 +151,7 @@
     <div>
         <textarea id="ResCode" style="width:800px; height:400px; overflow:auto"></textarea>
     </div>
+
+    <button class="btn">Copy</button>
 </body>
 </html>

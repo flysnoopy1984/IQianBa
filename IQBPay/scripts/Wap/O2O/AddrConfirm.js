@@ -3,16 +3,22 @@ $(function () {
     var noticeList = [];
     var ItemId = null;
     var AddrId = null;
-    var MallId = null;
+    var MallId = null;//接收的是shopName
+    var shopName = null;
+    var amt = null;
     ///出货商Id
     var OpenId = null;
     var RealAddr = null;
+    var ReceiveAddress = "";
     var aoId = null;
     /**
      * [返回]
      */
     backToHome = function () {
         window.location.href = "/O2OWap/Index?aoId=" + aoId;
+    };
+    backPage = function () {
+        history.back();
     };
 
     Init = function()
@@ -21,6 +27,8 @@ $(function () {
         MallId = GetUrlParam("MallId");
         OpenId = GetUrlParam("OpenId");
         aoId = GetUrlParam("aoId");
+        shopName =GetUrlParam("shopName",true);
+        amt = GetUrlParam("amt");
 
         if (aoId == "" || aoId == "null" || aoId == undefined) {
             window.location.href = "/O2OWap/ErrorPage?ec=1";
@@ -49,10 +57,16 @@ $(function () {
                 if (res.IsSuccess)
                 {
                     noticeList = [];
-                    noticeList.push("点击【前往购物】按钮将进入商城。</br>已指定购买的商品！");
-                    var p2 = "购物必须填写以下地址</br>" + res.resultObj.ReceiveAddress;
-                    noticeList.push(p2);
+                    var p = String.format("请确认【{0}】的订单，金额为【{1}】，若不是，请返回重新选择", shopName, amt);
+                    noticeList.push(p);
+                    p = "点击【前往购物按钮】若没有跳转，请复制链接到浏览器中打开";
+                    noticeList.push(p);
+                    p = "请务必填写以下收货地址</br>" + res.resultObj.ReceiveAddress;
+                    noticeList.push(p);
+                    p = "下单完成切记上传订单信息";
+                    noticeList.push(p);
 
+                    ReceiveAddress = res.resultObj.ReceiveAddress;
                     AddrId = res.resultObj.Id;
                     RealAddr = res.resultObj.ItemRealAddr;
                     InitNoticeList();
@@ -81,6 +95,18 @@ $(function () {
             }
         });
     }
+
+    //复制到剪贴板
+    copyToClipboard = function (Id) {
+        
+        var clipboard = new ClipboardJS("#" + Id, {
+            text: function (trigger) {
+                return ReceiveAddress;
+            }
+        });
+
+
+    };
     /**
      * [获取notice列表]
      * @return {[type]} [description]
@@ -96,14 +122,33 @@ $(function () {
         for (var i = 0; i < noticeList.length; i++) {
             str += '<div class="o2o_notice" id="o2o_notice_' + i + '">';
             str += '<div class="o2o_notice_title">' + noticeList[i] + '</div>';
-            str += '<div class="o2o_notice_btn"><button class="btn btn-success" id="' + i + '_o2o_notice_btn">我知道了</button></div>';
+            if (i == 0) //带返回按钮
+            {
+                str += '<div class="o2o_notice_btn">';
+                str += '<button class="btn btn-success" onclick="backPage();" style="margin-right:40px;">返回</button>';
+                str +='<button class="btn btn-danger" id="' + i + '_o2o_notice_btn">确定</button></div>';
+            }
+            else if (i == 2) //复制到剪贴板
+            {
+                str += '<div class="o2o_notice_btn"><button class="btn btn-danger copy" id="' + i + '_o2o_notice_btn" data-clipboard-text="' + ReceiveAddress + '">复制到剪贴板</button></div>';
+            }
+            else
+                str += '<div class="o2o_notice_btn"><button class="btn btn-success" id="' + i + '_o2o_notice_btn">我知道了</button></div>';
             str += '<div class="gap_border"></div>';
             str += '</div>';
         }
         $('.o2o_notice_list').html(str);
 
+
         $('.o2o_notice_btn > button').click(function (e) {
+
             var idx = e.currentTarget.id.split('_')[0];
+            if (idx == 2)
+            {
+                var clipboard = new ClipboardJS('.copy');
+
+            }
+
             var next = Number(idx) + 1;
             if (next >= noticeList.length) {
                 $('.confirm_btn > button').css('backgroundColor', '#ff4b59');
@@ -111,7 +156,13 @@ $(function () {
             } else {
                 $("#o2o_notice_" + next).slideDown("slow");
             }
+
+            $(document).scrollTop($(document).outerHeight(true));   
+
         });
+
+     
+    
     };
 
     Init();

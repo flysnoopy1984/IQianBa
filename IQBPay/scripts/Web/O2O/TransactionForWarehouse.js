@@ -139,21 +139,14 @@ function generateData(result) {
             AmountClass += " Color_AmountIn";
             AmountValue ="+"+result[i].TransferAmount;
         }
+        else if (transType == 50) {
+            des = "充值";
+            //AmountClass += " Color_AmountIn";
+            AmountValue =  result[i].TransferAmount;
+        }
 
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
         Ctrl += "<td style='" + tdWidth + "'>" + des + "</td>";
-
-        //商城
-        tdWidth = "width:" + $("#header th").eq(n++).css("width");
-        Ctrl += "<td style='" + tdWidth + "'>" + result[i].MallName + "</td>";
-
-        //商城订单编号
-        tdWidth = "width:" + $("#header th").eq(n++).css("width");
-        Ctrl += "<td style='" + tdWidth + "' title=" + result[i].MallOrderNo + ">" + result[i].MallOrderNo + "</td>";
-
-        //商品
-        tdWidth = "width:" + $("#header th").eq(n++).css("width");
-        Ctrl += "<td style='" + tdWidth + "' title=" + result[i].ItemName + ">" + result[i].ItemName + "</td>";
 
         //金额
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
@@ -170,6 +163,20 @@ function generateData(result) {
         //打款时间
         tdWidth = "width:" + $("#header th").eq(n++).css("width");
         Ctrl += "<td style='" + tdWidth + "' title=" + result[i].TransDateTimeStr + ">" + result[i].TransDateTimeStr + "</td>";
+
+        //商城
+        tdWidth = "width:" + $("#header th").eq(n++).css("width");
+        Ctrl += "<td style='" + tdWidth + "'>" + result[i].MallName + "</td>";
+
+        //商城订单编号
+        tdWidth = "width:" + $("#header th").eq(n++).css("width");
+        Ctrl += "<td style='" + tdWidth + "' title=" + result[i].MallOrderNo + ">" + result[i].MallOrderNo + "</td>";
+
+        //商品
+        tdWidth = "width:" + $("#header th").eq(n++).css("width");
+        Ctrl += "<td style='" + tdWidth + "' title=" + result[i].ItemName + ">" + result[i].ItemName + "</td>";
+
+      
 
         Ctrl += "</tr>";
 

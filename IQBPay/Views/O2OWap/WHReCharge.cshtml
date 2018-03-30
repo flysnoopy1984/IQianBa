@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewBag.Title = "WHReCharge";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
+}
+<link href="@Url.Scrpit("~/Content/Wap/O2O/O2OMain.css")" rel="stylesheet" />
+<link href="@Url.Scrpit("~/Content/IQBFonts.css")" rel="stylesheet" />
+<script type="text/javascript" src="~/scripts/Wap/O2O/WHRecharge.js"></script>
+
+<style>
+    .selWHName{width:200px !important;}
+    .td_StoreName{
+        word-break:break-word;
+    }
+    .td_Balance{
+      
+        padding:0px!important;
+        text-align:center;
+        width:140px;
+        vertical-align:bottom!important;
+       
+    }
+    .td_Balabel ul{
+       
+        width:100%;
+    }
+    .BaLabel{
+        vertical-align:text-bottom;
+        width:35px;
+    }
+    .BaVal{
+        width:85px;
+        text-align:left;
+    }
+    
+  
+    .td_recharge{
+        padding-right:0px!important;
+        padding-left:0px!important;
+    }
+    .td_log{
+        padding-right:0px !important;
+        text-align:right;
+    }
+    .btn_log{
+        text-align:center;
+        width:60px;
+        cursor:pointer;
+        height:30px;
+        line-height:30px;
+    }
+    .in_recharge{
+        width:80px;
+    }
+   .nbt{
+       border-top:none !important;
+   }
+   .table tr td{
+     
+   }
+   .tr_Log{
+      display:none;
+   }
+   .tr_Log td ul li{
+       width:49%;
+       text-align:center;
+   }
+
+</style>
+<header class="o2o_header">
+    @*<div class="header_back" onclick="historyBack();"></div>*@
+    <div class="header_title">出库商/商户充值</div>
+</header>
+<div class="o2o_content">
+    <div class="container-fluid" style="padding:10px;">
+        <div class="row">
+            <div class="col-xs-3" style="height:34px; line-height:34px;">
+                <label>供应商</label>
+            </div>
+            <div class="col-xs-6" style="padding-right:0px;">
+                <input type="text" id="qWHName" class="form-control" />
+            </div>
+            <div class="col-xs-3">
+                <button type="button" class="btn btn-warning" id="btnQuery" onclick="Query();">查询</button>
+            </div>
+        </div>
+    </div>
+    @*<ul class="list-inline">
+        <li>
+            <label>供应商</label>
+        </li>
+        <li style="width:70%;">
+           
+            <input type="text" id="qWHName" class="form-control" />
+        </li>
+        <li ><button type="button" class="btn btn-warning" id="btnQuery">查询</button>  </li>
+    </ul>*@
+    <table class="table mgz2  large-only" id="trContainer">
+        @*<tr>
+            <td colspan="4" class="td_StoreName">商户/出货商: xxg</td>
+        </tr>
+        <tr>
+            <td class= "nbt"><button type="button" class="btn btn-info" id="btnLog">日志</button>  </td>
+            <td class="td_Balance IQBFont1 nbt">
+            <ul class="list-inline">
+                <li class="BaLabel">
+                    余额
+                </li>
+                <li class="FontAmount">
+                    19291929
+                </li>
+            </ul></td>
+            <td class="td_recharge nbt"><input type="number" class="form-control in_recharge" /></td>
+            <td class="nbt">
+                <button type="button" class="btn btn-danger" id="btnReCharge">充值</button>  
+            </td>     
+        </tr>
+        <tr class="tr_Log" id="detail">
+            <td class="nbt" colspan="4">
+                <ul class="list-inline">
+                    <li>充值时间</li>
+                    <li>充值金额</li>
+                </ul>
+                <ul class="list-inline">
+                    <li>2018-2-2</li>
+                    <li>20000.33</li>
+                </ul>
+            </td>   
+        </tr>*@
+      
+    </table>
+</div>

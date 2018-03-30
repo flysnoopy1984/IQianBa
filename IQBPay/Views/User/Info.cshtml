@@ -193,8 +193,10 @@
 
         </div>
         <div class="form-group" style="text-align:center;">
-            <button type="button" class="btn btn-warning" onclick="CreateOrUpdateQRO2O();">创建更新O2O</button>
-            <button type="button" class="btn btn-primary" onclick="CloseQRO2O();">关闭O2O</button>
+            <button type="button" class="btn btn-primary" onclick="CreateOrUpdateQRO2O();">成为代理</button>
+            <button type="button" class="btn btn-info" onclick="BecomeO2ORole('@Convert.ToInt32(IQBCore.IQBPay.BaseEnum.O2OUserRole.Shippment)');">成为出库商</button>
+            <button type="button" class="btn btn-warning" onclick="BecomeO2ORole('@Convert.ToInt32(IQBCore.IQBPay.BaseEnum.O2OUserRole.Shippment_Shop)');">成为商户</button>
+            @*<button type="button" class="btn btn-primary" onclick="CloseQRO2O();">关闭O2O</button>*@
         </div>
     </div>
   

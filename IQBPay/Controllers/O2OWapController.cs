@@ -20,6 +20,7 @@ using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBWX.Models.WX.Template.ReviewRemind;
 using IQBCore.IQBWX.Models.WX.Template.ConfirmSign;
+using IQBCore.IQBPay.Models.Result;
 
 namespace IQBPay.Controllers
 {
@@ -468,7 +469,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                     EO2OItemInfo Item = db.DBO2OItemInfo.Where(o => o.Id == ItemId).FirstOrDefault();
 
                     
-                    EUserInfo whUser = db.DBUserInfo.Where(o => o.OpenId == AgentOpenId).FirstOrDefault();
+                    EUserInfo whUser = db.DBUserInfo.Where(o => o.OpenId == Item.OpenId).FirstOrDefault();
                   //  EQRUser qrUser = db.DBQRUser.Where(a => a.ID == qrUserId);
                     if (Item.RecordStatus == RecordStatus.Blocked)
                     {
@@ -519,6 +520,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                         return Json(result);
                     }
                     double agentFee = Item.ShipFeeRate+ GlobalConfig.AgentFeeBasedShipFee+ AgentFeeRate.DiffFeeRate;
+
                     //EO2ORoleCharge RoleCharge = db.DBO2ORoleCharge.Where(o => o.UserOpenId == Item.OpenId && o.O2OUserRole == O2OUserRole.Shippment).FirstOrDefault();
                     //if (RoleCharge == null)
                     //{
@@ -1062,14 +1064,6 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
     
         #endregion
 
-        #region Data
-        public EO2OOrder GetO2OOrder()
-        {
-            EO2OOrder order = new EO2OOrder();
-            return order;
-        }
-        #endregion
-
         #region User
 
         [HttpPost]
@@ -1207,6 +1201,116 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
    
         }
 
+
+        #endregion
+
+        #region Admin
+        public ActionResult WHReCharge()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult WHReChargeQuery()
+        {
+            string WHName = Request["WHName"];
+            NResult<RUserAccountBalance> result = new NResult<RUserAccountBalance>();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    string sql = @"select b.OpenId,b.O2OShipBalance,ui.Name as UserName from UserAccountBalance as b
+join UserInfo as ui on ui.OpenId = b.OpenId where 1=1 ";
+                    if(!string.IsNullOrEmpty(WHName))
+                    {
+                        sql += string.Format(" and ui.Name like '%{0}%'",WHName);
+                    }
+                    result.resultList = db.Database.SqlQuery<RUserAccountBalance>(sql).ToList();
+
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+
+
+        }
+        
+        [HttpPost]
+        public ActionResult DoReCharge()
+        {
+            string WHOpenId = Request["WHOpenId"];
+            double amt =Convert.ToDouble(Request["amt"]);
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    EUserAccountBalance balance = db.DBUserAccountBalance.Where(a => a.OpenId == WHOpenId).FirstOrDefault();
+                  
+                    RUserInfo ui = db.DBUserInfo.Where(a => a.OpenId == WHOpenId).Select(a => new RUserInfo
+                    {
+                        OpenId = a.OpenId,
+                        AliPayAccount = a.AliPayAccount
+                    }).FirstOrDefault();
+
+
+                    EO2OTranscationWH trans = new EO2OTranscationWH
+                    {
+                        TransferTarget = TransferTarget.ReCharge,
+                        ReceiveAccount = ui.AliPayAccount,
+                        TransDateTime = DateTime.Now,
+                        TransferAmount = amt,
+                        OpenId = WHOpenId
+                    };
+
+                    db.DBO2OTranscationWH.Add(trans);
+                    balance.SetBalacne(trans.TransferAmount);
+                    db.SaveChanges();
+
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult ReChargeLog()
+        {
+            NResult<RO2OTranscationWH> result = new NResult<RO2OTranscationWH>();
+            try
+            {
+                string WHOpenId = Request["WHOpenId"];
+                using (AliPayContent db = new AliPayContent())
+                {
+                    var list = db.DBO2OTranscationWH
+                                          .Where(a => a.OpenId == WHOpenId && 
+                                                 a.TransferTarget == TransferTarget.ReCharge)
+                                                 .Select(a=>new RO2OTranscationWH()
+                                         {
+                                            TransDateTime = a.TransDateTime,
+                                            TransferAmount = a.TransferAmount,
+                                            OpenId = a.OpenId
+                                         }).OrderByDescending(a=>a.TransDateTime);
+
+                    result.resultList = list.Take(20).ToList();
+                }
+               
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+        }
 
         #endregion
     }

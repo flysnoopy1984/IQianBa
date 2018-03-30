@@ -18,6 +18,9 @@ using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.InParameter;
 using System.Configuration;
 using IQBCore.Model;
+using System.Data.Entity.Migrations;
+using IQBCore.IQBPay.Models.O2O;
+using EntityFramework.Extensions;
 
 namespace IQBPay.Controllers
 {
@@ -438,6 +441,138 @@ namespace IQBPay.Controllers
         }
 
 
+        /// <summary>
+        /// 开通O2O代理
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <param name="Rate"></param>
+        /// <param name="marketRate"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult O2OCreateOrUpdate(string openId, float Rate, float marketRate)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.AR).First();
+                    EQRUser bQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.O2O).FirstOrDefault();
+                    EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == openId).First();
+                    if (bQRUser == null)
+                    {
+                        //O2O参数
+                        bQRUser = EQRUser.CopyToQRUserForO2O(sQRUser);
+                        bQRUser.Rate = Rate;
+                        bQRUser.MarketRate = marketRate;
+                        db.DBQRUser.AddOrUpdate(bQRUser);
+
+                        //ui.HasQRO2O = true;
+                        ui.O2OUserRole = O2OUserRole.Agent;
+                        db.SaveChanges();
+
+                        bQRUser = QRManager.CreateO2OEntryQR(bQRUser);
+                        db.Entry(bQRUser).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+
+                        result.SuccessMsg = "开通权限";
+                    }
+                    else
+                    {
+                        bQRUser.Rate = Rate;
+                        bQRUser.MarketRate = marketRate;
+
+                        result.SuccessMsg = "修改成功";
+
+                    }
+                    //O2O代理费率配置表
+                    List<EO2OItemInfo> itemList = db.DBO2OItemInfo.Where(a => a.RecordStatus == RecordStatus.Normal).ToList();
+                    foreach (EO2OItemInfo item in itemList)
+                    {
+                        EO2OAgentFeeRate rate = new EO2OAgentFeeRate
+                        {
+                            MallCode = item.MallCode,
+                            ItemId = item.Id,
+                            MarketRate = 10,
+                            DiffFeeRate = 0,
+                            OpenId = bQRUser.OpenId,
+
+                        };
+                        EO2OAgentFeeRate dbRate = db.DBO2OAgentFeeRate.Where(a => a.OpenId == rate.OpenId && a.ItemId == rate.ItemId).FirstOrDefault();
+                        if (dbRate == null)
+                            db.DBO2OAgentFeeRate.Add(rate);
+                        dbRate = rate;
+                    }
+                    db.SaveChanges();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+        }
+
+        /// <summary>
+        /// 开通出库商
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult O2OCreateShipment(string openId, O2OUserRole O2ORole = O2OUserRole.User)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    //身份转换成出库商
+                    EUserInfo ui = db.DBUserInfo.Where(a => a.OpenId == openId).FirstOrDefault();
+                    if(ui ==null)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = "通过OpenId没有找到用户";
+                        return Json(result);
+                    }
+                    ui.O2OUserRole = O2ORole;
+
+                    //出库费率跟着商品走了，所以此表暂时没用了...
+                    EO2ORoleCharge charge = db.DBO2ORoleCharge.Where(a => a.UserOpenId == openId).FirstOrDefault();
+                    if (charge == null)
+                    {
+                        charge = new EO2ORoleCharge();
+                        charge.ChargeFee = 1;
+                       
+                    }
+                    charge.UserOpenId = openId;   
+                    charge.O2OUserRole = O2OUserRole.Shippment;
+                    db.DBO2ORoleCharge.AddOrUpdate(charge);
+                    db.SaveChanges();
+
+                    //余额表
+                    EUserAccountBalance balance = db.DBUserAccountBalance.Where(a => a.OpenId == openId).FirstOrDefault();
+                    if (balance == null)
+                        balance = new EUserAccountBalance();
+
+                    balance.UserAccountType = UserAccountType.O2OShippment;
+                
+                    balance.OpenId = ui.OpenId;
+                    db.DBUserAccountBalance.AddOrUpdate(balance);
+
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+
+            }
+            return Json(result);
+        }
+
         public ActionResult Demo()
         {
 
@@ -514,16 +649,11 @@ namespace IQBPay.Controllers
                 }
                 using (AliPayContent db = new AliPayContent())
                 {
-                    string sql = @"select b.Id,ui.OpenId,b.AliPayAccount,b.UserAccountType,ui.Name as UserName,
-                    ROUND(b.O2OShipBalance, 2) as O2OShipBalance,o.O2OOnOrderAmount from UserAccountBalance as b
+                    string sql = @"select b.Id,ui.OpenId,ui.AliPayAccount,b.UserAccountType,ui.Name as UserName,
+                    ROUND(b.O2OShipBalance, 2) as O2OShipBalance,
+					ROUND(b.O2OShipInCome, 2) as O2OShipInCome,
+					ROUND(b.O2OShipOutCome, 2) as O2OShipOutCome from UserAccountBalance as b
                     join  UserInfo as ui on b.OpenId = ui.OpenId
-                    left join 
-                    (
-                    select sum(o.OrderAmount) as O2OOnOrderAmount,o.WHOpenId 
-                    from O2OOrder as o 
-                    where o.O2OOrderStatus <18
-                    group by o.WHOpenId
-                    ) as o on o.WHOpenId = ui.OpenId
                     where ui.O2OUserRole = {0}";
                     if(us.UserRole != UserRole.Administrator)
                     {

@@ -52,7 +52,10 @@ namespace IQBWX.Controllers
             ViewBag.ConfirmCss = ppUrl+ "Content/Component/jquery-confirm.min.css";
             ViewBag.ppUrl = ppUrl;
 
-                // InitProfilePage();
+            ViewBag.IsAdmin = UserSession.UserRole == UserRole.Administrator;
+            ViewBag.ReChargePage = ConfigurationManager.AppSettings["Site_IQBPay"] + "O2OWap/WHReCharge";
+
+            // InitProfilePage();
             return View(qrUser);
         }
 
@@ -62,10 +65,47 @@ namespace IQBWX.Controllers
             {
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
+        
             return View();
         }
 
-        [HttpPost]
+//        [HttpPost]
+//        public ActionResult AgentFeeRateQuery()
+//        {
+//            NResult<RO2OAgentFeeRate> result = new NResult<RO2OAgentFeeRate>();
+//            try
+//            {
+//                using (AliPayContent db = new AliPayContent())
+//                {
+//                    string sql = @"select r.Id,r.MarketRate,i.ShipFee+{1} as FeeRate,m.Name as MallName
+//from O2OAgentFeeRate as r
+//join
+//(
+
+//select max(i.ShipFeeRate) as ShipFee,i.MallId
+//from O2OItemInfo as i
+//where i.RecordStatus = 0
+//group by i.MallId
+
+//) as i on i.MallId = r.MallId
+//join O2OMall as m on m.ID = r.MallId
+//where r.OpenId = '{0}'";
+
+//                    sql = string.Format(sql, UserSession.OpenId,GlobalConfig.AgentFeeBasedShipFee);
+//                    result.resultList = db.Database.SqlQuery<RO2OAgentFeeRate>(sql).ToList();
+//                    if (result.resultList == null) result.resultList = new List<RO2OAgentFeeRate>();
+//                }
+//            } 
+//            catch(Exception ex)
+//            {
+//                result.IsSuccess = false;
+//                result.ErrorMsg = ex.Message;
+//            }
+           
+//            return Json(result);
+//        }
+
+            [HttpPost]
         public ActionResult AgentFeeRateQuery()
         {
             NResult<RO2OAgentFeeRate> result = new NResult<RO2OAgentFeeRate>();
@@ -73,46 +113,13 @@ namespace IQBWX.Controllers
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    string sql = @"select r.Id,r.MarketRate,i.ShipFee+{1} as FeeRate,m.Name as MallName
-from O2OAgentFeeRate as r
-join
-(
-
-select max(i.ShipFeeRate) as ShipFee,i.MallId
+                    string sql = @"select ISNULL(agent.Id,0) as Id,i.Id as ItemId,i.MallCode,i.Name as ItemName,i.Amount,i.ShipFeeRate+1 as FeeRate,i.PayMethod,i.IsLightReceive,
+m.Name as MallName,isnull(agent.MarketRate,0) as MarketRate
 from O2OItemInfo as i
-where i.RecordStatus = 0
-group by i.MallId
-
-) as i on i.MallId = r.MallId
-join O2OMall as m on m.ID = r.MallId
-where r.OpenId = '{0}'";
-
-                    sql = string.Format(sql, UserSession.OpenId,GlobalConfig.AgentFeeBasedShipFee);
-                    result.resultList = db.Database.SqlQuery<RO2OAgentFeeRate>(sql).ToList();
-                    if (result.resultList == null) result.resultList = new List<RO2OAgentFeeRate>();
-                }
-            } 
-            catch(Exception ex)
-            {
-                result.IsSuccess = false;
-                result.ErrorMsg = ex.Message;
-            }
-           
-            return Json(result);
-        }
-
-        public ActionResult AgentFeeRateQuery2()
-        {
-            NResult<RO2OAgentFeeRate> result = new NResult<RO2OAgentFeeRate>();
-            try
-            {
-                using (AliPayContent db = new AliPayContent())
-                {
-                    string sql = @"select i.Id,i.Name,i.Amount,i.ShipFeeRate+{1},i.PayMethod,i.IsLightReceive,m.Name
-from O2OItemInfo as i
-left join O2OAgentFeeRate as agent on agent.ItemId = i.Id
-join O2OMall as m on m.ID = i.MallId
-where agent.OpenId = '{0}'
+left join O2OAgentFeeRate as agent on agent.ItemId = i.Id and agent.OpenId = '{0}'
+join O2OMall as m on m.Code = i.MallCode
+where i.RecordStatus =0
+order by i.PayMethod,i.Amount
 ";
 
                     sql = string.Format(sql, UserSession.OpenId, GlobalConfig.AgentFeeBasedShipFee);
@@ -129,23 +136,46 @@ where agent.OpenId = '{0}'
             return Json(result);
         }
 
-        public ActionResult AgentFeeRateSave(List<EO2OAgentFeeRate> list)
+        public ActionResult AgentFeeRateSave(List<EO2OAgentFeeRate> newList, List<EO2OAgentFeeRate> updateList)
         {
             OutAPIResult result = new OutAPIResult();
             try
             {
+                if(string.IsNullOrEmpty(UserSession.OpenId))
+                {
+                    result.IntMsg = -1;
+                    result.IsSuccess = false;
+                    result.ErrorMsg = "没有获取代理信息，请在微信公众号登录";
+                    return Json(result);
+                }
                 using (AliPayContent db = new AliPayContent())
                 {
                     
-
-                    foreach (EO2OAgentFeeRate obj in list)
+                    if(newList!=null)
                     {
-                        db.DBO2OAgentFeeRate.Where(a => a.Id == obj.Id).Update(a => new EO2OAgentFeeRate
+                        foreach (EO2OAgentFeeRate obj in newList)
                         {
-                            MarketRate = obj.MarketRate
-                        });
+                            obj.OpenId = UserSession.OpenId;
+                            obj.DiffFeeRate = 0;
+                            db.DBO2OAgentFeeRate.Add(obj);
 
+                        }
+                        db.SaveChanges();
                     }
+                  
+                    if(updateList!=null)
+                    {
+                        foreach (EO2OAgentFeeRate obj in updateList)
+                        {
+
+                            db.DBO2OAgentFeeRate.Where(a => a.Id == obj.Id).Update(a => new EO2OAgentFeeRate
+                            {
+                                MarketRate = obj.MarketRate
+                            });
+
+                        }
+                    }
+
                 }
             }
             catch(Exception ex)

@@ -97,7 +97,9 @@ namespace IQBCore.IQBPay.BaseEnum
         
         Mall =5,
         //出库商
-        Shippment = 10,       
+        Shippment = 10, 
+        
+        Shippment_Shop = 12,      
     }
 
     /// <summary>
@@ -323,16 +325,22 @@ namespace IQBCore.IQBPay.BaseEnum
         Internal =3,
         L3Agent = 4,
         MidStore = 5,
-        O2OWareHouse =20,
-     
-       /// <summary>
-       /// 资金转给自己（暂时没用到）
-       /// </summary>
-        Self = 50,
+
         /// <summary>
-        /// 从押金中扣除
+        /// 出库商获得押金
         /// </summary>
-        PP =100,
+        O2OWareHouse =20,
+        
+        
+        
+       /// <summary>
+       /// 充值
+       /// </summary>
+        ReCharge = 50,
+        /// <summary>
+        /// 平台从用户账户扣减余额
+        /// </summary>
+        PP = 100,
 
         /*查询使用*/
         All = 999, 

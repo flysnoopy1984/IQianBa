@@ -5,15 +5,19 @@
 <link href="@Url.Scrpit("~/Content/Css/O2O/O2OMain.css")" rel="stylesheet" />
 
 <style type="text/css">
+    body{
+        
+    }
     #Title{
         text-align:center;
         height:80px;
         width:100%;
     }
-    #btnSaveMarket{float:right;}
-    .btnList{display: -webkit-flex; display:flex; align-items:center; height:50px;justify-content:flex-end;}
+    /*#btnSaveMarket{float:right;}*/
+    /*.btnList{display: -webkit-flex; display:flex; align-items:center; height:50px;justify-content:flex-end;}*/
+    .btnList{text-align:center;height:50px;}
     .table>tbody>tr>th{border:none; text-align:center;}
-    .table>tbody>tr>td{ text-align:center; padding:8px 3px;}
+    .table>tbody>tr>td{ text-align:center; padding:8px 0px 0px 0px;}
     .martketText {width:40px; height:20px;  } 
     .td_item{
         word-break:break-word;
@@ -29,6 +33,7 @@
     {
         padding:0 8px;
     }
+    .tr_content{}
 </style>
 <script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
 <script src="@Url.Scrpit("~/Content/Script/IQBPay/O2O/AgentFeeRate.js")"></script>
@@ -40,40 +45,40 @@
     </div>
     <table class="table mgz2  large-only" id="trContainer">
         @*<tr>
-            <th width="25%">金额</th>
-            <th width="25%">商品</th>
-            <th width="30%">用户手续费</th>
-        </tr>*@
-        <tr>
-            <th colspan="3">花呗</th>
-        </tr>
-        <tr>
-            <td class="">
-                金额：10000
-            </td>
-            <td class="">
-                费率：51%
-            </td>
-            <td class="">手续费：<input id="MarketRate" type="number" class="martketText" value={3} onkeyup="NumInput();" />%
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" class="td_item">
-                <ul>
-                    <li>
-                        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxaaaaaaaaaaaaaaaaaaaaaa
-                    </li>
-                    <li>
+        <th width="25%">金额</th>
+        <th width="25%">商品</th>
+        <th width="30%">用户手续费</th>
+    </tr>
+    <tr>
+        <th colspan="3">花呗</th>
+    </tr>
+    <tr>
+        <td class="">
+            金额：10000
+        </td>
+        <td class="">
+            费率：51%
+        </td>
+        <td class="">手续费：<input id="MarketRate" type="number" class="martketText" value={3} onkeyup="NumInput();" />%
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" class="td_item">
+            <ul class="list-group">
+                <li class="list-group-item-text">
+                    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxaaaaaaaaaaaaaaaaaaaaaa
+                </li>
 
-                    </li>
-                </ul>
-               
-            </td>
-         
-        </tr>
-        
-       
+            </ul>
+
+        </td>
+
+    </tr>
+
+        *@
+   
     </table>
-
+  
+   
 </div>
 

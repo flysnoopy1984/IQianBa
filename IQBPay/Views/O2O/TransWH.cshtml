@@ -63,7 +63,7 @@
     #Info ul{width:100%; list-style:none; height:30px; padding:0px; clear:both;}
   
     #Info ul li{float:left}
-   #Info ul>li{
+    #Info ul>li{
        width:35%;
    }
     .LeftSpan {
@@ -91,11 +91,11 @@
     </ul>
     <ul>
         <li>
-            <span class="LeftSpan">账户余额(不包含收入)：</span><span id="O2OShipBalance"></span>
+            <span class="LeftSpan">账户余额：</span><span id="O2OShipBalance"></span>
         </li>    
-        <li>
+        @*<li>
             <span class="LeftSpan">在单金额：</span><span id="O2OOnOrderAmount"></span>
-        </li>
+        </li>*@
     </ul>
    
        
@@ -124,9 +124,10 @@
             <li>
                 <label>类型：</label>
                 <select id="cTransferTarget" class="form-control ConditionField">
-                    <option value="20" selected>获得佣金</option>
+                    <option value="20">获得佣金</option>
                     <option value="100">扣减押金</option>
-                    <option value="999">全部</option>
+                    <option value="50">充值收入</option>
+                    <option value="999" selected>全部</option>
                 </select>
             </li>
         </ul>
@@ -145,13 +146,14 @@
         <table id="DataTable" class="">
             <tr id="header" style="display:-webkit-flex;">
                 <th style="width:80px;">类型</th>
+                <th style="width:80px;">金额</th>
+                @*<th style="width:50px;">费率</th>
+        <th style="width:250px;">账户</th>*@
+                <th style="width:150px;">打款时间</th>      
                 <th style="width:50px;">商城</th>
                 <th style="width:250px;">商城订单编号</th>
                 <th style="width:350px;">商品</th>
-                <th style="width:80px;">金额</th>
-                @*<th style="width:50px;">费率</th>
-                <th style="width:250px;">账户</th>*@
-                <th style="width:150px;">打款时间</th>          
+                   
             </tr>
         </table>
     </div>

@@ -221,6 +221,7 @@
     <Content Include="Content\Style\IQBFonts.css" />
     <Content Include="Content\Wap\O2O\AddrConfirm.css" />
     <Content Include="Content\Wap\O2O\index.css" />
+    <Content Include="Content\Wap\O2O\O2OMain.css" />
     <Content Include="Content\Wap\O2O\OrderDetail.css" />
     <Content Include="Content\Wap\O2O\ItemList.css" />
     <Content Include="Content\Wap\O2O\MallList.css" />
@@ -529,6 +530,7 @@
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="scripts\Component\clipboard.min.js" />
     <Content Include="scripts\Component\FlyDiv.js" />
     <Content Include="scripts\Component\IQBTable.js" />
     <Content Include="scripts\Component\IQB\IQBScroll.js" />
@@ -555,6 +557,7 @@
     <Content Include="scripts\Wap\O2O\OrderDetail.js" />
     <Content Include="scripts\Wap\O2O\OrderList.js" />
     <Content Include="scripts\Wap\O2O\UploadOrder - 复制.js" />
+    <Content Include="scripts\Wap\O2O\WHRecharge.js" />
     <Content Include="scripts\Wap\PayHuge.js" />
     <Content Include="scripts\Wap\O2O\ItemList.js" />
     <Content Include="scripts\Wap\O2O\MallList.js" />
@@ -773,6 +776,8 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Views\O2O\WHInfo.cshtml" />
+    <Content Include="Views\O2OWap\WHReCharge.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -71,7 +71,7 @@ $(function () {
               pdts = res;
               var itemStr = '';
               for (var p = 0; p < res.length; p++) {
-                  itemStr += '<div id="' + res[p].Id + '_item_' + res[p].OpenId + '" class="pdt_list_content_item">';
+                  itemStr += '<div id="' + res[p].Id + '_item_' + res[p].Amount + '" class="pdt_list_content_item">';
                   itemStr += '<input id="OpenId" type="hidden" value="' + res[p].OpenId + '" />';
                   if (res[p].ImgUrl != "" && res[p].ImgUrl != null && res[p].ImgUrl != "null")
                     itemStr += '<img width="175" height="175" src="' + res[p].ImgUrl + '"></img>';
@@ -124,6 +124,7 @@ $(function () {
   // 点击商品
   $(document).on("click", ".pdt_list_content_item", function(e) {
       var idx = e.currentTarget.id.split('_')[0];
+      var amt = e.currentTarget.id.split('_')[2];
       //var OpenId = e.currentTarget.id.split('_')[2];
       var OpenId = $(e.currentTarget).find("#OpenId").val();
     //pdtIdx = idx;
@@ -139,11 +140,11 @@ $(function () {
     //modalPdt += '</div></div>';
       //$('.o2o_modal_content_container').html(modalPdt);
 
-      confirm(idx, OpenId);
+      confirm(idx, OpenId, amt);
   });
 
-  confirm = function (ItemId, OpenId) {
-      window.location.href = '/O2OWap/AddrConfirm?ItemId=' + ItemId + '&OpenId=' + OpenId + '&MallId=' + shopId + '&aoId=' + aoId;
+  confirm = function (ItemId, OpenId, amt) {
+      window.location.href = '/O2OWap/AddrConfirm?ItemId=' + ItemId + '&OpenId=' + OpenId + '&shopName=' + encodeURI(shopName) + '&MallId=' + shopId + '&amt=' + amt + '&aoId=' + aoId;
   }
 
   /**

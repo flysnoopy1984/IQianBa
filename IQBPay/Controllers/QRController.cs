@@ -157,78 +157,7 @@ namespace IQBPay.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult O2OCreateOrUpdate(string openId, float Rate, float marketRate)
-        {
-            OutAPIResult result = new OutAPIResult();
-            try
-
-            {
-                using (AliPayContent db = new AliPayContent())
-                {
-                    EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.AR).First();
-                    EQRUser bQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.O2O).FirstOrDefault();
-                    EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == openId).First();
-                    if (bQRUser == null)
-                    {
-                        //O2O参数
-                        bQRUser = EQRUser.CopyToQRUserForO2O(sQRUser);
-                        bQRUser.Rate = Rate;
-                        bQRUser.MarketRate = marketRate;
-                        db.DBQRUser.AddOrUpdate(bQRUser);
-
-                        //ui.HasQRO2O = true;
-                        ui.O2OUserRole = O2OUserRole.Agent;
-                        db.SaveChanges();
-
-                        bQRUser = QRManager.CreateO2OEntryQR(bQRUser);
-                        db.Entry(bQRUser).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
-
-
-                        result.SuccessMsg = "开通权限";
-                    }
-                    else
-                    {
-                        bQRUser.Rate = Rate;
-                        bQRUser.MarketRate = marketRate;
-
-                        result.SuccessMsg = "修改成功";
-                       
-                    }
-                    //O2O代理费率配置表
-                    List<EO2OMall> mallList = db.DBO2OMall.ToList();
-                    foreach (EO2OMall mall in mallList)
-                    {
-                        EO2OAgentFeeRate rate = new EO2OAgentFeeRate
-                        {
-                            MallCode = mall.Code,
-                            MarketRate = 8,
-                            DiffFeeRate = 0,
-                            OpenId = bQRUser.OpenId,
-                            //QrUserId = bQRUser.ID,
-                            // UserId = ui.Id
-                        };
-                        EO2OAgentFeeRate dbRate =  db.DBO2OAgentFeeRate.Where(a => a.OpenId == rate.OpenId && a.MallCode == rate.MallCode).FirstOrDefault();
-                        if (dbRate == null)
-                            db.DBO2OAgentFeeRate.Add(rate);
-                        dbRate = rate;
-                            
-                    }
-                    db.SaveChanges();
-
-
-
-
-                }
-            }
-            catch (Exception ex)
-            {
-                result.ErrorMsg = ex.Message;
-            }
-            return Json(result);
-        }
-
+       
         public ActionResult Get(long Id,QRType qrType)
         {
             

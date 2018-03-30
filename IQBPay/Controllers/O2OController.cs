@@ -948,6 +948,7 @@ where o.O2ONo = '{0}'";
 
         /// <summary>
         /// 和出库商结算
+        /// -5 出库商余额不足
         /// -4 订单状态不正确无法结算
         /// -3 出库商账户没有设置
         /// -2 订单号未获取
@@ -988,45 +989,37 @@ where o.O2ONo = '{0}'";
                         result.IntMsg = -4;
                         return Json(result);
                     }
+
                     order.O2OOrderStatus = O2OOrderStatus.Payment;
                     order.SettlementDateTime = DateTime.Now;
                     order.SettlementUserId = UserId;
-                    
-                  
-                    EUserAccountBalance ub = db.DBUserAccountBalance.Where(a => a.OpenId == order.WHOpenId && 
-                                                                          a.UserAccountType == UserAccountType.O2OShippment).FirstOrDefault();
-                   
-                    if (ub == null || string.IsNullOrEmpty(ub.AliPayAccount))
+                    RUserInfo ui = db.DBUserInfo.Where(a => a.OpenId == order.WHOpenId).Select(a => new RUserInfo
+                    {
+                        OpenId = a.OpenId,
+                        AliPayAccount = a.AliPayAccount
+                    }).FirstOrDefault();
+
+                    EUserAccountBalance ub = db.DBUserAccountBalance.Where(a => a.OpenId == order.WHOpenId &&
+                                                                            a.UserAccountType == UserAccountType.O2OShippment).FirstOrDefault();
+
+                    if (ub == null || string.IsNullOrEmpty(ui.AliPayAccount))
                     {
                         result.IsSuccess = false;
                         result.ErrorMsg = "出库商账户没有设置";
                         result.IntMsg = -3;
                         return Json(result);
                     }
-                    ////  EUserInfo ui = db.DBUserInfo.Where(a => a.Id == order.WHUserId).FirstOrDefault();
-                    //  /*创建结算单明细
-                    //   * PP :转账给平台（从押金扣除）
-                    //  */
-                    //  EO2OTranscationWH trans = new EO2OTranscationWH
-                    //  {
-                    //      ItemId = order.ItemId,
-                    //      O2ONo = order.O2ONo,
-                    //      MallId = order.MallId,
-                    //      MallOrderNo = order.MallOrderNo,
-                    //      TransferTarget = TransferTarget.PP,
-                    //      ReceiveAccount = ub.AliPayAccount,
-                    //      TransDateTime = DateTime.Now,
-                    //      FeeRate = 100,
-                    //      TransferAmount = order.OrderAmount,
-                    //      OpenId = order.WHOpenId
-                    //  };
-                    //  db.DBO2OTranscationWH.Add(trans);
-                    //ub.O2OShipBalance -= trans.TransferAmount;
+                    if(ub.O2OShipBalance - order.OrderAmount<0)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg =string.Format("余额不足.当前余额：{0}，订单金额：{1}",ub.O2OShipBalance, order.OrderAmount);
+                        result.IntMsg = -5;
+                        return Json(result);
+                    }
 
-
-
+                     
                     /*创建结算单明细
-                    * O2OWareHouse :转账给出库商（返回佣金）
+                     * PP :转账给平台（从押金扣除）
                     */
                     EO2OTranscationWH trans = new EO2OTranscationWH
                     {
@@ -1034,19 +1027,38 @@ where o.O2ONo = '{0}'";
                         O2ONo = order.O2ONo,
                         MallCode = order.MallCode,
                         MallOrderNo = order.MallOrderNo,
+                        TransferTarget = TransferTarget.PP,
+                        ReceiveAccount = ui.AliPayAccount,
+                        TransDateTime = DateTime.Now,
+                        FeeRate = 100,
+                        TransferAmount = order.OrderAmount,
+                        OpenId = order.WHOpenId
+                    };
+                    db.DBO2OTranscationWH.Add(trans);
+                    //支出
+                    ub.SetBalacne(trans.TransferAmount);
+                   
+
+                    /*创建结算单明细
+                    * O2OWareHouse :转账给出库商（返回佣金）
+                    */
+                     trans = new EO2OTranscationWH
+                    {
+                        ItemId = order.ItemId,
+                        O2ONo = order.O2ONo,
+                        MallCode = order.MallCode,
+                        MallOrderNo = order.MallOrderNo,
                         TransferTarget = TransferTarget.O2OWareHouse,
-                        ReceiveAccount = ub.AliPayAccount,
+                        ReceiveAccount = ui.AliPayAccount,
                         TransDateTime = DateTime.Now,
                         FeeRate = order.WHRate,
                         TransferAmount = order.OrderAmount * (order.WHRate/100),
                         OpenId = order.WHOpenId
                    };
                     db.DBO2OTranscationWH.Add(trans);
-
-                    //账户余额变动（-订单金额+佣金）
-                  //  ub.O2OShipOutCome = Math.Round(ub.O2OShipOutCome + order.OrderAmount,2);
-                    ub.O2OShipInCome  = Math.Round(ub.O2OShipInCome + trans.TransferAmount, 2);
-                   // ub.O2OShipBalance = Math.Round(ub.O2OShipBalance - order.OrderAmount, 2);
+                    //收入
+                    ub.SetBalacne(Math.Round(ub.O2OShipInCome + trans.TransferAmount, 2));
+                 
                     ETransferAmount AliTrans = new ETransferAmount();
                     AliTrans.O2OInitForShipment(order);
                     AliTrans.TransferAmount = (float)trans.TransferAmount;
@@ -1550,5 +1562,15 @@ where o.O2ONo = '{0}'";
         }
 
         #endregion
+
+        #region WH 商户/出货商
+        public ActionResult WHInfo()
+        {
+
+            return View();
+        }
+        #endregion
+
+
     }
 }

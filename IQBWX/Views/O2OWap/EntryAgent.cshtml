@@ -95,5 +95,12 @@
         <button type="button" onclick="OpenOnPc();" class="mgz btn btn-warning btnOnPC" id="btnOnPC">在PC端打开</button>
        
     </div>
+    @if (ViewBag.IsAdmin)
+    {
+        <div id="AdminArea" style="text-align:center;width:100%">
+            <a href="@ViewBag.ReChargePage">出库商充值</a>
+
+        </div>
+    }
 </div>
 

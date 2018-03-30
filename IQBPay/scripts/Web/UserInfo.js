@@ -294,9 +294,35 @@ function AjaxO2OQR() {
         }
     });
 }
+//roleType:10 出库商  12：商户
+function BecomeO2ORole(roleType)
+{
+    var url = "/User/O2OCreateShipment";
+    var OpenId = $("#OpenId").val();
+
+    $.ajax({
+        type: 'post',
+        dataType: "json",
+        data: { "OpenId": OpenId, "O2ORole": roleType },
+        url: url,
+        success: function (data) {
+            if (data.IsSuccess) {
+                alert(data.SuccessMsg);
+            }
+            else {
+                alert(data.ErrorMsg);
+            }
+        },
+        error: function (xhr, type) {
+
+            alert("系统出错");
+
+        }
+    });
+}
 
 function CreateOrUpdateQRO2O() {
-    var url = "/QR/O2OCreateOrUpdate";
+    var url = "/User/O2OCreateOrUpdate";
     var OpenId = $("#OpenId").val();
 
     var QRO2O_FeeRate = $("#QRO2O_FeeRate").val();
@@ -326,5 +352,4 @@ function CreateOrUpdateQRO2O() {
 
         }
     });
-
 }

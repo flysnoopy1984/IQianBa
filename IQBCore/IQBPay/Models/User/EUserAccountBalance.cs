@@ -27,13 +27,13 @@ namespace IQBCore.IQBPay.Models.User
 
         public UserAccountType UserAccountType { get; set; }
  
-        [MaxLength(100)]
-        public string AliPayAccount { get; set; }
-
+       
         /// <summary>
         ///针对出库商的余额
         /// </summary>
-        public double O2OShipBalance { get; set; }
+        public double O2OShipBalance {
+            get;set;
+        }
 
         /// <summary>
         /// 出货商收入
@@ -52,7 +52,13 @@ namespace IQBCore.IQBPay.Models.User
 
         //   public DateTime TransDate { get; set; }
 
-
+        public void SetBalacne(double amt)
+        {
+            if (amt > 0)
+                this.O2OShipInCome += amt;
+            else this.O2OShipOutCome += Math.Abs(amt);
+            this.O2OShipBalance += amt;
+        }
 
 
     }

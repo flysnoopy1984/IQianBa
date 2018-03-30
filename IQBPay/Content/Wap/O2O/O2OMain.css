@@ -1,0 +1,12 @@
+﻿.o2o_header {
+  height: 50px;
+  width: 100%;
+  text-align: center;
+  line-height: 50px;
+  border: 1px solid #f1f1f1;
+  font-size: 21px;
+}
+
+.o2o_content {
+  width: 100%;
+}
