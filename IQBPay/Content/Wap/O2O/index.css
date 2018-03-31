@@ -54,7 +54,7 @@ body {
 }
 
 .get_phone_check_input {
-  width: 60%;
+  width: 180px;
   display: inline-block;
   vertical-align: middle;
   margin-top: 7px;
@@ -156,8 +156,8 @@ input:focus {
 }
 
 .o2o_modal_content_btn {
-  width: 100%;
-  height: 50px;
+  width: 100px;
+  height: 40px;
   background-color: #ff4b59;
   font-size: 18px;
   color: #ffffff;

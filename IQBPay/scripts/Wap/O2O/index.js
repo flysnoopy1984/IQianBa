@@ -117,7 +117,8 @@ lookOrderList = function () {
 
   function GetPopHtml()
   {
-      var h = '<div id="SMSVerify" class="o2o_modal">';
+      //  var h = '<div id="SMSVerify" class="o2o_modal">';
+      var h = '<div id="SMSVerify" >';
       h += '<div class="o2o_modal_content">';
       h += '<div class="o2o_modal_content_body">';
       h += '<div class="o2o_modal_content_container">';
@@ -145,6 +146,7 @@ lookOrderList = function () {
           theme: "modern",
           title: '请先验证手机',
           type: 'red',
+          boxWidth:'80%',
           content: html,
           buttons: {
               cancel: {
@@ -170,7 +172,8 @@ lookOrderList = function () {
           url: url,
           success: function (data) {
               if (data.IsSuccess) {
-                  alert("Ok");
+                  alert("恭喜您，注册成功！");
+                //  alert("Ok");
 
               }
               else

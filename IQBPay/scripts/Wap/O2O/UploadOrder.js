@@ -111,6 +111,28 @@ $(function () {
       window.history.back();
       
   };
+  StartBlockUI = function (txt, w) {
+
+      if (w == undefined)
+          w = 45;
+      var msg = ' <div id="ProcessArea1" class="progress progress-striped active">';
+      msg += '<div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ' + w + '%;">';
+      msg += '<span class="sr-only">' + txt + '</span>';
+      msg += '</div>';
+      msg += '</div>';
+
+      ////   alert(data.files[0].name);
+      $.blockUI({
+          message: msg,
+          css: {
+              border: 'none',
+              width: '90%',
+              height: '20px',
+              left: '20px',
+              'border-radius': '4px',
+          }
+      });
+  }
 
   VerifyAccount = function () {
       var url = "/O2OWap/VerifyAliPayAccount";
@@ -334,27 +356,6 @@ $(function () {
   }
   Init();
 
-  StartBlockUI = function (txt,w) {
-
-      if (w == undefined)
-          w = 45;
-      var msg = ' <div id="ProcessArea1" class="progress progress-striped active">';
-      msg += '<div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+w+'%;">';
-      msg += '<span class="sr-only">'+txt+'</span>';
-      msg += '</div>';
-      msg += '</div>';
-
-      ////   alert(data.files[0].name);
-      $.blockUI({
-          message: msg,
-          css: {
-              border: 'none',
-              width: '90%',
-              height: '20px',
-              left: '20px',
-              'border-radius': '4px',
-          }
-      });
-  }
+ 
 
 });

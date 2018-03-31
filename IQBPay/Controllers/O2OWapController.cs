@@ -1244,9 +1244,16 @@ join UserInfo as ui on ui.OpenId = b.OpenId where 1=1 ";
         {
             string WHOpenId = Request["WHOpenId"];
             double amt =Convert.ToDouble(Request["amt"]);
+
             OutAPIResult result = new OutAPIResult();
             try
             {
+                if(amt <=0)
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMsg = "金额不能小于零";
+                    return Json(result);
+                }
                 using (AliPayContent db = new AliPayContent())
                 {
                     EUserAccountBalance balance = db.DBUserAccountBalance.Where(a => a.OpenId == WHOpenId).FirstOrDefault();

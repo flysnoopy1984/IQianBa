@@ -2,15 +2,45 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace IQBConsole
 {
     class Program
     {
+        static PPBatchJob job = new PPBatchJob();
+       
+        static int _OrderDiffMin = 90;
+        static int _interval = 60;
+
         static void Main(string[] args)
         {
+          
+            try
+            {
+               
+                while(true)
+                {
+                    job.Run(_OrderDiffMin);
+                    Thread.Sleep(_interval * 1000 * 60);
+                }
 
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+              
+            }
+            
         }
+
+       
+
+      
     }
 }

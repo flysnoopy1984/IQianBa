@@ -12,6 +12,8 @@
     <script src="~/scripts/jquery-1.10.2.min.js"></script>
     <link href="~/Content/Component/viewer.min.css" rel="stylesheet" />
     <script src="~/scripts/Component/Viewer/viewer.min.js"></script>
+
+    <script src="~/scripts/Component/jquery.blockUI.min.js"></script>
     <script src="@Url.Scrpit("~/scripts/Web/O2O/OrderSettlement.js")"></script>
 
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
@@ -69,6 +71,24 @@
             display: unset;
             width: auto;
         }
+
+        .sr-only {
+            color: white;
+            font-size:16px;
+            clip: unset;
+            width: 100%;
+            height: 40px;
+            line-height:40px;
+            left: 0px;
+        }
+        .progress{
+            height:40px;
+        }  
+        /*.blockMsg
+        {
+            width:400px !important;
+            left:100px !important;
+        }*/
     </style>
     <script type="text/javascript">
         function CheckPage()
@@ -92,7 +112,7 @@
             <ul>
                 <li>
                     <span class="LeftSpan">商城订单编号：</span><span>@Model.MallOrderNo</span>
-                </li>   
+                </li>
             </ul>
             <ul>
                 <li>
@@ -112,17 +132,17 @@
         <div id="buttonList">
             <ul class="UlHorizontal" style="text-align:center; margin-top:20px;">
                 @if (Model.O2OOrderStatus == IQBCore.IQBPay.BaseEnum.O2OOrderStatus.Settlement ||
-                    Model.O2OOrderStatus == IQBCore.IQBPay.BaseEnum.O2OOrderStatus.ComfirmSign)
+                Model.O2OOrderStatus == IQBCore.IQBPay.BaseEnum.O2OOrderStatus.ComfirmSign)
                 {
                     <li>
                         <button id="btnConfirm" type="button" class="btn btn-primary" onclick="ConfirmWithPay();">收货确认并打款</button>
                     </li>
                 }
-              
+
             </ul>
-           
+
         </div>
-      <input type="hidden" id="O2ONo" value="@Model.O2ONo" />
+        <input type="hidden" id="O2ONo" value="@Model.O2ONo" />
     </div>
 </body>
 </html>

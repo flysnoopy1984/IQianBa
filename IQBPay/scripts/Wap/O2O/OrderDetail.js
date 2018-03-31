@@ -3,6 +3,7 @@ $(function () {
     var OrderObj = null;
     var aoId = null;
     var O2ONo = null;
+    var HasOrder = true;
 
     ShowBlock = function () {
 
@@ -24,67 +25,8 @@ $(function () {
         });
     }
 
-    //var stepTmp = ' <div class="order_item">'
-    //stepTmp += '<div class="{0}">';
-    //stepTmp += '<div class="{1}">第一步</div>';
-    //stepTmp +='<div class="{2}"></div>';
-    //stepTmp +='</div>';
+    
 
-    //stepTmp +='<div class="{3}">';
-    //stepTmp +='<div class="{4}">{6}</div>';
-    //stepTmp +='<div class="{5}">{7}</div>';
-    //stepTmp +='</div>';
-    //stepTmp +='</div>';
-    //初始化函数
-    InitOrder = function () {
-        aoId = GetUrlParam("aoId");
-        if (aoId == "" || aoId == "null" || aoId == undefined) {
-            window.location.href = "/O2OWap/ErrorPage?ec=1";
-            return;
-        }
-        ShowBlock();
-
-        O2ONo = GetUrlParam("O2ONo");
-
-        var url = "/O2OWap/OrderDetailQuery";
-        $.ajax({
-            type: 'post',
-            data: { "O2ONo": O2ONo },
-            url: url,
-            success: function (res) {
-                if (res.IsSuccess) {
-                    if (res.resultList.length > 0) {
-                        OrderObj = res.resultObj;
-
-                        $("#number").text(OrderObj.OrderAmount);
-                        generateSteps(res.resultList);
-                        switchControlByOrderStatus();
-                    }
-                    $.unblockUI();
-                }
-                else {
-                    $.unblockUI();
-                    if (res.IntMsg == -1) {
-                        alert("用户信息未获取，请重新提交手机号");
-                        window.location.href = "/O2OWap/Index?aoId=" + aoId;
-                    }
-                    else if (res.IntMsg == -2) {
-
-                        alert("您还没有订单，请先创建");
-                        window.location.href = "/O2OWap/MallList?aoId=" + aoId;
-                    }
-                    else {
-                        alert(res.ErrorMsg);
-                    }
-                }
-
-            },
-            error: function (xhr, type) {
-                alert("系统错误！");
-                $.unblockUI();
-            }
-        });
-    };
 
   /**
    * [返回订单查询页]
@@ -245,7 +187,6 @@ $(function () {
       return step;
   }
 
-  InitOrder();
 
   DoCloseOrder = function () {
 
@@ -257,12 +198,12 @@ $(function () {
           success: function (res) {
               if (res.IsSuccess) {
                   alert("您将返回商品列表");
-                  window.location.href="/O2OWap/MallList?aoId="+aoId; 
+                  window.location.href = "/O2OWap/MallList?aoId=" + aoId;
               }
               else {
                   alert(res.ErrorMsg);
                   if (res.IntMsg == -1)//"订单未获取！请联系中介";
-                  window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                      window.location.href = "/O2OWap/Index?aoId=" + aoId;
               }
 
           },
@@ -276,6 +217,9 @@ $(function () {
 
   CloseOrder = function (skipWarn) {
 
+      if (!HasOrder) {
+          alert("没有订单！"); return;
+      }
       $.confirm({
           type: "red",
           theme: 'material',
@@ -297,42 +241,38 @@ $(function () {
               }
           }
       });
-     
+
   };
 
-  /**
-   * [按钮模拟图片上传input]
-   * @return {[type]} [description]
-   */
+    /**
+     * [按钮模拟图片上传input]
+     * @return {[type]} [description]
+     */
   upLoadOrder = function () {
-      if (OrderObj.O2OOrderStatus >= 2)
-      {
+      if (OrderObj.O2OOrderStatus >= 2) {
           window.location.href = "/O2OWap/UploadOrder?aoId=" + aoId + "&OrderNo=" + OrderObj.O2ONo + "&OrderStatus=" + OrderObj.O2OOrderStatus;
       }
-      else
-      {
+      else {
           alert("请完成上一步");
       }
-    
+
   };
 
-  reSelectItem=function()
-  {
-     
-    //  window.open("http://m.baidu.com", "_blank");
+  reSelectItem = function () {
+
+      //  window.open("http://m.baidu.com", "_blank");
       CloseOrder();
-     // window.location.href = "/O2OWap/MallList?aoId=" + aoId;
+      // window.location.href = "/O2OWap/MallList?aoId=" + aoId;
   }
 
-  SignConfirm =function()
-  {
+  SignConfirm = function () {
       $.confirm({
           theme: "light",
           title: '签收确认',
           type: 'red',
           content: "注意请不要提前确认签收,否则将被处罚停单！",
           buttons: {
-              know: {  
+              know: {
                   text: "签收",
                   btnClass: "btn-red",
                   action: function () {
@@ -347,8 +287,7 @@ $(function () {
       });
   }
 
-  DoSignConfirm = function()
-  {
+  DoSignConfirm = function () {
       var url = "/O2OWap/OrderSignConfirm";
       $.ajax({
           type: 'post',
@@ -372,5 +311,60 @@ $(function () {
           }
       });
   }
+
+    //初始化函数
+  InitOrder = function () {
+      aoId = GetUrlParam("aoId");
+      if (aoId == "" || aoId == "null" || aoId == undefined) {
+          window.location.href = "/O2OWap/ErrorPage?ec=1";
+          return;
+      }
+      ShowBlock();
+
+      O2ONo = GetUrlParam("O2ONo");
+
+      var url = "/O2OWap/OrderDetailQuery";
+      $.ajax({
+          type: 'post',
+          data: { "O2ONo": O2ONo },
+          url: url,
+          success: function (res) {
+              if (res.IsSuccess) {
+                  if (res.resultList.length > 0) {
+                      OrderObj = res.resultObj;
+
+                      $("#number").text(OrderObj.OrderAmount);
+                      generateSteps(res.resultList);
+                      switchControlByOrderStatus();
+                  }
+                  $.unblockUI();
+              }
+              else {
+                  $.unblockUI();
+                  if (res.IntMsg == -1) {
+                      alert("用户信息未获取，请重新提交手机号");
+                      window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                  }
+                  else if (res.IntMsg == -2) {
+                      $("#btnCloseOrder").hide();
+                      HasOrder = false;
+                      alert("您还没有订单，请先创建");
+                      window.location.href = "/O2OWap/MallList?aoId=" + aoId;
+                  }
+                  else {
+                      alert(res.ErrorMsg);
+                  }
+              }
+
+          },
+          error: function (xhr, type) {
+              alert("系统错误！");
+              $.unblockUI();
+          }
+      });
+  };
+
+  InitOrder();
+
 
 });
