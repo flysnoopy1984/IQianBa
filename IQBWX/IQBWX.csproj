@@ -148,6 +148,7 @@
     <Content Include="Content\Css\List.css" />
     <Content Include="Content\Css\MainCss.css" />
     <Content Include="Content\Css\idangerous.swiper.css" />
+    <Content Include="Content\Css\O2O\AgentInfoCheck.css" />
     <Content Include="Content\Css\O2O\O2OMain.css" />
     <Content Include="Content\Css\PP.css" />
     <Content Include="Content\Css\DoTransfer.css" />
@@ -190,6 +191,27 @@
     <Content Include="Content\images\LeftArrow.jpg" />
     <Content Include="Content\images\lxwm_03.jpg" />
     <Content Include="Content\images\money1.png" />
+    <Content Include="Content\images\O2O\back.png" />
+    <Content Include="Content\images\O2O\border.png" />
+    <Content Include="Content\images\O2O\clear.png" />
+    <Content Include="Content\images\O2O\close.png" />
+    <Content Include="Content\images\O2O\current.png" />
+    <Content Include="Content\images\O2O\delete.png" />
+    <Content Include="Content\images\O2O\done.png" />
+    <Content Include="Content\images\O2O\guomei.png" />
+    <Content Include="Content\images\O2O\Home.png" />
+    <Content Include="Content\images\O2O\huawei.png" />
+    <Content Include="Content\images\O2O\jingdong.png" />
+    <Content Include="Content\images\O2O\left.png" />
+    <Content Include="Content\images\O2O\loading1.gif" />
+    <Content Include="Content\images\O2O\orderLogo.png" />
+    <Content Include="Content\images\O2O\plus.png" />
+    <Content Include="Content\images\O2O\right.png" />
+    <Content Include="Content\images\O2O\sunning.png" />
+    <Content Include="Content\images\O2O\temp.png" />
+    <Content Include="Content\images\O2O\tianmao.png" />
+    <Content Include="Content\images\O2O\to_end.png" />
+    <Content Include="Content\images\O2O\x.png" />
     <Content Include="Content\images\PayError1.jpg" />
     <Content Include="Content\images\PeopleGroup.png" />
     <Content Include="Content\images\Proj\cc.jpg" />
@@ -240,6 +262,8 @@
     <Content Include="Content\Script\IQBPay\InviteCode.js" />
     <Content Include="Content\Script\IQBPay\News.js" />
     <Content Include="Content\Script\IQBPay\O2O\AgentFeeRate.js" />
+    <Content Include="Content\Script\IQBPay\O2O\AgentInfoCheck.js" />
+    <Content Include="Content\Script\IQBPay\SMS.js" />
     <Content Include="Content\Script\IQBPay\Pay2.js" />
     <Content Include="Content\Script\IQBPay\PayWithAccount.js" />
     <Content Include="Content\Script\IQBPay\PPTransferList.js" />
@@ -250,6 +274,7 @@
     <Content Include="Content\Script\IQBPay\StoreList.js" />
     <Content Include="Content\Script\IQBPay\SysMain.js" />
     <Content Include="Content\Script\IQBPay\UserVerification.js" />
+    <Content Include="Content\Script\Component\jquery.blockUI.min.js" />
     <Content Include="Content\Script\jsCookie.js" />
     <Content Include="Content\Script\jsValidateHelper.js" />
     <Content Include="Content\Script\MemberInfo.js" />
@@ -288,7 +313,6 @@
     <Compile Include="BLL\NT\RegistrationNT.cs" />
     <Compile Include="BLL\PopPolicy.cs" />
     <Compile Include="BLL\Payment.cs" />
-    <Compile Include="BLL\SMS.cs" />
     <Compile Include="BLL\WXAuthorizeAttribute.cs" />
     <Compile Include="Common\HttpHelper.cs" />
     <Compile Include="Controllers\API\HJBController.cs" />
@@ -443,6 +467,7 @@
     <Content Include="Views\Union\ProjKK.cshtml" />
     <Content Include="Views\Union\ProjWTP.cshtml" />
     <Content Include="Views\Union\CC.cshtml" />
+    <Content Include="Views\O2OWap\AgentInfoCheck.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

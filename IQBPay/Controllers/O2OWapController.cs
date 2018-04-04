@@ -29,13 +29,12 @@ namespace IQBPay.Controllers
         // GET: O2OWap
         public ActionResult Index()
         {
-
-
             CheckaoId();
             string act = Request["act"];
             if(act == "switchUser")
             {
                 Session["BuyerSession"] = null;
+                CookieHelper.setCookie(IQBConstant.ck_O2OBuyerPhone, "");
             }
         //    aoId = "1607";
 
@@ -673,7 +672,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                 using (AliPayContent db = new AliPayContent())
                 {
                     string sql = @"select o.O2ONo,i.Name as ItemName,CONVERT(varchar(100), o.CreateDateTime, 20) as CreateDateTime,
-                                          o.O2OOrderStatus,o.OrderAmount from O2OOrder as o 
+                                          o.O2OOrderStatus,o.OrderAmount,o.UserPhone from O2OOrder as o 
                                    join O2OItemInfo as i on i.Id = o.ItemId
                                    where o.UserPhone= '{0}'";
 
@@ -1116,6 +1115,9 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                         EO2OBuyer buyer =  db.DBO2OBuyer.Where(o => o.Phone == Phone).FirstOrDefault();
                         if (buyer !=null)
                         {
+                            base.SetBuyerSession(buyer);
+                            base.SetBuyerCookie(buyer);
+
                             //检查订单是否存在
                             int orderNum = db.DBO2OOrder.Where(o => o.UserPhone == Phone
                                            && (o.O2OOrderStatus != O2OOrderStatus.Complete && o.O2OOrderStatus != O2OOrderStatus.UserClose)).Count();
@@ -1126,8 +1128,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
 
                             result.resultObj = buyer;
 
-                            base.SetBuyerSession(buyer);
-                            base.SetBuyerCookie(buyer);
+                           
                         }
                         else
                             result.IntMsg = 0;  
@@ -1319,6 +1320,18 @@ join UserInfo as ui on ui.OpenId = b.OpenId where 1=1 ";
             return Json(result);
         }
 
+        #endregion
+
+        #region User Wap
+        public ActionResult ContactUS()
+        {
+            string agentOpenId = CheckaoId();
+            if(string.IsNullOrEmpty(agentOpenId))
+            {
+                return RedirectToAction("ErrorPage", new { ec = 1 });
+            }
+            return View();
+        }
         #endregion
     }
 }

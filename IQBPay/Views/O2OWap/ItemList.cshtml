@@ -3,38 +3,33 @@
     ViewBag.Title = "ItemList";
     Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
-
+@section Title{
+    商品列表
+}
 <link href="@Url.Scrpit("~/Content/Wap/O2O/ItemList.css")" rel="stylesheet" />
 
 <script src="@Url.Scrpit("~/scripts/Wap/O2O/ItemList.js")"></script>
 
-<header class="o2o_header">
-    <div class="header_back" onclick="backToHome();"></div>
-    <div class="header_title"><span></span></div>
-    <div class="div_UserInfo"><a href="#">@ViewBag.BuyerPhone</a></div>
-</header>
-<div class="o2o_content">
-    <div id="shop_list">
-        <div class="price_list">
-            <!-- <div class="price_item"> 1999~2999</div> -->
+<div id="shop_list">
+    <div class="price_list">
+        <!-- <div class="price_item"> 1999~2999</div> -->
+    </div>
+    <div class="pdt_list">
+        <div class="pdt_list_header">
+            <div class="header-image header-left-image"></div>
+            <span id="header-title">1999</span>
+            <div class="header-image header-right-image"></div>
         </div>
-        <div class="pdt_list">
-            <div class="pdt_list_header">
-                <div class="header-image header-left-image"></div>
-                <span id="header-title">1999</span>
-                <div class="header-image header-right-image"></div>
-            </div>
-            <div class="pdt_list_content">
-                <!-- <div class="pdt_list_content_item">
-                  <img width="175" height="175" src="https://res.vmallres.com/pimages//product/6901443211388/800_800_1513571794593mp.jpg"></img>
-                  <div class="pdt-price"><span class="price_symbal">￥</span><span class="price">1999</span></div>
-                  <div class="pdt-label">HUAWEI MateBook X 13英寸轻薄笔记本电脑 HUAWEI MateBook X 13英寸轻薄笔记本电脑</div>
-                  <div class="pdt-tag">
-                    <div class="pdt-tag-label">直降</div>
-                    <div class="pdt-tag-label">包邮</div>
-                  </div>
-                </div> -->
-            </div>
+        <div class="pdt_list_content">
+            <!-- <div class="pdt_list_content_item">
+              <img width="175" height="175" src="https://res.vmallres.com/pimages//product/6901443211388/800_800_1513571794593mp.jpg"></img>
+              <div class="pdt-price"><span class="price_symbal">￥</span><span class="price">1999</span></div>
+              <div class="pdt-label">HUAWEI MateBook X 13英寸轻薄笔记本电脑 HUAWEI MateBook X 13英寸轻薄笔记本电脑</div>
+              <div class="pdt-tag">
+                <div class="pdt-tag-label">直降</div>
+                <div class="pdt-tag-label">包邮</div>
+              </div>
+            </div> -->
         </div>
     </div>
 </div>

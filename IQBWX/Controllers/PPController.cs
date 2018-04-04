@@ -28,6 +28,7 @@ using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using WxPayAPI;
+using EntityFramework.Extensions;
 
 namespace IQBWX.Controllers
 {
@@ -1329,6 +1330,38 @@ group by o.AgentOpenId ,o.OrderType
             }
 
             
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateAgentPhone()
+        {
+            string phone = Request["Phone"];
+
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                if(string.IsNullOrEmpty(phone))
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMsg="手机号为空";
+                    return Json(result);
+                }
+                using (AliPayContent db = new AliPayContent())
+                {
+                    db.DBUserInfo.Where(a=>a.OpenId == UserSession.OpenId).Update(a => new EUserInfo()
+                    {
+                        UserPhone = phone,
+                    });
+                    UserSession.AgentPhone = phone;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+
+            }
             return Json(result);
         }
 

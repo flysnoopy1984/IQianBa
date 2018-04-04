@@ -63,8 +63,14 @@
   .List_Item_style1{
       color:#797979;
       font-size:16px;
-      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family:Montserrat;
   }
+.List_Item_style1 span{
+     font-family: Montserrat;
+     font-weight:bold;
+     color:#F19659;
+     font-size:18px;
+}
  .ToDetail{
       font-size:14px;
       float:right;
@@ -87,6 +93,10 @@
  }
  .td_time{
      font-size:12px;
+    
+ }
+ .td_span_UserPhone{
+     float:right;
  }
  .td_Width_Content1{
     width:65%;

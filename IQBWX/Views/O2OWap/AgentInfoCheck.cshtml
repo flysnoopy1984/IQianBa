@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
+}
+<link href="@Url.Scrpit("~/Content/Css/O2O/AgentInfoCheck.css")" rel="stylesheet" />
+<script src="~/Content/Script/Component/jquery.blockUI.min.js"></script>
+<script src="@Url.Scrpit("~/Content/Script/IQBPay/SMS.js")"></script>
+<script src="@Url.Scrpit("~/Content/Script/IQBPay/O2O/AgentInfoCheck.js")"></script>
+
+<style>
+     .sr-only
+    {
+       color:white;
+       clip:unset;
+       width:100%;
+       height:20px;
+       left:0px;
+    }
+</style>
+
+<header class="o2o_header">
+    <div class="header_back" onclick="historyBack();"></div>
+    <div class="header_title">代理认证信息</div>
+</header>
+<div class="o2o_content">
+    <!-- 获取验证码 -->
+    <div id="get_phone_check">
+        <input id="phone_num" type="text" placeholder="请输入手机号" class="form-control get_phone_check_input" />
+        <div id="phone_clear" class="input_clear" onclick="clearPhone();"></div>
+        <button type="button" class="btn btn-warning get_phone_btn" id="btn_GetVerifyCode">获取验证码</button>
+            @*<div class="get_phone_btn" >获取验证码</div>*@
+</div>
+    <!-- 确认验证 -->
+    <div id="verify_phone_check">
+        <input id="code_num" type="text" placeholder="请输入验证码" class="form-control get_phone_check_input" />
+        <div id="code_clear" class="input_clear" onclick="clearCode();"></div>
+        <button type="button" class="btn btn-success get_code_btn" id="btn_ConfirmVerifyCode">确认验证</button>
+        @*<div class="get_code_btn" >确认验证</div>*@
+    </div>
+    <!-- 支付宝账号 -->
+    @*<div id="zhifubao_no">
+        <input id="zhifubao_num" type="text" placeholder="请输入支付宝账号" class="form-control get_phone_check_input" />
+    </div>*@
+    <!-- 开始购物 -->
+    @*<div class="check_btn" onclick="beginOrder();">
+        <div id="begin_order" class="begin_order_disabled">提交</div>
+    </div>*@
+</div>
+

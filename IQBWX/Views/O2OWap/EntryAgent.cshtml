@@ -58,6 +58,11 @@
     {
         window.location.href = "/O2OWap/AgentFeeRate";
     }
+
+    function OrderForUser() {
+        window.location.href = "@ViewBag.TargetUrl";
+    }
+
     function OpenOnPc() {
         var show = '<div class="ShowUrl"></br>@ViewBag.ppUrl</div>';
 
@@ -70,14 +75,14 @@
                 know: {
                     text: "关闭",
                     btnClass: "btn-red",
-                   
+
                 }
-              
+
 
             }
         });
     }
-   
+
 </script>
 
 <header class="o2o_header">O2O商城入口</header>
@@ -90,11 +95,14 @@
     <div style="text-align: center;">
         <img Id ="QRImg" src="@Model.OrigQRFilePath" class="QRImg" />
     </div>
-    
-    <div style="text-align: center;">
-        <button type="button" onclick="OpenOnPc();" class="mgz btn btn-warning btnOnPC" id="btnOnPC">在PC端打开</button>
+    @*<div style="text-align: center;">
+        <button type="button" onclick="OrderForUser();" class="mgz btn btn-warning btnOnPC" id="btnOnPC">替用户下单</button>
+    </div>*@
+    <div style="text-align: center;margin-top:20px;">
+        <button type="button" onclick="OpenOnPc();" class="btn btn-info" id="btnOnPC">PC端入口</button>
        
     </div>
+  
     @if (ViewBag.IsAdmin)
     {
         <div id="AdminArea" style="text-align:center;width:100%">
@@ -103,4 +111,5 @@
         </div>
     }
 </div>
+
 

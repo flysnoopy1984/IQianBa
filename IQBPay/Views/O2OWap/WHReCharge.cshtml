@@ -3,6 +3,9 @@
     ViewBag.Title = "WHReCharge";
     Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
+@section Title{
+    出库商/商户充值
+}
 <link href="@Url.Scrpit("~/Content/Wap/O2O/O2OMain.css")" rel="stylesheet" />
 <link href="@Url.Scrpit("~/Content/IQBFonts.css")" rel="stylesheet" />
 <script src="~/scripts/Component/jquery.blockUI.min.js"></script>
@@ -77,36 +80,32 @@
     }
 
 </style>
-<header class="o2o_header">
-    @*<div class="header_back" onclick="historyBack();"></div>*@
-    <div class="header_title">出库商/商户充值</div>
-</header>
-<div class="o2o_content">
-    <div class="container-fluid" style="padding:10px;">
-        <div class="row">
-            <div class="col-xs-3" style="height:34px; line-height:34px;">
-                <label>供应商</label>
-            </div>
-            <div class="col-xs-6" style="padding-right:0px;">
-                <input type="text" id="qWHName" class="form-control" />
-            </div>
-            <div class="col-xs-3">
-                <button type="button" class="btn btn-warning" id="btnQuery" onclick="Query();">查询</button>
-            </div>
+
+<div class="container-fluid" style="padding:10px;">
+    <div class="row">
+        <div class="col-xs-3" style="height:34px; line-height:34px;">
+            <label>供应商</label>
+        </div>
+        <div class="col-xs-6" style="padding-right:0px;">
+            <input type="text" id="qWHName" class="form-control" />
+        </div>
+        <div class="col-xs-3">
+            <button type="button" class="btn btn-warning" id="btnQuery" onclick="Query();">查询</button>
         </div>
     </div>
-    @*<ul class="list-inline">
+</div>
+@*<ul class="list-inline">
         <li>
             <label>供应商</label>
         </li>
         <li style="width:70%;">
-           
+
             <input type="text" id="qWHName" class="form-control" />
         </li>
         <li ><button type="button" class="btn btn-warning" id="btnQuery">查询</button>  </li>
     </ul>*@
-    <table class="table mgz2  large-only" id="trContainer">
-        @*<tr>
+<table class="table mgz2  large-only" id="trContainer">
+    @*<tr>
             <td colspan="4" class="td_StoreName">商户/出货商: xxg</td>
         </tr>
         <tr>
@@ -122,8 +121,8 @@
             </ul></td>
             <td class="td_recharge nbt"><input type="number" class="form-control in_recharge" /></td>
             <td class="nbt">
-                <button type="button" class="btn btn-danger" id="btnReCharge">充值</button>  
-            </td>     
+                <button type="button" class="btn btn-danger" id="btnReCharge">充值</button>
+            </td>
         </tr>
         <tr class="tr_Log" id="detail">
             <td class="nbt" colspan="4">
@@ -135,8 +134,7 @@
                     <li>2018-2-2</li>
                     <li>20000.33</li>
                 </ul>
-            </td>   
+            </td>
         </tr>*@
-      
-    </table>
-</div>
+
+</table>

@@ -3,8 +3,12 @@
     ViewBag.Title = "AddrConfirm";
     Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
+@section Title{
+    下单注意事项
+}
 <link href="@Url.Scrpit("~/Content/Wap/O2O/AddrConfirm.css")" rel="stylesheet" />
 <script src="~/scripts/Component/clipboard.min.js"></script>
+<script src="~/scripts/Component/jquery.blockUI.min.js"></script>
 <script src="@Url.Scrpit("~/scripts/Wap/O2O/AddrConfirm.js")"></script>
 
 <style>
@@ -12,37 +16,37 @@
 
     }
     .copy{}
+     .sr-only
+    {
+       color:white;
+       clip:unset;
+       width:100%;
+       height:20px;
+       left:0px;
+    }
 </style>
 
-<header class="o2o_header">
-
-    <div class="header_back" onclick="backToHome();"></div>
-    <div class="header_title">下单流程</div>
-    <div class="div_UserInfo"><a href="#">@ViewBag.BuyerPhone</a></div>
-</header>
-<div class="o2o_content">
-    <div class="o2o_warn">请按以下注意事项继续操作。随意下单，后果自负！</div>
-    <div class="o2o_notice_list">
-        @*<div class="o2o_notice" id="o2o_notice_0">
-            <div class="o2o_notice_title">1.请按照一下地址收货，未收到货的将不予回款。请修改收款地址 上海市徐汇区肇嘉浜路169号飞雕大厦9楼</div>
-            <div class="o2o_notice_btn"><button class="btn btn-success" id="0_o2o_notice_btn">我知道了</button></div>
-            <div class="gap_border"></div>
-          </div>
-          <div class="o2o_notice" id="o2o_notice_1">
-            <div class="o2o_notice_title">2.请按照一下地址收货，未收到货的将不予回款。请修改收款地址 上海市徐汇区肇嘉浜路169号飞雕大厦9楼</div>
-            <div class="o2o_notice_btn"><button class="btn btn-success" id="1_o2o_notice_btn">我知道了</button></div>
-            <div class="gap_border"></div>
-          </div>
-          <div class="o2o_notice" id="o2o_notice_2">
-            <div class="o2o_notice_title">2.请按照一下地址收货，未收到货的将不予回款。请修改收款地址 上海市徐汇区肇嘉浜路169号飞雕大厦9楼</div>
-            <div class="o2o_notice_btn"><button class="btn btn-success" id="1_o2o_notice_btn">我知道了</button></div>
-            <div class="gap_border"></div>
-          </div>*@ 
-    </div>
-    <div class="confirm_btn">
-        <button id="bnConfirmToShop" onclick="order();" disabled>明白注意事项，前往购物</button>
-        <!-- <iframe id="confirm_iframe" src="https://m.vmall.com/product/549981984.html"></iframe> -->
-        <!-- <iframe id="confirm_iframe" src="https://hwid1.vmall.com/CAS/mobile/standard/wapLogin.html?service=https%3A%2F%2Fm.vmall.com%2Faccount%2Fcaslogin%3Furl%3D%252Fproduct%252F21046116.html%2523648692702&loginChannel=26000002&reqClientType=26&lang=zh-cn"></iframe> -->
-    </div>
+<div class="o2o_warn">请按以下注意事项继续操作。随意下单，后果自负！</div>
+<div class="o2o_notice_list">
+    @*<div class="o2o_notice" id="o2o_notice_0">
+          <div class="o2o_notice_title">1.请按照一下地址收货，未收到货的将不予回款。请修改收款地址 上海市徐汇区肇嘉浜路169号飞雕大厦9楼</div>
+          <div class="o2o_notice_btn"><button class="btn btn-success" id="0_o2o_notice_btn">我知道了</button></div>
+          <div class="gap_border"></div>
+        </div>
+        <div class="o2o_notice" id="o2o_notice_1">
+          <div class="o2o_notice_title">2.请按照一下地址收货，未收到货的将不予回款。请修改收款地址 上海市徐汇区肇嘉浜路169号飞雕大厦9楼</div>
+          <div class="o2o_notice_btn"><button class="btn btn-success" id="1_o2o_notice_btn">我知道了</button></div>
+          <div class="gap_border"></div>
+        </div>
+        <div class="o2o_notice" id="o2o_notice_2">
+          <div class="o2o_notice_title">2.请按照一下地址收货，未收到货的将不予回款。请修改收款地址 上海市徐汇区肇嘉浜路169号飞雕大厦9楼</div>
+          <div class="o2o_notice_btn"><button class="btn btn-success" id="1_o2o_notice_btn">我知道了</button></div>
+          <div class="gap_border"></div>
+        </div>*@
+</div>
+<div class="confirm_btn">
+    <button id="bnConfirmToShop" onclick="order();" disabled>【前往购物】</button>
+    <!-- <iframe id="confirm_iframe" src="https://m.vmall.com/product/549981984.html"></iframe> -->
+    <!-- <iframe id="confirm_iframe" src="https://hwid1.vmall.com/CAS/mobile/standard/wapLogin.html?service=https%3A%2F%2Fm.vmall.com%2Faccount%2Fcaslogin%3Furl%3D%252Fproduct%252F21046116.html%2523648692702&loginChannel=26000002&reqClientType=26&lang=zh-cn"></iframe> -->
 </div>
 

@@ -29,6 +29,8 @@ namespace IQBCore.Model
 
         public O2OUserRole O2OUserRole { get; set; }
 
+        public string AgentPhone { get; set; }
+
         public void InitFromUser(EUserInfo ui)
         {
             HasQRHuge = ui.HasQRHuge;
@@ -40,7 +42,9 @@ namespace IQBCore.Model
             HasPassInviteFee = ui.HasPassInviteFee;
             HasQRHuge = ui.HasQRHuge;
             O2OUserRole = ui.O2OUserRole;
-            
+            AgentPhone = ui.UserPhone;
+
+
         }
 
 

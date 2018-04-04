@@ -53,17 +53,25 @@ namespace IQBWX.Controllers.API
         /// <param name="mobilePhone"></param>
         /// <param name="SMSId"></param>
         [HttpGet]
-        public OutSMS IQBPay_ConfirmVerifyCode(string SMSId,string Code)
+        public OutSMS IQBPay_ConfirmVerifyCode(string mobilePhone, string Code)
         {
            
             OutSMS OutSMS = new OutSMS();
             OutSMS.SMSVerifyStatus = SMSVerifyStatus.UnKnown;
-            long sId = Convert.ToInt64(SMSId);
+           
 
             using (AliPayContent db = new AliPayContent())
             {
-                var sms = db.DBSMSVerification.Where(s => s.ID == sId).FirstOrDefault();
-                if(sms == null)
+                var sms = db.DBSMSVerification.Where(s => s.MobilePhone == mobilePhone
+                                                && (
+                                                   s.SMSVerifyStatus == SMSVerifyStatus.Sent ||
+                                                   s.SMSVerifyStatus == SMSVerifyStatus.Verifying ||
+                                                   s.SMSVerifyStatus == SMSVerifyStatus.Failure
+                                                   )
+                                                )
+                   .OrderByDescending(s => s.ID)
+                   .FirstOrDefault();
+                if (sms == null)
                 {
                     OutSMS.SMSVerifyStatus = SMSVerifyStatus.UnKnown;
                 }
@@ -165,6 +173,7 @@ namespace IQBWX.Controllers.API
                 //说明可以重新发送短信（不在短信重新发送倒计时内）
                 if (OutSMS.RemainSec == -1)
                 {
+
                     string VerifyCode = StringHelper.GenerateVerifyCode();
 
                     InSMS inSMS = new InSMS();
@@ -173,11 +182,11 @@ namespace IQBWX.Controllers.API
                     inSMS.PhoneNumber = mobilePhone;
                     inSMS.Parameters = VerifyCode;
 
-                    //if (!this.DoSMS(inSMS))
-                    //{
-                    //    OutSMS.SMSVerifyStatus = SMSVerifyStatus.SentFailure;
-                    //    return OutSMS;
-                    //}
+                    if (!this.DoSMS(inSMS))
+                    {
+                        OutSMS.SMSVerifyStatus = SMSVerifyStatus.SentFailure;
+                        return OutSMS;
+                    }
 
                     using (AliPayContent db = new AliPayContent())
                     {
@@ -185,7 +194,7 @@ namespace IQBWX.Controllers.API
                         {
                             VerifyCode = VerifyCode,
                             MobilePhone = mobilePhone,
-                          
+
                             SendDateTime = DateTime.Now,
                             SMSVerifyStatus = SMSVerifyStatus.Sent,
                             SMSEvent = SMSEvent,
@@ -196,14 +205,15 @@ namespace IQBWX.Controllers.API
                     }
                     OutSMS.SMSVerifyStatus = SMSVerifyStatus.Sent;
                     OutSMS.RemainSec = -1;
-
                 }
                 else
                 {
                     OutSMS.RemainSec = IntervalSec - OutSMS.RemainSec;
                     OutSMS.SMSVerifyStatus = SMSVerifyStatus.Verifying;
                 }
-            
+
+              
+
 
             }
             catch (Exception ex)

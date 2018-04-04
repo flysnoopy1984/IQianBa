@@ -3,18 +3,14 @@
     ViewBag.Title = "MallList";
     Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
+@section Title{
+    商城列表
+}
 <link href="@Url.Scrpit("~/Content/Wap/O2O/MallList.css")" rel="stylesheet" />
 
 <script src="@Url.Scrpit("~/scripts/Wap/O2O/MallList.js")"></script>
 
-<header class="o2o_header">
-    <div class="header_back" onclick="backToHome();"></div>
-    <div class="header_title">o2o商城</div>
-    <div class="div_UserInfo"><a href="#">@ViewBag.BuyerPhone</a></div>
-</header>
-<div class="o2o_content">
-    <div id="shop_list">
-    </div>
+<div id="shop_list">
 </div>
   <!-- Modal -->
 <div class="o2o_modal">

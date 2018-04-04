@@ -3,6 +3,9 @@
     ViewBag.Title = "OrderDetail";
     Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
+@section Title{
+    商品详情
+}
 <link href="~/Content/Component/jquery-confirm.min.css" rel="stylesheet" />
 <script src="~/scripts/Component/jquery-confirm.min.js"></script>
 <link href="@Url.Scrpit("~/Content/Wap/O2O/OrderDetail.css")" rel="stylesheet" />
@@ -19,25 +22,18 @@
         font-size:16px;
     }
 </style>
-<header class="o2o_header">
-    <div class="header_back" onclick="backToHome();"></div>
-    <div class="header_title">订单详情</div>
-    <div class="div_UserInfo"><a href="#">@ViewBag.BuyerPhone</a></div>
-</header>
-<div class="o2o_content">
-    <div id="order_list">
-        <!-- 订单号 -->
-        <div class="order_number">
-            <!-- 左侧 -->
-            <div class="order_number_logo">
-            </div>
-            <!-- 右侧 -->
-            <div class="order_number_content">
-                订单金额：<span id="number"></span> 
-               
-            </div>  
-            <div id="btnCloseOrder" class="upload_image"  onclick="CloseOrder(true);"> 关闭订单</div>
+<div id="order_list">
+    <!-- 订单号 -->
+    <div class="order_number">
+        <!-- 左侧 -->
+        <div class="order_number_logo">
         </div>
+        <!-- 右侧 -->
+        <div class="order_number_content">
+            订单金额：<span id="number"></span>
+
+        </div>
+        <div id="btnCloseOrder" class="upload_image" onclick="CloseOrder(true);"> 关闭订单</div>
     </div>
 </div>
 

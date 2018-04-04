@@ -82,8 +82,8 @@ namespace IQBWX.Models.JsonData
                     break;
                 case Errorcode.NotWXClient:
                     obj.errorMsg = "请用微信扫描";
-                  
                     break;
+               
 
             }
 

@@ -119,7 +119,7 @@
             ctrl += '<li class="list-inline-item List_Title_Font">{0}</li>';
             ctrl += '</ul>';
             ctrl += '<ul class="list-inline">';
-            ctrl += '<li class="list-inline-item List_Item_style1">金额：{1}</li>';
+            ctrl += '<li class="list-inline-item List_Item_style1">金额：<span>{1}</span></li>';
             //ctrl += '<li class="list-inline-item List_Item_style1"></li>';
             ctrl += '</ul>';
             ctrl += '</td>';
@@ -133,12 +133,12 @@
             ctrl += '</td>';
             ctrl += "</tr>";
             ctrl += '<tr id="' + Id + '_2">';
-            ctrl += '<td colspan=3 class="td_border_bottom_ff6a00 td_time">下单时间：{2}</td>';
-           
+            ctrl += '<td colspan="2" class="td_border_bottom_ff6a00 td_time">时间：{2}<span class="td_span_UserPhone">用户：{4}</span></td>';
+          
             ctrl += "</tr>";
 
 
-            ctrl = String.format(ctrl, data[i].ItemName, data[i].OrderAmount, data[i].CreateDateTime, data[i].O2OOrderStatusStr);
+            ctrl = String.format(ctrl, data[i].ItemName, data[i].OrderAmount, data[i].CreateDateTime, data[i].O2OOrderStatusStr, data[i].UserPhone);
             DataTable.append(ctrl);
 
           

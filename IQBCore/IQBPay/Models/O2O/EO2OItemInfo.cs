@@ -70,9 +70,6 @@ namespace IQBCore.IQBPay.Models.O2O
         [DefaultValue("")]
         public string ModifyUser { get; set; }
 
-        
-
-
         /// <summary>
         /// 秒到
         /// </summary>
@@ -83,6 +80,13 @@ namespace IQBCore.IQBPay.Models.O2O
         /// 套现方式 花呗，白条
         /// </summary>
        public PayMethod PayMethod { get; set; }
+
+
+
+        /// <summary>
+        /// 有些商品需要指定地址
+        /// </summary>
+        public int AddrId { get; set; }
 
     public void InitFromUpdate(EO2OItemInfo updateObj)
     {

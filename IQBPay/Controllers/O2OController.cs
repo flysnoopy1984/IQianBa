@@ -69,7 +69,7 @@ namespace IQBPay.Controllers
                     OpenId = o.OpenId,
                     IsLightReceive = o.IsLightReceive,
                     PayMethod = o.PayMethod,
-                  
+                    AddrId = o.AddrId,
                 });
                 if (base.GetUserSession().UserRole != UserRole.Administrator)
                     list = list.Where(o => o.OpenId == UserOpenId);
@@ -90,6 +90,28 @@ namespace IQBPay.Controllers
                 {
                     result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
                 }
+            }
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult InitItemListPage()
+        {
+
+            DItemList result = new DItemList();
+            using (AliPayContent db = new AliPayContent())
+            {
+                var rule = db.Database.SqlQuery<HashO2ORule>("select Id,Name,Code from O2ORule").ToList();
+                if (rule != null)
+                    result.HashO2ORule = rule;
+                var mall = db.Database.SqlQuery<HashO2OMall>("select Id,Name,Code,O2ORuleCode from O2OMall").ToList();
+                if (mall != null)
+                    result.HashO2OMall = mall;
+                var sql = "select * from O2ODeliveryAddress as ad where ad.OpenId = '{0}' and  ad.RecordStatus = 0";
+                sql = string.Format(sql, GetUserSession().OpenId);
+                var addr = db.Database.SqlQuery<RO2ODeliveryAddr>(sql).ToList();
+                result.AddrList = addr;
+
             }
             return Json(result);
         }
@@ -131,6 +153,7 @@ namespace IQBPay.Controllers
                             PriceGroupId = obj.PriceGroupId,
                             PayMethod = obj.PayMethod,
                             IsLightReceive = obj.IsLightReceive,
+                            AddrId = obj.AddrId,
                         });
                      //   db.SaveChanges();
                       //  db.DBO2OItemInfo.Where(o => o.Id == obj.Id
@@ -219,23 +242,7 @@ namespace IQBPay.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult InitRule_Mall()
-        {
-
-            HashO2OMall_Rule result = new HashO2OMall_Rule();
-            using (AliPayContent db = new AliPayContent())
-            {
-                var rule = db.Database.SqlQuery<HashO2ORule>("select Id,Name,Code from O2ORule").ToList();
-                if (rule != null)
-                    result.HashO2ORule = rule;
-                var mall = db.Database.SqlQuery<HashO2OMall>("select Id,Name,Code,O2ORuleCode from O2OMall").ToList();
-                if (mall != null)
-                    result.HashO2OMall = mall;
-
-            }
-            return Json(result);
-        }
+      
 
         [HttpPost]
         public ActionResult MallListQuery()
@@ -765,7 +772,6 @@ where o.CreateDateTime between cast('{0}' as datetime) and cast('{1}' as datetim
                               Convert.ToInt32(O2OOrderStatus.Complete),
                               Convert.ToInt32(O2OOrderStatus.ComfirmSign));
                         }
-                      
                         else
                             sql += string.Format(" and o.O2OOrderStatus ={0}", Convert.ToInt32(InO2OOrder.O2OOrderStatus));
                     }

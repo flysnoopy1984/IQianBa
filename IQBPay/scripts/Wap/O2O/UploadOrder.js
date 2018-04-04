@@ -62,13 +62,13 @@ $(function () {
       }
       StartBlockUI("数据处理中...",100);
 
-      var MallOrderNo = $("#MallOrderNo").val();
+    //  var MallOrderNo = $("#MallOrderNo").val();
 
       var url = "/O2OWap/SubmitUpload";
       $.ajax({
           type: 'post',
           url: url,
-          data: { "imgUpload1": imgUpload1, "MallOrderNo": MallOrderNo, "OrderNo": OrderNo, "ReceiveAccount": ReceiveAccount, "OrderStatus": OrderStatus },
+          data: { "imgUpload1": imgUpload1,  "OrderNo": OrderNo, "ReceiveAccount": ReceiveAccount, "OrderStatus": OrderStatus },
           success: function (res) {
               $.unblockUI();
               if (res.IsSuccess) {

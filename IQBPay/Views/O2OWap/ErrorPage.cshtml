@@ -3,6 +3,9 @@
     ViewBag.Title = "错误信息";
     Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
+@section Title{
+    错误页面
+}
 <link href="@Url.Scrpit("~/Content/Wap/O2O/index.css")" rel="stylesheet" />
 <style type="text/css">
     #ErrorMsg
@@ -10,10 +13,7 @@
         font: 12px/1.5 Tahoma,Helvetica,Arial,'宋体',sans-serif;
     }
 </style>
-<header class="o2o_header">错误信息</header>
-<div class="o2o_content">
-    <div class="box">
-       <div id="ErrorMsg">@Html.Raw(@Model.Msg)</div>
-    </div>
+<div class="box">
+    <div id="ErrorMsg">@Html.Raw(@Model.Msg)</div>
 </div>
 

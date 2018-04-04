@@ -168,6 +168,7 @@ namespace IQBWX.Controllers
             string errorMsg = Request.QueryString["ErrorMsg"];
             string QRUserId = Request.QueryString["QRUserId"];
             string QRHugeId = Request.QueryString["QRHugeId"];
+            string backUrl = Request.QueryString["backUrl"];
 
             jsonError data=null;
             if (!string.IsNullOrEmpty(code))
@@ -176,6 +177,11 @@ namespace IQBWX.Controllers
                 if (ec == Errorcode.SystemMaintain)
                     errorMsg = WXBaseController.GlobalConfig.Note;
                 data = jsonError.GetErrorObj(ec, errorMsg);
+                if (!string.IsNullOrEmpty(backUrl))
+                {
+                    data.btnUrl = backUrl;
+                    data.btnText = "返回";
+                }
                 if(!string.IsNullOrEmpty(QRUserId))
                 {
                     data.btnUrl += "?Id="+QRUserId;

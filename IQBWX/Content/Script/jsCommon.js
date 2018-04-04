@@ -52,6 +52,13 @@ function checkPhone() {
     return true;
 }
 
+// 验证手机号
+function isPhoneNo(phone) {
+    var pattern = /^1[34578]\d{9}$/;
+    return pattern.test(phone);
+}
+
+
 function IsWeixinOrAlipay() {
     var ua = window.navigator.userAgent.toLowerCase();
     //判断是不是微信

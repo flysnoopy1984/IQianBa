@@ -21,6 +21,29 @@ $(function () {
         history.back();
     };
 
+    StartBlockUI = function (txt, w) {
+
+        if (w == undefined)
+            w = 100;
+        var msg = ' <div id="ProcessArea1" class="progress progress-striped active">';
+        msg += '<div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ' + w + '%;">';
+        msg += '<span class="sr-only">' + txt + '</span>';
+        msg += '</div>';
+        msg += '</div>';
+
+        ////   alert(data.files[0].name);
+        $.blockUI({
+            message: msg,
+            css: {
+                border: 'none',
+                width: '90%',
+                height: '20px',
+                left: '20px',
+                'border-radius': '4px',
+            }
+        });
+    }
+
     Init = function()
     {
         ItemId = GetUrlParam("ItemId");
@@ -59,9 +82,9 @@ $(function () {
                     noticeList = [];
                     var p = String.format("请确认【{0}】的订单，金额为【{1}】，若不是，请返回重新选择", shopName, amt);
                     noticeList.push(p);
-                    p = "点击【前往购物按钮】若没有跳转，请复制链接到浏览器中打开";
+                    p = "点击【前往购物】按钮,若没有跳转请复制链接到浏览器中打开";
                     noticeList.push(p);
-                    p = "请务必填写以下收货地址</br>" + res.resultObj.ReceiveAddress;
+                    p = "请务必填写以下收货地址:</br>" + res.resultObj.ReceiveAddress;
                     noticeList.push(p);
                     p = "下单完成切记上传订单信息";
                     noticeList.push(p);
@@ -174,6 +197,7 @@ $(function () {
    
 
     order = function () {
+
         if(RealAddr == null)
         {
             alert("此商品收货地址没有获取，请联系管理员或重新选择");
@@ -181,6 +205,7 @@ $(function () {
         }
         else
         {
+            this.StartBlockUI("数据处理,正在跳转商城,请稍等...");
             var url = "/O2OWap/CreateO2OOrder";
 
             $.ajax({
@@ -188,6 +213,7 @@ $(function () {
                 url: url,
                 data: { "ItemId": ItemId, "AddrId": AddrId, "aoId": aoId },
                 success: function (res) {
+                    $.unblockUI();
                     if (res.IsSuccess) {
                         window.location.href = RealAddr;
                        // window.open(RealAddr, "menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1");
@@ -248,6 +274,7 @@ $(function () {
 
                 },
                 error: function (xhr, type) {
+                    $.unblockUI();
                     alert("系统错误！");
                 }
             });

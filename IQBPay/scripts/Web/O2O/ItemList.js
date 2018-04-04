@@ -3,6 +3,7 @@ var pageSize = 40;
 var RuleData = null;
 var MallData = null;
 var PayData = null;
+var AddrData = null;
 
 var MallCode = "";
 var RuleId = -1;
@@ -15,6 +16,45 @@ $(document).ready(function () {
     InitCondition();
  
 });
+
+function InitCondition() {
+    $("#btnAdd").hide();
+
+    var url = "/O2O/InitItemListPage";
+    $.ajax({
+        type: 'post',
+        data: "",
+        url: url,
+        success: function (data) {
+            RuleData = data.HashO2ORule;
+            MallData = data.HashO2OMall;
+            AddrData = data.AddrList;
+
+            var btnCtrl = "";
+
+            $.each(MallData, function (i) {
+                btnCtrl = '<li><button type="button" class="btn btn-default" onclick=SelectMall("' + MallData[i].Code + '")>' + MallData[i].Name + '商城</button></li>';
+                $("#ulMallList").append(btnCtrl);
+
+                //dataContainer
+                $("#AllTab").append("<div id='" + DataPre + MallData[i].Code + "'></div>")
+            });
+
+            $("#btnAdd").show();
+
+        },
+        error: function (xhr, type) {
+            alert("系统错误！");
+            $("#btnAdd").show();
+        }
+    });
+
+}
+
+function InitData()
+{
+
+}
 
 function SetPayMethod(mCode)
 {
@@ -34,45 +74,9 @@ function SetPayMethod(mCode)
         obj = { "Name": "花呗", "Value": 0 };
         PayData.push(obj);
     }
-    
-    
-    
+ 
 }
 
-function InitCondition()
-{
-    $("#btnAdd").hide();
-   
-    var url = "/O2O/InitRule_Mall";
-    $.ajax({
-        type: 'post',
-        data: "",
-        url: url,
-        success: function (data) {
-            RuleData = data.HashO2ORule;
-            MallData = data.HashO2OMall;
-
-          
-            var btnCtrl = "";
-           
-            $.each(MallData, function (i) {
-                btnCtrl = '<li><button type="button" class="btn btn-default" onclick=SelectMall("'+ MallData[i].Code+ '")>' + MallData[i].Name + '商城</button></li>';
-                $("#ulMallList").append(btnCtrl);
-
-                //dataContainer
-                $("#AllTab").append("<div id='" + DataPre + MallData[i].Code + "'></div>")
-            });
-
-            $("#btnAdd").show();
-         
-        },
-        error: function (xhr, type) {
-            alert("系统错误！");
-            $("#btnAdd").show();
-        }
-    });
-
-}
 
 function SelectStatus()
 {
@@ -167,7 +171,10 @@ function PayOption(updateData)
 
 
         $.each(PayData, function (i) {
-            payop += "<option value=" + PayData[i].Value + " selected>" + PayData[i].Name + "</option>";
+            if (PayData[i].Value == 0 )
+                payop += "<option value=" + PayData[i].Value + " selected>" + PayData[i].Name + "</option>";
+            else
+                payop += "<option value=" + PayData[i].Value + ">" + PayData[i].Name + "</option>";
         });
     }
     else {
@@ -183,6 +190,27 @@ function PayOption(updateData)
     return payop;
 }
 
+function AddrOption(updateData) {
+    var addrop = "<option value=0 selected>系统分配</option>";
+    if (updateData == null) {
+
+        $.each(AddrData, function (i) {
+            addrop += "<option value=" + AddrData[i].Id + ">" + AddrData[i].Address + "</option>";
+        });
+    }
+    else {
+        $.each(AddrData, function (i) {
+            if (updateData.AddrId == AddrData[i].Id)
+                addrop += "<option value=" + AddrData[i].Id + " selected>" + AddrData[i].Address + "</option>";
+            else
+                addrop += "<option value=" + AddrData[i].Id + ">" + AddrData[i].Address + "</option>";
+        });
+
+    }
+
+    return addrop;
+}
+
 function CreateNew(updateData)
 {
     if (MallCode == "")
@@ -194,12 +222,13 @@ function CreateNew(updateData)
     var mallOp = MallOption(updateData);
     var ruleOp = RuleOption(updateData);
     var payOP = PayOption(updateData);
+    var addrOp = AddrOption(updateData);
     
   
     var ctrl = GetCellHtml();
     if (updateData == null) {
 
-        ctrl = String.format(ctrl, "New_" + MallCode, "", "", "1", "", "", "", "0", mallOp, ruleOp, "", "", payOP);
+        ctrl = String.format(ctrl, "New_" + MallCode, "", "", "1", "", "", "", "0", mallOp, ruleOp, "", "", payOP, addrOp);
     }
     else {
         ctrl = String.format(ctrl, "O_"+updateData.Id,
@@ -213,7 +242,8 @@ function CreateNew(updateData)
                                    mallOp, ruleOp,
                                    updateData.CreateDateTimeStr,
                                    updateData.ModifyDateTimeStr,
-                                   payOP);
+                                   payOP,
+                                   addrOp);
     }
 
     DataCtrl.prepend(ctrl);
@@ -279,6 +309,9 @@ function GetCellHtml() {
     ctrl += '</ul>';
     ctrl += '<ul class="UlHorizontal">';
     ctrl += '<li><span>图片地址：</span><input id="ImgUrl" type="text" class="form-control" style="width:680px;" value="{6}" /></li>';
+    ctrl += '</ul>';
+    ctrl += '<ul class="UlHorizontal">';
+    ctrl += '<li><span>收货地址：</span><select id="selAddrList" class="form-control">{13}</select></li>';
     ctrl += '</ul>';
     ctrl += '<ul class="UlHorizontal">';
     ctrl += '<li class="CellTitle" style="width:300px;">创建时间:<span id="CreateDate" style="margin-left:10px;">{10}</span></li>';
@@ -478,6 +511,7 @@ function Save(obj) {
     var mCode = pObj.find("#MallCode").val();
     var IsLightReceive = pObj.find("#IsLightReceive").get(0).checked;
     var PayMethod = pObj.find("#PayMethod").val();
+    var AddrId = pObj.find("#selAddrList").val();
     if (!VerifyItem(pObj)) return;
    
     $.ajax({
@@ -495,6 +529,7 @@ function Save(obj) {
             "RecordStatus": RecordStatus,
             "IsLightReceive": IsLightReceive,
             "PayMethod": PayMethod,
+            "AddrId":AddrId,
         },
         url: url,
         success: function (data) {

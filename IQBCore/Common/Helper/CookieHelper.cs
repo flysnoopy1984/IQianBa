@@ -10,7 +10,7 @@ namespace IQBCore.Common.Helper
     public class CookieHelper
     {
         
-        public static HttpCookie setCookie(string key, string value,int days=30)
+        public static HttpCookie setCookie(string key, string value,int days=1)
         {
             HttpCookie cookie = null;
             if (HttpContext.Current.Request.Cookies[key] == null)

@@ -20,6 +20,8 @@ namespace IQBConsole
           
             try
             {
+                Console.Write("请输入需要删除的订单间隔时间：");
+                _OrderDiffMin = Convert.ToInt32(Console.ReadLine());
                
                 while(true)
                 {

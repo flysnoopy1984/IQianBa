@@ -3,6 +3,9 @@
     ViewBag.Title = "UploadOrder";
     Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
+@section Title{
+    订单信息上传
+}
 <link href="@Url.Scrpit("~/Content/IQBFonts.css")" rel="stylesheet" />
 <link href="@Url.Scrpit("~/Content/Wap/O2O/UploadOrder.css")" rel="stylesheet" />
 <script src="~/scripts/Component/jquery.blockUI.min.js"></script>
@@ -30,90 +33,84 @@
     <script src="@Url.Scrpit("~/scripts/Web/O2O/OrderReview.js")"></script>
 
 }
-<header class="o2o_header">
-    <div class="header_title">订单信息</div>
-    <div class="div_UserInfo"><a href="#">@ViewBag.BuyerPhone</a></div>
-</header>
-<div class="o2o_content">
-    <div id="upload_list">
-        <div class="upload_order">
+<div id="upload_list">
+    @*<div class="upload_order">
             <div class="upload_order_title">订单编号</div>
             <div class="upload_order_input">
                 <input id="MallOrderNo" type="text" placeholder="请输入订单编号" class="form-control order_input FontAmount" />
             </div>
+        </div>*@
+    <div class="upload_order">
+        <div class="upload_order_title">收款账户<span style="color:firebrick;">*</span></div>
+        <div class="upload_order_input">
+            <input id="ReceiveAccount" type="text" placeholder="请输入收款账户" class="form-control order_input FontAmount" />
         </div>
-        <div class="upload_order">
-            <div class="upload_order_title">收款账户<span style="color:firebrick;">*</span></div>
-            <div class="upload_order_input">
-                <input id="ReceiveAccount" type="text" placeholder="请输入收款账户" class="form-control order_input FontAmount" />              
-            </div>
-            <div style="text-align:center;">
-                <button id="btnVerifyAccount" type="button" class="btn btn-success" onclick="VerifyAccount();">请先验证收款账户</button>
-            </div>
+        <div style="text-align:center;">
+            <button id="btnVerifyAccount" type="button" class="btn btn-success" onclick="VerifyAccount();">请先验证收款账户</button>
         </div>
-        <div class="upload_image">
-            <div class="upload_order_image_title">上传订单相关信息</div>
-            <div class="upload_order_image_list">
-                <!-- 已经上传图片 -->
-                <div id="imgContainer1" class="upload_order_image_done">
-                    <div class="upload_order_delete_btn" id="btnDelImg" onclick="deleteImage();"></div>
-                    <img id="imgUpload1" src=""></img>
-                </div>
-                <!-- 上传按钮 -->
-                <div class="submit_btn" id="btnUpload1" onclick="fileSelect();"></div>
-                <input type="file" name="fileToUpload" id="upload_OrderInfo"  style="display:none;">
-                <!--进度条-->
-                @*<div id="ProcessArea1" class="progress progress-striped">
+    </div>
+    <div class="upload_image">
+        <div class="upload_order_image_title">上传订单相关信息</div>
+        <div class="upload_order_image_list">
+            <!-- 已经上传图片 -->
+            <div id="imgContainer1" class="upload_order_image_done">
+                <div class="upload_order_delete_btn" id="btnDelImg" onclick="deleteImage();"></div>
+                <img id="imgUpload1" src=""></img>
+            </div>
+            <!-- 上传按钮 -->
+            <div class="submit_btn" id="btnUpload1" onclick="fileSelect();"></div>
+            <input type="file" name="fileToUpload" id="upload_OrderInfo" style="display:none;">
+            <!--进度条-->
+            @*<div id="ProcessArea1" class="progress progress-striped">
                     <div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar"
                          aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
                          style="width: 30%;">
                         <span class="sr-only">正在上传请耐心等待...</span>
                     </div>
                 </div>*@
-               
-            </div>
-          
+
         </div>
-       
-        <!-- 按钮 -->
-        <div class="upload_btn_group">
-            <div class="upload_btn upload_submit" id ="btnSubmit" onclick="submitUpload();">提交</div>
-            <div class="upload_btn upload_back" onclick="BackToOrderDetail();">返回订单查询页</div>
-        </div>
-        <!--审核-->
-        <div id="ReviewArea">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <span class="LeftSpan">O2ONo：</span><input disabled="disabled" id="O2ONo" type="text" class="form-control" />
-                </li>
-                <li class="list-group-item">
-                    <span class="LeftSpan">订单状态：</span><input disabled="disabled" id="OrderStatus" type="text" class="form-control" />
-                </li>
-              
-            </ul>
-            <ul class="list-group">
-                @*<li class="list-group-item">
-                    <span class="LeftSpan">商城订单编号：</span><input id="MallOrderNo" type="text" class="form-control" />
-                </li>*@
-                <li class="list-group-item">
-                    <span class="LeftSpan">订单金额：</span><input id="OrderAmount" type="text"  class="form-control" />
-                </li>
-            </ul>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <span class="LeftSpan">驳回理由：</span>
-                    <span><textarea class="form-control" id="Reason"></textarea></span>
-                </li>
-                <li class="list-group-item">
-                    <button id="btnSearch" type="button" class="btn btn-primary" onclick="Review(0);">通过</button>
-                    <button id="btnSearch" type="button" class="btn btn-warning" onclick="Review(1);">驳回</button>
-                </li>
-               
-            </ul>
-        </div>
+
     </div>
 
-   
-    <input type="hidden" id="IsAdmin" value="@ViewBag.IsAdmin" />
+    <!-- 按钮 -->
+    <div class="upload_btn_group">
+        <div class="upload_btn upload_submit" id="btnSubmit" onclick="submitUpload();">提交</div>
+        <div class="upload_btn upload_back" onclick="BackToOrderDetail();">返回订单查询页</div>
+    </div>
+    <!--审核-->
+    <div id="ReviewArea">
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                <span class="LeftSpan">商城订单：</span><input id="MallOrderNo" type="text" class="form-control" />
+            </li>
+            <li class="list-group-item">
+                <span class="LeftSpan">O2ONo：</span><input disabled="disabled" id="O2ONo" type="text" class="form-control" />
+            </li>
+            <li class="list-group-item">
+                <span class="LeftSpan">订单状态：</span><input disabled="disabled" id="OrderStatus" type="text" class="form-control" />
+            </li>
+            <li class="list-group-item">
+                <span class="LeftSpan">订单金额：</span><input id="OrderAmount" type="text" class="form-control" />
+            </li>
+
+        </ul>
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                <span class="LeftSpan">驳回理由：</span>
+                <span><textarea class="form-control" id="Reason"></textarea></span>
+            </li>
+            <li class="list-group-item">
+                <button id="btnSearch" type="button" class="btn btn-primary" onclick="Review(0);">通过</button>
+                <button id="btnSearch" type="button" class="btn btn-warning" onclick="Review(1);">驳回</button>
+            </li>
+
+        </ul>
+    </div>
 </div>
+
+
+<input type="hidden" id="IsAdmin" value="@ViewBag.IsAdmin" />
 
