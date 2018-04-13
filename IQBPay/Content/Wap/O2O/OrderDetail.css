@@ -117,6 +117,7 @@ body {
   font-size: 12px;
   color: #bbbbbb;
   -webkit-transform:scale(0.91);
+   text-align:left;
 }
 
 .step_time_end {
@@ -148,6 +149,7 @@ body {
 .step_time_end > .step_time_desc {
   font-size: 12px;
   color: #F23131;
+  text-align:left;
   -webkit-transform:scale(0.91);
 }
 

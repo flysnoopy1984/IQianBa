@@ -27,7 +27,8 @@ namespace IQBCore.IQBPay.Models.User
 
         public UserAccountType UserAccountType { get; set; }
  
-       
+      
+
         /// <summary>
         ///针对出库商的余额
         /// </summary>
@@ -56,7 +57,9 @@ namespace IQBCore.IQBPay.Models.User
         {
             if (amt > 0)
                 this.O2OShipInCome += amt;
-            else this.O2OShipOutCome += Math.Abs(amt);
+            else
+                this.O2OShipOutCome += Math.Abs(amt);
+
             this.O2OShipBalance += amt;
         }
 

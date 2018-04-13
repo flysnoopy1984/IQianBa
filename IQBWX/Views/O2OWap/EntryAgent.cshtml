@@ -4,23 +4,27 @@
     Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
 
-<script type="text/javascript" src="@ViewBag.ConfirmJquery"></script>
-<link href="@ViewBag.ConfirmCss" rel="stylesheet" />
+<script type="text/javascript" src="@ViewBag.ppUrl/scripts/Component/jquery-confirm.js"></script>
+<link href="@ViewBag.ppUrl/Content/Component/jquery-confirm.min.css" rel="stylesheet" />
+
+@*<script type="text/javascript" src="@ViewBag.ppUrl/scripts/Component/jquery.blockUI.min.js"></script>*@
+
+
+<script src="@Url.Scrpit("~/Content/Script/IQBPay/O2O/EntryAgent.js")"></script>
+
 <link href="@Url.Scrpit("~/Content/Css/O2O/O2OMain.css")" rel="stylesheet" />
 <style>
    
 
     .box {
         width: 100%;
-        height: 100px;
+        height: 80px;
      
         text-align: center;
     }
     .QRImg{
          width: 300px;
-        height: 300px;
-     
-       
+        height: 300px; 
     }
 
     .o2o_index_btn {
@@ -52,15 +56,32 @@
         color:rgb(0, 148, 255);
 
      }
+     .Footbar1{
+         display:flex;
+         justify-content:space-between;
+         padding:8px;
+     }
+     .sr-only
+    {
+       color:black;
+       clip:unset;
+       width:100%;
+       height:40px;
+       left:0px;
+    }
+    .progressbar
+    {
+        height:40px;
+    }
+   
 </style>
 <script type="text/javascript">
-    function toRateList()
-    {
-        window.location.href = "/O2OWap/AgentFeeRate";
-    }
 
     function OrderForUser() {
-        window.location.href = "@ViewBag.TargetUrl";
+        window.location.href = "@Model.TargetUrl";
+    }
+    function CreateOrderForUser() {
+        window.location.href ="@ViewBag.ppUrl"+"O2OWap/EntryOrderForUser?aoId=@Model.OpenId";
     }
 
     function OpenOnPc() {
@@ -77,8 +98,6 @@
                     btnClass: "btn-red",
 
                 }
-
-
             }
         });
     }
@@ -98,15 +117,27 @@
     @*<div style="text-align: center;">
         <button type="button" onclick="OrderForUser();" class="mgz btn btn-warning btnOnPC" id="btnOnPC">替用户下单</button>
     </div>*@
-    <div style="text-align: center;margin-top:20px;">
-        <button type="button" onclick="OpenOnPc();" class="btn btn-info" id="btnOnPC">PC端入口</button>
+    @*<div style="text-align: center;margin-top:20px;">
+        <ul class="">
+            <li class="list-group-item"><button type="button" onclick="CreateOrderForUser();" class="btn btn-warning" id="btnOnPC">替用户下单</button></li>
+            <li class="list-group-item"><button type="button" onclick="OpenOnPc();" class="btn btn-info" id="btnOnPC">PC端入口</button></li>
+        </ul>
+    </div>*@
+    
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container Footbar1">
+            <button type="button" onclick="OpenOnPc();" class="btn btn-info" id="btnOnPC">PC端入口</button>
+            <button type="button" onclick="CreateOrderForUser();" class="btn btn-success" id="btnOrderForUser">替用户下单</button>
+            <button type="button" onclick="ShowAllOrderList('@ViewBag.AgentPhone','@Model.OpenId');" class="btn btn-warning" id="btnAllOrder">全部订单</button>
+        </div>
        
-    </div>
+    </nav>
   
     @if (ViewBag.IsAdmin)
     {
         <div id="AdminArea" style="text-align:center;width:100%">
-            <a href="@ViewBag.ReChargePage">出库商充值</a>
+            <a href="@ViewBag.ppUrl/O2OWap/WHReCharge">出库商充值</a>
 
         </div>
     }

@@ -10,12 +10,13 @@ $(function () {
     var OpenId = null;
     var RealAddr = null;
     var ReceiveAddress = "";
-    var aoId = null;
+    //var aoId = null;
     /**
      * [返回]
      */
     backToHome = function () {
-        window.location.href = "/O2OWap/Index?aoId=" + aoId;
+        toPage("/O2OWap/Index");
+      
     };
     backPage = function () {
         history.back();
@@ -53,20 +54,18 @@ $(function () {
         shopName =GetUrlParam("shopName",true);
         amt = GetUrlParam("amt");
 
-        if (aoId == "" || aoId == "null" || aoId == undefined) {
-            window.location.href = "/O2OWap/ErrorPage?ec=1";
-            return;
-        }
-
+       
         if (ItemId == null || ItemId == undefined || MallId == null || MallId == undefined || OpenId == null || OpenId == undefined)
         {
             alert("未获取指定的商品，请选择商品");
-            window.location.href = "/O2OWap/MallList?aoId="+aoId;
+            toPage("/O2OWap/MallList");
+           
             return;
         }
         if (OpenId == null || OpenId == undefined) {
             alert("商品供应商未获取，请联系管理员");
-            window.location.href = "/O2OWap/Index?aoId=" + aoId;
+            toPage("/O2OWap/Index");
+            
             return;
         }
           
@@ -98,12 +97,14 @@ $(function () {
                 {
                     if (res.IntMsg == -1) {
                         alert("未获取用户信息，需重新提交手机号");
-                        window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                        toPage("/O2OWap/Index");
+                      
                         return;
                     }
                     else if (res.IntMsg == -2) {
                         alert("此商品收货地址没有设置，请联系管理员");
-                        window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                        toPage("/O2OWap/Index");
+                      
                         return;
                     }
                     else
@@ -153,7 +154,7 @@ $(function () {
             }
             else if (i == 2) //复制到剪贴板
             {
-                str += '<div class="o2o_notice_btn"><button class="btn btn-danger copy" id="' + i + '_o2o_notice_btn" data-clipboard-text="' + ReceiveAddress + '">复制到剪贴板</button></div>';
+                str += '<div class="o2o_notice_btn"><button class="btn btn-danger copy" id="' + i + '_o2o_notice_btn" data-clipboard-text="' + ReceiveAddress + '">点击复制内容</button></div>';
             }
             else
                 str += '<div class="o2o_notice_btn"><button class="btn btn-success" id="' + i + '_o2o_notice_btn">我知道了</button></div>';
@@ -201,7 +202,8 @@ $(function () {
         if(RealAddr == null)
         {
             alert("此商品收货地址没有获取，请联系管理员或重新选择");
-            window.location.href = "/O2OWap/MallList";
+            toPage("/O2OWap/MallList");
+         
         }
         else
         {
@@ -211,7 +213,7 @@ $(function () {
             $.ajax({
                 type: 'post',
                 url: url,
-                data: { "ItemId": ItemId, "AddrId": AddrId, "aoId": aoId },
+                data: { "ItemId": ItemId, "AddrId": AddrId, "aoId": aoId,"un":un },
                 success: function (res) {
                     $.unblockUI();
                     if (res.IsSuccess) {
@@ -224,11 +226,13 @@ $(function () {
                             //手机号为空，重新登陆
                             case -1:
                                 alert("手机号未获取，请返回首页重新操作");
-                                window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                                toPage("/O2OWap/Index");
+                               
                                 break;
                             case -2:
                                 alert("商品未获取，请返回重新选择商品");
-                                window.location.href = "/O2OWap/MallList?aoId=" + aoId;
+                                toPage("/O2OWap/MallList");
+                             
                                 break;
                             case -3:
                                 alert("收货地址未获取，请联系管理员");
@@ -236,7 +240,8 @@ $(function () {
                                 break;
                             case -4:
                                 alert("中介信息未获取，可能等待时间过长，请返回首页重新操作");
-                                window.location.href = "/O2OWap/ErrorPage?ec=1";
+                                toPage("/O2OWap/ErrorPage?ec=1");
+                             
                                 break;
                             case -5:
                                 alert("中介费率未配置，请联系您的中介");
@@ -255,23 +260,22 @@ $(function () {
                                 //  window.location.href = "O2OWap/MallList";
                                 break;
                             case -9:
-                               // alert(res.ErrorMsg);
-                                window.location.href = "/O2OWap/ErrorPage?ec=40001&aoId=" + aoId;
+                                // alert(res.ErrorMsg);
+                                toPage("/O2OWap/ErrorPage?ec=40001");
                                 break;
                             case -10:
-                               // alert("订单已创建，请勿重复提交");
-                              //  $("#bnConfirmToShop").hide();
                                 window.location.href = RealAddr;
                                 break;
-
+                            //Session失效
+                            case -11:
+                                toPage("/O2OWap/ErrorPage?ec=2");
+                                break;
                           
                             default:
                                 alert(res.ErrorMsg);
                            
                         }
                     }
-
-
                 },
                 error: function (xhr, type) {
                     $.unblockUI();

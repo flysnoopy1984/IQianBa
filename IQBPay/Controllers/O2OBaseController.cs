@@ -45,16 +45,25 @@ namespace IQBPay.Controllers
 
         public string GetBuyerPhone()
         {
-            string buyerPhone = null;
-            O2OBuyerSession buyerSession = Session["BuyerSession"] as O2OBuyerSession;
-            if (buyerSession == null)
-            {
-                buyerPhone = CookieHelper.getCookie(IQBConstant.ck_O2OBuyerPhone);
-                return buyerPhone;
+            string buyerPhone = "";
 
+            O2OBuyerSession buyerSession = Session[IQBConstant.SK_O2OBuyerSession] as O2OBuyerSession;
+          
+            if (buyerSession != null)
+            {
+                buyerPhone = buyerSession.Phone;
+
+                if (string.IsNullOrEmpty(buyerPhone))
+                    buyerPhone = buyerSession.UserName;
             }
-            else
-                return buyerSession.Phone;
+               
+
+            return buyerPhone;
+
+
+
+
+          
 
         }
 
@@ -62,7 +71,7 @@ namespace IQBPay.Controllers
         {
             get
             {
-                O2OBuyerSession buyerSession = Session["BuyerSession"] as O2OBuyerSession;
+                O2OBuyerSession buyerSession = Session[IQBConstant.SK_O2OBuyerSession] as O2OBuyerSession;
                 if (buyerSession == null)
                 {
                     buyerSession = new O2OBuyerSession();
@@ -102,7 +111,8 @@ namespace IQBPay.Controllers
 
         public void SetBuyerCookie(EO2OBuyer buyer)
         {
-            CookieHelper.setCookie(IQBConstant.ck_O2OBuyerPhone, buyer.Phone);
+           
+            CookieHelper.setCookie(IQBConstant.ck_O2OUser, buyer.Phone);
             CookieHelper.setCookie(IQBConstant.ck_O2OReceiveAccount, buyer.ReceiveAccount);
         }
         public void SetBuyerSession(EO2OBuyer buyer)
@@ -111,8 +121,9 @@ namespace IQBPay.Controllers
             buyerSession.AliPayAccount = buyer.ReceiveAccount;
             buyerSession.Phone = buyer.Phone;
             buyerSession.BuyerId = buyer.Id;
-
-            Session["BuyerSession"] = buyerSession;
+            buyerSession.UserName = buyer.BuyerName;
+            
+            Session[IQBConstant.SK_O2OBuyerSession] = buyerSession;
         }
       
 
@@ -130,11 +141,16 @@ namespace IQBPay.Controllers
            
         }
 
-        public void InitO2OPage()
+        public int InitO2OPage()
         {
             CheckaoId();
             string Phone = GetBuyerPhone();
             ViewBag.BuyerPhone = Phone;
+
+            if (string.IsNullOrEmpty(Phone)) return -1;
+            else return 0;
         }
+
+       
     }
 }

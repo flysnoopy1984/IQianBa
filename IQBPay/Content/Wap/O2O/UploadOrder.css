@@ -30,7 +30,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .upload_order {
@@ -209,5 +209,6 @@ input:focus {
     display:inline-block;
 
 }
+ .span_Red{color:#ff0000}
 
 

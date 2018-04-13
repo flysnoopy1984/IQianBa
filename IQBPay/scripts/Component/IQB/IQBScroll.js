@@ -32,7 +32,7 @@
 
                 var winHeight = $(window).outerHeight(true);
                 var docHeight = $(document).outerHeight(true)
-                var curPos = $(document).scrollTop();
+                var curPos = Math.ceil($(document).scrollTop());
                 if (curPos + winHeight >= docHeight) {
                     me.status = -2;
                     FnloadDown(me);

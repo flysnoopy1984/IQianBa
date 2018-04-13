@@ -37,6 +37,6 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public double OrderAmount { get; set; }
 
-        public string UserPhone { get; set; }
+        public string User { get; set; }
     }
 }

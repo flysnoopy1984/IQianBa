@@ -51,15 +51,17 @@ namespace IQBWX.Controllers
                 }
                    
             }
-            ViewBag.TargetUrl = qrUser.TargetUrl;
+          //  ViewBag.TargetUrl = qrUser.TargetUrl;
 
             string ppUrl = ConfigurationManager.AppSettings["Site_IQBPay"];
-            ViewBag.ConfirmJquery = ppUrl+ "scripts/Component/jquery-confirm.js";
-            ViewBag.ConfirmCss = ppUrl+ "Content/Component/jquery-confirm.min.css";
             ViewBag.ppUrl = ppUrl;
+            //ViewBag.ConfirmJquery = ppUrl+ "scripts/Component/jquery-confirm.js";
+            //ViewBag.ConfirmCss = ppUrl+ "Content/Component/jquery-confirm.min.css";
+            //ViewBag.ppUrl = ppUrl;
 
             ViewBag.IsAdmin = UserSession.UserRole == UserRole.Administrator;
-            ViewBag.ReChargePage = ConfigurationManager.AppSettings["Site_IQBPay"] + "O2OWap/WHReCharge";
+  //          ViewBag.ReChargePage = ConfigurationManager.AppSettings["Site_IQBPay"] + "O2OWap/WHReCharge";
+            ViewBag.AgentPhone = UserSession.AgentPhone;
 
             // InitProfilePage();
             return View(qrUser);
@@ -91,41 +93,43 @@ namespace IQBWX.Controllers
             return View();
         }
 
-//        [HttpPost]
-//        public ActionResult AgentFeeRateQuery()
-//        {
-//            NResult<RO2OAgentFeeRate> result = new NResult<RO2OAgentFeeRate>();
-//            try
-//            {
-//                using (AliPayContent db = new AliPayContent())
-//                {
-//                    string sql = @"select r.Id,r.MarketRate,i.ShipFee+{1} as FeeRate,m.Name as MallName
-//from O2OAgentFeeRate as r
-//join
-//(
+      
 
-//select max(i.ShipFeeRate) as ShipFee,i.MallId
-//from O2OItemInfo as i
-//where i.RecordStatus = 0
-//group by i.MallId
+            //        [HttpPost]
+            //        public ActionResult AgentFeeRateQuery()
+            //        {
+            //            NResult<RO2OAgentFeeRate> result = new NResult<RO2OAgentFeeRate>();
+            //            try
+            //            {
+            //                using (AliPayContent db = new AliPayContent())
+            //                {
+            //                    string sql = @"select r.Id,r.MarketRate,i.ShipFee+{1} as FeeRate,m.Name as MallName
+            //from O2OAgentFeeRate as r
+            //join
+            //(
 
-//) as i on i.MallId = r.MallId
-//join O2OMall as m on m.ID = r.MallId
-//where r.OpenId = '{0}'";
+            //select max(i.ShipFeeRate) as ShipFee,i.MallId
+            //from O2OItemInfo as i
+            //where i.RecordStatus = 0
+            //group by i.MallId
 
-//                    sql = string.Format(sql, UserSession.OpenId,GlobalConfig.AgentFeeBasedShipFee);
-//                    result.resultList = db.Database.SqlQuery<RO2OAgentFeeRate>(sql).ToList();
-//                    if (result.resultList == null) result.resultList = new List<RO2OAgentFeeRate>();
-//                }
-//            } 
-//            catch(Exception ex)
-//            {
-//                result.IsSuccess = false;
-//                result.ErrorMsg = ex.Message;
-//            }
-           
-//            return Json(result);
-//        }
+            //) as i on i.MallId = r.MallId
+            //join O2OMall as m on m.ID = r.MallId
+            //where r.OpenId = '{0}'";
+
+            //                    sql = string.Format(sql, UserSession.OpenId,GlobalConfig.AgentFeeBasedShipFee);
+            //                    result.resultList = db.Database.SqlQuery<RO2OAgentFeeRate>(sql).ToList();
+            //                    if (result.resultList == null) result.resultList = new List<RO2OAgentFeeRate>();
+            //                }
+            //            } 
+            //            catch(Exception ex)
+            //            {
+            //                result.IsSuccess = false;
+            //                result.ErrorMsg = ex.Message;
+            //            }
+
+            //            return Json(result);
+            //        }
 
             [HttpPost]
         public ActionResult AgentFeeRateQuery()
@@ -208,7 +212,7 @@ order by i.PayMethod,i.Amount
             return Json(result);
         }
 
-
+       
 
     }
 }

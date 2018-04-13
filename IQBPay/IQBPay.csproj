@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -24,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -220,6 +222,7 @@
     <Content Include="Content\Style\Frame1\bootstrap.min.css" />
     <Content Include="Content\Style\IQBFonts.css" />
     <Content Include="Content\Wap\O2O\AddrConfirm.css" />
+    <Content Include="Content\Wap\O2O\FlexForm.css" />
     <Content Include="Content\Wap\O2O\index.css" />
     <Content Include="Content\Component\IQBLeftmenu.css" />
     <Content Include="Content\Wap\O2O\O2OMain.css" />
@@ -555,10 +558,14 @@
     <Content Include="scripts\Component\Viewer\viewer.min.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\Wap\O2O\AddrConfirm.js" />
+    <Content Include="scripts\Wap\O2O\EntryOrderForUser.js" />
     <Content Include="scripts\Wap\O2O\index.js" />
     <Content Include="scripts\Component\IQB\IQBLeftmenu.js" />
     <Content Include="scripts\Wap\O2O\OrderDetail.js" />
     <Content Include="scripts\Wap\O2O\OrderList.js" />
+    <Content Include="scripts\Wap\O2O\PageParameter.js" />
+    <Content Include="scripts\Wap\O2O\StepReceiveConSign.js" />
+    <Content Include="scripts\Wap\O2O\StepReceiveSMS.js" />
     <Content Include="scripts\Wap\O2O\WHRecharge.js" />
     <Content Include="scripts\Wap\PayHuge.js" />
     <Content Include="scripts\Wap\O2O\ItemList.js" />
@@ -779,6 +786,10 @@
     <Content Include="Views\O2OWap\WHReCharge.cshtml" />
     <Content Include="Views\Shared\_O2OUserLayOut.cshtml" />
     <Content Include="Views\O2OWap\ContactUS.cshtml" />
+    <Content Include="Views\O2OWap\EntryOrderForUser.cshtml" />
+    <Content Include="Views\O2OWap\StepReceiveSMS.cshtml" />
+    <Content Include="Views\O2OWap\StepReceiveConSign.cshtml" />
+    <Content Include="Views\O2OWap\LoginFormPP.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -809,11 +820,15 @@
       <Name>IQBCore</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>

@@ -75,7 +75,9 @@ function Query(NeedClearn,_PageIndex)
     var BeforeDay = $("#cBeforeDay").val();
     var MallOrderNo = $("#cMallOrderNo").val();
     var O2OOrderStatus = $("#cO2OOrderStatus").val();
-    var IsSign = $("#IsSign").get(0).checked;
+ //   var IsSign = $("#IsSign").get(0).checked;
+    var IsSMS = $("#IsSMS").get(0).checked;
+    var IsSignCode = $("#IsSignCode").get(0).checked;
 
     var url = "/O2O/OrderListQuery";
 
@@ -88,7 +90,8 @@ function Query(NeedClearn,_PageIndex)
             "BeforeDay": BeforeDay,
             "MallOrderNo": MallOrderNo,
             "O2OOrderStatus": O2OOrderStatus,
-            "IsSign": IsSign
+            "IsSMS": IsSMS,
+            "IsSignCode": IsSignCode,
         },
         url: url,
         success: function (data) {
@@ -170,12 +173,23 @@ function generateData(result)
         Ctrl += "<td style='" + tdWidth + "'>" + op + "</td>";
        
         if (FromPage == 1) {
-            var IsSign = "是";
-            if (result[i].O2OOrderStatus == 10)
-                IsSign = "否";
-            //是否签收
+            var IsSMS = "没发送";
+            if (result[i].HasSMS == true)
+                IsSMS = "已发送";
+            if (result[i].NeedSMS == false)
+                IsSMS = "不用";
+            //是否短信
             tdWidth = "width:" + $("#header th").eq(n++).css("width");
-            Ctrl += "<td style='" + tdWidth + "'>" + IsSign + "</td>";
+            Ctrl += "<td style='" + tdWidth + "'>" + IsSMS + "</td>";
+
+
+            //提货信息
+            var SignCode = "没有";
+            if (result[i].HasSignCode == true)
+                SignCode = '<a href=javascript:OpenWin("/O2O/OrderSettlement?O2ONo=' + result[i].O2ONo + '")>已提供</a>';
+
+            tdWidth = "width:" + $("#header th").eq(n++).css("width");
+            Ctrl += "<td style='" + tdWidth + "'>" + SignCode + "</td>";
         }
 
 
@@ -186,9 +200,9 @@ function generateData(result)
 
         if (FromPage == 0)
         {
-            //用户手机
+            //用户
             tdWidth = "width:" + $("#header th").eq(n++).css("width");
-            Ctrl += "<td style='" + tdWidth + "' title=" + result[i].UserPhone + ">" + result[i].UserPhone + "</td>";
+            Ctrl += "<td style='" + tdWidth + "' title=" + result[i].User + ">" + result[i].User + "</td>";
            
         }
        

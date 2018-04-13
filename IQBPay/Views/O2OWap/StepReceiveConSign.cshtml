@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "StepReceiveConSign";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
+}
+
+@section Title{
+    收货
+}
+<script src="~/scripts/Component/clipboard.min.js"></script>
+<link href="@Url.Scrpit("~/Content/Wap/O2O/FlexForm.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Wap/O2O/StepReceiveConSign.js")"></script>
+
+<style type="text/css">
+    .flex_container {
+        align-items: flex-start;
+    }
+
+    .Form_Container {
+        width: 95%;
+    }
+
+    .Title {
+        width: 100%;
+        border-bottom: 1px solid #808080;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .RowTitle {
+        color: #ff6a00;
+        font-size: 20px;
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .Form_Row_Vertical {
+        flex-direction: column;
+    }
+    .Form_Row_Horizontal{
+        flex-direction:row;
+        justify-content:space-between;
+        padding-left:20px;
+        padding-right:20px;
+        display:flex;
+    }
+
+    .NextPage {
+    }
+
+    #ConSignCode ul li {
+        padding:8px;
+    }
+    #ConInfo{
+        height:220px;
+    }
+    .ImportText{
+        height:40px;
+        line-height:60px;
+        padding-left:15px;
+
+    }
+</style>
+<div class="flex_container">
+    <div class="Form_Container">
+        <div class="Title">请按以下步骤开始您的收货操作</div>
+        <div class="Form_Row_Vertical" id="ConSignCode">
+            <div class="RowTitle">提货柜信息<span style="color:firebrick; font-size:12px" id="opStatus">(未操作)</span></div>
+            <ul class="list-group">
+                <li class="list-group-item-info">请关注短信，若收到提货柜信息，请将信息复制黏贴到下面的输入框，提交给系统。</li>
+                <li class="list-group-item" style="border:none;"><textarea id="ConInfo" class="form-control" placeholder="输入提货柜号和密码，或直接黏贴短信内容"></textarea></li>
+            </ul>
+            <div class="Form_Row_Horizontal">
+                <button class="btn btn-success" id="btnSubmit">提交信息</button>
+                <button class="btn btn-warning" id="btnBack">返回订单</button>
+            </div>
+            <div class="ImportText"><b>*若不完成此操作，可能影响货款结算时间。</b></div>
+        </div>
+    </div>
+</div>
+
+

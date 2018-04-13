@@ -47,10 +47,9 @@ function CloseBlock() {
 
 
 function ConfirmWithPay()
-{
-    
-    //var url = "/O2O/OrderSettlementToPP";
-    var url = "/O2O/SettleToWH_Agent_User"; //改为一次性全部结算
+{ 
+   // var url = "/O2O/OrderSettlementToPP";
+    var url = "/O2O/SettleToWH_Agent_User"; //一次性全部结算（Agent 余额不直接打钱，其他直接转账）
     var O2ONo = $("#O2ONo").val();
     if (O2ONo == "" || O2ONo == "null")
     {
@@ -59,9 +58,7 @@ function ConfirmWithPay()
     }
     StartBlockUI("结算处理中,请稍等...");
   //  $("#btnConfirm").hide();
-   
-   
-    
+ 
     $.ajax({
         type: 'post',
         dataType: "json",
@@ -81,8 +78,6 @@ function ConfirmWithPay()
                 }
                 CloseBlock();
             }
-           
-
         },
         error: function (xhr, type) {
             CloseBlock();

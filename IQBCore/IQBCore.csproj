@@ -124,7 +124,9 @@
     <Compile Include="IQBPay\Models\O2O\EO2OMall.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OPriceGroup.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2ORoleCharge.cs" />
+    <Compile Include="IQBPay\Models\O2O\EO2OTransAgent.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OTranscationWH.cs" />
+    <Compile Include="IQBPay\Models\O2O\EO2OOrder_SignCode.cs" />
     <Compile Include="IQBPay\Models\O2O\EOrderUpload.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OOrder.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2OStep.cs" />
@@ -139,11 +141,13 @@
     <Compile Include="IQBPay\Models\O2O\RO2OMall.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2OOrder.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2OOrder_ForAgent.cs" />
+    <Compile Include="IQBPay\Models\O2O\RO2OOrder_SignCode.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2ORule.cs" />
     <Compile Include="IQBPay\Models\O2O\HashO2OMall_Rule.cs" />
     <Compile Include="IQBPay\Models\O2O\HashO2ORule.cs" />
     <Compile Include="IQBPay\Models\O2O\HashO2OMall.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2OStep.cs" />
+    <Compile Include="IQBPay\Models\O2O\RO2OTransAgent.cs" />
     <Compile Include="IQBPay\Models\O2O\RO2OTranscationWH.cs" />
     <Compile Include="IQBPay\Models\O2O\ROrderSteps.cs" />
     <Compile Include="IQBPay\Models\O2O\RSimpleEntity.cs" />

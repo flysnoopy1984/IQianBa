@@ -271,6 +271,11 @@ function CreateNew(updateData)
             IsLightReceive.attr("checked", true);
         }
 
+        var NeedSMS = $("#O_" + updateData.Id).find("#NeedSMS");
+        if (updateData.NeedSMS) {
+            NeedSMS.attr("checked", true);
+        }
+
     }
     else
     {
@@ -278,6 +283,12 @@ function CreateNew(updateData)
         btn_Status.hide();
         var btn_Delete = $("#New_" + MallCode).find("#btn_Delete");
         btn_Delete.on("click", { "ItemId": "0" }, DeleteItem);
+
+        var NeedSMS = $("#New_" + updateData.Id).find("#NeedSMS");
+        if(MallCode == "JD")
+        {
+            NeedSMS.attr("checked", true);
+        }
 
      
     }
@@ -299,6 +310,7 @@ function GetCellHtml() {
     ctrl += '<ul class="UlHorizontal">';
     ctrl += '<li><span>规则：</span><select id="O2ORuleId" style="width:120px;" class="form-control">{9}</select></li>';
     ctrl += '<li><span>支持秒到：</span><input id="IsLightReceive"  type="checkbox" class="CheckBox_Control" /></li>';
+    ctrl += '<li><span>需要SMS：</span><input id="NeedSMS"  type="checkbox" class="CheckBox_Control" /></li>';
     ctrl += '<li><span>套现方式：</span><select class="form-control" id="PayMethod">{12}</select></li>';
     ctrl += '</ul>';
     ctrl += '<ul class="UlHorizontal">';
@@ -510,6 +522,7 @@ function Save(obj) {
     var O2ORuleCode = pObj.find("#O2ORuleId").val();
     var mCode = pObj.find("#MallCode").val();
     var IsLightReceive = pObj.find("#IsLightReceive").get(0).checked;
+    var NeedSMS = pObj.find("#NeedSMS").get(0).checked;
     var PayMethod = pObj.find("#PayMethod").val();
     var AddrId = pObj.find("#selAddrList").val();
     if (!VerifyItem(pObj)) return;
@@ -529,7 +542,8 @@ function Save(obj) {
             "RecordStatus": RecordStatus,
             "IsLightReceive": IsLightReceive,
             "PayMethod": PayMethod,
-            "AddrId":AddrId,
+            "AddrId": AddrId,
+            "NeedSMS": NeedSMS,
         },
         url: url,
         success: function (data) {

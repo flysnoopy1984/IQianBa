@@ -14,6 +14,7 @@
     <script src="~/scripts/jquery-1.10.2.min.js"></script>
   
     <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+    <script src="@Url.Scrpit("~/scripts/Wap/O2O/PageParameter.js")"></script>
     <script src="~/scripts/Component/jquery.transit.min.js"></script>
     <link href="@Url.Scrpit("~/Content/Component/IQBLeftmenu.css")" rel="stylesheet" />
 
@@ -34,39 +35,46 @@ font-size: 21px;
 .o2o_content {
 
 width: 100%;
-height: 100%;
+height: 100vh;
 padding: 0 0;
+
 }
+
+.HeaderMenu_Right{
+        
+    font-size:9px;
+    position:absolute;
+    right:10px;
+    z-index:999;
+}
+
 </style>
 <script type="text/javascript">
     function GoMenu(url)
     {
-        var aoId = GetUrlParam("aoId");
-        if (url.indexOf("?") > -1)
-            window.location.href = url + "&aoId=" + aoId;
-        else
-            window.location.href = url + "?aoId=" + aoId;
+        toPage(url);
     }
+   
 </script>
 </head>
 <body>
     <ul id="LeftMainMenu" class="sidenav">
         <li><a href=javascript:GoMenu('/O2OWap/Index')><i class="fa fa-inbox"></i><b>主页</b></a></li>
-        <li><a href=javascript:GoMenu('/O2OWap/OrderList')><i class="fa fa-inbox"></i><b>订单列表</b></a></li>
-        <li><a href="#"><i class="fa fa-pencil"></i><b>用户订单</b></a></li>
-        <li><a href="#"><i class="fa fa-cog"></i><b>用户请求</b></a></li>
-        <li><a href="javascript:GoMenu('/O2OWap/Index?act=switchUser')"><i class="fa fa-check"></i><b>退出</b></a></li> 
+        <li><a href=javascript:GoMenu('/O2OWap/OrderList')><i class="fa fa-inbox"></i><b>用户所有订单</b></a></li>
+        @*<li><a href="#"><i class="fa fa-pencil"></i><b>用户订单</b></a></li>
+        <li><a href="#"><i class="fa fa-cog"></i><b>用户请求</b></a></li>*@
+        <li><a href="javascript:GoMenu('/O2OWap/Index?act=switchUser')"><i class="fa fa-check"></i><b>切换用户</b></a></li> 
     </ul>
     <header class="o2o_header">
         <div class="LeftMenu" id="btnLeftMainMenu"><a href="#">菜单</a></div>
         <div>@RenderSection("Title")</div>
-        <div class="div_UserInfo"><a href="#">@ViewBag.BuyerPhone</a></div>
+        <div class="HeaderMenu_Right"><a href="#" id="CurUser">@ViewBag.BuyerPhone</a></div>
     </header>
     <div class="o2o_content">
       
         @RenderBody()
     </div>
-   
+  @*<input type="hidden" id="hCurUser" value="" />*@
 </body>
 </html>
 

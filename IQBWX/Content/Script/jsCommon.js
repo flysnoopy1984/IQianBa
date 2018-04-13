@@ -1,6 +1,6 @@
 ﻿var wxUrl = "http://wx.iqianba.cn";
 var payUrl = "http://pp.iqianba.cn";
-
+//var payUrl = "http://localhost:24068";
 function StringFormat() {
     if (arguments.length == 0)
         return null;

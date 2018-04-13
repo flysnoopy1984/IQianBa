@@ -2,24 +2,20 @@ $(function () {
   var httpUrl = 'http://pp.iqianba.cn';
   var selectedId = '';
   var selectedName = '';
-  var aoId = null;
+
 
   /**
    * [返回]
    */
   backToHome = function () {
-      window.location.href = "/O2OWap/Index?aoId=" + aoId;
+      toPage("/O2OWap/Index");
+     
   };
 
   // 获取商城列表
   function getShopList() {
 
-      aoId = GetUrlParam("aoId");
-     
-      if (aoId == "" || aoId == "null" || aoId == undefined) {
-          window.location.href = "/O2OWap/ErrorPage?ec=1";
-          return;
-      }
+    
       var url = "/O2OWap/QueryMallList";
       $.ajax({
           type: 'post',
@@ -79,8 +75,10 @@ $(function () {
     //var name = $('#name').val();
     //var password = $('#password').val();
     //console.log('name: ' + name);
-    //console.log('password: ' + password);
-      window.location.href = '/O2OWap/ItemList?name=' + selectedName + '&id=' + selectedId + '&aoId=' + aoId;
+      //console.log('password: ' + password);
+
+      var url = '/O2OWap/ItemList?name=' + selectedName + '&id=' + selectedId;
+      toPage(url);
   };
 
   /**

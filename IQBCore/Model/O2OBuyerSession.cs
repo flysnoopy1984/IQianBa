@@ -13,9 +13,12 @@ namespace IQBCore.Model
         public long BuyerId { get; set; }
         public string Phone { get; set; }
 
+        public string UserName { get; set; }
+
         public string AliPayAccount { get; set; }
 
-        public long QRUserId { get; set; }
+       public bool IsUserOrder { get; set; }
+
 
        
        public bool IsAdmin

@@ -15,6 +15,15 @@ namespace IQBCore.IQBPay.Models.O2O
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
+        [MaxLength(50)]
+        public string BuyerName { get; set; }
+
+        /// <summary>
+        /// 用户对应的代理
+        /// </summary>
+        [MaxLength(32)]
+        public string AgentOpenId { get; set; }
+
         [MaxLength(20)]
         public string Phone { get; set; }
 

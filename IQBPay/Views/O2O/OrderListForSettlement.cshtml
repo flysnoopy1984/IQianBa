@@ -69,13 +69,15 @@
             <li>
                 <label class="LeftLable">订单状态：</label>
                 <select id="cO2OOrderStatus" class="form-control ConditionField">
-                    <option value="1014">到货确认</option>
+                    <option value="100">到货确认</option>
                     <option value="1850">已结算</option>
                     <option value="10141850">全部</option>
                 </select>
             </li>
             <li>
-                <input id="IsSign" checked type="checkbox" class="bootstrap-checkbox" style="vertical-align:text-bottom; margin-right:10px;"><label for="IsSign">是否签收</label>
+                @*<input id="IsSign" checked type="checkbox" class="bootstrap-checkbox" style="vertical-align:text-bottom; margin-right:10px;"><label for="IsSign">是否签收</label>*@
+                <input id="IsSMS"  type="checkbox" class="bootstrap-checkbox" style="vertical-align:text-bottom; margin-right:10px;"><label for="IsSMS">短信确认</label>
+                <input id="IsSignCode" type="checkbox" class="bootstrap-checkbox" style="vertical-align:text-bottom; margin-right:10px;"><label for="IsSignCode">提货柜信息</label>
             </li>
             </ul>
         <ul class="UlHorizontal">
@@ -103,7 +105,8 @@
         <table id="DataTable">
             <tr id="header" style="display:-webkit-flex;">
                 <th style="width:100px;">操作</th>
-                <th style="width:40px;">签收</th>
+                <th style="width:100px;">短信</th>
+                <th style="width:100px;">提货信息</th>
                 <th style="width:200px;">商城订单编号</th>
                 <th style="width:250px;">商品</th>
                 <th style="width:80px;">金额</th>

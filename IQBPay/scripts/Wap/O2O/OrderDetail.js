@@ -1,7 +1,7 @@
 $(function () {
     var httpUrl = 'http://pp.iqianba.cn';
     var OrderObj = null;
-    var aoId = null;
+    //var aoId = null;
     var O2ONo = null;
     var HasOrder = true;
 
@@ -37,7 +37,8 @@ $(function () {
   };
 
   backToHome = function () {
-      window.location.href = "/O2OWap/Index?aoId=" + aoId;
+      toPage("/O2OWap/Index");
+     
   };
 
 
@@ -52,11 +53,20 @@ $(function () {
   generateSteps = function (list) {
 
       $.each(list, function (i) {
+         
           var step = list[i];
+          if (OrderObj.NeedSMS == false && step.Code == "StepSMSSend")
+          {
+              return true;
+          }
           var ctrl = AnalyStepByOrderStatus(step);
+          ctrl = String.format(ctrl, "第" + (i+1) + "步");
+
 
           if (ctrl != null && ctrl != "null")
           {
+
+
               $("#order_list").append(ctrl);
               //如果驳回
               if (OrderObj.O2OOrderStatus == 5 && step.Code == "StepReviewOrder")
@@ -81,13 +91,24 @@ $(function () {
              
 
               //已经不能上传照片(>Settlement),不能重新选择商品
-              if(OrderObj.O2OOrderStatus>=10 && (step.Code == "StepUpload" || step.Code =="StepReSelectItem"))
+              if(OrderObj.O2OOrderStatus>=8 && (step.Code == "StepUpload" || step.Code =="StepReSelectItem"))
               {
                   $("#linkToupload").text("查看订单");
                   $("#LinkToSelItem").hide();
 
               }
-             
+
+              //短信结点不能操作
+              if (OrderObj.O2OOrderStatus < 8 && step.Code == "StepSMSSend") {
+                  $("#SendSMSToDelivery").hide();
+                  //$("#StepConfirmSign").find("#linkToSignConfirm").show();
+              }
+              if (OrderObj.O2OOrderStatus < 12 && step.Code == "StepSignCode") {
+                  $("#SignCodeInfo").hide();
+                  //$("#StepConfirmSign").find("#linkToSignConfirm").show();
+              }
+
+  
           }
               
       });
@@ -131,6 +152,16 @@ $(function () {
                       ctrl = replaceStepToPrcess(ctrl,0);
 
                   break;
+              //发送SMS
+              case 8:
+                    if(step.RSeq<4)
+                        ctrl = step.EndContent;
+                    else
+                       ctrl = step.BeginContent;
+                   
+                    if (step.Code == "StepSMSSend")
+                        ctrl = replaceStepToPrcess(ctrl, 0);
+                    break;
               //签收确认
               case 10:
                   if (step.Code == "StepReSelectItem" ||
@@ -141,14 +172,26 @@ $(function () {
                   if (step.Code == "StepConfirmSign")
                       ctrl = replaceStepToPrcess(ctrl,0);
                   break;
+              //柜子信息
+              case 12:
+                  if (step.RSeq < 5)
+                      ctrl = step.EndContent;
+                  else
+                      ctrl = step.BeginContent;
+
+                  if (step.Code == "StepSignCode")
+                      ctrl = replaceStepToPrcess(ctrl, 0);
+                  break;
+                
               //等待结算回款
               case 14:
               case 18:
-                  if (step.Code == "StepReSelectItem" ||
-                      step.Code == "StepUpload" ||
-                      step.Code == "StepReviewOrder" ||
-                      step.Code == "StepConfirmSign" ||
-                      step.Code == "StepWaitingReceive")
+                  if (step.RSeq < 6)
+                  //if (step.Code == "StepReSelectItem" ||
+                  //    step.Code == "StepUpload" ||
+                  //    step.Code == "StepReviewOrder" ||
+                  //    step.Code == "StepConfirmSign" ||
+                  //    step.Code == "StepWaitingReceive")
                       ctrl = step.EndContent;
                   else ctrl = step.BeginContent;
                   if (step.Code == "StepPayment")
@@ -198,12 +241,14 @@ $(function () {
           success: function (res) {
               if (res.IsSuccess) {
                   alert("您将返回商品列表");
-                  window.location.href = "/O2OWap/MallList?aoId=" + aoId;
+                  toPage("/O2OWap/MallList");
+                
               }
               else {
                   alert(res.ErrorMsg);
                   if (res.IntMsg == -1)//"订单未获取！请联系中介";
-                      window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                      toPage("/O2OWap/Index");
+                    
               }
 
           },
@@ -250,7 +295,9 @@ $(function () {
      */
   upLoadOrder = function () {
       if (OrderObj.O2OOrderStatus >= 2) {
-          window.location.href = "/O2OWap/UploadOrder?aoId=" + aoId + "&OrderNo=" + OrderObj.O2ONo + "&OrderStatus=" + OrderObj.O2OOrderStatus;
+          var url = "/O2OWap/UploadOrder?OrderNo=" + OrderObj.O2ONo + "&OrderStatus=" + OrderObj.O2OOrderStatus;
+          toPage(url);
+         
       }
       else {
           alert("请完成上一步");
@@ -301,7 +348,8 @@ $(function () {
               else {
                   alert(res.ErrorMsg);
                   if (res.IntMsg == -1)//"订单未获取！请联系中介";
-                      window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                      toPage("/O2OWap/Index");
+                    
               }
 
           },
@@ -311,17 +359,28 @@ $(function () {
           }
       });
   }
+  //提货箱信息
+  SignCodeInfo = function () {
+      toPage("/O2OWap/StepReceiveConSign?O2ONo=" + O2ONo);
+  };
+
+  SendSMSToDelivery = function () {
+      toPage("/O2OWap/StepReceiveSMS?O2ONo=" + O2ONo);
+  };
 
     //初始化函数
   InitOrder = function () {
-      aoId = GetUrlParam("aoId");
-      if (aoId == "" || aoId == "null" || aoId == undefined) {
-          window.location.href = "/O2OWap/ErrorPage?ec=1";
-          return;
-      }
+    
       ShowBlock();
 
       O2ONo = GetUrlParam("O2ONo");
+      
+      if (O2ONo == "" || O2ONo == null)
+      {
+          alert("订单编号未获取，请回到列表尝试重新选择");
+          toPage("/O2OWap/OrderList");
+      }
+        
 
       var url = "/O2OWap/OrderDetailQuery";
       $.ajax({
@@ -343,13 +402,16 @@ $(function () {
                   $.unblockUI();
                   if (res.IntMsg == -1) {
                       alert("用户信息未获取，请重新提交手机号");
-                      window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                      toPage("/O2OWap/Index");
+                    
                   }
-                  else if (res.IntMsg == -2) {
+                      //-2 订单编号没有传，-3订单编号在数据库中没有找到
+                  else if (res.IntMsg == -2 || res.IntMsg ==-3) {
                       $("#btnCloseOrder").hide();
                       HasOrder = false;
-                      alert("您还没有订单，请先创建");
-                      window.location.href = "/O2OWap/MallList?aoId=" + aoId;
+                      alert("订单编号没有获取");
+                      toPage("/O2OWap/OrderList");
+                   
                   }
                   else {
                       alert(res.ErrorMsg);

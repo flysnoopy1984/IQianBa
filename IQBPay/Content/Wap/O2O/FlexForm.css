@@ -1,0 +1,33 @@
+﻿body {
+  
+}
+
+.flex_container{
+    display: -webkit-flex; /* Safari */
+    display:flex;
+    margin:0;
+    height:100vh;
+    width:100vw;
+    align-items:center;
+    justify-content:center;
+}
+.Form_Container
+{
+
+    width:80%;
+}
+.Form_Row{
+   padding:15px;
+   width:100%;
+   display:flex;
+}
+.Form_Row label{
+    width:35%;
+    padding-right:5px;
+    padding-top:5px;
+    
+}
+.Flex_Row_Right{
+    display:flex;
+    justify-content:flex-end;
+}

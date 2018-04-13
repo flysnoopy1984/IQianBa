@@ -68,6 +68,9 @@ namespace IQBWX.DataBase.IQBPay
             return (i > 0);
 
         }
+
+        public DbSet<EUserAccountBalance> DBUserAccountBalance { get; set; }
+
         #endregion
 
         #region Store
@@ -137,6 +140,8 @@ namespace IQBWX.DataBase.IQBPay
         public DbSet<EO2ORoleCharge> DBO2ORoleCharge { get; set; }
 
         public DbSet<EO2OBuyerReceiveAddr> DBO2OBuyerReceiveAddr { get; set; }
+
+        public DbSet<EO2OTransAgent> DBO2OTransAgent { get; set; }
 
         #endregion
 

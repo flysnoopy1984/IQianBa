@@ -1,0 +1,193 @@
+﻿@model IQBCore.IQBPay.Models.User.EUserAccountBalance
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
+    <title></title>
+    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/List.css")" rel="stylesheet" />
+    <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
+    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
+    <script src="~/Content/Script/jsCommon.js" type="text/javascript"></script>
+    <link href="@ViewBag.ppUrl/Content/Component/IQBScroll.css" rel="stylesheet" />
+    <script src="@ViewBag.ppUrl/scripts/Component/IQB/IQBScroll.js" type="text/javascript"></script>
+
+    <link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
+    <script src="~/Content/Script/Component/jquery-confirm.js"></script>
+
+    @*<script src="@ViewBag.ppUrl/scripts/Component/jquery.blockUI.min.js" type="text/javascript"></script>*@
+
+    <script src="@Url.Scrpit("~/Content/Script/IQBPay/AgentAccount.js")"></script>
+    <link href="@Url.Scrpit("~/Content/Css/Info.css")" rel="stylesheet" />
+    <link href="~/Content/Css/bootstrap.min.css" rel="stylesheet" />
+
+    <style type="text/css">
+        body {
+            font-size: 24px !important;
+        }
+
+        .Summery {
+            display: flex;
+            width: 100vw;
+            height: 80px;
+            line-height: 80px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+            .Summery div {
+                border-bottom: solid 1px #808080;
+            }
+
+        .grzxcon1rs {
+            padding-top: unset !important;
+        }
+
+        .btn {
+            width: auto;
+            height: auto;
+            font-size: 24px !important;
+        }
+
+        .lineRow {
+            display: flex;
+            height: 50px;
+            line-height: 50px;
+            width: 100%;
+            justify-content: space-between;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .AmtType {
+            width: 30%;
+        }
+
+        .AmtDes {
+            width: 48%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .AmtValue {
+            font-family: arial,"Hiragino Sans GB","Microsoft Yahei",sans-serif;
+            font-weight: bold;
+            color: #000000;
+            font-size: 24px;
+        }
+
+        .AmtAdd {
+            color: #F19659;
+        }
+
+        #GetMoneyArea {
+            display: none;
+            height: 80px;
+            line-height: 80px;
+            padding-left: 15px;
+            padding-right: 15px;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+            #GetMoneyArea div {
+                border-bottom: none;
+            }
+
+        #GetMoney_Amt {
+            width: 250px;
+            height: 40px !important;
+            font-size: 24px;
+        }
+        /*#GetMoneyArea label{padding-right:15px;}*/
+        .form-control {
+            display: inline-block !important;
+            width: auto;
+        }
+
+        .btnList {
+            display: flex;
+            justify-content: space-between;
+        }
+
+            .btnList div {
+                border-bottom: none;
+            }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="grzxcon1 mgz">
+        <div class="grzxcon1l f"><img align="absmiddle" src="@ViewBag.Headimgurl" width="130" height="130" /></div>
+        <div class="grzxcon1r f bai">
+            <div class="grzxcon1rs mg2">服务平台</div>
+            <div class="grzxcon1rx mg2 xi21"><img align="absmiddle" src="@ViewBag.UserRoleImg" />@ViewBag.ShowName</div>
+        </div>
+    </div>
+    <div>
+        <div class="grzxcon2 mgz xi30 bai cen">账户余额</div>
+        <div class="Summery">
+            <div style="width:50%">我的余额：<span id="AgentBalance">@Model.O2OShipBalance</span></div>
+
+            <div style="width:50%" class="btnList">
+                <div><button type="button" onclick="GetMoney();" class="btn btn-danger" id="btnGetMoney">提现</button></div>
+                <div><button type="button" onclick="SetUserAccount();" class="btn btn-success" id="btnUserAccount">账户设置</button></div>
+            </div>
+        </div>
+        <div id="GetMoneyArea">
+            <div><label for="GetMoney_Amt">输入提现金额:</label></div>
+            <div><input type="tel" id="GetMoney_Amt" class="form-control" onchange="CheckAmtValue(this);" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></div>
+            @*<div>
+                    <img id="btnAmtMin" src="~/Content/images/s_min.png" style="width:48px;height:48px;" />
+                    <img id="btnAmtAdd" src="~/Content/images/s_add.png" style="width:48px;height:48px;" />
+                </div>*@
+            <div><button type="button" onclick="SureGetMoney();" class="btn btn-warning" id="btnSureGetMoney">确定</button></div>
+
+        </div>
+        <div id="Detail">
+            <table class="table" id="DataTable">
+                @*<tbody>
+                      <tr>
+                          <td>
+                             <div class="lineRow">
+                                 <div class="AmtType">2018-2-1</div>
+                                 <div class="AmtDes">订单佣金</div>
+                                 <div class="AmtValue">192921.11</div>
+                             </div>
+
+                          </td>
+                      </tr>
+                        <tr>
+                            <td>
+                                <div class="lineRow">
+                                    <div class="AmtType">2018-12-12</div>
+                                    <div class="AmtDes">上级佣金收入</div>
+                                    <div class="AmtValue AmtAdd">192921.11</div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>*@
+            </table>
+
+        </div>
+
+
+
+
+
+    </div>
+</body>
+</html>

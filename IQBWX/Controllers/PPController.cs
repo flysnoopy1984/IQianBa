@@ -29,6 +29,10 @@ using System.Web;
 using System.Web.Mvc;
 using WxPayAPI;
 using EntityFramework.Extensions;
+using IQBCore.Model;
+using IQBCore.IQBPay.Models.O2O;
+using IQBCore.IQBPay.Models.AccountPayment;
+using IQBCore.IQBPay.Models.Sys;
 
 namespace IQBWX.Controllers
 {
@@ -1365,6 +1369,166 @@ group by o.AgentOpenId ,o.OrderType
             return Json(result);
         }
 
+        public ActionResult AgentAccount()
+        {
+            if (UserSession.UserRole < UserRole.Agent)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+            InitProfilePage();
+
+            ViewBag.ppUrl = ConfigurationManager.AppSettings["Site_IQBPay"];
+            EUserAccountBalance ub;
+            using (AliPayContent db = new AliPayContent())
+            {
+                string openId = UserSession.OpenId;
+                ub = db.DBUserAccountBalance.Where(a => a.OpenId == openId && a.UserAccountType == UserAccountType.Agent).FirstOrDefault();
+                if (ub == null)
+                {
+                    ub = new EUserAccountBalance()
+                    {
+                        OpenId = openId,
+                        UserAccountType = UserAccountType.Agent,
+                        O2OShipBalance =0,
+                        O2OShipInCome =0,
+                        O2OShipOutCome =0,
+                    };
+                    db.DBUserAccountBalance.Add(ub);
+                    db.SaveChanges();
+                }
+            }
+
+            return View(ub);
+        }
+
+        [HttpPost]
+        public ActionResult AgentAccountTransQuery()
+        {
+            string OpenId = UserSession.OpenId;
+            int pageIndex = Convert.ToInt32(Request["pageIndex"]);
+            int pageSize = Convert.ToInt32(Request["pageSize"]);
+
+            NResult<RO2OTransAgent> result = new NResult<RO2OTransAgent>();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                   var list =  db.DBO2OTransAgent.Where(a => a.AgentOpenId == OpenId).Select(a=>new RO2OTransAgent() {
+                       AgentOpenId = a.AgentOpenId,
+                       Amount = a.Amount,
+                       Id = a.Id,
+                       TransactionType = a.TransactionType,
+                       TransDateTime = a.TransDateTime,
+                   }).OrderByDescending(a=>a.TransDateTime);
+
+                    if (pageIndex == 0)
+                        result.resultList = list.Take(pageSize).ToList();
+                    else
+                        result.resultList = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+                 }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+
+            }
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult TransferAmoutToAgent()
+        {
+            OutAPIResult result = new OutAPIResult();
+            string openId = UserSession.OpenId;
+            AliPayManager payManager = new AliPayManager();
+         
+            try
+            {
+                float amt = Convert.ToSingle(Request["Amt"]);
+                int minAmt = Convert.ToInt32(Request["minAmt"]);
+                if (amt < minAmt || amt % minAmt != 0)
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMsg = string.Format("金额不正确,必须{0}的倍数", minAmt);
+                    return Json(result);
+                }
+                using (AliPayContent db = new AliPayContent())
+                {
+                    EUserAccountBalance ub = db.DBUserAccountBalance.Where(a => a.OpenId == openId && a.UserAccountType == UserAccountType.Agent).FirstOrDefault();
+                    if(ub == null)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = "账户余额表出错，请联系平台";
+                        return Json(result);
+                    }
+                    if(ub.O2OShipBalance<amt)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = "提款金额不能大于余额";
+                        return Json(result);
+                    }
+                    EUserInfo ui = db.DBUserInfo.Where(a => a.OpenId == openId).FirstOrDefault();
+                    //支付宝转账给代理（提现操作）
+                    ETransferAmount AliTrans = new ETransferAmount()
+                    {
+                        AgentOpenId = ui.OpenId,
+                        AgentName = ui.Name,
+                        TargetAccount = ui.AliPayAccount,
+                        TransDate = DateTime.Now,
+                        TransDateStr = DateTime.Now.ToShortDateString(),
+                        TransferStatus = TransferStatus.Open,
+                        TransferTarget = TransferTarget.Agent,
+                        TransferAmount = amt, 
+
+                    };
+                    EAliPayApplication app;
+                    app = db.DBAliPayApp.Where(a => a.IsSubAccount == true).FirstOrDefault();
+                    if (app == null)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = "没有AliPay应用,请联系管理员";
+                        return Json(result);
+                    }
+                    AliTrans = payManager.O2OTransferHandler(AliTrans, app, app);
+                    if (AliTrans.TransferStatus == TransferStatus.Failure)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = "转账失败:"+ AliTrans.Log;
+                        return Json(result);
+                    }
+                    else
+                    {
+                        db.DBTransferAmount.Add(AliTrans);
+
+                        EO2OTransAgent o2oTrans = new EO2OTransAgent()
+                        {
+                            AgentOpenId = openId,
+                            Amount = amt,
+                            TransDateTime = DateTime.Now,
+                            TransactionType = TransactionType.GetCash,
+
+                        };
+                        db.DBO2OTransAgent.Add(o2oTrans);
+
+                        //账户变动（支出）
+                        ub.O2OShipBalance -= amt;
+                        ub.O2OShipOutCome += amt;
+
+                        db.SaveChanges();
+                    }
+
+                }
+                    
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+        }
+
         #endregion
 
         #region 加盟商户
@@ -1764,6 +1928,8 @@ group by o.AgentOpenId ,o.OrderType
 
             return View();
         }
+
+       
         #endregion
 
 

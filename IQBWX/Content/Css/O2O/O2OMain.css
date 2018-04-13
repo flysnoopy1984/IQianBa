@@ -15,7 +15,7 @@
 
 .o2o_content {
   width: 100%;
-
+  position:absolute;
   height: 100%;
   padding: 0 15px;
 }

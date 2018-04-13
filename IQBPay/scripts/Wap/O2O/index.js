@@ -5,26 +5,41 @@ $(function () {
     var countDown = InitCount;
     var IsPassVerify = false;
     var popModel = null;
-    var aoId = null;
+
+  
     var HasOrder = false;
-    var ck_IQB_O2OBuyerPhone = "IQB_O2OBuyerPhone";
+    var ck_IQB_O2OBuyerPhone = "IQB_O2OUser";
 
     function  InitPage()
     {
         $("#ActionArea").hide();
         $("#get_phone_check").show();
 
-        aoId = GetUrlParam("aoId");
-        if (aoId == "" || aoId == "null" || aoId == undefined)
-        {
-            window.location.href = "/O2OWap/ErrorPage?ec=1";
-            return;
+        var act = GetUrlParam("act");
+
+        if (un == "" || un == undefined || un == "null") {
+            
+            var curUser = $("#CurUser").text();
+            if (curUser != null && curUser != "") {
+                ShowActionArea(1);
+            }
         }
-        var phone = $.cookie(ck_IQB_O2OBuyerPhone);
-        if (phone != undefined && phone!="")
+        //代下单
+        else
         {
-            ShowActionArea(1);
+            if (act != undefined && act == "switchUser")
+            {
+                var url = "/O2OWap/EntryOrderForUser";
+                toPage(url);
+                return;
+            }
+            else
+            {
+                $("#o2o_btn__look").text("当前用户订单列表");
+                ShowActionArea(1);
+            }
         }
+      
     }
 
 InitPage();
@@ -32,35 +47,21 @@ InitPage();
    * [跳转到我要购物页面]
    */
 orderPdt = function () {
-    window.location.href = "/O2OWap/MallList?aoId=" + aoId;
-     //var url = "/O2OWap/HasBuyerOrder";
-     //$.ajax({
-     //    type: 'post', 
-     //    url: url,
-     //    success: function (data) {
-     //        if (data == true) {
-     //            alert("您有未完成的订单，请先处理");
-     //            lookOrderList();
-     //        }
-     //        else
-     //            window.location.href = "/O2OWap/MallList?aoId=" + aoId;
-     //    },
-     //    error: function (xhr, type) {
-     //        alert("error");
-     //    }
-     //});
-    
+    toPage("/O2OWap/MallList");
+
   };
 
   /**
    * [跳转到我要查看我的订单页面]
    */
 lookOrderDetail = function () {
-      window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
+    toPage("/O2OWap/OrderDetail");
+  
 };
 
 lookOrderList = function () {
-    window.location.href = "/O2OWap/OrderList?aoId=" + aoId;
+    toPage("/O2OWap/OrderList");
+    
 };
 
   $('#phone_num').keypress(function () {
@@ -136,7 +137,7 @@ lookOrderList = function () {
   function ShowSMSModel()
   {
       //   $('.o2o_modal').css("display", "flex");
-      var phone = $("#phone_num").val();
+      var phone = $("#user_num").val();
      // $("#phone_Verify").text(phone);
       var html = GetPopHtml();// $('.o2o_modal').html();
 
@@ -168,7 +169,7 @@ lookOrderList = function () {
       $.ajax({
           type: 'post',
           dataType: "json",
-          data: { "Phone": Phone},
+          data: { "Phone": Phone, "aoId": aoId },
           url: url,
           success: function (data) {
               if (data.IsSuccess) {
@@ -275,32 +276,32 @@ lookOrderList = function () {
       });
   }
 
-  LoginByPhone = function () {
-      var Phone = $('#phone_num').val();
-      if(isPhoneNo(Phone))
+  Login = function () {
+      var user = $('#user_num').val().trim();
+      
+     
+      if (isPhoneNo(user))
       {
-          //检查是用户信息是否存在，检查是否有订单
-        //  $("#btnLogin").hide();
-
+          //此为用户自己登陆
           var url = "/O2OWap/Login";
           $.ajax({
               type: 'post',
               dataType: "json",
-              data: { "Phone": Phone },
+              data: { "UserNum": user },
               url: url,
               success: function (data) {
                   if (data.IsSuccess) {
-                      switch(data.IntMsg)
-                      {
+                      switch (data.IntMsg) {
                           case 0:
                               ShowSMSModel();
                               break;
-                          case 2:
-                              HasOrder = true;
+                         
                           default:
-                            //  $.cookie('IQB_O2OBuyerPhone', Phone); 后台已经写入
-                              ShowActionArea(1);
-                              
+                              toPage("/O2OWap/Index");
+                              //$("#CurUser").text(user);
+                              ////  $.cookie('IQB_O2OBuyerPhone', Phone); 后台已经写入
+                              //ShowActionArea(1);
+
                       }
                   }
                   else {
@@ -318,14 +319,16 @@ lookOrderList = function () {
       else
       {
           alert("请正确填写手机号");
-          $('#phone_num').focus();
+          $('#user_num').select();
+          $('#user_num').focus();
       }
   }
 
     //切换用户
   switchUser = function () {
       $.cookie(ck_IQB_O2OBuyerPhone, '');
-      window.location.href = "/O2OWap/Index?aoId=" + aoId+"&act=switchUser";
+      toPage("/O2OWap/Index");
+    
   }
 
     /**

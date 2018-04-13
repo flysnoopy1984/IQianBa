@@ -157,13 +157,7 @@ body {
   margin: auto;
   background-repeat: no-repeat;
 }
-.div_UserInfo{
-        
-    font-size:9px;
-    position:absolute;
-    right:10px;
-    z-index:999;
-}
+
  .o2o_header div
 {
     display:inline-block;

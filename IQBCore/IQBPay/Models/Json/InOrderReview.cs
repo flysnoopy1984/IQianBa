@@ -15,6 +15,8 @@ namespace IQBCore.IQBPay.Models.Json
 
         public double OrderAmount { get; set; }
 
+        public string OrderImgSrc{ get; set; }
+
         public bool IsApprove { get; set; }
     }
 }

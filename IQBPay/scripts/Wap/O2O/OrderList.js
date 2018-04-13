@@ -1,22 +1,18 @@
 ﻿$(function () {
-    var aoId = null;
+    //var aoId = null;
     var pageIndex = 0;
     var pageSize = 10;
     var IsAdmin = false;
     var IQBScroll = null;
 
-    aoId = GetUrlParam("aoId");
 
-    if (aoId == "" || aoId == "null" || aoId == undefined) {
-        window.location.href = "/O2OWap/ErrorPage?ec=1";
-        return;
-    }
 
     /**
  * [返回]
  */
     backToHome = function () {
-        window.location.href = "/O2OWap/Index?aoId=" + aoId;
+        toPage("/O2OWap/Index");
+       
     };
 
     ShowBlock = function () {
@@ -62,7 +58,7 @@
                 var selOS = $("#selCondition").val();
                 $.ajax({
                     type: 'post',
-                    data: { "pageIndex": pageIndex, "pageSize": pageSize, "selOS": selOS },
+                    data: { "pageIndex": pageIndex, "pageSize": pageSize, "selOS": selOS,"aoId":aoId },
                     url: url,
                     success: function (res) {
                         if (res.IsSuccess) {
@@ -138,7 +134,7 @@
             ctrl += "</tr>";
 
 
-            ctrl = String.format(ctrl, data[i].ItemName, data[i].OrderAmount, data[i].CreateDateTime, data[i].O2OOrderStatusStr, data[i].UserPhone);
+            ctrl = String.format(ctrl, data[i].ItemName, data[i].OrderAmount, data[i].CreateDateTime, data[i].O2OOrderStatusStr, data[i].User);
             DataTable.append(ctrl);
 
           
@@ -180,8 +176,9 @@
 
     ToReview = function (e, O2ONo, OrderStatus) {
         e.stopPropagation();
-
-        window.location.href = "/O2OWap/UploadOrder?aoId=" + aoId + "&OrderNo=" + O2ONo + "&OrderStatus=" + OrderStatus;
+        var url = "/O2OWap/UploadOrder?OrderNo=" + O2ONo + "&OrderStatus=" + OrderStatus;
+        toPage(url);
+      
     }
 
 
@@ -190,8 +187,9 @@
     ToDetail = function (e,O2ONo)
     {
      
-
-        window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId + "&O2ONo=" + O2ONo;
+        var url = "/O2OWap/OrderDetail?O2ONo=" + O2ONo;
+        toPage(url);
+      
       
     }
 });

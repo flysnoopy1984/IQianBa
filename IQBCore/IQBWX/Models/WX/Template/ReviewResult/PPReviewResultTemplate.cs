@@ -48,7 +48,7 @@ namespace IQBCore.IQBWX.Models.WX.Template.ReviewResult
                 
              
                 first = new TemplateField() { value = first, color = "#1364EB" },
-                keyword1 = new TemplateField() { value = o2oOrder.UserPhone },
+                keyword1 = new TemplateField() { value = o2oOrder.User },
                 keyword2 = new TemplateField() { value = OrderStatus },
                 keyword3 = new TemplateField() { value = o2oOrder.ReviewDateTime.ToString("yyyy-MM-dd HH:mm:ss") },
 

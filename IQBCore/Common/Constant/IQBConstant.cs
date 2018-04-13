@@ -30,6 +30,8 @@ namespace IQBCore.Common.Constant
 
         public const string SK_O2OAgentOpenId = "O2OAgentOpenId";
 
+        public const string SK_O2OBuyerSession = "BuyerSession";
+
         /* Session Key end */
 
         /* Cookie Key begin */
@@ -44,10 +46,10 @@ namespace IQBCore.Common.Constant
         public const string ck_O2OBuyerPhone = "IQB_O2OBuyerPhone";
 
         public const string ck_O2OReceiveAccount = "IQB_O2OReceiveAccount";
+        public const string ck_O2OUser = "IQB_O2OUser";
 
-      
 
-        
+
         /* Cookie Key end */
     }
 }

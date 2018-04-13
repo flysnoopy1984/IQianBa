@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
 @section Title{
-    订单信息上传
+    订单详细信息
 }
 <link href="@Url.Scrpit("~/Content/IQBFonts.css")" rel="stylesheet" />
 <link href="@Url.Scrpit("~/Content/Wap/O2O/UploadOrder.css")" rel="stylesheet" />
@@ -21,6 +21,7 @@
        height:20px;
        left:0px;
     }
+   
      #ReviewArea
      {
         width:100%;
@@ -49,29 +50,21 @@
             <button id="btnVerifyAccount" type="button" class="btn btn-success" onclick="VerifyAccount();">请先验证收款账户</button>
         </div>
     </div>
-    <div class="upload_image">
-        <div class="upload_order_image_title">上传订单相关信息</div>
-        <div class="upload_order_image_list">
-            <!-- 已经上传图片 -->
-            <div id="imgContainer1" class="upload_order_image_done">
-                <div class="upload_order_delete_btn" id="btnDelImg" onclick="deleteImage();"></div>
-                <img id="imgUpload1" src=""></img>
-            </div>
-            <!-- 上传按钮 -->
-            <div class="submit_btn" id="btnUpload1" onclick="fileSelect();"></div>
-            <input type="file" name="fileToUpload" id="upload_OrderInfo" style="display:none;">
-            <!--进度条-->
-            @*<div id="ProcessArea1" class="progress progress-striped">
-                    <div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar"
-                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                         style="width: 30%;">
-                        <span class="sr-only">正在上传请耐心等待...</span>
-                    </div>
-                </div>*@
+    <ul class="list-group">
+        <li class="list-group-item">
+            <span class="LeftSpan" id="lb_MallLoginName">商城登陆用户名</span>
+            <span style="color:firebrick;">*</span>
+            <input id="MallLoginName" type="text" class="form-control" />
+        </li>
+        <li class="list-group-item">
+            <span class="LeftSpan" id="lb_MallLoginPwd">商城登陆密码</span>
+            <span style="color:firebrick;">*</span>
+            <input id="MallLoginPwd" type="text" class="form-control" />
+        </li>
+      
 
-        </div>
+    </ul>
 
-    </div>
 
     <!-- 按钮 -->
     <div class="upload_btn_group">
@@ -80,7 +73,29 @@
     </div>
     <!--审核-->
     <div id="ReviewArea">
+        <div class="upload_image">
+            <div class="upload_order_image_title">上传订单相关信息</div>
+            <div class="upload_order_image_list">
+                <!-- 已经上传图片 -->
+                <div id="imgContainer1" class="upload_order_image_done">
+                    <div class="upload_order_delete_btn" id="btnDelImg" onclick="deleteImage();"></div>
+                    <img id="imgUpload1" src=""></img>
+                </div>
+                <!-- 上传按钮 -->
+                <div class="submit_btn" id="btnUpload1" onclick="fileSelect();"></div>
+                <input type="file" name="fileToUpload" id="upload_OrderInfo" style="display:none;">
+                <!--进度条-->
+                @*<div id="ProcessArea1" class="progress progress-striped">
+                    <div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar"
+                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                         style="width: 30%;">
+                        <span class="sr-only">正在上传请耐心等待...</span>
+                    </div>
+                </div>*@
 
+            </div>
+
+        </div>
         <ul class="list-group">
             <li class="list-group-item">
                 <span class="LeftSpan">商城订单：</span><input id="MallOrderNo" type="text" class="form-control" />

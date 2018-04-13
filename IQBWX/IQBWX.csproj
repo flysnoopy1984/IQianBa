@@ -149,6 +149,7 @@
     <Content Include="Content\Css\MainCss.css" />
     <Content Include="Content\Css\idangerous.swiper.css" />
     <Content Include="Content\Css\O2O\AgentInfoCheck.css" />
+    <Content Include="Content\Css\O2O\FlexBody.css" />
     <Content Include="Content\Css\O2O\O2OMain.css" />
     <Content Include="Content\Css\PP.css" />
     <Content Include="Content\Css\DoTransfer.css" />
@@ -226,6 +227,8 @@
     <Content Include="Content\images\show_06.jpg" />
     <Content Include="Content\images\sQR.png" />
     <Content Include="Content\images\sysc.png" />
+    <Content Include="Content\images\s_add.png" />
+    <Content Include="Content\images\s_min.png" />
     <Content Include="Content\images\tx2.jpg" />
     <Content Include="Content\images\WXIcons.png" />
     <Content Include="Content\images\wxLoginBK.jpg" />
@@ -252,6 +255,7 @@
     <Content Include="Content\Script\ErrorMessage.js" />
     <Content Include="Content\Script\idangerous.swiper.min.js" />
     <Content Include="Content\Script\iqb.dropload.min.js" />
+    <Content Include="Content\Script\IQBPay\AgentAccount.js" />
     <Content Include="Content\Script\IQBPay\AgentCommList.js" />
     <Content Include="Content\Script\IQBPay\AgentDetail.js" />
     <Content Include="Content\Script\IQBPay\AgentList.js" />
@@ -263,6 +267,7 @@
     <Content Include="Content\Script\IQBPay\News.js" />
     <Content Include="Content\Script\IQBPay\O2O\AgentFeeRate.js" />
     <Content Include="Content\Script\IQBPay\O2O\AgentInfoCheck.js" />
+    <Content Include="Content\Script\IQBPay\O2O\EntryAgent.js" />
     <Content Include="Content\Script\IQBPay\SMS.js" />
     <Content Include="Content\Script\IQBPay\Pay2.js" />
     <Content Include="Content\Script\IQBPay\PayWithAccount.js" />
@@ -468,6 +473,7 @@
     <Content Include="Views\Union\ProjWTP.cshtml" />
     <Content Include="Views\Union\CC.cshtml" />
     <Content Include="Views\O2OWap\AgentInfoCheck.cshtml" />
+    <Content Include="Views\PP\AgentAccount.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

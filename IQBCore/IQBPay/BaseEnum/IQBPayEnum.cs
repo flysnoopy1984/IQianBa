@@ -54,6 +54,13 @@ namespace IQBCore.IQBPay.BaseEnum
                 case O2OOrderStatus.Settlement:
                     O2OOrderStatusStr = "等待平台结算";
                     break;
+                case O2OOrderStatus.WaitingSendSMS:
+                    O2OOrderStatusStr = "等待发送短信";
+                    break;
+                case O2OOrderStatus.SignCodeInfo:
+                    O2OOrderStatusStr = "快递柜信息";
+                    break;
+
                 //case O2OOrderStatus.WaitingDeliver:
                 //    O2OOrderStatusStr = "等待发货";
                 //    break;
@@ -69,6 +76,7 @@ namespace IQBCore.IQBPay.BaseEnum
 
     }
 
+  
     public enum PayWebStatus
     {
         Running = 0,
@@ -331,7 +339,7 @@ namespace IQBCore.IQBPay.BaseEnum
         /// </summary>
         O2OWareHouse =20,
         
-        
+       
         
        /// <summary>
        /// 充值
@@ -357,6 +365,20 @@ namespace IQBCore.IQBPay.BaseEnum
         Open =0 ,
         Success = 1,
         Failure= -1,
+
+    }
+
+    public enum TransactionType
+    {
+        Agent_Order_Comm = 0,
+        Parent_Comm = 1,
+        L3_Comm = 2,
+
+        /// <summary>
+        /// 提款
+        /// </summary>
+        GetCash = 3,
+
 
     }
 
@@ -403,9 +425,15 @@ namespace IQBCore.IQBPay.BaseEnum
         //等待订单审核
         OrderReview=6,
 
+        //JD订单需要发送短信给快递员
+        WaitingSendSMS = 8,
+
         //用户确认签收
         ComfirmSign=10,
 
+        //提货柜信息
+        SignCodeInfo =12,
+         
         //等待到货结算
         Settlement = 14,
 
@@ -423,13 +451,23 @@ namespace IQBCore.IQBPay.BaseEnum
 
         /* 订单过滤查询使用 */
         //出库商过滤使用，到货确认
-        Sign_Settle = 1014,
+        ItemArrival = 100,
+        //已结算
         Payment_Complete = 1850,
-        Sign_Settle_Payment_Complete = 10141850,
 
+        Sign_Settle_Payment_Complete = 10141850,
+/*
         Sign_Settle_Payment = 101418,
         Payment_UserClose = 1845,
         Settle_Payment_UserClose = 141845,
+        */
+    }
+
+    public enum O2OOrderType
+    {
+        Normal = 0,
+        //代替用户下单
+        ForUser = 10,
     }
 
 
@@ -440,6 +478,11 @@ namespace IQBCore.IQBPay.BaseEnum
         /// 出库商
         /// </summary>
         O2OShippment = 10,
+
+        /// <summary>
+        /// 代理
+        /// </summary>
+        Agent = 0,
 
     }
 

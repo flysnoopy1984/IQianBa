@@ -127,6 +127,8 @@
             data: { "mobilePhone": Phone, "Code": Code },
             url: url,
             success: function (data) {
+                if (endEvent)
+                    endEvent();
                 switch (data.SMSVerifyStatus) {
                     case -1:
                         alert("验证码未知错误，请联系管理员");
@@ -151,8 +153,7 @@
                         return data.SMSVerifyStatus;
 
                 }
-                if (endEvent)
-                    endEvent();
+             
 
 
             },

@@ -75,6 +75,7 @@ namespace IQBCore.IQBPay.Models.O2O
         /// </summary>
        public bool IsLightReceive { get; set; }
 
+       public bool NeedSMS { get; set; }
 
         /// <summary>
         /// 套现方式 花呗，白条

@@ -11,5 +11,7 @@ namespace IQBCore.Model
         public string Code { get; set; }
 
         public string Msg { get; set; }
+
+        public string aoId { get; set; }
     }
 }

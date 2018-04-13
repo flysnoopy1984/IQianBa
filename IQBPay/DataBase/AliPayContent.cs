@@ -69,6 +69,8 @@ namespace IQBPay.DataBase
 
         public DbSet<EPayChannel> DBPayChannel { get; set; }
 
+   
+
         #region Interface
         public T Update<T>(T entity) where T : class
         {
@@ -285,7 +287,9 @@ namespace IQBPay.DataBase
 
         public DbSet<EO2OBuyerReceiveAddr> DBO2OBuyerReceiveAddr { get; set; }
 
-        
+        public DbSet<EO2OOrder_SignCode> DBO2OOrder_SignCode { get; set; }
+
+        public DbSet<EO2OTransAgent> DBO2OTransAgent { get; set; }
 
         #endregion
 

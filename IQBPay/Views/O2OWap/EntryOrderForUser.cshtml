@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_O2OLayOut.cshtml";
+}
+
+@section Title{
+    替用户下单
+}
+<style>
+    .form-control {
+        display: inline-block !important;
+    }
+
+    .Title {
+        border-bottom: 1px solid #ff6a00;
+    }
+    .Form_Container
+    {
+        padding-bottom:100px;
+    }
+</style>
+<link href="@Url.Scrpit("~/Content/Wap/O2O/FlexForm.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/Scripts/Wap/O2O/EntryOrderForUser.js")"></script>
+
+<div class="flex_container">
+    <div class="Form_Container">
+        <div class="Title">输入用户姓名,开始为他下单</div>
+        <div class="Form_Row">
+            <label for="UserName">用户名:</label><input id="UserName" type="text" placeholder="用户名" class="form-control" onkeypress="checkSepcValue(this);" />
+        </div>
+        <div class="Flex_Row_Right">
+            <button id="btnToOrder" type="button" class="btn btn-success" onclick="ToOrder();">开始下单</button>
+        </div>
+    </div>
+</div>
+

@@ -1,4 +1,4 @@
-﻿@model IQBCore.IQBPay.Models.O2O.EO2OOrder
+﻿@model IQBCore.IQBPay.Models.O2O.RO2OOrder
 @{
     Layout = null;
 }
@@ -123,16 +123,24 @@
                 </li>
             </ul>
             <ul style="height:400px;">
-                <li>
+                <li style="width:100%;">
                     <span class="LeftSpan">上传的图片：</span>
                     <span id="ImgSpan"><img class="imgOrder" id="imgOrder" src="@Model.OrderImgUrl" data-original="@Model.OrderImgUrl" /></span>
+                </li>
+            </ul>
+            <ul style="height:200px;">
+                <li style="width:100%;">
+                    <span class="LeftSpan">提货柜信息：</span>
+                    <textarea readonly style="width:500px; height:150px; vertical-align:middle;">
+                        @Model.SignCodeInfo
+                    </textarea>
                 </li>
             </ul>
         </div>
         <div id="buttonList">
             <ul class="UlHorizontal" style="text-align:center; margin-top:20px;">
                 @if (Model.O2OOrderStatus == IQBCore.IQBPay.BaseEnum.O2OOrderStatus.Settlement ||
-                Model.O2OOrderStatus == IQBCore.IQBPay.BaseEnum.O2OOrderStatus.ComfirmSign)
+                Model.O2OOrderStatus == IQBCore.IQBPay.BaseEnum.O2OOrderStatus.SignCodeInfo)
                 {
                     <li>
                         <button id="btnConfirm" type="button" class="btn btn-primary" onclick="ConfirmWithPay();">收货确认并打款</button>

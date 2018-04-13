@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace IQBCore.Common.Helper
@@ -88,6 +89,11 @@ namespace IQBCore.Common.Helper
             return sd + r3;
         }
 
-       
+        public static bool IsPhoneNo(string str_handset)
+        {
+            return Regex.IsMatch(str_handset, "^(((13[0-9])|(15([0-3]|[5-9]))|(18[0-9])|(17[0-9])|(14[0-9]))\\d{8})$");
+        }
+
+
     }
 }

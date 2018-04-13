@@ -4,13 +4,14 @@ $(function () {
   var shopId = ''; // 商城价格
   var pdts = [];
   var pdtIdx = 0; // 选中的商品Idx
-  var aoId = null;
+  //var aoId = null;
 
   /**
    * [返回]
    */
   backToHome = function () {
-      window.location.href = "/O2OWap/Index?aoId=" + aoId;
+      toPage("/O2OWap/Index");
+     
   };
 
   function GetRequest(key) {
@@ -99,11 +100,12 @@ $(function () {
     shopId = GetRequest('id');
     $('.header_title > span').text(shopName);
 
-    aoId = GetUrlParam("aoId");
-    if (aoId == "" || aoId == "null" || aoId == undefined) {
-        window.location.href = "/O2OWap/ErrorPage?ec=1";
-        return;
-    }
+    //aoId = GetUrlParam("aoId");
+    //if (aoId == "" || aoId == "null" || aoId == undefined) {
+    //    toPage("/O2OWap/ErrorPage?ec=1");
+     
+    //    return;
+    //}
 
     // 获取价格列表
     getPriceList(shopId);
@@ -145,7 +147,8 @@ $(function () {
   });
 
   confirm = function (ItemId, OpenId, amt) {
-      window.location.href = '/O2OWap/AddrConfirm?ItemId=' + ItemId + '&OpenId=' + OpenId + '&shopName=' + encodeURI(shopName) + '&MallId=' + shopId + '&amt=' + amt + '&aoId=' + aoId;
+      var url = '/O2OWap/AddrConfirm?ItemId=' + ItemId + '&OpenId=' + OpenId + '&shopName=' + encodeURI(shopName) + '&MallId=' + shopId + '&amt=' + amt;
+      toPage(url);
   }
 
   /**

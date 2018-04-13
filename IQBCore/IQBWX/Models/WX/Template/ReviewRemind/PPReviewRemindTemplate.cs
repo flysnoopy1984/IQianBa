@@ -29,7 +29,7 @@ namespace IQBCore.IQBWX.Models.WX.Template.ReviewRemind
             var data = new
             {
                 first = new TemplateField() { value = first, color = "#EB6B13" },
-                keyword1 = new TemplateField() { value = o2oOrder.UserPhone},
+                keyword1 = new TemplateField() { value = o2oOrder.User},
                 keyword2 = new TemplateField() { value = o2oOrder.OrderAmount.ToString() },
                 
                 remark = new TemplateField { value = remark, color = "#007ACC" },

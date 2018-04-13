@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "StepReceiveConfirm";
+    Layout = "~/Views/Shared/_O2OLayOut.cshtml";
+}
+
+@section Title{
+    收货
+}
+<script src="~/scripts/Component/clipboard.min.js"></script>
+<link href="@Url.Scrpit("~/Content/Wap/O2O/FlexForm.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/Wap/O2O/StepReceiveSMS.js")"></script>
+
+<style type="text/css">
+.flex_container
+{
+    align-items:flex-start;
+}
+.Form_Container{ width:95%;}
+.Title{
+    width:100%;
+    border-bottom:1px solid #808080;
+    height:50px;
+    line-height:50px;
+}
+.RowTitle{
+    color:#ff6a00;
+    font-size:20px;
+    height:40px;
+    line-height:40px;
+}
+.Form_Row{flex-direction:column;}
+.NextPage{}
+#SMSInfo ul li{padding-top:8px; padding-bottom:8px;}
+
+</style>
+<div class="flex_container">
+    <div class="Form_Container">
+        <div class="Title">请按以下步骤开始您的收货操作</div>
+        <div class="Form_Row" id="SMSInfo">
+            <div class="RowTitle">短信操作<span style="color:firebrick; font-size:12px" id="opStatus">(未操作)</span></div>
+            <ul class="list-group">
+                <li class="list-group-item-text">请打开商城订单，查看订单物流信息</li>
+                <li class="list-group-item-warning">明天早上8：40-11：00，快递显示配送的时候，能看到快递员的手机号码</li>
+                <li class="list-group-item-text">编辑以下短信发送给快递员</li>
+                <li class="list-group-item">
+                    <div id="smsTemplate">快递师傅您好：我是 XXX ，我的快递请让我的朋友香楠路200弄35号的欧先生帮我代签收，他手机17011864200，谢谢，辛苦了！订单号：XXXXX(用商城订单替换).</div>
+                    <ul class="list-inline" style="padding-top:10px;" id="btnList">
+                        <li style="width:50%">
+                            <button class="btn btn-success copy" id="btnCopy">复制内容</button>
+                        </li>
+                       <li>
+                            <button class="btn btn-danger" id="btnDone">我已操作</button>
+                        </li>
+                        
+                   </ul>  
+                    
+                </li>
+                <li class="list-group-item-text">若有提货码，也请发给快递员</li> 
+                <li><b>若不完成此操作，将被拒签，无法收到货款。</b></li>
+                <li style="width:100%; text-align:center; list-style:none; padding-top:0px;"><button class="btn btn-warning" id="btnBack">返回订单</button></li>
+            </ul> 
+        </div>
+       
+        @*<div class="Form_Row" id="ConSignCode">
+            <div class="RowTitle">提货柜信息<span style="color:firebrick; font-size:12px">(未操作)</span></div>
+            <ul class="list-group">
+                <li class="list-group-item-info">请关注短信，若收到提货柜信息，请将信息黏贴后，提交到系统</li>
+                <li class="list-group-item"><textarea class="form-control" placeholder="输入提货柜号和密码，或直接黏贴短信内容"></textarea></li>
+            </ul>
+        </div>*@
+    </div>
+</div>
+

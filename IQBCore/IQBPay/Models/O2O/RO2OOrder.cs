@@ -53,5 +53,9 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public string WHAccount { get; set; }
 
+        public bool NeedSMS { get; set; }
+
+        public string SignCodeInfo { get; set; }
+
     }
 }

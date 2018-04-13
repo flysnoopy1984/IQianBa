@@ -20,5 +20,9 @@ namespace IQBCore.IQBPay.Models.O2O
         public string RejectReason { get; set; }
 
         public string O2ONo { get; set; }
+
+        public int RSeq { get; set; }
+
+        public bool NeedSMS { get; set; }
     }
 }

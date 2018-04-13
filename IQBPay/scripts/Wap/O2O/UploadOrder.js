@@ -1,12 +1,11 @@
-
-
 $(function () {
-    var httpUrl = 'http://pp.iqianba.cn';
+ 
     var OrderNo = '';
-    var aoId = null;
+    //var aoId = null;
     var OrderStatus = null;
     var IsPassAccount = false;
     var jqXHR = null;
+    var MallCode;
 
     $(window).bind('beforeunload', function () {
         if(jqXHR!=null)
@@ -14,6 +13,33 @@ $(function () {
             jqXHR.abort();
         }
     });
+
+    Init = function () {
+
+
+        OrderNo = GetUrlParam("OrderNo");
+        if (OrderNo == "" || OrderNo == undefined) {
+            alert("订单未获取");
+
+            toPage("/O2OWap/OrderDetail");
+
+            return;
+        }
+
+      //  OrderStatus = GetUrlParam("OrderStatus");
+        //如果是管理员打开审核面板
+    
+
+        this.InitData();
+
+        
+
+        InitNewUpload();
+
+       
+    }
+
+
   
   /**
    * [删除已经上传的图片]
@@ -30,18 +56,7 @@ $(function () {
   fileSelect = function() {
       $('#upload_OrderInfo').click();
   };
-  ///**
-  // * [选择上传的图片信息]
-  // * @param  {[type]} e [上传的图片信息]
-  // * @return {[type]}   [description]
-  // */
-  //fileSelected = function(e) {
-  //  console.log(e);
-  //};
-  /**
-   * [提交]
-   * @return {[type]} [description]
-   */
+ 
   submitUpload = function () {
 
       var ReceiveAccount = $("#ReceiveAccount").val();
@@ -54,12 +69,27 @@ $(function () {
           alert("请点击按钮,先验证账户");
           return;
       }
-      var imgUpload1 = $("#imgUpload1").attr("src");
-      if (imgUpload1 == null || imgUpload1 == "" || imgUpload1 == undefined)
-      {
-          alert("请先上传图片");
+      var MallAccount = $("#MallLoginName").val();
+      if (MallAccount == null || MallAccount == "" || MallAccount == undefined) {
+          alert("请输入"+$("#lb_MallLoginName").text());
+          $("#MallAccount").focus();
           return;
       }
+      var MallPwd = $("#MallLoginPwd").val();
+      if (MallPwd == null || MallPwd == "" || MallPwd == undefined) {
+          alert("请输入" + $("#lb_MallLoginPwd ").text());
+          $("#MallLoginPwd").focus();
+          return;
+      }
+   
+
+      //改为让审核的人上传订单
+      //var imgUpload1 = $("#imgUpload1").attr("src");
+      //if (imgUpload1 == null || imgUpload1 == "" || imgUpload1 == undefined)
+      //{
+      //    alert("请先上传图片");
+      //    return;
+      //}
       StartBlockUI("数据处理中...",100);
 
     //  var MallOrderNo = $("#MallOrderNo").val();
@@ -68,32 +98,44 @@ $(function () {
       $.ajax({
           type: 'post',
           url: url,
-          data: { "imgUpload1": imgUpload1,  "OrderNo": OrderNo, "ReceiveAccount": ReceiveAccount, "OrderStatus": OrderStatus },
+          data: {
+              "imgUpload1": "",
+              "OrderNo": OrderNo,
+              "ReceiveAccount": ReceiveAccount,
+              "OrderStatus": OrderStatus,
+              "MallAccount": MallAccount,
+              "MallPwd": MallPwd
+          },
           success: function (res) {
               $.unblockUI();
               if (res.IsSuccess) {
                   alert("提交成功！");
-                  
-                  window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId + "&O2ONo=" + OrderNo;
+
+                  toPage("/O2OWap/OrderDetail?O2ONo=" + OrderNo);
+               //   window.location.href = "?aoId=" + aoId + "&O2ONo=" + OrderNo;
               }
               else {
                   if (res.IntMsg == -1) {
                       alert("订单编号未获取!");
-                      window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId + "&O2ONo=" + OrderNo;
+                      toPage("/O2OWap/OrderDetail?O2ONo=" + OrderNo);
+                     // window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId + "&O2ONo=" + OrderNo;
                       return;
                   }
-                  if (res.IntMsg == -2) {
+                  else if (res.IntMsg == -2) {
                       alert("上传文件未获取，请联系管理员");                    
                       return;
                   }
-                  if (res.IntMsg == -3) {
+                  else if (res.IntMsg == -3) {
                       $("#ReceiveAccount").focus();
                       alert("收款账户未填写");
                       return;
                   }
-                  if (res.IntMsg == -4) {
+                  else if (res.IntMsg == -4) {
                       alert("订单状态不正确，无法上传图片");
                       return;
+                  }
+                  else {
+                      alert(res.ErrorMsg);
                   }
               }
           },
@@ -103,10 +145,7 @@ $(function () {
           }
       });
   };
-  /**
-   * [返回订单查询页]
-   * @return {[type]} [description]
-   */
+ 
   BackToOrderDetail = function() {
       window.history.back();
       
@@ -159,8 +198,9 @@ $(function () {
               }
               else {
                   alert(res.ErrorMsg);
-                  if (res.IntMsg == -1) {  
-                      window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                  if (res.IntMsg == -1) {
+                      toPage("/O2OWap/Index");
+                   //   window.location.href = "/O2OWap/Index?aoId=" + aoId;
                       return;
                   }
 
@@ -188,24 +228,32 @@ $(function () {
               if (res.IsSuccess) {
                   if (res.resultObj!=null)
                   {
-                      if (res.resultObj.v1 != null)
+                      if (res.resultObj.OrderImgUrl != null && res.resultObj.OrderImgUrl != "")
                       {
                           $("#imgContainer1").show();
-                          $("#imgUpload1").attr({ src: res.resultObj.v1 });
+                          $("#imgUpload1").attr({ src: res.resultObj.OrderImgUrl });
                           $("#btnUpload1").hide();
                       }
                     
                    
-                      $("#ReceiveAccount").val(res.resultObj.v2);
-                      $("#MallOrderNo").val(res.resultObj.v3);
-                      $("#OrderAmount").val(res.resultObj.v4);
+                      $("#ReceiveAccount").val(res.resultObj.ReceiveAccount);
+                      $("#MallOrderNo").val(res.resultObj.MallOrderNo);
+                      $("#OrderAmount").val(res.resultObj.OrderAmount);
+
+                      $("#MallLoginName").val(res.resultObj.MallAccount);
+                      $("#MallLoginPwd").val(res.resultObj.MallPwd);
                       
+                      OrderStatus = res.resultObj.O2OOrderStatus;
+                      MallCode = res.resultObj.MallCode;
+
+                      InitOterControl();
                   }
               }
               else {
                   if (res.IntMsg == -1) {
                       alert("订单编号未获取!");
-                      window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
+                      toPage("/O2OWap/OrderDetail");
+                    //  window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
                       return;
                   }
                   else
@@ -229,13 +277,9 @@ $(function () {
       $("#imgContainer1").hide();
       $("#btnUpload1").show();
 
-      //进度条
-    //  $("upload_progress1").css("width", "0%");
-    //  $("#ProcessArea1").hide();
-     // $("#ProcessArea1").removeClass("active");
-
+    
       //Settlement 等待到货结算之前,提交按钮显示
-      if (OrderStatus < 10) {
+      if (OrderStatus < 8) {
           $("#btnDelImg").show();
           $("#btnSubmit").show();
       }
@@ -244,49 +288,40 @@ $(function () {
           $("#btnDelImg").hide();
           $("#btnSubmit").hide();
       }
+      var Name = "商城";
 
-  }
-
-  Init = function () {
-
-      aoId = GetUrlParam("aoId");
-      if (aoId == "" || aoId == undefined)
-      {
-          window.location.href = "/O2OWap/ErrorPage?ec=1";
-          return;
+      //商城名动态显示
+      switch (MallCode) {
+          case "Tmall":
+              Name = "天猫";
+              break;
+          case "JD":
+              Name = "京东";
+              break;
+          case "GM":
+              Name = "国美";
+              break;
+          case "HW":
+              Name = "华为";
+              break;
+          case "Sun":
+              Name = "苏宁";
+              break;
+          default:
+              Name = "商城";
       }
+      $("#lb_MallLoginName").text(Name + "登陆用户名");
+      $("#lb_MallLoginPwd").text(Name + "登陆密码");
 
-      OrderNo = GetUrlParam("OrderNo");
-      if (OrderNo == "" || OrderNo == undefined) {
-          alert("订单未获取");
-          window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
-          return;
-      }
-      OrderStatus = GetUrlParam("OrderStatus");
-      //如果是管理员打开审核面板
       var IsAdmin = $("#IsAdmin").val();
-      if (IsAdmin)
-      {
+
+      if (IsAdmin) {
           $("#ReviewArea").show();
           $("#O2ONo").val(OrderNo);
           $("#OrderStatus").val(OrderStatus);
       }
 
-      InitOterControl();
-
-     // this.InitUploadControl();
-      InitNewUpload();
-      //2:WaitingUpload
-    //  if (OrderStatus >2)
-      this.InitData();
-
   }
-
-  //$(document).on("touchmove", function (e) {
-  //    e.preventDefault();
-  //   // e.stopPropagation();
-  //},false);
- 
 
 
 
@@ -321,7 +356,7 @@ $(function () {
                   uploading = true;
               },
               success: function (data) {
-                
+                  $.unblockUI();
                   if (data.IsSuccess == true) {
                       $("#imgContainer1").show();
                       $("#imgUpload1").attr({ src: data.resultObj });
@@ -333,19 +368,21 @@ $(function () {
                               alert("文件过大"); break;
                           case -2:
                               alert("手机号未获取,请重新提交");
-                              window.location.href = "/O2OWap/Index?aoId=" + aoId;
+                              toPage("/O2OWap/Index");
+                            //  window.location.href = "/O2OWap/Index?aoId=" + aoId;
                               break;
                           case -3:
                               alert("文件格式不正确"); break;
                           case -4:
                               alert("订单编号未获取");
-                              window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
+                              toPage("/O2OWap/OrderDetail");
+                           //   window.location.href = "/O2OWap/OrderDetail?aoId=" + aoId;
                               break;
 
                       }
                       InitOterControl();
                   }
-                  $.unblockUI();
+                
               },
               error: function (xhr, type) {
                   $.unblockUI();
@@ -354,8 +391,8 @@ $(function () {
           });
       });
   }
-  Init();
 
- 
+
+  Init();
 
 });

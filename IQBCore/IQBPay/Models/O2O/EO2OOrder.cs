@@ -56,8 +56,10 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public long RefOrderNo { get; set; }
 
-        [MaxLength(20)]
-        public string UserPhone { get; set; }
+        [MaxLength(50)]
+        public string User { get; set; }
+
+      
 
         [MaxLength(100)]
         public string UserAliPayAccount { get; set; }
@@ -93,6 +95,14 @@ namespace IQBCore.IQBPay.Models.O2O
 
         public O2OOrderStatus O2OOrderStatus { get; set; }
 
+        /// <summary>
+        /// 订单类型，普通 和 代下单
+        /// </summary>
+        public O2OOrderType O2OOrderType { get; set; }
+
+        /// <summary>
+        /// 订单对应的转账单是否成功
+        /// </summary>
         public TransferStatus O2OTransferStatus { get; set; } 
 
 
@@ -110,5 +120,9 @@ namespace IQBCore.IQBPay.Models.O2O
         /// 审核时间
         /// </summary>
         public DateTime ReviewDateTime { get; set; }
+
+        public bool HasSMS { get; set; }
+
+        public bool HasSignCode { get; set; }
     }
 }
