@@ -127,11 +127,12 @@
                
             </ul>
             <ul style="height:400px;" >
-                <li>
+                <li style="width:20%">
                     <span class="LeftSpan">上传的图片：</span>
-                    <span id="ImgSpan"><img class="imgOrder" id="imgOrder" src="@Model.OrderImgUrl" data-original="@Model.OrderImgUrl" /></span>
+                </li>
+                <li style="width:76%">
+                    <img class="imgOrder" id="imgUpload1" src="@Model.OrderImgUrl" data-original="@Model.OrderImgUrl" />
                     <input type="file" name="fileToUpload" onchange="UploadFile();" class="btn btn-warning" id="upload_OrderInfo" style="display:inline-block;" />
-
                 </li>
             </ul>
             <hr class="HR2_ffd800" />
@@ -149,8 +150,8 @@
             </ul> 
             <hr class="HR2_ffd800" />  
             <div id="buttonList">
-                <button id="btnConfirm" type="button" class="btn btn-danger" onclick="ConfirmWithPay();">结算确认</button>
-                <button id="btnSearch" type="button" class="btn btn-danger" onclick="PaymentOrder();">用户/代理打款</button>
+                <button id="btnConfirm" type="button" class="btn btn-warning" onclick="ConfirmWithPay();">结算确认</button>
+                <button id="btnSearch" type="button" class="btn btn-danger" onclick="PaymentToUser();">用户打款</button>
             </div>
 
         </div>

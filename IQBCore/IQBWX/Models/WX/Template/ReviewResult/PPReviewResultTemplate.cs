@@ -20,8 +20,8 @@ namespace IQBCore.IQBWX.Models.WX.Template.ReviewResult
         */
         public PPReviewResultTemplate GenerateData(string toUserOpenId, RO2OOrder o2oOrder)
         {
-            string nextStep = "请注意您的商城订单，如果已被签收，请到系统确认签收!";
-
+            string nextStep = "请到平台的订单详情页面，根据流程，继续完成相关步骤。";
+ 
             string first = string.Format("订单审核通过！请根据以下提示继续操作！");
 
             string OrderStatus = "审核通过";

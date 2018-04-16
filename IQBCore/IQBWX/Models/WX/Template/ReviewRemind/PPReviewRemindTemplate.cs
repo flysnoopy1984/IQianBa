@@ -34,9 +34,9 @@ namespace IQBCore.IQBWX.Models.WX.Template.ReviewRemind
                 
                 remark = new TemplateField { value = remark, color = "#007ACC" },
             };
-            string url = ConfigurationManager.AppSettings["Main_SiteUrl"]+ "/O2OWap/UploadOrder?aoId={0}&OrderNo={1}&OrderStatus={2}";
+            string url = ConfigurationManager.AppSettings["Main_SiteUrl"]+ "/O2OWap/UploadOrder?act=review&aoId={1}&OrderNo={0}";
 
-            url = string.Format(url, o2oOrder.AgentOpenId, o2oOrder.O2ONo, Convert.ToInt32(o2oOrder.O2OOrderStatus));
+            url = string.Format(url, o2oOrder.O2ONo,toUserOpenId);
 
             PPReviewRemindTemplate obj = base.InitObject(toUserOpenId, url, "Hwfh8EsQtI-az0dorSBZEVi3iuvg3lh8dpCznayXHdg");
             obj.data = data;

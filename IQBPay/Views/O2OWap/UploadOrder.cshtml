@@ -6,6 +6,11 @@
 @section Title{
     订单详细信息
 }
+@if (ViewBag.IsAdmin)
+{
+    <script src="@Url.Scrpit("~/scripts/Web/O2O/OrderReview.js")"></script>
+
+}
 <link href="@Url.Scrpit("~/Content/IQBFonts.css")" rel="stylesheet" />
 <link href="@Url.Scrpit("~/Content/Wap/O2O/UploadOrder.css")" rel="stylesheet" />
 <script src="~/scripts/Component/jquery.blockUI.min.js"></script>
@@ -28,12 +33,13 @@
         border-top:1px dashed black;
         display:none;
      }
+     .btnList{
+        width: 100vw;
+        display: flex;
+        justify-content: space-between;
+     }
 </style>
-@if (ViewBag.IsAdmin)
-{
-    <script src="@Url.Scrpit("~/scripts/Web/O2O/OrderReview.js")"></script>
 
-}
 <div id="upload_list">
     @*<div class="upload_order">
             <div class="upload_order_title">订单编号</div>
@@ -61,8 +67,11 @@
             <span style="color:firebrick;">*</span>
             <input id="MallLoginPwd" type="text" class="form-control" />
         </li>
-      
-
+        <li class="list-group-item">
+            <span class="LeftSpan" id="lb_UserPhone">手机号：</span>
+            <span style="color:firebrick;">*</span>
+            <a id="aUserPhone" href="#"><input id="UserPhone" type="text" class="form-control" /></a>
+        </li>
     </ul>
 
 
@@ -74,12 +83,12 @@
     <!--审核-->
     <div id="ReviewArea">
         <div class="upload_image">
-            <div class="upload_order_image_title">上传订单相关信息</div>
+            <div class="upload_order_image_title">审核相关信息</div>
             <div class="upload_order_image_list">
                 <!-- 已经上传图片 -->
                 <div id="imgContainer1" class="upload_order_image_done">
                     <div class="upload_order_delete_btn" id="btnDelImg" onclick="deleteImage();"></div>
-                    <img id="imgUpload1" src=""></img>
+                    <img id="imgUpload1" src="">
                 </div>
                 <!-- 上传按钮 -->
                 <div class="submit_btn" id="btnUpload1" onclick="fileSelect();"></div>
@@ -98,13 +107,19 @@
         </div>
         <ul class="list-group">
             <li class="list-group-item">
+                <span class="LeftSpan">订单状态：</span><input disabled="disabled" id="OrderStatus" type="text" class="form-control" />
+            </li>
+            <li class="list-group-item">
+                <a id="aAgentPhone" href="#">
+                    <span class="LeftSpan">代理手机号：</span>
+                    <input id="AgentPhone" type="text" class="form-control" readonly />
+                </a>
+</li>
+            <li class="list-group-item">
                 <span class="LeftSpan">商城订单：</span><input id="MallOrderNo" type="text" class="form-control" />
             </li>
             <li class="list-group-item">
                 <span class="LeftSpan">O2ONo：</span><input disabled="disabled" id="O2ONo" type="text" class="form-control" />
-            </li>
-            <li class="list-group-item">
-                <span class="LeftSpan">订单状态：</span><input disabled="disabled" id="OrderStatus" type="text" class="form-control" />
             </li>
             <li class="list-group-item">
                 <span class="LeftSpan">订单金额：</span><input id="OrderAmount" type="text" class="form-control" />
@@ -117,9 +132,10 @@
                 <span class="LeftSpan">驳回理由：</span>
                 <span><textarea class="form-control" id="Reason"></textarea></span>
             </li>
-            <li class="list-group-item">
-                <button id="btnSearch" type="button" class="btn btn-primary" onclick="Review(0);">通过</button>
-                <button id="btnSearch" type="button" class="btn btn-warning" onclick="Review(1);">驳回</button>
+            <li class="list-group-item btnList">
+                <button id="btnApprove" type="button" class="btn btn-primary" onclick="Review(0);">通过</button>
+                <button id="btnReject" type="button" class="btn btn-warning" onclick="Review(1);">驳回</button>
+                <button id="btnPayToUser" type="button" class="btn btn-danger" onclick="PaymentToUser();">结算给用户</button>
             </li>
 
         </ul>

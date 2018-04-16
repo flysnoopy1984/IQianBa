@@ -48,6 +48,7 @@ namespace IQBCore.IQBPay.Models.O2O
         public string AgentName { get; set; }
 
         public string AgentAccount { get; set; }
+        public string AgentPhone { get; set; }
 
         public string WHName { get; set; }
 
@@ -56,6 +57,8 @@ namespace IQBCore.IQBPay.Models.O2O
         public bool NeedSMS { get; set; }
 
         public string SignCodeInfo { get; set; }
+
+     
 
     }
 }

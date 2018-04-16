@@ -125,30 +125,61 @@ namespace IQBPay.Controllers
             int r = InitO2OPage();
             string aoid = base.CheckaoId();
             string un = Request.QueryString["un"];
-            if (r == -1)
-                return RedirectToAction("ErrorPage", new { ec = 2, aoId = aoid,un=un });
+            string act = Request.QueryString["act"];
+            ViewBag.IsAdmin = false;
+           
 
-            @ViewBag.IsAdmin = O2OBuyerSession.IsAdmin;
+            foreach (string admin in ReviewOpenIdGroup)
+            {
+                if (aoid == admin)
+                {
+                    ViewBag.IsAdmin = true;
+                    break;
+                }
+            }
+         
+            if(!ViewBag.IsAdmin)
+            {
+                if (r == -1)
+                    return RedirectToAction("ErrorPage", new { ec = 2, aoId = aoid, un = un });
+
+            }
+
+
+
 
             return View();
         }
 
         public ActionResult OrderDetail()
         {
-            int r = InitO2OPage();
+          //  int r = InitO2OPage();
             string aoid = base.CheckaoId();
             string un = Request.QueryString["un"];
-            if (r == -1)
-                return RedirectToAction("ErrorPage", new { ec = 2, aoId = aoid, un = un });
+            string O2ONo = Request.QueryString["O2ONo"];
+            //if (r == -1)
+            //    return RedirectToAction("ErrorPage", new { ec = 2, aoId = aoid, un = un });
 
-            string Phone = this.GetBuyerPhone();
-
-            if (string.IsNullOrEmpty(Phone))
+            using (AliPayContent db = new AliPayContent())
             {
-                return RedirectToAction("Index",new {aoId = aoid,un= un });
+                string User =  db.DBO2OOrder.Where(a => a.O2ONo == O2ONo).Select(a=>a.User).FirstOrDefault();
+               
+                EO2OBuyer buyer = new EO2OBuyer();
+                buyer.AgentOpenId = aoid;
+                buyer.BuyerName = User;
+                this.SetBuyerSession(buyer);
+
+                ViewBag.BuyerPhone = User;
             }
-           
-            return View();
+
+                //string Phone = this.GetBuyerPhone();
+
+                //if (string.IsNullOrEmpty(Phone))
+                //{
+                //    return RedirectToAction("Index",new {aoId = aoid,un= un });
+                //}
+
+                return View();
         }
 
         public ActionResult OrderList()
@@ -488,7 +519,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
            
             string Phone = base.GetBuyerPhone();
 
-            string un = Request["un"];
+            string un = Request.QueryString["un"];
             
             
             int ItemId = 0;
@@ -661,7 +692,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
         [HttpPost]
         public ActionResult OrderDetailQuery()
         {
-            string BuyerPhone = this.GetBuyerPhone();
+          //  string BuyerPhone = this.GetBuyerPhone();
 
             string O2ONo = Request["O2ONo"];
 
@@ -670,12 +701,12 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
 
             try
             {
-                if (string.IsNullOrEmpty(BuyerPhone))
-                {
-                    result.IsSuccess = false;
-                    result.IntMsg = -1;
-                    return Json(result);
-                }
+                //if (string.IsNullOrEmpty(BuyerPhone))
+                //{
+                //    result.IsSuccess = false;
+                //    result.IntMsg = -1;
+                //    return Json(result);
+                //}
                 if (string.IsNullOrEmpty(O2ONo))
                 {
                     result.IsSuccess = false;
@@ -693,10 +724,10 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
 	                join O2OItemInfo as i on i.Id = o.ItemId
 	                where o.O2ONo = '{0}'";
 
-                    if (BuyerPhone!="13482710060")
-                    {
-                        sql += " and o.[User]='" + BuyerPhone + "'";
-                    }
+                    //if (BuyerPhone!="13482710060")
+                    //{
+                    //    sql += " and o.[User]='" + BuyerPhone + "'";
+                    //}
                     sql += " order by o.CreateDateTime desc";
 
                     sql = string.Format(sql, O2ONo); 
@@ -742,6 +773,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
             int selOS = Convert.ToInt32(Request["selOS"]);
             string aoId = Request["aoId"];
             bool isAgent = false;
+            bool isAdmin = false;
             try
             {
                 using (AliPayContent db = new AliPayContent())
@@ -763,26 +795,35 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                     }
                   
 
-                    string sql = @"select o.O2ONo,i.Name as ItemName,
+                    string sql = @"select o.O2ONo,i.Name as ItemName,o.O2OOrderType,
                                           CONVERT(varchar(100), o.CreateDateTime, 20) as CreateDateTime,
-                                          o.O2OOrderStatus,o.OrderAmount,o.[User] from O2OOrder as o 
+                                          o.O2OOrderStatus,o.OrderAmount,o.[User] 
+                                    from O2OOrder as o 
                                    join O2OItemInfo as i on i.Id = o.ItemId";
                     
-                                   
-                    //if(BuyerPhone != "13482710060")
-                    //{
-                       
-                    //}
-                    if (isAgent)
+                                  
+                    foreach(string admin in ReviewOpenIdGroup)
                     {
-                        sql += " where o.AgentOpenId='{0}'";
-                        sql = string.Format(sql, aoId);
+                        if(aoId ==admin)
+                        {
+                            isAdmin = true;
+                            break;
+                        }
                     }
-                    else
+                    if(!isAdmin)
                     {
-                        sql += " where o.[User]= '{0}' and o.AgentOpenId='{1}'";
-                        sql = string.Format(sql, BuyerPhone, aoId);
+                        if (isAgent)
+                        {
+                            sql += " where o.AgentOpenId='{0}'";
+                            sql = string.Format(sql, aoId);
+                        }
+                        else
+                        {
+                            sql += " where o.[User]= '{0}' and o.AgentOpenId='{1}'";
+                            sql = string.Format(sql, BuyerPhone, aoId);
+                        }
                     }
+                   
 
                     if (selOS !=99)
                     {
@@ -1032,6 +1073,30 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
             return Json(result);
         }
 
+        [HttpPost]
+        public ActionResult DeleteUploadFile()
+        {
+            OutAPIResult result = new OutAPIResult();
+            string OrderNo = Request["O2ONo"];
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    db.DBO2OOrder.Where(a => a.O2ONo == OrderNo).Update(a => new EO2OOrder
+                    {
+                        OrderImgUrl = "",
+                    });
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+           
+        }
+
         /// <summary>
         /// -1 没有订单编号
         /// -2 没有上传图片地址
@@ -1049,6 +1114,8 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
             string MallOrderNo = Request["MallOrderNo"];
             var MallAccount = Request["MallAccount"];
             var MallPwd = Request["MallPwd"];
+            var UserPhone = Request["UserPhone"];
+
             OutAPIResult result = new OutAPIResult();
             try
             {
@@ -1100,7 +1167,7 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                      //   OrderImgUrl = imgUpload1,
                         MallAccount = MallAccount,
                         MallPwd = MallPwd,
-
+                        UserPhone = UserPhone,
 
                     });
                      
@@ -1139,7 +1206,13 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                 }
                 using (AliPayContent db = new AliPayContent())
                 {
-                    result.resultObj = db.DBO2OOrder.Where(a => a.O2ONo == OrderNo).Select(b => new RO2OOrder
+                    string sql = @"select o.OrderImgUrl,o.UserAliPayAccount,o.MallOrderNo,o.OrderAmount,o.MallAccount,
+                                          o.MallPwd,o.MallCode,o.O2OOrderStatus,o.UserPhone,ui.UserPhone as AgentPhone
+from O2OOrder as o 
+left join UserInfo as ui on ui.OpenId = o.AgentOpenId where o.O2ONo='{0}'";
+                    sql = string.Format(sql, OrderNo);
+
+                    result.resultObj = db.Database.SqlQuery<RO2OOrder>(sql).Select(b => new RO2OOrder
                     {
                         OrderImgUrl = b.OrderImgUrl,
                         UserAliPayAccount = b.UserAliPayAccount,
@@ -1147,10 +1220,29 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                         OrderAmount = b.OrderAmount,
                         MallAccount = b.MallAccount,
                         MallPwd = b.MallPwd,
-                        MallCode =b.MallCode,
-                        O2OOrderStatus = b.O2OOrderStatus
+                        MallCode = b.MallCode,
+                        O2OOrderStatus = b.O2OOrderStatus,
+                        UserPhone = b.UserPhone,
+                        AgentPhone = b.AgentPhone,
+
 
                     }).FirstOrDefault();
+
+
+                    //result.resultObj = db.DBO2OOrder.Where(a => a.O2ONo == OrderNo).Select(b => new RO2OOrder
+                    //{
+                    //    OrderImgUrl = b.OrderImgUrl,
+                    //    UserAliPayAccount = b.UserAliPayAccount,
+                    //    MallOrderNo = b.MallOrderNo,
+                    //    OrderAmount = b.OrderAmount,
+                    //    MallAccount = b.MallAccount,
+                    //    MallPwd = b.MallPwd,
+                    //    MallCode = b.MallCode,
+                    //    O2OOrderStatus = b.O2OOrderStatus,
+                    //    UserPhone = b.UserPhone,
+
+
+                    //}).FirstOrDefault();
                     //if (result.resultObj == null)
                     //    result.resultObj = new RSimpleEntity();
                 }
@@ -1414,23 +1506,30 @@ on oc.O2ONo = o.O2ONo where o.O2ONo='{0}'";
                     {
                         //检查用户是否存在
                         EO2OBuyer buyer = db.DBO2OBuyer.Where(o => o.Phone == UserNum).FirstOrDefault();
-                        if (buyer != null)
+                       
+                        if (buyer == null)
                         {
-                            base.SetBuyerSession(buyer);
-                            base.SetBuyerCookie(buyer);
+                            EUserInfo agent = db.DBUserInfo.Where(o => o.UserPhone == UserNum).FirstOrDefault();
+                            if (agent != null)
+                            {
+                                buyer = new EO2OBuyer();
+                                buyer.AgentOpenId = agent.OpenId;
+                                buyer.BuyerName = UserNum;
+                                buyer.Phone = UserNum;
 
-                            ////检查订单是否存在
-                            //int orderNum = db.DBO2OOrder.Where(o => o.User == Phone
-                            //               && (o.O2OOrderStatus != O2OOrderStatus.Complete && o.O2OOrderStatus != O2OOrderStatus.UserClose)).Count();
-                            //if (orderNum > 0)
-                            //    result.IntMsg = 2;   
-                            //else
-                            //    result.IntMsg = 1;
-                            result.IntMsg = 1;
-                            result.resultObj = buyer;
+                            }
+                            else
+                            {
+                                result.IntMsg = 0;
+                                return Json(result);
+                            }
+                                
                         }
-                        else
-                            result.IntMsg = 0;
+
+                        base.SetBuyerSession(buyer);
+                        base.SetBuyerCookie(buyer);
+                        result.IntMsg = 1;
+                        result.resultObj = buyer;
 
                     }
                 }
@@ -1447,17 +1546,26 @@ on oc.O2ONo = o.O2ONo where o.O2ONo='{0}'";
             return Json(result);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LoginFormPP()
         {
-            string UserNum = Request.QueryString["UserNum"];
+         //   string UserNum = Request.QueryString["UserNum"];
             string gt = Request.QueryString["goto"];
             string aoid = base.CheckaoId();
             using (AliPayContent db = new AliPayContent())
             {
+              
                 //检查用户是否存在
-                EO2OBuyer buyer = db.DBO2OBuyer.Where(o => o.Phone == UserNum).FirstOrDefault();
-                if (buyer != null)
+                EUserInfo ui = db.DBUserInfo.Where(o => o.OpenId == aoid).FirstOrDefault();
+                if (ui != null && !string.IsNullOrEmpty(ui.UserPhone))
                 {
+                    EO2OBuyer buyer = new EO2OBuyer();
+                    buyer.AgentOpenId = ui.OpenId;
+                    buyer.BuyerName = ui.UserPhone;
+
                     base.SetBuyerSession(buyer);
                     base.SetBuyerCookie(buyer);
 
@@ -1552,7 +1660,9 @@ on oc.O2ONo = o.O2ONo where o.O2ONo='{0}'";
                 using (AliPayContent db = new AliPayContent())
                 {
                     string sql = @"select b.OpenId,b.O2OShipBalance,ui.Name as UserName from UserAccountBalance as b
-join UserInfo as ui on ui.OpenId = b.OpenId where 1=1 ";
+join UserInfo as ui on ui.OpenId = b.OpenId where 1=1 and b.UserAccountType = {0}";
+
+                    sql = string.Format(sql, Convert.ToInt32(UserAccountType.O2OShippment));
                     if(!string.IsNullOrEmpty(WHName))
                     {
                         sql += string.Format(" and ui.Name like '%{0}%'",WHName);

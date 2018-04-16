@@ -26,13 +26,8 @@ $(function () {
             return;
         }
 
-      //  OrderStatus = GetUrlParam("OrderStatus");
-        //如果是管理员打开审核面板
-    
-
+   
         this.InitData();
-
-        
 
         InitNewUpload();
 
@@ -45,8 +40,24 @@ $(function () {
    * [删除已经上传的图片]
    * @return {[type]} [description]
    */
-  deleteImage = function() {
-      InitOterControl();
+    deleteImage = function () {
+
+        //$("#imgUpload1").attr({ src: "" });
+        //$("#imgContainer1").hide();
+        //$("#btnUpload1").show();
+
+
+        //Settlement 等待到货结算之前,提交按钮显示
+        //if (OrderStatus < 8) {
+        //    $("#btnDelImg").show();
+        //    $("#btnSubmit").show();
+        //}
+
+        //else {
+        //    $("#btnDelImg").hide();
+        //    $("#btnSubmit").hide();
+        //}
+     
      // this.InitUploadControl();
   };
   /**
@@ -81,6 +92,13 @@ $(function () {
           $("#MallLoginPwd").focus();
           return;
       }
+
+      var UserPhone = $("#UserPhone").val();
+      if (UserPhone == null || UserPhone == "" || UserPhone == undefined) {
+          alert("请输入" + $("#lb_UserPhone").text());
+          $("#UserPhone").focus();
+          return;
+      }
    
 
       //改为让审核的人上传订单
@@ -104,7 +122,8 @@ $(function () {
               "ReceiveAccount": ReceiveAccount,
               "OrderStatus": OrderStatus,
               "MallAccount": MallAccount,
-              "MallPwd": MallPwd
+              "MallPwd": MallPwd,
+              "UserPhone": UserPhone,
           },
           success: function (res) {
               $.unblockUI();
@@ -228,25 +247,46 @@ $(function () {
               if (res.IsSuccess) {
                   if (res.resultObj!=null)
                   {
+                     
                       if (res.resultObj.OrderImgUrl != null && res.resultObj.OrderImgUrl != "")
                       {
                           $("#imgContainer1").show();
                           $("#imgUpload1").attr({ src: res.resultObj.OrderImgUrl });
+                          $("#imgUpload1").show();
                           $("#btnUpload1").hide();
+                         
+                      }
+                      else
+                      {
+                          $("#btnDelImg").hide();
                       }
                     
-                   
-                      $("#ReceiveAccount").val(res.resultObj.ReceiveAccount);
+                      if (res.resultObj.UserAliPayAccount != "" && res.resultObj.UserAliPayAccount != "null" && res.resultObj.UserAliPayAccount != null)
+                      {
+                          $("#ReceiveAccount").val(res.resultObj.UserAliPayAccount);
+                          IsPassAccount = true;
+                      }
+                     
                       $("#MallOrderNo").val(res.resultObj.MallOrderNo);
                       $("#OrderAmount").val(res.resultObj.OrderAmount);
 
                       $("#MallLoginName").val(res.resultObj.MallAccount);
                       $("#MallLoginPwd").val(res.resultObj.MallPwd);
+
+                      $("#UserPhone").val(res.resultObj.UserPhone);
+                      $("#aUserPhone").attr("href", "tel:" + res.resultObj.UserPhone);
+
+                      $("#AgentPhone").val(res.resultObj.AgentPhone);
+                      $("#aAgentPhone").attr("href", "tel:" + res.resultObj.AgentPhone);
                       
-                      OrderStatus = res.resultObj.O2OOrderStatus;
+                      OrderStatus = res.resultObj.O2OOrderStatusStr;
                       MallCode = res.resultObj.MallCode;
 
                       InitOterControl();
+                  }
+                  else
+                  {
+                      $("#btnDelImg").hide();
                   }
               }
               else {
@@ -273,19 +313,19 @@ $(function () {
 
   InitOterControl = function () {
 
-      $("#imgUpload1").attr({ src: "" });
-      $("#imgContainer1").hide();
-      $("#btnUpload1").show();
+      //$("#imgUpload1").attr({ src: "" });
+      //$("#imgContainer1").hide();
+      //$("#btnUpload1").show();
 
     
       //Settlement 等待到货结算之前,提交按钮显示
       if (OrderStatus < 8) {
-          $("#btnDelImg").show();
+        //  $("#btnDelImg").show();
           $("#btnSubmit").show();
       }
 
       else {
-          $("#btnDelImg").hide();
+       //   $("#btnDelImg").hide();
           $("#btnSubmit").hide();
       }
       var Name = "商城";
@@ -360,7 +400,9 @@ $(function () {
                   if (data.IsSuccess == true) {
                       $("#imgContainer1").show();
                       $("#imgUpload1").attr({ src: data.resultObj });
+                      $("#imgUpload1").show();
                       $("#btnUpload1").hide();
+                      $("#btnDelImg").show();
                   }
                   else {
                       switch (data.IntMsg) {

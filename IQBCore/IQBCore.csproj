@@ -233,6 +233,8 @@
     <Compile Include="IQBWX\Models\WX\Template\ReviewRemind\PPReviewRemindTemplate.cs" />
     <Compile Include="IQBWX\Models\WX\Template\ReviewResult\PPReviewResultNT.cs" />
     <Compile Include="IQBWX\Models\WX\Template\ReviewResult\PPReviewResultTemplate.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\SettleToUser\SettleToUserNT.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\SettleToUser\SettleToUserTemplate.cs" />
     <Compile Include="IQBWX\Models\WX\Template\TemplateData.cs" />
     <Compile Include="IQBWX\Models\WX\Template\TemplateField.cs" />
     <Compile Include="Model\BaseModel.cs" />

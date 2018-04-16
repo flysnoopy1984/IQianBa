@@ -179,7 +179,6 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.js" />
@@ -780,11 +779,9 @@
     <Content Include="Content\bootstrap-reboot.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Views\O2O\WHInfo.cshtml" />
     <Content Include="Views\O2OWap\WHReCharge.cshtml" />
-    <Content Include="Views\Shared\_O2OUserLayOut.cshtml" />
     <Content Include="Views\O2OWap\ContactUS.cshtml" />
     <Content Include="Views\O2OWap\EntryOrderForUser.cshtml" />
     <Content Include="Views\O2OWap\StepReceiveSMS.cshtml" />

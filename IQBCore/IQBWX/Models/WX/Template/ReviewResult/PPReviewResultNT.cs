@@ -11,6 +11,7 @@ namespace IQBCore.IQBWX.Models.WX.Template.ReviewResult
     {
         RO2OOrder _O2OOrder;
         string _OpenId;
+        
         public PPReviewResultNT(string accessToken, RO2OOrder O2OOrder) : base(accessToken)
         {
             _O2OOrder = O2OOrder;

@@ -11,14 +11,19 @@ $(function () {
 
         aoId = GetUrlParam("aoId"); //有这个字段传过来说明是代下单 aoId = GetUrlParam("aoId");
 
-        if (aoId == "" || aoId == "null" || aoId == undefined) {
-            //排除ErrorPage本身
-            if (window.location.pathname.toLocaleLowerCase() != "/O2OWap/ErrorPage".toLocaleLowerCase())
-            {
-                window.location.href = "/O2OWap/ErrorPage?ec=1";
-                return;
+        var act = GetUrlParam("act");
+        if (act == undefined || act != "review")
+        {
+            if (aoId == "" || aoId == "null" || aoId == undefined) {
+                //排除ErrorPage本身
+                if (window.location.pathname.toLocaleLowerCase() != "/O2OWap/ErrorPage".toLocaleLowerCase()) {
+                    window.location.href = "/O2OWap/ErrorPage?ec=1";
+                    return;
+                }
             }
         }
+
+    
     }
 
     toPage =function(url)

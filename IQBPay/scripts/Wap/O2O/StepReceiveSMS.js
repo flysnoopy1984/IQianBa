@@ -9,6 +9,7 @@
             alert("订单编号没有获取，请联系管理员");
             toPage("/O2OWap/OrderList");
         }
+
         var sms = $("#smsTemplate").text().trim();
         $("#btnCopy").attr("data-clipboard-text", sms);
 
@@ -22,7 +23,7 @@
                     if (res.resultObj.v4)
                     {
                         $("#opStatus").text("(已操作)");
-                        $("#btnList").hide();
+                       // $("#btnList").hide();
                     }
                 }
                 else {
@@ -52,7 +53,7 @@
 
                 if (res.IsSuccess) {
                     alert("操作成功");
-                    window.location.reload();
+                    toPage("/O2OWap/OrderDetail?O2ONo=" + O2ONo);
                 }
                 else
                 {

@@ -133,6 +133,7 @@ namespace IQBPay.Controllers
             
             if (string.IsNullOrEmpty(aoId))
                 aoId = Request["aoId"];
+
             if(!string.IsNullOrEmpty(aoId))
                 Session[IQBConstant.SK_O2OAgentOpenId] = aoId;
 

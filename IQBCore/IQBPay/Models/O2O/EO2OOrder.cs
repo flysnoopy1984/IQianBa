@@ -63,7 +63,7 @@ namespace IQBCore.IQBPay.Models.O2O
 
         [MaxLength(100)]
         public string UserAliPayAccount { get; set; }
-     
+
 
         public string MallCode { get; set; }
 
@@ -124,5 +124,10 @@ namespace IQBCore.IQBPay.Models.O2O
         public bool HasSMS { get; set; }
 
         public bool HasSignCode { get; set; }
+
+        [MaxLength(20)]
+        public string UserPhone { get; set; }
+
+      
     }
 }

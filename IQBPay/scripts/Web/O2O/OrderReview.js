@@ -8,10 +8,10 @@
             toolbar: false,
         });
     }
-    var imgSrc = $("#imgOrder").attr("src");
+    var imgSrc = $("#imgUpload1").attr("src");
     if(imgSrc == "" || imgSrc== null)
     {
-        $("#imgOrder").hide();
+        $("#imgUpload1").hide();
     }
     else
     {
@@ -21,10 +21,10 @@
   
 });
 
-function PaymentOrder()
+function PaymentToUser()
 {
     var O2ONo = $("#O2ONo").val();
-    var url = "/O2O/OrderPaymentToUser_Agent";
+    var url = "/O2O/OrderPaymentToUser";
     $.ajax({
         type: 'post',
         dataType: "json",
@@ -66,8 +66,8 @@ function UploadFile() {
             $.unblockUI();
             if (data.IsSuccess == true) {
 
-                $("#imgOrder").show();
-                $("#imgOrder").attr({ src: data.resultObj });
+                $("#imgUpload1").show();
+                $("#imgUpload1").attr({ src: data.resultObj });
                 $("#upload_OrderInfo").hide();
             }
             else {
@@ -108,7 +108,7 @@ function Review(act)
     var OrderAmount = parseFloat($("#OrderAmount").val());
     var Reason = $("#Reason").val();
     var IsApprove = true;
-    var OrderImgSrc = $("#imgOrder").attr("src");
+    var OrderImgSrc = $("#imgUpload1").attr("src");
     //通过
     if (act == 0)
     {
@@ -156,4 +156,5 @@ function Review(act)
     });
 
 }
+
 

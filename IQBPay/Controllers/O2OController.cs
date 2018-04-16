@@ -10,6 +10,7 @@ using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.Result;
 using IQBCore.IQBPay.Models.User;
 using IQBCore.IQBWX.Models.WX.Template.ReviewResult;
+using IQBCore.IQBWX.Models.WX.Template.SettleToUser;
 using IQBCore.Model;
 using IQBPay.Core;
 using IQBPay.DataBase;
@@ -23,7 +24,7 @@ using System.Web.Mvc;
 
 namespace IQBPay.Controllers
 {
-    public class O2OController : BaseController
+    public class O2OController : O2OBaseController
     {
         // GET: O2O
         public ActionResult Index()
@@ -992,6 +993,7 @@ where o.O2ONo='{0}'";
         /// -1 session失效
         /// </summary>
         /// <returns></returns>
+        [Obsolete("请使用SettleToWH_Agent_User函数")]
         public ActionResult OrderSettlementToPP()
         {
             string O2ONo = Request["O2ONo"];
@@ -1124,9 +1126,14 @@ where o.O2ONo='{0}'";
             return Json(result);
         }
 
+        /// <summary>
+        /// 结算给出库商和代理，用户另外结算
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult SettleToWH_Agent_User()
         {
+            
             string O2ONo = Request["O2ONo"];
             OutAPIResult result = new OutAPIResult();
             int UserId = GetUserSession().Id;
@@ -1165,7 +1172,7 @@ where o.O2ONo='{0}'";
                         return Json(result);
                     }
                     //订单处理
-                    order.O2OOrderStatus = O2OOrderStatus.Complete;
+                    order.O2OOrderStatus = O2OOrderStatus.Payment;
                     order.SettlementDateTime = DateTime.Now;
                     order.SettlementUserId = UserId;
 
@@ -1195,8 +1202,7 @@ where o.O2ONo='{0}'";
                         result.IntMsg = -5;
                         return Json(result);
                     }
-
-                    
+ 
                    /* 创建结算单明细
                     * PP :转账给平台（从余额扣除）
                     */
@@ -1346,20 +1352,20 @@ where o.O2ONo='{0}'";
                         }
                         */
 
-                        //打钱给用户
-                    AliTrans = new ETransferAmount();
-                    AliTrans.O2OInitForUser(order);
-                    //User Amount
-                    AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * ((100 - agentFee.MarketRate) / 100));
-                    AliTrans = payManager.O2OTransferHandler(AliTrans, BaseController.SubApp, BaseController.SubApp);
-                    if (AliTrans.TransferStatus == TransferStatus.Failure)
-                        hasError++;
-                    else
-                        db.DBTransferAmount.Add(AliTrans);
+                    //    //打钱给用户
+                    //AliTrans = new ETransferAmount();
+                    //AliTrans.O2OInitForUser(order);
+                    ////User Amount
+                    //AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * ((100 - agentFee.MarketRate) / 100));
+                    //AliTrans = payManager.O2OTransferHandler(AliTrans, BaseController.SubApp, BaseController.SubApp);
+                    //if (AliTrans.TransferStatus == TransferStatus.Failure)
+                    //    hasError++;
+                    //else
+                        //db.DBTransferAmount.Add(AliTrans);
 
                    
 
-                    order.O2OOrderStatus = O2OOrderStatus.Complete;
+                   // order.O2OOrderStatus = O2OOrderStatus.Complete;
 
                     if (hasError > 0)
                     {
@@ -1367,8 +1373,19 @@ where o.O2ONo='{0}'";
                     }
 
                     db.SaveChanges();
+
+                    //微信通知结算结果
+                    string accessToken = this.getAccessToken(true);
+                 
+                    foreach(string admin in ReviewOpenIdGroup)
+                    {
+                        SettleToUserNT notice = new SettleToUserNT(accessToken, admin, order);
+                        notice.Push();
+                    }
+                   
+
                 }
-           }
+            }
             catch(Exception ex)
             {
                 result.IsSuccess = false;
@@ -1378,18 +1395,17 @@ where o.O2ONo='{0}'";
       }
 
         [HttpPost]
-        public ActionResult OrderPaymentToUser_Agent()
+        public ActionResult OrderPaymentToUser()
         {
             string O2ONo = Request["O2ONo"];
             OutAPIResult result = new OutAPIResult();
-            int UserId = GetUserSession().Id;
+            //int UserId = GetUserSession().Id;
             EO2OOrder order = null;
-            EUserInfo agentUi,parentUi = null;
+
             AliPayManager payManager = new AliPayManager();
             EO2OAgentFeeRate agentFee = null;
             int hasError = 0;
-           // EO2OMall mall = null;
-            double parentCommRate = 0.2;
+       
             try
             {
                 if (string.IsNullOrEmpty(O2ONo))
@@ -1399,13 +1415,13 @@ where o.O2ONo='{0}'";
                     result.IntMsg = -2;
                     return Json(result);
                 }
-                if (UserId == 0)
-                {
-                    result.IsSuccess = false;
-                    result.ErrorMsg = "session失效";
-                    result.IntMsg = -1;
-                    return Json(result);
-                }
+                //if (UserId == 0)
+                //{
+                //    result.IsSuccess = false;
+                //    result.ErrorMsg = "session失效";
+                //    result.IntMsg = -1;
+                //    return Json(result);
+                //}
 
                 using (AliPayContent db = new AliPayContent())
                 {
@@ -1419,44 +1435,12 @@ where o.O2ONo='{0}'";
                         return Json(result);
                     }
 
-                    agentUi = db.DBUserInfo.Where(a => a.OpenId == order.AgentOpenId).FirstOrDefault();
-                    agentFee = db.DBO2OAgentFeeRate.Where(a => a.ItemId == order.ItemId).FirstOrDefault();
-                  //  mall = db.DBO2OMall.Where(a => a.Id == order.MallId).FirstOrDefault();
-                    //ToAgent      
-                    ETransferAmount AliTrans = new ETransferAmount();
-                    AliTrans.O2OInitForAgent(order, agentUi);
-                    //Agent Amount
-                    AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * ((agentFee.MarketRate - order.AgentFeeRate) / 100));
-                    AliTrans = payManager.O2OTransferHandler(AliTrans, BaseController.SubApp, BaseController.SubApp);
-                    if (AliTrans.TransferStatus == TransferStatus.Failure)
-                        hasError++;
-                    //return base.ErrorResult("转账失败：" + AliTrans.Log);
-                    else
-                        db.DBTransferAmount.Add(AliTrans);
-
-
-                    //ToParent
-                    //父节点统一0.2
-                    if(!string.IsNullOrEmpty(agentUi.parentOpenId))
-                    {
-                        parentUi = db.DBUserInfo.Where(a => a.OpenId == agentUi.parentOpenId).FirstOrDefault();
-                        AliTrans = new ETransferAmount();
-                        AliTrans.O2OInitForAgent(order, parentUi);
-                        //Parent Amount
-                        AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * 0.2 / 100);
-                        AliTrans = payManager.O2OTransferHandler(AliTrans, BaseController.SubApp, BaseController.SubApp);
-                        if (AliTrans.TransferStatus == TransferStatus.Failure)
-                            // return base.ErrorResult("转账失败：" + AliTrans.Log);
-                            hasError++;
-                        else
-                            db.DBTransferAmount.Add(AliTrans);
-                    }
-
                     //ToUser
-                    AliTrans = new ETransferAmount();
+                    ETransferAmount AliTrans = new ETransferAmount();
                     AliTrans.O2OInitForUser(order);
                     //User Amount
-                    AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * ((100-agentFee.MarketRate) / 100));
+                   
+                    AliTrans.TransferAmount = Convert.ToSingle(order.OrderAmount * ((100-order.MarketRate) / 100));
                     AliTrans = payManager.O2OTransferHandler(AliTrans, BaseController.SubApp, BaseController.SubApp);
                     if (AliTrans.TransferStatus == TransferStatus.Failure)
                         hasError++;

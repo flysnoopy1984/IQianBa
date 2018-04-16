@@ -107,7 +107,7 @@
 
         var ctrl = "";
         $.each(data, function (i) {
-            var Id = data[i].O2ONo+"_"+i;
+            var Id = data[i].O2ONo + "_" + data[i].O2OOrderType + "_" + data[i].User;
 
             ctrl = '<tr class="tr_OrderItem" id="' + Id + '">';
             ctrl += '<td class="td_Width_Content1">';
@@ -133,7 +133,10 @@
           
             ctrl += "</tr>";
 
-
+            if (data[i].O2OOrderType == 10)
+            {
+                data[i].User += "(代)";
+            }
             ctrl = String.format(ctrl, data[i].ItemName, data[i].OrderAmount, data[i].CreateDateTime, data[i].O2OOrderStatusStr, data[i].User);
             DataTable.append(ctrl);
 
@@ -157,9 +160,10 @@
     //进入明细
     $(document).on("click", ".tr_OrderItem", function (e) {
         var O2ONo = e.currentTarget.id.split('_')[0];
-        
+        var OrderType = parseInt(e.currentTarget.id.split('_')[1]);
+        var UserName = e.currentTarget.id.split('_')[2];
        
-        ToDetail(e,O2ONo);
+        ToDetail(O2ONo, OrderType, UserName);
 
     });
 
@@ -176,18 +180,19 @@
 
     ToReview = function (e, O2ONo, OrderStatus) {
         e.stopPropagation();
-        var url = "/O2OWap/UploadOrder?OrderNo=" + O2ONo + "&OrderStatus=" + OrderStatus;
+        var url = "/O2OWap/UploadOrder?act=review&OrderNo=" + O2ONo + "&OrderStatus=" + OrderStatus;
         toPage(url);
       
     }
 
-
-   
-
-    ToDetail = function (e,O2ONo)
+    ToDetail = function (O2ONo, OrderType, UserName)
     {
      
         var url = "/O2OWap/OrderDetail?O2ONo=" + O2ONo;
+        if (OrderType == 10)
+        {
+            url += "&un=" + UserName;
+        }
         toPage(url);
       
       
