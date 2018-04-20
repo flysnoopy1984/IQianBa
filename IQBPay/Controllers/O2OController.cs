@@ -795,6 +795,7 @@ where o.CreateDateTime between cast('{0}' as datetime) and cast('{1}' as datetim
 
                     if (InO2OOrder.pageIndex == 0)
                     {
+                        result.IntMsg = list.Count();
                         result.resultList = list.Take(InO2OOrder.pageSize).ToList();
                     }
                     else
@@ -1738,7 +1739,7 @@ where o.O2ONo='{0}'";
         public ActionResult TransWHQuery(InO2OTrans InO2OTrans)
         {
             UserSession userSession = GetUserSession();
-            List<RO2OTranscationWH> result = new List<RO2OTranscationWH>();
+            NResult<RO2OTranscationWH> result = new NResult<RO2OTranscationWH>();
             try
             {
                 string UserOpenId = base.GetUserSession().OpenId;
@@ -1787,11 +1788,12 @@ where o.O2ONo='{0}'";
 
                     if (InO2OTrans.pageIndex == 0)
                     {
-                        result = list.Take(InO2OTrans.pageSize).ToList();
+                        result.IntMsg = list.Count();
+                        result.resultList = list.Take(InO2OTrans.pageSize).ToList();
                     }
                     else
                     {
-                        result = list.Skip(InO2OTrans.pageIndex * InO2OTrans.pageSize).Take(InO2OTrans.pageSize).ToList();
+                        result.resultList = list.Skip(InO2OTrans.pageIndex * InO2OTrans.pageSize).Take(InO2OTrans.pageSize).ToList();
                     }
                 }
                

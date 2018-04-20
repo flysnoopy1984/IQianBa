@@ -486,13 +486,13 @@ function VerifyItem(pObj)
     }
 
     var feeObj = pObj.find("#FeeRate");
-    var fee = parseFloat(feeObj.val())
-    if (fee < 0 || fee > 5)
-    {
-        alert("费率必须在【0-5】之间");
-        feeObj.focus();
-        return false;
-    }
+    //var fee = parseFloat(feeObj.val())
+    //if (fee < 0 || fee > 5)
+    //{
+    //    alert("费率必须在【0-5】之间");
+    //    feeObj.focus();
+    //    return false;
+    //}
 
     //var qtyObj = pObj.find("#Fee");
     //var qty = parseFloat(qtyObj.val());

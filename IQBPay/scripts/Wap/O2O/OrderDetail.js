@@ -93,7 +93,7 @@ $(function () {
               //已经不能上传照片(>Settlement),不能重新选择商品
               if(OrderObj.O2OOrderStatus>=8 && (step.Code == "StepUpload" || step.Code =="StepReSelectItem"))
               {
-                  $("#linkToupload").text("查看订单");
+                  $("#linkToupload").text("查看信息");
                   $("#LinkToSelItem").hide();
 
               }

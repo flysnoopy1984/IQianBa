@@ -495,15 +495,16 @@ namespace IQBPay.Controllers
                         {
                             MallCode = item.MallCode,
                             ItemId = item.Id,
-                            MarketRate = 10,
+                            MarketRate = marketRate,
                             DiffFeeRate = 0,
-                            OpenId = bQRUser.OpenId,
+                            OpenId = openId,
 
                         };
-                        EO2OAgentFeeRate dbRate = db.DBO2OAgentFeeRate.Where(a => a.OpenId == rate.OpenId && a.ItemId == rate.ItemId).FirstOrDefault();
+                        EO2OAgentFeeRate dbRate = db.DBO2OAgentFeeRate.Where(a => a.OpenId == openId && a.ItemId == rate.ItemId).FirstOrDefault();
                         if (dbRate == null)
                             db.DBO2OAgentFeeRate.Add(rate);
-                        dbRate = rate;
+                        else
+                            dbRate = rate;
                     }
                     db.SaveChanges();
 
@@ -550,17 +551,19 @@ namespace IQBPay.Controllers
                     charge.UserOpenId = openId;   
                     charge.O2OUserRole = O2OUserRole.Shippment;
                     db.DBO2ORoleCharge.AddOrUpdate(charge);
-                    db.SaveChanges();
+                  
 
                     //余额表
-                    EUserAccountBalance balance = db.DBUserAccountBalance.Where(a => a.OpenId == openId).FirstOrDefault();
+                    EUserAccountBalance balance = db.DBUserAccountBalance.Where(a => a.OpenId == openId && a.UserAccountType == UserAccountType.O2OShippment).FirstOrDefault();
                     if (balance == null)
+                    {
                         balance = new EUserAccountBalance();
+                        balance.UserAccountType = UserAccountType.O2OShippment;
+                        balance.OpenId = ui.OpenId;
+                        db.DBUserAccountBalance.Add(balance);
+                    }
 
-                    balance.UserAccountType = UserAccountType.O2OShippment;
-                
-                    balance.OpenId = ui.OpenId;
-                    db.DBUserAccountBalance.AddOrUpdate(balance);
+                    db.SaveChanges();
 
                 }
             }

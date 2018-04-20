@@ -147,7 +147,6 @@ join O2OMall as m on m.Code = i.MallCode
 where i.RecordStatus =0
 order by i.PayMethod,i.Amount
 ";
-
                     sql = string.Format(sql, UserSession.OpenId, GlobalConfig.AgentFeeBasedShipFee);
                     result.resultList = db.Database.SqlQuery<RO2OAgentFeeRate>(sql).ToList();
                     if (result.resultList == null) result.resultList = new List<RO2OAgentFeeRate>();
@@ -183,7 +182,10 @@ order by i.PayMethod,i.Amount
                         {
                             obj.OpenId = UserSession.OpenId;
                             obj.DiffFeeRate = 0;
-                            db.DBO2OAgentFeeRate.Add(obj);
+                            EO2OAgentFeeRate upObj = db.DBO2OAgentFeeRate.Where(a => a.OpenId == obj.OpenId && a.ItemId == obj.ItemId).FirstOrDefault();
+                            if(upObj == null)
+                                db.DBO2OAgentFeeRate.Add(obj);
+                          
 
                         }
                         db.SaveChanges();

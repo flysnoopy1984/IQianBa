@@ -112,11 +112,11 @@ namespace ConsoleApplication1
            //string template =JsonConvert.SerializeObject(data);
         }
 
-        public static string SMSTest()
-        {
-            SMS sms = new SMS();
-            return sms.TestSMS();
-        }
+        //public static string SMSTest()
+        //{
+        //    SMS sms = new SMS();
+        //    return sms.TestSMS();
+        //}
 
         public static List<RARTrans> PageTest(int pageIndex)
         {

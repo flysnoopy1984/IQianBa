@@ -1,22 +1,30 @@
 ﻿var pageIndex = -1;
-var pageSize =20;
+var pageSize = 20;
+
 //0：OrderList//1:OrderListForSettlement
 var FromPage = 0;
-function CreateDemoData()
-{
-    var url = "/O2O/CreateDemoData";
-    $.ajax({
-        type: 'post',
-        url: url,
-        success: function (data) {
-            alert("OK");
 
-        },
-        error: function (xhr, type) {
-            alert("系统错误！");
-        }
-    });
-}
+var $Pager = null;
+var defaultOpts = {
+    totalPages: 1,
+
+};
+//function CreateDemoData()
+//{
+//    var url = "/O2O/CreateDemoData";
+//    $.ajax({
+//        type: 'post',
+//        url: url,
+//        success: function (data) {
+//            alert("OK");
+
+//        },
+//        error: function (xhr, type) {
+//            alert("系统错误！");
+//        }
+//    });
+//}
+
 
 $(document).ready(function () {
 
@@ -27,6 +35,18 @@ $(document).ready(function () {
     }
     
     InitCondition();
+
+    $Pager = $('#Pager');
+
+    defaultOpts = {
+     
+        onPageClick: function (event, page) {
+            if (pageIndex != -1)
+                Query(true, page-1);
+        }
+    };
+   
+   
 
 });
 
@@ -98,9 +118,22 @@ function Query(NeedClearn,_PageIndex)
             if (data.IsSuccess)
             {
                 var arrLen = data.resultList.length;
+
                 if (arrLen > 0) {
+                    if (pageIndex == -1)
+                    {
+                        $Pager.twbsPagination('destroy');
+                        $Pager.twbsPagination($.extend({}, defaultOpts, {
+                            startPage: 1,
+                            totalPages: Math.ceil(data.IntMsg/pageSize),
+                        }));
+
+                    }
+                  
+ 
                     generateData(data.resultList);
-                    pageIndex++;
+                    //pageIndex++;
+                    pageIndex = _PageIndex;
                 }
                 else
                 {

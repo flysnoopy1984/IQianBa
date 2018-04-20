@@ -13,6 +13,7 @@
 
 <link href="@Url.Scrpit("~/Content/Style/Web/O2O/O2OList.css")" rel="stylesheet" />
 <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+<script src="~/scripts/Component/jquery.twbsPagination.js"></script>
 <script src="@Url.Scrpit("~/scripts/Web/O2O/OrderList.js")"></script>
 
 <style type="text/css">
@@ -97,13 +98,15 @@
                 <th style="width:100px;">订单状态</th>
                 <th style="width:150px;">创建时间</th>   
                 <th style="width:50px;">商城</th>
-                
                 <th style="width:150px;">商城登陆账户</th>
                 <th style="width:150px;">商城登陆密码</th>
                 <th style="width:150px;">O2O编号</th>
                 <th style="width:150px;">平台订单编号</th>         
             </tr>
         </table>
+    </div>
+    <div>
+        <ul id="Pager" class="pagination-sm"></ul>
     </div>
 </div>
 

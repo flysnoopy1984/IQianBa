@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
 @section Title{
-    订单详细信息
+    审核信息
 }
 @if (ViewBag.IsAdmin)
 {
@@ -70,7 +70,8 @@
         <li class="list-group-item">
             <span class="LeftSpan" id="lb_UserPhone">手机号：</span>
             <span style="color:firebrick;">*</span>
-            <a id="aUserPhone" href="#"><input id="UserPhone" type="text" class="form-control" /></a>
+            <input id="UserPhone" type="text" class="form-control" />
+            @*<a id="aUserPhone" href="#"><input id="UserPhone" type="text" class="form-control" /></a>*@
         </li>
     </ul>
 

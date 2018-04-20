@@ -1,6 +1,10 @@
 ﻿var pageIndex = -1;
 var pageSize = 20;
 
+var $Pager = null;
+var defaultOpts = {
+    totalPages: 1,
+};
 
 function CreateDemoData() {
     var url = "/O2O/CreateTransData";
@@ -21,6 +25,17 @@ $(document).ready(function () {
 
  
     Init();
+
+    $Pager = $('#Pager');
+
+    defaultOpts = {
+
+        onPageClick: function (event, page) {
+            if (pageIndex != -1)
+                Query(true, page - 1);
+        }
+    };
+
 
 });
 
@@ -99,9 +114,19 @@ function Query(NeedClearn, _PageIndex) {
         },
         url: url,
         success: function (data) {
-            var arrLen = data.length;
+            var arrLen = data.resultList.length;
             if (arrLen > 0) {
-                generateData(data);
+
+                if (pageIndex == -1) {
+                    $Pager.twbsPagination('destroy');
+                    $Pager.twbsPagination($.extend({}, defaultOpts, {
+                        startPage: 1,
+                        totalPages: Math.ceil(data.IntMsg / pageSize),
+                    }));
+
+                }
+
+                generateData(data.resultList);
                 pageIndex++;
             }
         },

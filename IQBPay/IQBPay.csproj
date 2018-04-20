@@ -542,8 +542,8 @@
     <Content Include="scripts\Component\jquery.blockUI.min.js" />
     <Content Include="scripts\Component\jquery.cookie.js" />
     <Content Include="scripts\Component\jquery.imagecompress.js" />
-    <Content Include="scripts\Component\jquery.pwstabs-1.2.1.min.js" />
     <Content Include="scripts\Component\jquery.transit.min.js" />
+    <Content Include="scripts\Component\jquery.twbsPagination.js" />
     <Content Include="scripts\Component\PageScroll\iscroll.min.js" />
     <Content Include="scripts\Component\PageScroll\listloading.min.js" />
     <Content Include="scripts\Component\PageScroll\zepto.min.js" />

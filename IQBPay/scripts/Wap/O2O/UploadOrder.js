@@ -3,6 +3,7 @@ $(function () {
     var OrderNo = '';
     //var aoId = null;
     var OrderStatus = null;
+    var osDes = null;
     var IsPassAccount = false;
     var jqXHR = null;
     var MallCode;
@@ -279,7 +280,8 @@ $(function () {
                       $("#AgentPhone").val(res.resultObj.AgentPhone);
                       $("#aAgentPhone").attr("href", "tel:" + res.resultObj.AgentPhone);
                       
-                      OrderStatus = res.resultObj.O2OOrderStatusStr;
+                      OrderStatus = res.resultObj.O2OOrderStatus;
+                      osDes = res.resultObj.O2OOrderStatusStr;
                       MallCode = res.resultObj.MallCode;
 
                       InitOterControl();
@@ -358,7 +360,7 @@ $(function () {
       if (IsAdmin) {
           $("#ReviewArea").show();
           $("#O2ONo").val(OrderNo);
-          $("#OrderStatus").val(OrderStatus);
+          $("#OrderStatus").val(osDes);
       }
 
   }
