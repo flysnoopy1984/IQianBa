@@ -93,7 +93,10 @@ namespace IQBWX.Controllers
             return View();
         }
 
-      
+        public ActionResult LearningVideo()
+        {
+            return View();
+        }
 
             //        [HttpPost]
             //        public ActionResult AgentFeeRateQuery()

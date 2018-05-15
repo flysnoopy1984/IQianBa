@@ -8,11 +8,6 @@
           "type": "view",
           "name": "大事件",
           "url": "http://wx.iqianba.cn/PP/News"
-        },
-        {
-          "type": "view",
-          "name": "我的账户",
-          "url": "http://wx.iqianba.cn/PP/AgentAccount"
         }
 
       ]
@@ -20,10 +15,20 @@
      {
       "name": "用户中心",
       "sub_button": [
+         {
+          "type": "view",
+          "name": "我的账户",
+          "url": "http://wx.iqianba.cn/PP/AgentAccount"
+        },
         {
           "type": "view",
           "name": "邀请码",
           "url": "http://wx.iqianba.cn/PP/InviteCode"
+        },
+        {
+          "type": "view",
+          "name": "我的团队",
+          "url": "http://wx.iqianba.cn/PP/AgentList"
         }
       ]
     },

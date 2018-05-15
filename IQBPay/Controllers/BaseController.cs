@@ -47,8 +47,6 @@ namespace IQBPay.Controllers
             _SubApp = null;
         }
 
-       
-
         public static void CleanSubAccount()
         {
             _App = null;
@@ -261,5 +259,11 @@ namespace IQBPay.Controllers
 
         }
 
+        public bool canRunO2O()
+        {
+            return DateTime.Now.Hour >= 9 && DateTime.Now.Hour < 21;
+        }
+
+     
     }
 }

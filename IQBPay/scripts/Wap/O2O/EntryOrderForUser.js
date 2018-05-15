@@ -2,6 +2,7 @@
 
     Init = function () {
         $("#btnLeftMainMenu").hide();
+        $("#o2o_header").append('<div class="LeftMenu"><a href="#">教程</a></div>');
        
     };
     checkSepcValue = function(obj)

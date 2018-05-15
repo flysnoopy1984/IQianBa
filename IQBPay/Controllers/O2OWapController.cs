@@ -31,13 +31,20 @@ namespace IQBPay.Controllers
         {
             string aoId = CheckaoId();
             string act = Request["act"];
-            if(act == "switchUser")
+            if (act == "switchUser")
             {
                 Session[IQBConstant.SK_O2OBuyerSession] = null;
                 CookieHelper.setCookie(IQBConstant.ck_O2OUser, "");
                 @ViewBag.BuyerPhone = null;
                 return View();
             }
+
+            if (!canRunO2O())
+            {
+                return RedirectToAction("ErrorPage", new { aoId= aoId, ec = 3 });
+            }
+          
+          
             string un = Request.QueryString["un"];
             //不为空说明代下单
             if(!string.IsNullOrEmpty(un))
@@ -104,6 +111,9 @@ namespace IQBPay.Controllers
                 case 2:
                    
                     ErrorMsg.Msg = "超时，请返回首页重新操作！";
+                    break;
+                case 3:
+                    ErrorMsg.Msg = "商城营业时间为：早上9点到晚上21点";
                     break;
 
                 case 40001:
@@ -201,6 +211,7 @@ namespace IQBPay.Controllers
             }
             return View();
         }
+
 
 
         public ActionResult Demo()
@@ -1778,6 +1789,17 @@ join UserInfo as ui on ui.OpenId = b.OpenId where 1=1 and b.UserAccountType = {0
         }
 
         public ActionResult EntryOrderForUser()
+        {
+            string aoId = CheckaoId();
+            if (!canRunO2O())
+            {
+                return RedirectToAction("ErrorPage", new { aoId = aoId, ec = 3 });
+            }
+
+            return View();
+        }
+
+        public ActionResult Learning()
         {
             return View();
         }

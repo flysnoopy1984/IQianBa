@@ -474,6 +474,7 @@
     <Content Include="Views\Union\CC.cshtml" />
     <Content Include="Views\O2OWap\AgentInfoCheck.cshtml" />
     <Content Include="Views\PP\AgentAccount.cshtml" />
+    <Content Include="Views\O2OWap\LearningVideo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

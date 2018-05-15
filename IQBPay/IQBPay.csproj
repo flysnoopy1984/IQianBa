@@ -556,6 +556,7 @@
     <Content Include="Content\Component\viewer.min.css" />
     <Content Include="scripts\Component\Viewer\viewer.min.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
+    <Content Include="scripts\Swift\Test.js" />
     <Content Include="scripts\Wap\O2O\AddrConfirm.js" />
     <Content Include="scripts\Wap\O2O\EntryOrderForUser.js" />
     <Content Include="scripts\Wap\O2O\index.js" />
@@ -787,6 +788,7 @@
     <Content Include="Views\O2OWap\StepReceiveSMS.cshtml" />
     <Content Include="Views\O2OWap\StepReceiveConSign.cshtml" />
     <Content Include="Views\O2OWap\LoginFormPP.cshtml" />
+    <Content Include="Views\O2OWap\Learning.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
