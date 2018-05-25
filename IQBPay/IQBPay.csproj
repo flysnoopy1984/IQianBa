@@ -628,6 +628,7 @@
     <Compile Include="Controllers\PartStoreController.cs" />
     <Compile Include="Controllers\QRController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ROController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TransferController.cs" />
@@ -789,6 +790,8 @@
     <Content Include="Views\O2OWap\StepReceiveConSign.cshtml" />
     <Content Include="Views\O2OWap\LoginFormPP.cshtml" />
     <Content Include="Views\O2OWap\Learning.cshtml" />
+    <Content Include="Views\Shared\_ROLayout.cshtml" />
+    <Content Include="Views\RO\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -810,7 +813,6 @@
     <Folder Include="Content\UploadFile\AgentVerify\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Global\" />
-    <Folder Include="Views\O2OBase\" />
     <Folder Include="Views\PartStore\" />
   </ItemGroup>
   <ItemGroup>

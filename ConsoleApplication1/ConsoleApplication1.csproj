@@ -100,10 +100,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CatchWebContent\CatchWebContent.csproj">
-      <Project>{7e16ccdc-f697-4e0f-807d-985edc805e47}</Project>
-      <Name>CatchWebContent</Name>
-    </ProjectReference>
     <ProjectReference Include="..\IQBCore\IQBCore.csproj">
       <Project>{079669b1-7659-41c1-b5d6-fa7f634fab3a}</Project>
       <Name>IQBCore</Name>

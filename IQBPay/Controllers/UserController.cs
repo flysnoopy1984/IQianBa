@@ -584,7 +584,6 @@ namespace IQBPay.Controllers
            // string url = "http://ap.iqianba.cn/api/userapi/register/";
             string url = "http://localhost:24068/api/userapi/register/";
             string data = @"UserStatus=1&UserRole=1&Isadmin=false&name=平台服务客服&openId=o3nwE0m12mke3-VhWic-UAX7Oh_0&QRAuthId=66&Headimgurl=http://wx.qlogo.cn/mmopen/6bFpEa5VMGgc8Aoj6Ro2sTK4icFibQrEpLBQCiaGey6gWzBJnZZ44ic9JEUC2zxxRbx9bKC1COuXlwjZ8tMsC1wZtSHrW19qicl0N/0";
-         
             string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
             if (res == "EXIST")
             {
