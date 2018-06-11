@@ -38,6 +38,10 @@
          text-align:center;
          width:60%;
      }
+     #trContainer tr td{
+         padding-left:2px;
+         padding-right:2px;
+     }
 </style>
 <div id="PageList">
     <div class="grzxcon2 mgz xi30 bai cen">收款二维码设置</div>
@@ -46,7 +50,7 @@
     </div>*@
     <div class="ListTableBody_noFixed" id="ListTableBody">
         <div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>
-        <table class="table mgz2  large-only" id="trContainer"></table>
+        <table class="table mgz2  large-only" style="width:100%; font-size:16px;" id="trContainer"></table>
     </div>
     @*<button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%; height:60px;" onclick="Next();">加载更多</button>*@
 </div>

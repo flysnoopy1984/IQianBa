@@ -301,9 +301,5 @@ namespace IQBPay.DataBase
         public DbSet<ESMSLog> DBSMSLog { get; set; }
         #endregion
 
-
-
-
-
     }
 }

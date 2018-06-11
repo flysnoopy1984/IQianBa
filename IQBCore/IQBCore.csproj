@@ -33,8 +33,13 @@
     <Reference Include="AopSdk">
       <HintPath>..\IQBPay\ReferenceDLL\AopSdk.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\CatchWebContent\bin\Debug\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="F2FPayDll">
       <HintPath>..\IQBPay\ReferenceDLL\F2FPayDll.dll</HintPath>
@@ -97,6 +102,7 @@
     <Compile Include="Common\Helper\ImgHelper.cs" />
     <Compile Include="Common\Helper\IQBUrlHelper.cs" />
     <Compile Include="Common\Helper\UtilityHelper.cs" />
+    <Compile Include="DataBase\OOContent.cs" />
     <Compile Include="IQBPay\BaseEnum\SMSEnum.cs" />
     <Compile Include="Common\Constant\IQBConstant.cs" />
     <Compile Include="Common\Helper\HttpHelper.cs" />
@@ -237,6 +243,7 @@
     <Compile Include="IQBWX\Models\WX\Template\SettleToUser\SettleToUserTemplate.cs" />
     <Compile Include="IQBWX\Models\WX\Template\TemplateData.cs" />
     <Compile Include="IQBWX\Models\WX\Template\TemplateField.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BaseInPage.cs" />
     <Compile Include="Model\BasePageModel.cs" />
@@ -245,6 +252,7 @@
     <Compile Include="Model\NResult.cs" />
     <Compile Include="Model\O2OBuyerSession.cs" />
     <Compile Include="Model\UserSession.cs" />
+    <Compile Include="OO\Models\Entity\EBanner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WxSDK\IQBConfig - 复制.cs" />
     <Compile Include="WxSDK\Config.cs" />
@@ -261,6 +269,7 @@
     <Folder Include="IQBWX\BLL\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

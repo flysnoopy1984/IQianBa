@@ -78,8 +78,8 @@ namespace IQBPay.Controllers
             {
                 return Content("Error: No Id Comming!请联系管理员");
             }
-           
-                
+
+        
            
             return Redirect(app.AuthUrl_Store + "&Id=" + Id); 
             //return Content("OK");

@@ -374,25 +374,25 @@ function generateData(result) {
         
 
         if (i == 0) {
-            strCtrl += "<tr><td colspan='3' style='text-align:center'>普通码配置</td></tr>";
+            strCtrl += "<tr><td colspan='4' style='text-align:center'>普通码配置</td></tr>";
             qrType = 0;
         }
         if (i == 1) {
-            strCtrl += "<tr><td colspan='3' style='text-align:center'>大额码配置</td></tr>";
+            strCtrl += "<tr><td colspan='4' style='text-align:center'>大额码配置</td></tr>";
             qrType = 1;
         }
 
         strCtrl += "<tr>";
         if (i == 0)
-            strCtrl += "<td style='width:10%' class='td_bgIcon_sQR'></td>";
+            strCtrl += "<td style='width:14%' class='td_bgIcon_sQR'></td>";
         else
-            strCtrl += "<td style='width:10%' class='td_bgIcon_bQR'></td>";
-        strCtrl += "<td style='width:45%' ";     
+            strCtrl += "<td style='width:14%' class='td_bgIcon_bQR'></td>";
+        strCtrl += "<td style='width:40%' ";     
         strCtrl += "onclick='ToInfoPage(" + QueryData.length + ");'>";
         strCtrl += "<ul><li style='color:brown; font-weight:bold; height:30px;'>用户手续费:" + result[i].MarketRate + "</li>";
         //strCtrl += "<li>上级代理:" + ParentName + "</li>";
         strCtrl += "</ul></td>";
-        strCtrl += "<td style='width:45%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='height:30px;'>代理成本:" + (result[i].MarketRate - result[i].Rate).toFixed(2) + "</li>";
+        strCtrl += "<td style='width:40%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='height:30px;'>代理成本:" + (result[i].MarketRate - result[i].Rate).toFixed(2) + "</li>";
         //strCtrl += "<li>上级代理佣金:" + result[i].ParentCommissionRate + "</li>";
         strCtrl += "</ul></td>";
         if (i == 0 && result.length==2)

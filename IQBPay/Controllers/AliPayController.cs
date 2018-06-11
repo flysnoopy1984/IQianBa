@@ -1397,7 +1397,7 @@ namespace IQBPay.Controllers
         {
             AliPayManager payManager = new AliPayManager();
             string tid; 
-            AlipayFundTransToaccountTransferResponse response =  payManager.DoTransferAmount(TransferTarget.Internal,BaseController.SubApp, "1451286938@qq.com", 0.1.ToString("0.00"),PayTargetMode.AliPayAccount,out tid);
+            AlipayFundTransToaccountTransferResponse response =  payManager.DoTransferAmount(TransferTarget.Internal,BaseController.SubApp, "song_fuwei@hotmail.com", 0.1.ToString("0.00"),PayTargetMode.AliPayAccount,out tid);
 
             return Content(response.Body);
            // return View();

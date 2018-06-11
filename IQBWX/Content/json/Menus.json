@@ -15,10 +15,20 @@
      {
       "name": "用户中心",
       "sub_button": [
-         {
+        {
           "type": "view",
           "name": "我的账户",
           "url": "http://wx.iqianba.cn/PP/AgentAccount"
+        },
+         {
+          "type": "view",
+          "name": "设置二维码",
+          "url": "http://wx.iqianba.cn/PP/Agent_QR_ARList"
+        },
+        {
+          "type": "click",
+          "name": "我的二维码",
+          "key": "pay_101"
         },
         {
           "type": "view",

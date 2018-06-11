@@ -1,5 +1,4 @@
-﻿using CatchWebContent;
-using IQBCore.Common.Constant;
+﻿using IQBCore.Common.Constant;
 using IQBCore.Common.Helper;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBWX.Models.OutParameter;
