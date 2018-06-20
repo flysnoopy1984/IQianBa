@@ -103,6 +103,7 @@
     <Compile Include="Common\Helper\IQBUrlHelper.cs" />
     <Compile Include="Common\Helper\UtilityHelper.cs" />
     <Compile Include="DataBase\OOContent.cs" />
+    <Compile Include="DataBase\OOTContent.cs" />
     <Compile Include="IQBPay\BaseEnum\SMSEnum.cs" />
     <Compile Include="Common\Constant\IQBConstant.cs" />
     <Compile Include="Common\Helper\HttpHelper.cs" />
@@ -252,7 +253,16 @@
     <Compile Include="Model\NResult.cs" />
     <Compile Include="Model\O2OBuyerSession.cs" />
     <Compile Include="Model\UserSession.cs" />
+    <Compile Include="OO\BaseEnum\ItemStatus.cs" />
+    <Compile Include="OO\BaseEnum\OOChannel.cs" />
+    <Compile Include="OO\BaseEnum\OrderStatus.cs" />
     <Compile Include="OO\Models\Entity\EBanner.cs" />
+    <Compile Include="OO\Models\Entity\EBaseRecord.cs" />
+    <Compile Include="OO\Models\Entity\EItemInfo.cs" />
+    <Compile Include="OO\Models\Entity\EOrderInfo.cs" />
+    <Compile Include="OO\Models\Entity\EStoreInfo.cs" />
+    <Compile Include="OO\Models\Entity\EUserInfo.cs" />
+    <Compile Include="OO\Models\In\QItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WxSDK\IQBConfig - 复制.cs" />
     <Compile Include="WxSDK\Config.cs" />

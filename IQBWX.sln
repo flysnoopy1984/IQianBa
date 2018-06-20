@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQBConsole", "IQBConsole\IQ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQBAPI", "IQBAPI\IQBAPI.csproj", "{244E4C4E-9179-486E-8ADE-96BA69B6BEE4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OOProject", "OOProject", "{90AE8748-5BA3-4140-9F2E-0258D9C44B49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +56,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{244E4C4E-9179-486E-8ADE-96BA69B6BEE4} = {90AE8748-5BA3-4140-9F2E-0258D9C44B49}
 	EndGlobalSection
 EndGlobal

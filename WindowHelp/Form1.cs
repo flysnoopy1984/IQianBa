@@ -33,33 +33,33 @@ namespace IQBConsole
 
         private void RunCatchWeb(int type)           
         {
-            CatchWeb cw = null;
-            try
-            {
-                string url = "";
-                Encoding code = Encoding.Default;
-                if (type == 1)
-                { 
-                    url = "http://www.iqianba.cn/iqb/catchsite/abc.html";
-                    code = Encoding.Default;
-                    cw = new CatchWeb(true, this.tb_Result);
-                }
-                else
-                { 
-                    url = "http://hjc025.xiaoyun.com/m/";
-                    code = Encoding.UTF8;
-                    cw = new CatchWeb(false, this.tb_Result);
-                }
+            //CatchWeb cw = null;
+            //try
+            //{
+            //    string url = "";
+            //    Encoding code = Encoding.Default;
+            //    if (type == 1)
+            //    { 
+            //        url = "http://www.iqianba.cn/iqb/catchsite/abc.html";
+            //        code = Encoding.Default;
+            //        cw = new CatchWeb(true, this.tb_Result);
+            //    }
+            //    else
+            //    { 
+            //        url = "http://hjc025.xiaoyun.com/m/";
+            //        code = Encoding.UTF8;
+            //        cw = new CatchWeb(false, this.tb_Result);
+            //    }
 
-                tb_Result.Text += "开始抓爬数据：" + url+"\n";
+            //    tb_Result.Text += "开始抓爬数据：" + url+"\n";
                 
-                cw.run(url, code);
-                tb_Result.Text += "抓爬数据完成\n";
-            }
-            catch(Exception ex)
-            {
-                tb_Result.Text = "抓爬错误：" + ex.Message+"\n";
-            }
+            //    cw.run(url, code);
+            //    tb_Result.Text += "抓爬数据完成\n";
+            //}
+            //catch(Exception ex)
+            //{
+            //    tb_Result.Text = "抓爬错误：" + ex.Message+"\n";
+            //}
         }
 
         /// <summary>

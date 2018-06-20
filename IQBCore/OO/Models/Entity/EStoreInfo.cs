@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace IQBCore.OO.Models.Entity
 {
-    [Table("Banner")]
-    public class EBanner: EBaseRecord
+    [Table("StoreInfo")]
+    public class EStoreInfo: EBaseRecord
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        [MaxLength(255)]
-        public string BannerImg { get; set; }
+        public string Name { get; set; }
 
-        [MaxLength(50)]
-        public string Title { get; set; }
+        /// <summary>
+        /// 属于哪个用户
+        /// </summary>
+        public long UserId { get; set; }
 
 
-        public int Position { get; set; }
     }
 }
