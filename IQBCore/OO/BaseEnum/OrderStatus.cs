@@ -18,5 +18,7 @@ namespace IQBCore.OO.BaseEnum
 
         Complete = 100,
 
+        ALL = 999,
+
     }
 }

@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQBAPI", "IQBAPI\IQBAPI.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OOProject", "OOProject", "{90AE8748-5BA3-4140-9F2E-0258D9C44B49}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OODBSrv", "OODLL\OODBSrv.csproj", "{28269CBA-2915-4AB8-B336-AB1DF063A1B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,11 +55,15 @@ Global
 		{244E4C4E-9179-486E-8ADE-96BA69B6BEE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{244E4C4E-9179-486E-8ADE-96BA69B6BEE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{244E4C4E-9179-486E-8ADE-96BA69B6BEE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28269CBA-2915-4AB8-B336-AB1DF063A1B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28269CBA-2915-4AB8-B336-AB1DF063A1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28269CBA-2915-4AB8-B336-AB1DF063A1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28269CBA-2915-4AB8-B336-AB1DF063A1B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{244E4C4E-9179-486E-8ADE-96BA69B6BEE4} = {90AE8748-5BA3-4140-9F2E-0258D9C44B49}
+		{28269CBA-2915-4AB8-B336-AB1DF063A1B0} = {90AE8748-5BA3-4140-9F2E-0258D9C44B49}
 	EndGlobalSection
 EndGlobal

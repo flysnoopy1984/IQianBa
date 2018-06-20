@@ -2,6 +2,7 @@
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.Model;
 using IQBCore.OO.Models.Entity;
+using OODBSrv;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,13 @@ namespace IQBAPI.Controllers
 {
     public class BannerController :BaseAPIController
     {
+        private BannerDBSrv _SrvBanner = new BannerDBSrv();  
+
+
         [HttpPost]
         public NResult<EBanner> GetLatestBanner()
         {
-            NResult<EBanner> result = base.GetLatestData<EBanner>(10);
+            NResult<EBanner> result = _SrvBanner.GetLatestData(10);
             return result;
 
         }

@@ -6,16 +6,9 @@ using System.Threading.Tasks;
 
 namespace IQBCore.OO.BaseEnum
 {
-    public enum OOChannel
+    public enum CashTransType
     {
-        TMALL = 1,
-
-        TaoBao = 2,
-
-        JD = 3,
-
-        ALL = 999,
-
-
+        In = 0,
+        Out = 1,
     }
 }

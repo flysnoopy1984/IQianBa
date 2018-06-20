@@ -13,9 +13,9 @@ namespace IQBAPI.Controllers
     public class OrderController : BaseAPIController
     {
         [HttpPost]
-        public NResult<EOrderInfo> GetLatestOrder(long UserId)
+        public NResult<EUserOrder> GetLatestOrder(long UserId)
         {
-            NResult<EOrderInfo> result = new NResult<EOrderInfo>();
+            NResult<EUserOrder> result = new NResult<EUserOrder>();
             try
             {
                 using (OOContent db = new OOContent())
@@ -32,7 +32,7 @@ namespace IQBAPI.Controllers
                 result.ErrorMsg = ex.Message;
             }
             if (result == null)
-                result = new NResult<EOrderInfo>();
+                result = new NResult<EUserOrder>();
 
             return result;
         }

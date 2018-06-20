@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IQBCore.OO.BaseEnum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,5 +24,7 @@ namespace IQBCore.OO.Models.Entity
 
         [MaxLength(50)]
         public string NickName { get; set; }
+
+        public RecordStatus RecordStatus { get; set; }
     }
 }

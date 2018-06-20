@@ -17,7 +17,7 @@ namespace IQBCore.DataBase
         public DbSet<EBanner> DBBanner { get; set; }
         public DbSet<EUserInfo> DBUserInfo { get; set; }
         public DbSet<EStoreInfo> DBStoreInfo { get; set; }
-        public DbSet<EOrderInfo> DBOrderInfo { get; set; }
+        public DbSet<EUserOrder> DBOrderInfo { get; set; }
 
         public DbSet<EItemInfo> DBItemInfo { get; set; }
 

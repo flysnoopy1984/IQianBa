@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 
 namespace IQBCore.OO.BaseEnum
 {
-    public enum OOChannel
+    public enum UserTaskStatus
     {
-        TMALL = 1,
+        Created = 0,
 
-        TaoBao = 2,
+        Process = 2,
 
-        JD = 3,
+        Stop = 4,
+
+        GetError = -1,
+
+        Complete = 100,
 
         ALL = 999,
-
 
     }
 }

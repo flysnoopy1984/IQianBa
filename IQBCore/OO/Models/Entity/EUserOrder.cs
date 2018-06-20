@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace IQBCore.OO.Models.Entity
 {
-    [Table("OrderInfo")]
-    public class EOrderInfo: EBaseRecord
+    [Table("UserOrder")]
+    public class EUserOrder: EBaseRecord
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

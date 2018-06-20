@@ -1,5 +1,6 @@
 ﻿using IQBCore.DataBase;
 using IQBCore.Model;
+using IQBCore.OO.BaseEnum;
 using IQBCore.OO.Models.Entity;
 using IQBCore.OO.Models.In;
 using System;
@@ -21,7 +22,7 @@ namespace IQBAPI.Controllers
             {
                 using (OOContent db = new OOContent())
                 {
-                    var list = db.DBItemInfo.Where(a => a.ItemStatus == IQBCore.OO.BaseEnum.ItemStatus.OnLine).OrderByDescending(a => a.CreatedTime);
+                    var list = db.DBItemInfo.Where(a => a.RecordStatus == RecordStatus.Normal).OrderByDescending(a => a.CreatedTime);
 
                     if (qItem.pageIndex == 0)
                     {

@@ -6,17 +6,15 @@ using System.Threading.Tasks;
 
 namespace IQBCore.OO.BaseEnum
 {
-    public enum ItemStatus
+    public enum TaskType
     {
-        Created = 0,
+        //刷单
+        Order =1,
 
-        OnLine = 1,
+        //广告
+        AD =2,
 
-        OffLine = -1,
-
-        Blocked = -2,
-
-
+        ALL = 999
 
     }
 }

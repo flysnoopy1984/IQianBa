@@ -18,7 +18,7 @@ namespace IQBCore.OO.Models.Entity
 
         public long StoreId { get; set; }
 
-        public ItemStatus ItemStatus { get; set; }
+        public RecordStatus RecordStatus { get; set; }
 
         [MaxLength(50)]
         public string Name { get; set; }

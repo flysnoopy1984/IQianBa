@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace IQBCore.OO.BaseEnum
 {
-    public enum OOChannel
+    public enum RecordStatus
     {
-        TMALL = 1,
+        Normal = 0 ,
 
-        TaoBao = 2,
-
-        JD = 3,
+        Blocked = -1,
 
         ALL = 999,
+
+
 
 
     }

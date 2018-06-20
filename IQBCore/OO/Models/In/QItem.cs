@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IQBCore.OO.BaseEnum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ namespace IQBCore.OO.Models.In
         public int pageIndex { get; set; }
         
         public int pageSize { get; set; }
+
+        public RecordStatus RecordStatus { get; set; }
 
 
     }

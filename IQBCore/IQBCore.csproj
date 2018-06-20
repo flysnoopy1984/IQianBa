@@ -253,16 +253,26 @@
     <Compile Include="Model\NResult.cs" />
     <Compile Include="Model\O2OBuyerSession.cs" />
     <Compile Include="Model\UserSession.cs" />
-    <Compile Include="OO\BaseEnum\ItemStatus.cs" />
+    <Compile Include="OO\BaseEnum\CashTransType.cs" />
     <Compile Include="OO\BaseEnum\OOChannel.cs" />
     <Compile Include="OO\BaseEnum\OrderStatus.cs" />
+    <Compile Include="OO\BaseEnum\RecordStatus.cs" />
+    <Compile Include="OO\BaseEnum\TaskStatus.cs" />
+    <Compile Include="OO\BaseEnum\TaskType.cs" />
     <Compile Include="OO\Models\Entity\EBanner.cs" />
     <Compile Include="OO\Models\Entity\EBaseRecord.cs" />
+    <Compile Include="OO\Models\Entity\EUserCashOutTrans.cs" />
+    <Compile Include="OO\Models\Entity\ECurrencyInfo.cs" />
     <Compile Include="OO\Models\Entity\EItemInfo.cs" />
-    <Compile Include="OO\Models\Entity\EOrderInfo.cs" />
+    <Compile Include="OO\Models\Entity\EUserOrder.cs" />
     <Compile Include="OO\Models\Entity\EStoreInfo.cs" />
+    <Compile Include="OO\Models\Entity\ETaskInfo.cs" />
+    <Compile Include="OO\Models\Entity\EUserBalance.cs" />
     <Compile Include="OO\Models\Entity\EUserInfo.cs" />
+    <Compile Include="OO\Models\Entity\EUserQRInvite.cs" />
+    <Compile Include="OO\Models\Entity\EUserTask.cs" />
     <Compile Include="OO\Models\In\QItem.cs" />
+    <Compile Include="OO\Models\In\QTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WxSDK\IQBConfig - 复制.cs" />
     <Compile Include="WxSDK\Config.cs" />
@@ -280,6 +290,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
