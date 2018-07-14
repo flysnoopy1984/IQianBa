@@ -8,6 +8,7 @@ namespace IQBCore.Common.Constant
 {
     public class IQBConstant
     {
+        #region IQB
         public const string WXQR_IQBPAY_PREFIX = "IQBPay_QR_";
 
         public const int PageSize = 80;
@@ -48,8 +49,13 @@ namespace IQBCore.Common.Constant
         public const string ck_O2OReceiveAccount = "IQB_O2OReceiveAccount";
         public const string ck_O2OUser = "IQB_O2OUser";
 
-
-
         /* Cookie Key end */
+
+        #endregion
+
+        #region OO
+        public const string DefaultDateTime= "1900-1-1";
+
+        #endregion
     }
 }

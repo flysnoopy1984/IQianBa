@@ -16,6 +16,7 @@ using IQBWX.Models.Results;
 using IQBWX.Models.Transcation;
 using IQBWX.Models.User;
 using IQBWX.Models.WX;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -49,16 +50,13 @@ namespace ConsoleApplication1
 
         static void Main(string[] args)
         {
+            
+
             try
             {
-                string b = "13225930162";
-                List<String> list = new List<string>();
-                list.Add("13225930162");
-                if(list.Contains(b))
-                {
-
-                }
-
+                NLogHelper.ErrorDb("ttt");
+            //   string a =  StringHelper.GenerateUserInviteCode("13482710060");
+             //   Console.WriteLine(a);
             }
             catch (Exception ex)
             {

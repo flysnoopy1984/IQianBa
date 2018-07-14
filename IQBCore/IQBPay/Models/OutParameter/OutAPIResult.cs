@@ -18,6 +18,9 @@ namespace IQBCore.IQBPay.Models.OutParameter
 
         public string SuccessMsg { get; set; }
 
+        /// <summary>
+        /// -10 已经存在
+        /// </summary>
         public  int IntMsg { get; set; }
 
        

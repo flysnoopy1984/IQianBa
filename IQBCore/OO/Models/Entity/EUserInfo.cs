@@ -22,8 +22,13 @@ namespace IQBCore.OO.Models.Entity
         [MaxLength(20)]
         public string Pwd { get; set; }
 
+        [MaxLength(20)]
+        public string Phone { get; set; }
+
         [MaxLength(50)]
         public string NickName { get; set; }
+
+        public UserRole UserRole { get; set; }
 
         public RecordStatus RecordStatus { get; set; }
     }

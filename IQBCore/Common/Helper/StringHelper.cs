@@ -94,6 +94,25 @@ namespace IQBCore.Common.Helper
             return Regex.IsMatch(str_handset, "^(((13[0-9])|(15([0-3]|[5-9]))|(18[0-9])|(17[0-9])|(14[0-9]))\\d{8})$");
         }
 
+        #region OO
+        /// <summary>
+        /// 手机后5位+3位随机数
+        /// </summary>
+        /// <returns></returns>
+        public static string GenerateUserInviteCode(string phone)
+        {
+
+            string code = phone.Substring(6);
+            code += GetRnd(3, true, false, false, false, "");
+            return code;
+        }
+        public static string GenerateOONo()
+        {
+            return "OO" + DateTime.Now.ToString("yyyyMMddhhmmss") + GetRnd(2, true, true, false, false, "");
+        }
+
+        #endregion
+
 
     }
 }

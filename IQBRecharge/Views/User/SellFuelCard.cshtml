@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "冲油卡";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+@section Title{
+    供加油卡
+}
+
+<link href="@Url.Scrpit("~/Content/Style/Wap/SellFuelCard.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/Content/scripts/Wap/SellFuelCard.js")"></script>
+
+<div class="box">
+    <div class="title">
+        请仔细确认加油卡信息，再填写！
+        因填写错误而导致失败或造成的损失，请自行承担。
+    </div>
+    <div class="content">
+        <div class="row">
+            <div class="lbField"><label>卡种</label></div>
+            <div class="contentField">
+                <div class="ItemList" id="CardTypeList">
+                    <div class="ItemSelected">
+                        中石油
+                    </div>
+                    <div class="Item">
+                        中石油省卡
+                    </div>
+                    <div class="Item">
+                        中石化
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="height:100px; margin-top:10px;">
+            <div class="lbField"><label>面额</label></div>
+            <div class="contentField">
+                <div id="CardValueList" class="ItemList" style="height:100px;">
+                    <div class="Col2 Item" >
+                        ￥100
+                    </div>
+                    <div class="Item Col2">
+                        ￥200
+                    </div>
+                    <div class="Item Col2">
+                        ￥500
+                    </div>
+                    <div class="Item Col2">
+                        ￥1000
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="row" style="margin-top:10px; align-items:flex-start">
+            <div class="lbField"><label>数量</label></div>
+            <div class="textField">
+                <input type="tel" class="form-control" />
+            </div>
+        </div>*@
+
+        <div class="row" style="margin-top:5px; align-items:flex-start">
+            <div class="lbField"><label>加油卡卡号</label></div>
+            <div class="textField">
+                <input type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="row" style="margin-top:5px; align-items:flex-start">
+            <div class="lbField"><label>加油卡密码</label></div>
+            <div class="textField">
+                <input type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="row SingleLabel" style="height:70px;">
+            <input type="checkbox" checked id="cb_Confirm" />
+            <label id="lb_Confirm" for="cb_Confirm">我已确认该卡面值准确无误（如面值错误余额恕不退还！损失自行承担！）</label>
+        </div>
+        <div class="row buttonlist">
+            <input type="button" class="btn btn-warning submitBtn" value="提交" id="btnSubmit" />
+        </div>
+    </div>
+
+</div>

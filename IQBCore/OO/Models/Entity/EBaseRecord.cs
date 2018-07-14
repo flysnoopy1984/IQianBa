@@ -8,6 +8,10 @@ namespace IQBCore.OO.Models.Entity
 {
     public class EBaseRecord
     {
+        public EBaseRecord()
+        {
+            CreatedTime = DateTime.Now;
+        }
         public DateTime CreatedTime { get; set; }
     }
 }

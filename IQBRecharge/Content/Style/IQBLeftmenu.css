@@ -1,0 +1,38 @@
+﻿
+* {margin: 0; padding: 0;}
+.LeftMenu{
+    position:absolute;
+    left:10px;
+    cursor:pointer;
+    font-size:14px;
+}
+/*.transleft{
+    transform: translateX(150px);
+            
+}*/
+
+
+.sidenav {
+background: rgb(50, 60, 60); 
+width: 150px;
+position: absolute; 
+left: 0; top: 50px; bottom: 0; 
+
+display:none;
+margin-bottom:unset !important;
+}
+.sidenav li {list-style-type: none; text-align:center;}
+.sidenav a { color: white; text-decoration: none; }
+.sidenav b {
+	font: bold 14px/78px Montserrat; 
+    display: block;
+    cursor:pointer;
+	opacity: 0; transform: translateX(50px); transition: all 0.4s;
+}
+
+.bShow {opacity: 1; transform: translateX(0);}
+
+.sidenav i {
+	display: block; width: 80px; float: left; 
+	font-size: 16px; line-height: 78px; text-align: center;
+}

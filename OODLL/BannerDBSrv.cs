@@ -12,6 +12,7 @@ namespace OODBSrv
 
     public class BannerDBSrv: BaseDBSrv
     {
+
         public NResult<EBanner> GetLatestData(int showNum)
         {
             NResult<EBanner> result = base.GetLatestData<EBanner>(showNum);
@@ -24,6 +25,7 @@ namespace OODBSrv
             {
                 using (OOContent db = new OOContent())
                 {
+                    
                 }
             }
             catch (Exception ex)

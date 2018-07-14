@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IQBCore.IQBPay.Models.SMS
 {
-    [Table("SMSInfo")]
+    [Table("SMSLog")]
     public class ESMSLog
     {
         [Key]

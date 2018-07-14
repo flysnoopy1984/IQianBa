@@ -17,10 +17,20 @@ namespace IQBCore.OO.Models.Entity
 
         public long UserId { get; set; }
 
+        /// <summary>
+        /// 二维码对应的地址
+        /// </summary>
         public string QRUrl { get; set; }
 
+        /// <summary>
+        /// 二维码存放地址
+        /// </summary>
         public string QRPath { get; set; }
 
+        /// <summary>
+        /// 一般的邀请码
+        /// </summary>
+        [MaxLength(20)]
         public string InviteCode { get; set; }
     }
 }

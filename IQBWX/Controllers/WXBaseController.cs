@@ -220,8 +220,8 @@ namespace IQBWX.Controllers
 
         protected string GetOpenId(bool isTest = false,bool IsforOpenId = true)
         {
-            bool isDev = Convert.ToBoolean(ConfigurationManager.AppSettings["DevMode"]);
-          if(isDev) return "o3nwE0i_Z9mpbZ22KdOTWeALXaus";
+           bool isDev = Convert.ToBoolean(ConfigurationManager.AppSettings["DevMode"]);
+           if(isDev) return "o3nwE0i_Z9mpbZ22KdOTWeALXaus";
 
 
             //Jacky

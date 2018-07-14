@@ -17,7 +17,20 @@ namespace IQBCore.Model
 
         public List<T> resultList { get; set; }
 
-        public bool IsSuccess { get; set; }
+        private bool _IsSuccess;
+        public bool IsSuccess
+        {
+            get
+            {
+                return _IsSuccess;
+            }
+            set
+            {
+                _IsSuccess = value;
+                if (!_IsSuccess)
+                    SuccessMsg = "";
+            }
+        }
         public string ErrorMsg { get; set; }
 
         public string SuccessMsg { get; set; }

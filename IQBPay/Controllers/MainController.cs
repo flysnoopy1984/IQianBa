@@ -113,7 +113,7 @@ namespace IQBPay.Controllers
         {
             try
             {
-                using (AliPayContent db = new AliPayContent(true))
+                using (AliPayContent db = new AliPayContent())
                 {
                     if(IQBConstant.NeedDefaultQRModule)
                     {

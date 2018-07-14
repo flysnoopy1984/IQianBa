@@ -12,6 +12,15 @@ namespace IQBCore.OO.Models.Entity
     [Table("ItemInfo")]
     public class EItemInfo:EBaseRecord
     {
+
+        public EItemInfo()
+        {
+            Channel = OOChannel.Normal;
+            RecordStatus = RecordStatus.Normal;
+            Price = 0;
+
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
@@ -25,10 +34,13 @@ namespace IQBCore.OO.Models.Entity
 
         public OOChannel Channel { get; set; }
 
-        [MaxLength(255)]
+       
         public string RealUrl { get; set; }
 
         public double Price { get; set; }
+
+        [MaxLength(50)]
+        public string ExtId { get; set; }
 
 
     }

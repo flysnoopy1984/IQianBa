@@ -1,0 +1,100 @@
+﻿.box {
+  width: 100%;
+  /*margin: auto auto auto auto;*/
+  display:flex;
+  flex-direction:column;
+}
+.title
+{
+    padding-top:20px;
+    padding-bottom:20px;
+    height:80px;
+    
+    color:#0095F5;
+    border-bottom:1px solid #adadad
+
+}
+.content{
+    text-align:center;
+    margin-top:10px;
+    display:flex;
+    flex-direction:column;
+    flex-grow:1;
+}
+
+.row{
+    display:flex;
+    /*align-content:space-around;*/
+    align-items:baseline;
+    /*height:50px;*/
+
+}
+.bottomline{
+    border-bottom:1px inset #dbd8d8;
+}
+.row .lbField{
+    width:25%;
+}
+.row .contentField{
+    width:75%;
+}
+.row .textField{
+    width:70%;
+}
+
+.buttonlist{
+    justify-content:center;
+}
+.submitBtn{
+    width:80%;
+}
+
+
+.SingleLabel{
+   padding:20px;
+
+}
+.ItemList
+{
+    padding-right:20px;
+    display:flex;
+    justify-content:space-between;
+    align-content:space-between;
+    flex-wrap:wrap;
+
+}
+
+.Col2{
+   width:100px;
+}
+.ItemList .Item
+{
+    height:40px;
+    line-height:40px;
+    border:1px solid #adadad;
+    /*margin-top:-5px;*/
+    padding-left:10px;
+    padding-right:10px;
+    cursor:pointer;
+}
+
+.ItemList .ItemSelected
+{
+    height:40px;
+    line-height:40px;
+    border:1px solid #eaaa17;
+    /*margin-top:-5px;*/
+    padding-left:10px;
+    padding-right:10px;
+    cursor:pointer;
+    background-color:#f9d29e;
+    background-image:url('../../Images/xuanzhong.png');
+    background-repeat:no-repeat;
+    background-position-x:right;
+    background-position-y:bottom;
+}
+
+#lb_Confirm
+{
+     color:#0095F5;
+}

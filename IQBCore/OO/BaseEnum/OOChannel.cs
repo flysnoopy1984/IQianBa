@@ -8,6 +8,8 @@ namespace IQBCore.OO.BaseEnum
 {
     public enum OOChannel
     {
+        Normal = 0,
+
         TMALL = 1,
 
         TaoBao = 2,

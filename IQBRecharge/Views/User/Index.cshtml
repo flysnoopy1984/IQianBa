@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "用户";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+@section Title{
+    首页
+}
+<link href="@Url.Scrpit("~/Content/Style/Wap/UserIndex.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/Content/scripts/Wap/UserIndex.js")"></script>
+<style>
+   /*.get_login_info{
+      width: 100%;
+      height: 50px;
+      text-align:center;
+      border-bottom: 1px solid #dcdada;
+      margin-top: 25px;
+   }*/
+</style>
+<div class="box">
+    <div class="get_login_info">
+        <label>手机号：</label><input id="user_num" type="tel" placeholder="" class="form-control get_login_info_input" />
+    </div>
+    <div class="get_login_info">
+        <label>密码：</label><input id="user_pwd" type="password" placeholder="" class="form-control get_login_info_input" />
+    </div>
+   <div style="margin-top:20px;">
+       <button id="btnLogin" type="button" class="btn btn-success" onclick="Login();">登陆</button>
+   </div>
+    
+</div>

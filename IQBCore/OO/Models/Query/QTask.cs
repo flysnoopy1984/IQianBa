@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 
 
-namespace IQBCore.OO.Models.In
+namespace IQBCore.OO.Models.Query
 {
     public class QTask
     {
@@ -17,6 +17,8 @@ namespace IQBCore.OO.Models.In
         public long AcceptUserId { get; set; }
 
         public UserTaskStatus TaskStatus { get; set; }
+
+        public RecordStatus RecordStatus { get; set; }
 
         public TaskType TaskType { get; set; }
 

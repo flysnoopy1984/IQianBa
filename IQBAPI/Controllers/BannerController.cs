@@ -1,8 +1,8 @@
-﻿using IQBCore.DataBase;
+﻿using IQBCore.Common.Helper;
+using IQBCore.DataBase;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.Model;
 using IQBCore.OO.Models.Entity;
-using OODBSrv;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +14,17 @@ namespace IQBAPI.Controllers
 {
     public class BannerController :BaseAPIController
     {
-        private BannerDBSrv _SrvBanner = new BannerDBSrv();  
+      //  private BannerDBSrv _SrvBanner = new BannerDBSrv();  
 
 
         [HttpPost]
-        public NResult<EBanner> GetLatestBanner()
+        public NResult<EBanner> GetLatest()
         {
-            NResult<EBanner> result = _SrvBanner.GetLatestData(10);
-            return result;
+            NResult<EBanner> result = base.GetLatestData<EBanner>(10);
+           // NLogHelper.InfoTxt("ttt");
 
+
+            return result;
         }
 
         [HttpPost]

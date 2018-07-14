@@ -34,5 +34,7 @@ namespace IQBCore.IQBPay.BaseEnum
         IQB_PayOrder=100,
 
         O2O_BuyerPhoneVerify = 200,
+
+        ReCharge = 300,
     }
 }

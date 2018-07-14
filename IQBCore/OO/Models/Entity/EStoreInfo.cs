@@ -1,4 +1,4 @@
-﻿using IQBCore.IQBPay.BaseEnum;
+﻿using IQBCore.OO.BaseEnum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,6 +17,8 @@ namespace IQBCore.OO.Models.Entity
         public long Id { get; set; }
 
         public string Name { get; set; }
+
+        public string Description { get; set; }
 
         /// <summary>
         /// 属于哪个用户

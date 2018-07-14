@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+@section Title{
+    首页
+}
+
+<link href="@Url.Scrpit("~/Content/Style/Wap/Home.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/Content/Scripts/Wap/Home.js")"></script>
+
+<div class="box">
+    <div class="title">
+       请选择你需要的操作
+    </div>
+    <div>
+        <ul class="list-group">
+            <li id="liJY" class="list-group-item item" style="background-color:#FFECB8">卖加油卡</li>
+            <li id ="liSJ" class="list-group-item item" style="background-color:#6c8ffb">卖手机卡</li>
+        </ul>
+    </div>
+   
+</div>

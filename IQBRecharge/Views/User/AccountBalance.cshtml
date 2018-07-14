@@ -1,0 +1,34 @@
+﻿@model IQBCore.IQBRecharge.Models.EUserAccountBalance
+@{
+    ViewBag.Title = "AccountBalance";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+@section Title{
+    账户余额
+}
+
+<link href="@Url.Scrpit("~/Content/Style/Wap/AccountBalance.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/Content/Scripts/Wap/AccountBalance.js")"></script>
+
+<div>
+        <div class="Summery">
+            <div style="width:60%">我的余额：<span id="AgentBalance">@Model.Balance</span></div>
+
+            <div style="width:40%" class="btnList">
+                <div><button type="button" onclick="GetMoney();" class="btn btn-danger" id="btnGetMoney">提现</button></div>
+                <div><button type="button" onclick="SetUserAccount();" class="btn btn-success" id="btnUserAccount">账户设置</button></div>
+            </div>
+        </div>
+        <div id="GetMoneyArea"> 
+            <div><label for="GetMoney_Amt">输入提现金额:</label></div>
+            <div><input type="tel" id="GetMoney_Amt" class="form-control" onchange="CheckAmtValue(this);" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></div>
+          
+            <div><button type="button" onclick="SureGetMoney();" class="btn btn-warning" id="btnSureGetMoney">确定</button></div>
+
+        </div>
+        <div id="Detail">
+            <table class="table" id="DataTable">
+              
+            </table>
+        </div>
+    </div>

@@ -39,11 +39,11 @@ function generateData(result) {
         else if (channel == 1)
             cn = "加盟商";
 
-        //if (result[i].APPId == "2017112100077913")
-        //    app = "玉杰";
-        //else if (result[i].APPId == "2017122901328258")
-        //    app = "寒翼";
-        if (result[i].APPId == "2018060760292909")
+        if (result[i].APPId == "2017112100077913")
+            app = "玉杰";
+        else if (result[i].APPId == "2017122901328258")
+            app = "寒翼";
+        else if (result[i].APPId == "2018060760292909")
             app = "哲胜";
         
 

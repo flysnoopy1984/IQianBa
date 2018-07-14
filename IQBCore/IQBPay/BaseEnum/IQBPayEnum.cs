@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 namespace IQBCore.IQBPay.BaseEnum
 {
+    [NotMapped()]
     public class IQBPayEnum
     {
         public static string GetPayMethod(PayMethod pm)
@@ -219,6 +221,7 @@ namespace IQBCore.IQBPay.BaseEnum
         All =-1,
     }
 
+  
     public enum RecordStatus
     {
         Normal=0,

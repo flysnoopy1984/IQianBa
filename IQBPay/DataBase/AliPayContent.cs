@@ -32,13 +32,13 @@ namespace IQBPay.DataBase
 
         }
 
-        public AliPayContent(bool isInit = false) : base("PPConnection")
-        {
-            if (isInit)
-                Database.SetInitializer<AliPayContent>(new DropCreateDatabaseAlways<AliPayContent>());
-            else
-                Database.SetInitializer<AliPayContent>(null);
-        }
+        //public AliPayContent(bool isInit = false) : base("PPConnection")
+        //{
+        //    if (isInit)
+        //        Database.SetInitializer<AliPayContent>(new DropCreateDatabaseAlways<AliPayContent>());
+        //    else
+        //        Database.SetInitializer<AliPayContent>(null);
+        //}
 
         public DbSet<EAgentCommission> DBAgentCommission { get; set; }
 

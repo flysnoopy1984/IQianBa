@@ -8,6 +8,9 @@ namespace IQBCore.OO.BaseEnum
 {
     public enum UserTaskStatus
     {
+        /// <summary>
+        /// 一接单就开始了
+        /// </summary>
         Created = 0,
 
         Process = 2,

@@ -2,7 +2,7 @@
 using IQBCore.Model;
 using IQBCore.OO.BaseEnum;
 using IQBCore.OO.Models.Entity;
-using IQBCore.OO.Models.In;
+using IQBCore.OO.Models.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +38,52 @@ namespace IQBAPI.Controllers
             {
                 result.IsSuccess = false;
                 result.ErrorMsg = ex.Message;
+            }
+            return result;
+        }
+
+        [HttpPost]
+        public NResult<EItemInfo> CreateOrUpdate(EItemInfo obj)
+        {
+            NResult<EItemInfo> result = new NResult<EItemInfo>();
+            try
+            {
+                using (OOContent db = new OOContent())
+                {
+                    EItemInfo updateObj = null;
+                    if (obj.Id != 0)
+                    {
+                        updateObj = db.DBItemInfo.Where(a => a.Id == obj.Id).FirstOrDefault();
+                    }
+
+                    //新增
+                    if (updateObj == null)
+                    {
+                        db.DBItemInfo.Add(obj);
+                        db.SaveChanges();
+                    }
+                    //修改
+                    else
+                    {
+                        updateObj.Channel = obj.Channel;
+                        updateObj.Name = obj.Name;
+                        updateObj.Price = obj.Price;
+                        updateObj.RealUrl = obj.RealUrl;
+                        updateObj.StoreId = obj.StoreId;
+                      
+                        updateObj.RecordStatus = obj.RecordStatus;
+
+                        db.SaveChanges();
+                    }
+                    result.resultObj = obj;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+                ErrorToDb(ex.Message);
             }
             return result;
         }

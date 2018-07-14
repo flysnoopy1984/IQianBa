@@ -39,10 +39,10 @@ namespace IQBPay.Controllers
                 return View();
             }
 
-            if (!canRunO2O())
-            {
-                return RedirectToAction("ErrorPage", new { aoId= aoId, ec = 3 });
-            }
+            //if (!canRunO2O())
+            //{
+            //    return RedirectToAction("ErrorPage", new { aoId= aoId, ec = 3 });
+            //}
           
           
             string un = Request.QueryString["un"];

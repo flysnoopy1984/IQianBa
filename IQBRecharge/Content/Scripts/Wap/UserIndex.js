@@ -1,0 +1,6 @@
+﻿$(function () {
+
+    Login = function () {
+
+    };
+})

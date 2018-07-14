@@ -92,5 +92,8 @@ namespace IQBCore.IQBWX.BaseEnum
         VerifyCode = 60627,
         //收款确认：您已支付成功，您的收款确认码为：{1}。若代理商家已打款，请到以下地址进行收款确认：http://b.iqianba.cn/。
         ReceiveConfirm = 60977,
+
+        //您的验证码为{1}，请于{2}分钟内填写。如非本人操作，请忽略短信
+        NormalVerify = 65091,
     }
 }

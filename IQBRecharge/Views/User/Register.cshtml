@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+@section Title{
+   注册
+}
+
+<link href="@Url.Scrpit("~/Content/Style/Wap/Register.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/Content/scripts/Wap/Register.js")"></script>
+
+<div class="box">
+    <div class="row_Info">
+        <label>手机号：</label>
+        <input id="user_phone" type="tel" placeholder="请输入手机号" class="form-control get_field_input" />
+        <div class="btn_verify_code" id="div_vc">
+            <input id="btnVerifyCode" type="button" class="btn btn-success" value="验证码" />
+        </div>
+    </div>
+    <div class="row_Info">
+        <label>验证码：</label>
+        <input id="txt_verifyCode" type="text" placeholder="请输入验证码" class="form-control get_field_input" /> 
+    </div>
+    <div class="row_Info">
+        <label>密码：</label>
+        <input id="user_pwd" type="password" placeholder="请输入密码" class="form-control get_field_input" />
+    </div>
+
+    <div class="row_Register">
+        <input id="btnRegister" type="button" class="btn btn-danger" value="注册" />
+    </div>
+</div>
+
+
+
