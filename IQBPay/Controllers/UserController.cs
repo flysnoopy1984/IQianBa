@@ -76,18 +76,16 @@ namespace IQBPay.Controllers
                            from userinfo as ui 
                            left join qrUser on qruser.OpenId = ui.OpenId 
                            left join StoreInfo as si on si.ID = qruser.ReceiveStoreId                  
-                           where ui.openId = '{0}'
+                           where ui.openId = '{0}' and qrUser.QRType = '{1}'
                         ";
 
-            sql = string.Format(sql, OpenId);
-           // base.Log.log(sql);
-
+            sql = string.Format(sql, OpenId,(int)QRReceiveType.Small);
+          
             using (AliPayContent db = new AliPayContent())
             {
                 try
                 {
                     RUserInfo result = db.Database.SqlQuery<RUserInfo>(sql).FirstOrDefault();
-                    
 
                     if (result == null)
                     {
@@ -95,13 +93,20 @@ namespace IQBPay.Controllers
                         result.QueryResult = false;
                         return Json(result);
                     }
-                    EQRUser qrHuge = db.DBQRUser.Where(o => o.OpenId == OpenId && o.QRType == QRType.ARHuge).FirstOrDefault();
-                    if(qrHuge ==null)
+
+
+                    EQRUser qrHuge = db.DBQRUser.Where(o => o.OpenId == OpenId && o.QRType == QRReceiveType.Huge).FirstOrDefault();
+                    if (qrHuge == null)
                         result.QRHuge = new EQRUser();
                     else
-                    {
                         result.QRHuge = qrHuge;
-                    }
+
+                    EQRUser qrCC = db.DBQRUser.Where(o => o.OpenId == OpenId && o.QRType == QRReceiveType.CreditCard).FirstOrDefault();
+                    if (qrCC == null)
+                        result.QRCC = new EQRUser();
+                    else
+                        result.QRCC = qrCC;
+
 
                     result.StoreList = db.Database.SqlQuery<HashStore>("select Id,Name,Rate from storeinfo").ToList();
                     result.ParentAgentList = db.Database.SqlQuery<HashUser>("select OpenId,Name from userinfo where userRole = 3 or userRole=100").ToList();
@@ -128,7 +133,7 @@ namespace IQBPay.Controllers
                         qruser.Rate,qruser.ParentCommissionRate,qruser.parentOpenId as ParentAgentOpenId,qruser.ParentName as ParentAgent,QRUser.MarketRate,
                         si.ID as StoreId,si.Name as StoreName,si.Rate as StoreRate
                         from userinfo as ui 
-                        left join qrUser on qruser.OpenId = ui.OpenId
+                        left join qrUser on qruser.OpenId = ui.OpenId and QRUser.QRType = 1
                         left join StoreInfo as si on si.ID = qruser.ReceiveStoreId
                         where qrUser.IsCurrent = 'true'";
 
@@ -283,7 +288,7 @@ namespace IQBPay.Controllers
                     ui.NeedFollowUp = InUA.NeedFollowUp;
 
                     //本人所有QRUser
-                    EQRUser qrUser = db.DBQRUser.Where(o => o.OpenId == InUA.OpenId && o.QRType ==  QRType.AR).FirstOrDefault();
+                    EQRUser qrUser = db.DBQRUser.Where(o => o.OpenId == InUA.OpenId && o.QRType == QRReceiveType.Small).FirstOrDefault();
 
                     float Ratediff = InUA.MarketRate - InUA.Rate;
 
@@ -400,8 +405,8 @@ namespace IQBPay.Controllers
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.AR).First();
-                    EQRUser bQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.ARHuge).FirstOrDefault();
+                    EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRReceiveType.Small).First();
+                    EQRUser bQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRReceiveType.Huge).FirstOrDefault();
                     if (bQRUser == null)
                     {
                         //大额码参数
@@ -440,6 +445,52 @@ namespace IQBPay.Controllers
             return Json(result);
         }
 
+        //信用卡
+        [HttpPost]
+        public ActionResult CreateOrUpdateQRCC(string openId, float Rate, float marketRate)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRReceiveType.Small).First();
+                    EQRUser ccQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRReceiveType.CreditCard).FirstOrDefault();
+                    if (ccQRUser == null)
+                    {
+                        //大额码参数
+                        ccQRUser = EQRUser.CopyToQRUserForCC(sQRUser);
+                        ccQRUser.Rate = Rate;
+                        ccQRUser.MarketRate = marketRate;
+                        db.DBQRUser.Add(ccQRUser);
+
+                     
+                        result.SuccessMsg = "创建成功";
+                    }
+                    else
+                    {
+                        ccQRUser.Rate = Rate;
+                        ccQRUser.MarketRate = marketRate;
+
+
+                        result.SuccessMsg = "修改成功";
+
+
+                    }
+                    db.SaveChanges();
+
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+        }
+
 
         /// <summary>
         /// 开通O2O代理
@@ -457,8 +508,8 @@ namespace IQBPay.Controllers
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.AR).First();
-                    EQRUser bQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRType.O2O).FirstOrDefault();
+                    EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRReceiveType.Small).First();
+                    EQRUser bQRUser = db.DBQRUser.Where(o => o.OpenId == openId && o.QRType == QRReceiveType.O2O).FirstOrDefault();
                     EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == openId).First();
                     if (bQRUser == null)
                     {

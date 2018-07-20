@@ -192,6 +192,15 @@ namespace IQBCore.IQBPay.BaseEnum
         Pass =100
     }
 
+    public enum QRReceiveType
+    {
+        Small = 1,
+        CreditCard =2,
+        Huge = 4,
+        O2O = 10
+
+    }
+
     public enum QRType
     {
         /// <summary>
@@ -229,6 +238,8 @@ namespace IQBCore.IQBPay.BaseEnum
         Blocked=1,
 
         Process = 2,
+
+        WaitingReview = 10,
 
         All = 99,
     }
@@ -394,7 +405,8 @@ namespace IQBCore.IQBPay.BaseEnum
 
     public enum StoreType
     {
-        Small = 0,
+        Small = 1,
+        CreditCard = 2,
         Huge =4,
         All =99,
     }

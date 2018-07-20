@@ -61,9 +61,19 @@ namespace IQBCore.IQBPay.Models.Result
 
         public List<HashUser> ParentAgentList { get; set; }
 
+        /// <summary>
+        /// 大额码信息
+        /// </summary>
         public EQRUser QRHuge { get; set; }
 
+        /// <summary>
+        /// 信用卡信息
+        /// </summary>
+        public EQRUser QRCC { get; set; }
+
         public long? QRUserId { get; set; }
+
+        public QRReceiveType QRType { get; set; }
 
         public long? QRInviteCode { get; set; }
 

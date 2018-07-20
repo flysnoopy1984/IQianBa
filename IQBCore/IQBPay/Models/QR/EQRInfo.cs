@@ -114,8 +114,6 @@ namespace IQBCore.IQBPay.Models.QR
             this.RecordStatus = RecordStatus.Normal;
             this.Channel = si.Channel;
             this.Type = QRType.StoreAuth;
-
-
         }
 
         public void InitByUser(EUserInfo ui)

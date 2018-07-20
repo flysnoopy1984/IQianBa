@@ -59,9 +59,24 @@ namespace IQBCore.IQBPay.Models.Sys
         public Boolean AllowRegister { get; set; }
 
         /// <summary>
-        /// 市场价花呗扣点率
+        /// 花呗市场手续费
         /// </summary>
         public float MarketRate { get; set; }
+
+        /// <summary>
+        /// 花呗子孩子固定费率比率
+        /// </summary>
+        public float ChildFixRate { get; set; }
+
+        /// <summary>
+        /// 信用卡自孩子固定费率比率
+        /// </summary>
+        public float CCChildFixRate { get; set; }
+
+        /// <summary>
+        /// 信用卡市场手续费
+        /// </summary>
+        public float CCMarketRate { get; set; }
 
         /// <summary>
         /// 转账后微信通知

@@ -5,17 +5,17 @@ $(document).ready(function () {
 
 function Query() {
 
-    var url = "/QR/Query";
+    var url = "/QR/QueryStoreAuthList";
     $.ajax({
         type: 'post',
-        data: "QRType=2&pageIndex=0",
+        data: "pageIndex=0",
         url: url,
         success: function (data) {
-            var arrLen = data.length;
+            var arrLen = data.resultList.length;
 
             $("#trContainer").empty();
             if (arrLen > 0) {
-                generateData(data);
+                generateData(data.resultList);
             }
         },
         error: function (xhr, type) {
@@ -32,6 +32,7 @@ function generateData(result) {
 
         var cn;
         var app;
+        var storeType; //信用卡/当面付
 
         var channel = result[i].Channel;
         if (channel == 0)
@@ -46,14 +47,18 @@ function generateData(result) {
         else if (result[i].APPId == "2018060760292909")
             app = "哲胜";
         
-
+        if (result[i].StoreType == 1)
+            storeType = "小额花呗";
+        else if (result[i].StoreType == 2)
+            storeType = "信用卡";
 
         strCtrl = "";
         strCtrl += "<tr>";
     
-        strCtrl += "<td>" + result[i].Name + "</td>";
+        strCtrl += "<td>" + result[i].StoreName + "</td>";
         strCtrl += "<td>" + result[i].Rate + "</td>";
         strCtrl += "<td>" + cn + "</td>";
+        strCtrl += "<td>" + storeType + "</td>";
         strCtrl += "<td>" + app + "</td>";
         strCtrl += "<td>" + result[i].Remark + "</td>";
 

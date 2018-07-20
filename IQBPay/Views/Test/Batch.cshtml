@@ -129,6 +129,48 @@
                 }
             });
         }
+
+        function UpdateReceiveQR() {
+            var url = "/Test/UpdateReceiveQR";
+            $.ajax({
+                type: 'post',
+                data: "",
+                url: url,
+                success: function (data) {
+                    if (data.IsSuccess == true) {
+                        alert("Done");
+                    }
+                    else {
+                        alert("Error:" + data.ErrorMsg);
+                    }
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+
+                }
+            });
+        }
+
+        function AddCreditCardQR() {
+            var url = "/Test/AddCreditCardQR";
+            $.ajax({
+                type: 'post',
+                data: "",
+                url: url,
+                success: function (data) {
+                    if (data.IsSuccess == true) {
+                        alert("Done");
+                    }
+                    else {
+                        alert("Error:" + data.ErrorMsg);
+                    }
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+
+                }
+            });
+        }
     </script>
 </head>
 <body>
@@ -138,6 +180,8 @@
         <input type="button" value="邀请码" onclick="DoInviteQRBatch()" />
         <input type="button" value="测试收款二维码" onclick="TestReceiveQR()" />
         <input type="button" value="测试邀请码" onclick="TestDoInviteQR" />
+        <input type="button" value="更新收款二维码" onclick="UpdateReceiveQR()" />
+        <input type="button" value="添加信用卡" onclick="AddCreditCardQR()" />
     </div>
     <div>
         <img id="qrImg" src="" />

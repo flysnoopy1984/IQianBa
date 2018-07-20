@@ -38,24 +38,24 @@ function Init(Id) {
             if (data.RunResult == "OK")
             {
                 InitFormData(data);
-                var st = true;
-                if (data.RecordStatus == 1)
-                    st = false;
-                $("#StoreStatus").bootstrapSwitch({
-                    onText: "启用",
-                    state: st,
-                    offText: "禁用",
-                    onColor: "success",
-                    offColor: "danger",
-                    size: "small",
-                    onSwitchChange: function (event, state) {
-                        if (state == true) {
-                            $(this).val("0");
-                        } else {
-                            $(this).val("1");
-                        }
-                    }
-                });
+                //var st = true;
+                //if (data.RecordStatus == 1)
+                //    st = false;
+                //$("#StoreStatus").bootstrapSwitch({
+                //    onText: "启用",
+                //    state: st,
+                //    offText: "禁用",
+                //    onColor: "success",
+                //    offColor: "danger",
+                //    size: "small",
+                //    onSwitchChange: function (event, state) {
+                //        if (state == true) {
+                //            $(this).val("0");
+                //        } else {
+                //            $(this).val("1");
+                //        }
+                //    }
+                //});
             }
             else
             {
@@ -93,6 +93,7 @@ function InitFormData(data)
     $("#MidCommAccount").val(data.MidCommAccount);
     $("#MidCommRate").val(data.MidCommRate);
     $("#Log").val(data.Log);
+    $("#StoreStatus").val(data.RecordStatus);
 
     var channel = data.Channel;
     if(channel == 0)
@@ -144,6 +145,7 @@ function Save()
             if(data == "OK")
             {
                 alert("Save Done");
+                window.location.reload();
              //   window.location = "list";
             }
             else

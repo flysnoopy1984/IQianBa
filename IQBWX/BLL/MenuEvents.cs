@@ -1,5 +1,6 @@
 ﻿using IQBCore.Common.Constant;
 using IQBCore.Common.Helper;
+using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Const;
@@ -51,13 +52,15 @@ namespace IQBWX.BLL
             string desc;
             try
             {
+              
                 IQBCore.IQBPay.Models.QR.EQRUser payQRUser;
                 string ke = msg.EventKey;
                 RedirectUrl = null;
                 using (AliPayContent db = new AliPayContent())
                 {
                     //筛选出当前的收款二维码 
-                    payQRUser = db.DBQRUser.Where(u => u.OpenId == msg.FromUserName && u.IsCurrent == true && u.QRType == IQBCore.IQBPay.BaseEnum.QRType.AR).FirstOrDefault();
+                    payQRUser = db.DBQRUser.Where(u => u.OpenId == msg.FromUserName && u.QRType == QRReceiveType.Small).FirstOrDefault();
+                
                     if (payQRUser == null)
                     {
                         this.ResponseXml = msg.toText("没有权限！");
@@ -70,7 +73,8 @@ namespace IQBWX.BLL
                     case "pay_101":
                         picUrl = url + payQRUser.FilePath;
                         GoUrl = url+"/Wap/MyReceiveQR?FilePath="+ payQRUser.FilePath;
-                        desc = "代理成本：" + (payQRUser.MarketRate-payQRUser.Rate)+"%  |  用户手续费：["+payQRUser.MarketRate+"%]";
+                        //  desc = "代理成本：" + (payQRUser.MarketRate-payQRUser.Rate)+"%  |  用户手续费：["+payQRUser.MarketRate+"%]";
+                        desc = "代理成本/用户手续费请查看设置";
                         this.ResponseXml = msg.toPicText(picUrl, GoUrl, desc);
                         break;
                     //使用手册
@@ -164,12 +168,12 @@ namespace IQBWX.BLL
             {
             
                 mText += "欢迎注册服务平台！\n";
-                mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate- qr.Rate);
-                mText += "首笔订单统一费率2.8%\n之后订单\n";
-                mText += "【中介】费率2%\n";
-                mText += "【队长】费率1.8%\n";
-                mText += "【总代】费率1.5%\n";
-                mText += note;
+                //mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate- qr.Rate);
+                //mText += "首笔订单统一费率2.8%\n之后订单\n";
+                //mText += "【中介】费率2%\n";
+                //mText += "【队长】费率1.8%\n";
+                //mText += "【总代】费率1.5%\n";
+                //mText += note;
                 mText += string.Format("<a href='{0}'>点击阅读使用手册</a>",url);
             }
             else if(result.StartsWith("ParentOK"))
@@ -180,11 +184,11 @@ namespace IQBWX.BLL
                     pUser = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).FirstOrDefault();
                 }
                 mText += "欢迎注册服务平台！\n";
-                mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate);
-                mText += "首笔订单统一费率2.8%\n之后订单\n";
-                mText += "【中介】费率2%\n";
-                mText += "【队长】费率1.8%\n";
-                mText += "【总代】费率1.5%\n";
+                //mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate);
+                //mText += "首笔订单统一费率2.8%\n之后订单\n";
+                //mText += "【中介】费率2%\n";
+                //mText += "【队长】费率1.8%\n";
+                //mText += "【总代】费率1.5%\n";
                 mText += note;
                 mText += string.Format("<a href='{0}'>点击阅读使用手册</a>", url);
             }
@@ -202,11 +206,11 @@ namespace IQBWX.BLL
                     pUser = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).FirstOrDefault();
                 }
 
-                mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate);
-                mText += "首笔订单统一费率2.8%\n之后订单\n";
-                mText += "【中介】费率2%\n";
-                mText += "【队长】费率1.8%\n";
-                mText += "【总代】费率1.5%\n";
+                //mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate);
+                //mText += "首笔订单统一费率2.8%\n之后订单\n";
+                //mText += "【中介】费率2%\n";
+                //mText += "【队长】费率1.8%\n";
+                //mText += "【总代】费率1.5%\n";
                 mText += note;
                 mText += string.Format("<a href='{0}'>请先点击阅读使用手册</a>", url);
             }

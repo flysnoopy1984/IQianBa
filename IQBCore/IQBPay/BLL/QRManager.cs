@@ -83,12 +83,12 @@ namespace IQBCore.IQBPay.BLL
         /// <summary>
         /// 收款二维码
         /// </summary>
-        public static EQRUser CreateUserUrlById(EQRUser qrUser,string logoUrl)
+        public static EQRUser CreateUserUrlById(EQRUser qrUser,string logoUrl = "")
         {
             try
             { 
                  string site = ConfigurationManager.AppSettings["IQBWX_SiteUrl"];
-                 string url = site + "PP/Pay?Id=" + qrUser.ID;
+                 string url = site + "PP/PaySelection?Id=" + qrUser.OpenId;
 
                  string filePath = ConfigurationManager.AppSettings["QR_ARUser_FP"];
                  string filename = "QRARU_" +qrUser.ID+ "_"+System.DateTime.Now.ToString("yyyyMMdd") + (new Random()).Next(1, 100).ToString()
@@ -248,7 +248,7 @@ namespace IQBCore.IQBPay.BLL
           
         }
 
-        public static EQRInfo CreateStoreAuthUrlById(EQRInfo qr)
+        public static EQRStoreAuth CreateStoreAuthUrlById(EQRStoreAuth qr)
         {
             try
             {

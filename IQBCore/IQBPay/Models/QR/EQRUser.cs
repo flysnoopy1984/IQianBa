@@ -81,7 +81,7 @@ namespace IQBCore.IQBPay.Models.QR
         /// </summary>
         public bool IsCurrent { get; set; }
 
-        public QRType QRType { get; set; }
+        public QRReceiveType QRType { get; set; }
 
         public RecordStatus RecordStatus { get; set; }
 
@@ -101,7 +101,22 @@ namespace IQBCore.IQBPay.Models.QR
                 ParentCommissionRate = qrSmall.ParentCommissionRate,
                 ReceiveStoreId = qrSmall.ReceiveStoreId,
                 UserName = qrSmall.UserName,
-                QRType = QRType.ARHuge,
+                QRType = QRReceiveType.Huge,
+            };
+            return QRhuge;
+        }
+
+        public static EQRUser CopyToQRUserForCC(EQRUser qrSmall)
+        {
+            EQRUser QRhuge = new EQRUser
+            {
+                OpenId = qrSmall.OpenId,
+                ParentOpenId = qrSmall.ParentOpenId,
+                ParentName = qrSmall.ParentName,
+                ParentCommissionRate = qrSmall.ParentCommissionRate,
+                ReceiveStoreId = qrSmall.ReceiveStoreId,
+                UserName = qrSmall.UserName,
+                QRType = QRReceiveType.CreditCard,
             };
             return QRhuge;
         }
@@ -109,7 +124,7 @@ namespace IQBCore.IQBPay.Models.QR
         public static EQRUser CopyToQRUserForO2O(EQRUser qrSmall)
         {
             EQRUser QRhuge = CopyToQRUserForHuge(qrSmall);
-            QRhuge.QRType = QRType.O2O;
+            QRhuge.QRType = QRReceiveType.O2O;
          
             return QRhuge;
         }

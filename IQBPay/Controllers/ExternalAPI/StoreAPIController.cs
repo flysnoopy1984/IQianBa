@@ -34,7 +34,7 @@ namespace IQBPay.Controllers.ExternalAPI
                 si.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
                 si.StoreAuthStatus = IQBCore.IQBPay.BaseEnum.StoreAuthStatus.NoAuth;
 
-                EQRInfo qr = new EQRInfo();
+                EQRStoreAuth qr = new EQRStoreAuth();
                 qr.InitByStore(si);
                 using (TransactionScope sc = new TransactionScope())
                 {
@@ -42,7 +42,7 @@ namespace IQBPay.Controllers.ExternalAPI
                     {
                         
                       
-                        db.DBQRInfo.Add(qr);
+                        db.DBQRStoreAuth.Add(qr);
                         db.SaveChanges();
 
                         qr = QRManager.CreateStoreAuthUrlById(qr);

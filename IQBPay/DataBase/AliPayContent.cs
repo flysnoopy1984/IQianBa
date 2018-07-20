@@ -69,7 +69,9 @@ namespace IQBPay.DataBase
 
         public DbSet<EPayChannel> DBPayChannel { get; set; }
 
-   
+        public DbSet<EQRStoreAuth> DBQRStoreAuth { get; set; }
+
+
 
         #region Interface
         public T Update<T>(T entity) where T : class
@@ -159,10 +161,7 @@ namespace IQBPay.DataBase
 
         }
 
-        public EQRInfo QR_GetById(long Id, QRType qrType)
-        {
-            return DBQRInfo.Where(a => a.ID == Id && a.Type == qrType).FirstOrDefault();
-        }
+       
         #endregion
 
         #region QRUser
@@ -178,9 +177,10 @@ namespace IQBPay.DataBase
             IQBLog _log = new IQBLog();
             try
             {
-                EQRUser qrUser = null;
+                EQRUser qrUser,pQrUser = null;
                 //RUserInfo pi = null;
                 EQRInfo cQR = null;
+
 
                 //被邀请人的邀请码
                 cQR = new EQRInfo();
@@ -216,19 +216,21 @@ namespace IQBPay.DataBase
                 entry.Property(t => t.FilePath).IsModified = true;
                 entry.Property(t => t.TargetUrl).IsModified = true;
                 this.SaveChanges();
-                //    _log.log("UpdateQRUser 邀请码");
-
-
+            
                 //收款 二维码
+                string sql = string.Format("select rate from qrUser where QRType ={1} and openId = '{0}'", pQR.OwnnerOpenId,(int)QRReceiveType.Small);
+                float rate = Database.SqlQuery<float>(sql).FirstOrDefault();
+
                 qrUser = new EQRUser();
                 qrUser.MarketRate = BaseController.GlobalConfig.MarketRate;
                 qrUser.IsCurrent = true;
                 qrUser.QRId = pQR.ID;
                 qrUser.OpenId = ui.OpenId;
                 qrUser.UserName = ui.Name;
-                qrUser.Rate = pQR.Rate;
+                qrUser.Rate = (float)(rate - BaseController.GlobalConfig.ChildFixRate);
+                if (qrUser.Rate < 0) qrUser.Rate = 1;
                 qrUser.ReceiveStoreId = pQR.ReceiveStoreId;
-                qrUser.QRType = QRType.AR;
+                qrUser.QRType = QRReceiveType.Small;
 
 
                 if (!string.IsNullOrEmpty(pQR.ParentOpenId))
@@ -238,13 +240,26 @@ namespace IQBPay.DataBase
                     qrUser.ParentCommissionRate = pQR.ParentCommissionRate;
                 }
                 this.DBQRUser.Add(qrUser);
+
                 this.SaveChanges();
-                //     _log.log("UpdateQRUser 收款 二维码");
                 qrUser = QRManager.CreateUserUrlById(qrUser, ui.Headimgurl);
-                //    _log.log("UpdateQRUser 收款 二维码图片生成");
 
                 this.Entry(qrUser).State = System.Data.Entity.EntityState.Modified;
                 this.SaveChanges();
+
+                //信用卡
+                sql = string.Format("select rate from qrUser where QRType ={1} and openId = '{0}'", pQR.OwnnerOpenId, (int)QRReceiveType.CreditCard);
+                rate = Database.SqlQuery<float>(sql).FirstOrDefault();
+
+
+                EQRUser ccQRUser = qrUser;
+                ccQRUser.QRType = QRReceiveType.CreditCard;
+                ccQRUser.MarketRate = BaseController.GlobalConfig.CCMarketRate;
+                ccQRUser.Rate = rate - BaseController.GlobalConfig.CCChildFixRate;
+                if (qrUser.Rate < 0) qrUser.Rate = 1;
+                this.DBQRUser.Add(ccQRUser);
+                this.SaveChanges();
+
             }
             catch (Exception ex)
             {

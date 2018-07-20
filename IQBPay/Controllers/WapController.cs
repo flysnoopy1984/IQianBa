@@ -54,7 +54,7 @@ namespace IQBPay.Controllers
             {
                 using (AliPayContent db = new AliPayContent())
                 {
-                    EQRInfo qr = db.DBQRInfo.Where(a => a.ID == qId).FirstOrDefault();
+                    EQRStoreAuth qr = db.DBQRStoreAuth.Where(a => a.ID == qId).FirstOrDefault();
                     if(qr ==null)
                     {
                         return Content("Error: No QR Find!请联系管理员");

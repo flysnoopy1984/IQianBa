@@ -18,6 +18,7 @@ using IQBCore.IQBWX.Models.WX.Template.InviteCode;
 using IQBCore.IQBPay.Models.User;
 using IQBCore.IQBPay.Models.O2O;
 using System.Data.Entity.Migrations;
+using IQBCore.Model;
 
 namespace IQBPay.Controllers
 {
@@ -135,7 +136,7 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        public ActionResult GetByType(QRType qrType,string openId)
+        public ActionResult GetByType(QRReceiveType qrType,string openId)
         {
 
             try
@@ -187,6 +188,72 @@ namespace IQBPay.Controllers
                 return Json(result);
             }
             catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public ActionResult QueryStoreAuthList(string Name = "",
+                                               int pageIndex = 0, 
+                                               int pageSize = IQBConstant.PageSize)
+        {
+            NResult<RQRStoreAuth> result = new NResult<RQRStoreAuth>();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    string sql = "select * from QRStoreAuth where 1=1";
+                    if(!string.IsNullOrEmpty(Name))
+                    {
+                        sql += string.Format(" and StoreName='{0}'",Name);
+                    }
+                    sql += " order by CreateDateTime desc";
+                    var list = db.Database.SqlQuery<RQRStoreAuth>(sql);
+
+                    if (pageIndex == 0)
+                        result.resultList = list.Take(pageSize).ToList();
+                    else
+                        result.resultList = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+        }
+
+        /// <summary>
+        /// 获取商店授权码
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="qrType"></param>
+        /// <returns></returns>
+        public ActionResult GetStoreAuthQR(long Id)
+        {
+
+            try
+            {
+                EQRStoreAuth result = null;
+                using (AliPayContent db = new AliPayContent())
+                {
+                    if (Id == -1)
+                    {
+                        result = new EQRStoreAuth();
+                        result.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal;
+
+                    }
+                    else
+                    {
+                        result = db.DBQRStoreAuth.Where(a => a.ID == Id).FirstOrDefault();
+                    }
+                }
+             
+                return Json(result);
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -345,8 +412,6 @@ namespace IQBPay.Controllers
         public ActionResult AuthList()
         {
          
-
-
             return View();
         }
 
@@ -361,40 +426,45 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        public ActionResult SaveAuth(EQRInfo qr)
+        public ActionResult SaveStoreAuth(EQRStoreAuth qr)
         {
-
+            NResult<EQRStoreAuth> result = new NResult<EQRStoreAuth>();
             try
             {
-                qr.OwnnerOpenId = this.GetUserSession().OpenId;
-                qr.RunResult = "OK";
+                if(string.IsNullOrEmpty(qr.OwnnerOpenId))
+                    qr.OwnnerOpenId = this.GetUserSession().OpenId;
+               
                 using (AliPayContent db = new AliPayContent())
                 {
                     if (qr.ID > 0)
                     {
-                        qr.InitModify();
+                       
+                      //  qr.InitModify();
 
-                        DbEntityEntry<EQRInfo> entry = db.Entry<EQRInfo>(qr);
+                        DbEntityEntry<EQRStoreAuth> entry = db.Entry<EQRStoreAuth>(qr);
                         entry.State = EntityState.Unchanged;
-
-                        entry.Property(t => t.Name).IsModified = true;
+                   
+                        entry.Property(t => t.StoreName).IsModified = true;
                         entry.Property(t => t.Rate).IsModified = true;
                         entry.Property(t => t.Remark).IsModified = true;
                         entry.Property(t => t.RecordStatus).IsModified = true;
                         entry.Property(t => t.Channel).IsModified = true;
                         entry.Property(t => t.APPId).IsModified = true;
-                        entry.Property(t => t.MDate).IsModified = true;
-                        entry.Property(t => t.MTime).IsModified = true;
-                        entry.Property(t => t.ModifyDate).IsModified = true;
+                        entry.Property(t => t.StoreType).IsModified = true;
+
+                        entry.Property(t => t.MaxLimitAmount).IsModified = true;
+                        entry.Property(t => t.MinLimitAmount).IsModified = true;
+                        entry.Property(t => t.DayIncome).IsModified = true;
+                        entry.Property(t => t.RemainAmount).IsModified = true;
+
                         db.SaveChanges();
                     }
                     else
                     {
 
-                        qr.OwnnerOpenId = this.GetUserSession().OpenId;
-                     
-                        qr.Type = QRType.StoreAuth;
-                        db.DBQRInfo.Add(qr);
+                        qr.CreateDateTime = DateTime.Now;
+
+                        db.DBQRStoreAuth.Add(qr);
                         db.SaveChanges();
 
                         qr = QRManager.CreateStoreAuthUrlById(qr);
@@ -402,15 +472,16 @@ namespace IQBPay.Controllers
                         db.SaveChanges();
 
                     }
+                    result.resultObj = qr;
 
                 }
             }
             catch (Exception ex)
             {
-                qr.RunResult = "Save Store Error:" + ex.Message;
-                
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
             }
-            return Json(qr);
+            return Json(result);
         }
         #endregion
 

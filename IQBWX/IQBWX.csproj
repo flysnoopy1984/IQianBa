@@ -80,11 +80,18 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.7\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -156,6 +163,7 @@
     <Content Include="Content\Css\ReceiveOrder.css" />
     <Content Include="Content\Css\WebCss.css" />
     <Content Include="Content\images\404_02.jpg" />
+    <Content Include="Content\images\border.png" />
     <Content Include="Content\images\bQR.png" />
     <Content Include="Content\images\daikuanchaoshi_03.jpg" />
     <Content Include="Content\images\daikuanchaoshi_05.jpg" />
@@ -401,6 +409,12 @@
     <Content Include="Content\json\SendMsg.json" />
     <Content Include="Content\json\json.json" />
     <Content Include="Content\json\Menus - OldYJ.json" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\IQBWX.pubxml" />
     <Content Include="Views\Pay\Index.cshtml" />
     <Content Include="Views\Pay\Test.cshtml" />
@@ -475,6 +489,8 @@
     <Content Include="Views\O2OWap\AgentInfoCheck.cshtml" />
     <Content Include="Views\PP\AgentAccount.cshtml" />
     <Content Include="Views\O2OWap\LearningVideo.cshtml" />
+    <Content Include="Views\PP\PaySelection.cshtml" />
+    <Content Include="Views\PP\CardPay.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -487,6 +503,7 @@
     <Folder Include="Content\CatchSite\HJB\css\" />
     <Folder Include="Content\CatchSite\HJB\images\" />
     <Folder Include="Content\Html\" />
+    <Folder Include="Log\" />
     <Folder Include="Models\IQBPay\" />
     <Folder Include="Views\Valid\" />
   </ItemGroup>

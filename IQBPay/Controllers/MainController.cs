@@ -174,7 +174,7 @@ namespace IQBPay.Controllers
 
         public ActionResult Login()
         {
-
+         
             string action = Request.QueryString["action"];
             if(action == "exit")
             {

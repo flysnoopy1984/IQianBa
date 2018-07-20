@@ -65,7 +65,7 @@ namespace IQBWX.Controllers
         }
         public ActionResult Message()
         {
-             
+            NLogHelper.InfoTxt("Test In");
             try
             {
                 string echostr = Request.QueryString["echostr"];

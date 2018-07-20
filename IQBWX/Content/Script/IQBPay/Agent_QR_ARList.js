@@ -1,5 +1,5 @@
 ﻿var pageIndex = -1;
-var url = site + "/PP/Agent_QR_ARListQuery";
+
 var QueryData;
 var slider;
 var ReqHuge
@@ -217,19 +217,22 @@ function ToListPage() {
 
 }
 
-//qrType =0 小 1 大
+//qrType =1 小 4 大 2 信用卡
 function ToInfoPage(i,qrType) {
 
     $("#PageList").hide();
     $("#PageInfo").show();
 
-    if (qrType == 0)
+    if (qrType == 1)
     {
-        $("#Title").text("【普通码设置】");
+        $("#Title").text("【小码设置】");
         $("#QRImgContainer").show();
     }
-    else
-        $("#Title").text("【大额码设置】");
+    else if(qrType == 4)
+        $("#Title").text("【大码设置】");
+    else if (qrType == 2)
+        $("#Title").text("【信用卡设置】");
+
     $("#QRImgContainer").hide();
 
     $range = $("#AfterMarketRate").ionRangeSlider({
@@ -272,43 +275,36 @@ function ToInfoPage(i,qrType) {
     {
      
         var diff = (QueryData[i].MarketRate - QueryData[i].Rate).toFixed(2);
-        if (qrType == 0)
+
+      
+
+        if (qrType == 1)
         {
             slider.update({
-                min: 4,
+                min: 0,
                 max: 15,
                 from: QueryData[i].MarketRate,
                 step: 0.5,
             });
            
-            $("#QRImg").attr("src", payUrl + QueryData[i].OrigQRFilePath);
+           // $("#QRImg").attr("src", payUrl + QueryData[i].OrigQRFilePath);
         }
-        else
+        else if(qrType == 2)
         {
             slider.update({
-                min: 6,
-                max: 20,
+                min: 0,
+                max: 5,
                 from: QueryData[i].MarketRate,
-                step: 0.5,
+                step: 0.1,
             }); 
-              
-           
-         
-        
         }
-      
-       
 
         $("#QrUserId").val(QueryData[i].ID);
 
         $("#MarketRate").val(QueryData[i].MarketRate);
-       
-    //    $("#IsCurrent").attr("checked", QueryData[i].IsCurrent);
-
-
+  
         $("#Rate").val(QueryData[i].Rate);
-     //   $("#Field_AfterMarketRate").hide();
-
+  
         $("#btnSave").text("更新");
     }
 
@@ -319,6 +315,7 @@ function ToInfoPage(i,qrType) {
 
 function Query(_pageIndex) {
 
+    var url = site + "/PP/Agent_QR_ARListQuery";
     var PageSize = 20;
 
     $.ajax({
@@ -361,8 +358,22 @@ function generateData(result) {
 
     $.each(result, function (i) {
       
-      
-        var qrType = 1;
+        strCtrl = "";
+        if (result[i].QRType == 1) {
+            strCtrl += "<tr><td colspan='4' style='text-align:center'>小码配置</td></tr>";
+
+        }
+        else if (result[i].QRType == 2) {
+            strCtrl += "<tr><td colspan='4' style='text-align:center'>信用卡配置</td></tr>";
+
+        }
+        else if (result[i].QRType == 4) {
+            strCtrl += "<tr><td colspan='4' style='text-align:center'>大额码配置</td></tr>";
+
+        }
+        else
+            return true;
+
         QueryData.push(result[i]);
 
         var ParentName = result[i].ParentName;
@@ -370,35 +381,29 @@ function generateData(result) {
         if (ParentName == "")
             ParentName = "无"
 
-        strCtrl = "";
+        
         
 
-        if (i == 0) {
-            strCtrl += "<tr><td colspan='4' style='text-align:center'>普通码配置</td></tr>";
-            qrType = 0;
-        }
-        if (i == 1) {
-            strCtrl += "<tr><td colspan='4' style='text-align:center'>大额码配置</td></tr>";
-            qrType = 1;
-        }
+      
 
         strCtrl += "<tr>";
-        if (i == 0)
-            strCtrl += "<td style='width:14%' class='td_bgIcon_sQR'></td>";
-        else
-            strCtrl += "<td style='width:14%' class='td_bgIcon_bQR'></td>";
+        //if (i == 0)
+        //    strCtrl += "<td style='width:14%' class='td_bgIcon_sQR'></td>";
+        //else
+        //    strCtrl += "<td style='width:14%' class='td_bgIcon_bQR'></td>";
         strCtrl += "<td style='width:40%' ";     
         strCtrl += "onclick='ToInfoPage(" + QueryData.length + ");'>";
-        strCtrl += "<ul><li style='color:brown; font-weight:bold; height:30px;'>用户手续费:" + result[i].MarketRate + "</li>";
+        strCtrl += "<ul><li style='color:brown; font-weight:bold; height:100%;'>用户手续费:" + result[i].MarketRate + "</li>";
         //strCtrl += "<li>上级代理:" + ParentName + "</li>";
         strCtrl += "</ul></td>";
-        strCtrl += "<td style='width:40%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='height:30px;'>代理成本:" + (result[i].MarketRate - result[i].Rate).toFixed(2) + "</li>";
+        strCtrl += "<td style='width:40%' onclick='ToInfoPage(" + QueryData.length + ");'><ul><li style='height:100%;'>代理成本:" + (result[i].MarketRate - result[i].Rate).toFixed(2) + "</li>";
         //strCtrl += "<li>上级代理佣金:" + result[i].ParentCommissionRate + "</li>";
         strCtrl += "</ul></td>";
-        if (i == 0 && result.length==2)
-            strCtrl += "<td style='border-bottom: 1px solid #ddd;'><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + "," + qrType + ");' /></td>";
-        else
-            strCtrl += "<td><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + "," + qrType + ");' /></td>";
+        strCtrl += "<td><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + "," + result[i].QRType + ");' /></td>";
+        //if (i == 0 && result.length==2)
+        //    strCtrl += "<td style='border-bottom: 1px solid #ddd;'><input type='button' class='btn-primary' value='调整' onclick='ToInfoPage(" + QueryData.length + "," + qrType + ");' /></td>";
+        //else
+            
         //strCtrl += "<input type='button' class='btn-danger' value='删除' onclick='DeleteUserQr(" + QueryData.length + ");' />";
         strCtrl += "</tr>";
 

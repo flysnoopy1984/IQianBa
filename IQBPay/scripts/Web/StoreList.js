@@ -108,14 +108,24 @@ function generateData(result)
             appName = "寒翼";
 
         var storeType = "未知??";
-        if (result[i].StoreType == 0)
+        if (result[i].StoreType == 1)
             storeType = "小码";
+        else if(result[i].StoreType == 2)
+            storeType = "信用卡";
         else if (result[i].StoreType == 4)
             storeType = "大额";
         
 
         strCtrl = "";
-        strCtrl += "<tr>";
+       
+        if (result[i].RecordStatus == 10)
+        {
+            strCtrl += "<tr style='background-color:#A5E068'>";
+        }
+        else
+        {
+            strCtrl += "<tr>";
+        }
         strCtrl += "<td>" + result[i].ID + "</td>";
         strCtrl += "<td title='" + result[i].Provider + "'>" + result[i].Provider + "</td>";
         strCtrl += "<td>" + result[i].Name + "</td>";
@@ -135,9 +145,11 @@ function generateData(result)
         strCtrl += "<td title='" + result[i].Remark + "'>" + result[i].Remark + "</td>";
 
         if (result[i].RecordStatus == 0)
-            strCtrl += "<td style='color:#4AC4BC;'><div class='noft-green-number'></div>启用</td>";
+            strCtrl += "<td style='color:#4AC4BC;'>启用</td>";
+        else if (result[i].RecordStatus == 10)
+            strCtrl += "<td style='color:#3A97E5'>等待审核</td>";
         else
-            strCtrl += "<td><div class='noft-red-number'></div>停用</td>";
+            strCtrl += "<td style='color:#DD4E42;'>停用</td>";
 
         strCtrl += "<td>";
         strCtrl += "<a href='/Store/Info?id=" + result[i].ID + "' class='td'>详情</a>";

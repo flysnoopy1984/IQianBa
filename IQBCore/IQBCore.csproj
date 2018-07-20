@@ -168,7 +168,9 @@
     <Compile Include="IQBPay\Models\O2O\ROrderSteps.cs" />
     <Compile Include="IQBPay\Models\O2O\RSimpleEntity.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashKeyValue.cs" />
+    <Compile Include="IQBPay\Models\QR\EQRStoreAuth.cs" />
     <Compile Include="IQBPay\Models\Report\RPAgentPerformance.cs" />
+    <Compile Include="IQBPay\Models\Result\RQRStoreAuth.cs" />
     <Compile Include="IQBPay\Models\Result\RUserAccountBalance.cs" />
     <Compile Include="IQBPay\Models\Rules\EBenefitRule.cs" />
     <Compile Include="IQBPay\Models\InParameter\InDoTransfer.cs" />

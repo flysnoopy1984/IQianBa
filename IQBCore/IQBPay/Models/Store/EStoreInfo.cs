@@ -34,10 +34,7 @@ namespace IQBCore.IQBPay.Models.Store
 
         public float Rate { get; set; }
 
-        /// <summary>
-        /// 每天的营业额度(限额)
-        /// </summary>
-        public float DayIncome { get; set; }
+      
         /// <summary>
         /// 可能被禁用
         /// </summary>
@@ -85,6 +82,11 @@ namespace IQBCore.IQBPay.Models.Store
         public float MinLimitAmount { get; set; }
 
         public float RemainAmount { get; set; }
+
+        /// <summary>
+        /// 每天的营业额度(限额)
+        /// </summary>
+        public float DayIncome { get; set; }
 
         public StoreAuthStatus StoreAuthStatus { get; set; }
 

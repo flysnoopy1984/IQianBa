@@ -67,6 +67,16 @@ namespace IQBWX.Controllers
             return View();
         }
 
+        public ActionResult PaySelection()
+        {
+            return View();
+        }
+
+        public ActionResult CardPay()
+        {
+            return View();
+        }
+
         public ActionResult Pay(string Id)
         {
             // return RedirectToAction("Pay2", "PP", new { Id = Id });
@@ -826,7 +836,7 @@ namespace IQBWX.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetQRUser(QRType qrType)
+        public ActionResult GetQRUser(QRReceiveType qrType)
         {
             EQRUser qrUser = null;
             using (AliPayContent db = new AliPayContent())
@@ -846,7 +856,13 @@ namespace IQBWX.Controllers
             using (AliPayContent db = new AliPayContent())
             {
 
-                var list = db.DBQRUser.Where(u=>u.OpenId == UserSession.OpenId && u.RecordStatus == RecordStatus.Normal).Select(s => new RQRUser()
+                var list = db.DBQRUser
+                             .Where(u=>u.OpenId == UserSession.OpenId && 
+                                    u.RecordStatus == RecordStatus.Normal && 
+                                    (u.QRType == QRReceiveType.Small || 
+                                    u.QRType == QRReceiveType.Huge || 
+                                    u.QRType == QRReceiveType.CreditCard))
+                             .Select(s => new RQRUser()
                 {
                     QRId = s.QRId,
                     Rate = s.Rate,
@@ -1645,10 +1661,10 @@ group by o.AgentOpenId ,o.OrderType
                     if (num > RuleManager.PayRule().Agent_QRHugeFee)
                     {
                        
-                        EQRUser bQRUser = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId && o.QRType == QRType.ARHuge).FirstOrDefault();
+                        EQRUser bQRUser = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId && o.QRType == QRReceiveType.Huge).FirstOrDefault();
                         if (bQRUser == null)
                         {
-                            EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId && o.QRType == QRType.AR).First();
+                            EQRUser sQRUser = db.DBQRUser.Where(o => o.OpenId == UserSession.OpenId && o.QRType == QRReceiveType.Small).First();
                             //大额码参数
                             bQRUser = EQRUser.CopyToQRUserForHuge(sQRUser);
                             if (UserSession.UserRole == UserRole.Agent)
@@ -1704,7 +1720,7 @@ group by o.AgentOpenId ,o.OrderType
                     ID = o.ID,
                 }).Where(o => o.OpenId == UserSession.OpenId 
                                         && o.RecordStatus == RecordStatus.Normal
-                                        && o.QRType == QRType.ARHuge).FirstOrDefault();
+                                        && o.QRType == QRReceiveType.Huge).FirstOrDefault();
                 if(qrUser == null)
                 {
                     return RedirectToAction("ErrorMessage", "Home", new {code = Errorcode.QRHugeQRUserMiss });

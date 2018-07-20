@@ -154,7 +154,8 @@ namespace IQBPay.Controllers
 
                     if(RecordStatus!= RecordStatus.All)
                     {
-                        list = list.Where(s => s.RecordStatus == RecordStatus);
+                        if(RecordStatus == RecordStatus.Normal)
+                        list = list.Where(s => s.RecordStatus == RecordStatus.Normal || s.RecordStatus == RecordStatus.WaitingReview );
                     }
 
                     if (StoreType != StoreType.All)

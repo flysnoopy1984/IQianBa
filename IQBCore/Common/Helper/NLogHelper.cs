@@ -10,6 +10,7 @@ namespace IQBCore.Common.Helper
     public static class NLogHelper
     {
         private static Logger _FileLogger = LogManager.GetLogger("FileNLog");
+        private static Logger _FileErrorLogger = LogManager.GetLogger("ErrorNLog");
 
         private static Logger _DbLogger = LogManager.GetLogger("DBLogger");
 
@@ -32,7 +33,7 @@ namespace IQBCore.Common.Helper
             try
             {
 
-                _FileLogger.Error(txt);
+                _FileErrorLogger.Error(txt);
             }
             catch (Exception ex)
             {

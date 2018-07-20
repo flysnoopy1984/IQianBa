@@ -40,7 +40,7 @@ namespace IQBWX.Controllers
             using (AliPayContent db = new AliPayContent())
             {
                 string PaySite = ConfigurationManager.AppSettings["Site_IQBPay"];
-                qrUser = db.DBQRUser.Where(a => a.OpenId == UserSession.OpenId && a.QRType == QRType.O2O).FirstOrDefault();
+                qrUser = db.DBQRUser.Where(a => a.OpenId == UserSession.OpenId && a.QRType == QRReceiveType.O2O).FirstOrDefault();
 
                 if (qrUser == null)
                     qrUser = new EQRUser();

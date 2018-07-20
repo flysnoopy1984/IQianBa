@@ -27,9 +27,9 @@
             <label class="col-sm-3 control-label">APP</label>
             <div class="col-sm-6">
                 <select class="form-control" id="appId">
-                    <option value="2017122901328258" selected>寒翼</option>
-                    <option value="2017112100077913">玉杰</option>
-                    <option value="2018060760292909">E哲胜</option>
+                    @*<option value="2017122901328258" >寒翼</option>
+                    <option value="2017112100077913">玉杰</option>*@
+                    <option value="2018060760292909" selected>E哲胜</option>
                 </select>
             </div>
         </div>
@@ -43,6 +43,42 @@
             <label class="col-sm-3 control-label">点率(0-100)</label>
             <div class="col-sm-6">
                 <input id="Rate" type="text" class="form-control NeedFill" onkeyup='this.value = this.value.replace(/[^\d.]/g, "")'>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">日营业额</label>
+            <div class="col-sm-6">
+                <input id="DayIncome" type="text" class="form-control" value="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">剩余额度</label>
+            <div class="col-sm-6">
+                <input id="RemainAmount" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">最小额度</label>
+            <div class="col-sm-6">
+                <input id="MinLimitAmount" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">最大额度</label>
+            <div class="col-sm-6">
+                <input id="MaxLimitAmount" type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">码类型</label>
+            <div class="col-sm-6">
+                <select class="form-control" id="StoreType">
+                    <option value="1">小额</option>
+                    <option value="2">信用卡</option>
+                </select>
             </div>
         </div>
         <div class="form-group">
@@ -80,4 +116,5 @@
         <button type="button" class="btn btn-warning" onclick="New()">新增</button>
         <button type="button" class="btn btn-success" onclick="Save();">保存</button>
     </div>
+    <input type="hidden" id="OpenId" />
 </div>

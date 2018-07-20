@@ -41,6 +41,8 @@
      #trContainer tr td{
          padding-left:2px;
          padding-right:2px;
+         height:50px;
+         line-height:50px;
      }
 </style>
 <div id="PageList">
@@ -48,9 +50,9 @@
     @*<div class="funBtnList">
         <button type="button" id="btnNewQR" class="mgz btn btn-success" onclick="ToInfoPage(-1);">新增用户手续费</button>
     </div>*@
-    <div class="ListTableBody_noFixed" id="ListTableBody">
+    <div class="ListTableBody_noFixed" id="ListTableBody" style="padding-left:15px;padding-right:15px;">
         <div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>
-        <table class="table mgz2  large-only" style="width:100%; font-size:16px;" id="trContainer"></table>
+        <table class="table mgz2  large-only" style="width:100%; font-size:20px;" id="trContainer"></table>
     </div>
     @*<button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%; height:60px;" onclick="Next();">加载更多</button>*@
 </div>

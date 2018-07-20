@@ -90,6 +90,10 @@ function Init(OpenId) {
             $("#QRHuge_Rate").val(QRHuge.Rate);
             $("#QRHuge_MarketRate").val(QRHuge.MarketRate);
 
+            var QRCC = data.QRCC;
+            $("#QRCC_Rate").val(QRCC.Rate);
+            $("#QRCC_MarketRate").val(QRCC.MarketRate);
+
             AjaxInviteCode(data.QRInviteCode);
 
             AjaxO2OQR();
@@ -255,7 +259,16 @@ function Save() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "OpenId": OpenId,"QRInfo_MaxInviteCount":QRInfo_MaxInviteCount,"NeedFollowUp":NeedFollowUp,"QRInfo_Rate":Invite_Rate,"QRInfo_ParentCommissionRate":Invite_ParentCommissionRate,"Rate": Rate, "MarketRate": MarketRate, "AliPayAccount": AliPayAccount, "UserRole": UserRole, "UserStatus": UserStatus, "ParentOpenId": ParentOpenId, "ParentName": ParentName, "ParentCommissionRate": ParentCommissionRate, "StoreId": StoreId, "qrUserId": qrUserId },
+        data: {
+            "OpenId": OpenId, "QRInfo_MaxInviteCount": QRInfo_MaxInviteCount,
+            "NeedFollowUp": NeedFollowUp, "QRInfo_Rate": Invite_Rate,
+            "QRInfo_ParentCommissionRate": Invite_ParentCommissionRate,
+            "Rate": Rate, "MarketRate": MarketRate,
+            "AliPayAccount": AliPayAccount, "UserRole": UserRole,
+            "UserStatus": UserStatus, "ParentOpenId": ParentOpenId,
+            "ParentName": ParentName, "ParentCommissionRate": ParentCommissionRate,
+            "StoreId": StoreId, "qrUserId": qrUserId
+        },
         url: url,
         success: function (data) {
             if (data == "OK") {
@@ -337,6 +350,39 @@ function CreateOrUpdateQRO2O() {
         type: 'post',
         dataType: "json",
         data: { "OpenId": OpenId, "Rate": Rate, "marketRate": QRO2O_MarketRate },
+        url: url,
+        success: function (data) {
+            if (data.IsSuccess) {
+                alert(data.SuccessMsg);
+            }
+            else {
+                alert(data.ErrorMsg);
+            }
+        },
+        error: function (xhr, type) {
+
+            alert(xhr.responseText);
+
+        }
+    });
+}
+
+function CreateOrUpdateQRCC() {
+    var url = "/User/CreateOrUpdateQRCC";
+    var OpenId = $("#OpenId").val();
+
+    var QRCC_FeeRate = $("#QRCC_Rate").val();
+    var QRCC_MarketRate = $("#QRCC_MarketRate").val();
+
+    var Rate = parseFloat(QRCC_MarketRate) - parseFloat(QRCC_FeeRate);
+    if (QRCC_FeeRate == 0 || QRCC_MarketRate == 0) {
+        alert("值不能为空或0");
+        return;
+    }
+    $.ajax({
+        type: 'post',
+        dataType: "json",
+        data: { "OpenId": OpenId, "Rate": Rate, "marketRate": QRCC_MarketRate },
         url: url,
         success: function (data) {
             if (data.IsSuccess) {

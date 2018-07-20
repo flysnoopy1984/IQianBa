@@ -1,4 +1,6 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
+using IQBCore.IQBPay.BLL;
+using IQBCore.IQBPay.Models.QR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,23 @@ namespace IQBConsole
             
           
         }
+
+        public void ChangeReceiveQR()
+        {
+            using (IQBContent db = new IQBContent())
+            {
+                //var list = db.DBQRUser.Where(a => a.QRType == QRReceiveType.Small).ToList();
+                var list = db.DBQRUser.Where(a => a.QRType == QRReceiveType.Small && a.OpenId== "o3nwE0jrONff65oS-_W96ErKcaa0").ToList();
+                foreach (EQRUser qr in list)
+                {
+                    string openId = qr.OpenId;
+                    EQRUser updateQr = QRManager.CreateUserUrlById(qr);
+                   
+                }
+                db.SaveChanges();
+            }
+        }
+
         public void DeleteWaitingOrder()
         {
             using (IQBContent db = new IQBContent())

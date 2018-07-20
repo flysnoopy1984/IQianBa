@@ -418,5 +418,62 @@ namespace IQBPay.Controllers
             }
             return Content("OK");
         }
+
+        public ActionResult UpdateReceiveQR()
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    //var list = db.DBQRUser.Where(a => a.QRType == QRReceiveType.Small).ToList();
+                    var list = db.DBQRUser.Where(a => a.QRType == QRReceiveType.Small).ToList();
+                    foreach (EQRUser qr in list)
+                    {
+                        string openId = qr.OpenId;
+                        EQRUser updateQr = QRManager.CreateUserUrlById(qr);
+
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+
+        }
+
+
+        public ActionResult AddCreditCardQR()
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                  
+                    var list = db.DBQRUser.Where(a => a.QRType == QRReceiveType.Small).ToList();
+                    foreach (EQRUser qr in list)
+                    {
+                        EQRUser ccQR = qr;
+                        ccQR.QRType = QRReceiveType.CreditCard;
+                        ccQR.MarketRate = (float)1.5;
+                        ccQR.Rate = (float)0.6;
+                        db.DBQRUser.Add(ccQR);
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+
+        }
     }
 }

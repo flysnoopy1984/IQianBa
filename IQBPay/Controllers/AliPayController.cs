@@ -413,153 +413,12 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        public ActionResult AuthHanYi()
-        {
-            string authCode = Request["app_auth_code"];
-            string appId = Request["app_id"];
-            string Id = Request["Id"];
-            string StoreId = Request["StoreId"];
-            long qrId;
-            EQRInfo qr = null;
-            EStoreInfo store = null;
-            EStoreInfo SelfStore = null;
-            Log.log("Auth Code:" + authCode);
-            EAliPayApplication app = null;
-            AlipayOpenAuthTokenAppResponse response = null;
+      
 
-            if (!string.IsNullOrEmpty(authCode))
-            {
-                if (string.IsNullOrEmpty(Id) || !long.TryParse(Id, out qrId))
-                {
-                    Log.log("Auth No Id");
-                    return Content("【传入的值不正确】无法授权，请联系平台");
-                }
-                app = BaseController.SubApp;
-                if (app == null)
-                {
-                    Log.log("Auth No app");
-                    return Content("【没有APP】无法授权，请联系平台");
-                }
-
-                try
-                {
-                    using (AliPayContent db = new AliPayContent())
-                    {
-                        qr = db.QR_GetById(qrId, IQBCore.IQBPay.BaseEnum.QRType.StoreAuth);
-
-                        if (qr == null)
-                        {
-                            Log.log("Auth No QR");
-                            return Content("【授权码不存在】无法授权，请联系平台！");
-                        }
-                        else if (qr.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
-                            return Content("【授权码已被使用】无法授权，请联系平台！");
-
-
-                        IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
-                        app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
-
-                        AlipayOpenAuthTokenAppRequest request = new AlipayOpenAuthTokenAppRequest();
-
-                        AlipayOpenAuthTokenAppModel model = new AlipayOpenAuthTokenAppModel();
-                        model.GrantType = "authorization_code";
-                        model.Code = authCode;
-
-                        request.SetBizModel(model);
-
-                        response = alipayClient.Execute(request);
-                        if (response.Code == "10000")
-                        {
-                            if (!string.IsNullOrEmpty(StoreId))
-                                SelfStore = db.DBStoreInfo.Where(s => s.ID == Convert.ToInt32(StoreId)).FirstOrDefault();
-
-
-                            store = db.Store_GetByAliPayUserId(response.UserId);
-                            if (store == null)
-                            {
-                                if (SelfStore != null)
-                                {
-                                    SelfStore.AliPayAccount = response.UserId;
-                                    SelfStore.AliPayAuthAppId = response.AuthAppId;
-                                    SelfStore.AliPayAuthToke = response.AppAuthToken;
-
-                                }
-                                else
-                                {
-                                    store = new EStoreInfo
-                                    {
-                                        AliPayAccount = response.UserId,
-                                        AliPayAuthAppId = response.AuthAppId,
-                                        AliPayAuthToke = response.AppAuthToken,
-                                        OwnnerOpenId = qr.OwnnerOpenId,
-                                        Channel = qr.Channel,
-                                        Name = qr.Name,
-                                        Remark = qr.Remark,
-                                        RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal,
-                                        QRId = qr.ID,
-                                        Rate = qr.Rate,
-                                        FromIQBAPP = app.AppId,
-                                    };
-                                    store.InitCreate();
-                                    store.InitModify();
-                                    db.DBStoreInfo.Add(store);
-                                }
-
-                            }
-                            else
-                            {
-                                if (SelfStore != null)
-                                {
-                                    SelfStore.AliPayAccount = response.UserId;
-                                    SelfStore.AliPayAuthAppId = response.AuthAppId;
-                                    SelfStore.AliPayAuthToke = response.AppAuthToken;
-
-                                }
-                                else
-                                {
-                                    store.AliPayAccount = response.UserId;
-                                    store.AliPayAuthAppId = response.AuthAppId;
-                                    store.AliPayAuthToke = response.AppAuthToken;
-                                    store.FromIQBAPP = app.AppId;
-                                    store.OwnnerOpenId = qr.OwnnerOpenId;
-                                    store.Channel = qr.Channel;
-                                    store.Remark = qr.Remark;
-                                    store.QRId = qr.ID;
-                                    store.Rate = qr.Rate;
-                                }
-                            }
-                            qr.InitModify();
-                            qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
-                        //    Log.log("Auth QR Status:" + qr.RecordStatus);
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            Log.log("response Code" + response.Code);
-                            return Content("授权失败：" + response.Msg);
-                        }
-
-                    }
-                    string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "/PP/Auth_Store?Rate=" + store.Rate;
-                    return Redirect(url);
-                }
-                catch (Exception ex)
-                {
-                    Log.log("Auth Response Error:" + ex.Message);
-                    Log.log("Auth Response Inner Error:" + ex.InnerException);
-                    return View();
-
-                }
-
-            }
-            else
-            {
-                return Content("No Auth Code");
-            }
-
-
-        }
-
+        /// <summary>
+        /// 授权给商户
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Auth()
         {
             string authCode = Request["app_auth_code"];
@@ -567,13 +426,13 @@ namespace IQBPay.Controllers
             string Id = Request["Id"];
             string StoreId = Request["StoreId"];
             long qrId;
-            EQRInfo qr = null;
+            EQRStoreAuth qr = null;
             EStoreInfo store = null;
             EStoreInfo SelfStore = null;
-            Log.log("Auth Code:"+authCode);
+          //  Log.log("Auth Code:"+authCode);
             EAliPayApplication app = null;
             AlipayOpenAuthTokenAppResponse response = null;
-
+            NLogHelper.InfoTxt("StoreAuth Id:" + Id);
             if (!string.IsNullOrEmpty(authCode))
             {
                 if (string.IsNullOrEmpty(Id) || !long.TryParse(Id, out qrId))
@@ -592,7 +451,7 @@ namespace IQBPay.Controllers
                 {
                     using (AliPayContent db = new AliPayContent())
                     {
-                        qr = db.QR_GetById(qrId, IQBCore.IQBPay.BaseEnum.QRType.StoreAuth);
+                        qr = db.DBQRStoreAuth.Where(a => a.ID == qrId).FirstOrDefault();
 
                         if (qr == null)
                         {
@@ -640,13 +499,31 @@ namespace IQBPay.Controllers
                                         AliPayAuthToke = response.AppAuthToken,
                                         OwnnerOpenId = qr.OwnnerOpenId,
                                         Channel = qr.Channel,
-                                        Name = qr.Name,
+                                        Name = qr.StoreName,
                                         Remark = qr.Remark,
                                         RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Normal,
                                         QRId = qr.ID,
                                         Rate = qr.Rate,
                                         FromIQBAPP = app.AppId,
-                                    };
+                                        StoreType = qr.StoreType,
+
+                                        MaxLimitAmount = qr.MaxLimitAmount,
+                                        MinLimitAmount = qr.MinLimitAmount,
+                                        RemainAmount = qr.RemainAmount,
+                                        DayIncome = qr.DayIncome
+                                };
+                                    if(store.Channel == Channel.League)
+                                    {
+                                        store.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.WaitingReview;
+                                        EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == qr.OwnnerOpenId).FirstOrDefault();
+                                        if(ui!= null)
+                                            store.Provider = ui.Name.Length>30?ui.Name.Substring(0,30):ui.Name;
+                                    }
+                                    else if(store.Channel == Channel.PP)
+                                    {
+                                        store.Provider = "PP";
+                                    }
+
                                     store.InitCreate();
                                     store.InitModify();
                                     db.DBStoreInfo.Add(store);
@@ -674,17 +551,37 @@ namespace IQBPay.Controllers
                                     store.Remark = qr.Remark;
                                     store.QRId = qr.ID;
                                     store.Rate = qr.Rate;
+                                    store.StoreType = qr.StoreType;
+
+                                    store.MaxLimitAmount = qr.MaxLimitAmount;
+                                    store.MinLimitAmount = qr.MinLimitAmount;
+                                    store.RemainAmount = qr.RemainAmount;
+                                    store.DayIncome = qr.DayIncome;
+
+                                    if (store.Channel == Channel.League)
+                                    {
+                                        store.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.WaitingReview;
+                                        EUserInfo ui = db.DBUserInfo.Where(u => u.OpenId == qr.OwnnerOpenId).FirstOrDefault();
+                                        if (ui != null)
+                                            store.Provider = ui.Name.Length > 30 ? ui.Name.Substring(0, 30) : ui.Name;
+                                    }
+                                    else if (store.Channel == Channel.PP)
+                                    {
+                                        store.Provider = "PP";
+                                    }
+
                                 }
                               
                             }
-                            qr.InitModify();
-                            qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
-                            Log.log("Auth QR Status:"+qr.RecordStatus);
+                            //if(qr.Channel == Channel.PP)
+                            //    qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
+                           
                             db.SaveChanges();
                         }
                         else
                         {
-                            Log.log("response Code"+ response.Code);
+                            NLogHelper.ErrorTxt("支付宝返回商户授权失败：" + response.Code);
+                        
                             return Content("授权失败："+response.Msg);
                         }
 
@@ -694,8 +591,7 @@ namespace IQBPay.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Log.log("Auth Response Error:" + ex.Message);
-                    Log.log("Auth Response Inner Error:" + ex.InnerException);
+                    NLogHelper.ErrorTxt("商户授权错误："+ex.Message);
                     return View();
 
                 }
@@ -864,7 +760,7 @@ namespace IQBPay.Controllers
                     }
                    
                     //校验代理二维码
-                    qrUser = db.DBQRUser.Where(q => q.OpenId == qrHuge.OpenId && q.QRType == QRType.ARHuge && q.RecordStatus == RecordStatus.Normal).FirstOrDefault();
+                    qrUser = db.DBQRUser.Where(q => q.OpenId == qrHuge.OpenId && q.QRType == QRReceiveType.Huge && q.RecordStatus == RecordStatus.Normal).FirstOrDefault();
 
                     if (qrUser == null)
                     {

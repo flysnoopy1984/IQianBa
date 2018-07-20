@@ -20,19 +20,23 @@ namespace IQBConsole
           
             try
             {
-                Console.Write("请输入需要删除的订单间隔时间：");
-                _OrderDiffMin = Convert.ToInt32(Console.ReadLine());
-               
-                while(true)
-                {
-                    job.Run(_OrderDiffMin);
-                    Thread.Sleep(_interval * 1000 * 60);
-                }
+                //Console.Write("请输入需要删除的订单间隔时间：");
+                //_OrderDiffMin = Convert.ToInt32(Console.ReadLine());
+
+                //while(true)
+                //{
+                //    job.Run(_OrderDiffMin);
+                //    Thread.Sleep(_interval * 1000 * 60);
+                //}
+                job.ChangeReceiveQR();
+
+                Console.Read();
 
             }
-            catch
+            catch(Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
+                Console.Read();
             }
             finally
             {

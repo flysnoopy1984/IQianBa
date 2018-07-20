@@ -11,6 +11,11 @@ $(document).ready(function () {
         if (channel == 0 || channel == 1)
             $("#Channel").val(channel);
 
+        $("#MaxLimitAmount").val(400);
+        $("#MinLimitAmount").val(0);
+        $("#DayIncome").val(10000);
+        $("#RemainAmount").val(10000);
+
         $("#QRStatus").bootstrapSwitch({
             onText: "未使用",
             state: true,
@@ -35,10 +40,10 @@ function Init(Id) {
    
    
 
-    var url = "/QR/Get";
+    var url = "/QR/GetStoreAuthQR";
     $.ajax({
         type: 'post',
-        data: "Id=" + Id+"&qrType=2",
+        data: "Id=" + Id,
         url: url,
         success: function (data) {
 
@@ -59,13 +64,20 @@ function InitFormData(data) {
     //    Id = -1;
 
     $("#RecId").val(data.ID);
-    $("#Name").val(data.Name);
+    $("#Name").val(data.StoreName);
     $("#Rate").val(data.Rate);
     $("#Remark").val(data.Remark);
     $("#Channel").val(data.Channel);
     $("#QRStatus").val(data.RecordStatus);
     $("#appId").find("option[value='" + data.APPId + "']").attr("selected", true);
-    
+    $("#StoreType").val(data.StoreType);
+    $("#OpenId").val(data.OwnnerOpenId);
+
+    $("#MaxLimitAmount").val(data.MaxLimitAmount);
+    $("#MinLimitAmount").val(data.MinLimitAmount);
+    $("#DayIncome").val(data.DayIncome);
+    $("#RemainAmount").val(data.RemainAmount);
+
 
     var filePath = data.FilePath;
     if(filePath!=null && filePath!="")
@@ -119,25 +131,35 @@ function Save() {
     var Channel = $("#Channel").val();
     var level = $("#Level").val();
     var appId = $("#appId").val();
-
+    var StoreType = $("#StoreType").val();
     var ID = $("#RecId").val();
+    var MaxLimitAmount = $("#MaxLimitAmount").val();
+    var MinLimitAmount = $("#MinLimitAmount").val();
+    var DayIncome = $("#DayIncome").val();
+    var RemainAmount = $("#RemainAmount").val();
+ 
 
     if (!CheckForm()) return;
 
-    var url = "/QR/SaveAuth";
+    var url = "/QR/SaveStoreAuth";
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID, "APPId":appId,"Name": name, "Rate": rate,"Channel":Channel, "Remark": remake, "RecordStatus": QRStatus },
+        data: {
+            "ID": ID, "APPId": appId,
+            "StoreName": name, "StoreType": StoreType,
+            "Rate": rate, "Channel": Channel,
+            "Remark": remake, "RecordStatus": QRStatus,
+            "MaxLimitAmount": MaxLimitAmount, "MinLimitAmount": MinLimitAmount,
+            "DayIncome": DayIncome, "RemainAmount": RemainAmount
+        },
         url: url,
         success: function (data) {
-            if (data.RunResult == "OK") {
+            if (data.IsSuccess) {
                 alert("Save Done");
-                //InitFormData(data);
-             //   window.location.href = "Authlist";
             }
             else {
-                alert(data.RunResult);
+                alert(data.ErrorMsg);
             }
         },
         error: function (xhr, type) {
