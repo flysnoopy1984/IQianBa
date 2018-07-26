@@ -32,7 +32,7 @@ namespace IQBCore.IQBPay.Models.User
         /// <summary>
         ///针对出库商的余额
         /// </summary>
-        public double O2OShipBalance {
+        public double Balance {
             get;set;
         }
 
@@ -60,7 +60,7 @@ namespace IQBCore.IQBPay.Models.User
             else
                 this.O2OShipOutCome += Math.Abs(amt);
 
-            this.O2OShipBalance += amt;
+            this.Balance += amt;
         }
 
 

@@ -92,7 +92,18 @@ namespace IQBPay.Controllers.ExternalAPI
                                         updateUser.QRAuthId = 0;
                                         updateUser.UserStatus = UserStatus.PPUser;
                                         updateUser.NeedFollowUp = pQR.NeedFollowUp;
-                                        
+
+                                        EUserAccountBalance ub = db.DBUserAccountBalance.Where(a => a.OpenId == ui.OpenId).FirstOrDefault();
+                                        if(ub == null)
+                                        {
+                                            ub = new EUserAccountBalance();
+                                            ub.OpenId = ui.OpenId;
+                                            ub.UserAccountType = UserAccountType.Agent;
+                                            ub.Balance = 0;
+                                            db.DBUserAccountBalance.Add(ub);
+
+                                        }
+
                                         db.DBUserInfo.Add(updateUser);
                                         isExist = false;
                                         if (pQR.NeedVerification)

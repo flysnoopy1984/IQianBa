@@ -22,7 +22,7 @@
         },
          {
           "type": "view",
-          "name": "设置二维码",
+          "name": "费率设置",
           "url": "http://wx.iqianba.cn/PP/Agent_QR_ARList"
         },
         {
@@ -30,7 +30,24 @@
           "name": "我的二维码",
           "key": "pay_101"
         },
-        {
+        //{
+        //  "type": "view",
+        //  "name": "我的战绩",
+        //  "url": "http://wx.iqianba.cn/PP/OrderList"
+        //},
+         {
+          "type": "view",
+          "name": "码商入口",
+          "url": "http://wx.iqianba.cn/PP/StoreList"
+        }
+       
+       
+      ]
+    },
+     {
+      "name": "团队中心",
+      "sub_button": [
+         {
           "type": "view",
           "name": "邀请码",
           "url": "http://wx.iqianba.cn/PP/InviteCode"
@@ -40,19 +57,13 @@
           "name": "我的团队",
           "url": "http://wx.iqianba.cn/PP/AgentList"
         }
-      ]
-    },
-     {
-      "name": "项目中心",
-      "sub_button": [
 
 
-     
-        {
-          "type": "view",
-          "name": "O2O商城",
-          "url": "http://wx.iqianba.cn/O2OWap/EntryAgent"
-        }
+        //{
+        //  "type": "view",
+        //  "name": "O2O商城",
+        //  "url": "http://wx.iqianba.cn/O2OWap/EntryAgent"
+        //}
       ]
     }
   

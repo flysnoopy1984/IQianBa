@@ -148,14 +148,16 @@ namespace IQBPay.Controllers
                 {
                     
                     if (Channel == Channel.All)
-                        list = db.DBStoreInfo.Where(i => i.OwnnerOpenId == openId).OrderByDescending(i => i.CreateDate);
+                        list = db.DBStoreInfo.OrderByDescending(i => i.CreateDate);
                     else
-                        list = db.DBStoreInfo.Where(i => i.OwnnerOpenId == openId && i.Channel == Channel).OrderByDescending(i => i.CreateDate);
+                        list = db.DBStoreInfo.Where( i=>i.Channel == Channel).OrderByDescending(i => i.CreateDate);
 
                     if(RecordStatus!= RecordStatus.All)
                     {
                         if(RecordStatus == RecordStatus.Normal)
-                        list = list.Where(s => s.RecordStatus == RecordStatus.Normal || s.RecordStatus == RecordStatus.WaitingReview );
+                            list = list.Where(s => s.RecordStatus == RecordStatus.Normal || s.RecordStatus == RecordStatus.WaitingReview );
+                        else
+                            list = list.Where(s => s.RecordStatus == RecordStatus.Blocked);
                     }
 
                     if (StoreType != StoreType.All)

@@ -233,6 +233,8 @@ namespace IQBCore.IQBPay.BaseEnum
   
     public enum RecordStatus
     {
+        Init  = -1,
+
         Normal=0,
        
         Blocked=1,
@@ -393,6 +395,9 @@ namespace IQBCore.IQBPay.BaseEnum
         /// </summary>
         GetCash = 3,
 
+        Store_Comm = 10,
+        Store_L2 = 11,
+        Store_L3 = 12,
 
     }
 

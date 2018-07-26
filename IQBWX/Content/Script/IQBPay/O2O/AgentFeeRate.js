@@ -32,9 +32,6 @@
 
         var PayMethod = -1;
         $.each(data, function (i) {
-
-           
-
             var ctrl = "";
             if (PayMethod != data[i].PayMethod)
             {

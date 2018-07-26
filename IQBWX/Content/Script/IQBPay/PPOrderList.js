@@ -176,8 +176,8 @@ function generateData(result) {
         strCtrl += "<tr style='height:80px;'>";
 
       //tdWidth = "width:" + $("#trHeader th").eq(0).css("width");
-        strCtrl += "<td style='line-height:80px;width:45%;color:cadetblue;padding-left:20px;'>交易时间:" + result[i].TransDateStr + "</td>";
-        strCtrl += "<td style='line-height:80px;width:55%;text-align:right;color:firebrick;padding-right:20px;'>+" + result[i].AgentAmount.toFixed(2) + " &yen</td>";
+        strCtrl += "<td style='line-height:80px;width:60%;color:cadetblue;padding-left:20px;'>交易时间:" + result[i].TransDateStr + "</td>";
+        strCtrl += "<td style='line-height:80px;width:40%;text-align:right;color:firebrick;padding-right:20px;'>+" + result[i].AgentAmount.toFixed(2) + " &yen</td>";
         strCtrl += "</tr>";
         if (result[i].ParentCommissionAmount > 0)
         {

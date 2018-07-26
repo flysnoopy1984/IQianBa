@@ -94,7 +94,6 @@ namespace IQBPay.Controllers
                         return Json(result);
                     }
 
-
                     EQRUser qrHuge = db.DBQRUser.Where(o => o.OpenId == OpenId && o.QRType == QRReceiveType.Huge).FirstOrDefault();
                     if (qrHuge == null)
                         result.QRHuge = new EQRUser();
@@ -106,6 +105,18 @@ namespace IQBPay.Controllers
                         result.QRCC = new EQRUser();
                     else
                         result.QRCC = qrCC;
+
+                    EUserStore us = db.DBUserStore.Where(a => a.OpenId == OpenId).FirstOrDefault();
+                    if (us == null)
+                        result.UserStoreRate = -1;
+                    else
+                    {
+                        result.UserStoreRate = us.Rate;
+                        result.UserStoreFixComm = us.FixComm;
+                        result.UserStoreOwnerRate = us.OwnerRate;
+
+                    }
+                        
 
 
                     result.StoreList = db.Database.SqlQuery<HashStore>("select Id,Name,Rate from storeinfo").ToList();
@@ -287,7 +298,7 @@ namespace IQBPay.Controllers
                     ui.parentOpenId = InUA.ParentOpenId;
                     ui.NeedFollowUp = InUA.NeedFollowUp;
 
-                    //本人所有QRUser
+                    //小额码
                     EQRUser qrUser = db.DBQRUser.Where(o => o.OpenId == InUA.OpenId && o.QRType == QRReceiveType.Small).FirstOrDefault();
 
                     float Ratediff = InUA.MarketRate - InUA.Rate;
@@ -296,14 +307,17 @@ namespace IQBPay.Controllers
                     {
                         adjustRate = InUA.Rate - qrUser.Rate;
                     }
-
-
                     qrUser.ParentName = InUA.ParentName;
                     qrUser.ParentOpenId = InUA.ParentOpenId;
                     qrUser.ParentCommissionRate = InUA.ParentCommissionRate;
                     qrUser.ReceiveStoreId = InUA.StoreId;
                     //qrUser.MarketRate = InUA.MarketRate;
                     qrUser.Rate = qrUser.MarketRate - Ratediff;
+
+                    //信用卡
+                    EQRUser ccQrUser = db.DBQRUser.Where(o => o.OpenId == InUA.OpenId && o.QRType == QRReceiveType.CreditCard).FirstOrDefault();
+                    if(ccQrUser !=null)
+                        ccQrUser.ReceiveStoreId = InUA.StoreId;
 
                     //本人邀请码QRInfo
                     EQRInfo qrInfo = db.DBQRInfo.Where(a => a.ID == ui.QRInviteCode).FirstOrDefault();
@@ -474,6 +488,56 @@ namespace IQBPay.Controllers
                         ccQRUser.MarketRate = marketRate;
 
 
+                        result.SuccessMsg = "修改成功";
+
+
+                    }
+                    db.SaveChanges();
+
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
+        }
+
+        //码商
+        [HttpPost]
+        public ActionResult CreateOrUpdateUserStore(string openId, float UserStoreRate,float UserStoreFixComm,float UserStoreOwnRate)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    EUserStore us = db.DBUserStore.Where(a => a.OpenId == openId).FirstOrDefault();
+                    EUserInfo ui = db.DBUserInfo.Where(a => a.OpenId == openId).FirstOrDefault();
+                    if (us == null)
+                    {
+                        //大额码参数
+                        us = new EUserStore
+                        {
+                            Name = ui.Name.Length > 40 ? "[" + ui.Name.Substring(0, 40) + "] 店铺" : "[" + ui.Name + "] 店铺",
+                            OpenId = openId,
+                            Rate = UserStoreRate,
+                            FixComm = UserStoreFixComm,
+                            OwnerRate = UserStoreOwnRate,
+                        };
+
+                        db.DBUserStore.Add(us);
+
+
+                        result.SuccessMsg = "创建成功";
+                    }
+                    else
+                    {
+                        us.Rate = UserStoreRate;
+                        us.FixComm = UserStoreFixComm;
+                        us.OwnerRate = UserStoreOwnRate;
                         result.SuccessMsg = "修改成功";
 
 

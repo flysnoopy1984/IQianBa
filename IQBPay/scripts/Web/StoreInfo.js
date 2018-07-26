@@ -139,7 +139,16 @@ function Save()
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID, "Provider": Provider, "MidCommAccount": MidCommAccount, "MidCommRate": MidCommRate, "Log": Log, "Channel": Channel, "StoreType": StoreType, "RemainAmount": RemainAmount, "DayIncome": DayIncome, "MinLimitAmount": MinLimitAmount, "MaxLimitAmount": MaxLimitAmount, "Name": name, "Rate": Rate, "Remark": remake, "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount },
+        data: {
+            "ID": ID, "Provider": Provider,
+            "MidCommAccount": MidCommAccount,
+            "MidCommRate": MidCommRate, "Log": Log,
+            "Channel": Channel, "StoreType": StoreType,
+            "RemainAmount": RemainAmount, "DayIncome": DayIncome,
+            "MinLimitAmount": MinLimitAmount, "MaxLimitAmount": MaxLimitAmount,
+            "Name": name, "Rate": Rate, "Remark": remake,
+            "RecordStatus": StoreStatus, "IsReceiveAccount": IsReceiveAccount
+        },
         url: url,
         success: function (data) {
             if(data == "OK")

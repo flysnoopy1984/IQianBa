@@ -168,7 +168,7 @@ namespace IQBWX.BLL
             {
             
                 mText += "欢迎注册服务平台！\n";
-                //mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate- qr.Rate);
+               // mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate- qr.Rate);
                 //mText += "首笔订单统一费率2.8%\n之后订单\n";
                 //mText += "【中介】费率2%\n";
                 //mText += "【队长】费率1.8%\n";

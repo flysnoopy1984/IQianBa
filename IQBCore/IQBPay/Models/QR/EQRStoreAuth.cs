@@ -20,10 +20,14 @@ namespace IQBCore.IQBPay.Models.QR
             MinLimitAmount = 0;
             DayIncome = 10000;
             RemainAmount = 10000;
+            CreateDateTime = DateTime.Now;
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
+
+        
+        public long StoreId { get; set; }
 
         [MaxLength(32)]
         public string APPId { get; set; }
@@ -87,15 +91,20 @@ namespace IQBCore.IQBPay.Models.QR
 
         public void InitByStore(EStoreInfo si)
         {
-          
-          
+
+            this.StoreId = si.ID;
             this.OwnnerOpenId = si.OwnnerOpenId;
             this.Rate = si.Rate;
             this.RecordStatus = RecordStatus.Normal;
             this.Channel = si.Channel;
             this.StoreType = StoreType.Small;
             this.StoreName = si.Name;
-            
+            MaxLimitAmount = si.MaxLimitAmount;
+            MinLimitAmount = si.MinLimitAmount;
+            DayIncome = si.DayIncome;
+            RemainAmount = 0;
+
+
         }
     }
 }

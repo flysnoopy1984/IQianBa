@@ -54,9 +54,11 @@ namespace ConsoleApplication1
 
             try
             {
-                NLogHelper.ErrorDb("ttt");
-            //   string a =  StringHelper.GenerateUserInviteCode("13482710060");
-             //   Console.WriteLine(a);
+                //   Console.WriteLine( Math.Round(0.338333, 2));
+                Console.WriteLine(decimal.Round(decimal.Parse("0.3383333"), 2));
+                Console.Read();
+                //   string a =  StringHelper.GenerateUserInviteCode("13482710060");
+                //   Console.WriteLine(a);
             }
             catch (Exception ex)
             {

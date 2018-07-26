@@ -129,6 +129,7 @@
     <Compile Include="IQBPay\Models\AccountPayment\EPreTransfer.cs" />
     <Compile Include="IQBPay\Models\Error\EPrivilegeError.cs" />
     <Compile Include="IQBPay\Models\InParameter\InAgentOverview.cs" />
+    <Compile Include="IQBPay\Models\InParameter\InUserStore.cs" />
     <Compile Include="IQBPay\Models\Json\HashO2ODeliveryAddr.cs" />
     <Compile Include="IQBPay\Models\Json\InOrderReview.cs" />
     <Compile Include="IQBPay\Models\O2O\DItemList.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="IQBPay\Models\O2O\ROrderSteps.cs" />
     <Compile Include="IQBPay\Models\O2O\RSimpleEntity.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashKeyValue.cs" />
+    <Compile Include="IQBPay\Models\Page\PPaySelection.cs" />
     <Compile Include="IQBPay\Models\QR\EQRStoreAuth.cs" />
     <Compile Include="IQBPay\Models\Report\RPAgentPerformance.cs" />
     <Compile Include="IQBPay\Models\Result\RQRStoreAuth.cs" />
@@ -227,6 +229,7 @@
     <Compile Include="IQBPay\Models\User\EBuyerInfo.cs" />
     <Compile Include="IQBPay\Models\User\EUserAccountBalance.cs" />
     <Compile Include="IQBPay\Models\User\EUserInfo.cs" />
+    <Compile Include="IQBPay\Models\User\EUserStore.cs" />
     <Compile Include="IQBRecharge\BaseEnum\CardType.cs" />
     <Compile Include="IQBRecharge\BaseEnum\RcOrderStatus.cs" />
     <Compile Include="IQBRecharge\Models\EItemInfo.cs" />

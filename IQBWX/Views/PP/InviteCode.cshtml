@@ -15,7 +15,7 @@
     <div class="grzxcon2 mgz xi30 bai">【@ViewBag.ShowName】 邀请码</div>
 
     <div class="InfoBody">
-        <div class="form-group">
+        @*<div class="form-group">
             <label class="label-top">下级费率</label>
             <div class="col-sm-6">
                 <input id="Rate" type="text" value="@Model.Rate" class="form-control" datatype="n" nullmsg="请填写代理反点率" sucmsg="OK" errormsg="请填写数字">
@@ -27,7 +27,7 @@
             <div class="col-sm-6">
                 <input type="text" id="ParentCommRate" value="@Model.ParentCommissionRate" class="form-control" datatype="n" nullmsg="上级代理反佣金" sucmsg="OK" errormsg="请填写上级代理反佣金率" /> 
             </div>
-        </div>
+        </div>*@
         <div class="form-group" id="Field_AfterMarketRate">
             <label>状态:</label>
             @if (Model.RecordStatus == RecordStatus.Normal)

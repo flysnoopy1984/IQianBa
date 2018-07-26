@@ -270,8 +270,7 @@ namespace IQBCore.IQBPay.BLL
             }
             catch (Exception ex)
             {
-                IQBLog log = new IQBLog();
-                log.log("CreateStoreAuthUrlById Error:" + ex.Message);
+                NLogHelper.ErrorTxt(ex.Message);
                 throw ex;
             }
             return qr;

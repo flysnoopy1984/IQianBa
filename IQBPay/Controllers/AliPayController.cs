@@ -37,6 +37,7 @@ using System.Data.Entity;
 using IQBCore.IQBPay.Models.Json;
 using IQBCore.Common.Constant;
 using IQBCore.IQBWX.Models.WX.Template.InviteCode;
+using IQBCore.IQBPay.Models.O2O;
 
 namespace IQBPay.Controllers
 {
@@ -156,7 +157,21 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        
+        public void UpdateUserBalance(AliPayContent db,string openId,double amt, TransactionType transType)
+        {
+            EUserAccountBalance ub = db.DBUserAccountBalance.Where(a => a.OpenId == openId && a.UserAccountType == UserAccountType.Agent).FirstOrDefault();
+            ub.Balance += Convert.ToDouble(amt.ToString("0.00"));
+
+            EO2OTransAgent o2oTrans = new EO2OTransAgent
+            {
+                AgentOpenId = openId,
+                Amount = Convert.ToDouble(amt.ToString("0.00")),
+                TransDateTime = DateTime.Now,
+                TransactionType = transType,
+            };
+            db.DBO2OTransAgent.Add(o2oTrans);
+        }
+
 
         public ActionResult PayNotify()
         {
@@ -208,18 +223,22 @@ namespace IQBPay.Controllers
                   //  order.AliPayTransDate = Convert.ToDateTime(Request["gmt_create"]);
                     if (order.AliPayTradeStatus == "TRADE_SUCCESS")
                     {
+                        #region 原大额码逻辑
+
                         //不管打款是否成功，用户是成功支付了大额码
-                        if(order.EQRHugeTransId>0)
-                        {
-                            try
-                            {
-                                UpdateQRHuge(db, order.EQRHugeTransId);
-                            }
-                            catch (Exception ex)
-                            {
-                                Log.log("PayNotify UpdateQRHuge Error:"+ ex.Message);
-                            }
-                        }
+                        //if(order.EQRHugeTransId>0)
+                        //{
+                        //    try
+                        //    {
+                        //        UpdateQRHuge(db, order.EQRHugeTransId);
+                        //    }
+                        //    catch (Exception ex)
+                        //    {
+                        //        Log.log("PayNotify UpdateQRHuge Error:"+ ex.Message);
+                        //    }
+                        //}
+                        #endregion
+
                         #region 短信通知收款码
                         //短信通知买家收款码开始
                         // base.Log.log("BuyerMobilePhone" + order.BuyerMobilePhone);
@@ -263,9 +282,7 @@ namespace IQBPay.Controllers
                             }
                             catch (Exception ex)
                             {
-                                order.LogRemark += ex.Message;
-                                order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
-                                Log.log("subStore 获取错误");
+                                NLogHelper.ErrorTxt(ex.Message);
                             }
                             if (subStore!=null)
                             {
@@ -279,19 +296,56 @@ namespace IQBPay.Controllers
                                         TransferError++;
                                         store.RecordStatus = RecordStatus.Blocked;
                                         store.Log = string.Format("[分账错误]订单：{0}。时间：{1}",order.OrderNo,order.TransDateStr);
+                                        db.SaveChanges();
+                                        return View();
                                     }
                                     else
                                     {
-                                        if(!string.IsNullOrEmpty(store.MidCommAccount) && store.MidCommRate>0)
+                                        EUserStore us = db.DBUserStore.Where(a => a.OpenId == store.OwnnerOpenId).FirstOrDefault();
+                                        if(us !=null)
                                         {
-                                            float midComm = (store.MidCommRate * order.TotalAmount)/100;
-                                            EUserInfo midUI = new EUserInfo();
-                                            midUI.AliPayAccount = store.MidCommAccount;
-                                            tranfer = payManager.TransferHandler(TransferTarget.MidStore, BaseController.SubApp, BaseController.SubApp, midUI, ref order, midComm);
-                                            db.DBTransferAmount.Add(tranfer);
-                                            if (tranfer.TransferStatus != TransferStatus.Success)
-                                                TransferError++;
+                                            double amt = Convert.ToDouble((order.TotalAmount * us.Rate).ToString("0.00"));
+                                            UpdateUserBalance(db, store.OwnnerOpenId, amt, TransactionType.Store_Comm);
+
+                                            string sql = string.Format(@"select parentOpenId from UserInfo 
+                                                                         where openId = '{0}'",
+                                                                         us.OpenId);
+                                            string pOpenId = db.Database.SqlQuery<string>(sql).FirstOrDefault();
+                                            if(!string.IsNullOrEmpty(pOpenId))
+                                            {
+                                                amt = Convert.ToDouble((order.TotalAmount * us.FixComm).ToString("0.00"));
+                                                UpdateUserBalance(db, pOpenId, amt, TransactionType.Store_L2);
+
+                                                sql = string.Format(@"select parentOpenId from UserInfo 
+                                                                         where openId = '{0}'",
+                                                                         pOpenId);
+                                                if (!string.IsNullOrEmpty(pOpenId))
+                                                {
+                                                    pOpenId = db.Database.SqlQuery<string>(sql).FirstOrDefault();
+                                                    amt = Convert.ToDouble((order.TotalAmount * us.FixComm).ToString("0.00"));
+                                                    UpdateUserBalance(db, pOpenId, amt, TransactionType.Store_L3);
+                                                }                                
+                                            }             
                                         }
+                                     
+                                        #region 原中间商逻辑，商户上加了个字段
+                                       
+                                        //if(order.SellerCommission>0.1)
+                                        //    UpdateUserBalance(db, store.OwnnerOpenId, Math.Abs(order.SellerCommission));
+
+                                        //if(!string.IsNullOrEmpty(store.MidCommAccount) && store.MidCommRate>0)
+                                        //{
+                                        //    float midComm = (store.MidCommRate * order.TotalAmount)/100;
+                                        //    EUserInfo midUI = new EUserInfo();
+                                        //    midUI.AliPayAccount = store.MidCommAccount;
+                                        //    tranfer = payManager.TransferHandler(TransferTarget.MidStore, BaseController.SubApp, BaseController.SubApp, midUI, ref order, midComm);
+                                        //    db.DBTransferAmount.Add(tranfer);
+                                        //    if (tranfer.TransferStatus != TransferStatus.Success)
+                                        //        TransferError++;
+                                        //}
+                                        #endregion
+
+
                                     }
                                 }
                                 catch(Exception ex)
@@ -299,28 +353,31 @@ namespace IQBPay.Controllers
                                     order.LogRemark += ex.Message;
                                     store.RecordStatus = RecordStatus.Blocked;
                                     store.Remark += ex.Message;
-                                }
-                               
+                                } 
                             }
-                         //  Log.log("PayNotify 分账结束");
                         }
                         string accessToken = this.getAccessToken(true);
-                        //代理打款
-                        EUserInfo agentUI = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
+                       
+                       //代理
+                        UpdateUserBalance(db, order.AgentOpenId, order.RateAmount,TransactionType.Agent_Order_Comm);
+                        PPOrderPayNT notice = new PPOrderPayNT(accessToken, order.AgentOpenId, order);
+                        notice.Push();
 
-                        //  Log.log("PayNotify 开始转账给代理");
-                        
+                        #region 代理打款
+                        /*EUserInfo agentUI = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
                         tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.SubApp, BaseController.SubApp, agentUI,ref order,0, accessToken,BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
                         if(tranfer.TransferStatus != TransferStatus.Success)
                             TransferError++;
-                      //  Log.log("PayNotify 转账给代理结束");
+                        */
+                        #endregion
 
                         //上级代理佣金
                         if (!string.IsNullOrEmpty(order.ParentOpenId) && order.ParentCommissionAmount > 0)
                         {
 
                             agentComm = db.DBAgentCommission.Where(c => c.OrderNo == order.OrderNo && c.ParentOpenId == order.ParentOpenId && c.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
+                            agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
 
                             EUserInfo parentUi = new EUserInfo();
                             parentUi.AliPayAccount = agentComm.ParentAliPayAccount;
@@ -329,18 +386,20 @@ namespace IQBPay.Controllers
                             parentUi.OpenId = agentComm.ParentOpenId;
                             parentUi.Name = agentComm.ParentName;
 
-                            tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order,0, null,BaseController.GlobalConfig);
-                            db.DBTransferAmount.Add(tranfer);
+                            UpdateUserBalance(db, order.ParentOpenId, order.ParentCommissionAmount,TransactionType.Parent_Comm);
+                            //tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order,0, null,BaseController.GlobalConfig);
+                            //db.DBTransferAmount.Add(tranfer);
                             
-                            if(tranfer.TransferStatus == TransferStatus.Success)
-                                agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
-                            else
-                                TransferError++;
+                            //if(tranfer.TransferStatus == TransferStatus.Success)
+                            //    agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
+                            //else
+                            //    TransferError++;
                         }
                         //3级
                         if (!string.IsNullOrEmpty(order.L3OpenId) && order.L3CommissionAmount>0)
                         {
                             agentComm = db.DBAgentCommission.Where(c => c.OrderNo == order.OrderNo && c.ParentOpenId == order.L3OpenId && c.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
+                            agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
 
                             EUserInfo parentUi = new EUserInfo();
                             parentUi.AliPayAccount = agentComm.ParentAliPayAccount;
@@ -349,13 +408,15 @@ namespace IQBPay.Controllers
                             parentUi.OpenId = agentComm.ParentOpenId;
                             parentUi.Name = agentComm.ParentName;
 
-                            tranfer = payManager.TransferHandler(TransferTarget.L3Agent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order,0, null, BaseController.GlobalConfig);
-                            db.DBTransferAmount.Add(tranfer);
+                            UpdateUserBalance(db, order.L3OpenId, order.L3CommissionAmount,TransactionType.L3_Comm);
 
-                            if (tranfer.TransferStatus == TransferStatus.Success)
-                                agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
-                            else
-                                TransferError++;
+                            //tranfer = payManager.TransferHandler(TransferTarget.L3Agent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order,0, null, BaseController.GlobalConfig);
+                            //db.DBTransferAmount.Add(tranfer);
+
+                            //if (tranfer.TransferStatus == TransferStatus.Success)
+                            //    agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
+                            //else
+                            //    TransferError++;
                         }
 
                             //用户打款
@@ -368,25 +429,7 @@ namespace IQBPay.Controllers
                         if(TransferError>0)
                             order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
                         else
-                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Closed;
-
-                      //  Log.log("PayNotify 结束用户打款");
-
-                      //政策实施
-                        if(order.OrderStatus == OrderStatus.Closed)
-                        {
-                            if(agentUI.HasPassRegFee== false)
-                            {
-                                agentUI.HasPassRegFee = true;
-                            }
-                            if (agentUI.UserStatus == UserStatus.JustRegister)
-                                agentUI.UserStatus = UserStatus.PPUser;
-                            //if(agentUI.HasPassInviteFee==false)
-                            //{
-                            //    db.DBOrder.Where(o=>o.AgentOpenId == agentUI.OpenId && o.OrderStatus == OrderStatus.Closed).ToList().Sum()
-                            //}
-                        }
-                 
+                            order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Closed;                  
                     }
                     else
                     {
@@ -432,7 +475,7 @@ namespace IQBPay.Controllers
           //  Log.log("Auth Code:"+authCode);
             EAliPayApplication app = null;
             AlipayOpenAuthTokenAppResponse response = null;
-            NLogHelper.InfoTxt("StoreAuth Id:" + Id);
+        //    NLogHelper.InfoTxt("StoreAuth Id:" + Id);
             if (!string.IsNullOrEmpty(authCode))
             {
                 if (string.IsNullOrEmpty(Id) || !long.TryParse(Id, out qrId))
@@ -441,11 +484,7 @@ namespace IQBPay.Controllers
                     return Content("【传入的值不正确】无法授权，请联系平台");
                 }
                 app = BaseController.App;
-                if (app == null)
-                {
-                    Log.log("Auth No app");
-                    return Content("【没有APP】无法授权，请联系平台");
-                }
+              
                
                 try
                 {
@@ -460,7 +499,13 @@ namespace IQBPay.Controllers
                         }
                         else if (qr.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
                             return Content("【授权码已被使用】无法授权，请联系平台！");
-                  
+
+                        if (app == null || app.AppId != qr.APPId)
+                        {
+                            NLogHelper.ErrorTxt("Store Auth Error 【没有APP】无法授权或当前APP和授权码APP不一致");
+                            return Content("【没有APP】无法授权或当前APP和授权码APP不一致，请联系平台");
+                        }
+
 
                         IAopClient alipayClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
                         app.Merchant_Private_Key, "json", app.Version, app.SignType, app.Merchant_Public_key, "UTF-8", false);
@@ -476,8 +521,8 @@ namespace IQBPay.Controllers
                         response = alipayClient.Execute(request);
                         if (response.Code == "10000")
                         {
-                            if (!string.IsNullOrEmpty(StoreId))
-                                SelfStore = db.DBStoreInfo.Where(s => s.ID == Convert.ToInt32(StoreId)).FirstOrDefault();
+                            if (qr.StoreId>0)
+                                SelfStore = db.DBStoreInfo.Where(s => s.ID == qr.StoreId).FirstOrDefault();
                       
                             
                             store = db.Store_GetByAliPayUserId(response.UserId);
@@ -488,6 +533,8 @@ namespace IQBPay.Controllers
                                     SelfStore.AliPayAccount = response.UserId;
                                     SelfStore.AliPayAuthAppId = response.AuthAppId;
                                     SelfStore.AliPayAuthToke = response.AppAuthToken;
+                                    SelfStore.FromIQBAPP = qr.APPId;
+                                    SelfStore.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.WaitingReview;
 
                                 }
                                 else
@@ -506,12 +553,11 @@ namespace IQBPay.Controllers
                                         Rate = qr.Rate,
                                         FromIQBAPP = app.AppId,
                                         StoreType = qr.StoreType,
-
                                         MaxLimitAmount = qr.MaxLimitAmount,
                                         MinLimitAmount = qr.MinLimitAmount,
                                         RemainAmount = qr.RemainAmount,
                                         DayIncome = qr.DayIncome
-                                };
+                                    };
                                     if(store.Channel == Channel.League)
                                     {
                                         store.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.WaitingReview;
@@ -535,9 +581,17 @@ namespace IQBPay.Controllers
                             {
                                 if (SelfStore != null)
                                 {
+                                    if (store.ID != qr.StoreId)
+                                    {
+                                        var ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "/Home/ErrorMessage?code=2000&ErrorMsg=此授权码已被其他商户授权";
+                                        return Redirect(ErrorUrl);
+                                    }
+
                                     SelfStore.AliPayAccount = response.UserId;
                                     SelfStore.AliPayAuthAppId = response.AuthAppId;
                                     SelfStore.AliPayAuthToke = response.AppAuthToken;
+                                    SelfStore.FromIQBAPP = qr.APPId;
+                                    
 
                                 }
                                 else
@@ -573,8 +627,8 @@ namespace IQBPay.Controllers
                                 }
                               
                             }
-                            //if(qr.Channel == Channel.PP)
-                            //    qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
+                            if(qr.StoreId ==0)
+                                qr.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
                            
                             db.SaveChanges();
                         }
@@ -586,7 +640,13 @@ namespace IQBPay.Controllers
                         }
 
                     }
-                    string url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"]+"/PP/Auth_Store?Rate="+store.Rate;
+                    string url = "";
+                    if (qr.StoreId>0)
+                        url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"]+"/PP/Auth_Store?Rate="+SelfStore.Rate;
+                    else
+                        url = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "/PP/Auth_Store?Rate=" + store.Rate;
+
+                    NLogHelper.InfoTxt(url);
                     return Redirect(url);
                 }
                 catch (Exception ex)
@@ -883,8 +943,10 @@ namespace IQBPay.Controllers
                         qrHuge.PayCount++;
                         db.SaveChanges();
 
+                        EUserStore us = db.DBUserStore.Where(a => a.OpenId == store.OwnnerOpenId).FirstOrDefault();
+                        
                         //创建初始化订单
-                        EOrderInfo order = payMag.InitOrder(qrUser, store, qrHuge.Amount,OrderType.Huge, AliPayAccount,1, ui,QRHugeTrans);
+                        EOrderInfo order = payMag.InitOrder(qrUser, store,us, qrHuge.Amount,OrderType.Huge, AliPayAccount,1, ui,QRHugeTrans);
                       
                         if (!string.IsNullOrEmpty(qrUser.ParentOpenId))
                         {
@@ -1060,14 +1122,13 @@ namespace IQBPay.Controllers
                         return Redirect(ErrorUrl);
                     }
                     //被禁用的用户，手续费调整为8
-                    
-                    
-                   /* if (ui.UserStatus == IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister)
+                    if (ui.UserStatus == IQBCore.IQBPay.BaseEnum.UserStatus.JustRegister)
                     {
 
-                       //ErrorUrl += "您的联系人被禁用,无法支付！";
-                       // return Redirect(ErrorUrl);
-                    }*/
+                        ErrorUrl += "您的联系人被禁用,无法支付！";
+                        return Redirect(ErrorUrl);
+                    }
+
                     if (string.IsNullOrEmpty(ui.AliPayAccount))
                     {
                         ErrorUrl += "您的联系人没有设置支付宝账户！";
@@ -1076,8 +1137,10 @@ namespace IQBPay.Controllers
 
                     EStoreInfo store = null;
                     string selectStoreSql = string.Format(@"select top 1 * from StoreInfo 
-                                            where RecordStatus = 0 and RemainAmount> 0 and StoreType=0 and MinLimitAmount<={0} and MaxLimitAmount>={0}
-                                            order by NEWID()", Amount);
+                                            where RecordStatus = 0 and RemainAmount> 0 and StoreType={1} and MinLimitAmount<={0} and MaxLimitAmount>={0}
+                                            order by NEWID()", Amount,(int)qrUser.QRType);
+
+                  //  NLogHelper.InfoTxt("Sql:" + selectStoreSql);
 
                     if (!string.IsNullOrEmpty(TestStoreId))
                     {
@@ -1116,7 +1179,10 @@ namespace IQBPay.Controllers
 
                     if (store == null)
                     {
-                        ErrorUrl += "该额度金额花呗已用完，请尝试【20-499】金额支付";
+                   //     ErrorUrl += "";
+                        ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?code=2001&ErrorMsg=暂时没有找到可用的商户！请尝试其他通道";
+                        ErrorUrl += "&backUrl=/PP/PaySelection?Id="+qrUser.OpenId;
+
                         return Redirect(ErrorUrl);
                     }
                     //获取并校验商户 
@@ -1132,6 +1198,7 @@ namespace IQBPay.Controllers
                         return Redirect(ErrorUrl);
                     }
 
+                    #region 测试转账
                     //测试转账
                     if (!string.IsNullOrEmpty(AliPayAccount))
                     {
@@ -1158,7 +1225,8 @@ namespace IQBPay.Controllers
                             }
                         }
                     }
-               
+                    #endregion
+
                     string Res = payMag.PayF2FNew(app, ui, store, Amount, out status);
                                 
                     if (status == AliPayResult.SUCCESS)
@@ -1167,8 +1235,16 @@ namespace IQBPay.Controllers
                         int ordernum =0;
                         if (ui.HasPassRegFee)
                             ordernum = 1;
+                        EUserStore us = db.DBUserStore.Where(a => a.OpenId == store.OwnnerOpenId).FirstOrDefault();
+                        if(us == null)
+                        {
+                            string sql = @"select us.* from UserInfo as ui
+                                        join UserStore as us on ui.OpenId = us.OpenId
+                                        where ui.UserRole = 100";
+                            us = db.Database.SqlQuery<EUserStore>(sql).FirstOrDefault();
+                        }
                         //创建初始化订单
-                        EOrderInfo order = payMag.InitOrder(qrUser, store,Convert.ToSingle(Amount),OrderType.Normal, AliPayAccount, ordernum,ui);
+                        EOrderInfo order = payMag.InitOrder(qrUser, store,us,Convert.ToSingle(Amount),OrderType.Normal, AliPayAccount, ordernum,ui);
 
                         if (!string.IsNullOrEmpty(qrUser.ParentOpenId))
                         {

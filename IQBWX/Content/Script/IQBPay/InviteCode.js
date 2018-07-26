@@ -28,15 +28,7 @@ function InviteCodeStatus()
         success: function (data) {
            
             if (data.IsSuccess == true) {
-                //$.alert({
-                //    title: '成功!',
-                //    content: "成功",
-                //    confirm: function () {
-                //        window.location.reload();
-                //        return true;
-                //    }
-
-                //});
+         
                 alert("邀请码已更新");
                 window.location.reload();
               //  window.location.reload();
@@ -61,9 +53,9 @@ function InviteCodeStatus()
 function Update()
 {
     var ID = $("#hQRId").val();
-    var Rate = $("#Rate").val();
+    //var Rate = $("#Rate").val();
   
-    var ParentCommissionRate = $("#ParentCommRate").val();
+    //var ParentCommissionRate = $("#ParentCommRate").val();
     var ReceiveStoreId = $("#selStoreRate").val();
     var ParentOpenId = $("#selParentAgent").val();
 
@@ -71,7 +63,8 @@ function Update()
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": ID, "Rate": Rate, "ParentCommissionRate": ParentCommissionRate, "ReceiveStoreId": ReceiveStoreId, "ParentOpenId": ParentOpenId },
+        //data: { "ID": ID, "Rate": Rate, "ParentCommissionRate": ParentCommissionRate, "ReceiveStoreId": ReceiveStoreId, "ParentOpenId": ParentOpenId },
+        data: { "ID": ID, "ReceiveStoreId": -1, "ParentOpenId": ParentOpenId },
         url: url,
         success: function (data) {
             if (data.IsSuccess == true) {

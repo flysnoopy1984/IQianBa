@@ -171,6 +171,27 @@
                 }
             });
         }
+
+        function AddUserBalance() {
+            var url = "/Test/AddUserBalance";
+            $.ajax({
+                type: 'post',
+                data: "",
+                url: url,
+                success: function (data) {
+                    if (data.IsSuccess == true) {
+                        alert("Done");
+                    }
+                    else {
+                        alert("Error:" + data.ErrorMsg);
+                    }
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+
+                }
+            });
+        }
     </script>
 </head>
 <body>
@@ -182,6 +203,7 @@
         <input type="button" value="测试邀请码" onclick="TestDoInviteQR" />
         <input type="button" value="更新收款二维码" onclick="UpdateReceiveQR()" />
         <input type="button" value="添加信用卡" onclick="AddCreditCardQR()" />
+        <input type="button" value="添加账户表" onclick="AddUserBalance()" />
     </div>
     <div>
         <img id="qrImg" src="" />

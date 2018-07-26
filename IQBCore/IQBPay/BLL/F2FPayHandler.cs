@@ -44,7 +44,7 @@ namespace IQBCore.IQBPay.BLL
             _OrderNo = StringHelper.GenerateOrderNo();
 
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
-          app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+            app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
 
             AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
             AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();

@@ -1053,10 +1053,10 @@ where o.O2ONo='{0}'";
                         result.IntMsg = -3;
                         return Json(result);
                     }
-                    if(ub.O2OShipBalance - order.OrderAmount<0)
+                    if(ub.Balance - order.OrderAmount<0)
                     {
                         result.IsSuccess = false;
-                        result.ErrorMsg =string.Format("余额不足.当前余额：{0}，订单金额：{1}",ub.O2OShipBalance, order.OrderAmount);
+                        result.ErrorMsg =string.Format("余额不足.当前余额：{0}，订单金额：{1}",ub.Balance, order.OrderAmount);
                         result.IntMsg = -5;
                         return Json(result);
                     }
@@ -1196,10 +1196,10 @@ where o.O2ONo='{0}'";
                         return Json(result);
                     }
                     //检查余额是否充足。
-                    if (ub.O2OShipBalance - order.OrderAmount < 0)
+                    if (ub.Balance - order.OrderAmount < 0)
                     {
                         result.IsSuccess = false;
-                        result.ErrorMsg = string.Format("余额不足.当前余额：{0}，订单金额：{1}", ub.O2OShipBalance, order.OrderAmount);
+                        result.ErrorMsg = string.Format("余额不足.当前余额：{0}，订单金额：{1}", ub.Balance, order.OrderAmount);
                         result.IntMsg = -5;
                         return Json(result);
                     }
@@ -1281,7 +1281,7 @@ where o.O2ONo='{0}'";
                         ubAgent = new EUserAccountBalance();
                         db.DBUserAccountBalance.Add(ubAgent);
                     }
-                    ubAgent.O2OShipBalance += agTrans.Amount;
+                    ubAgent.Balance += agTrans.Amount;
                     ubAgent.O2OShipInCome += agTrans.Amount;
 
 
@@ -1308,7 +1308,7 @@ where o.O2ONo='{0}'";
                             ubAgent = new EUserAccountBalance();
                             db.DBUserAccountBalance.Add(ubAgent);
                         }
-                        ubAgent.O2OShipBalance += agTrans.Amount;
+                        ubAgent.Balance += agTrans.Amount;
                         ubAgent.O2OShipInCome += agTrans.Amount;
 
                         db.DBO2OTransAgent.Add(agTrans);

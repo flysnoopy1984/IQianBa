@@ -461,7 +461,7 @@ namespace IQBPay.Controllers
                         EQRUser ccQR = qr;
                         ccQR.QRType = QRReceiveType.CreditCard;
                         ccQR.MarketRate = (float)1.5;
-                        ccQR.Rate = (float)0.6;
+                        ccQR.Rate = (float)0.75;
                         db.DBQRUser.Add(ccQR);
                     }
                     db.SaveChanges();
@@ -474,6 +474,41 @@ namespace IQBPay.Controllers
             }
             return Json(result);
 
+        }
+
+        public ActionResult AddUserBalance()
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+
+                    var list = db.DBUserInfo.ToList();
+                    foreach (EUserInfo ui in list)
+                    {
+                        EUserAccountBalance ub = db.DBUserAccountBalance.Where(a => a.OpenId == ui.OpenId && a.UserAccountType == UserAccountType.Agent).FirstOrDefault();
+                        if(ub == null)
+                        {
+                            ub = new EUserAccountBalance();
+                            ub.UserAccountType = UserAccountType.Agent;
+                            ub.OpenId = ui.OpenId;
+                            ub.O2OShipInCome = 0;
+                            ub.O2OShipOutCome = 0;
+                            ub.Balance = 0;
+                            db.DBUserAccountBalance.Add(ub);
+             
+                        }
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
         }
     }
 }

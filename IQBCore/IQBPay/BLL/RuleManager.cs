@@ -21,8 +21,8 @@ namespace IQBCore.IQBPay.BLL
                 _PayRule.Agent_InviteFee = 999;
                 _PayRule.Agent_QRHugeFee = 5000;
                 _PayRule.Agent_FOFeeRate = 2.8;
-                _PayRule.User_ServerFee_Q = 1;
-                _PayRule.User_ServerFee_HQ = 1;
+                _PayRule.User_ServerFee_Q = 2;
+                _PayRule.User_ServerFee_HQ = 2;
             }
             return _PayRule;
         } 

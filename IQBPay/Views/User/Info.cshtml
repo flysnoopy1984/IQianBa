@@ -118,7 +118,7 @@
     </div>
 
     <div id="EditRightArea">
-        <div style="text-align:center; margin:20px;"><a id="GoQRDetail">【邀请码】</a></div>
+        @*<div style="text-align:center; margin:20px;"><a id="GoQRDetail">【邀请码】</a></div>
         <div id="RightTop" style="height:150px;">
           
             <div class="form-group">
@@ -151,9 +151,9 @@
                     <input id="Invite_MaxInviteCount" type="text" class="form-control">
                 </div>
             </div>
-        </div>
+        </div>*@
         
-        <hr style="height:3px;border:none;border-top:3px double red;" />
+        @*<hr style="height:3px;border:none;border-top:3px double red;" />
         <div style="text-align:center;">【大额码】</div>
         <div id="RightBottom" style="height:100px;">  
             <div class="form-group">
@@ -172,7 +172,7 @@
         <div class="form-group" style="text-align:center;">
             <button type="button" class="btn btn-warning" onclick="CreateOrUpdateQRHuge();">创建更新大额码</button>
             <button type="button" class="btn btn-primary" onclick="CloseQRHuge();">关闭大额码</button>
-        </div>
+        </div>*@
 
         <hr style="height:3px;border:none;border-top:3px double red;" />
         <div style="text-align:center;">【信用卡】</div>
@@ -192,7 +192,38 @@
         </div>  
         <div class="form-group" style="text-align:center;">
             <button type="button" class="btn btn-warning" onclick="CreateOrUpdateQRCC();">创建更新信用卡 </button>
-           
+        </div>
+
+        <hr style="height:3px;border:none;border-top:3px double red;" />
+        <div style="text-align:center;">【码商】</div>
+        <div id="RightBottom" style="height:100px;">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">码主Rate</label>
+                <div class="col-sm-6">
+                    <input id="UserStore_OwnRate" type="text" class="form-control NeedFill" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">码商Rate</label>
+                <div class="col-sm-6">
+                    <input id="UserStore_Rate" type="text" class="form-control NeedFill" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">固定返佣</label>
+                <div class="col-sm-6">
+                    <input id="UserStore_FixComm" type="text" class="form-control NeedFill" />
+                </div>
+            </div>
+            @*<div class="form-group">
+                <label class="col-sm-4 control-label">信用卡用户手续费</label>
+                <div class="col-sm-6">
+                    <input id="QRCC_MarketRate" type="text" class="form-control NeedFill" />
+                </div>
+            </div>*@
+        </div>
+        <div class="form-group" style="text-align:center;">
+            <button type="button" class="btn btn-warning" onclick="CreateUserStore();">创建更新码商 </button>
         </div>
 
         <hr style="height:3px;border:none;border-top:3px double red;" />

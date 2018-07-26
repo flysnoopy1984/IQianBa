@@ -80,17 +80,17 @@ namespace IQBWX.Controllers
         public ActionResult Pay(string Id)
         {
             // return RedirectToAction("Pay2", "PP", new { Id = Id });
-            List<string> list = new List<string>();
-            list.Add("1431");
+            //List<string> list = new List<string>();
+            //list.Add("1431");
 
             if(WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop && Id!="118")
             {
                 return RedirectToAction("ErrorMessage", "Home",new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
             }
-            if(list.Contains(Id))
-            {
-                return RedirectToAction("Pay2", "PP", new { Id = Id });
-            }
+            //if(list.Contains(Id))
+            //{
+            //    return RedirectToAction("Pay2", "PP", new { Id = Id });
+            //}
             
             ViewBag.QRUserId = Id;
            // ViewBag.ReceiveNo = StringHelper.GenerateReceiveNo();
@@ -1041,8 +1041,8 @@ namespace IQBWX.Controllers
                     DbEntityEntry<EQRInfo> entry = db.Entry<EQRInfo>(qrInfo);
                     entry.State = EntityState.Unchanged;
                     entry.Property(t => t.ParentOpenId).IsModified = true;
-                    entry.Property(t => t.ParentCommissionRate).IsModified = true;
-                    entry.Property(t => t.Rate).IsModified = true;
+                    //entry.Property(t => t.ParentCommissionRate).IsModified = true;
+                    //entry.Property(t => t.Rate).IsModified = true;
                     entry.Property(t => t.ReceiveStoreId).IsModified = true;
 
                     entry.Property(t => t.MDate).IsModified = true;
@@ -1405,7 +1405,7 @@ group by o.AgentOpenId ,o.OrderType
                     {
                         OpenId = openId,
                         UserAccountType = UserAccountType.Agent,
-                        O2OShipBalance =0,
+                        Balance =0,
                         O2OShipInCome =0,
                         O2OShipOutCome =0,
                     };
@@ -1461,7 +1461,7 @@ group by o.AgentOpenId ,o.OrderType
          
             try
             {
-                float amt = Convert.ToSingle(Request["Amt"]);
+                double amt = Convert.ToDouble(Request["Amt"]);
                 int minAmt = Convert.ToInt32(Request["minAmt"]);
                 if (amt < minAmt || amt % minAmt != 0)
                 {
@@ -1478,10 +1478,16 @@ group by o.AgentOpenId ,o.OrderType
                         result.ErrorMsg = "账户余额表出错，请联系平台";
                         return Json(result);
                     }
-                    if(ub.O2OShipBalance<amt)
+                    if(ub.Balance<amt)
                     {
                         result.IsSuccess = false;
                         result.ErrorMsg = "提款金额不能大于余额";
+                        return Json(result);
+                    }
+                    if(ub.Balance<1)
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = "提现金额必须大于1元";
                         return Json(result);
                     }
                     EUserInfo ui = db.DBUserInfo.Where(a => a.OpenId == openId).FirstOrDefault();
@@ -1495,7 +1501,7 @@ group by o.AgentOpenId ,o.OrderType
                         TransDateStr = DateTime.Now.ToShortDateString(),
                         TransferStatus = TransferStatus.Open,
                         TransferTarget = TransferTarget.Agent,
-                        TransferAmount = amt, 
+                        TransferAmount = (float)amt, 
 
                     };
                     EAliPayApplication app;
@@ -1528,8 +1534,13 @@ group by o.AgentOpenId ,o.OrderType
                         db.DBO2OTransAgent.Add(o2oTrans);
 
                         //账户变动（支出）
-                        ub.O2OShipBalance -= amt;
-                        ub.O2OShipOutCome += amt;
+                        ub.Balance -= amt;
+                        // ub.Balance = 
+                        if (ub.Balance > 0)
+                        {
+                            ub.Balance = double.Parse(ub.Balance.ToString("0.00"));
+                        }
+                      //  ub.O2OShipOutCome += amt;
 
                         db.SaveChanges();
                     }
@@ -1550,10 +1561,14 @@ group by o.AgentOpenId ,o.OrderType
         #region 加盟商户
         public ActionResult StoreList()
         {
-            if(UserSession.UserRole < UserRole.Administrator)
+            string sql =string.Format("select count(1) from UserStore where openId='{0}'",UserSession.OpenId);
+            using(AliPayContent db = new AliPayContent())
             {
-                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+                if(db.Database.ExecuteSqlCommand(sql)==0)
+                    return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
+            ViewBag.ppUrl = ConfigurationManager.AppSettings["Site_IQBPay"];
+
             InitProfilePage();
 
             return View();
@@ -1563,6 +1578,7 @@ group by o.AgentOpenId ,o.OrderType
         {
             int pageIndex = Convert.ToInt32(Request["Page"]);
             int pageSize = Convert.ToInt32(Request["PageSize"]);
+            string openId = Request["OpenId"];
 
             using (AliPayContent db = new AliPayContent())
             {
@@ -1576,14 +1592,17 @@ group by o.AgentOpenId ,o.OrderType
                     MaxLimitAmount = s.MaxLimitAmount,
                     MinLimitAmount = s.MinLimitAmount,
                     RemainAmount = s.RemainAmount,
-
+                    StoreType = s.StoreType,
+                    ID =s.ID,
+                    RecordStatus = s.RecordStatus,
+                    OwnnerOpenId =s.OwnnerOpenId,
                     CDate = s.CDate,
                     CTime = s.CTime,
                     CreateDate = s.CreateDate
                 });
 
                 if (UserSession.UserRole != UserRole.Administrator)
-                    list = list.Where(o => o.OwnnerOpenId == UserSession.OpenId);
+                    list = list.Where(o => o.OwnnerOpenId == openId);
 
                 list = list.OrderByDescending(o => o.CreateDate);
 
@@ -1947,6 +1966,34 @@ group by o.AgentOpenId ,o.OrderType
 
        
         #endregion
+
+        public ActionResult StoreAuth()
+        {
+            RQRStoreAuth qrAuth = null;
+            try
+            {
+                long Id = Convert.ToInt32(Request["Id"]);
+                string sql = string.Format(@"select s.Name as StoreName,sa.FilePath from StoreInfo as s
+                               join QRStoreAuth as sa on sa.StoreId = s.ID
+                               where s.Id='{0}'",Id);
+
+                using (AliPayContent db = new AliPayContent())
+                {
+                    qrAuth = db.Database.SqlQuery<RQRStoreAuth>(sql).FirstOrDefault();
+                    qrAuth.FilePath = ConfigurationManager.AppSettings["Site_IQBPay"] + qrAuth.FilePath;
+                }
+            }
+            catch(Exception ex)
+            {
+               return RedirectToAction("ErrorMessage", "Home",new { code="9000", ErrorMsg=ex.Message, backUrl="/PP/StoreList" });
+            }
+            if (qrAuth == null)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = "9000", ErrorMsg = "授权码缺失，请联系平台", backUrl = "/PP/StoreList" });
+            }
+
+            return View(qrAuth);
+        }
 
 
     }

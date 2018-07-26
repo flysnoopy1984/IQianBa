@@ -41,8 +41,9 @@ namespace IQBCore.IQBPay.BLL
 
             AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
 
-             string commission = (order.TotalAmount - order.SellerCommission).ToString("0.00");
-           // string commission = "47.00";
+         //   string commission = (order.TotalAmount*(100-0.38)/100).ToString("0.00");
+            string commission = (order.TotalAmount - order.SellerCommission).ToString("0.00");
+        // string commission = "47.00";
             request.BizContent = "{" +
             "\"out_request_no\":\"" + StringHelper.GenerateSubAccountTransNo() + "\"," +
             "\"trade_no\":\""+order.AliPayOrderNo+"\"," +
@@ -55,15 +56,28 @@ namespace IQBCore.IQBPay.BLL
             //"\"operator_id\":" +
             "}";
 
-            // model.RoyaltyParameters = paramList;
-            // request.SetBizModel(model);
-            //IQBLog log = new IQBLog();
-            //log.log(request.BizContent);
-
             AlipayTradeOrderSettleResponse response = aliyapClient.Execute(request,null, store.AliPayAuthToke);
             return response;
         }
        
+        public void NoticeToAgentForOrder(string accessToken,string openId,EOrderInfo order)
+        {
+            try
+            {
+
+                if (!string.IsNullOrEmpty(accessToken))
+                {
+                    PPOrderPayNT notice = new PPOrderPayNT(accessToken, openId, order);
+                  
+                    notice.Push();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // log.log("TransferHandler WX note Error:"+ex.Message);
+            }
+        }
        
 
         /// <summary>
@@ -117,17 +131,17 @@ namespace IQBCore.IQBPay.BLL
             if(target == TransferTarget.User)
             {
                 res = DoTransferAmount(target, subApp, AliPayAccount, TransferAmount.ToString("0.00"), PayTargetMode, out TransferId, order);
-                if (res.Code == "40004" && res.SubCode == "PAYER_BALANCE_NOT_ENOUGH")
-                {
-                    string tid;
-                    Random r = new Random();
-                    int num = r.Next(11890, 15588);
-                    AlipayFundTransToaccountTransferResponse response = DoTransferAmount(TransferTarget.Internal,app, "hanyiadmin@126.com", num.ToString("0.00"), PayTargetMode.AliPayAccount, out tid);
-                    if(response.Code == "10000")
-                    {
-                        res = DoTransferAmount(target, subApp, AliPayAccount, TransferAmount.ToString("0.00"), PayTargetMode, out TransferId, order);
-                    }
-                }
+                //if (res.Code == "40004" && res.SubCode == "PAYER_BALANCE_NOT_ENOUGH")
+                //{
+                //    string tid;
+                //    Random r = new Random();
+                //    int num = r.Next(11890, 15588);
+                //    AlipayFundTransToaccountTransferResponse response = DoTransferAmount(TransferTarget.Internal,app, "hanyiadmin@126.com", num.ToString("0.00"), PayTargetMode.AliPayAccount, out tid);
+                //    if(response.Code == "10000")
+                //    {
+                //        res = DoTransferAmount(target, subApp, AliPayAccount, TransferAmount.ToString("0.00"), PayTargetMode, out TransferId, order);
+                //    }
+                //}
             }
             else
                 res = DoTransferAmount(target, app, AliPayAccount, TransferAmount.ToString("0.00"), PayTargetMode, out TransferId, order);
@@ -137,39 +151,10 @@ namespace IQBCore.IQBPay.BLL
 
             if (res.Code == "10000")
             {
-                IQBLog log = new IQBLog();
-                //微信通知代理开始
-                try
-                {
-
-                    //if (GlobalConfig.IsWXNotice_AgentTransfer)
-                    //{
-
-                    //}
-                    if (!string.IsNullOrEmpty(accessToken))
-                    {
-                        if (target == TransferTarget.Agent)
-                        {
-                            if(ui.UserStatus == UserStatus.PPUser)
-                            {
-                                PPOrderPayNT notice = new PPOrderPayNT(accessToken, ui.OpenId, order);
-                                //  log.log("通知代理");
-                                notice.Push();
-                            }
-                          
-                        }
-                    }
-
-                }
-                catch(Exception ex)
-                {
-                    log.log("TransferHandler WX note Error:"+ex.Message);
-                }
-                //微信通知代理通知结束
-
+              
                 //转账记录开始
                 transfer.TransferStatus = TransferStatus.Success;
-             //   transfer.Log += string.Format("[Transfer to {2}] Code:{0};msg:{1}", res.Code, res.Msg, target.ToString());
+         
 
                
             }
@@ -368,8 +353,9 @@ namespace IQBCore.IQBPay.BLL
         /// <param name="ui">如果用户被禁用，传入</param>
         /// <param name="QRHugeTrans"></param>
         /// <returns></returns>
-        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store, float TotalAmount,OrderType orderType,string AliPayAccount = "",int orderNum=0,EUserInfo ui = null,EQRHugeTrans QRHugeTrans = null)
+        public EOrderInfo InitOrder(EQRUser qrUser,EStoreInfo store,EUserStore userStore, float TotalAmount,OrderType orderType,string AliPayAccount = "",int orderNum=0,EUserInfo ui = null,EQRHugeTrans QRHugeTrans = null)
         {
+            
             EOrderInfo order = new EOrderInfo()
             {
                 OrderNo = _handler.OrderNo,
@@ -387,7 +373,7 @@ namespace IQBCore.IQBPay.BLL
                 SellerName = store.Name,
                 SellerChannel = store.Channel,
                 SellerRate = store.Rate,
-                SellerCommission = (float)Math.Round(TotalAmount * (store.Rate) / 100, 2, MidpointRounding.ToEven),
+                SellerCommission = (float)Math.Round(TotalAmount * (userStore.OwnerRate) / 100, 2, MidpointRounding.ToEven),
                 OrderType = orderType,
                
                 BuyerMarketRate = qrUser.MarketRate,
@@ -406,17 +392,18 @@ namespace IQBCore.IQBPay.BLL
             }
             else
             {
-                double FOFeeRate = RuleManager.PayRule().Agent_FOFeeRate;
+                //double FOFeeRate = RuleManager.PayRule().Agent_FOFeeRate;
                 //小单用户手续费
                 if(order.TotalAmount>=199)
                     order.BuyerTransferAmount -= (float)RuleManager.PayRule().User_ServerFee_Q;
 
-                if(orderNum == 0 && (qrUser.MarketRate-qrUser.Rate)< FOFeeRate)
-                    order.RateAmount = (float)Math.Round(TotalAmount * ((qrUser.MarketRate-FOFeeRate) / 100), 2, MidpointRounding.ToEven);
+                ////首单费率
+                //if(orderNum == 0 && (qrUser.MarketRate-qrUser.Rate)< FOFeeRate)
+                //    order.RateAmount = (float)Math.Round(TotalAmount * ((qrUser.MarketRate-FOFeeRate) / 100), 2, MidpointRounding.ToEven);
 
                 if(ui.UserStatus == UserStatus.JustRegister)
                 {
-                    order.RateAmount = (float)Math.Round(TotalAmount * (2 / 100), 2, MidpointRounding.ToEven);
+                    order.RateAmount = (float)Math.Round(TotalAmount * (0.5 / 100), 2, MidpointRounding.ToEven);
                 }
 
             }
@@ -756,5 +743,7 @@ namespace IQBCore.IQBPay.BLL
             return initedTransfer;
         }
         #endregion
+
+       
     }
 }

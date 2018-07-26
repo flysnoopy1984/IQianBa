@@ -94,7 +94,7 @@ function Init(OpenId) {
             $("#QRCC_Rate").val(QRCC.Rate);
             $("#QRCC_MarketRate").val(QRCC.MarketRate);
 
-            AjaxInviteCode(data.QRInviteCode);
+        //    AjaxInviteCode(data.QRInviteCode);
 
             AjaxO2OQR();
 
@@ -191,10 +191,13 @@ function InitFormData(data) {
 
     $("#MarketRate").val(data.MarketRate);
     //邀请码 - Begin
-    $("#Invite_QRCode").val(data.QRInviteCode);
-
-  
+    $("#Invite_QRCode").val(data.QRInviteCode);  
     //邀请码 - End
+
+    //码商
+    $("#UserStore_Rate").val(data.UserStoreRate);
+    $("#UserStore_FixComm").val(data.UserStoreFixComm);
+    $("#UserStore_OwnRate").val(data.UserStoreOwnerRate);
 
     var st;
     if (data.UserStatus == 0)
@@ -383,6 +386,44 @@ function CreateOrUpdateQRCC() {
         type: 'post',
         dataType: "json",
         data: { "OpenId": OpenId, "Rate": Rate, "marketRate": QRCC_MarketRate },
+        url: url,
+        success: function (data) {
+            if (data.IsSuccess) {
+                alert(data.SuccessMsg);
+            }
+            else {
+                alert(data.ErrorMsg);
+            }
+        },
+        error: function (xhr, type) {
+
+            alert(xhr.responseText);
+
+        }
+    });
+}
+
+function CreateUserStore() {
+    var url = "/User/CreateOrUpdateUserStore";
+    var OpenId = $("#OpenId").val();
+
+    var UserStoreRate = $("#UserStore_Rate").val();
+    var UserStoreFixComm = $("#UserStore_FixComm").val();
+    var UserStoreOwnRate = $("#UserStore_OwnRate").val();
+
+    if (UserStoreRate == 0) {
+        alert("值不能为空或0");
+        return;
+    }
+    $.ajax({
+        type: 'post',
+        dataType: "json",
+        data: {
+            "OpenId": OpenId,
+            "UserStoreRate": UserStoreRate,
+            "UserStoreFixComm": UserStoreFixComm,
+            "UserStoreOwnRate":UserStoreOwnRate,
+        },
         url: url,
         success: function (data) {
             if (data.IsSuccess) {

@@ -1,0 +1,62 @@
+﻿@model IQBCore.IQBPay.Models.Result.RQRStoreAuth
+@{
+    ViewBag.Title = "商户授权";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
+}
+<style type="text/css">
+    .Title1{
+        width:100%;
+        height:100px;
+        line-height:100px;
+        text-align:center;
+    }
+    .StoreDes
+    {
+        padding-left:50px;
+        padding-right:50px;
+        height:80px;
+        word-wrap:break-word;
+        color:#40C2FA;
+        font-weight:bold;
+        
+    }
+    .AuthQRArea
+    {
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+
+    }
+    .BtnArea
+    {
+        padding:20px;
+    }
+    .BtnArea input[type=button]{
+        width:100%;
+    }
+
+</style>
+<script type="text/javascript">
+    function BackToList()
+    {
+        window.location.href = "/PP/StoreList";
+    }
+</script>
+<div class="box">
+    <div class="Title1">
+        请用此商铺对应的【支付宝】扫描
+    </div>
+    <div class="StoreDes">
+        商铺名：@Model.StoreName
+    </div>
+    <div class="AuthQRArea">
+        <div>授权码</div>
+        <div>
+            <img id="StoreQR" src="@Model.FilePath" />
+        </div>
+    </div>
+    <div class="BtnArea">
+        <input type="button" id="btnBack" class="btn btn-warning" value="返回列表" onclick="BackToList();" />
+    </div>
+</div>
+

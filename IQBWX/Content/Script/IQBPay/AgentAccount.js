@@ -2,7 +2,7 @@
     var pageIndex = 0;
     var pageSize = 10;
     var IQBScroll = null;
-    var minAmt = 100;
+    var minAmt = 10;
 
     Init = function () {
         $("#GetMoney_Amt").val(minAmt);
@@ -70,7 +70,11 @@
 
             if (data[i].TransactionType == 0 ||
                 data[i].TransactionType == 1 ||
-                data[i].TransactionType == 2)
+                data[i].TransactionType == 2 ||
+                data[i].TransactionType == 10 ||
+                 data[i].TransactionType == 11 ||
+                 data[i].TransactionType == 12 
+                )
                 ctrl += '<div class="AmtValue AmtAdd">+' + data[i].Amount + '</div>';
            else
                 ctrl += '<div class="AmtValue">-' + data[i].Amount + '</div>';
@@ -78,8 +82,6 @@
             ctrl += "</td>";
             ctrl += "</tr>";
             $("#DataTable").append(ctrl);
-
-
         });
     };
 

@@ -60,6 +60,11 @@ namespace IQBWX.DataBase.IQBPay
         public DbSet<EOrderDetail> DBOrderDetail { get; set; }
 
 
+        public DbSet<EUserStore> DBUserStore { get; set; }
+
+        public DbSet<EQRStoreAuth> DBQRStoreAuth { get; set; }
+
+
 
         #region User  
         public Boolean IsExistUser(string openId)

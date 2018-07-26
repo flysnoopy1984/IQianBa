@@ -161,6 +161,7 @@
     <Content Include="Content\Css\PP.css" />
     <Content Include="Content\Css\DoTransfer.css" />
     <Content Include="Content\Css\ReceiveOrder.css" />
+    <Content Include="Content\Css\ValidStyle.css" />
     <Content Include="Content\Css\WebCss.css" />
     <Content Include="Content\images\404_02.jpg" />
     <Content Include="Content\images\border.png" />
@@ -276,6 +277,7 @@
     <Content Include="Content\Script\IQBPay\O2O\AgentFeeRate.js" />
     <Content Include="Content\Script\IQBPay\O2O\AgentInfoCheck.js" />
     <Content Include="Content\Script\IQBPay\O2O\EntryAgent.js" />
+    <Content Include="Content\Script\IQBPay\PaySelection.js" />
     <Content Include="Content\Script\IQBPay\SMS.js" />
     <Content Include="Content\Script\IQBPay\Pay2.js" />
     <Content Include="Content\Script\IQBPay\PayWithAccount.js" />
@@ -331,7 +333,9 @@
     <Compile Include="Controllers\API\HJBController.cs" />
     <Compile Include="Controllers\API\InitController.cs" />
     <Compile Include="Controllers\API\OutDataController.cs" />
+    <Compile Include="Controllers\API\PageDataController.cs" />
     <Compile Include="Controllers\API\SMSController.cs" />
+    <Compile Include="Controllers\API\UserStoreController.cs" />
     <Compile Include="Controllers\Html5Controller.cs" />
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\IQBAsyncController.cs" />
@@ -407,7 +411,6 @@
     <Content Include="Content\json\Test.json" />
     <Content Include="Content\json\Cities.json" />
     <Content Include="Content\json\SendMsg.json" />
-    <Content Include="Content\json\json.json" />
     <Content Include="Content\json\Menus - OldYJ.json" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -491,6 +494,7 @@
     <Content Include="Views\O2OWap\LearningVideo.cshtml" />
     <Content Include="Views\PP\PaySelection.cshtml" />
     <Content Include="Views\PP\CardPay.cshtml" />
+    <Content Include="Views\PP\StoreAuth.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -505,6 +509,7 @@
     <Folder Include="Content\Html\" />
     <Folder Include="Log\" />
     <Folder Include="Models\IQBPay\" />
+    <Folder Include="Views\PageData\" />
     <Folder Include="Views\Valid\" />
   </ItemGroup>
   <ItemGroup>

@@ -176,6 +176,7 @@ namespace IQBWX.Controllers
                 Errorcode ec = (Errorcode)Enum.Parse(typeof(Errorcode), code);
                 if (ec == Errorcode.SystemMaintain)
                     errorMsg = WXBaseController.GlobalConfig.Note;
+
                 data = jsonError.GetErrorObj(ec, errorMsg);
                 if (!string.IsNullOrEmpty(backUrl))
                 {

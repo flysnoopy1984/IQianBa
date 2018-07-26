@@ -1,12 +1,12 @@
 ﻿$(document).ready(function () {
 
-    var client = IsWeixinOrAlipay();
-    if (client == "false") {
-        window.location.href = "http://m.yujiept.icoc.me/";
-        alert("请用微信或支付宝访问");
+    //var client = IsWeixinOrAlipay();
+    //if (client == "false") {
+    //    window.location.href = "http://m.yujiept.icoc.me/";
+    //    alert("请用微信或支付宝访问");
         
-        return false;
-    }
+    //    return false;
+    //}
 
     var errorCode = $("#errorCode").val();
     var url = $("#urlToJM").val();

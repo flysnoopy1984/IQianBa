@@ -115,5 +115,12 @@ namespace IQBCore.IQBPay.Models.Result
         public bool QueryResult { get; set; }
 
         public bool HasQRHuge { get; set; }
+
+
+        public float UserStoreRate { get; set; }
+
+        public float UserStoreFixComm { get; set; }
+
+        public float UserStoreOwnerRate { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBPay.Models.Result;
+using IQBCore.Model;
 using IQBPay.DataBase;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,23 @@ namespace IQBPay.Controllers.ExternalAPI
                 result.IsSuccess = false;
                 result.ErrorMsg = ex.Message;
 
+            }
+            return result;
+        }
+
+        [HttpPost]
+        public NResult<EQRStoreAuth> CreateQRStoreAuth(EQRStoreAuth qr)
+        {
+            NResult<EQRStoreAuth> result = new NResult<EQRStoreAuth>();
+            try
+            {
+                qr = QRManager.CreateStoreAuthUrlById(qr);
+                result.resultObj = qr;
+            }
+            catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
             }
             return result;
         }

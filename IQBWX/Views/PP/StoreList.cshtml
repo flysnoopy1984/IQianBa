@@ -1,64 +1,227 @@
 ﻿
 @{
     ViewBag.Title = "商户列表";
-    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
 
+<script src="~/Content/Script/Component/jquery.blockUI.min.js"></script>
+
+<link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
+<script src="~/Content/Script/Component/jquery-confirm.js"></script>
+
+<link href=@Url.Scrpit("~/Content/Css/ValidStyle.css") rel="stylesheet" />
 <script src="~/Content/Script/Component/Validform_v5.3.2_min.js"></script>
+<link href="@ViewBag.ppUrl/Content/Component/IQBScroll.css" rel="stylesheet" />
+<script src="@ViewBag.ppUrl/scripts/Component/IQB/IQBScroll.js" type="text/javascript"></script>
 
 <script src="@Url.Scrpit("~/Content/Script/IQBPay/StoreList.js")"></script>
 
 
-<link href="@Url.Scrpit("~/Content/Css/Info.css")" rel="stylesheet" />
+@*<link href="@Url.Scrpit("~/Content/Css/Info.css")" rel="stylesheet" />*@
+<style type="text/css">
+    .form-group
+    {
+        margin-bottom:0px;
+    }
+    .Title{
+        font-size:16px;
+        height:50px;
+        line-height:50px;
+        padding-left:20px;
+        padding-right:40px;
+        display:flex;
+        justify-content:space-between;
+    }
+    #trContainer tr td ul
+    {
+        list-style-type:none;
+        padding-left:0px;
+    }
+    .rowCon
+    {
+        display:flex;
+        justify-content:space-between;
+       
+        flex-direction:row;
+        align-items:flex-end;
+    }
+    .rowBtnList{
+        display:flex;
+        justify-content:space-between;
+        width:100px;
+    }
+    .rowInfoField{
+        display:flex;
+    }
 
+    .btn_small
+    {
+        font-size:12px !important;
+        padding:4px 10px !important;
+    }
+    .StoreName{
+        font-size:16px;
+      
+        color:#01a5db;
+    }
+    .StoreStatus{
+        font-size:14px;
+        color:#da573d;
+    }
+
+    /* Info */
+    .label-top{
+        padding-left:15px;
+    }
+    .Validform_checktip
+    {
+        padding-left:15px;
+    }
+    .BtnArea{
+       padding:20px;
+    }
+    .BtnArea input[type=button]{
+        width:100%;
+    }
+    .btnDelete{
+        width: 80px;
+        height: 30px;
+        line-height: 1px
+    }
+    .StoreTypeArea
+    {
+        display:flex;
+        width:50%;
+        justify-content:space-between;
+    }
+     .StoreTypeArea div
+     {
+         display:flex;
+         justify-content:space-evenly;
+         width:100%;
+     }
+     .sr-only
+    {
+        color:black;
+        clip:unset;
+        width:100%;
+        height:40px;
+        line-height:40px;
+        left:0px;
+    }
+
+    .progress
+    {
+        height:40px;
+        line-height:40px;
+    }
+
+</style>
 
 <div id="PageList">
-    <div class="grzxcon2 mgz xi30 bai cen">商户列表</div>
-    <div class="ListTableBody_noFixed" id="ListTableBody">
-        <div id="Process" class="DataProcess" style="display:none;">数据加载中...</div>
-        <table class="table mgz2  large-only" id="trContainer"></table>
+    <div class="Title">
+        商户列表
+        <div>
+            <input type="button" class="btn btn-primary btn_small" value="新增商户" id="btnNew" onclick="ToInfoPage(-1);" />
+        </div>
     </div>
-    <button type="button" class="mgz btn btn-primary AlwaysBottom20" id="btnNext" style="width:90%" onclick="Next();">加载更多</button>
+    <div id="DataList">
+        <table class="table" id="trContainer">
+           @*<tr>
+               <td style="width:90%">
+                   <div class="StoreName">店铺名：xxxxxxxxxxxx</div>
+                   <div class="rowCon">
+                       <div>
+                           <div>最小额度：0</div>
+                           <div>最大额度：1000</div>
+                           <div>每日额度：30000</div>
+                           <div>创建日期：2018-01-22</div>
+                           <div class="StoreStatus">状态：已上架</div>
+                       </div>
+                       <div class="rowBtnList">
+                           <input type="button" class="btn btn-danger" value="上架" />
+                           <input type="button" class="btn btn-success" value="下架" />
+                       </div>
+                 
+                   </div>
+               </td>
+               <td class='GoToInfoButton' onclick='ToInfoPage(" + QueryData.length + ");'>></td>
+           </tr>*@
+        </table>
+    </div>
 </div>
 
 <div id="PageInfo" class="PageInfo">
-    <div class="grzxcon2 mgz xi30 bai"><a href="javascript:ToListPage();"><<返回列表</a></div>
+    <div class="Title   ">
+        <div>
+            <a href="javascript:ToListPage();"><<返回列表</a>
+        </div>
+       <div style="width:60px;">
+           <input type="button" id="btnDelete" class="btn btn-danger btnDelete" value="删除店铺"  onclick="Delete();"/>
+       </div>
+      
+    </div>
     <div class="InfoBody">
+        <input type="hidden" value="" id="storeId" />
+        
         <div class="form-group">
             <label class="label-top">店铺名称</label>
             <div class="col-sm-6">
-                <input id="Name" type="text" class="form-control" datatype="s" nullmsg="请填写店铺名称" sucmsg="OK">   
+                <input id="Name" type="text" class="form-control" datatype="*" nullmsg="请填写店铺名称" sucmsg="OK">   
             </div>
           <div class="Validform_checktip"></div>
         </div>
-        <div class="form-group">
-            <label class="label-top">返佣点数-（只能填入0.5-1的数字）</label>
-            <div class="col-sm-6">
-                <input id="Rate" type="text" class="form-control" datatype="/^(0\.[5-9]\d*|1)$/" nullmsg="请填写返佣点数" sucmsg="OK" errormsg="请填写0.5-1之间的数字">
+
+        <div class="rowInfoField">
+            <div class="form-group" style="width:40%;">
+                <label class="label-top">最小额度</label>
+                <div class="col-sm-6">
+                    <input id="MinLimitAmount" type="text" class="form-control" datatype="n" nullmsg="请填写最小额度" sucmsg="OK">
+                </div>
+                <div class="Validform_checktip"></div>
             </div>
-            <div class="Validform_checktip"></div>
-        </div>
 
-        <div class="form-group">
-            <label class="label-top">分控最大额度(如299,499...)</label>
-            <div class="col-sm-6">
-                <input id="MaxLimitAmount" type="text" datatype="n" class="form-control" nullmsg="请填写分控额度" sucmsg="OK">
+            <div class="form-group" style="width:40%;">
+                <label class="label-top">最大额度</label>
+                <div class="col-sm-6">
+                    <input id="MaxLimitAmount" type="text" datatype="n" class="form-control" nullmsg="请填写最大额度" sucmsg="OK">
+                </div>
+                <div class="Validform_checktip"></div>
             </div>
-            <div class="Validform_checktip"></div>
         </div>
-
-        <div class="form-group">
-            <label class="label-top">每日限额(不填代表无限额)</label>
-            <div class="col-sm-6">
-                <input id="DayIncome" type="text" class="form-control" datatype ="empty|n"  sucmsg="OK">
+      
+       
+        <div class="form-group" style="width:40%;">
+                <label class="label-top">每日限额</label>
+                <div class="col-sm-6">
+                    <input id="DayIncome" type="text" class="form-control" datatype="empty|n" sucmsg="OK">
+                </div>
+                <div class="Validform_checktip"></div>
             </div>
-            <div class="Validform_checktip"></div>
-        </div>
 
         <div class="form-group">
-            <label class="label-top">没有授权</label>
-        </div>
+                <label class="label-top">商户类型</label>
+                <div class="col-sm-6 StoreTypeArea">
+                    <div>
+                        <input type="radio" name="sType" value="2" id="r_cc" /><label style="font-weight:normal;" for="r_cc">信用卡</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="sType" value="1" id="r_sqr" /><label style="font-weight:normal;" for="r_sqr">小额码</label>
+                    </div>
+                </div>
+                <div class="Validform_checktip"></div>
+            </div>
 
+        <div class="form-group">
+                <label class="label-top">状态</label>
+                <span id="Status"></span>
+            </div>
+
+        <div class="BtnArea">
+            <input type="button" id="btnSave" class="btn btn-warning" value="保存" />
+        </div>
     </div>
+    
+  
     <input type="hidden" value="@ViewBag.OpenId" id="hOpenId" />
 </div>

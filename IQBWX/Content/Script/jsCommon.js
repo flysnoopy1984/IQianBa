@@ -73,6 +73,11 @@ function IsWeixinOrAlipay() {
     return "false";
 }
 
+function toErrorPage(msg,backUrl)
+{
+    window.location.href = "/Home/ErrorMessage?code=9000&ErrorMsg=" + msg + "&backUrl=" + backUrl;
+}
+
 String.format = function () {
     // The string containing the format items (e.g. "{0}")
     // will and always has to be the first argument.

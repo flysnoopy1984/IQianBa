@@ -29,6 +29,7 @@ namespace IQBCore.IQBWX.BaseEnum
         SystemMaintain = 9999,
         
         NormalErrorNoButton = 2000,
+        NormalError = 9000,
         /// <summary>
         /// 支付错误
         /// </summary>

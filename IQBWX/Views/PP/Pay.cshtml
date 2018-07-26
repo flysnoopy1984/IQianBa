@@ -46,15 +46,15 @@
 
     <div class="mgz cen" id="PayArea">
        
-        <div class="mg2 xi30" style="color:#F97600; margin:20px;">
+        @*<div class="mg2 xi30" style="color:#F97600; margin:20px;">
             <button type="button" class="mgz btn btn-success" style="width:60%; height:60px;" onclick="GoToSafePay();">切换其它模式</button>
-        </div>
+        </div>*@
         <div class="yuec mg2 xi35" style="margin:20px;font-weight:bold;">*请关闭wifi和定位*</div>
-        @*<div class="TitleInfo mg2 xi30" style="color:#F97600">请通过支付宝扫码</div>*@
-        <div>
+     
+        @*<div>
             <span class="FieldLabel" style="font-weight:bold;color:brown;">*风控用户请支付【199】*</span>
             <span class="FieldLabel" style="font-weight:bold;color:brown;">*非风控用户请支付【@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMin-@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMax】*</span>
-        </div>
+        </div>*@
 
 
         <div id="PayContent">
@@ -83,8 +83,6 @@
     <input type="hidden" id="qrUserId" value="@ViewBag.QRUserId" />
     <input type="hidden" id="QRMin" value="@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMin" />
     <input type="hidden" id="QRMax" value="@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMax" />
-    <div style="text-align:center">
-        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1272813751'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1272813751%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
-    </div>
+   
 </body>
 </html>

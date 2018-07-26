@@ -38,15 +38,12 @@
         .Summery {
             display: flex;
             width: 100vw;
-            height: 80px;
-            line-height: 80px;
-            padding-left: 15px;
-            padding-right: 15px;
+            padding:15px;
         }
 
-            .Summery div {
-                border-bottom: solid 1px #808080;
-            }
+        .Summery div {
+            border-bottom: solid 1px #808080;
+        }
 
         .grzxcon1rs {
             padding-top: unset !important;
@@ -100,9 +97,9 @@
             justify-content: space-between;
         }
 
-            #GetMoneyArea div {
-                border-bottom: none;
-            }
+        #GetMoneyArea div {
+            border-bottom: none;
+        }
 
         #GetMoney_Amt {
             width: 250px;
@@ -117,32 +114,40 @@
 
         .btnList {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
+            padding-bottom:10px;
         }
 
         .btnList div {
             border-bottom: none;
         }
-
+        .grzxcon1
+        {
+            height:180px;
+        }
      
     </style>
 </head>
 <body>
     <div class="grzxcon1 mgz">
-        <div class="grzxcon1l f"><img align="absmiddle" src="@ViewBag.Headimgurl" width="130" height="130" /></div>
-        <div class="grzxcon1r f bai">
+        <div class="grzxcon1l f"><img align="absmiddle" src="@ViewBag.Headimgurl" width="130" height="130" />
+        </div>
+        <div class="grzxcon1r bai">
             <div class="grzxcon1rs mg2">服务平台</div>
             <div class="grzxcon1rx mg2 xi21"><img align="absmiddle" src="@ViewBag.UserRoleImg" />@ViewBag.ShowName</div>
+        </div>
+        <div style="width:100%;">
+            <button type="button" onclick="SetUserAccount();" class="btn btn-success" id="btnUserAccount">账户设置</button>
         </div>
     </div>
     <div>
         <div class="grzxcon2 mgz xi30 bai cen">账户余额</div>
         <div class="Summery">
-            <div style="width:50%">我的余额：<span id="AgentBalance">@Model.O2OShipBalance</span></div>
+            <div style="width:75%">我的余额：<span id="AgentBalance">@Model.Balance</span></div>
 
-            <div style="width:50%" class="btnList">
+            <div style="width:25%" class="btnList">
                 <div><button type="button" onclick="GetMoney();" class="btn btn-danger" id="btnGetMoney">提现</button></div>
-                <div><button type="button" onclick="SetUserAccount();" class="btn btn-success" id="btnUserAccount">账户设置</button></div>
+                
             </div>
         </div>
         <div id="GetMoneyArea">
@@ -182,10 +187,6 @@
             </table>
 
         </div>
-
-
-
-
 
     </div>
 </body>

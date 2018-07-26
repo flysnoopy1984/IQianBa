@@ -59,11 +59,11 @@ namespace IQBPay.Controllers
                     {
                         return Content("Error: No QR Find!请联系管理员");
                     }
-                    if(qr.APPId == BaseController.App.AppId)
+                    if (qr.APPId == BaseController.App.AppId)
                     {
                         app = BaseController.App;
                     }
-                    else if(qr.APPId == BaseController.SubApp.AppId)
+                    else if (qr.APPId == BaseController.SubApp.AppId)
                     {
                         app = BaseController.SubApp;
                     }

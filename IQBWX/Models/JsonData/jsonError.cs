@@ -57,13 +57,16 @@ namespace IQBWX.Models.JsonData
                 case Errorcode.NormalErrorNoButton:
                     obj.errorMsg = errorMsg;
                     break;
+                case Errorcode.NormalError:
+                    obj.errorMsg = errorMsg;
+                    break;
                 case Errorcode.NotAuthorized:
                     obj.errorMsg = "您没有权限！";
                     break;
                 case Errorcode.AliPay_PayError:
                     obj.btnText = "返回支付";
                     obj.errorMsg = errorMsg;
-                    obj.btnUrl = "/PP/Pay2";
+                    obj.btnUrl = "/PP/Pay";
                     break;
                 case Errorcode.QRHugeError:
                     obj.btnText = "返回支付";
