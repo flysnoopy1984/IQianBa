@@ -36,6 +36,11 @@ namespace IQBCore.IQBPay.Models.User
         /// </summary>
         public float FixComm { get; set; }
 
+
+        public void SetName(string uiName)
+        {
+            this.Name = uiName.Length > 40 ? "[" + uiName.Substring(0, 40) + "] 店铺" : "[" + uiName + "] 店铺";
+        }
       
     }
 }

@@ -72,6 +72,7 @@ function Update()
                     title: '成功!',
                     content: "修改成功",
                 });
+                window.location.reload();
                
             }
             else {

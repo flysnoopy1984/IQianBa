@@ -64,7 +64,7 @@ namespace IQBWX.DataBase.IQBPay
 
         public DbSet<EQRStoreAuth> DBQRStoreAuth { get; set; }
 
-
+       // public DbSet<EBuyerInfo> DBBuyerInfo { get; set; }
 
         #region User  
         public Boolean IsExistUser(string openId)

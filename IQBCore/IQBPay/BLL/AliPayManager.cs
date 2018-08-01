@@ -365,7 +365,7 @@ namespace IQBCore.IQBPay.BLL
                 AgentOpenId = qrUser.OpenId,
                 TotalAmount = TotalAmount,
                 Rate = qrUser.Rate,
-                RateAmount = (float)Math.Round(TotalAmount * (qrUser.Rate / 100), 2, MidpointRounding.ToEven),
+                RateAmount = (float)Math.Round(TotalAmount * (qrUser.Rate / 100), 2, MidpointRounding.AwayFromZero),
                 TransDate = DateTime.Now,
                 TransDateStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                 SellerAliPayId = store.AliPayAccount,
@@ -377,7 +377,7 @@ namespace IQBCore.IQBPay.BLL
                 OrderType = orderType,
                
                 BuyerMarketRate = qrUser.MarketRate,
-                BuyerTransferAmount = (float)Math.Round(TotalAmount * (100-qrUser.MarketRate) / 100, 2, MidpointRounding.ToEven),
+                BuyerTransferAmount = (float)Math.Round(TotalAmount * (100-qrUser.MarketRate) / 100, 2, MidpointRounding.AwayFromZero),
                 BuyerAliPayAccount = AliPayAccount,
               
                 //ReceiveNo = StringHelper.GenerateReceiveNo(),
@@ -394,14 +394,15 @@ namespace IQBCore.IQBPay.BLL
             {
                 //double FOFeeRate = RuleManager.PayRule().Agent_FOFeeRate;
                 //小单用户手续费
-                if(order.TotalAmount>=199)
-                    order.BuyerTransferAmount -= (float)RuleManager.PayRule().User_ServerFee_Q;
+                //if(order.TotalAmount>=199)
+                //    order.BuyerTransferAmount -= (float)RuleManager.PayRule().User_ServerFee_Q;
+                order.BuyerTransferAmount -= (float)RuleManager.PayRule().User_ServerFee_Q;
 
                 ////首单费率
                 //if(orderNum == 0 && (qrUser.MarketRate-qrUser.Rate)< FOFeeRate)
                 //    order.RateAmount = (float)Math.Round(TotalAmount * ((qrUser.MarketRate-FOFeeRate) / 100), 2, MidpointRounding.ToEven);
 
-                if(ui.UserStatus == UserStatus.JustRegister)
+                if (ui.UserStatus == UserStatus.JustRegister)
                 {
                     order.RateAmount = (float)Math.Round(TotalAmount * (0.5 / 100), 2, MidpointRounding.ToEven);
                 }

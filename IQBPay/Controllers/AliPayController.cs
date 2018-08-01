@@ -183,7 +183,6 @@ namespace IQBPay.Controllers
             JOrderPayMethod JOrderPayMethod;
             EQRUser qrUser = null;
 
-            
             int TransferError = 0 ;
 
             try
@@ -302,7 +301,7 @@ namespace IQBPay.Controllers
                                     else
                                     {
                                         EUserStore us = db.DBUserStore.Where(a => a.OpenId == store.OwnnerOpenId).FirstOrDefault();
-                                        if(us !=null)
+                                        if(us !=null && us.OpenId!= "o3nwE0i_Z9mpbZ22KdOTWeALXaus")
                                         {
                                             double amt = Convert.ToDouble((order.TotalAmount * us.Rate).ToString("0.00"));
                                             UpdateUserBalance(db, store.OwnnerOpenId, amt, TransactionType.Store_Comm);
@@ -310,6 +309,7 @@ namespace IQBPay.Controllers
                                             string sql = string.Format(@"select parentOpenId from UserInfo 
                                                                          where openId = '{0}'",
                                                                          us.OpenId);
+
                                             string pOpenId = db.Database.SqlQuery<string>(sql).FirstOrDefault();
                                             if(!string.IsNullOrEmpty(pOpenId))
                                             {
@@ -328,24 +328,7 @@ namespace IQBPay.Controllers
                                             }             
                                         }
                                      
-                                        #region 原中间商逻辑，商户上加了个字段
-                                       
-                                        //if(order.SellerCommission>0.1)
-                                        //    UpdateUserBalance(db, store.OwnnerOpenId, Math.Abs(order.SellerCommission));
-
-                                        //if(!string.IsNullOrEmpty(store.MidCommAccount) && store.MidCommRate>0)
-                                        //{
-                                        //    float midComm = (store.MidCommRate * order.TotalAmount)/100;
-                                        //    EUserInfo midUI = new EUserInfo();
-                                        //    midUI.AliPayAccount = store.MidCommAccount;
-                                        //    tranfer = payManager.TransferHandler(TransferTarget.MidStore, BaseController.SubApp, BaseController.SubApp, midUI, ref order, midComm);
-                                        //    db.DBTransferAmount.Add(tranfer);
-                                        //    if (tranfer.TransferStatus != TransferStatus.Success)
-                                        //        TransferError++;
-                                        //}
-                                        #endregion
-
-
+                                      
                                     }
                                 }
                                 catch(Exception ex)
@@ -363,7 +346,7 @@ namespace IQBPay.Controllers
                         PPOrderPayNT notice = new PPOrderPayNT(accessToken, order.AgentOpenId, order);
                         notice.Push();
 
-                        #region 代理打款
+                        #region (原)代理打款
                         /*EUserInfo agentUI = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
                         tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.SubApp, BaseController.SubApp, agentUI,ref order,0, accessToken,BaseController.GlobalConfig);
                         db.DBTransferAmount.Add(tranfer);
@@ -1246,48 +1229,29 @@ namespace IQBPay.Controllers
                         //创建初始化订单
                         EOrderInfo order = payMag.InitOrder(qrUser, store,us,Convert.ToSingle(Amount),OrderType.Normal, AliPayAccount, ordernum,ui);
 
-                        if (!string.IsNullOrEmpty(qrUser.ParentOpenId))
+                        if(ui.UserRole != UserRole.DiamondAgent)
                         {
-                            EAgentCommission agentComm = payMag.InitAgentCommission(order, qrUser);   
-
-                            RUserInfo parentUi = db.DBUserInfo.Where(u => u.OpenId == qrUser.ParentOpenId).Select(a => new RUserInfo()
+                            if (!string.IsNullOrEmpty(qrUser.ParentOpenId) && qrUser.ParentOpenId!= "o3nwE0i_Z9mpbZ22KdOTWeALXaus")
                             {
-                                OpenId = a.OpenId,
-                                ParentAgentOpenId =a.parentOpenId,
-                                AliPayAccount = a.AliPayAccount,
-                                NeedFollowUp  = a.NeedFollowUp,
-                                
-                            }).FirstOrDefault();
+                               
+                                order.ParentOpenId = qrUser.ParentOpenId;
+                                if(qrUser.QRType == QRReceiveType.Small)
+                                    order.ParentCommissionAmount = Convert.ToSingle((order.TotalAmount* GlobalConfig.ChildFixRate).ToString("0.00"));
+                                else
+                                    order.ParentCommissionAmount = Convert.ToSingle((order.TotalAmount * GlobalConfig.CCChildFixRate).ToString("0.00"));
 
-                            agentComm.ParentAliPayAccount = parentUi.AliPayAccount;
-
-                            db.DBAgentCommission.Add(agentComm);
-
-                            order.ParentOpenId = qrUser.ParentOpenId;
-                            order.ParentCommissionAmount = agentComm.CommissionAmount;
-
-                            //3级
-                            if (parentUi.NeedFollowUp)
-                            {
-                                RUserInfo L3Parent = db.DBUserInfo.Where(u => u.OpenId == parentUi.ParentAgentOpenId).Select(a => new RUserInfo()
+                                string sql = string.Format("select parentOpenId from userinfo where openId='{0}'", qrUser.ParentOpenId);
+                                string L3OpenId =  db.Database.SqlQuery<string>(sql).FirstOrDefault();
+                                if(!string.IsNullOrEmpty(L3OpenId) && L3OpenId != "o3nwE0i_Z9mpbZ22KdOTWeALXaus")
                                 {
-                                    OpenId = a.OpenId,
-                                    Name = a.Name,
-                                    AliPayAccount = a.AliPayAccount,
-                                }).FirstOrDefault();
-                                if(L3Parent!=null)
-                                {
-                                    agentComm = payMag.InitAgentCommission_L3(order, qrUser, L3Parent);
-
-                                    db.DBAgentCommission.Add(agentComm);
-
-                                    order.L3OpenId = L3Parent.OpenId;
-                                    order.L3CommissionAmount = agentComm.CommissionAmount;
+                                    order.L3OpenId = L3OpenId;
+                                    if (qrUser.QRType == QRReceiveType.Small)
+                                        order.L3CommissionAmount = Convert.ToSingle((order.TotalAmount * GlobalConfig.ChildFixRate).ToString("0.00"));
+                                    else
+                                        order.L3CommissionAmount = Convert.ToSingle((order.TotalAmount * GlobalConfig.CCChildFixRate).ToString("0.00"));
                                 }
-                                
+
                             }
-                            
-                           
                         }
 
                         db.DBOrder.Add(order);

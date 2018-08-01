@@ -107,6 +107,7 @@
             }
         });
     }
+
     SubmitVerifyCode = function(e){
         //   var Phone = $("#" + e.data.phoneCtrlId).text();
         var Phone = PhoneCtrl.val();

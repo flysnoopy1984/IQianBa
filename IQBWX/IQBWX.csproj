@@ -144,11 +144,13 @@
   <ItemGroup>
     <Content Include="Content\CatchSite\HJB\script\hjb.js" />
     <Content Include="Content\Config\PopPolicy.xml" />
+    <Content Include="Content\Css\AgentAccount.css" />
     <Content Include="Content\Css\bootstrap.min.css" />
     <Content Include="Content\Css\common.css" />
     <Content Include="Content\CatchSite\HJB\list.html" />
     <Content Include="Content\Css\Component\ion.rangeSlider.css" />
     <Content Include="Content\Css\Component\ion.rangeSlider.skinHTML5.css" />
+    <Content Include="Content\Css\Component\IQBkeyboard.css" />
     <Content Include="Content\Css\Component\Mybootstrap.css" />
     <Content Include="Content\Css\Component\jquery-confirm.css" />
     <Content Include="Content\Css\Info.css" />
@@ -158,6 +160,7 @@
     <Content Include="Content\Css\O2O\AgentInfoCheck.css" />
     <Content Include="Content\Css\O2O\FlexBody.css" />
     <Content Include="Content\Css\O2O\O2OMain.css" />
+    <Content Include="Content\Css\Pay.css" />
     <Content Include="Content\Css\PP.css" />
     <Content Include="Content\Css\DoTransfer.css" />
     <Content Include="Content\Css\ReceiveOrder.css" />
@@ -196,6 +199,7 @@
     <Content Include="Content\images\grzx_231.png" />
     <Content Include="Content\images\grzx_25.png" />
     <Content Include="Content\images\grzx_251.png" />
+    <Content Include="Content\images\keybord-return.png" />
     <Content Include="Content\images\kouzi_03.jpg" />
     <Content Include="Content\images\kouzi_04.png" />
     <Content Include="Content\images\LeftArrow.jpg" />
@@ -222,6 +226,7 @@
     <Content Include="Content\images\O2O\tianmao.png" />
     <Content Include="Content\images\O2O\to_end.png" />
     <Content Include="Content\images\O2O\x.png" />
+    <Content Include="Content\images\pay-success.png" />
     <Content Include="Content\images\PayError1.jpg" />
     <Content Include="Content\images\PeopleGroup.png" />
     <Content Include="Content\images\Proj\cc.jpg" />
@@ -250,7 +255,9 @@
     <Content Include="Content\Script\CashOut.js" />
     <Content Include="Content\Script\CommissionDetail.js" />
     <Content Include="Content\Script\Component\dropload.min.js" />
+    <Content Include="Content\Script\Component\fastclick.js" />
     <Content Include="Content\Script\Component\ion.rangeSlider.min.js" />
+    <Content Include="Content\Script\Component\IQBkeyboard.js" />
     <Content Include="Content\Script\Component\iscroll.js" />
     <Content Include="Content\Script\Component\jquery-confirm.js" />
     <Content Include="Content\Script\Component\jquery.mobile-1.4.5.min.js" />
@@ -273,6 +280,7 @@
     <Content Include="Content\Script\IQBPay\Auth_Store.js" />
     <Content Include="Content\Script\IQBPay\DoTransfer.js" />
     <Content Include="Content\Script\IQBPay\InviteCode.js" />
+    <Content Include="Content\Script\IQBPay\NewMemberReview.js" />
     <Content Include="Content\Script\IQBPay\News.js" />
     <Content Include="Content\Script\IQBPay\O2O\AgentFeeRate.js" />
     <Content Include="Content\Script\IQBPay\O2O\AgentInfoCheck.js" />
@@ -334,8 +342,19 @@
     <Compile Include="Controllers\API\InitController.cs" />
     <Compile Include="Controllers\API\OutDataController.cs" />
     <Compile Include="Controllers\API\PageDataController.cs" />
+    <Compile Include="Controllers\API\PPCusController.cs" />
+    <Compile Include="Controllers\API\PPUserController.cs" />
     <Compile Include="Controllers\API\SMSController.cs" />
     <Compile Include="Controllers\API\UserStoreController.cs" />
+    <Compile Include="Controllers\API\WxSDK\Config.cs" />
+    <Compile Include="Controllers\API\WxSDK\Data.cs" />
+    <Compile Include="Controllers\API\WxSDK\Exception.cs" />
+    <Compile Include="Controllers\API\WxSDK\HttpService.cs" />
+    <Compile Include="Controllers\API\WxSDK\IQBConfig - 复制.cs" />
+    <Compile Include="Controllers\API\WxSDK\JsApiPay.cs" />
+    <Compile Include="Controllers\API\WxSDK\Log.cs" />
+    <Compile Include="Controllers\API\WxSDK\WxPayApi.cs" />
+    <Compile Include="Controllers\API\WxSDK\WXSign.cs" />
     <Compile Include="Controllers\Html5Controller.cs" />
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\IQBAsyncController.cs" />
@@ -495,6 +514,9 @@
     <Content Include="Views\PP\PaySelection.cshtml" />
     <Content Include="Views\PP\CardPay.cshtml" />
     <Content Include="Views\PP\StoreAuth.cshtml" />
+    <Content Include="Views\PP\UserStoreInfo.cshtml" />
+    <Content Include="Views\PP\NewMemberReview.cshtml" />
+    <Content Include="Views\Test\NewMemberNT.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

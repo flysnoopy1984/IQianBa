@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace IQBCore.IQBWX.Models.WX.Template.ReviewRemind
 {
+
+    /// <summary>
+    /// Hwfh8EsQtI-az0dorSBZEVi3iuvg3lh8dpCznayXHdg
+    /// </summary>
     public class PPReviewRemindTemplate: BaseTemplate<PPReviewRemindTemplate>
     {
         public object data;

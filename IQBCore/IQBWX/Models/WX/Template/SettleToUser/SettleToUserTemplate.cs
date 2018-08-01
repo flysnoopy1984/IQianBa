@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace IQBCore.IQBWX.Models.WX.Template.SettleToUser
 {
+    /// <summary>
+    /// i_5j4EheOGvq6bBDL_5SLKEW6LjJWB11iy61bKogVlk
+    /// </summary>
     public class SettleToUserTemplate : BaseTemplate<SettleToUserTemplate>
     {
         public object data;

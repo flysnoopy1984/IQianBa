@@ -33,6 +33,7 @@ using IQBCore.Model;
 using IQBCore.IQBPay.Models.O2O;
 using IQBCore.IQBPay.Models.AccountPayment;
 using IQBCore.IQBPay.Models.Sys;
+using IQBCore.IQBPay.Models.Page;
 
 namespace IQBWX.Controllers
 {
@@ -69,6 +70,7 @@ namespace IQBWX.Controllers
 
         public ActionResult PaySelection()
         {
+
             return View();
         }
 
@@ -79,22 +81,25 @@ namespace IQBWX.Controllers
 
         public ActionResult Pay(string Id)
         {
-            // return RedirectToAction("Pay2", "PP", new { Id = Id });
-            //List<string> list = new List<string>();
-            //list.Add("1431");
-
-            if(WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop && Id!="118")
+            string name = "";
+            if (WXBaseController.GlobalConfig.WebStatus == PayWebStatus.Stop && Id!="118")
             {
                 return RedirectToAction("ErrorMessage", "Home",new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
             }
-            //if(list.Contains(Id))
-            //{
-            //    return RedirectToAction("Pay2", "PP", new { Id = Id });
-            //}
+            PPayData pData = null;
+            string sql = string.Format(@"select qr.ID as qrId,ui.Name,qr.Rate,qr.MarketRate from QRUser as qr 
+                        join UserInfo as ui on ui.OpenId =qr.OpenId
+                        where qr.ID ='{0}'", Id);
             
-            ViewBag.QRUserId = Id;
-           // ViewBag.ReceiveNo = StringHelper.GenerateReceiveNo();
-            return View();
+            using (AliPayContent db = new AliPayContent())
+            {
+                pData = db.Database.SqlQuery<PPayData>(sql).FirstOrDefault();
+                if (pData == null)
+                    pData = new PPayData();
+              
+            }
+
+            return View(pData);
         }
 
         public ActionResult PayWithAccount(string Id)
@@ -149,6 +154,8 @@ namespace IQBWX.Controllers
                     entry.Property(t => t.AliPayAccount).IsModified = true;
 
                     db.SaveChanges();
+
+                    UserSession.AliPayAccount = AliPayAccount;
                 }
             }
             catch(Exception ex)
@@ -182,6 +189,8 @@ namespace IQBWX.Controllers
                 ViewBag.ID = ui.Id;
                 ViewBag.AliPayAccount = ui.AliPayAccount;
 
+                UserSession.AliPayAccount = ui.AliPayAccount;
+
             }
 
             return View();
@@ -199,7 +208,7 @@ namespace IQBWX.Controllers
         public ActionResult AgentCommList()
         {
 
-            if (UserSession.UserRole < UserRole.Agent)
+            if (UserSession.UserRole < UserRole.Agent || UserSession.UserStatus == UserStatus.WaitRewiew)
             {
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
@@ -826,8 +835,9 @@ namespace IQBWX.Controllers
 
         public ActionResult Agent_QR_ARList()
         {
-            if (UserSession.UserRole < UserRole.Agent)
+            if (UserSession.UserRole < UserRole.Agent || UserSession.UserStatus == UserStatus.WaitRewiew)
             {
+                if (UserSession.UserStatus == UserStatus.WaitRewiew) UserSession = null;
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
             InitProfilePage();
@@ -1038,8 +1048,11 @@ namespace IQBWX.Controllers
                 using (AliPayContent db = new AliPayContent())
                 {
                     qrInfo.InitModify();
+                    qrInfo.RecordStatus = RecordStatus.Normal;
                     DbEntityEntry<EQRInfo> entry = db.Entry<EQRInfo>(qrInfo);
                     entry.State = EntityState.Unchanged;
+
+                    entry.Property(t => t.RecordStatus).IsModified = true;
                     entry.Property(t => t.ParentOpenId).IsModified = true;
                     //entry.Property(t => t.ParentCommissionRate).IsModified = true;
                     //entry.Property(t => t.Rate).IsModified = true;
@@ -1095,39 +1108,56 @@ namespace IQBWX.Controllers
         public ActionResult InviteCode()
         {
             RQRInfo qr = null;
-            if (UserSession.UserRole < UserRole.DiamondAgent)
+
+            string type = Request.QueryString["type"];
+
+            if (!string.IsNullOrEmpty(type) && type == "us" || UserSession.UserStatus == UserStatus.WaitRewiew)
             {
-                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+                /*暂时不支持
+                if (!HasUserStore())
+                    return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+                */
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2000,ErrorMsg="码商暂时不支持此功能，请联系平台" });
             }
             else
             {
-                if (!UserSession.HasPassInviteFee)
+                if (UserSession.UserRole < UserRole.Agent || UserSession.UserStatus == UserStatus.WaitRewiew)
                 {
-                    
-                    using (AliPayContent db = new AliPayContent())
-                    {
-                        float num = db.DBOrder.Where(o => o.AgentOpenId == UserSession.OpenId && o.OrderStatus == OrderStatus.Closed).ToList().Sum(o=>o.TotalAmount);
-                        if(num> RuleManager.PayRule().Agent_InviteFee)
-                        {
-                            IQBCore.IQBPay.Models.User.EUserInfo ui = new IQBCore.IQBPay.Models.User.EUserInfo();
-                            ui.Id = UserSession.Id;
-                            ui.HasPassInviteFee = true;
-
-                            DbEntityEntry<IQBCore.IQBPay.Models.User.EUserInfo> entry = db.Entry<IQBCore.IQBPay.Models.User.EUserInfo>(ui);
-                            entry.State = EntityState.Unchanged;
-                            entry.Property(t => t.HasPassInviteFee).IsModified = true;
-                            db.SaveChanges();
-
-                            UserSession.HasPassInviteFee = true;
-                            UserSession = UserSession;
-                        }
-                        else
-                        {
-                            return RedirectToAction("PrivilegeError", "Home", new { code = 1000, curAmt= num });
-                        }
-                    }
+                   
+                    return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
                 }
             }
+            if (UserSession.UserStatus == UserStatus.WaitRewiew) UserSession = null;
+
+            //else
+            //{
+            //    if (!UserSession.HasPassInviteFee)
+            //    {
+
+            //        using (AliPayContent db = new AliPayContent())
+            //        {
+            //            float num = db.DBOrder.Where(o => o.AgentOpenId == UserSession.OpenId && o.OrderStatus == OrderStatus.Closed).ToList().Sum(o=>o.TotalAmount);
+            //            if(num> RuleManager.PayRule().Agent_InviteFee)
+            //            {
+            //                IQBCore.IQBPay.Models.User.EUserInfo ui = new IQBCore.IQBPay.Models.User.EUserInfo();
+            //                ui.Id = UserSession.Id;
+            //                ui.HasPassInviteFee = true;
+
+            //                DbEntityEntry<IQBCore.IQBPay.Models.User.EUserInfo> entry = db.Entry<IQBCore.IQBPay.Models.User.EUserInfo>(ui);
+            //                entry.State = EntityState.Unchanged;
+            //                entry.Property(t => t.HasPassInviteFee).IsModified = true;
+            //                db.SaveChanges();
+
+            //                UserSession.HasPassInviteFee = true;
+            //                UserSession = UserSession;
+            //            }
+            //            else
+            //            {
+            //                return RedirectToAction("PrivilegeError", "Home", new { code = 1000, curAmt= num });
+            //            }
+            //        }
+            //    }
+            //}
 
             InitProfilePage();
             string PPWeb = ConfigurationManager.AppSettings["Site_IQBPay"];
@@ -1142,8 +1172,6 @@ namespace IQBWX.Controllers
                     RecordStatus = a.RecordStatus,
                    
                 }).FirstOrDefault();
-
-               
 
                 if (qr == null)
                     throw new Exception("没有找到您的邀请码，请联系管理员");
@@ -1162,10 +1190,26 @@ namespace IQBWX.Controllers
         public ActionResult AgentList()
         {
             RQRInfo qr = null;
-            if (UserSession.UserRole < UserRole.DiamondAgent)
+
+           
+
+            if (UserSession.UserRole < UserRole.Agent || UserSession.UserStatus == UserStatus.WaitRewiew)
             {
+                if (UserSession.UserStatus == UserStatus.WaitRewiew) UserSession = null;
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
+            string type = Request.QueryString["type"];
+            if(!string.IsNullOrEmpty(type) && type == "us")
+            {
+                if (!HasUserStore() || UserSession.UserStatus == UserStatus.WaitRewiew)
+                {
+                    if (UserSession.UserStatus == UserStatus.WaitRewiew) UserSession = null;
+                    return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+                }
+               
+            }
+           
+
             InitProfilePage();
 
             return View();
@@ -1287,7 +1331,7 @@ group by o.AgentOpenId ,o.OrderType
         {
             RQRInfo qr = null;
             EQRUser qrUser = null;
-            if (UserSession.UserRole < UserRole.DiamondAgent)
+            if (UserSession.UserRole < UserRole.DiamondAgent || UserSession.UserStatus == UserStatus.WaitRewiew)
             {
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
@@ -1369,11 +1413,23 @@ group by o.AgentOpenId ,o.OrderType
                 }
                 using (AliPayContent db = new AliPayContent())
                 {
-                    db.DBUserInfo.Where(a=>a.OpenId == UserSession.OpenId).Update(a => new EUserInfo()
+                    var sql = string.Format("select count(1) from userinfo where UserPhone = '{0}'",phone);
+                    int count = db.Database.SqlQuery<int>(sql).FirstOrDefault();
+                    if(count>0)
                     {
-                        UserPhone = phone,
-                    });
-                    UserSession.AgentPhone = phone;
+                        result.IsSuccess = false;
+                        result.ErrorMsg = "此手机号已被注册";
+                        return Json(result);
+                    }
+                    else
+                    {
+                        db.DBUserInfo.Where(a => a.OpenId == UserSession.OpenId).Update(a => new EUserInfo()
+                        {
+                            UserPhone = phone,
+                        });
+                        UserSession.AgentPhone = phone;
+                    }
+                   
                 }
             }
             catch (Exception ex)
@@ -1387,12 +1443,25 @@ group by o.AgentOpenId ,o.OrderType
 
         public ActionResult AgentAccount()
         {
-            if (UserSession.UserRole < UserRole.Agent)
+            if (UserSession.UserRole < UserRole.Agent || UserSession.UserStatus == UserStatus.WaitRewiew)
             {
+                if (UserSession.UserStatus == UserStatus.WaitRewiew) UserSession = null;
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
-            InitProfilePage();
+            if(string.IsNullOrEmpty(UserSession.AliPayAccount))
+            {
+                string sql = string.Format(@"select AliPayAccount from UserInfo where openId='{0}'", UserSession.OpenId);
+                using (AliPayContent db = new AliPayContent())
+                {
+                    string r = db.Database.SqlQuery<string>(sql).FirstOrDefault();
+                    ViewBag.AlipayAccount = r;
+                }
+            }
 
+        
+            InitProfilePage();
+            ViewBag.AgentPhone = UserSession.AgentPhone;
+            ViewBag.AlipayAccount = UserSession.AliPayAccount;
             ViewBag.ppUrl = ConfigurationManager.AppSettings["Site_IQBPay"];
             EUserAccountBalance ub;
             using (AliPayContent db = new AliPayContent())
@@ -1491,6 +1560,13 @@ group by o.AgentOpenId ,o.OrderType
                         return Json(result);
                     }
                     EUserInfo ui = db.DBUserInfo.Where(a => a.OpenId == openId).FirstOrDefault();
+                    if(string.IsNullOrEmpty(ui.AliPayAccount))
+                    {
+                        result.IsSuccess = false;
+                        result.ErrorMsg = "没有设置支付宝账户";
+                        result.IntMsg = -10;
+                        return Json(result);
+                    }
                     //支付宝转账给代理（提现操作）
                     ETransferAmount AliTrans = new ETransferAmount()
                     {
@@ -1561,12 +1637,13 @@ group by o.AgentOpenId ,o.OrderType
         #region 加盟商户
         public ActionResult StoreList()
         {
-            string sql =string.Format("select count(1) from UserStore where openId='{0}'",UserSession.OpenId);
-            using(AliPayContent db = new AliPayContent())
+            if(!HasUserStore() || UserSession.UserStatus == UserStatus.WaitRewiew)
             {
-                if(db.Database.ExecuteSqlCommand(sql)==0)
-                    return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+                if (UserSession.UserStatus == UserStatus.WaitRewiew) UserSession = null;
+
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
+            
             ViewBag.ppUrl = ConfigurationManager.AppSettings["Site_IQBPay"];
 
             InitProfilePage();
@@ -1993,6 +2070,67 @@ group by o.AgentOpenId ,o.OrderType
             }
 
             return View(qrAuth);
+        }
+
+        public ActionResult UserStoreInfo()
+        {
+            EUserStore us = null;
+            if (UserSession.UserRole < UserRole.Agent || UserSession.UserStatus == UserStatus.WaitRewiew)
+            {
+                if (UserSession.UserStatus == UserStatus.WaitRewiew) UserSession = null;
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+            InitProfilePage();
+
+            using (AliPayContent db = new AliPayContent())
+            {
+               us = db.DBUserStore.Where(a => a.OpenId == UserSession.OpenId).FirstOrDefault();
+            }
+            if(us == null)
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg ="没有店铺权限，请联系平台" });
+            else
+                return View(us);
+        }
+
+        /// <summary>
+        /// 新会员审核
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult NewMemberReview()
+        {
+            if (UserSession.UserStatus == UserStatus.WaitRewiew)
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+
+            string newOpenId = Request.QueryString["nOpenId"];
+           // newOpenId = "o3nwE0jrONff65oS-_W96ErKcaa0";
+            ViewBag.NewOpenId = newOpenId;
+
+            if (!string.IsNullOrEmpty(newOpenId))
+            {
+                
+                using (AliPayContent db = new AliPayContent())
+                {
+                    string sql = string.Format(@"select name as NewName,UserStatus,OpenId as NewOpenId 
+                                              from userInfo where openId = '{0}'", newOpenId);
+
+                    var obj = db.Database.SqlQuery<PNewMemberReview>(sql).FirstOrDefault();
+                    if(obj == null)
+                        return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg = "没找到会员，请联系平台" });
+                    else
+                    {
+                        ViewBag.UserStatus = (int)obj.UserStatus;
+                        ViewBag.NewName = obj.NewName;
+                    }                   
+                }
+            }
+            else
+            {
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg = "没找到会员，请联系平台" });
+            }
+           
+            return View();
         }
 
 

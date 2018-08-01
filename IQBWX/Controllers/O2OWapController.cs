@@ -69,10 +69,10 @@ namespace IQBWX.Controllers
 
         public ActionResult AgentInfoCheck()
         {
-            if (UserSession.O2OUserRole < O2OUserRole.Agent && UserSession.UserRole != UserRole.Administrator)
-            {
-                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
-            }
+            //if (UserSession.O2OUserRole < O2OUserRole.Agent && UserSession.UserRole != UserRole.Administrator)
+            //{
+            //    return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            //}
             if (!string.IsNullOrEmpty(UserSession.AgentPhone))
             {
                 string url = ConfigurationManager.AppSettings["Site_WX"] +"/O2OWap/AgentEntry";

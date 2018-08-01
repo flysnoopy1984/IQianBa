@@ -169,6 +169,8 @@
     <Compile Include="IQBPay\Models\O2O\ROrderSteps.cs" />
     <Compile Include="IQBPay\Models\O2O\RSimpleEntity.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashKeyValue.cs" />
+    <Compile Include="IQBPay\Models\Page\PNewMemberReview.cs" />
+    <Compile Include="IQBPay\Models\Page\PPayData.cs" />
     <Compile Include="IQBPay\Models\Page\PPaySelection.cs" />
     <Compile Include="IQBPay\Models\QR\EQRStoreAuth.cs" />
     <Compile Include="IQBPay\Models\Report\RPAgentPerformance.cs" />
@@ -254,6 +256,8 @@
     <Compile Include="IQBWX\Models\WX\Template\ConfirmSign\PPConfirmSignTemplate.cs" />
     <Compile Include="IQBWX\Models\WX\Template\InviteCode\PPInviteCodeNT.cs" />
     <Compile Include="IQBWX\Models\WX\Template\InviteCode\PPInviteCodeTemplate.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\NewMemberReview\PPNewMemberReviewTemplate.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\NewMemberReview\PPNewMemberReviewNT.cs" />
     <Compile Include="IQBWX\Models\WX\Template\Notification.cs" />
     <Compile Include="IQBWX\Models\WX\Template\PPOrderPayNT.cs" />
     <Compile Include="IQBWX\Models\WX\Template\PPOrderPayTemplate.cs" />

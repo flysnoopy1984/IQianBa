@@ -24,7 +24,7 @@ namespace IQBCore.IQBPay.Models.Rules
         public double Agent_QRHugeFee { get; set; }
 
         /// <summary>
-        /// 用户每单服务费
+        /// 每单用户服务费
         /// </summary>
         public double User_ServerFee_Q { get; set; }
 

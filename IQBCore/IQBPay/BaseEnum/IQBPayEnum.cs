@@ -157,6 +157,10 @@ namespace IQBCore.IQBPay.BaseEnum
     public enum UserStatus
     {
         /// <summary>
+        /// 新邀请用户需要上级审核。
+        /// </summary>
+        WaitRewiew =  -10,
+        /// <summary>
         /// 仅仅注册不能支付不能提现
         /// </summary>
         

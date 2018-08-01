@@ -1,7 +1,7 @@
 ﻿ .btn
         {
             width:250px;
-            height:80px; 
+            /*height:80px;*/ 
 
           display: inline-block;
           padding: 6px 6px;
@@ -276,7 +276,7 @@ fieldset[disabled] .btn-success.active {
     color: #FB9C31 !important;
     font-size: 45px !important;
     font-weight:bold;
-    height: 60px !important;
+    height: 40px !important;
     padding:4px;
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 }

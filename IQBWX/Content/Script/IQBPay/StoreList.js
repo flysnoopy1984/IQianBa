@@ -302,8 +302,9 @@ function Delete() {
                         //data: { "StoreId": ID },
                         success: function (res) {
                             if (res.IsSuccess) {
-                                window.location.reload();
                                 alert("删除成功;");
+                                window.location.reload();
+                                
                             }
                             else {
                                 alert(res.ErrorMsg);
@@ -324,13 +325,53 @@ function OnlineStore(e)
 {
     var Id = $(e.currentTarget).attr("sId");
 
-   
+    var url = "/api/UserStore/OnlineStore?StoreId=" + Id;
+    $.ajax({
+        type: 'post',
+        url: url,
+        success: function (res) {
+            if (res.IsSuccess) {
+                alert("已上线;");
+                window.location.reload();
+               
+            }
+            else {
+                alert(res.ErrorMsg);
+            }
+        },
+        error: function (xhr, type) {
+            alert("系统错误！");
+        }
+    });
+
     return false;
 }
 
 function OfflineStore(e)
 {
-    alert("OffLine");
+    var Id = $(e.currentTarget).attr("sId");
+
+    var url = "/api/UserStore/OfflineStore?StoreId=" + Id;
+    $.ajax({
+        type: 'post',
+        url: url,
+        success: function (res) {
+            if (res.IsSuccess) {
+                alert("已下线;");
+
+                window.location.reload();
+
+            }
+            else {
+                alert(res.ErrorMsg);
+            }
+        },
+        error: function (xhr, type) {
+            alert("系统错误！");
+        }
+    });
+
+    return false;
 }
 
 function AuthStore(e)

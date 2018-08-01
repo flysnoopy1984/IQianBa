@@ -1,6 +1,7 @@
 ﻿using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.BLL;
 using IQBCore.IQBPay.Models.QR;
+using IQBCore.IQBPay.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,47 @@ namespace IQBConsole
         {
             
           
+        }
+
+        /// <summary>
+        /// 批量更新代理费率
+        /// </summary>
+        public void UpdateAgentRate()
+        {
+            using (IQBContent db = new IQBContent())
+            {
+                var list = db.DBUserInfo.Where(a => a.UserRole == UserRole.DiamondAgent).ToList();
+                foreach(EUserInfo u in list)
+                {
+                    /*总代*/
+                    //花呗
+                    EQRUser qr = db.DBQRUser.Where(a => a.OpenId == u.OpenId && a.QRType == QRReceiveType.Small).FirstOrDefault();
+                    qr.Rate = (float)1.2;
+                    qr.MarketRate = 2;
+
+                    //信用卡
+                    qr = db.DBQRUser.Where(a => a.OpenId == u.OpenId && a.QRType == QRReceiveType.CreditCard).FirstOrDefault();
+                    qr.Rate = (float)0.35;
+                    qr.MarketRate = 1;
+                }
+                list = db.DBUserInfo.Where(a => a.UserRole == UserRole.Agent && a.UserStatus== UserStatus.PPUser).ToList();
+                foreach (EUserInfo u in list)
+                {
+                    /*普通代理*/
+                    //花呗
+                    EQRUser qr = db.DBQRUser.Where(a => a.OpenId == u.OpenId && a.QRType == QRReceiveType.Small).FirstOrDefault();
+                    qr.Rate = (float)0.95;
+                    qr.MarketRate = 2;
+
+                    //信用卡
+                    qr = db.DBQRUser.Where(a => a.OpenId == u.OpenId && a.QRType == QRReceiveType.CreditCard).FirstOrDefault();
+                    qr.Rate = (float)0.25;
+                    qr.MarketRate = 1;
+
+                    Console.WriteLine(string.Format("调整代理：{0}", u.Name));
+                }
+                db.SaveChanges();
+            }
         }
 
         public void ChangeReceiveQR()
@@ -62,6 +104,8 @@ where datediff(MINUTE,o.CreateDateTime,getdate()) >{0} and o.O2OOrderStatus betw
             _OrderDiffMin = OrderDiffMin;
             DeleteWaitingOrder();
         }
+
+     
 
        
 

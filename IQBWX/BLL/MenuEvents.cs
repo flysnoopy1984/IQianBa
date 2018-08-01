@@ -4,6 +4,7 @@ using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Const;
+using IQBCore.IQBWX.Models.WX.Template.NewMemberReview;
 using IQBWX.BLL.ExternalWeb;
 using IQBWX.BLL.NT;
 using IQBWX.Common;
@@ -164,34 +165,42 @@ namespace IQBWX.BLL
             string result = exWeb.regeisterWebMember(ui, qr.ID);
             string url = "https://mp.weixin.qq.com/s?__biz=MzUyMzUwOTQ3MA==&mid=100000020&idx=1&sn=fb0bd4f65bdd44985bf137413012cf64&chksm=7a3acaa54d4d43b360d9513a1e810b11d9c13899ad0c50d0cff089f70c88c33037230ef65cad#rd";
             string note = string.Format("本系统不向任何人收取介绍费用，完全免费。\n请<a href='{0}'>阅读使用手册先</a>。\n如果您已被收费，请向您的介绍人索要回。\n",url);
-            if (result.StartsWith("OK"))
+            if (result.StartsWith("OK") || result.StartsWith("ParentOK"))
             {
             
                 mText += "欢迎注册服务平台！\n";
-               // mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate- qr.Rate);
-                //mText += "首笔订单统一费率2.8%\n之后订单\n";
-                //mText += "【中介】费率2%\n";
-                //mText += "【队长】费率1.8%\n";
-                //mText += "【总代】费率1.5%\n";
-                //mText += note;
+              
+                mText += "请等待邀请码的代理审核后使用";
                 mText += string.Format("<a href='{0}'>点击阅读使用手册</a>",url);
+
+                string accessToken = controller.getAccessToken(true);
+
+                PPNewMemberReviewNT obj = new PPNewMemberReviewNT(accessToken, 
+                    qr.ParentOpenId, 
+                    ui.openid, 
+                    ui.nickname, 
+                    DateTime.Now.ToString());
+                obj.Push();
+
+
+
             }
-            else if(result.StartsWith("ParentOK"))
-            {
-                IQBCore.IQBPay.Models.User.EUserInfo pUser;
-                using (AliPayContent db = new AliPayContent())
-                {
-                    pUser = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).FirstOrDefault();
-                }
-                mText += "欢迎注册服务平台！\n";
-                //mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate);
-                //mText += "首笔订单统一费率2.8%\n之后订单\n";
-                //mText += "【中介】费率2%\n";
-                //mText += "【队长】费率1.8%\n";
-                //mText += "【总代】费率1.5%\n";
-                mText += note;
-                mText += string.Format("<a href='{0}'>点击阅读使用手册</a>", url);
-            }
+            //else if(result.StartsWith("ParentOK"))
+            //{
+            //    //IQBCore.IQBPay.Models.User.EUserInfo pUser;
+            //    //using (AliPayContent db = new AliPayContent())
+            //    //{
+            //    //    pUser = db.DBUserInfo.Where(u => u.OpenId == qr.ParentOpenId).FirstOrDefault();
+            //    //}
+            //    mText += "欢迎注册服务平台！\n";
+            //    //mText += string.Format("您当前费率为【{0}%】\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate);
+            //    //mText += "首笔订单统一费率2.8%\n之后订单\n";
+            //    //mText += "【中介】费率2%\n";
+            //    //mText += "【队长】费率1.8%\n";
+            //    //mText += "【总代】费率1.5%\n";
+            //    mText += "请等待邀请码的代理审核。";
+            //    mText += string.Format("<a href='{0}'>点击阅读使用手册</a>", url);
+            //}
             else if (result.StartsWith("EXIST"))
             {
                 mText += string.Format("你当前收款码的成本为\n【{0}%】\n", WXBaseController.GlobalConfig.MarketRate - qr.Rate);
@@ -267,7 +276,6 @@ namespace IQBWX.BLL
                 if (ssoToken.StartsWith(IQBConstant.WXQR_IQBPAY_PREFIX))
                 {
                     string qrId = ssoToken.Substring(IQBConstant.WXQR_IQBPAY_PREFIX.Length);
-                 //   log.log("WXScanLogin ssoToken:" + ssoToken);
                     IQBAuth(msg, controller,qrId);
                     return true;
                 }

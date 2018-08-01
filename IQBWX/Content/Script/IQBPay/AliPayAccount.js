@@ -5,6 +5,7 @@
 
 function InitControl()
 {
+   
     var AliPayAccount = $("#AliPayAccount").val();
 
     $("#AliPayAccount").attr("disabled", true);
@@ -47,6 +48,8 @@ function UpdateAccount()
            
             if (data == "OK") {
                 alert("修改成功！");
+                if (document.referrer != "")
+                    window.location.href = document.referrer;
             }
             else
                 alert(data);

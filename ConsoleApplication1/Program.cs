@@ -7,6 +7,7 @@ using IQBCore.IQBPay.Models.InParameter;
 using IQBCore.IQBPay.Models.Order;
 using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBWX.BaseEnum;
+using IQBCore.IQBWX.Models.WX.Template.NewMemberReview;
 using IQBPay.Core;
 using IQBPay.DataBase;
 using IQBWX.Common;
@@ -54,11 +55,7 @@ namespace ConsoleApplication1
 
             try
             {
-                //   Console.WriteLine( Math.Round(0.338333, 2));
-                Console.WriteLine(decimal.Round(decimal.Parse("0.3383333"), 2));
-                Console.Read();
-                //   string a =  StringHelper.GenerateUserInviteCode("13482710060");
-                //   Console.WriteLine(a);
+               
             }
             catch (Exception ex)
             {

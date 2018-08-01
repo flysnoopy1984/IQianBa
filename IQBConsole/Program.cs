@@ -28,8 +28,8 @@ namespace IQBConsole
                 //    job.Run(_OrderDiffMin);
                 //    Thread.Sleep(_interval * 1000 * 60);
                 //}
-                job.ChangeReceiveQR();
-
+                //  job.ChangeReceiveQR();
+                job.UpdateAgentRate();
                 Console.Read();
 
             }
@@ -44,6 +44,8 @@ namespace IQBConsole
             }
             
         }
+
+
 
        
 

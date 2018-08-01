@@ -188,9 +188,9 @@ namespace IQBPay.DataBase
                 cQR = new EQRInfo();
                 cQR.InitByUser(ui);
 
-                cQR.ParentCommissionRate = Convert.ToSingle(1.5);
-                cQR.Rate = pQR.Rate - cQR.ParentCommissionRate;
-                cQR.ReceiveStoreId = pQR.ReceiveStoreId;
+              //  cQR.ParentCommissionRate = Convert.ToSingle(1.5);
+               // cQR.Rate = pQR.Rate - cQR.ParentCommissionRate;
+                cQR.ReceiveStoreId = -1;
                 this.DBQRInfo.Add(cQR);
                 this.SaveChanges();
 
@@ -209,14 +209,16 @@ namespace IQBPay.DataBase
                 //收款 二维码
                 string sql = string.Format("select MarketRate-Rate from qrUser where QRType ={1} and openId = '{0}'", pQR.OwnnerOpenId,(int)QRReceiveType.Small);
                 float rate = Database.SqlQuery<float>(sql).FirstOrDefault(); //这个是真的费率，不是所得
-
                 qrUser = new EQRUser();
-                qrUser.MarketRate = BaseController.GlobalConfig.MarketRate;
+                // = BaseController.GlobalConfig.MarketRate;
                 qrUser.IsCurrent = true;
                 qrUser.QRId = pQR.ID;
                 qrUser.OpenId = ui.OpenId;
-                qrUser.UserName = ui.Name;
-                qrUser.Rate = BaseController.GlobalConfig.MarketRate - (rate + BaseController.GlobalConfig.ChildFixRate);
+                qrUser.UserName = ui.Name;  
+                var feeRate = (float)(rate + BaseController.GlobalConfig.ChildFixRate);
+                qrUser.Rate = 2;
+                qrUser.MarketRate = qrUser.Rate + feeRate;
+
                 if (qrUser.Rate < 0) qrUser.Rate = 1;
                 qrUser.ReceiveStoreId = pQR.ReceiveStoreId;
                 qrUser.QRType = QRReceiveType.Small;
@@ -240,13 +242,34 @@ namespace IQBPay.DataBase
                 sql = string.Format("select MarketRate-Rate from qrUser where QRType ={1} and openId = '{0}'", pQR.OwnnerOpenId, (int)QRReceiveType.CreditCard);
                 rate = Database.SqlQuery<float>(sql).FirstOrDefault();
 
-
                 EQRUser ccQRUser = qrUser;
                 ccQRUser.QRType = QRReceiveType.CreditCard;
-                ccQRUser.MarketRate = BaseController.GlobalConfig.CCMarketRate;
-                ccQRUser.Rate = BaseController.GlobalConfig.CCMarketRate - (rate + BaseController.GlobalConfig.CCChildFixRate);
-                if (qrUser.Rate < 0) qrUser.Rate = 1;
+
+                feeRate = (float)(rate + BaseController.GlobalConfig.CCChildFixRate);
+                ccQRUser.Rate = (float)0.5;
+                ccQRUser.MarketRate = ccQRUser.Rate + feeRate;
+
+                //ccQRUser.MarketRate = BaseController.GlobalConfig.CCMarketRate;
+                //ccQRUser.Rate = rate + BaseController.GlobalConfig.CCChildFixRate;
+                //if (qrUser.Rate < 0) qrUser.Rate = 1;
                 this.DBQRUser.Add(ccQRUser);
+
+                //码商
+                /* 暂时不支持
+                EUserStore pUs = DBUserStore.Where(a => a.OpenId == pQR.OwnnerOpenId).FirstOrDefault();
+                if(pUs != null)
+                {
+                    EUserStore us = new EUserStore
+                    {
+                        OpenId = ui.OpenId,
+                        FixComm = pUs.FixComm,
+                        Rate = pUs.Rate - pUs.FixComm,
+                        OwnerRate = pUs.Rate,
+                    };
+                    us.SetName(ui.Name);
+                    DBUserStore.Add(us);
+                }
+                */
                 this.SaveChanges();
 
             }

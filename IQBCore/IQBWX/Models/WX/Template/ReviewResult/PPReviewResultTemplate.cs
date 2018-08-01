@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace IQBCore.IQBWX.Models.WX.Template.ReviewResult
 {
+    /// <summary>
+    /// ZDHFFrCe-8DefA96Ar8QTagfZ8tinOJbWio0wd1ivPw
+    /// </summary>
     public class PPReviewResultTemplate : BaseTemplate<PPReviewResultTemplate>
     {
         public object data;

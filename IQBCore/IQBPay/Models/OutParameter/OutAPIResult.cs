@@ -14,7 +14,16 @@ namespace IQBCore.IQBPay.Models.OutParameter
             SuccessMsg = "成功";
         }
         public bool IsSuccess { get; set; }
-        public string ErrorMsg { get; set; }
+
+        private string _ErrorMsg;
+        public string ErrorMsg
+        {
+            get { return _ErrorMsg; }
+            set {
+                IsSuccess = false;
+                _ErrorMsg = value;
+            }
+        }
 
         public string SuccessMsg { get; set; }
 

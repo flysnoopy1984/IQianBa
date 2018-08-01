@@ -521,12 +521,13 @@ namespace IQBPay.Controllers
                         //大额码参数
                         us = new EUserStore
                         {
-                            Name = ui.Name.Length > 40 ? "[" + ui.Name.Substring(0, 40) + "] 店铺" : "[" + ui.Name + "] 店铺",
+                          //  Name = ui.Name.Length > 40 ? "[" + ui.Name.Substring(0, 40) + "] 店铺" : "[" + ui.Name + "] 店铺",
                             OpenId = openId,
                             Rate = UserStoreRate,
                             FixComm = UserStoreFixComm,
                             OwnerRate = UserStoreOwnRate,
                         };
+                        us.SetName(ui.Name);
 
                         db.DBUserStore.Add(us);
 

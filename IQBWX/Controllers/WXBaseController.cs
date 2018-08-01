@@ -197,6 +197,15 @@ namespace IQBWX.Controllers
             }
             set { Session["UserSession"] = value; }
         }
+        public bool HasUserStore()
+        {
+            string sql = string.Format("select count(1) from UserStore where openId='{0}'", UserSession.OpenId);
+            using (AliPayContent db = new AliPayContent())
+            {
+                return (db.Database.SqlQuery<int>(sql).FirstOrDefault() > 0);
+                   
+            }
+        }
 
         public void InitProfilePage()
         {
@@ -225,7 +234,7 @@ namespace IQBWX.Controllers
 
 
             //Jacky
-          //   if (isDev) return "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
+           // if (isDev) return "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
              //平台
             if (isDev) return "o3nwE0jrONff65oS-_W96ErKcaa0";
 

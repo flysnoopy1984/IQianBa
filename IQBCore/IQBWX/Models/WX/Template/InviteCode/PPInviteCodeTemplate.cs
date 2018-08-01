@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace IQBCore.IQBWX.Models.WX.Template.InviteCode
 {
+    /// <summary>
+    /// OibcI38z2dvaO7s7vaxoI2_o0B8y_UQrOmfnPSqE0fE
+    /// </summary>
     public class PPInviteCodeTemplate : BaseTemplate<PPInviteCodeTemplate>
     {
         public object data;

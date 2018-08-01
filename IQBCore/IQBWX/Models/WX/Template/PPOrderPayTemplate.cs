@@ -6,6 +6,9 @@ using System.Web;
 
 namespace IQBCore.IQBWX.Models.WX.Template
 {
+    /// <summary>
+    /// ONG5RehDackEUk6VAHpGbPumTDv8S8XHkEywRTxL77Y
+    /// </summary>
     public class PPOrderPayTemplate:BaseTemplate<PPOrderPayTemplate>
     {
         public object data;

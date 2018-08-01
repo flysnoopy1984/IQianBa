@@ -1,170 +1,287 @@
-﻿
-function InitControls() {
+﻿$(function () {
+    var dialog = null;
+    var verifyDlg = null;
 
-    //$("#BnVerifyConfirm").hide();
-    ////支付区域
-    //$("#PayContent").hide();
+    PayToAli = function () {
 
-    //$("#AliPayAccount").attr("disabled", false);
+        var amt = parseFloat($("#paymoney").text());
 
-    //$("#bnModifyAliPayAccount").hide();
-    //$("#bnConfirmAliPayAccount").show();
-  
+        if (amt == null || amt == "" || amt <20 || isNaN(amt)) {
+            $.alert({
+                theme: "material",
+                title: "错误",
+                content: "<div style='font-size:14px !important;'>金额不能为空或小于20元</div>",
 
-}
 
-//function ShowPayArea()
-//{
-//    $("#AliPayAccount").attr("disabled", true);
-//    $("#bnModifyAliPayAccount").show();
-//    $("#bnConfirmAliPayAccount").hide();
-//    $("#PayContent").show();
-//}
+            });
 
-$(document).ready(function () {
+            return false;
+        }
 
-    $("#btnPay").click(function () {　　//普通事件方法
+        var qrUserId = $("#qrUserId").val();
+        if (qrUserId == null || qrUserId == "" || qrUserId<=0) {
+            $.alert({
+                theme: "material",
+                title: "错误",
+                content: "<div style='font-size:14px !important;'>未获取代理商家ID，请重新扫描后再尝试或联系代理商家</div>",
+
+            });
+
+            return;
+        }
+
+        var MarketRate = parseFloat($("#hMarketRate").val());
+        var Rate = parseFloat($("#hRate").val());
+
+        var AgentComm = (amt * (MarketRate / 100)).toFixed(2);
+        $("#PayVal").text(amt);
+        $("#AgentComm").text(AgentComm);
+        $("#SrvComm").text("2.00");
+        $("#RealGet").text(amt - AgentComm-2);
+
+        ShowConfirm(qrUserId,amt);
+
        
-        PayToAli();
-    });
-    //InitControls();
-    //var account = getCookie("YJ_AliPayAccount");
-    //if (account != null || account!="") {
-    //    GoToSafePay();
-    //}
-    //var account = getCookie("YJ_AliPayAccount");
-    //if (account != null)
-    //{
-    //    $("#AliPayAccount").val(account);
-    //    ShowPayArea();
-    //}
-    //var client = IsWeixinOrAlipay();
-    //if (client != "Alipay") {
-    //    window.location.href = "/Home/ErrorMessage?code=2000&ErrorMsg=请用支付宝打开";
-    //        alert("请使用支付宝打开");
+    }
 
-    //    return false;
-    //}
+    $("#btnPay").on("click", PayToAli);
 
- 
 
-    //$.alert({
-    //    theme: "dark",
-    //    title: "注意",
-    //    content: "风控用户请【199支付】必过！！",
-    //    btnClass:"btn-warning",
-    //    width: '30%',
-       
-         
-    //});
+    ShowConfirm = function (qrUserId,amt) {
+
+        var info = $("#Info");
+      
+      //  var str =
+        $.confirm({
+            theme: "modern",
+            title: '请仔细确认',
+            type: 'red',
+            content: info.html(),
+            columnClass: "col-md-2",
+            
+            buttons: {
+            
+                Cancel: {
+                    btnClass: 'btn btn-info',
+                    text: "那算了吧",
+                    action: function () {
+                    }
+                },
+                Know: {
+                    btnClass: 'btn btn-danger',
+                    text: "确定支付",
+                    action: function () {
+                        var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt;
+                        window.location.href = url;
+                    }
+                }
+             }
+        });
+    }
 
    
+
+    DialogHtml = function () {
+        var html = '<div id="PhoneArea">';
+        html += '<div id="get_phone_check" class="get_phone_check">';
+        html += '<input id="phone_num" type="tel" placeholder="请输入手机号" class="form-control get_phone_check_input" />';
+        //html += '<button type="button" class="btn btn-warning get_phone_btn" id="btn_GetVerifyCode">获取验证码</button>';
+        html += '<input type="button" class="btn btn-warning get_phone_btn" id="btn_Confirm" onclick="ConfirmPhone();" value="确定" />';
+        html += '</div>';
+        //html += '<div id="verify_phone_check">';
+        //html += '<input id="code_num" type="text" placeholder="请输入验证码" class="form-control get_phone_check_input" />';
+        //html += '<button type="button" class="btn btn-success get_code_btn" id="btn_ConfirmVerifyCode">确认验证</button>';
+        //html += '</div>';
+        html += '</div>';
+        return html;
+
+    }
+
+    VerifyDialogHtml = function (phone) {
+      
+        var html = '<div id="VerifyPhoneArea">';
+        html += '<div id="get_phone_check" class="get_phone_check">';
+        html += '<input id="phone_num" type="tel" value="' + phone + '" placeholder="请输入手机号" class="form-control get_phone_check_input" />';
+        html += '<button type="button" class="btn btn-warning get_phone_btn" id="btn_GetVerifyCode">获取验证码</button>';
+        html += '</div>';
+        html += '<div id="verify_phone_check">';
+        html += '<input id="code_num" type="tel" placeholder="请输入验证码" class="form-control get_phone_check_input" />';
+        html += '<button type="button" class="btn btn-success get_code_btn" id="btn_ConfirmVerifyCode">确认验证</button>';
+        html += '</div>';
+        html += '</div>';
+        return html;
+    }
+
+    ShowVerifyPhone = function (phone) {
+        var html = VerifyDialogHtml(phone);
+
+        verifyDlg = $.dialog({
+            title: '新手机号需要先验证',
+            content: html,
+            type: "red",
+            columnClass: 'col-md-4',
+            closeOnEscape: false,
+            onOpen: function () {
+
+                InitSMS("phone_num", "code_num", "btn_GetVerifyCode", "btn_ConfirmVerifyCode", 90, SMSSuccess, BeforeSMS, EndSMS);
+            },
+            onClose: function () {
+                if ($("#hPhone").val() == "") {
+                    Init();
+                }
+                verifyDlg = null;
+
+            }
+        });
+    }
+
+    Init = function () {
+
+
+        if ($("#hPhone").val() == "") {
+            //var PhoneArea = $("#PhoneArea");
+            //PhoneArea.show();
+            //var html = PhoneArea.html();
+            var html = DialogHtml();
+
+            dialog  = $.dialog({
+                title: '您的手机号',
+                content: html,
+                type:"red",
+                columnClass: 'col-md-4',
+                closeOnEscape: false,
+                onClose: function () {
+
+                    if ($("#hPhone").val() == "" && verifyDlg == null) {
+                        alert("需要填写手机号！");
+                       
+                        Init();
+                    }
+                    dialog = null;
+                    
+                }
+            });
+        }
+    };
+
+    //提交手机确认是否存在
+    ConfirmPhone = function () {
+
+        var url = "/api/ppCus/CheckPhone";
+        var phone = $("#phone_num").val();
+        if (phone == "" || !isPhoneNo(phone))
+        {
+            alert("请正确填写手机号码！");
+            $("#phone_num").focus();
+            return false;
+        }
+        $.ajax({
+            type: 'get',
+            data: { "phone": phone},
+            url: url,
+            success: function (data) {
+
+                if (data.IsSuccess == true) {
+
+                    if(data.IntMsg == 0)
+                    {
+                        ShowVerifyPhone(phone);
+                        dialog.close();
+                       
+                       
+                    }
+                    else
+                    {
+                        $("#hPhone").val(phone);
+                        dialog.close();
+                    }
+                   // window.location.reload();
+                    //  window.location.reload();
+                }
+                else {
+                    $.alert({
+                        theme: 'dark',
+                        title: '错误!',
+                        content: "<div style='font-size:12px;'>"+data.ErrorMsg + ".请联系平台"+"</div>",
+                    });
+                }
+            },
+            error: function (xhr, type) {
+
+                alert(xhr.responseText);
+
+            }
+        });
+    }
+
+    /*SMS begin*/
+    BeforeSMS = function () {
+        StartBlockUI("信息验证中..");
+    };
+    EndSMS = function () {
+        $.unblockUI();
+    };
+
+    SMSSuccess = function () {
+
+    
+        var phone = $("#phone_num").val();
+        var url = "/api/ppcus/AddBuyerPhone?phone="+phone;
+        $.ajax({
+            type: 'post',
+
+            url: url,
+            success: function (data) {
+
+                if (data.IsSuccess) {
+                    $("#hPhone").val(phone);
+                    verifyDlg.close();
+                }
+                else
+                {
+                    $.alert({
+                        theme: 'dark',
+                        title: '错误!',
+                        content: "<div style='font-size:12px;'>" + data.ErrorMsg + ".或请联系平台" + "</div>",
+                    });
+                }
+
+            },
+            error: function (xhr, type) {
+
+                alert(xhr.responseText);
+
+            }
+        });
+    };
+
+    StartBlockUI = function (txt, w) {
+
+        if (w == undefined)
+            w = 100;
+        var msg = ' <div id="ProcessArea1" class="progress progress-striped active">';
+        msg += '<div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ' + w + '%;">';
+        msg += '<span class="sr-only">' + txt + '</span>';
+        msg += '</div>';
+        msg += '</div>';
+
+        ////   alert(data.files[0].name);
+        $.blockUI({
+            message: msg,
+            css: {
+                border: 'none',
+                width: '90%',
+                height: '20px',
+                left: '20px',
+                'border-radius': '4px',
+            }
+        });
+    };
+    /*SMS end*/
+
+ 
+    Init();
+
+   
+
 });
-
-//function ModifyAliPayAccount() {
-//    InitControls();
-//}
-
-//function ConfirmAliPayAccount() {
-
-//    var AliPayAccount = $("#AliPayAccount").val();
-
-//    $.confirm({
-//        title: '请谨慎确认!',
-//        content: '如收款码输入有误，您将无法收到款项!',
-//        buttons: {
-//            confirm: {
-
-//                btnClass: 'btn-blue',
-//                text: '确定',
-//                action: function () {
-                   
-//                    ShowPayArea();
-//                }
-
-//            },
-//            cancel: {
-//                text: '重新输入',
-
-
-//            }
-
-//        }
-//    });
-
-   
-//}
-function GoToSafePay()
-{
-    var qrUserId = $("#qrUserId").val();
-    var url = "/PP/Pay2?Id=" + qrUserId;
-    window.location = url;
-}
-
-function PayToAli() {
-    var QRMin = parseFloat($("#QRMin").val());
-    var QRMax = parseFloat($("#QRMax").val());
- 
-    var amt = parseFloat($("#TotalAmout").val());
-    if (amt < QRMin || amt > QRMax) {
-
-        $.alert({
-            theme: "dark",
-            title: "错误",
-            content: "金额区间必须在【" + QRMin + "-" + QRMax + "】",
-
-        });
-        return;
-    }
-    var qrUserId = $("#qrUserId").val();
-    if (amt == null || amt == "" || amt == 0) {
-        $.alert({
-            theme: "dark",
-            title: "错误",
-            content: "金额不能为空",
-
-        });
-
-        return;
-    }
-    $("#btnPay").attr("disabled", true);
-    if (qrUserId == null || qrUserId == "") {
-        $.alert({
-            theme: "dark",
-            title: "错误",
-            content: "未获取代理商家ID，请重新扫描后再尝试或联系代理商家",
-
-        });
-
-        return;
-    }
-    $("#btnPay").attr("disabled", true);
-    var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt ;
-    window.location.href = url;
-    //设置账户cookie
-    //setCookie("YJ_AliPayAccount", AliPayAccount, 3);
-
-    //var str = '<div style="font-size:26px">若支付宝出现以下提示<br />说明您只能<span style="color:firebrick">199元连续支付</span></div>';
-    //str += '<div style="text-align:center; margin-top:10px;"><img src="/Content/images/PayError1.jpg" /></div>';
-    //$.confirm({
-    //    theme: "modern",
-    //    title: '注意',
-    //    type: 'red',
-    //    content: str,
-    //    buttons: {
-    //        Know: {
-    //            btnClass: 'btn btn-danger',
-    //            text: "我知道了",
-    //            action: function () {
-    //                // setCookie("YJ_PayWarning", 1, 3);
-    //                window.location.href = url;
-    //            }
-    //        },
-
-    //    }
-    //});
-
-    window.location = url;
-
-   
-}

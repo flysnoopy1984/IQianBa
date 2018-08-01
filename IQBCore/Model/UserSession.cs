@@ -17,6 +17,8 @@ namespace IQBCore.Model
 
         public UserRole UserRole { get; set; }
 
+        public UserStatus UserStatus { get; set; }
+
         public string Headimgurl { get; set; }
 
         public string Name { get; set; }
@@ -31,6 +33,8 @@ namespace IQBCore.Model
 
         public string AgentPhone { get; set; }
 
+        public string AliPayAccount { get; set; }
+
         public void InitFromUser(EUserInfo ui)
         {
             HasQRHuge = ui.HasQRHuge;
@@ -43,7 +47,9 @@ namespace IQBCore.Model
             HasQRHuge = ui.HasQRHuge;
             O2OUserRole = ui.O2OUserRole;
             AgentPhone = ui.UserPhone;
+            UserStatus = ui.UserStatus;
 
+            AliPayAccount = ui.AliPayAccount;
 
         }
 

@@ -13,7 +13,7 @@
       ]
     },
      {
-      "name": "用户中心",
+      "name": "代理中心",
       "sub_button": [
         {
           "type": "view",
@@ -30,48 +30,45 @@
           "name": "我的二维码",
           "key": "pay_101"
         },
-        //{
-        //  "type": "view",
-        //  "name": "我的战绩",
-        //  "url": "http://wx.iqianba.cn/PP/OrderList"
-        //},
+        {
+          "type": "view",
+          "name": "代理团队",
+          "url": "http://wx.iqianba.cn/PP/AgentList?type=ag"
+        },
          {
+          "type": "view",
+          "name": "代理邀请码",
+          "url": "http://wx.iqianba.cn/PP/InviteCode?type=ag"
+        }
+
+      ]
+    },
+     {
+      "name": "码商中心",
+      "sub_button": 
+      [
+        {
+          "type": "view",
+          "name": "码商信息",
+          "url": "http://wx.iqianba.cn/PP/UserStoreInfo"
+        },
+        {
+          "type": "view",
+          "name": "码商邀请码",
+          "url": "http://wx.iqianba.cn/PP/InviteCode?type=us"
+        },
+        {
+          "type": "view",
+          "name": "码商团队",
+          "url": "http://wx.iqianba.cn/PP/AgentList?type=us"
+        },
+        {
           "type": "view",
           "name": "码商入口",
           "url": "http://wx.iqianba.cn/PP/StoreList"
         }
-       
-       
-      ]
-    },
-     {
-      "name": "团队中心",
-      "sub_button": [
-         {
-          "type": "view",
-          "name": "邀请码",
-          "url": "http://wx.iqianba.cn/PP/InviteCode"
-        },
-        {
-          "type": "view",
-          "name": "我的团队",
-          "url": "http://wx.iqianba.cn/PP/AgentList"
-        }
-
-
-        //{
-        //  "type": "view",
-        //  "name": "O2O商城",
-        //  "url": "http://wx.iqianba.cn/O2OWap/EntryAgent"
-        //}
       ]
     }
   
   ]
 }
-
-  //{
-          //  "type": "view",
-          //  "name": "我的反佣",
-          //  "url": "http://wx.iqianba.cn/PP/AgentCommList"
-          //},

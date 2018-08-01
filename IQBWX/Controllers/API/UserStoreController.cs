@@ -78,7 +78,7 @@ namespace IQBWX.Controllers.API
                             Name = inObj.Name,
                             StoreType = inObj.StoreType,
                             Channel = IQBCore.IQBPay.BaseEnum.Channel.League,
-                            Rate = us.Rate,
+                            Rate = us.OwnerRate,
                             OwnnerOpenId = inObj.OwnnerOpenId,
                             RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Init,
                             Provider = us.Name,
@@ -133,6 +133,54 @@ namespace IQBWX.Controllers.API
                 }
             }
             catch(Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return result;
+        }
+
+        [HttpPost]
+        public OutAPIResult OnlineStore(string StoreId)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    string sql = string.Format(@"update StoreInfo
+set RecordStatus = 0, RemainAmount = DayIncome
+where id = '{0}';", StoreId);
+
+                    db.Database.ExecuteSqlCommand(sql);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMsg = ex.Message;
+            }
+            return result;
+        }
+
+        [HttpPost]
+        public OutAPIResult OfflineStore(string StoreId)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+                    string sql = string.Format(@"update StoreInfo
+                        set RecordStatus = 1
+                        where id = '{0}';", StoreId);
+
+                    db.Database.ExecuteSqlCommand(sql);
+
+                }
+            }
+            catch (Exception ex)
             {
                 result.IsSuccess = false;
                 result.ErrorMsg = ex.Message;

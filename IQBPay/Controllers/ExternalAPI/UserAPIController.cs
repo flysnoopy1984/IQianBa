@@ -68,11 +68,11 @@ namespace IQBPay.Controllers.ExternalAPI
                                         return FormatReturn("邀请码已被禁用！");
                                     }
                                     
-                                    int cn = db.DBUserInfo.Where(o => o.parentOpenId == pQR.OwnnerOpenId && o.UserStatus == UserStatus.PPUser).Count();
-                                    if (cn >= pQR.MaxInviteCount)
-                                    {
-                                        return FormatReturn("邀请码可邀请次数已达上限，邀请失败！");
-                                    }
+                                    //int cn = db.DBUserInfo.Where(o => o.parentOpenId == pQR.OwnnerOpenId && o.UserStatus == UserStatus.PPUser).Count();
+                                    //if (cn >= pQR.MaxInviteCount)
+                                    //{
+                                    //    return FormatReturn("邀请码可邀请次数已达上限，邀请失败！");
+                                    //}
                                     //检查用户是否已经注册
                                     updateUser = db.DBUserInfo.Where(u => u.OpenId == ui.OpenId).FirstOrDefault();
                                     //没有注册
@@ -90,8 +90,8 @@ namespace IQBPay.Controllers.ExternalAPI
                                         updateUser.Headimgurl = ui.Headimgurl;
                                         updateUser.UserRole = IQBCore.IQBPay.BaseEnum.UserRole.Agent;
                                         updateUser.QRAuthId = 0;
-                                        updateUser.UserStatus = UserStatus.PPUser;
-                                        updateUser.NeedFollowUp = pQR.NeedFollowUp;
+                                        updateUser.UserStatus = UserStatus.WaitRewiew;
+                                      //  updateUser.NeedFollowUp = pQR.NeedFollowUp;
 
                                         EUserAccountBalance ub = db.DBUserAccountBalance.Where(a => a.OpenId == ui.OpenId).FirstOrDefault();
                                         if(ub == null)
@@ -101,25 +101,25 @@ namespace IQBPay.Controllers.ExternalAPI
                                             ub.UserAccountType = UserAccountType.Agent;
                                             ub.Balance = 0;
                                             db.DBUserAccountBalance.Add(ub);
-
                                         }
-
                                         db.DBUserInfo.Add(updateUser);
                                         isExist = false;
                                         if (pQR.NeedVerification)
                                         {
                                             return FormatReturn("NeedVerification");
                                         }
-                                    }
 
-                                    int n = db.DBQRUser.Where(q => updateUser.OpenId == q.OpenId).Count();
-                                    if (n > 0)
+                                        updateUser = db.UpdateQRUser(pQR, updateUser, HttpContext.Current);
+                                        hasParent = !string.IsNullOrEmpty(updateUser.parentOpenId);
+                                    }
+                                   // int n = db.DBQRUser.Where(q => updateUser.OpenId == q.OpenId).Count();
+                                    else// (n > 0)
                                     {
                                         return FormatReturn("代理已经存在,不能重复邀请");
                                     }
-                                    pQR.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
+                                  //  pQR.RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked;
                                    
-                                    updateUser = db.UpdateQRUser(pQR, updateUser, HttpContext.Current);
+                                   
                                     //if(qrUser == null)
                                     //{
                                     //    return FormatReturn("授权码失效，无法给用户授权,请联系平台！");
@@ -130,7 +130,6 @@ namespace IQBPay.Controllers.ExternalAPI
                                     //updateUser.QRUserDefaultId = qrUser.ID;
 
                                     //用户返回后，给微信提示做判断
-                                    hasParent = !string.IsNullOrEmpty(updateUser.parentOpenId);
 
                                     sc.Commit();
                                     // db.SaveChanges();

@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 namespace IQBCore.IQBWX.Models.WX.Template.ConfirmSign
 {
     /*
+     * Hwfh8EsQtI-az0dorSBZEVi3iuvg3lh8dpCznayXHdg
       {{first.DATA}}
       订单编号：{{keyword1.DATA}}
       商品信息：{{keyword2.DATA}}
       {{remark.DATA}}
+
      */
     public class PPConfirmSignTemplate : BaseTemplate<PPConfirmSignTemplate>
     {

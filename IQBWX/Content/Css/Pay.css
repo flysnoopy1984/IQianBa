@@ -1,0 +1,72 @@
+﻿.TitleInfo {
+    height: 110px;
+    line-height: 110px;
+    width: 95%;
+    text-align: center;
+}
+#TotalAmout::-webkit-input-placeholder{
+    padding-left:5px;
+    color:#808080;
+    font-size: 26px;
+    height:70px;
+    line-height:70px;
+            
+    }
+.TitleDesArea
+{
+    height: 100px;
+    line-height: 25px;
+    font-weight: bold;
+    font-size: 14px;
+    border-bottom: 1px dashed #808080;
+    padding: 15px;
+    word-break: break-word;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+}
+.PayArea
+{
+    border: solid 1px #a7a7a7;
+    border-radius: 5px;
+    height: 100px;
+    padding: 10px;
+    margin: 20px;
+    width: 90%;
+    background-color: white;
+    font-size: 0.4rem;
+}
+.Content
+{
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    background-color:#F0F0F4;
+}
+.PayAmount
+{
+    font-size:0.8rem;
+}
+#Info
+{
+    display:none;
+}
+.InfoRow
+{
+    display:flex;
+    height:30px;
+    line-height:30px;
+    text-align:left;
+}
+.InfoRow .fn{width:45%;}
+.InfoRow .fv{width:55%;}
+.jconfirm-box
+{
+    padding:20px 20px !important;
+}
+.RealGet{
+    color:#2094f7;
+    font-weight:bold;
+    font-size:20px;
+}

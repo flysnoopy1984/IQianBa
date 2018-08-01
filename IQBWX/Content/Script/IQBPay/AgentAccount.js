@@ -5,6 +5,27 @@
     var minAmt = 10;
 
     Init = function () {
+        if (document.referrer != "" && document.referrer.indexOf("AliPayAccount") > -1)
+            window.location.reload();
+
+        var aliPayAccount = $("#AlipayAccount").val();
+        if (aliPayAccount == "")
+        {
+            alert("请先设置收款支付宝账户！");
+            SetUserAccount();
+        }
+
+        var phone = $("#Phone").val();
+        if (phone == "")
+        {
+            $("#Content").hide();
+            $("#PhoneArea").show();
+            InitSMS("phone_num", "code_num", "btn_GetVerifyCode", "btn_ConfirmVerifyCode", 90, SMSSuccess, BeforeSMS, EndSMS);
+
+            return;
+        }
+       
+
         $("#GetMoney_Amt").val(minAmt);
 
         $("#DataTable").empty();
@@ -94,42 +115,14 @@
         if (display == 'none') {
             $('#GetMoneyArea').show(700);
             $('#GetMoneyArea').css('display', "flex");
+            var v = parseFloat($("#AgentBalance").text());
+            $("#GetMoney_Amt").val(v);
         }
         else
             $('#GetMoneyArea').hide(700);
     };
 
-    AmtAdd = function () {
-        var v = parseFloat($("#GetMoney_Amt").val());
-        var r = minAmt;
-        if (v != "") {
-            r = v % minAmt;
-            if (r != 0) {
-                r = Math.floor((v / minAmt)) * minAmt;
-            }
-            else
-                r = v;
-        }
-        r += 100;
-        $("#GetMoney_Amt").val(r);
 
-    };
-    AmtMin = function () {
-        var v = parseFloat($("#GetMoney_Amt").val());
-        var r = minAmt;
-        if (v != "") {
-            r = v % minAmt;
-            if (r != 0) {
-                r = Math.floor((v / minAmt)) * minAmt;
-            }
-            else
-                r = v;
-        }
-        r -= minAmt;
-        if (r < minAmt) r = minAmt;
-        $("#GetMoney_Amt").val(r);
-
-    };
 
     CheckAmtValue = function (obj) {
         var v = $(obj).val();
@@ -188,6 +181,8 @@
                                 }
                                 else {
                                     alert(res.ErrorMsg);
+                                    if (res.IntMsg == -10)
+                                        SetUserAccount();
                                 }
                             },
                             error: function (xhr, type) {
@@ -203,9 +198,94 @@
       
     }
 
-    
+    BeforeSMS = function () {
+        StartBlockUI("信息验证中..");
+    };
+    EndSMS = function () {
+        $.unblockUI();
+    };
+
+    SMSSuccess = function () {
+
+        var url = "/PP/UpdateAgentPhone";
+        $.ajax({
+            type: 'post',
+            dataType: "json",
+            data: { "Phone": $("#phone_num").val() },
+            url: url,
+            success: function (data) {
+
+                if (data.IsSuccess) {
+                    alert("手机校验通过！");
+                    window.location.reload();
+                }
+                else
+                    alert(data.ErrorMsg);
+                    window.location.reload();
+
+            },
+            error: function (xhr, type) {
+
+                alert(xhr.responseText);
+
+            }
+        });
+    };
+
+    StartBlockUI = function (txt, w) {
+
+        if (w == undefined)
+            w = 100;
+        var msg = ' <div id="ProcessArea1" class="progress progress-striped active">';
+        msg += '<div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ' + w + '%;">';
+        msg += '<span class="sr-only">' + txt + '</span>';
+        msg += '</div>';
+        msg += '</div>';
+
+        ////   alert(data.files[0].name);
+        $.blockUI({
+            message: msg,
+            css: {
+                border: 'none',
+                width: '90%',
+                height: '20px',
+                left: '20px',
+                'border-radius': '4px',
+            }
+        });
+    };
+
     Init();
 
-    $(document).on("click", "#btnAmtAdd", AmtAdd);
-    $(document).on("click", "#btnAmtMin", AmtMin);
+    //AmtAdd = function () {
+    //    var v = parseFloat($("#GetMoney_Amt").val());
+    //    var r = minAmt;
+    //    if (v != "") {
+    //        r = v % minAmt;
+    //        if (r != 0) {
+    //            r = Math.floor((v / minAmt)) * minAmt;
+    //        }
+    //        else
+    //            r = v;
+    //    }
+    //    r += 100;
+    //    $("#GetMoney_Amt").val(r);
+
+    //};
+    //AmtMin = function () {
+    //    var v = parseFloat($("#GetMoney_Amt").val());
+    //    var r = minAmt;
+    //    if (v != "") {
+    //        r = v % minAmt;
+    //        if (r != 0) {
+    //            r = Math.floor((v / minAmt)) * minAmt;
+    //        }
+    //        else
+    //            r = v;
+    //    }
+    //    r -= minAmt;
+    //    if (r < minAmt) r = minAmt;
+    //    $("#GetMoney_Amt").val(r);
+
+    //};
 });

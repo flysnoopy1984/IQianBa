@@ -163,8 +163,6 @@ namespace IQBWX.Controllers.API
         public OutSMS SentSMS_IQBPay_BuyerOrder(string mobilePhone, int IntervalSec, SMSEvent SMSEvent = SMSEvent.O2O_BuyerPhoneVerify)
         {
 
-
-
             OutSMS OutSMS = new OutSMS();
             try
             {

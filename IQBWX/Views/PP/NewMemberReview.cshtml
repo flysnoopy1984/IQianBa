@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "新会员申请加入";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
+}
+<link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
+<script src="~/Content/Script/Component/jquery-confirm.js"></script>
+<script src="@Url.Scrpit("~/Content/Script/IQBPay/NewMemberReview.js")"></script>
+
+<style type="text/css">
+    .pageTitle{
+        height: 50px;
+        text-align: center;
+        line-height: 50px;
+        font-size: 24px;
+        border-bottom:dashed 1px #808080;
+    }
+    .NewMember{
+       text-align: center;
+        height: 200px;
+        line-height: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 16px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .NewMemberName{
+        color:#0094ff;
+    }
+    .BtnList{
+        display: flex;
+        padding: 30px;
+        justify-content: space-around;
+    }
+    .DoneArea
+    {
+        display:none;   
+        padding: 20px;
+        text-align: center;
+        margin: 0 auto;
+        height: 200px;
+        color: #3995D8;
+    }
+</style>
+
+<div class="pageTitle">审核</div>
+
+<div class="box">
+    <div class="NewMember">
+        <div>新会员【<span class="NewMemberName">@ViewBag.NewName</span>】</div>
+        <div>请求加入你的团队，是否同意？</div>
+    </div>
+    <div class="BtnList">
+        <div>
+            <input type="button" value="同意" class="btn btn-success" onclick="Agree()" />
+        </div>
+        <div>
+            <input type="button" value="忽略" class="btn btn-danger" onclick="Refused()" />
+        </div>
+    </div>
+   
+</div>
+<input type="hidden" id="OpenId" value="@ViewBag.NewOpenId" />
+<input type="hidden" id="hUserStatus" value="@ViewBag.UserStatus" />
+<div Id="DoneArea" class="DoneArea">
+    
+</div>
+
