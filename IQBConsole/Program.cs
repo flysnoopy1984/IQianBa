@@ -29,7 +29,9 @@ namespace IQBConsole
                 //    Thread.Sleep(_interval * 1000 * 60);
                 //}
                 //  job.ChangeReceiveQR();
-                job.UpdateAgentRate();
+                // job.UpdateAgentRate();
+                //  job.Test();
+                job.WXNTPayTellAdmin("o3nwE0qI_cOkirmh_qbGGG-5G6B0");
                 Console.Read();
 
             }

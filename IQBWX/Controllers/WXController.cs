@@ -28,7 +28,7 @@ namespace IQBWX.Controllers
     public class WXController : ApiController
     {
       //  IQBLog log = new IQBLog();
-       [HttpGet]
+        [HttpGet]
         public string MessageHandler()
         {
             return "111";
@@ -262,6 +262,118 @@ namespace IQBWX.Controllers
             return null;
 
 
+        }
+
+
+       
+        /// <summary>
+        /// 新版微信支付（微信公众好内支付）
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public WxPayOrder Pay(InPayInfo payInfo)
+        {
+          //  WxPayOrder result = new WxPayOrder();
+
+            WxPayOrder wxOrder = null;
+            JsApiPay jsApiPay = new JsApiPay();
+
+            try
+            {
+                string openId = this.Login();
+               
+                if(!string.IsNullOrEmpty(openId))
+                {
+                    NLogHelper.InfoTxt("Pay openId:" + openId);
+
+                    string notifyUrl = ConfigurationManager.AppSettings["Site_WX"] + "api/wx/PayNotify";
+
+                    string OrderNo = WxPayApi.GenerateOutTradeNo();
+                    WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult_YJ(payInfo.ItemDes, notifyUrl, OrderNo);
+                    WxPayData wxJsApiParam = jsApiPay.GetJsApiParameters2();
+
+                    wxOrder = new WxPayOrder()
+                    {
+                        appId = wxJsApiParam.GetValue("appId").ToString(),
+                        nonceStr = wxJsApiParam.GetValue("nonceStr").ToString(),
+                        package = wxJsApiParam.GetValue("package").ToString(),
+                        paySign = wxJsApiParam.GetValue("paySign").ToString(),
+                        signType = "MD5",
+                        timeStamp = wxJsApiParam.GetValue("timeStamp").ToString(),
+                    };
+                }
+               
+            }
+            catch
+            {
+                wxOrder = new WxPayOrder()
+                {
+                    appId = "",
+                    nonceStr = "",
+                    package = "",
+                    paySign = "",
+                    timeStamp = "",
+                    signType = "MD5",
+
+                };
+            }
+
+            return wxOrder;
+        }
+
+        public void PayNotify()
+        {
+            NLogHelper.InfoTxt("==============WXPayNotify=================");
+        }
+
+        public string Login()
+        {
+            JsApiPay wxAPI = new JsApiPay();
+            string openId = "";
+            string code = HttpContext.Current.Request.QueryString["code"];
+            NLogHelper.InfoTxt("Login Code:" + code);
+            if (!string.IsNullOrEmpty(code))
+            {
+                //获取code码，以获取openid和access_token
+            //    code = Request.QueryString["code"];
+                //  NLogHelper.InfoTxt("[strat GetOpenidAndAccessTokenFromCode] Code:"+code);
+                wxAPI.GetOpenidAndAccessTokenFromCode(code);
+                //  NLogHelper.InfoTxt("[end GetOpenidAndAccessTokenFromCode]");
+                openId = wxAPI.openid;
+
+                return openId;
+                // NLogHelper.InfoTxt("RedirectToAction:" + rtnAction);
+               // return HttpContext.Current.RedirectToAction(rtnAction, rtnController, new { OpenId = openId });
+
+            }
+            else
+            {
+                try
+
+                {
+                    var redirect_uri = System.Web.HttpUtility.UrlEncode("http://wx.iqianba.cn/api/wx/Login", System.Text.Encoding.UTF8);
+
+                    WxPayData data = new WxPayData();
+                    data.SetValue("appid", WxPayConfig_YJ.APPID);
+                    data.SetValue("redirect_uri", redirect_uri);
+                    data.SetValue("response_type", "code");
+                    data.SetValue("scope", "snsapi_userinfo");
+
+                    data.SetValue("state", "1" + "#wechat_redirect");
+                    string url = "https://open.weixin.qq.com/connect/oauth2/authorize?" + data.ToUrl();
+
+                    NLogHelper.InfoTxt("WX/Login:" + url);
+
+                    HttpContext.Current.Response.Redirect(url, true);
+                }
+                catch
+                {
+
+                }
+               
+
+            }
+            return "";
         }
     }
 }

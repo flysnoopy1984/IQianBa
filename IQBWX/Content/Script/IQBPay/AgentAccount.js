@@ -2,7 +2,7 @@
     var pageIndex = 0;
     var pageSize = 10;
     var IQBScroll = null;
-    var minAmt = 10;
+    var minAmt = 1;
 
     Init = function () {
         if (document.referrer != "" && document.referrer.indexOf("AliPayAccount") > -1)
@@ -147,7 +147,7 @@
         var v = parseFloat($("#GetMoney_Amt").val());
         var AgentBalance = parseFloat($("#AgentBalance").text());
         if (v < minAmt) {
-            alert("金额不正确"); return;
+            alert("金额必须大于" + minAmt + "元"); return;
         }
         if(v>AgentBalance)
         {
@@ -169,33 +169,40 @@
                     btnClass: 'btn-danger',
                     text: '没有问题',
                     action: function () {
-                        var url = "/PP/TransferAmoutToAgent";
-                        $.ajax({
-                            type: 'post',
-                            url: url,
-                            data: { "Amt": v,"minAmt":minAmt },
-                            success: function (res) {
-                                if (res.IsSuccess) {
-                                    window.location.reload();
-                                    alert("提现成功;");
-                                }
-                                else {
-                                    alert(res.ErrorMsg);
-                                    if (res.IntMsg == -10)
-                                        SetUserAccount();
-                                }
-                            },
-                            error: function (xhr, type) {
-                                alert("系统错误！");
-                            }
-                        });
-
+                       
+                        TransferToAgent();
                     }
                 }
             }
-        });
+        });  
+    }
 
-      
+    TransferToAgent = function () {
+        StartBlockUI("提现处理中..");
+        
+        var url = "/PP/TransferAmoutToAgent";
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: { "Amt": v, "minAmt": minAmt },
+            success: function (res) {
+                $.unblockUI();
+                if (res.IsSuccess) {
+                    window.location.reload();
+                    alert("提现成功;");
+                }
+                else {
+                    alert(res.ErrorMsg);
+                    if (res.IntMsg == -10)
+                        SetUserAccount();
+                }
+            },
+            error: function (xhr, type) {
+                $.unblockUI();
+                alert("系统错误！");
+            }
+        });
+        
     }
 
     BeforeSMS = function () {

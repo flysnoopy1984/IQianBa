@@ -348,7 +348,7 @@ namespace WxPayAPI
         * @throws WxPayException
         * @return 成功时返回，其他抛异常
         */
-        public static WxPayData UnifiedOrder(WxPayData inputObj, int timeOut = 6)
+        public static WxPayData UnifiedOrder_YJ(WxPayData inputObj, int timeOut = 6)
         {
             string url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
             //检测必填参数
@@ -382,23 +382,28 @@ namespace WxPayAPI
             //异步通知url未设置，则使用配置文件中的url
             if (!inputObj.IsSet("notify_url"))
             {
-                inputObj.SetValue("notify_url", WxPayConfig.NOTIFY_URL);//异步通知url
+                //inputObj.SetValue("notify_url", WxPayConfig.NOTIFY_URL);//异步通知url
+                inputObj.SetValue("notify_url", WxPayConfig_YJ.NOTIFY_URL);//异步通知url
             }
 
-            inputObj.SetValue("appid", WxPayConfig.APPID);//公众账号ID
-            inputObj.SetValue("mch_id", WxPayConfig.MCHID);//商户号
-            inputObj.SetValue("spbill_create_ip", WxPayConfig.IP);//终端ip	  	    
+            inputObj.SetValue("appid", WxPayConfig_YJ.APPID);//公众账号ID
+            inputObj.SetValue("mch_id", WxPayConfig_YJ.MCHID);//商户号
+            inputObj.SetValue("spbill_create_ip", WxPayConfig_YJ.IP);//终端ip	  	    
+
+            //inputObj.SetValue("appid", WxPayConfig.APPID);//公众账号ID
+            //inputObj.SetValue("mch_id", WxPayConfig.MCHID);//商户号
+            //inputObj.SetValue("spbill_create_ip", WxPayConfig.IP);//终端ip	  	    
             inputObj.SetValue("nonce_str", GenerateNonceStr());//随机字符串
 
             //签名
-            inputObj.SetValue("sign", inputObj.MakeSign());
+            inputObj.SetValue("sign", inputObj.MakeSign(WxPayConfig_YJ.KEY));
             string xml = inputObj.ToXml();
 
             var start = DateTime.Now;
 
-            Log.Debug("WxPayApi", "UnfiedOrder request : " + xml);
+          //  Log.Debug("WxPayApi", "UnfiedOrder request : " + xml);
             string response = HttpService.Post(xml, url, false, timeOut);
-            Log.Debug("WxPayApi", "UnfiedOrder response : " + response);
+          //  Log.Debug("WxPayApi", "UnfiedOrder response : " + response);
 
             var end = DateTime.Now;
             int timeCost = (int)((end - start).TotalMilliseconds);

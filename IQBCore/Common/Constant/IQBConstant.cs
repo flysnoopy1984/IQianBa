@@ -18,6 +18,13 @@ namespace IQBCore.Common.Constant
         /// </summary>
         public const bool NeedDefaultQRModule = false;
 
+        public const string BuyerPhone = "BuyerPhone";
+        public const string BuyerOpenId = "BuyerOpenId";
+
+        public const string BuyerAliAccount = "BuyerAliAccount";
+
+        public const string SK_AgentQRId = "PPAgentQRId";
+
         /* Session Key begin */
         /// <summary>
         /// Session Key 

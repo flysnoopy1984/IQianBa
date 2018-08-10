@@ -1,109 +1,247 @@
-﻿function StartQuery()
-{
-    $("#ROProcess").show();
+﻿$(function () {
+    var pageIndex = 0;
+    var pageSize = 10;
+    var IQBScroll = null;
+    
+    StartBlockUI = function (txt, w) {
 
-    $("#ROProcess").nextAll().remove();
-}
-function EndQuery()
-{
-    $("#ROProcess").hide();
-}
+        if (w == undefined)
+            w = 100;
+        var msg = ' <div id="ProcessArea1" class="progress progress-striped active">';
+        msg += '<div id="upload_progress1" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ' + w + '%;">';
+        msg += '<span class="sr-only">' + txt + '</span>';
+        msg += '</div>';
+        msg += '</div>';
 
+        ////   alert(data.files[0].name);
+        $.blockUI({
+            message: msg,
+            css: {
+                border: 'none',
+                width: '90%',
+                height: '20px',
+                left: '20px',
+                'border-radius': '4px',
+            }
+        });
+    };
 
-function Query()
-{
-    var url = "/PP/OrderReceive";
-
-    var receiveNo = $("#ReceiveNo").val();
    
-    StartQuery();
-    $.ajax({
-        type: 'post',
-        data: "ReceiveNo=" + receiveNo,
-        url: url,
-        success: function (data) {
-            EndQuery();
+    Query = function (me) {
+
+        var phone = $("#PhoneNo").val();
+        if (phone == "") {
+            alert($("#PhoneNo").attr("placeholder"));
+            $("#PhoneNo").focus();
+            return;
+        }
+        var url = "/api/PPcus/QueryBuyerTrans";
+
+        if (me != null)
+            me.resetLoad();
+
+        $.ajax({
+            type: 'post',
+            data: {
+                "BuyerPhone": phone,
+                "pageIndex": pageIndex,
+                "pageSize": pageSize
+            },
+            url: url,
+            success: function (res) {
+                if (res.IsSuccess) {
+                    if (res.resultList.length > 0) {
+                        generateData(res.resultList);
+                        pageIndex++;
+                    }
+                    else {
+                        if (me != null)
+                            me.noData();
+                    }
+
+                }
+                else
+                    alert(res.ErrorMsg);
+                if (me != null)
+                    me.resetLoad();
+
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!');
+            }
+        });
+
+    };
+
+    generateData = function (data) {
+        var ctrl = "";
+        $.each(data, function (i) {
+            var status = data[i].OrderStatus; //1 Paid 2 Closed
            
-            var arrLen = data.length;
-            if (arrLen > 0) {
-                generateData(data);
-                
-            }
-            //else {
-            //    pageIndex--;
-            //    $("#btnNext").attr("disabled", true);
-            //    alert("没有数据了");
-            //}
-            
-        },
-        error: function (xhr, type) {
-            EndQuery();
-            alert('Ajax error!');
-            // 即使加载出错，也得重置
-        }
-    });
-}
+            ctrl = "<tr>";
+            ctrl += "<td>";
+            ctrl += '<div class="lineRow">';
+            ctrl += '<div class="lineRow_content">';
+            ctrl += '<div class="PayValue">收款金额：<span class="AmtValue">' + data[i].Amount + '</span></div>';
+            ctrl += '<div class="PayDate">支付日期：' + data[i].TransDateStr + '</div>';
+            ctrl += '</div>';
 
-function generateData(result) {
-    var strCtrl = "";
-    var status;
-  
-    $.each(result, function (i) {
-
-        status = result[i].OrderStatus;
-
-        strCtrl = "";
-        strCtrl += "<li>";
-        strCtrl += "<div>收货订号: ";
-        strCtrl += result[i].OrderNo;
-        strCtrl += "</div>";
-        strCtrl += "<div>交易时间: ";
-        strCtrl += result[i].TransDateStr;
-        strCtrl += "</div>";
-        strCtrl += "<div>金额: ";
-        strCtrl += result[i].Amount;
-        strCtrl += "</div>";
-        strCtrl += "</li>";
-        if(status==-2)
-            strCtrl += "<button type='button' class='btn btn-success ConfirmButton' id='btnConfrimRO' onclick=ConfirmRO(this,'" + result[i].OrderNo + "');>确认收款</button>";
-        strCtrl += "<hr />";
-        
-        $("#ROList").append(strCtrl);
-    });
-}
-
-function ConfirmRO(obj, OrderNo) {
-
-    $(obj).attr("disabled", true);
-
-    var url = "/PP/ConfirmRO";
-
-    $.ajax({
-        type: 'post',
-        data: "OrderNo=" + OrderNo,
-        url: url,
-        success: function (data) {
-         
-            if (data.RunResult == "OK")
-            {
-                alert("收货确认成功");
-                $(obj).hide();
-            }
+            ctrl += '<div class="lineRow_op">';
+            if (status == 1)
+                ctrl += '<input type="button" class="btn btn-danger" onclick=DoReceiveMoney("' + data[i].OrderNo + '"); value="收款"/>';
+            else if(status ==2)
+                ctrl += '状态：<span class="StatusValue StatusValue_Closed" >已结算</span>';
             else
-            {
-                alert(data.RunResult);
-                $(obj).attr("disabled", false);
-            }
+                ctrl += '状态：<span class="StatusValue">处理中</span>';
 
-        },
-        error: function (xhr, type) {
-            
-            alert('Ajax error!');
-            $(obj).attr("disabled", false);
-            // 即使加载出错，也得重置
+            ctrl += '</div>';
+            ctrl += "</td>";
+            ctrl += "</tr>";
+
+            $("#DataTable").append(ctrl);
+        });
+    }
+
+    StartQuery = function()
+    {
+        $("#Detail").show();
+        $("#DataTable").empty();
+        pageIndex = 0;
+
+        IQBScroll = $("#Detail").ScrollLoad({
+
+            loadData: function (me) {
+                Query(me);
+            }
+        });
+       
+    }
+
+    //确认手机号是否存在，并确认是否有对应的收款账户
+    ConfirmPhone = function () {
+        var phone = $("#PhoneNo").val();
+        if (phone == "") {
+            alert($("#PhoneNo").attr("placeholder"));
+            $("#PhoneNo").focus();
+            return;
         }
-    });
-   
-}
+        $("#StartArea").hide();
+        $("#Detail").hide();
+        $("#BuyerAccountArea").hide();
+        var url = "/api/PPcus/GetBuyerInfo?phone=" + phone;
+
+        $.ajax({
+            type: 'post',
+         
+            url: url,
+            success: function (res) {
+                if (res.IsSuccess) {
+                    var data = res.resultObj;
+                    $("#BuyerAccountArea").show();
+                    $("#AlipayAccount").val(data.AliPayAccount);
+                    $("#AlipayAccount").focus();
+                   // $("#btnConfirmPhone").val("修改");
+
+                   
+                }
+                else
+                    alert(res.ErrorMsg);
+
+              
+             
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!');
+            }
+        });
+    }
+
+    ComfirmAccount = function () {
+        var phone = $("#PhoneNo").val();
+        if (phone == "") {
+            alert($("#PhoneNo").attr("placeholder"));
+            $("#PhoneNo").focus();
+            return;
+        }
+
+        var Account = $("#AlipayAccount").val();
+        if (Account == "") {
+            alert($("#AlipayAccount").attr("placeholder"));
+            $("#AlipayAccount").focus();
+            return;
+        }
+
+        var url = "/api/PPcus/SetBuyerAliAccount?phone=" + phone + "&AliAccount=" + Account
+
+        $.ajax({
+            type: 'post',
+            url: url,
+            success: function (res) {
+                if (res.IsSuccess) {
+                    $("#StartArea").show();
+                    $("#btnConfirmAccount").val("修改");
+                }
+                else
+                    alert(res.ErrorMsg);
+
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!');
+            }
+        });
+    }
+
+
+    DoReceiveMoney = function (OrderNo) {
+        var url = payUrl + "/api/Buyer/TransferAmountToBuyer";
+        var AliAccount = $("#AlipayAccount").val();
+
+        StartBlockUI("打款中，请稍等...");
+        
+        $.ajax({
+            type: 'post',
+            url: url,
+            data:{
+                "OrderNo": OrderNo,
+                "AliAccount": AliAccount
+            },
+            success: function (res) {
+                $.unblockUI();
+
+                if (res.IsSuccess) {
+                    $("#StartArea").show();
+                    $("#btnConfirmAccount").val("修改");
+                }
+                else
+                    alert(res.ErrorMsg);
+               
+            },
+            error: function (xhr, type) {
+                $.unblockUI();
+                alert('失败，请联系客服');
+               
+            }
+        });
+        
+    };
+
+    Init = function () {
+        if ($("#PhoneNo").val() != "")
+        {
+            $("#btnConfirmPhone").val("修改");
+            $("#BuyerAccountArea").show();
+        }
+           
+        //if ($("#AlipayAccount").val() != "")
+        //    $("#btnConfirmAccount").val("修改");
+        
+           
+    }
+
+    Init();
+
+});
+
+
 
    

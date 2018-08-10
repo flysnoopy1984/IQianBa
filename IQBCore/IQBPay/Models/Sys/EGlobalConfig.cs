@@ -64,14 +64,24 @@ namespace IQBCore.IQBPay.Models.Sys
         public float MarketRate { get; set; }
 
         /// <summary>
-        /// 花呗子孩子固定费率比率
+        /// 花呗孩子固定费率比率
         /// </summary>
         public float ChildFixRate { get; set; }
 
         /// <summary>
-        /// 信用卡自孩子固定费率比率
+        /// 花呗一级（最低）费率
+        /// </summary>
+        public float HBMinFeeRate { get; set; }
+
+        /// <summary>
+        /// 信用卡孩子固定费率比率
         /// </summary>
         public float CCChildFixRate { get; set; }
+
+        /// <summary>
+        /// 信用卡一级（最低）费率
+        /// </summary>
+        public float CCMinFeeRate { get; set; }
 
         /// <summary>
         /// 信用卡市场手续费

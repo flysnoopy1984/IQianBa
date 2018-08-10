@@ -146,16 +146,16 @@ function Save()
     Rate = (AfterMarketRate - diff).toFixed(2);
     //var realRate = 10-diff;
 
-   
-    //if (AfterMarketRate < realRate)
-    //{
-    //    $.alert({
-    //        theme: 'dark',
-    //        title: '错误!',
-    //        content: "您这样设置，费率将小于0，请重新调整！",
-    //    });
-    //    return;
-    //}
+    if (Rate <= 0)
+    {
+        $.alert({
+            theme: 'dark',
+            title: '错误!',
+            content: "用户手续费过低，不能低于费率，请重新调整！",
+        });
+        return;
+    }
+
     var sucMsg = "新增成功";
     if (ID != "")
         sucMsg = "修改成功";

@@ -35,9 +35,19 @@
         $("#btnContainer").hide();
     }
 
+    //没码商权限
+    if (errorCode == "2010") {
+
+        $("#btnContainer").hide();
+    }
+
     //微信和支付宝客户端
     if (errorCode == "3000" || errorCode == "3001") {
         $("#btnContainer").hide();
+    }
+
+    ShowCallCenter = function () {
+        $("#img_CallCenter").slideDown()
     }
   
 })

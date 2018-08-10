@@ -37,11 +37,10 @@
         $("#PayVal").text(amt);
         $("#AgentComm").text(AgentComm);
         $("#SrvComm").text("2.00");
-        $("#RealGet").text(amt - AgentComm-2);
+        $("#RealGet").text((amt - AgentComm - 2).toFixed(2));
 
         ShowConfirm(qrUserId,amt);
 
-       
     }
 
     $("#btnPay").on("click", PayToAli);
@@ -50,7 +49,7 @@
     ShowConfirm = function (qrUserId,amt) {
 
         var info = $("#Info");
-      
+        var buyerPhone = $("#hPhone").val()
       //  var str =
         $.confirm({
             theme: "modern",
@@ -71,7 +70,7 @@
                     btnClass: 'btn btn-danger',
                     text: "确定支付",
                     action: function () {
-                        var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt;
+                        var url = payUrl + "/AliPay/F2FPay?qrUserId=" + qrUserId + "&Amount=" + amt + "&BuyerPhone=" + buyerPhone;
                         window.location.href = url;
                     }
                 }
@@ -137,13 +136,9 @@
 
     Init = function () {
 
-
         if ($("#hPhone").val() == "") {
-            //var PhoneArea = $("#PhoneArea");
-            //PhoneArea.show();
-            //var html = PhoneArea.html();
+         
             var html = DialogHtml();
-
             dialog  = $.dialog({
                 title: '您的手机号',
                 content: html,
@@ -151,16 +146,17 @@
                 columnClass: 'col-md-4',
                 closeOnEscape: false,
                 onClose: function () {
-
                     if ($("#hPhone").val() == "" && verifyDlg == null) {
-                        alert("需要填写手机号！");
-                       
+                        alert("需要填写手机号！"); 
                         Init();
                     }
-                    dialog = null;
-                    
+                    dialog = null;  
+                },
+                onOpen:function(){
+                    $("#phone_num").focus();
                 }
             });
+           
         }
     };
 
@@ -224,7 +220,6 @@
 
     SMSSuccess = function () {
 
-    
         var phone = $("#phone_num").val();
         var url = "/api/ppcus/AddBuyerPhone?phone="+phone;
         $.ajax({

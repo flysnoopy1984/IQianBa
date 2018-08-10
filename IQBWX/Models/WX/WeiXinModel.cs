@@ -12,6 +12,10 @@ namespace IQBWX.Models.WX
 
     public class WxPayOrder
     {
+        public WxPayOrder()
+        {
+            IsSuccess = true;
+        }
         public string appId { get; set; }
         public string timeStamp { get; set; }
         public string nonceStr { get; set; }
@@ -19,6 +23,12 @@ namespace IQBWX.Models.WX
 
         public string signType { get; set; }
         public string paySign { get; set; }
+
+        public string OrderNo { get; set; }
+
+        public bool IsSuccess { get; set; }
+
+        public string ErrorMsg { get; set; }
 
     
     }

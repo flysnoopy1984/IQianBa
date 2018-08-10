@@ -111,12 +111,16 @@ function generateData(result) {
     var userId ="";
 
     $.each(result, function (i) {
+
+        if (userId == result[i].userId)
+            return true;
+
         QueryData.push(result[i]);
-        if (i == 0 && pageIndex ==0)
-        {
-            $("#TotalMember").text(result[0].TotalMember + "/" + result[0].MaxInviteCount);
-            $("#TotalAmount").text(result[0].TotalAmount);
-        }
+        //if (i == 0 && pageIndex ==0)
+        //{
+        //    $("#TotalMember").text(result[0].TotalMember + "/" + result[0].MaxInviteCount);
+        //    $("#TotalAmount").text(result[0].TotalAmount);
+        //}
 
         var UserStatus;
         //var usColor = "style='color:forestgreen'";
@@ -127,6 +131,8 @@ function generateData(result) {
         }
         else
             UserStatus = "正常";
+      
+       // userId = result[i].userId
 
         strCtrl = "";
         //if (result[i].UserStatus == 0)
@@ -150,32 +156,46 @@ function generateData(result) {
 
         var totalAmount = 0;
         //大额费率返点
-        if (result[i].HugeQR)
-        {
-            strCtrl += "<ul>";
-            strCtrl += "<li style='color:cornflowerblue; width:49%;float:left;' > 大额费率: " + result[i].HugeQR.FeeRate.toFixed(2) + "</li>";
-            strCtrl += "<li style='height:32px; color:#EBC952;width:49%;float:left;'>大额返点: " + result[i].HugeQR.ParentCommissionRate + "</li>";
-            strCtrl += "</ul>";
+        //if (result[i].HugeQR)
+        //{
+        //    strCtrl += "<ul>";
+        //    strCtrl += "<li style='color:cornflowerblue; width:49%;float:left;' > 大额费率: " + result[i].HugeQR.FeeRate.toFixed(2) + "</li>";
+        //    strCtrl += "<li style='height:32px; color:#EBC952;width:49%;float:left;'>大额返点: " + result[i].HugeQR.ParentCommissionRate + "</li>";
+        //    strCtrl += "</ul>";
 
-            totalAmount = result[i].MemberTotalAmount + result[i].HugeQR.MemberTotalAmount;
-            strCtrl += "<ul>";
-            strCtrl += "<li style='color:#8E210B; width:99%;height:32px;' >业绩: " + result[i].MemberTotalAmount.toFixed(2) + "(小)" + "+" + result[i].HugeQR.MemberTotalAmount.toFixed(2) + "(大)" + "=" + totalAmount.toFixed(2) + " &yen</li>";
-            strCtrl += "</ul>";
-        }
-        else
-        {
-            strCtrl += "<ul>";
-            strCtrl += "<li style='color:#8E210B; width:99%;height:32px;' >业绩: " + result[i].MemberTotalAmount.toFixed(2) + " &yen</li>";
-            strCtrl += "</ul>";
-        }
+        //    totalAmount = result[i].MemberTotalAmount + result[i].HugeQR.MemberTotalAmount;
+        //    strCtrl += "<ul>";
+        //    strCtrl += "<li style='color:#8E210B; width:99%;height:32px;' >业绩: " + result[i].MemberTotalAmount.toFixed(2) + "(小)" + "+" + result[i].HugeQR.MemberTotalAmount.toFixed(2) + "(大)" + "=" + totalAmount.toFixed(2) + " &yen</li>";
+        //    strCtrl += "</ul>";
+        //}
+        //else
+        //{
+           
+        //}
+        strCtrl += "<ul>";
+        strCtrl += "<li style='color:#8E210B; width:99%;height:32px;' >业绩: " + result[i].MemberTotalAmount.toFixed(2) + " &yen</li>";
+        strCtrl += "</ul>";
+
         strCtrl += "<ul>";
         strCtrl += "<li style='width:99%;height:32px;' >注册日期: " + result[i].RegisterDate + "</li>";
         strCtrl += "</ul>";
         //小额费率 返点
-        strCtrl += "<ul>";
-        strCtrl += "<li style='color:cornflowerblue; width:49%;float:left;' > 小额费率: " + result[i].FeeRate.toFixed(2) + "</li>";
-        strCtrl += "<li style='height:32px; color:#EBC952;width:49%;float:left;'>小额返点: " + result[i].ParentCommissionRate + "</li>";
-        strCtrl += "</ul>";
+        if (userId != result[i].userId)
+        {
+            strCtrl += "<ul>";
+            strCtrl += "<li style='color:cornflowerblue; width:49%;float:left;' > 小额费率: " + result[i].FeeRate.toFixed(2) + "</li>";
+            strCtrl += "<li style='height:32px; color:#EBC952;width:49%;float:left;'>返点: 0.1</li>";
+            strCtrl += "</ul>";
+
+            strCtrl += "<ul>";
+            strCtrl += "<li style='color:cornflowerblue; width:49%;float:left;' > 信用卡费率: " + result[i+1].FeeRate.toFixed(2) + "</li>";
+            strCtrl += "<li style='height:32px; color:#EBC952;width:49%;float:left;'>返点: 0.02</li>";
+            strCtrl += "</ul>";
+        }
+       
+           
+        
+       
 
         strCtrl += "</td>";
 
@@ -184,6 +204,10 @@ function generateData(result) {
         strCtrl += "</tr>";
 
         $("#trContainer").append(strCtrl);
+
+        if (userId != result[i].userId) {
+            userId = result[i].userId;
+        }
     });
 
 

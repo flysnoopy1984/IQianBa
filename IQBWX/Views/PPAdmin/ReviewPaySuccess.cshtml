@@ -1,0 +1,77 @@
+﻿@model IQBCore.IQBPay.Models.Order.EOrderInfo
+@{
+    ViewBag.Title = "管理界面-审核支付";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
+}
+<style type="text/css">
+    .pageTitle {
+        height: 50px;
+        text-align: center;
+        line-height: 50px;
+        font-size: 24px;
+        border-bottom: dashed 1px #808080;
+    }
+
+    .NewMember {
+        text-align: center;
+        /*height: 200px;*/
+        line-height: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 16px;
+        padding-left: 10px;
+        padding-right: 10px;
+        align-items:flex-start;
+    }
+
+    .NewMemberName {
+        color: #0094ff;
+    }
+
+    .BtnList {
+        display: flex;
+        padding: 30px;
+        justify-content: space-around;
+    }
+    .AmtValue {
+    font-family: arial,"Hiragino Sans GB","Microsoft Yahei",sans-serif;
+    font-weight: bold;
+     color: #F19659;
+    font-size: 18px;
+}
+
+    .DoneArea {
+        display: none;
+        padding: 20px;
+        text-align: center;
+        margin: 0 auto;
+        height: 200px;
+        color: #3995D8;
+    }
+</style>
+<script src="@Url.Scrpit("~/Content/Script/IQBPay/ReviewPaySuccess.js")"></script>
+
+<div class="pageTitle">审核支付</div>
+
+<div class="box">
+    <div class="NewMember">
+        <div>No【<span class="NewMemberName" id="OrderNo">@Model.OrderNo</span>】</div>
+        <div>订单类型：【<span class="AmtValue" >@Model.OrderStatus</span>】</div>
+        <div>订单状态：【<span class="NewMemberName" id="OrderStatus">@Model.OrderType</span>】</div>
+        <div>代理：【<span class="NewMemberName" id="OrderNo">@Model.AgentName</span>】</div>
+        <div>用户手机：【<span class="NewMemberName" id="OrderNo">@Model.BuyerMobilePhone</span>】</div>
+        <div>交易时间：【<span class="NewMemberName">@Model.TransDate.ToString("yyyy-MM-dd hh:mm:ss")</span>】</div>
+      
+        <div>金额：【<span class="AmtValue">@Model.TotalAmount</span>】</div>
+       
+    </div>
+    <div class="BtnList">
+        <div>
+            <input id="btnAgree" type="button" value="确认用户可收款" class="btn btn-success" onclick="Agree()" />
+        </div>
+        
+    </div>
+   <input type="hidden" value="@Convert.ToInt32(Model.OrderStatus)" id="hOrderStatus" />
+</div>
+

@@ -38,6 +38,7 @@ using IQBCore.IQBPay.Models.Json;
 using IQBCore.Common.Constant;
 using IQBCore.IQBWX.Models.WX.Template.InviteCode;
 using IQBCore.IQBPay.Models.O2O;
+using IQBCore.IQBPay.Models.Report;
 
 namespace IQBPay.Controllers
 {
@@ -157,19 +158,55 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        public void UpdateUserBalance(AliPayContent db,string openId,double amt, TransactionType transType)
+        public void UpdateUserBalance(AliPayContent db,string openId,double amt, TransactionType transType, EReport_Order report= null)
         {
-            EUserAccountBalance ub = db.DBUserAccountBalance.Where(a => a.OpenId == openId && a.UserAccountType == UserAccountType.Agent).FirstOrDefault();
-            ub.Balance += Convert.ToDouble(amt.ToString("0.00"));
-
-            EO2OTransAgent o2oTrans = new EO2OTransAgent
+            if(amt!=0)
             {
-                AgentOpenId = openId,
-                Amount = Convert.ToDouble(amt.ToString("0.00")),
-                TransDateTime = DateTime.Now,
-                TransactionType = transType,
-            };
-            db.DBO2OTransAgent.Add(o2oTrans);
+                EUserAccountBalance ub = db.DBUserAccountBalance.Where(a => a.OpenId == openId && a.UserAccountType == UserAccountType.Agent).FirstOrDefault();
+                ub.Balance += Convert.ToDouble(amt.ToString("0.00"));
+
+                EO2OTransAgent o2oTrans = new EO2OTransAgent
+                {
+                    AgentOpenId = openId,
+                    Amount = Convert.ToDouble(amt.ToString("0.00")),
+                    TransDateTime = DateTime.Now,
+                    TransactionType = transType,
+                };
+                db.DBO2OTransAgent.Add(o2oTrans);
+
+                if (report != null)
+                {
+                    switch (transType)
+                    {
+                        case TransactionType.Agent_Order_Comm:
+                            report.AgentOpenId = openId;
+                            report.AgentInCome = Convert.ToSingle(amt.ToString("0.00"));
+                            break;
+                        case TransactionType.Parent_Comm:
+                            report.A2OpenId = openId;
+                            report.A2InCome = Convert.ToSingle(amt.ToString("0.00"));
+                            break;
+                        case TransactionType.L3_Comm:
+                            report.A3OpenId = openId;
+                            report.A3InCome = Convert.ToSingle(amt.ToString("0.00"));
+                            break;
+                        case TransactionType.Store_Comm:
+                            report.StoreOpenId = openId;
+                            report.StoreInCome = Convert.ToSingle(amt.ToString("0.00"));
+                            break;
+                        case TransactionType.Store_L2:
+                            report.S2OpenId = openId;
+                            report.S2InCome = Convert.ToSingle(amt.ToString("0.00"));
+                            break;
+                        case TransactionType.Store_L3:
+                            report.S3OpenId = openId;
+                            report.S3InCome = Convert.ToSingle(amt.ToString("0.00"));
+                            break;
+
+                    }
+                }
+            }
+
         }
 
 
@@ -178,10 +215,11 @@ namespace IQBPay.Controllers
             string orderNo = Request["out_trade_no"];
             AliPayManager payManager = new AliPayManager();
             ETransferAmount tranfer = null;
-            EAgentCommission agentComm = null;
+          
             EOrderDetail orderDetail = null;
-            JOrderPayMethod JOrderPayMethod;
-            EQRUser qrUser = null;
+
+            EQRUser _agentQR = null;
+            EReport_Order _ReportOrder = new EReport_Order();
 
             int TransferError = 0 ;
 
@@ -268,6 +306,8 @@ namespace IQBPay.Controllers
                         EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
                         //家门店铺更新额度
                         store.RemainAmount -= order.TotalAmount;
+                        if (store.RemainAmount < 0)
+                            store.RecordStatus = RecordStatus.Blocked;
                         //店铺佣金
                         if (!store.IsReceiveAccount)
                         {
@@ -300,30 +340,39 @@ namespace IQBPay.Controllers
                                     }
                                     else
                                     {
+                                        _ReportOrder.StoreOwnerRateAmount = order.SellerCommission;
+
                                         EUserStore us = db.DBUserStore.Where(a => a.OpenId == store.OwnnerOpenId).FirstOrDefault();
+
                                         if(us !=null && us.OpenId!= "o3nwE0i_Z9mpbZ22KdOTWeALXaus")
                                         {
-                                            double amt = Convert.ToDouble((order.TotalAmount * us.Rate).ToString("0.00"));
-                                            UpdateUserBalance(db, store.OwnnerOpenId, amt, TransactionType.Store_Comm);
+                                            double amt = Convert.ToDouble((order.TotalAmount * us.Rate/100).ToString("0.00"));
+                                            UpdateUserBalance(db, store.OwnnerOpenId, amt, TransactionType.Store_Comm, _ReportOrder);
 
-                                            string sql = string.Format(@"select parentOpenId from UserInfo 
-                                                                         where openId = '{0}'",
+                                            string sql = string.Format(@"select ui.parentOpenId from UserInfo as ui
+                                                                         inner join userstore as us on ui.parentOpenId = us.OpenId
+                                                                         where ui.OpenId = '{0}'",
                                                                          us.OpenId);
 
                                             string pOpenId = db.Database.SqlQuery<string>(sql).FirstOrDefault();
                                             if(!string.IsNullOrEmpty(pOpenId))
                                             {
-                                                amt = Convert.ToDouble((order.TotalAmount * us.FixComm).ToString("0.00"));
-                                                UpdateUserBalance(db, pOpenId, amt, TransactionType.Store_L2);
+                                                amt = Convert.ToDouble((order.TotalAmount * us.FixComm/100).ToString("0.00"));
+                                                UpdateUserBalance(db, pOpenId, amt, TransactionType.Store_L2, _ReportOrder);
 
-                                                sql = string.Format(@"select parentOpenId from UserInfo 
-                                                                         where openId = '{0}'",
+                                                sql = string.Format(@"select ui.parentOpenId from UserInfo as ui
+                                                                         inner join userstore as us on ui.parentOpenId = us.OpenId
+                                                                         where ui.OpenId = '{0}'",
                                                                          pOpenId);
+
+                                              
+                                                pOpenId = db.Database.SqlQuery<string>(sql).FirstOrDefault();
+
                                                 if (!string.IsNullOrEmpty(pOpenId))
                                                 {
                                                     pOpenId = db.Database.SqlQuery<string>(sql).FirstOrDefault();
-                                                    amt = Convert.ToDouble((order.TotalAmount * us.FixComm).ToString("0.00"));
-                                                    UpdateUserBalance(db, pOpenId, amt, TransactionType.Store_L3);
+                                                    amt = Convert.ToDouble((order.TotalAmount * us.FixComm/100).ToString("0.00"));
+                                                    UpdateUserBalance(db, pOpenId, amt, TransactionType.Store_L3, _ReportOrder);
                                                 }                                
                                             }             
                                         }
@@ -342,7 +391,7 @@ namespace IQBPay.Controllers
                         string accessToken = this.getAccessToken(true);
                        
                        //代理
-                        UpdateUserBalance(db, order.AgentOpenId, order.RateAmount,TransactionType.Agent_Order_Comm);
+                        UpdateUserBalance(db, order.AgentOpenId, order.RateAmount,TransactionType.Agent_Order_Comm, _ReportOrder);
                         PPOrderPayNT notice = new PPOrderPayNT(accessToken, order.AgentOpenId, order);
                         notice.Push();
 
@@ -359,17 +408,17 @@ namespace IQBPay.Controllers
                         if (!string.IsNullOrEmpty(order.ParentOpenId) && order.ParentCommissionAmount > 0)
                         {
 
-                            agentComm = db.DBAgentCommission.Where(c => c.OrderNo == order.OrderNo && c.ParentOpenId == order.ParentOpenId && c.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
-                            agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
+                            //agentComm = db.DBAgentCommission.Where(c => c.OrderNo == order.OrderNo && c.ParentOpenId == order.ParentOpenId && c.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
+                            //agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
 
-                            EUserInfo parentUi = new EUserInfo();
-                            parentUi.AliPayAccount = agentComm.ParentAliPayAccount;
+                            //EUserInfo parentUi = new EUserInfo();
+                            //parentUi.AliPayAccount = agentComm.ParentAliPayAccount;
 
-                            //用户转账函数赋值
-                            parentUi.OpenId = agentComm.ParentOpenId;
-                            parentUi.Name = agentComm.ParentName;
+                            ////用户转账函数赋值
+                            //parentUi.OpenId = agentComm.ParentOpenId;
+                            //parentUi.Name = agentComm.ParentName;
 
-                            UpdateUserBalance(db, order.ParentOpenId, order.ParentCommissionAmount,TransactionType.Parent_Comm);
+                            UpdateUserBalance(db, order.ParentOpenId, order.ParentCommissionAmount,TransactionType.Parent_Comm, _ReportOrder);
                             //tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order,0, null,BaseController.GlobalConfig);
                             //db.DBTransferAmount.Add(tranfer);
                             
@@ -381,17 +430,17 @@ namespace IQBPay.Controllers
                         //3级
                         if (!string.IsNullOrEmpty(order.L3OpenId) && order.L3CommissionAmount>0)
                         {
-                            agentComm = db.DBAgentCommission.Where(c => c.OrderNo == order.OrderNo && c.ParentOpenId == order.L3OpenId && c.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
-                            agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
+                            //agentComm = db.DBAgentCommission.Where(c => c.OrderNo == order.OrderNo && c.ParentOpenId == order.L3OpenId && c.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
+                            //agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
 
-                            EUserInfo parentUi = new EUserInfo();
-                            parentUi.AliPayAccount = agentComm.ParentAliPayAccount;
+                            //EUserInfo parentUi = new EUserInfo();
+                            //parentUi.AliPayAccount = agentComm.ParentAliPayAccount;
 
-                            //用户转账函数赋值
-                            parentUi.OpenId = agentComm.ParentOpenId;
-                            parentUi.Name = agentComm.ParentName;
+                            ////用户转账函数赋值
+                            //parentUi.OpenId = agentComm.ParentOpenId;
+                            //parentUi.Name = agentComm.ParentName;
 
-                            UpdateUserBalance(db, order.L3OpenId, order.L3CommissionAmount,TransactionType.L3_Comm);
+                            UpdateUserBalance(db, order.L3OpenId, order.L3CommissionAmount,TransactionType.L3_Comm, _ReportOrder);
 
                             //tranfer = payManager.TransferHandler(TransferTarget.L3Agent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order,0, null, BaseController.GlobalConfig);
                             //db.DBTransferAmount.Add(tranfer);
@@ -405,6 +454,9 @@ namespace IQBPay.Controllers
                             //用户打款
                        //  Log.log("PayNotify 开始用户打款");
                         tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App, BaseController.SubApp,null, ref order,0, null, BaseController.GlobalConfig);
+                        _ReportOrder.BuyerInCome = tranfer.TransferAmount;
+                        _ReportOrder.BuyerPhone = order.BuyerMobilePhone;
+
                         db.DBTransferAmount.Add(tranfer);
 
                         if(tranfer.TransferStatus != TransferStatus.Success)
@@ -426,6 +478,20 @@ namespace IQBPay.Controllers
                             order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
                         }
                     }
+                    _agentQR = db.DBQRUser.Where(a => a.ID == order.QRUserId).FirstOrDefault();
+
+                    _ReportOrder.QRUserId = order.QRUserId.ToString();
+                    _ReportOrder.QRType = _agentQR.QRType;
+                    _ReportOrder.TransDate = order.TransDate;
+                    _ReportOrder.OrderNo = order.OrderNo;
+                    _ReportOrder.OrderAmount = order.TotalAmount;
+                    _ReportOrder.CaluPPInCome();
+
+                    db.DBReportOrder.Add(_ReportOrder);
+                    /*
+                    Agent  Policy
+                     */
+                //    AgentPolicy(db, _agentQR);
 
                     db.SaveChanges();
                 }
@@ -437,6 +503,40 @@ namespace IQBPay.Controllers
             }
 
             return View();
+        }
+
+        private void AgentPolicy(AliPayContent db,EQRUser agentQr)
+        {
+            const int AdjustAgentOrderNum = 10;
+
+            int i= db.DBOrder.Where(a => a.AgentOpenId == agentQr.OpenId && a.OrderStatus == OrderStatus.Closed).Count();
+
+            //如果超过10单，则费率调整
+            //if(i> AdjustAgentOrderNum)
+            //{
+            //    float feeRate = 0;
+            //    float jumpRate = 0;
+            //    float minFeeRate = 0;
+            //    //花呗
+            //    if (agentQr.QRType == QRReceiveType.Small)
+            //    {
+            //        jumpRate = GlobalConfig.ChildFixRate;
+            //        minFeeRate = GlobalConfig.HBMinFeeRate;
+            //    }
+            //    //信用卡
+            //    else if (agentQr.QRType == QRReceiveType.CreditCard)
+            //    {
+            //        jumpRate = GlobalConfig.CCChildFixRate;
+            //        minFeeRate = GlobalConfig.CCMinFeeRate;
+            //    }
+
+            //    agentQr.Rate += jumpRate;
+            //    feeRate = agentQr.MarketRate - agentQr.Rate;
+            //    if (feeRate < minFeeRate)
+            //        agentQr.Rate = agentQr.MarketRate - minFeeRate;
+
+            //}
+
         }
 
       
@@ -694,19 +794,19 @@ namespace IQBPay.Controllers
 
         public ActionResult Note()
         {
-            string accessToken = this.getAccessToken(true);
+            //string accessToken = this.getAccessToken(true);
 
-            PPInviteCodeNT notice = null;
-            try
-            {
-                notice = new PPInviteCodeNT(accessToken, 10, 20, "o3nwE0qI_cOkirmh_qbGGG-5G6B0");
-                return Content(notice.Push());
+            //PPInviteCodeNT notice = null;
+            //try
+            //{
+            //    notice = new PPInviteCodeNT(accessToken, 10, 20, "o3nwE0qI_cOkirmh_qbGGG-5G6B0");
+            //    return Content(notice.Push());
 
-            }
-            catch
-            {
+            //}
+            //catch
+            //{
 
-            }
+            //}
             return View();
         }
 
@@ -1050,7 +1150,7 @@ namespace IQBPay.Controllers
         /// <param name="Id">QRUserId</param>
         /// <param name="Amount"></param>
         /// <returns></returns>   
-        public ActionResult F2FPay(string qrUserId, string Amount,string AliPayAccount="",string TestStoreId="")
+        public ActionResult F2FPay(string qrUserId, string Amount,string BuyerPhone="",string AliPayAccount="",string TestStoreId="")
         {
             string ErrorUrl = ConfigurationManager.AppSettings["IQBWX_SiteUrl"] + "Home/ErrorMessage?QRUserId="+qrUserId+"&code=2001&ErrorMsg=";
             EAliPayApplication app;
@@ -1074,7 +1174,7 @@ namespace IQBPay.Controllers
                 //    return Redirect(ErrorUrl);
                 //}
                 //黑名单
-                if(IsBlockUser(AliPayAccount))
+                if (IsBlockUser(AliPayAccount))
                 {
                     return Redirect("https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=%E6%88%91%E9%94%99%E4%BA%86&oq=%25E6%2588%2591%25E8%25A6%2581%25E5%25A4%25A7%25E9%25A2%259D&rsv_pq=fdc9a37600011847&rsv_t=12bbtVESTOTvr2Vka6q3RaIFGkTv3u3HZMssQ3J0JYuez4Fx0Cqqzvj%2BxqM&rqlang=cn&rsv_enter=1&inputT=13704&rsv_sug3=49&rsv_sug1=46&rsv_sug7=100&bs=%E6%88%91%E8%A6%81%E5%A4%A7%E9%A2%9D");
                 }
@@ -1228,17 +1328,19 @@ namespace IQBPay.Controllers
                         }
                         //创建初始化订单
                         EOrderInfo order = payMag.InitOrder(qrUser, store,us,Convert.ToSingle(Amount),OrderType.Normal, AliPayAccount, ordernum,ui);
+                        if (!string.IsNullOrEmpty(BuyerPhone))
+                            order.BuyerMobilePhone = BuyerPhone;
 
-                        if(ui.UserRole != UserRole.DiamondAgent)
+                        if (ui.UserRole != UserRole.DiamondAgent)
                         {
                             if (!string.IsNullOrEmpty(qrUser.ParentOpenId) && qrUser.ParentOpenId!= "o3nwE0i_Z9mpbZ22KdOTWeALXaus")
                             {
                                
                                 order.ParentOpenId = qrUser.ParentOpenId;
                                 if(qrUser.QRType == QRReceiveType.Small)
-                                    order.ParentCommissionAmount = Convert.ToSingle((order.TotalAmount* GlobalConfig.ChildFixRate).ToString("0.00"));
+                                    order.ParentCommissionAmount = Convert.ToSingle((order.TotalAmount* GlobalConfig.ChildFixRate/100).ToString("0.00"));
                                 else
-                                    order.ParentCommissionAmount = Convert.ToSingle((order.TotalAmount * GlobalConfig.CCChildFixRate).ToString("0.00"));
+                                    order.ParentCommissionAmount = Convert.ToSingle((order.TotalAmount * GlobalConfig.CCChildFixRate/100).ToString("0.00"));
 
                                 string sql = string.Format("select parentOpenId from userinfo where openId='{0}'", qrUser.ParentOpenId);
                                 string L3OpenId =  db.Database.SqlQuery<string>(sql).FirstOrDefault();
@@ -1246,9 +1348,9 @@ namespace IQBPay.Controllers
                                 {
                                     order.L3OpenId = L3OpenId;
                                     if (qrUser.QRType == QRReceiveType.Small)
-                                        order.L3CommissionAmount = Convert.ToSingle((order.TotalAmount * GlobalConfig.ChildFixRate).ToString("0.00"));
+                                        order.L3CommissionAmount = Convert.ToSingle((order.TotalAmount * GlobalConfig.ChildFixRate/100).ToString("0.00"));
                                     else
-                                        order.L3CommissionAmount = Convert.ToSingle((order.TotalAmount * GlobalConfig.CCChildFixRate).ToString("0.00"));
+                                        order.L3CommissionAmount = Convert.ToSingle((order.TotalAmount * GlobalConfig.CCChildFixRate/100).ToString("0.00"));
                                 }
 
                             }

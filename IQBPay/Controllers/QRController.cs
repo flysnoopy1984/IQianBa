@@ -310,19 +310,19 @@ namespace IQBPay.Controllers
                         //entry.Property(t => t.NeedFollowUp).IsModified = true;
                         db.SaveChanges();
 
-                        if(origNum != 0 && curNum>origNum)
-                        {
-                            try
-                            {
-                                string accessToken = this.getAccessToken(true);
-                                PPInviteCodeNT notice = new PPInviteCodeNT(accessToken, origNum, curNum, updateQR.OwnnerOpenId);
-                                notice.Push();
-                            }
-                            catch(Exception ex)
-                            {
-                                Log.log(ex.Message);
-                            }
-                        }
+                        //if(origNum != 0 && curNum>origNum)
+                        //{
+                        //    try
+                        //    {
+                        //        string accessToken = this.getAccessToken(true);
+                        //        PPInviteCodeNT notice = new PPInviteCodeNT(accessToken, origNum, curNum, updateQR.OwnnerOpenId);
+                        //        notice.Push();
+                        //    }
+                        //    catch(Exception ex)
+                        //    {
+                        //        Log.log(ex.Message);
+                        //    }
+                        //}
                     }
                     else
                     {

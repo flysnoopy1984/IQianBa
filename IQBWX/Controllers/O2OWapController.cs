@@ -32,10 +32,11 @@ namespace IQBWX.Controllers
             {
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             }
-            if(string.IsNullOrEmpty(UserSession.AgentPhone))
-            {
-                return RedirectToAction("AgentInfoCheck");
-            }
+
+            //if(string.IsNullOrEmpty(UserSession.AgentPhone))
+            //{
+            //    return RedirectToAction("AgentInfoCheck");
+            //}
             EQRUser qrUser = null;
             using (AliPayContent db = new AliPayContent())
             {

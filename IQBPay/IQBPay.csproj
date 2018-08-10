@@ -623,6 +623,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AliPayController.cs" />
+    <Compile Include="Controllers\ExternalAPI\BuyerController.cs" />
     <Compile Include="Controllers\ExternalAPI\PPSMSController.cs" />
     <Compile Include="Controllers\ExternalAPI\QRAPIController.cs" />
     <Compile Include="Controllers\ExternalAPI\StoreAPIController.cs" />

@@ -128,7 +128,11 @@
     <Compile Include="IQBPay\Models\AccountPayment\EAgentCommission.cs" />
     <Compile Include="IQBPay\Models\AccountPayment\EPreTransfer.cs" />
     <Compile Include="IQBPay\Models\Error\EPrivilegeError.cs" />
+    <Compile Include="IQBPay\Models\FeeRate\FeeAdjustLog.cs" />
+    <Compile Include="IQBPay\Models\FeeRate\FeePolicy.cs" />
     <Compile Include="IQBPay\Models\InParameter\InAgentOverview.cs" />
+    <Compile Include="IQBPay\Models\InParameter\InBuyerTrans.cs" />
+    <Compile Include="IQBPay\Models\InParameter\InTransferAmountToBuyer.cs" />
     <Compile Include="IQBPay\Models\InParameter\InUserStore.cs" />
     <Compile Include="IQBPay\Models\Json\HashO2ODeliveryAddr.cs" />
     <Compile Include="IQBPay\Models\Json\InOrderReview.cs" />
@@ -173,7 +177,9 @@
     <Compile Include="IQBPay\Models\Page\PPayData.cs" />
     <Compile Include="IQBPay\Models\Page\PPaySelection.cs" />
     <Compile Include="IQBPay\Models\QR\EQRStoreAuth.cs" />
+    <Compile Include="IQBPay\Models\Report\Report_Order.cs" />
     <Compile Include="IQBPay\Models\Report\RPAgentPerformance.cs" />
+    <Compile Include="IQBPay\Models\Result\RBuyerTrans.cs" />
     <Compile Include="IQBPay\Models\Result\RQRStoreAuth.cs" />
     <Compile Include="IQBPay\Models\Result\RUserAccountBalance.cs" />
     <Compile Include="IQBPay\Models\Rules\EBenefitRule.cs" />
@@ -220,6 +226,7 @@
     <Compile Include="IQBPay\Models\Result\RUser_OrderSum.cs" />
     <Compile Include="IQBPay\Models\O2O\EO2ORule.cs" />
     <Compile Include="IQBPay\Models\Rules\EPayRule.cs" />
+    <Compile Include="IQBPay\Models\Simple\SFee.cs" />
     <Compile Include="IQBPay\Models\SMS\ESMSVerification.cs" />
     <Compile Include="IQBPay\Models\SMS\ESMSLog.cs" />
     <Compile Include="IQBPay\Models\SMS\SMSResult_API51.cs" />
@@ -241,6 +248,7 @@
     <Compile Include="IQBRecharge\Models\In\InOrder.cs" />
     <Compile Include="IQBWX\BaseEnum\IQBWxEnum.cs" />
     <Compile Include="IQBWX\Const\IQBWXConst.cs" />
+    <Compile Include="IQBWX\Models\InParameter\InPayInfo.cs" />
     <Compile Include="IQBWX\Models\InParameter\InQR.cs" />
     <Compile Include="IQBWX\Models\Json\WXMedia\JIMedia.cs" />
     <Compile Include="IQBWX\Models\Json\WXMedia\JOMedia.cs" />
@@ -259,6 +267,8 @@
     <Compile Include="IQBWX\Models\WX\Template\NewMemberReview\PPNewMemberReviewTemplate.cs" />
     <Compile Include="IQBWX\Models\WX\Template\NewMemberReview\PPNewMemberReviewNT.cs" />
     <Compile Include="IQBWX\Models\WX\Template\Notification.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\PaySuccessTellAdmin\PaySuccessTellAdminNT.cs" />
+    <Compile Include="IQBWX\Models\WX\Template\PaySuccessTellAdmin\PaySuccessTellAdminTemplate.cs" />
     <Compile Include="IQBWX\Models\WX\Template\PPOrderPayNT.cs" />
     <Compile Include="IQBWX\Models\WX\Template\PPOrderPayTemplate.cs" />
     <Compile Include="IQBWX\Models\WX\Template\ReviewRemind\PPReviewRemindNT.cs" />

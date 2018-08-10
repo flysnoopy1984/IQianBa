@@ -43,12 +43,17 @@ namespace WxPayAPI
         /// </summary>
         public WxPayData unifiedOrderResult { get; set; }
 
-        IQBLog log = null;
+        //IQBLog log = null;
 
         public JsApiPay(HttpContextBase context)
         {
             this.Context = context;
-            log = new IQBLog();
+           // log = new IQBLog();
+        }
+
+        public JsApiPay()
+        {
+
         }
 
 
@@ -176,24 +181,26 @@ namespace WxPayAPI
          * @return 统一下单结果
          * @失败时抛异常WxPayException
          */
-        public WxPayData GetUnifiedOrderResult(string body)
+        public WxPayData GetUnifiedOrderResult_YJ(string body,string notifyUrl,string OrderNo)
         {
             //统一下单
             WxPayData data = new WxPayData();
             data.SetValue("body", body);
-            data.SetValue("attach", "test");
-            data.SetValue("out_trade_no", WxPayApi.GenerateOutTradeNo());
+            data.SetValue("attach", "PPWXPay");
+            // data.SetValue("out_trade_no", WxPayApi.GenerateOutTradeNo());
+            data.SetValue("out_trade_no", OrderNo);
             data.SetValue("total_fee", total_fee);
             data.SetValue("time_start", DateTime.Now.ToString("yyyyMMddHHmmss"));
             data.SetValue("time_expire", DateTime.Now.AddMinutes(10).ToString("yyyyMMddHHmmss"));
-            data.SetValue("goods_tag", "test");
+            data.SetValue("goods_tag", "Item");
             data.SetValue("trade_type", "JSAPI");
+            data.SetValue("notify_url", notifyUrl);
             data.SetValue("openid", openid);
 
-            WxPayData result = WxPayApi.UnifiedOrder(data);
+            WxPayData result = WxPayApi.UnifiedOrder_YJ(data);
             if (!result.IsSet("appid") || !result.IsSet("prepay_id") || result.GetValue("prepay_id").ToString() == "")
             {
-                Log.Error(this.GetType().ToString(), "UnifiedOrder response error!");
+           //     Log.Error(this.GetType().ToString(), "UnifiedOrder response error!");
                 throw new WxPayException("UnifiedOrder response error!");
             }
 
@@ -257,14 +264,14 @@ namespace WxPayAPI
 
             string parameters = jsApiParam.ToJson();
 
-            Log.Debug(this.GetType().ToString(), "Get jsApiParam : " + parameters);
+           // Log.Debug(this.GetType().ToString(), "Get jsApiParam : " + parameters);
             return parameters;
         }
         
      
         public WxPayData GetJsApiParameters2()
         {
-            Log.Debug(this.GetType().ToString(), "JsApiPay::GetJsApiParam is processing...");
+          //  Log.Debug(this.GetType().ToString(), "JsApiPay::GetJsApiParam is processing...");
 
             WxPayData jsApiParam = new WxPayData();
             jsApiParam.SetValue("appId", unifiedOrderResult.GetValue("appid"));

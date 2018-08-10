@@ -414,6 +414,31 @@ namespace IQBCore.IQBPay.BLL
            
         }
 
+        public EOrderInfo InitWXOrder(string No,EQRUser qrUser,float TotalAmount,string phone)
+        {
+            EOrderInfo order = new EOrderInfo()
+            {
+                OrderNo = No,
+                OrderStatus = BaseEnum.OrderStatus.WaitingAliPayNotify,
+                QRUserId = qrUser.ID,
+                AgentName = qrUser.UserName,
+                AgentOpenId = qrUser.OpenId,
+                TotalAmount = TotalAmount,
+                Rate = qrUser.Rate,
+                RateAmount = (float)Math.Round(TotalAmount * (qrUser.Rate / 100), 2, MidpointRounding.AwayFromZero),
+                TransDate = DateTime.Now,
+                TransDateStr = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+
+                OrderType = OrderType.WX,
+
+                BuyerMarketRate = qrUser.MarketRate,
+                BuyerTransferAmount = (float)Math.Round(TotalAmount * (100 - qrUser.MarketRate) / 100, 2, MidpointRounding.AwayFromZero),
+                BuyerMobilePhone = phone
+                // BuyerAliPayAccount = AliPayAccount,
+            };
+            return order;
+        }
+
         public string PayF2F_ForR(EAliPayApplication app, string SellerId,string amount, ETool_QR qr,out ResultEnum status)
         {
             string result = "";

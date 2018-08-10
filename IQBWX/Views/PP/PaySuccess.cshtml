@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "支付成功";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
+}
+<style type="text/css">
+.Content
+{
+        /*height: 80vh;*/
+    /*display: flex;
+    flex-direction: column;
+    justify-content: center;*/
+}
+.PayTxt{
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 162px;
+    line-height: 48px;
+    height: 48px;
+    text-align: center;
+    font-size: 28px;
+    color: white;
+
+}
+
+.btnBar{
+     
+    text-align:center;
+}
+
+.InfoContainer{
+    position: relative;
+    height: 490px;
+    margin-top: 10px;
+    text-align:center;
+}
+
+  #imgLogo{
+      width:332px;
+      height:245px;
+  }
+#btnBack{
+        width:90%;
+        height:50px;
+        line-height:50px;
+        padding:0px !important;
+        font-size:16px !important;
+}
+.QR_ReceiveOrder{
+    width:200px;
+    height:200px;
+}
+.QRTitle{
+    font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+    color:#841111;
+    background-color:#ffe4c4;
+}
+</style>
+<script type="text/javascript">
+    function BackPay() {
+        var qrId = getUrlParam("qrId");
+        window.location.href = "/PP/WXPay?Id="+qrId;
+    }
+</script>
+<div class="Content">
+    
+    <div class="InfoContainer">
+        <img id="imgLogo" align="absmiddle" src="~/Content/images/PaySuccess.jpg" />
+        <div class="PayTxt">支付成功</div>
+        <div class="QRTitle">扫描以下二维码进行收款</div>
+        <div>
+            <img class="QR_ReceiveOrder" src="~/Content/images/ReceiveOrderEntry.png" />
+        </div>  
+    </div>
+   
+   
+</div>
+
+@*<div class="btnBar">
+    <input id="btnBack" type="button" class="btn btn-info" value="返回继续支付" onclick="BackPay();" />
+</div>*@
+

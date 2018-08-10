@@ -1,10 +1,15 @@
 ﻿using IQBCore.Common.Helper;
+using IQBCore.IQBPay.BLL;
+using IQBCore.IQBPay.Models.Order;
+using IQBCore.IQBPay.Models.QR;
 using IQBCore.IQBWX.BaseEnum;
 using IQBCore.IQBWX.Const;
+using IQBCore.IQBWX.Models.InParameter;
 using IQBWX.BLL;
 using IQBWX.BLL.NT;
 using IQBWX.Common;
 using IQBWX.DataBase;
+using IQBWX.DataBase.IQBPay;
 using IQBWX.Models.JsonData;
 using IQBWX.Models.Order;
 using IQBWX.Models.Product;
@@ -15,6 +20,7 @@ using IQBWX.Models.WX;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Transactions;
 using System.Web;
@@ -70,69 +76,6 @@ namespace IQBWX.Controllers
             log.log("GetAvailDeposit Result:" + Json(result));
             return Json(result);
         }
-
-//        [HttpPost]
-//        public ActionResult DoDepositTest()
-//        {
-//            WXError error = null;
-//            ROutPay result = new ROutPay();
-//            string wxResult;
-//            UserContent udb = new UserContent();
-//            TransContent tdb = new TransContent();
-
-//            try
-//            {
-//                string openId = this.GetOpenId(true);
-//                string oamt = Request["amt"];
-//                decimal amt;
-//                if (string.IsNullOrEmpty(oamt)) amt = 0;
-//                else amt = Convert.ToDecimal(oamt);
-//                if (amt <= 0)
-//                {
-//                    result.OutResult = -1;
-//                    result.ResultRemark = "余额不足不能提款";
-//                    return Json(result);
-//                }
-//                using (TransactionScope ts = new TransactionScope())
-//                {
-               
-//                    EPPayment epPay = new EPPayment();
-//                    //对于返回结果还是要判断下
-//                    wxResult = @"<xml>
-//<return_code><![CDATA[SUCCESS]]></return_code>
-//<return_msg><![CDATA[每个红包的平均金额必须在1.00元到200.00元之间.]]></return_msg>
-//<result_code><![CDATA[FAIL]]></result_code>
-//<err_code><![CDATA[MONEY_LIMIT]]></err_code>
-//<err_code_des><![CDATA[每个红包的平均金额必须在1.00元到200.00元之间.]]></err_code_des>
-//<mch_billno><![CDATA[1440325302201704281493369062]]></mch_billno>
-//<mch_id><![CDATA[1440325302]]></mch_id>
-//<wxappid><![CDATA[wx041fa0b86badb080]]></wxappid>
-//<re_openid><![CDATA[orKUAw16WK0BmflDLiBYsR-Kh5bE]]></re_openid>
-//<total_amount>10</total_amount>
-//</xml>";
-                    
-//                    error = epPay.GetResult(wxResult);
-              
-//                    ts.Complete();
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                result.OutResult = -2;
-//                result.ResultRemark = ex.Message + "- 请联系管理员";
-
-//                log.log("DoDeposit Error:" + ex.Message);
-//                log.log("DoDeposit StackTrace:" + ex.StackTrace);
-//            }
-//            finally
-//            {
-//                tdb.Dispose();
-//                udb.Dispose();
-
-//            }
-//            return Json(result);
-//        }
-
 
         [HttpPost]
         public ActionResult DoDeposit()
@@ -325,6 +268,77 @@ namespace IQBWX.Controllers
             return Json(objResult); 
         }
 
-      
+
+        public ActionResult PayNotify()
+        {
+            NLogHelper.InfoTxt("==============WXPayNotify=================");
+
+            return View();
+        }
+
+       
+        //public ActionResult WXLogin()
+        //{
+          
+        //    //return View();
+        //}
+
+        /// <summary>
+        /// 新版微信支付（微信公众好内支付）
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult WXPay(InPayInfo payInfo)
+        {
+         //   WxPayOrder result = new WxPayOrder();
+            
+            WxPayOrder wxOrder = null;
+            JsApiPay jsApiPay = new JsApiPay();
+
+            try
+            {
+                string notifyUrl = ConfigurationManager.AppSettings["Site_WX"] + "Pay/PayNotify";
+
+                jsApiPay.openid = payInfo.OpenId;
+                jsApiPay.total_fee = (int)payInfo.PayAmount*100;
+               
+                string OrderNo = WxPayApi.GenerateOutTradeNo();
+
+                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult_YJ(payInfo.ItemDes, notifyUrl, OrderNo);
+                WxPayData wxJsApiParam = jsApiPay.GetJsApiParameters2();
+
+                wxOrder = new WxPayOrder()
+                {
+                    appId = wxJsApiParam.GetValue("appId").ToString(),
+                    nonceStr = wxJsApiParam.GetValue("nonceStr").ToString(),
+                    package = wxJsApiParam.GetValue("package").ToString(),
+                    paySign = wxJsApiParam.GetValue("paySign").ToString(),
+                    signType = "MD5",
+                    timeStamp = wxJsApiParam.GetValue("timeStamp").ToString(),
+                    OrderNo = OrderNo,
+                    
+                };
+                using (AliPayContent db = new AliPayContent())
+                {
+                    EQRUser qrUser = db.DBQRUser.Where(a => a.ID == payInfo.QrId).FirstOrDefault();
+                    AliPayManager payMsg = new AliPayManager();
+                    EOrderInfo order = payMsg.InitWXOrder(OrderNo, qrUser, payInfo.PayAmount, payInfo.BuyerPhone);
+                    db.DBOrder.Add(order);
+
+                    db.SaveChanges();
+                }
+
+            }
+            catch(Exception ex)
+            {
+                wxOrder = new WxPayOrder()
+                {
+                    IsSuccess = false,
+                    ErrorMsg = ex.Message,
+                };
+            }
+
+            return Json(wxOrder);
+        }
     }
 }

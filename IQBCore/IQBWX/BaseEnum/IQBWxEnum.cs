@@ -43,6 +43,9 @@ namespace IQBCore.IQBWX.BaseEnum
         QRHugeQRUserMiss = 2004,
         QRHugeBlock = 2005,
 
+        NoStoreAuthorized = 2010,
+
+
         /// <summary>
         /// 客户端错误
         /// </summary>

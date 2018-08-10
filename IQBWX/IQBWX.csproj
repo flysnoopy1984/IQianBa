@@ -169,6 +169,7 @@
     <Content Include="Content\images\404_02.jpg" />
     <Content Include="Content\images\border.png" />
     <Content Include="Content\images\bQR.png" />
+    <Content Include="Content\images\CallCenter.jpg" />
     <Content Include="Content\images\daikuanchaoshi_03.jpg" />
     <Content Include="Content\images\daikuanchaoshi_05.jpg" />
     <Content Include="Content\images\daikuanchaoshi_07.jpg" />
@@ -228,12 +229,14 @@
     <Content Include="Content\images\O2O\x.png" />
     <Content Include="Content\images\pay-success.png" />
     <Content Include="Content\images\PayError1.jpg" />
+    <Content Include="Content\images\PaySuccess.jpg" />
     <Content Include="Content\images\PeopleGroup.png" />
     <Content Include="Content\images\Proj\cc.jpg" />
     <Content Include="Content\images\Proj\KK.jpg" />
     <Content Include="Content\images\Proj\PMY.jpg" />
     <Content Include="Content\images\Proj\WTPay.jpg" />
     <Content Include="Content\images\qrLoading.gif" />
+    <Content Include="Content\images\ReceiveOrderEntry.png" />
     <Content Include="Content\images\right.png" />
     <Content Include="Content\images\shengjihuiyuan_02.jpg" />
     <Content Include="Content\images\shengjihuiyuan_05.jpg" />
@@ -286,6 +289,7 @@
     <Content Include="Content\Script\IQBPay\O2O\AgentInfoCheck.js" />
     <Content Include="Content\Script\IQBPay\O2O\EntryAgent.js" />
     <Content Include="Content\Script\IQBPay\PaySelection.js" />
+    <Content Include="Content\Script\IQBPay\ReviewPaySuccess.js" />
     <Content Include="Content\Script\IQBPay\SMS.js" />
     <Content Include="Content\Script\IQBPay\Pay2.js" />
     <Content Include="Content\Script\IQBPay\PayWithAccount.js" />
@@ -298,6 +302,7 @@
     <Content Include="Content\Script\IQBPay\SysMain.js" />
     <Content Include="Content\Script\IQBPay\UserVerification.js" />
     <Content Include="Content\Script\Component\jquery.blockUI.min.js" />
+    <Content Include="Content\Script\IQBPay\WXPay.js" />
     <Content Include="Content\Script\jsCookie.js" />
     <Content Include="Content\Script\jsValidateHelper.js" />
     <Content Include="Content\Script\MemberInfo.js" />
@@ -342,24 +347,17 @@
     <Compile Include="Controllers\API\InitController.cs" />
     <Compile Include="Controllers\API\OutDataController.cs" />
     <Compile Include="Controllers\API\PageDataController.cs" />
+    <Compile Include="Controllers\API\PPAdminController.cs" />
     <Compile Include="Controllers\API\PPCusController.cs" />
     <Compile Include="Controllers\API\PPUserController.cs" />
     <Compile Include="Controllers\API\SMSController.cs" />
     <Compile Include="Controllers\API\UserStoreController.cs" />
-    <Compile Include="Controllers\API\WxSDK\Config.cs" />
-    <Compile Include="Controllers\API\WxSDK\Data.cs" />
-    <Compile Include="Controllers\API\WxSDK\Exception.cs" />
-    <Compile Include="Controllers\API\WxSDK\HttpService.cs" />
-    <Compile Include="Controllers\API\WxSDK\IQBConfig - 复制.cs" />
-    <Compile Include="Controllers\API\WxSDK\JsApiPay.cs" />
-    <Compile Include="Controllers\API\WxSDK\Log.cs" />
-    <Compile Include="Controllers\API\WxSDK\WxPayApi.cs" />
-    <Compile Include="Controllers\API\WxSDK\WXSign.cs" />
     <Compile Include="Controllers\Html5Controller.cs" />
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\IQBAsyncController.cs" />
     <Compile Include="Controllers\O2OWapController.cs" />
     <Compile Include="Controllers\PartyStoreController.cs" />
+    <Compile Include="Controllers\PPAdminController.cs" />
     <Compile Include="Controllers\PPController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UnionController.cs" />
@@ -517,6 +515,10 @@
     <Content Include="Views\PP\UserStoreInfo.cshtml" />
     <Content Include="Views\PP\NewMemberReview.cshtml" />
     <Content Include="Views\Test\NewMemberNT.cshtml" />
+    <Content Include="Views\Test\RateChangeNT.cshtml" />
+    <Content Include="Views\PP\WXPay.cshtml" />
+    <Content Include="Views\PP\PaySuccess.cshtml" />
+    <Content Include="Views\PPAdmin\ReviewPaySuccess.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

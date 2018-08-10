@@ -21,42 +21,42 @@ namespace IQBWX.BLL
         public WxPayOrder PostPay(HttpContextBase httpContext, EItemInfo item, string openId)
         {
            
-            WxPayOrder aOrder;
-            JsApiPay jsApiPay = new JsApiPay(httpContext);
+            WxPayOrder aOrder =null;
+            //JsApiPay jsApiPay = new JsApiPay(httpContext);
 
-            jsApiPay.openid = openId;
-            jsApiPay.total_fee = item.SalesPrice;
+            //jsApiPay.openid = openId;
+            //jsApiPay.total_fee = item.SalesPrice;
 
-            try
-            {
+            //try
+            //{
 
-                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult(item.Description);
-                WxPayData wxJsApiParam = jsApiPay.GetJsApiParameters2();
+            //    WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult(item.Description);
+            //    WxPayData wxJsApiParam = jsApiPay.GetJsApiParameters2();
 
-                aOrder = new WxPayOrder()
-                {
-                    appId = wxJsApiParam.GetValue("appId").ToString(),
-                    nonceStr = wxJsApiParam.GetValue("nonceStr").ToString(),
-                    package = wxJsApiParam.GetValue("package").ToString(),
-                    paySign = wxJsApiParam.GetValue("paySign").ToString(),
-                    signType = "MD5",
-                    timeStamp = wxJsApiParam.GetValue("timeStamp").ToString(),
+            //    aOrder = new WxPayOrder()
+            //    {
+            //        appId = wxJsApiParam.GetValue("appId").ToString(),
+            //        nonceStr = wxJsApiParam.GetValue("nonceStr").ToString(),
+            //        package = wxJsApiParam.GetValue("package").ToString(),
+            //        paySign = wxJsApiParam.GetValue("paySign").ToString(),
+            //        signType = "MD5",
+            //        timeStamp = wxJsApiParam.GetValue("timeStamp").ToString(),
 
-                };
-            }
-            catch
-            {
-                aOrder = new WxPayOrder()
-                {
-                    appId = "",
-                    nonceStr = "",
-                    package = "",
-                    paySign = "",
-                    timeStamp = "",
-                    signType = "MD5",
+            //    };
+            //}
+            //catch
+            //{
+            //    aOrder = new WxPayOrder()
+            //    {
+            //        appId = "",
+            //        nonceStr = "",
+            //        package = "",
+            //        paySign = "",
+            //        timeStamp = "",
+            //        signType = "MD5",
 
-                };
-            }
+            //    };
+            //}
             return aOrder;
         }
     }

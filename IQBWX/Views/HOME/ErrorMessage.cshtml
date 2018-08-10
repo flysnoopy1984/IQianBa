@@ -1,42 +1,60 @@
 ﻿@model IQBWX.Models.JsonData.jsonError
+
 @{
-    Layout = null;
+    ViewBag.Title = "错误页面";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="target-densitydpi=286, width=640, user-scalable=no" />
-    <title>错误页面</title>
-    <link href=@Url.Scrpit("~/Content/Css/MainCss.css") rel="stylesheet" />
-    <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
-    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
-    <script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
-    <script src="@Url.Scrpit("~/Content/Script/ErrorMessage.js")"></script>
-</head>
-<body>
+<script src="@Url.Scrpit("~/Content/Script/jsCommon.js")"></script>
+<script src="@Url.Scrpit("~/Content/Script/ErrorMessage.js")"></script>
     <style>
         body {
             background: #ffffff;
         }
+        .CallCenter{
+            text-align: center;
+            font-size: 16px;
+            color: #1A89EA;
+            height: 200px;
+            line-height:50px;
+            cursor:pointer;
+        }
+        .CallCenterImg
+        {
+            display:none;
+        }
+        .CallCenterImg img{
+            width:230px;
+            height:230px;
+        }
+        .ErrorMsg{
+            padding:30px; 
+            font-size:18px;
+            text-align:center;
+        }
     </style>
     <div class="mgz cen">
-        @if (Model.errorCode == 9999)
+        @if (Model.errorCode == (int)IQBCore.IQBWX.BaseEnum.Errorcode.SystemMaintain)
         {
-            <div class="mg2" style="margin-top:20px;">系统维护中</div>
+            <div class="ErrorMsg" style="margin-top:20px;">系统维护中</div>
         }
-            @*<div class="z404 mg2"><img style="width:100%;" align="absmiddle" src="@Url.Scrpit("~/Content/images/404_02.png")" /></div>*@
-        <div class="mg2 xi30 huang" style="padding:30px;">@Model.errorMsg</div>
+     
+        <div class="ErrorMsg">@Model.errorMsg</div>
 
         </div>
-   
-    <div class="yuecon1 mgz cen xi28 bai tm AlwaysBottom20" id="btnContainer">
-        <a id="goAction" href="@Model.btnUrl">@Model.btnText</a>
+@if (Model.errorCode == (int)IQBCore.IQBWX.BaseEnum.Errorcode.NoStoreAuthorized || 
+    Model.errorCode == (int)IQBCore.IQBWX.BaseEnum.Errorcode.NotAuthorized)
+{
+    <div class="CallCenter">
+        <div onclick="ShowCallCenter();">联系客服</div>
+        <div id="img_CallCenter" class="CallCenterImg"><img src="~/Content/images/CallCenter.jpg" /></div>
     </div>
-    <input type="hidden" id="errorCode" value="@Model.errorCode" />
-    <input type="hidden" id="urlToJM" value="" />
+}
+   
 
-</body>
-</html>
+<div class="yuecon1 mgz cen xi28 bai tm AlwaysBottom20" id="btnContainer">
+    <a id="goAction" href="@Model.btnUrl">@Model.btnText</a>
+</div>
+    
+<input type="hidden" id="errorCode" value="@Model.errorCode" />
+<input type="hidden" id="urlToJM" value="" />
+

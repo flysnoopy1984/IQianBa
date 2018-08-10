@@ -1,5 +1,29 @@
 ﻿{
   "button": [
+    //{
+    //  "name": "玉杰服务",
+    //  "sub_button": [
+
+    //    {
+    //      "type": "view",
+    //      "name": "大事件",
+    //      "url": "http://wx.iqianba.cn/PP/News"
+    //    }
+
+    //  ]
+    //},
+     // {
+    //  "name": "其他项目",
+    //  "sub_button": [
+
+    //    {
+    //      "type": "view",
+    //      "name": "O2O",
+    //      "url": "http://wx.iqianba.cn/o2owap/EntryAgent"
+    //    }
+
+    //  ]
+    //},
     {
       "name": "玉杰服务",
       "sub_button": [
@@ -51,7 +75,7 @@
     {
       "name": "团队管理",
       "sub_button": [
-         {
+        {
           "type": "view",
           "name": "我的团队",
           "url": "http://wx.iqianba.cn/PP/AgentList"

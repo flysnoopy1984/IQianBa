@@ -21,6 +21,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Linq.Expressions;
+using IQBCore.IQBPay.Models.Report;
 
 namespace IQBPay.DataBase
 {
@@ -73,6 +74,8 @@ namespace IQBPay.DataBase
 
 
         public DbSet<EUserStore> DBUserStore { get; set; }
+
+        public DbSet<EReport_Order> DBReportOrder { get; set; }
 
 
         #region Interface
@@ -275,8 +278,9 @@ namespace IQBPay.DataBase
             }
             catch (Exception ex)
             {
-                _log.log("UpdateQRUser Error :" + ex.Message);
-                _log.log("UpdateQRUser Error Inner :" + ex.InnerException.Message);
+                NLogHelper.ErrorTxt(string.Format("用户【{0}】注册错误：{1}", ui.OpenId, ex.Message));
+                //_log.log("UpdateQRUser Error :" + ex.Message);
+                //_log.log("UpdateQRUser Error Inner :" + ex.InnerException.Message);
             }
 
             return ui;

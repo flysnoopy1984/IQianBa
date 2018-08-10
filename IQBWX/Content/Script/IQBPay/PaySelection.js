@@ -1,11 +1,29 @@
 ﻿$(function () {
+    var FromClient = "";
+
     Init = function () {
 
         var openId = getUrlParam("Id");
-        if (openId == "" || openId==null)
+        if (openId == "" || openId == null)
+        {
             toPage("/Home/ErrorMessage?code=2000&ErrorMsg=没有获取中介身份，请联系管理员");
+        }
+           
 
         var url = "/api/pagedata/InitPaySelection";
+
+        FromClient = IsWeixinOrAlipay();
+
+        if (FromClient == "false") {
+            $(".boxInfo").hide();
+            $.alert({
+                title: '注意!',
+                content: '请从支付宝或微信扫码进入',
+            });
+
+            return;
+        }
+
         ShowBlock();
         
         $.ajax({
@@ -20,10 +38,10 @@
                         if(result[i].QRType == 2){
                             $("#liJY").on("click",{"Id":result[i].QRUserId,"t":result[i].QRType},toPay);
                         }
-                        else if (result[i].QRType == 1) {
+
+                        else if (result[i].QRType == 1 && FromClient == "Alipay") {
                             $("#liSJ").on("click", { "Id": result[i].QRUserId,"t":result[i].QRType },toPay);
                         }
-
                     })
                 }
                 else
@@ -44,10 +62,20 @@
     {
         var Id = e.data.Id;
         var type = e.data.t;
-        window.location.href = "/PP/Pay?Id=" + Id + "&t=" + type;
+      
+        if (FromClient == "WeiXin")
+        {
+            window.location.href = "/PP/WXPay?Id=" + Id + "&t=" + type;
+        }
+        else
+        {
+            window.location.href = "/PP/Pay?Id=" + Id + "&t=" + type;
+        }
+       
     }
     toPage = function (url) {
         window.location.href = url;
+        return;
     }
 
     ShowBlock = function () {

@@ -1,18 +1,27 @@
 ﻿{
-  "button": [
-    {
-      "name": "玉杰服务",
-      "sub_button": [
-
+  "button": [  
+      {
+      "name": "码商中心",
+      "sub_button": 
+      [
         {
           "type": "view",
-          "name": "大事件",
-          "url": "http://wx.iqianba.cn/PP/News"
+          "name": "码商信息",
+          "url": "http://wx.iqianba.cn/PP/UserStoreInfo"
+        },
+        {
+          "type": "view",
+          "name": "码商团队",
+          "url": "http://wx.iqianba.cn/PP/AgentList?type=us"
+        },
+        {
+          "type": "view",
+          "name": "码商入口",
+          "url": "http://wx.iqianba.cn/PP/StoreList"
         }
-
       ]
     },
-     {
+    {
       "name": "代理中心",
       "sub_button": [
         {
@@ -20,7 +29,7 @@
           "name": "我的账户",
           "url": "http://wx.iqianba.cn/PP/AgentAccount"
         },
-         {
+        {
           "type": "view",
           "name": "费率设置",
           "url": "http://wx.iqianba.cn/PP/Agent_QR_ARList"
@@ -35,40 +44,15 @@
           "name": "代理团队",
           "url": "http://wx.iqianba.cn/PP/AgentList?type=ag"
         },
-         {
+        {
           "type": "view",
           "name": "代理邀请码",
           "url": "http://wx.iqianba.cn/PP/InviteCode?type=ag"
         }
 
       ]
-    },
-     {
-      "name": "码商中心",
-      "sub_button": 
-      [
-        {
-          "type": "view",
-          "name": "码商信息",
-          "url": "http://wx.iqianba.cn/PP/UserStoreInfo"
-        },
-        {
-          "type": "view",
-          "name": "码商邀请码",
-          "url": "http://wx.iqianba.cn/PP/InviteCode?type=us"
-        },
-        {
-          "type": "view",
-          "name": "码商团队",
-          "url": "http://wx.iqianba.cn/PP/AgentList?type=us"
-        },
-        {
-          "type": "view",
-          "name": "码商入口",
-          "url": "http://wx.iqianba.cn/PP/StoreList"
-        }
-      ]
     }
-  
+
+
   ]
 }

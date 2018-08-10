@@ -309,9 +309,15 @@ namespace IQBCore.IQBPay.BaseEnum
         Paid =1,
 
         /// <summary>
+        /// 等待系统打款（人工检查账户，确保有资金可打款）
+        /// </summary>
+        WaitingSysPay = 10,
+
+        /// <summary>
         /// 成功交易
         /// </summary>
         Closed= 2,
+
 
         
         /// <summary>
@@ -335,6 +341,10 @@ namespace IQBCore.IQBPay.BaseEnum
         Normal=1,
         Huge = 4,
         UnKnow=-1,
+        /// <summary>
+        /// 微信信用卡
+        /// </summary>
+        WX = 10,
         All = 99,
     }
 

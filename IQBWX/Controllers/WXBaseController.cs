@@ -234,9 +234,9 @@ namespace IQBWX.Controllers
 
 
             //Jacky
-           // if (isDev) return "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
+            if (isDev) return "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
              //平台
-            if (isDev) return "o3nwE0jrONff65oS-_W96ErKcaa0";
+         //   if (isDev) return "o3nwE0jrONff65oS-_W96ErKcaa0";
 
             string openId = (string)Session[IQBWXConst.SessionOpenId];
             if (string.IsNullOrEmpty(openId))

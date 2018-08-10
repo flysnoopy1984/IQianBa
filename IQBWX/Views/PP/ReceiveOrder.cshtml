@@ -1,36 +1,87 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+    ViewBag.Title = "收款页面";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
+<link href="@ViewBag.ppUrl/Content/Component/IQBScroll.css" rel="stylesheet" />
+<script src="@ViewBag.ppUrl/scripts/Component/IQB/IQBScroll.js" type="text/javascript"></script>
 
-<!DOCTYPE html>
+<script src="~/Content/Script/Component/jquery.blockUI.min.js"></script>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>收货确认</title>
-    <link href="@Url.Scrpit("~/Content/Css/MainCss.css")" rel="stylesheet" />
-    <link href="@Url.Scrpit("~/Content/Css/ReceiveOrder.css")" rel="stylesheet" />
-    <link href="@Url.Scrpit("~/Content/Css/PP.css")" rel="stylesheet" />
-    <script src="@Url.Scrpit("~/Content/Script/jquery-1.10.2.min.js")"></script>
-    <script src="@Url.Scrpit("~/Content/Script/IQBPay/ReceiveOrder.js")"></script>
-  
-</head>
-<body>
-    <div class="CC title">收货确认</div>
-    <div class="CC">
-        <label>收款码：</label>
-        <div style="display:inline;">
-            <input id="ReceiveNo" type="text" class="EditInput" style="font-size:30px!important;width:80%; height:50px!important;">   
-        </div>
-        <div style="margin-top:10px;text-align:center;">
-            <button type="button" class="btn btn-primary QueryButton" id="btnQuery" onclick="Query();">查询</button>
+<link href="@Url.Scrpit("~/Content/Css/ReceiveOrder.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/Content/Script/IQBPay/ReceiveOrder.js")"></script>
+
+<style type="text/css">
+    .sr-only {
+        color: white;
+        clip: unset;
+        width: 100%;
+        height: 20px;
+        left: 0px;
+    }
+</style>
+
+<div class="Title">
+    用户收款<span class="Header_CallCenter"><a href="">联系客服</a></span>
+</div>
+<div class="PageContent">
+
+    <div>
+        <label class="PhoneLabel">您的手机号：</label>
+        <div class="InfoRow">
+            <input id="PhoneNo" type="tel" value="@ViewBag.Phone" class="EditInput" placeholder="请输入您支付所用的手机号">
+            <input type="button"  class="btn btn-warning" id="btnConfirmPhone" value="确定" onclick="ConfirmPhone();">
         </div>
     </div>
-    <ul class="ULList" id="ROList">
-        <li id="ROProcess" style="display:none;">
-            <div>查询中,请稍等...</div>
-        </li>
-    </ul> 
-</body>
-</html>
+    <div id="BuyerAccountArea">
+        <label class="PhoneLabel">您的【支付宝】收款账户：</label>
+        <div class="InfoRow">
+            <input id="AlipayAccount" type="text" value="@ViewBag.AliAccount" class="EditInput" placeholder="请输入您的支付宝账户" />
+            <input type="button" class="btn btn-primary" id="btnConfirmAccount" value="确定" onclick="ComfirmAccount();" />
+        </div>
+    </div>
+    <div id="StartArea">
+        <button type="button" class="btn btn-success" id="btnQuery" onclick="StartQuery(null);">查询所有已支付订单</button>
+    </div>
+     
+    <div class="DataContent" id="Detail">
+        <table class="table" id="DataTable">
+            <tbody>
+                @*<tr>
+                    <td>
+                        <div class="lineRow">
+                            <div class="lineRow_content">
+                                <div class="PayValue">收款金额：<span class="AmtValue">192921.11</span></div>
+                                <div class="PayDate">支付日期：2018-2-1</div>
+                            </div>
+                           
+                            <div class="lineRow_op">
+                               状态：<span class="StatusValue">处理中</span>
+                            </div>
+                        </div>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="lineRow">
+                            <div class="lineRow_content">
+                                <div class="PayValue">收款金额：<span class="AmtValue">192921.11</span></div>
+                                <div class="PayDate">支付日期：2018-2-1</div>
+                                
+                            </div>
+
+                            <div class="lineRow_op">
+                                <input type="button" class="btn btn-danger" value="收款"/>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>*@
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+

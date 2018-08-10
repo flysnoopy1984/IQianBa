@@ -63,6 +63,9 @@ namespace IQBWX.Models.JsonData
                 case Errorcode.NotAuthorized:
                     obj.errorMsg = "您没有权限！";
                     break;
+                case Errorcode.NoStoreAuthorized:
+                    obj.errorMsg = "码商需要联系平台单独开通！";
+                    break;
                 case Errorcode.AliPay_PayError:
                     obj.btnText = "返回支付";
                     obj.errorMsg = errorMsg;

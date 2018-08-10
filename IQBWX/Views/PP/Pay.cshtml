@@ -99,7 +99,17 @@ input:focus {
   outline: none !important;
   border-color: #cfdc00 !important;
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.4) !important;
-  border-radius: 5px !important;
+  border-radius: 0px !important;
+}
+.info{
+    font-size:22px;
+    text-align:center;
+   color:#FE8642;
+   height:40px;
+   line-height:40px;
+}
+#phone_num{
+    height:42px;
 }
 
 </style>
@@ -108,7 +118,18 @@ input:focus {
     <div>收银台</div>
 </div>
 <div class="Content">
-     
+    @if (Model.QRType == IQBCore.IQBPay.BaseEnum.QRReceiveType.CreditCard)
+    {
+        <div class="info">
+            有效金额区间[20-5000]
+        </div>
+    }
+    @if (Model.QRType == IQBCore.IQBPay.BaseEnum.QRReceiveType.Small)
+    {
+        <div class="info">
+            有效金额区间[20-299]
+        </div>
+    }
    <div class="PayArea">
        <div>付款金额(元)</div>
        <div class="PayAmount">
@@ -117,19 +138,6 @@ input:focus {
        </div>
    </div>
 
-    @*<div id="PhoneArea">
-        <!-- 获取验证码 -->
-        <div id="get_phone_check" class="get_phone_check">
-            <input id="phone_num" type="text" placeholder="请输入手机号" class="form-control get_phone_check_input" />
-            <button type="button" class="btn btn-warning get_phone_btn" id="btn_GetVerifyCode">获取验证码</button>
-            <input type="button" class="btn btn-warning get_phone_btn" id="btn_Confirm" onclick="ConfirmPhone();" value="确定" />
-        </div>
-        <!-- 确认验证 -->
-        <div id="verify_phone_check">
-            <input id="code_num" type="text" placeholder="请输入验证码" class="form-control get_phone_check_input" />
-            <button type="button" class="btn btn-success get_code_btn" id="btn_ConfirmVerifyCode">确认验证</button>
-        </div>
-    </div>*@
     <div class="payinfo">
         <table cellspacing="0" cellpadding="0" id="numTable">
             <tr>
@@ -163,7 +171,6 @@ input:focus {
             </tr>
         </table>
     </div>
- 
 
 </div>
 
@@ -182,11 +189,9 @@ input:focus {
     </div>
 </div>
 
-
 <input type="hidden" id="qrUserId" value="@Model.qrId" />
 <input type="hidden" id="hMarketRate" value="@Model.MarketRate" />
 <input type="hidden" id="hRate" value="@Model.Rate" />
-<input type="hidden" id="hPhone" value="" />
-@*<input type="hidden" id="QRMin" value="@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMin" />
-<input type="hidden" id="QRMax" value="@IQBWX.Controllers.WXBaseController.GlobalConfig.QRMax" />*@
+<input type="hidden" id="hPhone" value="@Model.BuyerPhone" />
+    
 

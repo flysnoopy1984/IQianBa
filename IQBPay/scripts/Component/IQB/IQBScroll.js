@@ -26,9 +26,9 @@
            // console.log("status:"+me.status);
             if (me.status == 0)
             {
-                console.log("window Height:" + $(window).outerHeight(true));
-                console.log("document Height:" + $(document).outerHeight(true));
-                console.log($(document).scrollTop());
+                //console.log("window Height:" + $(window).outerHeight(true));
+                //console.log("document Height:" + $(document).outerHeight(true));
+                //console.log($(document).scrollTop());
 
                 var winHeight = $(window).outerHeight(true);
                 var docHeight = $(document).outerHeight(true)

@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
 <style type="text/css">
-    .o2o_warn {
+.o2o_warn {
   background-color: #ffe1d5;
   font-size: 12px;
   color: #333333;
@@ -50,9 +50,11 @@
     height:40px;
     line-height:40px;
 }
-
-
 </style>
+
+<link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
+<script src="~/Content/Script/Component/jquery-confirm.js"></script>
+
 <script src="~/Content/Script/Component/jquery.blockUI.min.js"></script>
 <script src="@Url.Scrpit("~/Content/Script/IQBPay/PaySelection.js")"></script>
 
@@ -64,6 +66,6 @@
           信用卡           
         </li>
         
-        <li id="liSJ" class="list-group-item item" style="background-color:#6c8ffb">小额码</li>
+        @*<li id="liSJ" class="list-group-item item" style="background-color:#6c8ffb">花呗</li>*@
     </ul>
 </div>
