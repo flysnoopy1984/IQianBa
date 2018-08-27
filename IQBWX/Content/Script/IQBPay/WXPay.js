@@ -33,11 +33,11 @@
 
         var amt = parseFloat($("#paymoney").text());
 
-        if (amt == null || amt == "" || amt <=0 || isNaN(amt)) {
+        if (amt == null || amt == "" || amt <=10 || isNaN(amt)) {
             $.alert({
                 theme: "material",
                 title: "错误",
-                content: "<div style='font-size:14px !important;'>金额不能为空或小于0元</div>",
+                content: "<div style='font-size:14px !important;'>金额不能为空或小于10元</div>",
             });
             return false;
         }
@@ -77,15 +77,15 @@
             content: info.html(),
             columnClass: "col-md-2",
             buttons: {
-                Cancel: {
-                    btnClass: 'btn btn-info',
-                    text: "那算了吧",
-                    action: function () {
-                    }
-                },
+                //Cancel: {
+                //    btnClass: 'btn btn-info',
+                //    text: "那算了吧",
+                //    action: function () {
+                //    }
+                //},
                 Know: {
                     btnClass: 'btn btn-danger',
-                    text: "确定支付",
+                    text: "知道了",
                     action: function () {
                         DoWxPay(amt);
                     }
@@ -127,6 +127,10 @@
 
         //window.location.href = "/PP/PaySuccess?qrId=181&No=aaaaa";
         //return;
+        var Id = getUrlParam("Id");
+        $("#goReceiveOrderPage").attr("href", "/PP/ReceiveOrder?Id=" + Id);
+
+       
 
         if ($("#hPhone").val() == "") {
             //var PhoneArea = $("#PhoneArea");
@@ -147,7 +151,8 @@
 
                         Init();
                     }
-                    dialog = null;
+                    else
+                        dialog = null;
 
                 },
                 onOpen: function () {
@@ -259,6 +264,8 @@
         });
     }
 
+   
+
     /*SMS begin*/
     BeforeSMS = function () {
         StartBlockUI("信息验证中..");
@@ -323,6 +330,12 @@
     /*SMS end*/
 
     Init();
+
+    window.onpageshow = function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    }
 
     $("#btnPay").on("click", PrePay);
 })

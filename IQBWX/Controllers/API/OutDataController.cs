@@ -14,15 +14,15 @@ namespace IQBWX.Controllers.API
         {
             WXBaseController.GlobalConfig = null;
             WXBaseController.RefreshSession = true;
-            IQBLog log = new IQBLog();
-            log.log("RefreshGlobelConfig");
+            //IQBLog log = new IQBLog();
+            //log.log("RefreshGlobelConfig");
         }
 
         public void RefreshSession()
         {
             WXBaseController.RefreshSession = true;
-            IQBLog log = new IQBLog();
-            log.log("RefreshSession");
+            //IQBLog log = new IQBLog();
+            //log.log("RefreshSession");
         }
     }
 

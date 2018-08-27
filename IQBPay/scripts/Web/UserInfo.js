@@ -377,7 +377,7 @@ function CreateOrUpdateQRCC() {
     var QRCC_FeeRate = $("#QRCC_Rate").val();
     var QRCC_MarketRate = $("#QRCC_MarketRate").val();
 
-    var Rate = parseFloat(QRCC_MarketRate) - parseFloat(QRCC_FeeRate);
+  //  var Rate = parseFloat(QRCC_MarketRate) - parseFloat(QRCC_FeeRate);
     if (QRCC_FeeRate == 0 || QRCC_MarketRate == 0) {
         alert("值不能为空或0");
         return;
@@ -385,7 +385,7 @@ function CreateOrUpdateQRCC() {
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "OpenId": OpenId, "Rate": Rate, "marketRate": QRCC_MarketRate },
+        data: { "OpenId": OpenId, "Rate": QRCC_FeeRate, "marketRate": QRCC_MarketRate },
         url: url,
         success: function (data) {
             if (data.IsSuccess) {

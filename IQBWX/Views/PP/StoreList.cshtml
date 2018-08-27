@@ -5,7 +5,7 @@
 }
 
 <script src="~/Content/Script/Component/jquery.blockUI.min.js"></script>
-
+<script src="~/Content/Script/jsCommon.js"></script>
 <link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
 <script src="~/Content/Script/Component/jquery-confirm.js"></script>
 
@@ -120,7 +120,9 @@
 
 <div id="PageList">
     <div class="Title">
-        商户列表
+        <div>
+            应用:<select id="AppList" onchange="Query()"></select>
+        </div>
         <div>
             <input type="button" class="btn btn-primary btn_small" value="新增商户" id="btnNew" onclick="ToInfoPage(-1);" />
         </div>
@@ -156,6 +158,7 @@
         <div>
             <a href="javascript:ToListPage();"><<返回列表</a>
         </div>
+       
        <div style="width:60px;">
            <input type="button" id="btnDelete" class="btn btn-danger btnDelete" value="删除店铺"  onclick="Delete();"/>
        </div>

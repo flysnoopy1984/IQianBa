@@ -29,8 +29,11 @@ namespace IQBPay.Controllers.ExternalAPI
             ETransferAmount tranfer = null;
             EOrderInfo order = null;
             EReport_Order _ReportOrder = new EReport_Order();
+           
             try
             {
+              
+               // base.ActionContext.Response.Headers.Server["Access-Control-Allow-Origin"] = "http:localhost:8080/";
                 using (AliPayContent db = new AliPayContent())
                 {
                     order = db.DBOrder.Where(a => a.OrderNo == InParameter.OrderNo).FirstOrDefault();
@@ -39,6 +42,7 @@ namespace IQBPay.Controllers.ExternalAPI
                     else
                     {
                         order.BuyerAliPayAccount = InParameter.AliAccount;
+                       
                         tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App, BaseController.SubApp, null, ref order, 0, null, BaseController.GlobalConfig);
                         if (tranfer.TransferStatus == TransferStatus.Success)
                         {
@@ -46,8 +50,7 @@ namespace IQBPay.Controllers.ExternalAPI
                             db.DBTransferAmount.Add(tranfer);
 
                             AliPayController payController = new AliPayController();
-                            payController.UpdateUserBalance(db, order.AgentOpenId, order.RateAmount, TransactionType.Agent_Order_Comm, _ReportOrder);
-
+                            payController.UpdateUserBalance(db, order.AgentOpenId, order.RateAmount, TransactionType.Agent_Order_Comm,ref _ReportOrder);
 
                             _ReportOrder.BuyerInCome = tranfer.TransferAmount;
                             _ReportOrder.BuyerPhone = order.BuyerMobilePhone;
@@ -58,7 +61,7 @@ namespace IQBPay.Controllers.ExternalAPI
                             _ReportOrder.OrderNo = order.OrderNo;
                             _ReportOrder.OrderAmount = order.TotalAmount;
                             _ReportOrder.CaluPPInCome();
-
+                            
                             db.DBReportOrder.Add(_ReportOrder);
 
                             db.SaveChanges();

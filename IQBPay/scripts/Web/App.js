@@ -50,12 +50,24 @@ function Init(Id) {
 function generateData(result) {
     var strCtrl = "";
     $.each(result, function (i) {
+
+        var SupportHuaBei ="";
+        var SupportTransfer = "";
+
+        if (result[i].SupportHuaBei) SupportHuaBei = "支持";
+        else SupportHuaBei = "不";
+
+        if (result[i].SupportTransfer) SupportTransfer = "支持";
+        else SupportTransfer = "不";
+
         strCtrl = "";
         strCtrl += "<tr>";
         strCtrl += "<td>" + result[i].AppId + "</td>";
         strCtrl += "<td>" + result[i].AppName + "</td>";
         strCtrl += "<td>" + result[i].IsCurrent + "</td>";
         strCtrl += "<td>" + result[i].IsSubAccount + "</td>";
+        strCtrl += "<td>" + SupportHuaBei + "</td>";
+        strCtrl += "<td>" + SupportTransfer + "</td>";
         strCtrl += "<td><a href='/Main/AppInfo?id=" + result[i].ID + "' class='td'>详情</a>";
         strCtrl += "</tr>";
 
@@ -86,6 +98,9 @@ function InitFormData(result) {
     $("#IsCurrent").attr("checked", result.IsCurrent);
 
     $("#IsSubAccount").attr("checked", result.IsSubAccount);
+
+    $("#SupportHuaBei").attr("checked", result.SupportHuaBei);
+    $("#SupportTransfer").attr("checked", result.SupportTransfer);
 
     $("#AuthUrl_Store").val(result.AuthUrl_Store);
 
@@ -135,10 +150,22 @@ function Save() {
         url = "/Main/UpdateApp";
     }
 
+    var SupportHuaBei = $("#SupportHuaBei").get(0).checked;
+    var SupportTransfer = $("#SupportTransfer").get(0).checked;
+   
+
     $.ajax({
         type: 'post',
         dataType: "json",
-        data: { "ID": Id, "AppId": AppId, "AppName": AppName, "AuthUrl_Store": AuthUrl_Store, "ServerUrl": ServerUrl, "Merchant_Private_Key": Private_Key, "Merchant_Public_key": Public_Key, "Version": Version, "SignType": SignType, "Charset": Charset, "RecordStatus": AppStatus, "IsCurrent": IsCurrent, "IsSubAccount": IsSubAccount },
+        data: {
+            "ID": Id, "AppId": AppId, "AppName": AppName,
+            "AuthUrl_Store": AuthUrl_Store, "ServerUrl": ServerUrl,
+            "Merchant_Private_Key": Private_Key, "Merchant_Public_key": Public_Key,
+            "Version": Version, "SignType": SignType, "Charset": Charset,
+            "RecordStatus": AppStatus,
+            "IsCurrent": IsCurrent, "IsSubAccount": IsSubAccount,
+            "SupportHuaBei": SupportHuaBei, "SupportTransfer": SupportTransfer,
+        },
         url: url,
         success: function (data) {
             if (data == "OK") {

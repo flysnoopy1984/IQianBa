@@ -11,7 +11,8 @@ namespace IQBConsole
     class Program
     {
         static PPBatchJob job = new PPBatchJob();
-       
+        static PayTest payTest = new PayTest();
+
         static int _OrderDiffMin = 90;
         static int _interval = 60;
 
@@ -31,7 +32,10 @@ namespace IQBConsole
                 //  job.ChangeReceiveQR();
                 // job.UpdateAgentRate();
                 //  job.Test();
-                job.WXNTPayTellAdmin("o3nwE0qI_cOkirmh_qbGGG-5G6B0");
+                //job.WXNTPayTellAdmin("o3nwE0qI_cOkirmh_qbGGG-5G6B0");
+                //job.UpdateAgentForSpecial();
+
+                payTest.Pay();
                 Console.Read();
 
             }

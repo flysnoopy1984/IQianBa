@@ -14,13 +14,15 @@
   color:#ff6a00;
   border-bottom:1px dashed #c7c7c7;
 }
-.Header_CallCenter{
-        
-    font-size:10px;
-    position:absolute;
-    right:10px;
-    z-index:999;
-    top:0px;
+.Header_CallCenter{  
+    font-size: 12px;
+    position: absolute;
+    right: 10px;
+    z-index: 999;
+    top: 0px;
+    width: 80px;
+    text-align: center;
+    color: #1b5fab;
 }
 
 
@@ -119,4 +121,5 @@ input:focus {
 .StatusValue_Closed{
      color: gray;
 }
+
 

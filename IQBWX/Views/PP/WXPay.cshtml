@@ -119,16 +119,37 @@
     .pay{
             background-color: #81D741;
     }
+    .Notification{
+        font-size: 18px;
+        height: 60px;
+        line-height: 30px;
+        padding: 10px;
+        color: #188208;
+    }
+    .Payinfo{
+        text-align:left;
+        color:#188208;
+        height:200px;
+
+    }
+    .InfoRow{
+           height: 40px;
+    line-height: 24px;
+    }
+    
 </style>
 <div class="TitleDesArea">
     <div style="align-self: flex-start;">【@Model.Name】</div>
     <div>收银台</div>
+    
 </div>
 <div class="Content">
     @*<div class="info">
         有效金额区间[20-5000]
     </div>*@
-   
+    <div class="Notification">
+        微信支付，不自动回款，请点击<br /><a id="goReceiveOrderPage">此地址进行收款操作</a>.
+    </div>
     <div class="PayArea">
         <div>付款金额(元)</div>
         <div class="PayAmount">
@@ -173,7 +194,19 @@
 
 </div>
 
-<div id="Info">
+<div id="Info" style="height:320px;">
+    <div  class="Payinfo">
+        微信支付，不支持自动回款。您可选择以下回款方式：<br /><br />
+        <div class="InfoRow">
+            1.点击支付界面金额上方的地址链接
+        </div>
+        <div class="InfoRow">
+            2.支付完成后，将出现回款二维码，扫码进入。
+        </div>
+
+    </div>
+</div>
+@*<div id="Info">
     <div class="InfoRow">
         <div class="fn">您将支付：</div><div class="fv" id="PayVal"></div>
     </div>
@@ -186,7 +219,7 @@
     <div class="InfoRow">
         <div class="fn">实际收入：</div><div class="fv RealGet" id="RealGet"></div>
     </div>
-</div>
+</div>*@
 
 <input type="hidden" id="qrUserId" value="@Model.qrId" />
 <input type="hidden" id="hMarketRate" value="@Model.MarketRate" />

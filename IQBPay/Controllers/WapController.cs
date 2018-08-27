@@ -59,15 +59,9 @@ namespace IQBPay.Controllers
                     {
                         return Content("Error: No QR Find!请联系管理员");
                     }
-                    if (qr.APPId == BaseController.App.AppId)
-                    {
-                        app = BaseController.App;
-                    }
-                    else if (qr.APPId == BaseController.SubApp.AppId)
-                    {
-                        app = BaseController.SubApp;
-                    }
-                    else
+                    app = db.DBAliPayApp.Where(a => a.AppId == qr.APPId).FirstOrDefault();
+                   
+                    if(app == null)
                     {
                         return Content("Error: 二维码没有对应的应用!请联系管理员");
                     }
@@ -79,9 +73,9 @@ namespace IQBPay.Controllers
                 return Content("Error: No Id Comming!请联系管理员");
             }
 
-        
-           
-            return Redirect(app.AuthUrl_Store + "&Id=" + Id); 
+            var authUrl = app.AuthUrl_Store + "&Id=" + Id;
+            NLogHelper.InfoTxt("AuthUrl:" + authUrl);
+            return Redirect(authUrl); 
             //return Content("OK");
 
         }

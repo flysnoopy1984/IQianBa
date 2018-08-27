@@ -742,7 +742,7 @@
     <Content Include="Views\Store\StoreTransSum.cshtml" />
     <Content Include="Views\Wap\MyReceiveQR.cshtml" />
     <Content Include="Views\Main\Message.cshtml" />
-    <Content Include="Views\Test\Login.cshtml" />
+    <Content Include="Views\Test\Login2.cshtml" />
     <Content Include="Views\AliPay\QRUserImg.cshtml" />
     <Content Include="Views\Test\Tool_RPay.cshtml" />
     <Content Include="Views\Test\JF.cshtml" />

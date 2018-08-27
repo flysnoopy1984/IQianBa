@@ -5,6 +5,9 @@
 <link href="@ViewBag.ppUrl/Content/Component/IQBScroll.css" rel="stylesheet" />
 <script src="@ViewBag.ppUrl/scripts/Component/IQB/IQBScroll.js" type="text/javascript"></script>
 
+<link href="~/Content/Css/Component/jquery-confirm.css" rel="stylesheet" />
+<script src="~/Content/Script/Component/jquery-confirm.js"></script>
+
 <script src="~/Content/Script/Component/jquery.blockUI.min.js"></script>
 
 <link href="@Url.Scrpit("~/Content/Css/ReceiveOrder.css")" rel="stylesheet" />
@@ -21,10 +24,10 @@
 </style>
 
 <div class="Title">
-    用户收款<span class="Header_CallCenter"><a href="">联系客服</a></span>
+    用户收款<span class="Header_CallCenter" onclick="ShowCallCenter();">联系客服</span>
 </div>
 <div class="PageContent">
-
+    
     <div>
         <label class="PhoneLabel">您的手机号：</label>
         <div class="InfoRow">

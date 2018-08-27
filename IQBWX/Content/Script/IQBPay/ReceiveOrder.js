@@ -156,6 +156,7 @@
         });
     }
 
+    //确认收款账户
     ComfirmAccount = function () {
         var phone = $("#PhoneNo").val();
         if (phone == "") {
@@ -201,6 +202,7 @@
         $.ajax({
             type: 'post',
             url: url,
+            dataType: "json",
             data:{
                 "OrderNo": OrderNo,
                 "AliAccount": AliAccount
@@ -211,14 +213,17 @@
                 if (res.IsSuccess) {
                     $("#StartArea").show();
                     $("#btnConfirmAccount").val("修改");
+                    alert("收款成功!");
+                    window.location.reload();
                 }
                 else
                     alert(res.ErrorMsg);
                
             },
-            error: function (xhr, type) {
+            error: function (xhr,ajaxOptions,thrownError) {
                 $.unblockUI();
-                alert('失败，请联系客服');
+                window.location.reload();
+              //  alert('失败，请联系客服');
                
             }
         });
@@ -239,6 +244,30 @@
     }
 
     Init();
+
+    ShowCallCenter = function () {
+        var html = '<div><img src="/Content/images/CallCenter2.jpg" /></div>';
+
+        $.confirm({
+            theme: "modern",
+            title: '扫码联系客服',
+            type: 'red',
+            content: html,
+            columnClass: "col-md-2",
+            buttons: {
+                Cancel: {
+                    btnClass: 'btn btn-danger',
+                    text: "关闭",
+                    action: function () {
+                       
+
+                    }
+                },
+
+            }
+        });
+        return false;
+    }
 
 });
 

@@ -170,14 +170,14 @@
                     text: '没有问题',
                     action: function () {
                        
-                        TransferToAgent();
+                        TransferToAgent(v,minAmt);
                     }
                 }
             }
         });  
     }
 
-    TransferToAgent = function () {
+    TransferToAgent = function (v,minAmt) {
         StartBlockUI("提现处理中..");
         
         var url = "/PP/TransferAmoutToAgent";

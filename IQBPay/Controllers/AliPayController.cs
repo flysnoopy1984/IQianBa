@@ -44,6 +44,8 @@ namespace IQBPay.Controllers
 {
     public class AliPayController : BaseController
     {
+
+
         private string privateKey = "MIIEowIBAAKCAQEAwHKeFBun6j3+wQwcgmAoCG7f/TWU1ST+iTKT/oImEiyNOEGrwel3D0TI8/qmeKWVS0u/lKraICRWmIuvd0p8IO5ab3jgYxBJb88NoSCHF8QbZ46BwyLFPc+SdbEvs0VAtyLE4iVzRcBmTHqpo7gt7Ga9MAmaV+x1WUNyiLgxgZqJYQWIyfXkfnGtjL3H6ox+9InwPHIcxZxEEAtdtLZCcrwPCC1zqRp6j191RAFUZ8KNU3zN+J1+QKC1ae4iyt2nBOGtwTVK8LwrMVYIpTffs1sMBNUj3XOqTfwYX7fUFwBrtvaEk4i+CtJopVLNlUxEqauqPEtbPgF1SuxdFIxYPwIDAQABAoIBAHiDThqpdu1pBS8+tluue2NMi1e1Rg5zrDGeSq8GMXEQFR81gKld2gDlwjGGtNi4WFVeigo/M3kNSG0ejDLXogO9P0SvHVTrzhEGSDKue+qWE9M1mmzoSTv70GuDGavZoj0MuN4lNZpocadS6QhtPdTcQXzjhpOor5PGeOLE9buCQz/6YbpgWBKUxWERFZellrgoWaEumDqVSAY4xmflbwL54UIoI/AHlVe3YiKZ2a8RSDpdKQHX4JpU/NHYTI0ZNM6NlXJ5FaAbCdMXgvBQzMz40qg27iF+pCA4jkgS3a5q0BM1+KaB05TlYNh/QHxWaL0Mtt1xgmBlO0n4ho+riwECgYEA9WhqNkzINpHXlGx5opzkUCxA3VCcN2QBkeDFdrdieBfHBIGCVnhmvb+tMq5+mSsEqOdCLmPLAmj3x8XNEt1CiXn34M011/Oh1AcwXgSjtwNySozNsa+qXS57gEoS3xp1n1pkK9bB8Xkebt2l7b2ibkSMLteeuIYl1q4WkLk77qcCgYEAyMEHsyuf8OAL04aGrJWlf4npv7lh9rCqWWLeBrkvt701sDoouwfo5m80i0eWhBbY5Nlh02LqBcJd1Iwk3WSjMA7XNj9CkUWoM4u/hz9YZMigMyPu9EWo7eqGypT9DIhQ67Z1VESlTS0LK2V3bDIkxAJhumgdhCp8iELjEauLVKkCgYBWoXB1EK/Qy7UdeRmLNPVH9AdF2TH8P7pqI72xRdVl7Ybc6Vb4bXJfY22hqYWZTl1Lvq9XLvU4OZPWmtXk5eSaIUtGuUpbnG6xKYSCfALLFVVgScpHAmsSj9kbFYsJ5Q5GnaMk8p/uPUJoAqiTf1D6ugn+czFdlEWBPl1K44jrmwKBgQCE+i/yg7wfHxlWVO7SVRHaKG1YXSDB+oXsTawKQhKUn9V3VR7zvKqOMS1Z8OKHvmaPOFsvXX7sr7Hdf7NPn0DlLX9q5H5gogZnlnMY0GHp6GcNWQkIbzgV2FrOx9/StFz9tc+EMTBZrbOPXFe9qH1oBLfddOfQSyBQVhX492uEeQKBgA/Umil0P/q/nECzL+71LMlpGM6ldRcOsnHKh+5/48h5VImiFn8YhOewboYUnkoBJBJXf5upj3GA+J2OSkojxgOwfBC+EWreXmGltYw/2bZ3CO08Fs80vXDbhMaPIUcjfsS4CCxx0qIJanhf/6522kT3avj5aA4jYE04by8qV4KI";
 
         private string publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwHKeFBun6j3+wQwcgmAoCG7f/TWU1ST+iTKT/oImEiyNOEGrwel3D0TI8/qmeKWVS0u/lKraICRWmIuvd0p8IO5ab3jgYxBJb88NoSCHF8QbZ46BwyLFPc+SdbEvs0VAtyLE4iVzRcBmTHqpo7gt7Ga9MAmaV+x1WUNyiLgxgZqJYQWIyfXkfnGtjL3H6ox+9InwPHIcxZxEEAtdtLZCcrwPCC1zqRp6j191RAFUZ8KNU3zN+J1+QKC1ae4iyt2nBOGtwTVK8LwrMVYIpTffs1sMBNUj3XOqTfwYX7fUFwBrtvaEk4i+CtJopVLNlUxEqauqPEtbPgF1SuxdFIxYPwIDAQAB";
@@ -53,7 +55,6 @@ namespace IQBPay.Controllers
         public string pk1_rs1 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3aaDFxkj4IfzV42j8lwdJCZgTPTfrwDTiFfxhQXwFk/9sstsNdSkrYzKAmMBgl95d7R9bA8ASc0A8JADgR1ye+gsky9K/l8DEI8ZbgSWgCdEkTHbuZtzLo0SN9Q+U6k/g3QWTV27+0WHXHNwECFhdk23V0s2MeF+HrYgPn0WSkpYwz58hCDV9Eh71sj05tcgWfitcEkMLSazXmDqRsv8LZjtzpXO9Chwssfi9iCWa3hfsuzfmXusk8TRwtRyUtD9hIq4Fxr2+QJ2AvMlyK7/Sgtnsgl+lIv869jVyaNydlwSv8js1TM8nXPVemTWvj7fQUnWhU0YRHVa0XcdeyvaBwIDAQAB";
 
         public string AppID = ConfigurationManager.AppSettings["APPID"];
-
 
 
         private static List<string>  _BlockList =null ;
@@ -158,7 +159,7 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        public void UpdateUserBalance(AliPayContent db,string openId,double amt, TransactionType transType, EReport_Order report= null)
+        public void UpdateUserBalance(AliPayContent db,string openId,double amt, TransactionType transType, ref EReport_Order report)
         {
             if(amt!=0)
             {
@@ -347,7 +348,7 @@ namespace IQBPay.Controllers
                                         if(us !=null && us.OpenId!= "o3nwE0i_Z9mpbZ22KdOTWeALXaus")
                                         {
                                             double amt = Convert.ToDouble((order.TotalAmount * us.Rate/100).ToString("0.00"));
-                                            UpdateUserBalance(db, store.OwnnerOpenId, amt, TransactionType.Store_Comm, _ReportOrder);
+                                            UpdateUserBalance(db, store.OwnnerOpenId, amt, TransactionType.Store_Comm, ref _ReportOrder);
 
                                             string sql = string.Format(@"select ui.parentOpenId from UserInfo as ui
                                                                          inner join userstore as us on ui.parentOpenId = us.OpenId
@@ -358,7 +359,7 @@ namespace IQBPay.Controllers
                                             if(!string.IsNullOrEmpty(pOpenId))
                                             {
                                                 amt = Convert.ToDouble((order.TotalAmount * us.FixComm/100).ToString("0.00"));
-                                                UpdateUserBalance(db, pOpenId, amt, TransactionType.Store_L2, _ReportOrder);
+                                                UpdateUserBalance(db, pOpenId, amt, TransactionType.Store_L2, ref _ReportOrder);
 
                                                 sql = string.Format(@"select ui.parentOpenId from UserInfo as ui
                                                                          inner join userstore as us on ui.parentOpenId = us.OpenId
@@ -372,7 +373,7 @@ namespace IQBPay.Controllers
                                                 {
                                                     pOpenId = db.Database.SqlQuery<string>(sql).FirstOrDefault();
                                                     amt = Convert.ToDouble((order.TotalAmount * us.FixComm/100).ToString("0.00"));
-                                                    UpdateUserBalance(db, pOpenId, amt, TransactionType.Store_L3, _ReportOrder);
+                                                    UpdateUserBalance(db, pOpenId, amt, TransactionType.Store_L3, ref _ReportOrder);
                                                 }                                
                                             }             
                                         }
@@ -391,7 +392,7 @@ namespace IQBPay.Controllers
                         string accessToken = this.getAccessToken(true);
                        
                        //代理
-                        UpdateUserBalance(db, order.AgentOpenId, order.RateAmount,TransactionType.Agent_Order_Comm, _ReportOrder);
+                        UpdateUserBalance(db, order.AgentOpenId, order.RateAmount,TransactionType.Agent_Order_Comm,ref _ReportOrder);
                         PPOrderPayNT notice = new PPOrderPayNT(accessToken, order.AgentOpenId, order);
                         notice.Push();
 
@@ -418,7 +419,7 @@ namespace IQBPay.Controllers
                             //parentUi.OpenId = agentComm.ParentOpenId;
                             //parentUi.Name = agentComm.ParentName;
 
-                            UpdateUserBalance(db, order.ParentOpenId, order.ParentCommissionAmount,TransactionType.Parent_Comm, _ReportOrder);
+                            UpdateUserBalance(db, order.ParentOpenId, order.ParentCommissionAmount,TransactionType.Parent_Comm, ref _ReportOrder);
                             //tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order,0, null,BaseController.GlobalConfig);
                             //db.DBTransferAmount.Add(tranfer);
                             
@@ -440,7 +441,7 @@ namespace IQBPay.Controllers
                             //parentUi.OpenId = agentComm.ParentOpenId;
                             //parentUi.Name = agentComm.ParentName;
 
-                            UpdateUserBalance(db, order.L3OpenId, order.L3CommissionAmount,TransactionType.L3_Comm, _ReportOrder);
+                            UpdateUserBalance(db, order.L3OpenId, order.L3CommissionAmount,TransactionType.L3_Comm, ref _ReportOrder);
 
                             //tranfer = payManager.TransferHandler(TransferTarget.L3Agent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order,0, null, BaseController.GlobalConfig);
                             //db.DBTransferAmount.Add(tranfer);
@@ -563,10 +564,11 @@ namespace IQBPay.Controllers
             {
                 if (string.IsNullOrEmpty(Id) || !long.TryParse(Id, out qrId))
                 {
-                    Log.log("Auth No Id");
+                    NLogHelper.ErrorTxt("Auth No Id");
+                
                     return Content("【传入的值不正确】无法授权，请联系平台");
                 }
-                app = BaseController.App;
+               
               
                
                 try
@@ -577,13 +579,13 @@ namespace IQBPay.Controllers
 
                         if (qr == null)
                         {
-                            Log.log("Auth No QR");
                             return Content("【授权码不存在】无法授权，请联系平台！");
                         }
                         else if (qr.RecordStatus == IQBCore.IQBPay.BaseEnum.RecordStatus.Blocked)
                             return Content("【授权码已被使用】无法授权，请联系平台！");
 
-                        if (app == null || app.AppId != qr.APPId)
+                        app = db.DBAliPayApp.Where(a => a.AppId == appId).FirstOrDefault();
+                        if (app == null )
                         {
                             NLogHelper.ErrorTxt("Store Auth Error 【没有APP】无法授权或当前APP和授权码APP不一致");
                             return Content("【没有APP】无法授权或当前APP和授权码APP不一致，请联系平台");
@@ -608,7 +610,7 @@ namespace IQBPay.Controllers
                                 SelfStore = db.DBStoreInfo.Where(s => s.ID == qr.StoreId).FirstOrDefault();
                       
                             
-                            store = db.Store_GetByAliPayUserId(response.UserId);
+                            store = db.Store_GetByAliPayUserId(response.UserId, appId);
                             if (store == null)
                             {
                                 if(SelfStore!=null)
@@ -675,7 +677,6 @@ namespace IQBPay.Controllers
                                     SelfStore.AliPayAuthToke = response.AppAuthToken;
                                     SelfStore.FromIQBAPP = qr.APPId;
                                     
-
                                 }
                                 else
                                 {
@@ -1220,8 +1221,10 @@ namespace IQBPay.Controllers
 
                     EStoreInfo store = null;
                     string selectStoreSql = string.Format(@"select top 1 * from StoreInfo 
-                                            where RecordStatus = 0 and RemainAmount> 0 and StoreType={1} and MinLimitAmount<={0} and MaxLimitAmount>={0}
-                                            order by NEWID()", Amount,(int)qrUser.QRType);
+                                            where RecordStatus = 0 and RemainAmount> 0 and StoreType={1} 
+                                            and MinLimitAmount<={0} and MaxLimitAmount>={0}
+                                            and FromIQBAPP = '{2}'
+                                            order by NEWID()", Amount,(int)qrUser.QRType,BaseController.App.AppId);
 
                   //  NLogHelper.InfoTxt("Sql:" + selectStoreSql);
 

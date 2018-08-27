@@ -13,7 +13,9 @@ namespace IQBCore.IQBPay.Models.Report
     public class EReport_Order
     {
         [Key]
-        [MaxLength(64)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
+      
         public string OrderNo { get; set; }
 
         [MaxLength(32)]
@@ -60,9 +62,13 @@ namespace IQBCore.IQBPay.Models.Report
 
         public DateTime TransDate { get; set; }
 
+      
         public string QRUserId { get; set; }
 
         public QRReceiveType QRType { get; set; }
+
+        [MaxLength(100)]
+        public string Remark { get; set; }
 
        
 

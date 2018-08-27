@@ -151,9 +151,9 @@ namespace IQBPay.DataBase
         /// </summary>
         /// <param name="AliPayUserId"></param>
         /// <returns></returns>
-        public EStoreInfo Store_GetByAliPayUserId(string AliPayUserId)
+        public EStoreInfo Store_GetByAliPayUserId(string AliPayUserId,string appId)
         {
-            return DBStoreInfo.Where(s => s.AliPayAccount == AliPayUserId).FirstOrDefault();
+            return DBStoreInfo.Where(s => s.AliPayAccount == AliPayUserId && s.FromIQBAPP == appId).FirstOrDefault();
         }
         #endregion
 

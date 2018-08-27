@@ -37,7 +37,7 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        public ActionResult Login()
+        public ActionResult Login2()
         {
             if (IsTestMode)
             {
@@ -511,6 +511,6 @@ namespace IQBPay.Controllers
             return Json(result);
         }
 
-
+     
     }
 }

@@ -150,7 +150,8 @@
                         alert("需要填写手机号！"); 
                         Init();
                     }
-                    dialog = null;  
+                    else
+                        dialog = null;  
                 },
                 onOpen:function(){
                     $("#phone_num").focus();

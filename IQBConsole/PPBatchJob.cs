@@ -164,9 +164,6 @@ namespace IQBConsole
                 var list = db.DBUserInfo.Where(a => a.UserRole == UserRole.DiamondAgent || a.UserRole == UserRole.Administrator
               && a.UserStatus == UserStatus.PPUser).ToList();
 
-               
-                
-
                 foreach (EUserInfo u in list)
                 {
                     List<SFee> feeList = new List<SFee>();
@@ -205,6 +202,53 @@ namespace IQBConsole
                 }
 
 
+                db.SaveChanges();
+                Console.WriteLine(string.Format("调整代理Done"));
+            }
+        }
+
+        public void UpdateAgentForSpecial()
+        {
+            using (IQBContent db = new IQBContent())
+            {
+                var list = db.DBUserInfo.Where(a => a.parentOpenId == "o3nwE0vaY07Rr2RJRgb9JRKci_KI").ToList();
+                foreach (EUserInfo u in list)
+                {
+                    List<SFee> feeList = new List<SFee>();
+                    SFee sfee = null;
+                    /*总代*/
+                    //花呗(0.75)/0.8
+                    EQRUser qr = db.DBQRUser.Where(a => a.OpenId == u.OpenId && a.QRType == QRReceiveType.Small).FirstOrDefault();
+                    var fee = 0.75;
+
+                    sfee = new SFee();
+                    sfee.OrigFeeRate = Convert.ToSingle((qr.MarketRate - qr.Rate).ToString("0.00"));
+                    sfee.QRType = qr.QRType;
+
+                    qr.Rate = Convert.ToSingle((qr.MarketRate - fee).ToString("0.00"));
+                    sfee.AdjustedFeeRate = Convert.ToSingle((qr.MarketRate - qr.Rate).ToString("0.00"));
+                    feeList.Add(sfee);
+
+                    //信用卡0.63/0.65
+                    qr = db.DBQRUser.Where(a => a.OpenId == u.OpenId && a.QRType == QRReceiveType.CreditCard).FirstOrDefault();
+                    if (u.OpenId == "o3nwE0snE94bXggy2K8ZfHuyypVs" || u.OpenId == "o3nwE0og1j5cLMTVdg0XSjtJ88E8")
+                        fee = 0.63;
+                    else
+                        fee = 0.65;
+
+                    sfee = new SFee();
+                    sfee.OrigFeeRate = Convert.ToSingle((qr.MarketRate - qr.Rate).ToString("0.00"));
+                    sfee.QRType = qr.QRType;
+
+                    qr.Rate = Convert.ToSingle((qr.MarketRate - fee).ToString("0.00"));
+
+                    sfee.AdjustedFeeRate = Convert.ToSingle((qr.MarketRate - qr.Rate).ToString("0.00"));
+                    feeList.Add(sfee);
+
+                    Console.WriteLine(string.Format("代理：{0}", u.Name));
+
+                   // WXNTAgentFeeRate(feeList, u.OpenId);
+                }
                 db.SaveChanges();
                 Console.WriteLine(string.Format("调整代理Done"));
             }
@@ -267,7 +311,10 @@ where datediff(MINUTE,o.CreateDateTime,getdate()) >{0} and o.O2OOrderStatus betw
         }
 
 
+        public void CreateQR(string url)
+        {
 
+        }
 
 
 

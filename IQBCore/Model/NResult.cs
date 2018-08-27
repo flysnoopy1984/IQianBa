@@ -31,7 +31,15 @@ namespace IQBCore.Model
                     SuccessMsg = "";
             }
         }
-        public string ErrorMsg { get; set; }
+        private string _ErrorMsg;
+        public string ErrorMsg
+        {
+            get { return _ErrorMsg; }
+            set {
+                _IsSuccess = false;
+                _ErrorMsg = value;
+            }
+        }
 
         public string SuccessMsg { get; set; }
 

@@ -54,6 +54,7 @@ namespace IQBWX.Controllers.API
                             qrAuth.RemainAmount = inObj.DayIncome;
                             qrAuth.StoreName = inObj.Name;
                             qrAuth.StoreType = inObj.StoreType;
+                         
                         }
                         db.SaveChanges();
                     }
@@ -66,8 +67,8 @@ namespace IQBWX.Controllers.API
                             result.IsSuccess = false;
                             return result;
                         }
-                        string sql = @"select AppId from AliPayApplication where IsCurrent = 1";
-                        string appId = db.Database.SqlQuery<string>(sql).FirstOrDefault();
+                        //string sql = @"select AppId from AliPayApplication where IsCurrent = 1";
+                        //string appId = db.Database.SqlQuery<string>(sql).FirstOrDefault();
 
                         newObj = new EStoreInfo
                         {
@@ -82,6 +83,7 @@ namespace IQBWX.Controllers.API
                             OwnnerOpenId = inObj.OwnnerOpenId,
                             RecordStatus = IQBCore.IQBPay.BaseEnum.RecordStatus.Init,
                             Provider = us.Name,
+                            FromIQBAPP = inObj.FromIQBAPP,
                         };
                         newObj.InitCreate();
                         db.DBStoreInfo.Add(newObj);
@@ -90,7 +92,7 @@ namespace IQBWX.Controllers.API
                         EQRStoreAuth qrAuth = new EQRStoreAuth();
                         
                         qrAuth.InitByStore(newObj);
-                        qrAuth.APPId = appId;
+                        qrAuth.APPId = inObj.FromIQBAPP;
                         db.DBQRStoreAuth.Add(qrAuth);
                         db.SaveChanges();
 

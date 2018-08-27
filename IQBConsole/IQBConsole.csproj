@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IQBContent.cs" />
+    <Compile Include="PayTest.cs" />
     <Compile Include="PPBatchJob.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

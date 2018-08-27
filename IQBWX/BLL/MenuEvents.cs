@@ -256,7 +256,7 @@ namespace IQBWX.BLL
                 string ssoToken = null;
                 EUserInfo ui =null ,pui = null;
 
-                //         log.log("WXScanLogin ssoToken:" + msg.EventKey);
+             
 
                 if (msg.Event == "scan")
                     ssoToken = msg.EventKey;

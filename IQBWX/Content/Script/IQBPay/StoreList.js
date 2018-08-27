@@ -1,20 +1,21 @@
 ﻿var pageIndex = 0;
 var pageSize = 10;
 var IQBScroll = null;
+
 var QueryData;
 
 $(document).ready(function () {
 
     $("#btnNext").attr("disabled", false);
     
-    
-    $("#trContainer").empty();
-    pageIndex = 0;
-
-    Query(pageIndex);
-
+    //用于重新加载，保持上次选择的下拉框
+    var selAppId = getUrlParam("appId");
+  //  alert(selAppId);
     ToListPage();
 
+    APPQuery(selAppId);
+
+  
     //Info Page
     $(".InfoBody").Validform({
         tiptype: 2,
@@ -106,32 +107,81 @@ function ToInfoPage(i) {
    
 }
 
-function Query(_pageIndex) {
+function APPQuery(selAppId)
+{
+    var url = "/PP/APPList";
+    $.ajax({
+        type: 'post',
+        data: "",
+        url: url,
+        success: function (data) {
+
+            if (data.IsSuccess) {
+                $("#AppList").empty();
+                $.each(data.resultList, function (i) {
+                    if (data.resultList[i].IsCurrent)
+                    {
+                        SelAppId = data.resultList[i].AppId;
+                        $("#AppList").append("<option selected value='" + data.resultList[i].AppId + "'>" + data.resultList[i].AppName + "</option>");
+                    }
+                    else
+                        $("#AppList").append("<option value='" + data.resultList[i].AppId + "'>" + data.resultList[i].AppName + "</option>")
+                    
+                });
+                if (selAppId != null && selAppId != "")
+                    $("#AppList").val(selAppId);
+                Query();
+
+            }
+            else
+                alert(data.ErrorMsg);
+
+        },
+        error: function (xhr, type) {
+
+            alert("系统错误！");
+
+            me.resetLoad();
+
+        }
+    });
+}
+
+
+
+function Query() {
 
     var PageSize = 30;
+    $("#trContainer").empty();
+    pageIndex = 0;
+    QueryData = [];
+
+    var SelAppId = $("#AppList").val();
 
     IQBScroll = $("#DataList").ScrollLoad({
 
         loadData: function (me) {
             var url = site + "/PP/StoreQuery";
             var openId = $("#hOpenId").val();
-
             $.ajax({
                 type: 'post',
-                data: "Page=" + pageIndex + "&PageSize=" + pageSize + "&OpenId=" + openId,
+                data: "Page=" + pageIndex + "&PageSize=" + pageSize + "&OpenId=" + openId + "&SelAppId=" + SelAppId,
                 url: url,
                 success: function (data) {
-                    var arrLen = data.length;
-
-                    if (arrLen > 0) {
-                        generateData(data);
-                        pageIndex++;
+                  
+                    if (data.IsSuccess) {
+                        var list = data.resultList;
+                        if (list.length > 0)
+                        {
+                            generateData(list);
+                            pageIndex++;
+                        }
+                        else
+                            me.noData();
+                       
                     }
                     else {
-                        me.noData();
-                      //  $("#btnNext").attr("disabled", true);
-                      //  alert("没有数据了");
-
+                        alert(data.ErrorMsg);
                     }
 
                     me.resetLoad();
@@ -148,11 +198,7 @@ function Query(_pageIndex) {
 
         }
     });
-
-
-   
-    //$("#trContainer").show();
-    //$("#Process").hide();
+ 
 }
 
 function GetStatus(obj)
@@ -242,8 +288,8 @@ function Save()
     var ID = $("#storeId").val();
     var openId = $("#hOpenId").val();
     var StoreType = $(".StoreTypeArea input[name='sType']:checked").val();
-  
-
+    var AppId = $("#AppList").val();
+ 
     var url = "/api/UserStore/Save";
     ShowBlock();
     $.ajax({
@@ -254,13 +300,15 @@ function Save()
             "MinLimitAmount": MinLimitAmount, "MaxLimitAmount": MaxLimitAmount,
             "DayIncome": DayIncome, "Name": Name,
             "StoreType": StoreType,
+            "FromIQBAPP": AppId
         },
         url: url,
         success: function (data) {
             if(data.IsSuccess)
             {
                 alert("保存成功！");
-                window.location.reload();
+                window.location.href = "/PP/StoreList?appId=" + AppId;
+               // window.location.reload();
             }
             else
             {
@@ -303,7 +351,8 @@ function Delete() {
                         success: function (res) {
                             if (res.IsSuccess) {
                                 alert("删除成功;");
-                                window.location.reload();
+                                window.location.href = "/PP/StoreList?appId=" + AppId;
+                               
                                 
                             }
                             else {
@@ -324,6 +373,7 @@ function Delete() {
 function OnlineStore(e)
 {
     var Id = $(e.currentTarget).attr("sId");
+    var AppId = $("#AppList").val();
 
     var url = "/api/UserStore/OnlineStore?StoreId=" + Id;
     $.ajax({
@@ -332,7 +382,8 @@ function OnlineStore(e)
         success: function (res) {
             if (res.IsSuccess) {
                 alert("已上线;");
-                window.location.reload();
+                window.location.href = "/PP/StoreList?appId=" + AppId;
+               // window.location.reload();
                
             }
             else {
@@ -350,6 +401,7 @@ function OnlineStore(e)
 function OfflineStore(e)
 {
     var Id = $(e.currentTarget).attr("sId");
+    var AppId = $("#AppList").val();
 
     var url = "/api/UserStore/OfflineStore?StoreId=" + Id;
     $.ajax({

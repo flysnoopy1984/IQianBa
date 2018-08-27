@@ -95,17 +95,16 @@ namespace IQBWX.Controllers
         {
           
 
-            string openId = "";
+            string openId = Convert.ToString(Session[IQBConstant.BuyerOpenId]);
 
-           // Session[IQBConstant.SK_AgentQRId] = Id;
-            //bool isDev = Convert.ToBoolean(ConfigurationManager.AppSettings["DevMode"]);
+            bool isDev = Convert.ToBoolean(ConfigurationManager.AppSettings["DevMode"]);
 
             //////Jacky
-            //if (isDev)
-            //{
-            //    ViewBag.OpenId = "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
-            //    return Pay(Id);
-            //}
+            if (isDev)
+            {
+                ViewBag.OpenId = "o3nwE0qI_cOkirmh_qbGGG-5G6B0";
+                return Pay(Id);
+            }
             ////平台
             ////if (isDev) return "o3nwE0jrONff65oS-_W96ErKcaa0";
             //return Pay(Id);
@@ -114,10 +113,9 @@ namespace IQBWX.Controllers
 
             JsApiPay wxAPI = new JsApiPay();
 
-
             string code = Request.QueryString["code"];
 
-            if (!string.IsNullOrEmpty(code))
+            if (!string.IsNullOrEmpty(code) && string.IsNullOrEmpty(openId))
             {
                 //获取code码，以获取openid和access_token
                 //    code = Request.QueryString["code"];
@@ -126,39 +124,54 @@ namespace IQBWX.Controllers
                 //  NLogHelper.InfoTxt("[end GetOpenidAndAccessTokenFromCode]");
                 openId = wxAPI.openid;
 
-                ViewBag.OpenId = openId;
-
                // Id = (string)Session[IQBConstant.SK_AgentQRId];
                 if(string.IsNullOrEmpty(Id))
                 {
                     return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg = "没有获取代理信息，请联系平台！" });
                 }
 
+                ViewBag.OpenId = openId;
+                Session[IQBConstant.BuyerOpenId] = openId;
                 return Pay(Id);
             }
             else
             {
-                try
+                if(string.IsNullOrEmpty(openId))
                 {
-                    var redirect_uri = System.Web.HttpUtility.UrlEncode("http://wx.iqianba.cn/PP/WXPay?Id="+ Id, System.Text.Encoding.UTF8);
+                    try
+                    {
+                        var redirect_uri = System.Web.HttpUtility.UrlEncode("http://wx.iqianba.cn/PP/WXPay?Id=" + Id, System.Text.Encoding.UTF8);
 
-                    WxPayData data = new WxPayData();
-                    data.SetValue("appid", WxPayConfig_YJ.APPID);
-                    data.SetValue("redirect_uri", redirect_uri);
-                    data.SetValue("response_type", "code");
-                    data.SetValue("scope", "snsapi_userinfo");
+                        WxPayData data = new WxPayData();
+                        data.SetValue("appid", WxPayConfig_YJ.APPID);
+                        data.SetValue("redirect_uri", redirect_uri);
+                        data.SetValue("response_type", "code");
+                        data.SetValue("scope", "snsapi_userinfo");
 
-                    data.SetValue("state", "1" + "#wechat_redirect");
-                    string url = "https://open.weixin.qq.com/connect/oauth2/authorize?" + data.ToUrl();
+                        data.SetValue("state", "1" + "#wechat_redirect");
+                        string url = "https://open.weixin.qq.com/connect/oauth2/authorize?" + data.ToUrl();
 
-                  //  NLogHelper.InfoTxt("WX/Login:" + url);
 
-                    return Redirect(url);
+
+                        return Redirect(url);
+                    }
+                    catch
+                    {
+
+                    }
                 }
-                catch
+                else
                 {
+                    if (string.IsNullOrEmpty(Id))
+                    {
+                        return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg = "没有获取代理信息，请联系平台！" });
+                    }
 
+                    ViewBag.OpenId = openId;
+                    Session[IQBConstant.BuyerOpenId] = openId;
+                    return Pay(Id);
                 }
+               
             }
 
             return View();
@@ -1784,47 +1797,84 @@ group by o.AgentOpenId ,o.OrderType
             return View();
         }
 
+        [HttpPost]
+        public ActionResult APPList()
+        {
+            NResult<EAliPayApplication> result = new NResult<EAliPayApplication>();
+            try
+            {
+              
+                using (AliPayContent db = new AliPayContent())
+                {
+                    result.resultList = db.DBAliPayApp.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+              
+            }
+            return Json(result);
+        }
+
         public ActionResult StoreQuery()
         {
             int pageIndex = Convert.ToInt32(Request["Page"]);
             int pageSize = Convert.ToInt32(Request["PageSize"]);
             string openId = Request["OpenId"];
+            string SelAppId = Request["SelAppId"];
 
-            using (AliPayContent db = new AliPayContent())
+            NResult<RStoreInfo> result = new NResult<RStoreInfo>();
+
+            if (string.IsNullOrEmpty(SelAppId))
             {
-
-                var list = db.DBStoreInfo.Select(s => new RStoreInfo()
-                {
-                    Name = s.Name,
-                    Rate = s.Rate,
-                    IsAuth = !string.IsNullOrEmpty(s.AliPayAccount),
-                    DayIncome = s.DayIncome,
-                    MaxLimitAmount = s.MaxLimitAmount,
-                    MinLimitAmount = s.MinLimitAmount,
-                    RemainAmount = s.RemainAmount,
-                    StoreType = s.StoreType,
-                    ID =s.ID,
-                    RecordStatus = s.RecordStatus,
-                    OwnnerOpenId =s.OwnnerOpenId,
-                    CDate = s.CDate,
-                    CTime = s.CTime,
-                    CreateDate = s.CreateDate
-                });
-
-                if (UserSession.UserRole != UserRole.Administrator)
-                    list = list.Where(o => o.OwnnerOpenId == openId);
-
-                list = list.OrderByDescending(o => o.CreateDate);
-
-                List<RStoreInfo> result = new List<RStoreInfo>();
-
-                if (pageIndex == 0)
-                    result = list.Take(pageSize).ToList();
-                else
-                    result = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
-
+                result.ErrorMsg = "应用ID没有获取";
                 return Json(result);
             }
+            try
+            {
+                using (AliPayContent db = new AliPayContent())
+                {
+
+                    var list = db.DBStoreInfo.Select(s => new RStoreInfo()
+                    {
+                        Name = s.Name,
+                        Rate = s.Rate,
+                        IsAuth = !string.IsNullOrEmpty(s.AliPayAccount),
+                        DayIncome = s.DayIncome,
+                        MaxLimitAmount = s.MaxLimitAmount,
+                        MinLimitAmount = s.MinLimitAmount,
+                        RemainAmount = s.RemainAmount,
+                        StoreType = s.StoreType,
+                        ID = s.ID,
+                        RecordStatus = s.RecordStatus,
+                        OwnnerOpenId = s.OwnnerOpenId,
+                        FromIQBAPP = s.FromIQBAPP,
+                        CDate = s.CDate,
+                        CTime = s.CTime,
+                        CreateDate = s.CreateDate
+                    }).Where(a=>a.FromIQBAPP == SelAppId);
+
+                    if (UserSession.UserRole != UserRole.Administrator)
+                        list = list.Where(o => o.OwnnerOpenId == openId);
+
+                    list = list.OrderByDescending(o => o.CreateDate);
+
+                   
+
+                    if (pageIndex == 0)
+                        result.resultList = list.Take(pageSize).ToList();
+                    else
+                        result.resultList = list.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+
+                   
+                }
+            }
+            catch(Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+            }
+            return Json(result);
         }
 
         public ActionResult StoreAdd()
@@ -2309,6 +2359,24 @@ group by o.AgentOpenId ,o.OrderType
                 return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg = "微信通知Bug，请返回尝试重新进入审核页面" });
             }
            
+            return View();
+        }
+
+        public ActionResult AgentQRAdjustment()
+        {
+            if (UserSession.UserStatus == UserStatus.WaitRewiew)
+            {
+                UserSession = null;
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg = "等待您上级的审核" });
+            }
+
+            if (UserSession.UserRole < UserRole.Agent)
+            {
+                if (UserSession.UserStatus == UserStatus.WaitRewiew) UserSession = null;
+                return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
+            }
+
+            InitProfilePage();
             return View();
         }
 

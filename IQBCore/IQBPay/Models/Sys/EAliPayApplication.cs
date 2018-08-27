@@ -56,5 +56,15 @@ namespace IQBCore.IQBPay.Models.Sys
 
         public bool IsSubAccount { get; set; }
 
+        /// <summary>
+        /// 此引用是否支持花呗
+        /// </summary>
+        public bool SupportHuaBei { get; set; }
+
+        /// <summary>
+        /// 此应用是否支持转账
+        /// </summary>
+        public bool SupportTransfer { get; set; }
+
     }
 }

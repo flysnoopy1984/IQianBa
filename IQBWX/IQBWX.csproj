@@ -145,6 +145,7 @@
     <Content Include="Content\CatchSite\HJB\script\hjb.js" />
     <Content Include="Content\Config\PopPolicy.xml" />
     <Content Include="Content\Css\AgentAccount.css" />
+    <Content Include="Content\Css\AgentQRAdjustment.css" />
     <Content Include="Content\Css\bootstrap.min.css" />
     <Content Include="Content\Css\common.css" />
     <Content Include="Content\CatchSite\HJB\list.html" />
@@ -170,6 +171,7 @@
     <Content Include="Content\images\border.png" />
     <Content Include="Content\images\bQR.png" />
     <Content Include="Content\images\CallCenter.jpg" />
+    <Content Include="Content\images\CallCenter2.jpg" />
     <Content Include="Content\images\daikuanchaoshi_03.jpg" />
     <Content Include="Content\images\daikuanchaoshi_05.jpg" />
     <Content Include="Content\images\daikuanchaoshi_07.jpg" />
@@ -246,6 +248,7 @@
     <Content Include="Content\images\sysc.png" />
     <Content Include="Content\images\s_add.png" />
     <Content Include="Content\images\s_min.png" />
+    <Content Include="Content\images\touxiang.jpg" />
     <Content Include="Content\images\tx2.jpg" />
     <Content Include="Content\images\WXIcons.png" />
     <Content Include="Content\images\wxLoginBK.jpg" />
@@ -519,6 +522,7 @@
     <Content Include="Views\PP\WXPay.cshtml" />
     <Content Include="Views\PP\PaySuccess.cshtml" />
     <Content Include="Views\PPAdmin\ReviewPaySuccess.cshtml" />
+    <Content Include="Views\PP\AgentQRAdjustment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
