@@ -222,7 +222,8 @@ namespace IQBPay.Controllers
             EQRUser _agentQR = null;
             EReport_Order _ReportOrder = new EReport_Order();
 
-            int TransferError = 0 ;
+            int TransferError = 0;
+            EAliPayApplication app = null;
 
             try
             {
@@ -309,33 +310,27 @@ namespace IQBPay.Controllers
                         store.RemainAmount -= order.TotalAmount;
                         if (store.RemainAmount < 0)
                             store.RecordStatus = RecordStatus.Blocked;
+
+                        app = db.DBAliPayApp.Where(a => a.AppId == store.FromIQBAPP).FirstOrDefault();
                         //店铺佣金
                         if (!store.IsReceiveAccount)
                         {
                           //  Log.log("PayNotify 开始分账");
                             //分账
                             
-                            EStoreInfo subStore =null;
-                            try
-                            {
-                                subStore = BaseController.SubAccount;
-                            }
-                            catch (Exception ex)
-                            {
-                                NLogHelper.ErrorTxt(ex.Message);
-                            }
-                            if (subStore!=null)
+                            if (app.AccountForSub!=store.AliPayAccount)
                             {
                                 try
                                 {
-                                    AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(BaseController.App, order, store, subStore);
-                                    if (res.Code != "10000")                                 
+                                    NLogHelper.InfoTxt("开始分账..");
+                                    AlipayTradeOrderSettleResponse res = payManager.DoSubAccount(app, order, store);
+                                    if (res.Code != "10000")
                                     {
                                         order.LogRemark += string.Format("[SubAccount] SubCode:{0};Submsg:{1}; ", res.SubCode, res.SubMsg);
                                         order.OrderStatus = IQBCore.IQBPay.BaseEnum.OrderStatus.Exception;
                                         TransferError++;
                                         store.RecordStatus = RecordStatus.Blocked;
-                                        store.Log = string.Format("[分账错误]订单：{0}。时间：{1}",order.OrderNo,order.TransDateStr);
+                                        store.Log = string.Format("[分账错误]订单：{0}。时间：{1}", order.OrderNo, order.TransDateStr);
                                         db.SaveChanges();
                                         return View();
                                     }
@@ -345,9 +340,9 @@ namespace IQBPay.Controllers
 
                                         EUserStore us = db.DBUserStore.Where(a => a.OpenId == store.OwnnerOpenId).FirstOrDefault();
 
-                                        if(us !=null && us.OpenId!= "o3nwE0i_Z9mpbZ22KdOTWeALXaus")
+                                        if (us != null && us.OpenId != "o3nwE0i_Z9mpbZ22KdOTWeALXaus")
                                         {
-                                            double amt = Convert.ToDouble((order.TotalAmount * us.Rate/100).ToString("0.00"));
+                                            double amt = Convert.ToDouble((order.TotalAmount * us.Rate / 100).ToString("0.00"));
                                             UpdateUserBalance(db, store.OwnnerOpenId, amt, TransactionType.Store_Comm, ref _ReportOrder);
 
                                             string sql = string.Format(@"select ui.parentOpenId from UserInfo as ui
@@ -356,9 +351,9 @@ namespace IQBPay.Controllers
                                                                          us.OpenId);
 
                                             string pOpenId = db.Database.SqlQuery<string>(sql).FirstOrDefault();
-                                            if(!string.IsNullOrEmpty(pOpenId))
+                                            if (!string.IsNullOrEmpty(pOpenId))
                                             {
-                                                amt = Convert.ToDouble((order.TotalAmount * us.FixComm/100).ToString("0.00"));
+                                                amt = Convert.ToDouble((order.TotalAmount * us.FixComm / 100).ToString("0.00"));
                                                 UpdateUserBalance(db, pOpenId, amt, TransactionType.Store_L2, ref _ReportOrder);
 
                                                 sql = string.Format(@"select ui.parentOpenId from UserInfo as ui
@@ -366,27 +361,25 @@ namespace IQBPay.Controllers
                                                                          where ui.OpenId = '{0}'",
                                                                          pOpenId);
 
-                                              
+
                                                 pOpenId = db.Database.SqlQuery<string>(sql).FirstOrDefault();
 
                                                 if (!string.IsNullOrEmpty(pOpenId))
                                                 {
                                                     pOpenId = db.Database.SqlQuery<string>(sql).FirstOrDefault();
-                                                    amt = Convert.ToDouble((order.TotalAmount * us.FixComm/100).ToString("0.00"));
+                                                    amt = Convert.ToDouble((order.TotalAmount * us.FixComm / 100).ToString("0.00"));
                                                     UpdateUserBalance(db, pOpenId, amt, TransactionType.Store_L3, ref _ReportOrder);
-                                                }                                
-                                            }             
+                                                }
+                                            }
                                         }
-                                     
-                                      
                                     }
                                 }
-                                catch(Exception ex)
+                                catch (Exception ex)
                                 {
                                     order.LogRemark += ex.Message;
                                     store.RecordStatus = RecordStatus.Blocked;
                                     store.Remark += ex.Message;
-                                } 
+                                }
                             }
                         }
                         string accessToken = this.getAccessToken(true);
@@ -568,9 +561,7 @@ namespace IQBPay.Controllers
                 
                     return Content("【传入的值不正确】无法授权，请联系平台");
                 }
-               
-              
-               
+
                 try
                 {
                     using (AliPayContent db = new AliPayContent())
@@ -602,8 +593,9 @@ namespace IQBPay.Controllers
                         model.Code = authCode;
 
                         request.SetBizModel(model);
-
+                       
                         response = alipayClient.Execute(request);
+                        NLogHelper.InfoTxt(string.Format("调用支付宝，商户授权返回：" + response.Code));
                         if (response.Code == "10000")
                         {
                             if (qr.StoreId>0)
@@ -611,6 +603,7 @@ namespace IQBPay.Controllers
                       
                             
                             store = db.Store_GetByAliPayUserId(response.UserId, appId);
+                         
                             if (store == null)
                             {
                                 if(SelfStore!=null)
@@ -1218,20 +1211,28 @@ namespace IQBPay.Controllers
                         ErrorUrl += "您的联系人没有设置支付宝账户！";
                         return Redirect(ErrorUrl);
                     }
-
+                    //根据支付通道选择APP
+                    if (qrUser.QRType == QRReceiveType.CreditCard)
+                        app = BaseController.App;
+                    else
+                    {
+                        app = db.DBAliPayApp.Where(a => a.SupportHuaBei == true).FirstOrDefault();
+                    }
                     EStoreInfo store = null;
                     string selectStoreSql = string.Format(@"select top 1 * from StoreInfo 
                                             where RecordStatus = 0 and RemainAmount> 0 and StoreType={1} 
                                             and MinLimitAmount<={0} and MaxLimitAmount>={0}
                                             and FromIQBAPP = '{2}'
-                                            order by NEWID()", Amount,(int)qrUser.QRType,BaseController.App.AppId);
+                                            order by NEWID()", Amount,(int)qrUser.QRType, app.AppId);
 
-                  //  NLogHelper.InfoTxt("Sql:" + selectStoreSql);
+                    NLogHelper.InfoTxt("Store Select Sql:" + selectStoreSql);
 
+                    //测试代码
                     if (!string.IsNullOrEmpty(TestStoreId))
                     {
                         long sId = Convert.ToInt64(TestStoreId);
                         store = db.DBStoreInfo.Where(o=>o.ID == sId).FirstOrDefault();
+                        app = db.DBAliPayApp.Where(a => a.AppId == store.FromIQBAPP).FirstOrDefault();
                     }
                     else
                     {
@@ -1274,6 +1275,8 @@ namespace IQBPay.Controllers
                     //获取并校验商户 
                     AliPayResult status;
 
+                  
+                    /*
                     if (store.FromIQBAPP == BaseController.App.AppId)
                         app = BaseController.App;
                     else if (store.FromIQBAPP == BaseController.SubApp.AppId)
@@ -1283,7 +1286,7 @@ namespace IQBPay.Controllers
                         ErrorUrl += "商户所属APP没有设置正确";
                         return Redirect(ErrorUrl);
                     }
-
+                    */
                     #region 测试转账
                     //测试转账
                     if (!string.IsNullOrEmpty(AliPayAccount))
@@ -1427,8 +1430,35 @@ namespace IQBPay.Controllers
                 AliPayManager payManager = new AliPayManager();
                 EOrderInfo order = db.DBOrder.Where(o => o.OrderNo == OrderNo).FirstOrDefault();
                 EStoreInfo store = db.DBStoreInfo.Where(s => s.ID == order.SellerStoreId).FirstOrDefault();
-                res = payManager.DoSubAccount(BaseController.App, order, store, BaseController.SubAccount);
-              
+                EAliPayApplication app = db.DBAliPayApp.Where(a => a.AppId == "2018082261169057").FirstOrDefault();
+
+                string subAccount = "2088131464918766";
+
+                IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
+
+              app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
+
+
+                AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
+
+                //   string commission = (order.TotalAmount*(100-0.38)/100).ToString("0.00");
+                string commission = (order.TotalAmount - order.SellerCommission).ToString("0.00");
+                // string commission = "47.00";
+                request.BizContent = "{" +
+                "\"out_request_no\":\"" + StringHelper.GenerateSubAccountTransNo() + "\"," +
+                "\"trade_no\":\"" + order.AliPayOrderNo + "\"," +
+                "\"royalty_parameters\":[{" +
+                "\"trans_out\":\"" + store.AliPayAccount + "\"," +
+                "\"trans_in\":\"" + subAccount + "\"," +
+                "\"amount\":" + commission + "," +
+                "\"desc\":\"分账\"" +
+                "}]" +
+                //"\"operator_id\":" +
+                "}";
+
+                res = aliyapClient.Execute(request, null, store.AliPayAuthToke);
+                
+
             }
             return Content(res.Body);
                

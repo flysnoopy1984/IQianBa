@@ -29,7 +29,7 @@ namespace IQBConsole
             using (AliPayContent db = new AliPayContent())
             {
                 EAliPayApplication app =  db.DBAliPayApp.Where(a => a.AppId == AppId).FirstOrDefault();
-                EStoreInfo store = db.DBStoreInfo.Where(a => a.ID == 117).FirstOrDefault();
+                EStoreInfo store = db.DBStoreInfo.Where(a => a.ID == 119).FirstOrDefault();
                 string code = payMag.PayTest(app, store, out result);
 
                 Console.WriteLine("Result:" + code);

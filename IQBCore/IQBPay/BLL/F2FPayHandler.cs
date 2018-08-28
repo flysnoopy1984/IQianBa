@@ -50,6 +50,7 @@ namespace IQBCore.IQBPay.BLL
             AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();
 
             model.SellerId = store.AliPayAccount;
+            NLogHelper.InfoTxt("当面付OrderNo:" + _OrderNo);
             model.OutTradeNo = _OrderNo;
             model.TotalAmount = TotalAmt;
             model.Subject =  "#"+AgentUI.Name+ " 收银台";

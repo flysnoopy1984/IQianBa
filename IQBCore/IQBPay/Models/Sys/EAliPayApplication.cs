@@ -66,5 +66,11 @@ namespace IQBCore.IQBPay.Models.Sys
         /// </summary>
         public bool SupportTransfer { get; set; }
 
+        /// <summary>
+        /// 分账对应的账号
+        /// </summary>
+        [MaxLength(32)]
+        public string AccountForSub { get; set; }
+
     }
 }

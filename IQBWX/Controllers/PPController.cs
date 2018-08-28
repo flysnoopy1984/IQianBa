@@ -77,6 +77,12 @@ namespace IQBWX.Controllers
             {
                 return RedirectToAction("ErrorMessage", "Home", new { code = Errorcode.SystemMaintain, ErrorMsg = WXBaseController.GlobalConfig.Note });
             }
+            using (AliPayContent db = new AliPayContent())
+            {
+                var sql = "select count(1) from AliPayApplication as a where a.SupportHuaBei = 1";
+                int r = db.Database.SqlQuery<int>(sql).FirstOrDefault();
+                ViewBag.HasHuaBei = r == 0 ? false : true;
+            }
 
             return View();
         }

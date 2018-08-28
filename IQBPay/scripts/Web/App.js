@@ -104,6 +104,8 @@ function InitFormData(result) {
 
     $("#AuthUrl_Store").val(result.AuthUrl_Store);
 
+    $("#AccountForSub").val(result.AccountForSub);
+
     if ($("#AppStatus").val() == 0) st = true;
     else st = false;
 
@@ -143,6 +145,8 @@ function Save() {
     var Charset = $("#Charset").val();
     var AppStatus = $("#AppStatus").val();
 
+    var AccountForSub = $("#AccountForSub").val();
+
     var Id = $("#RecId").val();
     var url = "/Main/AddApp";
     if (Id > 0)
@@ -165,6 +169,7 @@ function Save() {
             "RecordStatus": AppStatus,
             "IsCurrent": IsCurrent, "IsSubAccount": IsSubAccount,
             "SupportHuaBei": SupportHuaBei, "SupportTransfer": SupportTransfer,
+            "AccountForSub": AccountForSub
         },
         url: url,
         success: function (data) {

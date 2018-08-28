@@ -33,7 +33,7 @@ namespace IQBCore.IQBPay.BLL
     {
         private F2FPayHandler _handler =null;
 
-        public AlipayTradeOrderSettleResponse DoSubAccount(EAliPayApplication app,EOrderInfo order,EStoreInfo store,EStoreInfo receiveStore)
+        public AlipayTradeOrderSettleResponse DoSubAccount(EAliPayApplication app,EOrderInfo order,EStoreInfo store)
         {
             IAopClient aliyapClient = new DefaultAopClient("https://openapi.alipay.com/gateway.do", app.AppId,
               app.Merchant_Private_Key, "json", "1.0", "RSA2", app.Merchant_Public_key, "GBK", false);
@@ -49,7 +49,7 @@ namespace IQBCore.IQBPay.BLL
             "\"trade_no\":\""+order.AliPayOrderNo+"\"," +
             "\"royalty_parameters\":[{" +
             "\"trans_out\":\""+ store.AliPayAccount + "\"," + 
-            "\"trans_in\":\"" + receiveStore.AliPayAccount + "\"," +
+            "\"trans_in\":\"" + app.AccountForSub + "\"," +
             "\"amount\":"+ commission + "," +
             "\"desc\":\"分账\"" +
             "}]" +
