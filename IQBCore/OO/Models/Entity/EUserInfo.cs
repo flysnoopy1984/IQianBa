@@ -30,6 +30,9 @@ namespace IQBCore.OO.Models.Entity
 
         public UserRole UserRole { get; set; }
 
+        [MaxLength(256)]
+        public string HeaderImgUrl { get; set; }
+
         public RecordStatus RecordStatus { get; set; }
     }
 }

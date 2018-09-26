@@ -12,6 +12,9 @@ namespace IQBCore.OO.Models.Entity
     public class EUserReward
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
+       
         public long UserId { get; set; }
 
         /// <summary>

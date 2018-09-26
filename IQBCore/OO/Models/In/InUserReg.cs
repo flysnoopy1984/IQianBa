@@ -16,6 +16,9 @@ namespace IQBCore.OO.Models.In
 
         public string NickName { get; set; }
 
+        /// <summary>
+        /// 用户上级邀请码
+        /// </summary>
         public string InviteCode { get; set; }
 
     }

@@ -1219,8 +1219,10 @@ select top 1 ad.Id ,ad.Address from O2ODeliveryAddress as ad  where ad.OpenId = 
                 {
                     string sql = @"select o.OrderImgUrl,o.UserAliPayAccount,o.MallOrderNo,o.OrderAmount,o.MallAccount,
                                           o.MallPwd,o.MallCode,o.O2OOrderStatus,o.UserPhone,ui.UserPhone as AgentPhone
-from O2OOrder as o 
-left join UserInfo as ui on ui.OpenId = o.AgentOpenId where o.O2ONo='{0}'";
+                                   from O2OOrder as o 
+                                   left join UserInfo as ui on ui.OpenId = o.AgentOpenId 
+                                   where o.O2ONo='{0}'";
+
                     sql = string.Format(sql, OrderNo);
 
                     result.resultObj = db.Database.SqlQuery<RO2OOrder>(sql).Select(b => new RO2OOrder
@@ -1235,8 +1237,6 @@ left join UserInfo as ui on ui.OpenId = o.AgentOpenId where o.O2ONo='{0}'";
                         O2OOrderStatus = b.O2OOrderStatus,
                         UserPhone = b.UserPhone,
                         AgentPhone = b.AgentPhone,
-
-
                     }).FirstOrDefault();
 
 
@@ -1251,7 +1251,6 @@ left join UserInfo as ui on ui.OpenId = o.AgentOpenId where o.O2ONo='{0}'";
                     //    MallCode = b.MallCode,
                     //    O2OOrderStatus = b.O2OOrderStatus,
                     //    UserPhone = b.UserPhone,
-
 
                     //}).FirstOrDefault();
                     //if (result.resultObj == null)

@@ -311,6 +311,7 @@
     <Compile Include="OO\Models\Entity\EUserReward.cs" />
     <Compile Include="OO\Models\Entity\EUserTask.cs" />
     <Compile Include="OO\Models\In\InUserReg.cs" />
+    <Compile Include="OO\Models\QueryResult\RUserInfo.cs" />
     <Compile Include="OO\Models\QueryResult\RUserTask.cs" />
     <Compile Include="OO\Models\Query\QItem.cs" />
     <Compile Include="OO\Models\Query\QTask.cs" />

@@ -5,8 +5,11 @@ using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.Model;
 using IQBCore.OO.Models.Entity;
 using IQBCore.OO.Models.In;
+using IQBCore.OO.Models.QueryResult;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -24,14 +27,32 @@ namespace IQBAPI.Controllers
         /// <param name="pwd"></param>
         /// <returns></returns>
         [HttpPost]
-        public NResult<EUserInfo> Login(string loginName,string pwd)
+        public NResult<RUserInfo> Login(string loginName,string pwd)
         {
-            NResult<EUserInfo> result = new NResult<EUserInfo>();
+            NResult<RUserInfo> result = new NResult<RUserInfo>();
             try
             {
                 using (OOContent db = new OOContent())
                 {
-                    EUserInfo ui = db.DBUserInfo.Where(a => a.LoginName == loginName && a.Pwd == pwd).FirstOrDefault();
+                    var sql = @"select ui.Id,ui.NickName,
+                                       ui.Phone,ui.UserRole,
+                                       ui.HeaderImgUrl,
+                                       ui.RecordStatus 
+                                from UserInfo as ui
+                                where ui.LoginName = @LoginName and ui.Pwd = @Pwd";
+                    sql = string.Format(sql, loginName, pwd);
+                    List<SqlParameter> pList = new List<SqlParameter>();
+                    pList.Add(new SqlParameter("@LoginName", loginName));
+                    pList.Add(new SqlParameter("@Pwd", pwd));
+
+                    RUserInfo ui = db.Database.SqlQuery<RUserInfo>(sql, pList.ToArray()).FirstOrDefault();
+                    if(ui == null)
+                    {
+                        result.ErrorMsg = "用户名或密码错误";
+                        return result;
+                    }
+                    ui.LoginName = loginName;
+                    ui.Pwd = pwd;
                     result.resultObj = ui;
                 }
 
@@ -39,7 +60,7 @@ namespace IQBAPI.Controllers
             }
             catch(Exception ex)
             {
-                result.IsSuccess = false;
+               
                 result.ErrorMsg = ex.Message;
                 ErrorToDb(ex.Message);
             }
@@ -47,6 +68,11 @@ namespace IQBAPI.Controllers
             return result;
         }
 
+        /// <summary>
+        /// 用户注册
+        /// </summary>
+        /// <param name="userReg"></param>
+        /// <returns></returns>
         [HttpPost]
         public NResult<EUserInfo> Register(InUserReg userReg)
         {
@@ -60,13 +86,11 @@ namespace IQBAPI.Controllers
                 if(string.IsNullOrEmpty(userReg.Phone))
                 {
                     result.ErrorMsg = "手机号不能未空";
-                    result.IsSuccess = false;
                     return result;
                 }
                 if (string.IsNullOrEmpty(userReg.Pwd))
                 {
                     result.ErrorMsg = "密码不能为空";
-                    result.IsSuccess = false;
                     return result;
                 }
            
@@ -79,18 +103,19 @@ namespace IQBAPI.Controllers
                         if (ui != null)
                         {
                             result.ErrorMsg = "手机号已存在";
-                            result.IsSuccess = false;
                             return result;
                         }
+                     
                         ui = new EUserInfo();
                         //如果昵称或登陆名为空，则用手机号补充
                         if (string.IsNullOrEmpty(userReg.LoginName))
                             ui.LoginName = userReg.Phone;
                         if (string.IsNullOrEmpty(userReg.NickName))
                             ui.NickName = userReg.Phone;
+                        
 
                         ui.Phone = userReg.Phone;
-                        ui.Pwd = ui.Pwd;
+                        ui.Pwd = userReg.Pwd;
                         ui.UserRole = IQBCore.OO.BaseEnum.UserRole.User;
                         ui.RecordStatus = IQBCore.OO.BaseEnum.RecordStatus.Normal;
 
@@ -103,7 +128,6 @@ namespace IQBAPI.Controllers
                             if (pQR == null)
                             {
                                 result.ErrorMsg = "邀请码没有找到对应的用户";
-                                result.IsSuccess = false;
                                 return result;
                             }
                         }
@@ -153,7 +177,6 @@ namespace IQBAPI.Controllers
             }
             catch (Exception ex)
             {
-                result.IsSuccess = false;
                 result.ErrorMsg = ex.Message;
                 ErrorToDb(ex.Message);
             }
@@ -183,7 +206,7 @@ namespace IQBAPI.Controllers
         /// 获取用户邀请信息
         /// </summary>
         /// <returns></returns>
-        public OutAPIResult UserInviteInfo()
+        public OutAPIResult InviteInfo()
         {
             OutAPIResult result = new OutAPIResult();
             try
@@ -196,6 +219,27 @@ namespace IQBAPI.Controllers
             catch(Exception ex)
             {
                 ErrorToDb(ex.Message);
+            }
+            return result;
+        }
+
+        [HttpPost]
+        public OutAPIResult UpdateHeaderImage()
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+               
+                string phone = System.Web.HttpContext.Current.Request["UserPhone"];
+                string saveFullPath = SysConfig.ImageSaveDir + "\\user_"+phone;
+
+                NLogHelper.InfoTxt("Start UploadImge");
+                NLogHelper.InfoTxt("Save Paht:" + saveFullPath);
+                ImgHelper.UploadImg(saveFullPath);
+            }
+            catch(Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
             }
             return result;
         }

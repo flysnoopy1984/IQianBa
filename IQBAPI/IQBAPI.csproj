@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APIUtility\CoreStatic.cs" />
+    <Compile Include="APIUtility\SysConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BannerController.cs" />
@@ -179,6 +180,7 @@
     </Content>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>

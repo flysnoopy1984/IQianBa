@@ -17,6 +17,7 @@ namespace IQBCore.OO.Models.Entity
 
         public long UserId { get; set; }
 
+
         /// <summary>
         /// 二维码对应的地址
         /// </summary>

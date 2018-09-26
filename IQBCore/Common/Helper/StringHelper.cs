@@ -96,13 +96,13 @@ namespace IQBCore.Common.Helper
 
         #region OO
         /// <summary>
-        /// 手机后5位+3位随机数
+        /// 手机后3位+3位随机数
         /// </summary>
         /// <returns></returns>
         public static string GenerateUserInviteCode(string phone)
         {
 
-            string code = phone.Substring(6);
+            string code = phone.Substring(4);
             code += GetRnd(3, true, false, false, false, "");
             return code;
         }
