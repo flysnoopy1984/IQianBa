@@ -8,5 +8,6 @@ namespace IQBAPI.APIUtility
     public static class SysConfig
     {
         public const string ImageSaveDir = @"C:\Web\Datas\Images\OO\UserHeader";
+        public const string ImageSaveDBRoot = @"Images/OO/UserHeader/";
     }
 }

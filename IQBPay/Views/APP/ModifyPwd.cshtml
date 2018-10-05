@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "修改密码";
+    Layout = "~/Views/Shared/_AppLayout.cshtml";
+}
+
+<link href="~/Content/Component/BlockUI_Custom.css" rel="stylesheet" />
+<script src="~/scripts/Component/jquery.blockUI.min.js"></script>
+<link href="@Url.Scrpit("~/Content/Style/APP/ModifyPwd.css")" rel="stylesheet" />
+<script src="@Url.Scrpit("~/scripts/APP/ModifyPwd.js")"></script>
+
+
+<div class="box">
+    <ul class="rowUL">
+        <li class="lbField">手机号</li>
+        <li class="txtField"><input id="txtPhone" type="text" class="lineTxtInput"> </li>
+    </ul>
+    <ul class="rowUL">
+        <li class="lbField">原密码</li>
+        <li class="txtField"><input id="txtOldPwd" type="password" class="lineTxtInput"> </li>
+    </ul>
+    <ul class="rowUL">
+        <li class="lbField">新密码</li>
+        <li class="txtField"><input id="txtNewPwd" type="password" class="lineTxtInput"> </li>
+    </ul> 
+</div>
+<div class="btnListArea">
+    <input id="btn_Sure" type="button" class="btn btn-warning" value="提交修改" />
+</div>

@@ -1,0 +1,58 @@
+﻿input{outline:none} 
+.box {
+    width: 100%;
+    height: 400px;
+}
+
+.content {
+    height: 40px;
+    line-height: 40px;
+}
+
+.rowUL {
+    height:50px;
+    width:100%;
+    padding:0px;
+}
+.rowUL  li
+{
+        list-style: none; 
+        float:left;
+}
+.rowUL .lbField{
+    width:30%;
+    padding-top:20px;
+    padding-left:20px;
+}
+.rowUL .txtField{
+    width:70%;
+    padding:10px;
+        
+}
+.lineTxtInput{
+    width:80%;
+    height:34px;
+    border-bottom:1px solid black;
+    border-top:0px;
+    border-left:0px;
+    border-right:0px;
+    font-size:18px;
+    font-weight:bold;
+    color:#412d2d;
+}
+input:focus{
+    border-bottom:1px solid #0094ff;
+}
+.btnListArea{
+    width:100%;
+    text-align:center;
+            
+}
+#btn_Sure{
+    width:80%;
+    height:40px;
+    font-size:16px;
+    font-weight:bold;
+    text-align:center;
+    letter-spacing:5px;
+}

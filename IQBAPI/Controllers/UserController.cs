@@ -10,10 +10,12 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Transactions;
+using System.Web;
 using System.Web.Http;
 
 namespace IQBAPI.Controllers
@@ -27,44 +29,45 @@ namespace IQBAPI.Controllers
         /// <param name="pwd"></param>
         /// <returns></returns>
         [HttpPost]
-        public NResult<RUserInfo> Login(string loginName,string pwd)
+        public NResult<EUserInfo> Login(string loginName,string pwd)
         {
-            NResult<RUserInfo> result = new NResult<RUserInfo>();
+            NResult<EUserInfo> result = new NResult<EUserInfo>();
             try
             {
                 using (OOContent db = new OOContent())
                 {
-                    var sql = @"select ui.Id,ui.NickName,
-                                       ui.Phone,ui.UserRole,
-                                       ui.HeaderImgUrl,
-                                       ui.RecordStatus 
-                                from UserInfo as ui
-                                where ui.LoginName = @LoginName and ui.Pwd = @Pwd";
-                    sql = string.Format(sql, loginName, pwd);
-                    List<SqlParameter> pList = new List<SqlParameter>();
-                    pList.Add(new SqlParameter("@LoginName", loginName));
-                    pList.Add(new SqlParameter("@Pwd", pwd));
 
-                    RUserInfo ui = db.Database.SqlQuery<RUserInfo>(sql, pList.ToArray()).FirstOrDefault();
+                    EUserInfo ui = db.DBUserInfo.Where(a => a.LoginName == loginName && a.Pwd == pwd).FirstOrDefault();
+                    //var sql = @"select ui.Id,ui.NickName,
+                    //                   ui.Phone,ui.UserRole,
+                    //                   ui.HeaderImgUrl,
+                    //                   ui.RecordStatus 
+                    //            from UserInfo as ui
+                    //            where ui.LoginName = @LoginName and ui.Pwd = @Pwd";
+                    //sql = string.Format(sql, loginName, pwd);
+                    //List<SqlParameter> pList = new List<SqlParameter>();
+                    //pList.Add(new SqlParameter("@LoginName", loginName));
+                    //pList.Add(new SqlParameter("@Pwd", pwd));
+
+                    //RUserInfo ui = db.Database.SqlQuery<RUserInfo>(sql, pList.ToArray()).FirstOrDefault();
                     if(ui == null)
                     {
                         result.ErrorMsg = "用户名或密码错误";
                         return result;
                     }
-                    ui.LoginName = loginName;
-                    ui.Pwd = pwd;
+                    else
+                    {
+                        ui.LastLoginDateTime = DateTime.Now;
+                        db.SaveChanges();    
+                    }
                     result.resultObj = ui;
                 }
-
-              
             }
             catch(Exception ex)
-            {
-               
+            {               
                 result.ErrorMsg = ex.Message;
                 ErrorToDb(ex.Message);
             }
-
             return result;
         }
 
@@ -112,13 +115,12 @@ namespace IQBAPI.Controllers
                             ui.LoginName = userReg.Phone;
                         if (string.IsNullOrEmpty(userReg.NickName))
                             ui.NickName = userReg.Phone;
-                        
 
                         ui.Phone = userReg.Phone;
                         ui.Pwd = userReg.Pwd;
                         ui.UserRole = IQBCore.OO.BaseEnum.UserRole.User;
                         ui.RecordStatus = IQBCore.OO.BaseEnum.RecordStatus.Normal;
-
+                        ui.RegisterDateTime = DateTime.Now;
                         db.DBUserInfo.Add(ui);
 
                         //检查邀请码
@@ -184,7 +186,7 @@ namespace IQBAPI.Controllers
         }
 
         /// <summary>
-        /// 用户团队成员
+        /// 获取用户团队成员
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -223,19 +225,73 @@ namespace IQBAPI.Controllers
             return result;
         }
 
+        /// <summary>
+        /// 更新用户头像
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public OutAPIResult UpdateHeaderImage()
         {
             OutAPIResult result = new OutAPIResult();
+            Stream stream;
+            int maxSize = 10;
+            string phone = HttpContext.Current.Request["UserPhone"];
             try
             {
-               
-                string phone = System.Web.HttpContext.Current.Request["UserPhone"];
-                string saveFullPath = SysConfig.ImageSaveDir + "\\user_"+phone;
+                if (string.IsNullOrEmpty(phone))
+                {
+                    result.ErrorMsg = "【B】手机号没有获取";
+                    return result;
+                }
 
-                NLogHelper.InfoTxt("Start UploadImge");
+                HttpPostedFile file0 = HttpContext.Current.Request.Files[0];
+
+                int size = file0.ContentLength / 1024; //文件大小KB
+                if (size > maxSize*1024)
+                {
+                    result.ErrorMsg = string.Format("文件过大，不能超过{0}M", maxSize);
+                    return result;
+                }
+                byte[] fileByte = new byte[2];//contentLength，这里我们只读取文件长度的前两位用于判断就好了，这样速度比较快，剩下的也用不到。
+                stream = file0.InputStream;
+                stream.Read(fileByte, 0, 2);//contentLength，还是取前两位
+                                          
+                string fileFlag = "";
+                if (fileByte != null || fileByte.Length <= 0)//图片数据是否为空
+                {
+                    fileFlag = fileByte[0].ToString() + fileByte[1].ToString();
+                }
+                //extDir.Add("255216", "jpg");
+                if (fileFlag != "255216")
+                {
+                    result.ErrorMsg = "图片格式不正确";
+                    return result;
+                }
+              
+                string fileName = "user_" + phone + ".jpg";
+                string saveFullPath = SysConfig.ImageSaveDir + "\\"+ fileName;
                 NLogHelper.InfoTxt("Save Paht:" + saveFullPath);
-                ImgHelper.UploadImg(saveFullPath);
+
+                OutAPIResult updateResult = ImgHelper.UploadImg(saveFullPath);
+                if(updateResult.IsSuccess)
+                {
+                    using (OOContent db = new OOContent())
+                    {
+                        var dbImgUrl = SysConfig.ImageSaveDBRoot + fileName;
+                        var pList = new List<SqlParameter>();
+                        pList.Add(new SqlParameter("@imgUrl", dbImgUrl));
+                        pList.Add(new SqlParameter("@Phone", phone));
+                        var sql = @"update UserInfo
+                                    set HeaderImgUrl = @imgUrl
+                                    where Phone = @Phone
+                                    ";
+                        db.Database.ExecuteSqlCommand(sql, pList.ToArray());
+                    }
+                }
+                else
+                {
+                    result.ErrorMsg = result.ErrorMsg;
+                }
             }
             catch(Exception ex)
             {
@@ -244,5 +300,99 @@ namespace IQBAPI.Controllers
             return result;
         }
 
+        /// <summary>
+        /// 更新用户昵称
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public OutAPIResult SetNickName()
+        {
+            OutAPIResult result = new OutAPIResult();
+            string NickName = HttpContext.Current.Request["NickName"];
+            string phone = HttpContext.Current.Request["Phone"];
+            NLogHelper.InfoTxt(string.Format("Set Nick Name:{0}.Phone:{1}",NickName, phone));
+            try
+            {
+                if(string.IsNullOrEmpty(phone))
+                {
+                    result.ErrorMsg = "【B】手机号没有获取";
+                    return result;
+                }
+                if (string.IsNullOrEmpty(NickName))
+                {
+                    result.ErrorMsg = "【B】昵称没有获取";
+                    return result;
+                }
+                using (OOContent db = new OOContent())
+                {
+                    var pList = new List<SqlParameter>();
+                    pList.Add(new SqlParameter("@NickName", NickName));
+                    pList.Add(new SqlParameter("@Phone", phone));
+                    var sql = @"update UserInfo
+                                    set NickName = @NickName
+                                    where Phone = @Phone
+                                    ";
+                    result.IntMsg = db.Database.ExecuteSqlCommand(sql, pList.ToArray());
+                    if(result.IntMsg<=0)
+                    {
+                        result.ErrorMsg = "没有找到对应的用户更新";
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+            }
+            return result;
+
+        }
+
+        [HttpPost]
+        public OutAPIResult ModifyPwd()
+        {
+            string phone =HttpContext.Current.Request["Phone"];
+            string newPwd = HttpContext.Current.Request["newPwd"];
+            string oldPwd = HttpContext.Current.Request["oldPwd"];
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                if(string.IsNullOrEmpty(phone))
+                {
+                    result.ErrorMsg = "手机号不能为空！";
+                    return result;
+                }
+                if (string.IsNullOrEmpty(newPwd))
+                {
+                    result.ErrorMsg = "新密码不能为空！";
+                    return result;
+                }
+                using (OOContent db = new OOContent())
+                {
+                    EUserInfo ui =  db.DBUserInfo.Where(a => a.Phone == phone).FirstOrDefault();
+                    if(ui == null)
+                    {
+                        result.ErrorMsg = "手机对应的用户没有找到";
+                        return result;
+                    }
+                    if(ui.Pwd != oldPwd)
+                    {
+                        result.ErrorMsg = "旧密码不匹配";
+                        return result;
+                    }
+                    else
+                    {
+                        ui.Pwd = newPwd;
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+            }
+
+            return result;
+
+        }
     }
 }

@@ -1,0 +1,12 @@
+﻿.progress{
+    height:40px;
+}
+
+.progress-bar{
+    height:40px;
+    width:100%;
+    line-height:40px;
+}
+.sr-only{
+    position:unset;
+}

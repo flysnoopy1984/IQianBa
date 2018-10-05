@@ -1,5 +1,6 @@
 ﻿var wxUrl = "http://wx.iqianba.cn";
 var payUrl = "http://pp.iqianba.cn";
+var apiUrl = "http://oo.iqianba.cn";
 
 function GetUrlParam(name,nd) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
@@ -19,7 +20,6 @@ function GetUrlParam(name,nd) {
 function Trim(str) {
 
     return str.replace(/(^\s*)|(\s*$)/g, "");
-
 }
 
 function IsWeixinOrAlipay() {

@@ -1,0 +1,51 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    @*<meta name="viewport" content="width=device-width,height=device-height, initial-scale=1">*@
+    <meta content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=no, width=device-width" name="viewport">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
+
+    <script src="@Url.Scrpit("~/scripts/Web/Common.js")"></script>
+
+    <title></title>
+
+    <style type="text/css">
+        .o2o_header {
+            height: 50px;
+            width: 100%;
+            top: 0px;
+            text-align: center;
+            line-height: 50px;
+            border-bottom: 1px solid #f1f1f1;
+            font-size: 21px;
+        }
+
+        .o2o_content {
+            width: 100%;
+            height: 100vh;
+            padding: 0 0;
+        }
+
+     
+    </style>
+  
+</head>
+<body>
+    <header class="o2o_header">
+        <div>@ViewBag.Title</div>
+    </header>
+    <div class="o2o_content">
+
+        @RenderBody()
+    </div>
+    @*<input type="hidden" id="hCurUser" value="" />*@
+</body>
+</html>

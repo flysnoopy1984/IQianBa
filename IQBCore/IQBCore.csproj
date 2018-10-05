@@ -294,10 +294,12 @@
     <Compile Include="OO\BaseEnum\RecordStatus.cs" />
     <Compile Include="OO\BaseEnum\TaskStatus.cs" />
     <Compile Include="OO\BaseEnum\TaskType.cs" />
+    <Compile Include="OO\BaseEnum\UserBehaviorType.cs" />
     <Compile Include="OO\BaseEnum\UserRole.cs" />
     <Compile Include="OO\Models\Entity\EBanner.cs" />
     <Compile Include="OO\Models\Entity\EBaseRecord.cs" />
     <Compile Include="OO\Models\Entity\ESysConfig.cs" />
+    <Compile Include="OO\Models\Entity\EUserBehavior.cs" />
     <Compile Include="OO\Models\Entity\EUserCashOutTrans.cs" />
     <Compile Include="OO\Models\Entity\ECurrencyInfo.cs" />
     <Compile Include="OO\Models\Entity\EItemInfo.cs" />

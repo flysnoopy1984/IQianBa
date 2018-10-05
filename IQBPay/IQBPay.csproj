@@ -187,6 +187,7 @@
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Component\BlockUI_Custom.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.js" />
     <Content Include="Content\Component\IQBScroll.css" />
@@ -223,6 +224,7 @@
     <Content Include="Content\Images\PayHuge_ADLogo.png" />
     <Content Include="Content\Images\Tool\CouPonQRCode.png" />
     <Content Include="Content\IQBFonts.css" />
+    <Content Include="Content\Style\APP\ModifyPwd.css" />
     <Content Include="Content\Style\Frame1\bootstrap-theme.css" />
     <Content Include="Content\Style\Frame1\bootstrap-theme.min.css" />
     <Content Include="Content\Style\Frame1\bootstrap.min.css" />
@@ -540,6 +542,7 @@
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="scripts\APP\ModifyPwd.js" />
     <Content Include="scripts\Component\clipboard.min.js" />
     <Content Include="scripts\Component\FlyDiv.js" />
     <Content Include="scripts\Component\IQBTable.js" />
@@ -623,6 +626,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AliPayController.cs" />
+    <Compile Include="Controllers\APP\APPController.cs" />
     <Compile Include="Controllers\ExternalAPI\BuyerController.cs" />
     <Compile Include="Controllers\ExternalAPI\PPSMSController.cs" />
     <Compile Include="Controllers\ExternalAPI\QRAPIController.cs" />
@@ -806,6 +810,8 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Views\APP\ModifyPwd.cshtml" />
+    <Content Include="Views\Shared\_AppLayout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

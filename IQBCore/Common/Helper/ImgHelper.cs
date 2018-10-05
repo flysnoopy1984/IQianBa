@@ -1,4 +1,5 @@
-﻿using IQBCore.Model;
+﻿using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,59 +17,26 @@ namespace IQBCore.Common.Helper
     public class ImgHelper
     {
 
-        /// <summary>
-        /// 正常上传返回Null
-        /// saveFullPath c:\1 不包含后最
-        /// </summary>
-        /// <returns></returns>
-        public static string UploadImg(string saveFullPath)
+        public static OutAPIResult UploadImg(string saveFullPath)
         {
-            Stream stream;
-            string fullPath;
           
+            OutAPIResult result = new OutAPIResult();
             try
             {
-                NResult<string> result = new NResult<string>();
-
-                Dictionary<string, string> extDir = new Dictionary<string, string>();
-                extDir.Add("6677", "bmp");
-                extDir.Add("13780", "png");
-                extDir.Add("255216", "jpeg");
-
+            
                 HttpPostedFile file0 = HttpContext.Current.Request.Files[0];
-                int size = file0.ContentLength / 1024; //文件大小KB
-                if (size > 10240)
-                {
-                    result.IsSuccess = false;
-                    result.IntMsg = -1;
-                    return "文件过大，不能超过10M";
-                }
-                byte[] fileByte = new byte[2];//contentLength，这里我们只读取文件长度的前两位用于判断就好了，这样速度比较快，剩下的也用不到。
-                stream = file0.InputStream;
-                stream.Read(fileByte, 0, 2);//contentLength，还是取前两位
-                                            //  Stream stream;
-                string fileFlag = "";
-                if (fileByte != null || fileByte.Length <= 0)//图片数据是否为空
-                {
-                    fileFlag = fileByte[0].ToString() + fileByte[1].ToString();
-                }
-                if (extDir.Keys.Contains(fileFlag))
-                {
-                 //   string path = @"C:\Web\Datas\Images\OO\UserHeader\";
-                    fullPath = saveFullPath+ "." +extDir[fileFlag];
-                    file0.SaveAs(fullPath);
-                }
-               
-
+                file0.SaveAs(saveFullPath);
+                return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return ex.Message;
+                result.ErrorMsg = ex.Message;
             }
-          
 
-            return null;
+            return result;
         }
+     
+
         public static Bitmap CreateBlankImg(int w,int h, Brush b)
         {
             Bitmap newBK = new Bitmap(w,h);
@@ -216,5 +184,56 @@ namespace IQBCore.Common.Helper
            
             return MainImg;
         }
+
+        #region Bak
+        /// <summary>
+        /// 判断后缀
+        /// </summary>
+        /// <returns></returns>
+        //public static OutAPIResult UploadImg(string saveFullPath)
+        //{
+        //    Stream stream;
+        //    string fullPath;
+        //    OutAPIResult result = new OutAPIResult();
+        //    try
+        //    {
+        //        Dictionary<string, string> extDir = new Dictionary<string, string>();
+        //        extDir.Add("6677", "bmp");
+        //        extDir.Add("13780", "png");
+        //        extDir.Add("255216", "jpeg");
+
+        //        HttpPostedFile file0 = HttpContext.Current.Request.Files[0];
+        //        int size = file0.ContentLength / 1024; //文件大小KB
+        //        if (size > 10240)
+        //        {
+        //            result.ErrorMsg = "文件过大，不能超过10M";
+        //            return result;
+        //        }
+        //        byte[] fileByte = new byte[2];//contentLength，这里我们只读取文件长度的前两位用于判断就好了，这样速度比较快，剩下的也用不到。
+        //        stream = file0.InputStream;
+        //        stream.Read(fileByte, 0, 2);//contentLength，还是取前两位
+        //                                    //  Stream stream;
+        //        string fileFlag = "";
+        //        if (fileByte != null || fileByte.Length <= 0)//图片数据是否为空
+        //        {
+        //            fileFlag = fileByte[0].ToString() + fileByte[1].ToString();
+        //        }
+        //        if (extDir.Keys.Contains(fileFlag))
+        //        {
+        //         //   string path = @"C:\Web\Datas\Images\OO\UserHeader\";
+        //            fullPath = saveFullPath+ "." +extDir[fileFlag];
+        //            file0.SaveAs(fullPath);
+        //            result.SuccessMsg = extDir[fileFlag];
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        result.ErrorMsg =  ex.Message;
+        //    }
+
+        //    return result;
+        //}
+
+        #endregion
     }
 }

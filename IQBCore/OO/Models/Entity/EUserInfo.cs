@@ -12,7 +12,7 @@ namespace IQBCore.OO.Models.Entity
     [Table("UserInfo")]
     public class EUserInfo: EBaseRecord
     {
-        [Key]
+        //[Key, Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
@@ -22,6 +22,7 @@ namespace IQBCore.OO.Models.Entity
         [MaxLength(20)]
         public string Pwd { get; set; }
 
+        [Key, Column(Order = 0)]
         [MaxLength(20)]
         public string Phone { get; set; }
 
@@ -34,5 +35,9 @@ namespace IQBCore.OO.Models.Entity
         public string HeaderImgUrl { get; set; }
 
         public RecordStatus RecordStatus { get; set; }
+
+        public DateTime? LastLoginDateTime { get; set; }
+
+        public DateTime? RegisterDateTime { get; set; }
     }
 }

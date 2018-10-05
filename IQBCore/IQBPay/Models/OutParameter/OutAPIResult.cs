@@ -22,6 +22,7 @@ namespace IQBCore.IQBPay.Models.OutParameter
             set {
                 IsSuccess = false;
                 _ErrorMsg = value;
+                SuccessMsg = "";
             }
         }
 
