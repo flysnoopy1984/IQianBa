@@ -37,7 +37,7 @@ namespace IQBPay.Controllers
             return View();
         }
 
-        public ActionResult Login2()
+        public ActionResult Login()
         {
             if (IsTestMode)
             {

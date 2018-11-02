@@ -7,7 +7,6 @@ var FromPage = 0;
 var $Pager = null;
 var defaultOpts = {
     totalPages: 1,
-
 };
 //function CreateDemoData()
 //{
@@ -45,8 +44,6 @@ $(document).ready(function () {
                 Query(true, page-1);
         }
     };
-   
-   
 
 });
 
@@ -129,8 +126,6 @@ function Query(NeedClearn,_PageIndex)
                         }));
 
                     }
-                  
- 
                     generateData(data.resultList);
                     //pageIndex++;
                     pageIndex = _PageIndex;

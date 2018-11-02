@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "下载APP";
+    Layout = "~/Views/Shared/_AppLayout.cshtml";
+}
+<link href="~/Content/Component/IQBLoading.css" rel="stylesheet" />
+<style type="text/css">
+    .DownloadBK{
+        background:url(../../Content/Images/APP/BK@2x.png) no-repeat;
+        background-size:100% 100%;
+        width:100vw;
+        height:100vh;
+    }
+    .AppLogo{
+        background:url(../../Content/Images/APP/LOGO_120.png) no-repeat;
+        background-position:center bottom;
+        width:100%;
+        height:40%;
+    }
+    .MainTitle
+    {
+        height:85px;
+        line-height:85px;
+        width:100vw;
+        text-align:center;
+        display:flex;
+        justify-content:center;
+    }
+    .DevLogo{
+        background:url(../../Content/Images/APP/IOS_LOGO.png) no-repeat;
+        background-position:center 40%;
+        width:52px;
+        height:100%;
+    }
+    .AppName{
+        height:100%;
+        font-family: HelveticaNeue,Helvetica,Arial,sans-serif !important;
+        font-weight:bold;
+        font-size: 14px;
+        color: #000000;
+    }
+    .Line{
+        border: 1px solid #CFCDCD;
+        width:182px;
+        text-align:center;
+    }
+    .SubTitle{
+        width:100%;
+        height:50px;
+        display:flex;
+        justify-content:center;
+        flex-direction:column;
+        align-items:center;
+        color: #B2B1B1;
+    }
+    .btnArea{
+        width: 100%;
+        height: 160px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .btn_DownSetup
+    {
+        background:url("../../Content/Images/APP/btn_DownSetup2.png") no-repeat;
+        width:155px;
+        height:84px;
+        cursor:pointer;
+    }
+    .ProcessArea{
+        /*display:none;*/
+        color:#4A90E2;
+        font-size:18px;
+        text-align:center;
+        line-height: 35px;
+    }
+   
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".o2o_header").hide();
+        $(".btn_DownSetup").on("click", function () {
+            // alert("已经开始下载，请按Home键返回桌面查看")
+          
+
+            $("#btnArea").fadeOut(function () {
+                $("#ProcessArea").css("display", "flex");
+
+            });
+           
+        })
+    });
+</script>
+<div class="DownloadBK">
+     <div class="AppLogo">
+     </div>
+     <div class="MainTitle">
+         <div class="DevLogo"></div>
+         <div class="AppName">玉杰任务</div>
+     </div>
+     <hr class="Line" />
+    <div class="SubTitle">
+        <div>1.0.1(Build 1.0.1) - 17.09 MB</div>
+        <div>更新于 2018-10-30</div>
+    </div>
+    <div>
+        <div id="btnArea" class="btnArea">
+           <a href="itms-services://?action=download-manifest&url=https://data.iqianba.cn/Apps/YJOO.plist">
+               <div class="btn_DownSetup"></div>
+           </a>           
+        </div>
+        <div id="ProcessArea" class="btnArea ProcessArea">
+           
+            <div>APP 正在下载安装<br />请按Home键返回桌面查看</div>
+            @*<div class="LoadingCircle">
+                <p class="LoadAnimation"></p>
+            </div>*@
+        </div>
+       
+    </div>
+</div>
+

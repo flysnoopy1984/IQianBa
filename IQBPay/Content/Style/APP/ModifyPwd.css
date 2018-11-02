@@ -1,5 +1,6 @@
 ﻿input{outline:none} 
 .box {
+    margin-top:20px;
     width: 100%;
     height: 400px;
 }
@@ -16,8 +17,8 @@
 }
 .rowUL  li
 {
-        list-style: none; 
-        float:left;
+    list-style: none; 
+    float:left;
 }
 .rowUL .lbField{
     width:30%;
@@ -39,7 +40,11 @@
     font-size:18px;
     font-weight:bold;
     color:#412d2d;
+    border-radius:unset !important;
 }
+
+
+
 input:focus{
     border-bottom:1px solid #0094ff;
 }

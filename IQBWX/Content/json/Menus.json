@@ -1,26 +1,5 @@
 ﻿{
-  "button": [  
-      {
-      "name": "码商中心",
-      "sub_button": 
-      [
-        {
-          "type": "view",
-          "name": "码商信息",
-          "url": "http://wx.iqianba.cn/PP/UserStoreInfo"
-        },
-        {
-          "type": "view",
-          "name": "码商团队",
-          "url": "http://wx.iqianba.cn/PP/AgentList?type=us"
-        },
-        {
-          "type": "view",
-          "name": "码商入口",
-          "url": "http://wx.iqianba.cn/PP/StoreList"
-        }
-      ]
-    },
+  "button": [
     {
       "name": "代理中心",
       "sub_button": [
@@ -51,8 +30,37 @@
         }
 
       ]
+    },
+    {
+      "name": "项目",
+      "sub_button": [
+        {
+          "type": "view",
+          "name": "O2O",
+          "url": "http://wx.iqianba.cn/o2owap/EntryAgent"
+        }
+      ]
+    },
+    {
+      "name": "码商中心",
+      "sub_button":
+      [
+        {
+          "type": "view",
+          "name": "码商信息",
+          "url": "http://wx.iqianba.cn/PP/UserStoreInfo"
+        },
+        {
+          "type": "view",
+          "name": "码商团队",
+          "url": "http://wx.iqianba.cn/PP/AgentList?type=us"
+        },
+        {
+          "type": "view",
+          "name": "码商入口",
+          "url": "http://wx.iqianba.cn/PP/StoreList"
+        }
+      ]
     }
-
-
-  ]
-}
+    ]
+  }

@@ -190,11 +190,17 @@
     <Content Include="Content\Component\BlockUI_Custom.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.css" />
     <Content Include="Content\Component\bootstrap-switch\bootstrap-switch.min.js" />
+    <Content Include="Content\Component\IQBLoading.css" />
     <Content Include="Content\Component\IQBScroll.css" />
     <Content Include="Content\Component\jquery-confirm.css" />
     <Content Include="Content\Component\jquery-confirm.min.css" />
     <Content Include="Content\Component\jquery.pwstabs-1.2.1.min.css" />
     <Content Include="Content\Images\404_02.png" />
+    <Content Include="Content\Images\APP\BK%402x.png" />
+    <Content Include="Content\Images\APP\btn_DownSetup.png" />
+    <Content Include="Content\Images\APP\btn_DownSetup2.png" />
+    <Content Include="Content\Images\APP\IOS_LOGO.png" />
+    <Content Include="Content\Images\APP\LOGO_120.png" />
     <Content Include="Content\Images\backgrounds\O2OLoginbg.jpg" />
     <Content Include="Content\Images\backgrounds\bg4.jpg" />
     <Content Include="Content\Images\800_01.png" />
@@ -746,7 +752,7 @@
     <Content Include="Views\Store\StoreTransSum.cshtml" />
     <Content Include="Views\Wap\MyReceiveQR.cshtml" />
     <Content Include="Views\Main\Message.cshtml" />
-    <Content Include="Views\Test\Login2.cshtml" />
+    <Content Include="Views\Test\Login.cshtml" />
     <Content Include="Views\AliPay\QRUserImg.cshtml" />
     <Content Include="Views\Test\Tool_RPay.cshtml" />
     <Content Include="Views\Test\JF.cshtml" />
@@ -812,6 +818,7 @@
     </None>
     <Content Include="Views\APP\ModifyPwd.cshtml" />
     <Content Include="Views\Shared\_AppLayout.cshtml" />
+    <Content Include="Views\APP\Download.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

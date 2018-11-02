@@ -14,13 +14,13 @@
     //},
      // {
     //  "name": "其他项目",
-    //  "sub_button": [
+      //"sub_button": [
 
-    //    {
-    //      "type": "view",
-    //      "name": "O2O",
-    //      "url": "http://wx.iqianba.cn/o2owap/EntryAgent"
-    //    }
+      //  {
+      //    "type": "view",
+      //    "name": "O2O",
+      //    "url": "http://wx.iqianba.cn/o2owap/EntryAgent"
+      //  }
 
     //  ]
     //},

@@ -18,5 +18,10 @@ namespace IQBPay.Controllers.APP
         {
             return View();
         }
+
+        public ActionResult Download()
+        {
+            return View();
+        }
     }
 }

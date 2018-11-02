@@ -97,10 +97,7 @@
             }
 
         });
-
-      
-
-     
+    
     }
 
     generateData = function (data) {

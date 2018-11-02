@@ -152,6 +152,7 @@
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="SetUp\Install.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -186,6 +187,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\IQBAPI.pubxml" />
+    <Content Include="SetUp\yjoo.plist" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
