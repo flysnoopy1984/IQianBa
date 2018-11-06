@@ -1,5 +1,7 @@
-﻿using System;
+﻿using IQBCore.IOS.APNS;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,22 +23,23 @@ namespace IQBConsole
           
             try
             {
-                //Console.Write("请输入需要删除的订单间隔时间：");
-                //_OrderDiffMin = Convert.ToInt32(Console.ReadLine());
+               string jsonStr = "";// " 菜单结构";
+                string jsonPath = @"c:\message.json";
+                using (StreamReader sr = new StreamReader(jsonPath))
+                {
+                    jsonStr = sr.ReadToEnd();
+                }
 
-                //while(true)
-                //{
-                //    job.Run(_OrderDiffMin);
-                //    Thread.Sleep(_interval * 1000 * 60);
-                //}
-                //  job.ChangeReceiveQR();
-                // job.UpdateAgentRate();
-                //  job.Test();
-                //job.WXNTPayTellAdmin("o3nwE0qI_cOkirmh_qbGGG-5G6B0");
-                //job.UpdateAgentForSpecial();
+                string cerPath = @"C:\OOProd.p12";
+                IOSPushMessage message = new IOSPushMessage(IOSPushType.Development, cerPath, "edifier");
+                IOSPushSetting pushSetting = new IOSPushSetting();
+                pushSetting.deviceToken = "bb2288cbc4f29bf1dcb32ed6709f342404b882e7c49200de061dc992a4ef2ae4";
+                pushSetting.message = jsonStr ;// " 菜单结构";
+                
+                pushSetting.sound = "default";
+                pushSetting.badge = 1;
 
-                payTest.Pay();
-                Console.Read();
+                message.Push(pushSetting);
 
             }
             catch(Exception ex)

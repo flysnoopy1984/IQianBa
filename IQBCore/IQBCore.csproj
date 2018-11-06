@@ -113,6 +113,8 @@
     <Compile Include="Common\Helper\UtilityHelper.cs" />
     <Compile Include="DataBase\OOContent.cs" />
     <Compile Include="DataBase\OOTContent.cs" />
+    <Compile Include="IOS\APNS\IOSPushMessage.cs" />
+    <Compile Include="IOS\APNS\IOSPushSetting.cs" />
     <Compile Include="IQBPay\BaseEnum\SMSEnum.cs" />
     <Compile Include="Common\Constant\IQBConstant.cs" />
     <Compile Include="Common\Helper\HttpHelper.cs" />
