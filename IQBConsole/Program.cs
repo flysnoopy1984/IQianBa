@@ -23,23 +23,30 @@ namespace IQBConsole
           
             try
             {
-               string jsonStr = "";// " 菜单结构";
-                string jsonPath = @"c:\message.json";
-                using (StreamReader sr = new StreamReader(jsonPath))
-                {
-                    jsonStr = sr.ReadToEnd();
-                }
+                //string jsonStr = "";// " 菜单结构";
+                // string jsonPath = @"c:\message.json";
+                // using (StreamReader sr = new StreamReader(jsonPath))
+                // {
+                //     jsonStr = sr.ReadToEnd();
+                // }
 
-                string cerPath = @"C:\OOProd.p12";
-                IOSPushMessage message = new IOSPushMessage(IOSPushType.Development, cerPath, "edifier");
-                IOSPushSetting pushSetting = new IOSPushSetting();
-                pushSetting.deviceToken = "bb2288cbc4f29bf1dcb32ed6709f342404b882e7c49200de061dc992a4ef2ae4";
-                pushSetting.message = jsonStr ;// " 菜单结构";
-                
-                pushSetting.sound = "default";
-                pushSetting.badge = 1;
+                // string cerPath = @"C:\OOProd.p12";
+                // IOSPushMessage message = new IOSPushMessage(IOSPushType.Development, cerPath, "edifier");
+                // IOSPushSetting pushSetting = new IOSPushSetting();
+                // pushSetting.deviceToken = "bb2288cbc4f29bf1dcb32ed6709f342404b882e7c49200de061dc992a4ef2ae4";
+                // pushSetting.message = jsonStr ;// " 菜单结构";
 
-                message.Push(pushSetting);
+                // pushSetting.sound = "default";
+                // pushSetting.badge = 1;
+
+                // message.Push(pushSetting);
+
+                PushSharp ps = new PushSharp();
+                ps.StartServer();
+
+                ps.SendMsg();
+
+               
 
             }
             catch(Exception ex)

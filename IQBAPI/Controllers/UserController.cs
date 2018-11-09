@@ -22,6 +22,19 @@ namespace IQBAPI.Controllers
 {
     public class UserController : BaseAPIController
     {
+
+        public void GetUserDeviceToken(string DeviceToken)
+        {
+            try
+            {
+
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+        }
         /// <summary>
         /// 用户登录，返回用户基本信息
         /// </summary>
