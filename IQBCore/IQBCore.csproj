@@ -291,6 +291,7 @@
     <Compile Include="Model\O2OBuyerSession.cs" />
     <Compile Include="Model\UserSession.cs" />
     <Compile Include="OO\BaseEnum\CashTransType.cs" />
+    <Compile Include="OO\BaseEnum\DeviceChannel.cs" />
     <Compile Include="OO\BaseEnum\OOChannel.cs" />
     <Compile Include="OO\BaseEnum\OrderStatus.cs" />
     <Compile Include="OO\BaseEnum\RecordStatus.cs" />
@@ -305,6 +306,7 @@
     <Compile Include="OO\Models\Entity\EUserCashOutTrans.cs" />
     <Compile Include="OO\Models\Entity\ECurrencyInfo.cs" />
     <Compile Include="OO\Models\Entity\EItemInfo.cs" />
+    <Compile Include="OO\Models\Entity\EUserDevice.cs" />
     <Compile Include="OO\Models\Entity\EUserTaskOrder.cs" />
     <Compile Include="OO\Models\Entity\EStoreInfo.cs" />
     <Compile Include="OO\Models\Entity\ETaskInfo.cs" />

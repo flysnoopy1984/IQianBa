@@ -3,6 +3,7 @@ using IQBCore.Common.Helper;
 using IQBCore.DataBase;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.Model;
+using IQBCore.OO.BaseEnum;
 using IQBCore.OO.Models.Entity;
 using IQBCore.OO.Models.In;
 using IQBCore.OO.Models.QueryResult;
@@ -17,36 +18,73 @@ using System.Net.Http;
 using System.Transactions;
 using System.Web;
 using System.Web.Http;
+using Z.EntityFramework.Plus;
+
 
 namespace IQBAPI.Controllers
 {
     public class UserController : BaseAPIController
     {
 
-        public void GetUserDeviceToken(string DeviceToken)
+      
+        [HttpPost]
+        public void SetUserDeviceToken(string DeviceToken,string IDFV, DeviceChannel DeviceChannel, string appName="YJOO")
         {
             try
             {
+                if(!string.IsNullOrEmpty(DeviceToken) && !string.IsNullOrEmpty(IDFV))
+                {
+                    using (OOContent db = new OOContent())
+                    {
+                       EUserDevice userDevice =  db.DBUserDevice.Where(a => a.IDFV == IDFV).FirstOrDefault();
+                       if(userDevice == null)
+                        {
+                            userDevice = new EUserDevice();
+                            userDevice.CreateDateTime = DateTime.Now;
+                            db.DBUserDevice.Add(userDevice);
+                        }
+                            
 
+                        userDevice.DeviceToken = DeviceToken;
+                        userDevice.IDFV = IDFV;
+
+                        userDevice.DeviceChannel = DeviceChannel;
+                        userDevice.AppName = appName;
+                        userDevice.LastLoginDateTime = DateTime.Now;
+                        userDevice.LoginCount++;
+
+                        db.SaveChanges();
+
+                    }
+                }
+               
             }
             catch(Exception ex)
             {
-
+                NLogHelper.ErrorTxt("GetUserDeviceToken Error:" + ex.Message);
             }
 
         }
         /// <summary>
         /// 用户登录，返回用户基本信息
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="loginName">手机号</param>
         /// <param name="pwd"></param>
+        /// <param name="DeviceIdentify">对于IOS 就是 IDFV</param>
         /// <returns></returns>
         [HttpPost]
-        public NResult<EUserInfo> Login(string loginName,string pwd)
+        public NResult<EUserInfo> Login(string loginName,
+            string pwd,
+            string DeviceIdentify="",
+            string DeviceToken="",
+            DeviceChannel DeviceChannel = DeviceChannel.IOS)
         {
+
+           
             NResult<EUserInfo> result = new NResult<EUserInfo>();
             try
             {
+                NLogHelper.InfoTxt(string.Format("用户{0}登陆，密码：{1},DeviceIdentify:{2}",loginName,pwd,DeviceIdentify));
                 using (OOContent db = new OOContent())
                 {
 
@@ -70,7 +108,10 @@ namespace IQBAPI.Controllers
                     }
                     else
                     {
+                        
                         ui.LastLoginDateTime = DateTime.Now;
+                        //更新设备对应的手机
+                        UpdateDevice(DeviceIdentify,loginName, db);
                         db.SaveChanges();    
                     }
                     result.resultObj = ui;
@@ -181,6 +222,8 @@ namespace IQBAPI.Controllers
                         reward.OrderRewardRate = CoreStatic.Instance.Sys.L1RewardRate;
                         reward.IntroRate = CoreStatic.Instance.Sys.IntroRate;
                         db.DBUserReward.Add(reward);
+
+                        UpdateDevice(userReg.DeviceIdentify,userReg.Phone, db);
 
                         db.SaveChanges();
 
@@ -407,5 +450,36 @@ namespace IQBAPI.Controllers
             return result;
 
         }
+
+        /// <summary>
+        /// 没有DeviceIdentity 暂时就算了
+        /// </summary>
+        /// <param name="DeviceIdentity"></param>
+        /// <param name="Phone"></param>
+        /// <param name="db"></param>
+        private void UpdateDevice(string DeviceIdentity,
+            string Phone,
+            OOContent db)
+        {
+            try
+            {
+                if(!string.IsNullOrEmpty(DeviceIdentity))
+                {
+                    var UserDevice = db.DBUserDevice.Where(a => a.IDFV == DeviceIdentity).FirstOrDefault();
+                    if (UserDevice != null)
+                    {
+                        UserDevice.UserPhone = Phone;
+                    }
+                }
+             
+               
+
+            }
+            catch (Exception ex)
+            {
+                NLogHelper.ErrorTxt("Update Device Error:"+ex.Message);
+           }
+        }
+
     }
 }

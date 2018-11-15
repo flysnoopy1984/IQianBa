@@ -6,11 +6,11 @@
 
         var amt = parseFloat($("#paymoney").text());
 
-        if (amt == null || amt == "" || amt <20 || isNaN(amt)) {
+        if (amt == null || amt == "" || amt <10 || isNaN(amt)) {
             $.alert({
                 theme: "material",
                 title: "错误",
-                content: "<div style='font-size:14px !important;'>金额不能为空或小于20元</div>",
+                content: "<div style='font-size:14px !important;'>金额不能为空或小于10元</div>",
 
 
             });

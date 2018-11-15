@@ -63,12 +63,14 @@
     .btn_DownSetup
     {
         background:url("../../Content/Images/APP/btn_DownSetup2.png") no-repeat;
-        width:155px;
-        height:84px;
+        background-size:130px 45px; 
+        background-position:center center;
+      width:100vw;
+      height:100px;
         cursor:pointer;
     }
     .ProcessArea{
-        /*display:none;*/
+      display:none;
         color:#4A90E2;
         font-size:18px;
         text-align:center;
@@ -79,6 +81,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $(".o2o_header").hide();
+      
         $(".btn_DownSetup").on("click", function () {
             // alert("已经开始下载，请按Home键返回桌面查看")
           

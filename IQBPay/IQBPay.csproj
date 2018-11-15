@@ -197,7 +197,6 @@
     <Content Include="Content\Component\jquery.pwstabs-1.2.1.min.css" />
     <Content Include="Content\Images\404_02.png" />
     <Content Include="Content\Images\APP\BK%402x.png" />
-    <Content Include="Content\Images\APP\btn_DownSetup.png" />
     <Content Include="Content\Images\APP\btn_DownSetup2.png" />
     <Content Include="Content\Images\APP\IOS_LOGO.png" />
     <Content Include="Content\Images\APP\LOGO_120.png" />

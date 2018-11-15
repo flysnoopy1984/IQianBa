@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using IQBCore.DataBase;
+using IQBCore.OO.Models.Entity;
+using Newtonsoft.Json.Linq;
 using PushSharp.Apple;
 using System;
 using System.Collections.Generic;
@@ -52,9 +54,15 @@ namespace IQBConsole
 
         public void SendMsg()
         {
-            List<string> MY_DEVICE_TOKENS = new List<string>() {
-                "bb2288cbc4f29bf1dcb32ed6709f342404b882e7c49200de061dc992a4ef2ae4"
-            };
+            List<string> MY_DEVICE_TOKENS = new List<string>();
+            using (OOContent db = new OOContent())
+            {
+                db.DBUserDevice.ToList().ForEach(delegate (EUserDevice item)
+                {
+                    MY_DEVICE_TOKENS.Add(item.DeviceToken);
+                });
+            }
+           
 
             foreach (var deviceToken in MY_DEVICE_TOKENS)
             {

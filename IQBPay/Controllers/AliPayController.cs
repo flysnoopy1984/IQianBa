@@ -386,8 +386,16 @@ namespace IQBPay.Controllers
                        
                        //代理
                         UpdateUserBalance(db, order.AgentOpenId, order.RateAmount,TransactionType.Agent_Order_Comm,ref _ReportOrder);
-                        PPOrderPayNT notice = new PPOrderPayNT(accessToken, order.AgentOpenId, order);
-                        notice.Push();
+                        try
+                        {
+                            PPOrderPayNT notice = new PPOrderPayNT(accessToken, order.AgentOpenId, order);
+                            notice.Push();
+                        }
+                        catch(Exception ex)
+                        {
+                            NLogHelper.ErrorTxt("【PayNotify】微信消息推送失败：" + ex.Message);
+                        }
+                    
 
                         #region (原)代理打款
                         /*EUserInfo agentUI = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
@@ -788,19 +796,27 @@ namespace IQBPay.Controllers
 
         public ActionResult Note()
         {
-            //string accessToken = this.getAccessToken(true);
+            string accessToken = this.getAccessToken(true);
 
-            //PPInviteCodeNT notice = null;
-            //try
-            //{
-            //    notice = new PPInviteCodeNT(accessToken, 10, 20, "o3nwE0qI_cOkirmh_qbGGG-5G6B0");
-            //    return Content(notice.Push());
+            PPOrderPayNT notice = null;
+            try
+            {
+                EOrderInfo order = null;
+                using (AliPayContent db = new AliPayContent())
+                {
+                    order = db.DBOrder.Where(a => a.OrderNo == "YJO20181113043922p9").FirstOrDefault();
+                }
+                 notice = new PPOrderPayNT(accessToken, order.AgentOpenId, order);
+                notice.Push();
 
-            //}
-            //catch
-            //{
+              
+                return Content(notice.Push());
 
-            //}
+            }
+            catch
+            {
+
+            }
             return View();
         }
 

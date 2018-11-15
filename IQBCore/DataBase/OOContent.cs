@@ -40,5 +40,7 @@ namespace IQBCore.DataBase
 
         public DbSet<ESysConfig> DBSysConfig { get; set; }
 
+        public DbSet<EUserDevice> DBUserDevice { get; set; }
+
     }
 }

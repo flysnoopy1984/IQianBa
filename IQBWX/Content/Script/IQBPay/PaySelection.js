@@ -65,6 +65,7 @@
       
         if (FromClient == "WeiXin")
         {
+            alert("微信扫码需人工干预，可能隔天到！您可用支付宝扫码操作。");
             window.location.href = "/PP/WXPay?Id=" + Id + "&t=" + type;
         }
         else
