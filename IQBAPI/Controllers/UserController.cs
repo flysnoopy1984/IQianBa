@@ -1,6 +1,9 @@
-﻿using IQBAPI.APIUtility;
+﻿using GameCommon.DataBase;
+using IQBAPI.APIUtility;
+using IQBAPI.Controllers.Unity;
 using IQBCore.Common.Helper;
 using IQBCore.DataBase;
+using IQBCore.IQBPay.BaseEnum;
 using IQBCore.IQBPay.Models.OutParameter;
 using IQBCore.Model;
 using IQBCore.OO.BaseEnum;
@@ -125,6 +128,7 @@ namespace IQBAPI.Controllers
             return result;
         }
 
+
         /// <summary>
         /// 用户注册
         /// </summary>
@@ -137,6 +141,7 @@ namespace IQBAPI.Controllers
             NResult<EUserInfo> result = new NResult<EUserInfo>();
             EUserInfo ui = null;
             EUserQRInvite pQR = null;
+            SMSController smsController = new SMSController();
 
             try
             {
@@ -150,11 +155,24 @@ namespace IQBAPI.Controllers
                     result.ErrorMsg = "密码不能为空";
                     return result;
                 }
-           
+                if (string.IsNullOrEmpty(userReg.VerifyCode))
+                {
+                    result.ErrorMsg = "验证码不能为空";
+                    return result;
+                }
+                OutAPIResult smsResult = smsController.ConfirmVerification(userReg.Phone, userReg.VerifyCode);
+
+                if(!smsResult.IsSuccess)
+                {
+                    result.ErrorMsg = smsResult.ErrorMsg;
+                    return result;
+                }
                 using (OOContent db = new OOContent())
                 {
                     using (TransactionScope ts = new TransactionScope())
                     {
+
+
                         //创建用户基本信息
                         ui = db.DBUserInfo.Where(a => a.Phone == userReg.Phone).FirstOrDefault();
                         if (ui != null)
@@ -162,7 +180,7 @@ namespace IQBAPI.Controllers
                             result.ErrorMsg = "手机号已存在";
                             return result;
                         }
-                     
+
                         ui = new EUserInfo();
                         //如果昵称或登陆名为空，则用手机号补充
                         if (string.IsNullOrEmpty(userReg.LoginName))
@@ -175,6 +193,7 @@ namespace IQBAPI.Controllers
                         ui.UserRole = IQBCore.OO.BaseEnum.UserRole.User;
                         ui.RecordStatus = IQBCore.OO.BaseEnum.RecordStatus.Normal;
                         ui.RegisterDateTime = DateTime.Now;
+                        ui.RegisterChannel = RegisterChannel.OOAPP;
                         db.DBUserInfo.Add(ui);
 
                         //检查邀请码
@@ -203,7 +222,7 @@ namespace IQBAPI.Controllers
                         EUserRelation ur = new EUserRelation();
                         ur.UserId = ui.Id;
                         ur.UserName = ui.NickName;
-                       
+
                         if (pQR != null)
                             ur.PId = pQR.UserId;
                         db.DBUserRelation.Add(ur);
@@ -223,13 +242,14 @@ namespace IQBAPI.Controllers
                         reward.IntroRate = CoreStatic.Instance.Sys.IntroRate;
                         db.DBUserReward.Add(reward);
 
-                        UpdateDevice(userReg.DeviceIdentify,userReg.Phone, db);
+                        //绑定用户设备和用户手机号
+                        UpdateDevice(userReg.DeviceIdentify, userReg.Phone, db);
 
                         db.SaveChanges();
 
                         ts.Complete();
                     }
-  
+
                     result.resultObj = ui;
                 }
             }
@@ -480,6 +500,70 @@ namespace IQBAPI.Controllers
                 NLogHelper.ErrorTxt("Update Device Error:"+ex.Message);
            }
         }
+
+        #region Game相关
+        [HttpPost]
+        [HttpOptions]
+        public OutAPIResult GameUserLogin_WX(GameModel.EUserInfo wxUser)
+        {
+            NLogHelper.GameInfo("Login_WX In");
+            if(Request.Method.Method.ToLower() == "options")
+            {
+                return null;
+            }
+           
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (GameContent db = new GameContent())
+                {
+
+                    var user = db.DBUserInfo.Where(a => a.openId == wxUser.openId).FirstOrDefault();
+                    if (user == null)
+                    {
+                        result = GameUserRegister_WX(wxUser);
+                    }
+                    else
+                    {
+                        user.LastLogin = DateTime.Now;
+                        user.LoginCount++;
+                        db.SaveChanges();
+                    }
+                }
+
+            }
+            catch(Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+            }
+            return result;
+           
+        }
+
+        [HttpPost]
+        public OutAPIResult GameUserRegister_WX(GameModel.EUserInfo user)
+        {
+            OutAPIResult result = new OutAPIResult();
+            try
+            {
+                using (GameContent db = new GameContent())
+                {
+
+                    user.RegisterDate = DateTime.Now;
+                    user.LastLogin = DateTime.Now;
+                    user.LoginCount = 1;
+                   
+                    db.DBUserInfo.Add(user);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+            }
+            return result;
+        }
+        #endregion
 
     }
 }

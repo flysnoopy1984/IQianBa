@@ -1,0 +1,29 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Test</title>
+    <script type="text/javascript">
+        var ws = new WebSocket("ws://47.101.130.0:8090");
+        ws.onopen = function (evt) {
+            var e = evt;
+        }
+        ws.onclose = function (evt) {
+            var e = evt;
+        }
+        ws.onerror = function (evt) {
+            var e = evt;
+        }
+    </script>
+</head>
+<body>
+    <div> 
+    </div>
+</body>
+</html>

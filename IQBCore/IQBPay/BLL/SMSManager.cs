@@ -78,7 +78,7 @@ namespace IQBCore.IQBPay.BLL
                 StreamReader reader = new StreamReader(st, Encoding.GetEncoding("utf-8"));
                 string json = reader.ReadToEnd();
 
-                smsLog.ResponseMessage = bodys;
+                smsLog.ResponseMessage = json;
                 smsLog.SendDateTime = DateTime.Now;
                 
                 JsonSerializer serializer = new JsonSerializer();

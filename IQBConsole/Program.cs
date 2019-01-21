@@ -1,4 +1,6 @@
-﻿using IQBCore.IOS.APNS;
+﻿using GameServer;
+using IQBConsole.SocketServer;
+using IQBCore.IOS.APNS;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,35 +20,25 @@ namespace IQBConsole
         static int _OrderDiffMin = 90;
         static int _interval = 60;
 
+        static OOSocketServer _SocketServer = new OOSocketServer();
+        static OOWebSocket _WebSocket = new OOWebSocket();
+
+        static GameRunner _websockerRuner = new GameRunner();
+
         static void Main(string[] args)
         {
           
             try
             {
-                //string jsonStr = "";// " 菜单结构";
-                // string jsonPath = @"c:\message.json";
-                // using (StreamReader sr = new StreamReader(jsonPath))
-                // {
-                //     jsonStr = sr.ReadToEnd();
-                // }
+                _websockerRuner.InitSocket();
+               // _WebSocket.Init();
+               // _SocketServer.Init();
+               //PushSharp ps = new PushSharp();
+               //ps.StartServer();
 
-                // string cerPath = @"C:\OOProd.p12";
-                // IOSPushMessage message = new IOSPushMessage(IOSPushType.Development, cerPath, "edifier");
-                // IOSPushSetting pushSetting = new IOSPushSetting();
-                // pushSetting.deviceToken = "bb2288cbc4f29bf1dcb32ed6709f342404b882e7c49200de061dc992a4ef2ae4";
-                // pushSetting.message = jsonStr ;// " 菜单结构";
+                //ps.SendMsg();
 
-                // pushSetting.sound = "default";
-                // pushSetting.badge = 1;
-
-                // message.Push(pushSetting);
-
-                PushSharp ps = new PushSharp();
-                ps.StartServer();
-
-                ps.SendMsg();
-
-               
+                Console.Read();
 
             }
             catch(Exception ex)

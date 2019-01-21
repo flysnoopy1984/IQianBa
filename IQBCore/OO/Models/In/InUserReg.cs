@@ -26,6 +26,10 @@ namespace IQBCore.OO.Models.In
         public string AppName { get; set; }
 
         /// <summary>
+        /// 验证码
+        /// </summary>
+        public string VerifyCode { get; set; }
+        /// <summary>
         /// 用户上级邀请码
         /// </summary>
         public string InviteCode { get; set; }

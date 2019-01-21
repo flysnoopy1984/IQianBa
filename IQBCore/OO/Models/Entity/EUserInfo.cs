@@ -31,6 +31,11 @@ namespace IQBCore.OO.Models.Entity
 
         public UserRole UserRole { get; set; }
 
+        /// <summary>
+        /// 注册来源
+        /// </summary>
+        public RegisterChannel RegisterChannel { get; set; }
+
         [MaxLength(256)]
         public string HeaderImgUrl { get; set; }
 

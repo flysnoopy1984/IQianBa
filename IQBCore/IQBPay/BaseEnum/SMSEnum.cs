@@ -12,11 +12,19 @@ namespace IQBCore.IQBPay.BaseEnum
 
     public enum SMSVerifyStatus
     {
+        //基本不用。。。
         Verifying =1,
+        //已发送
         Sent = 2,
+        //发送失败
         SentFailure = 6,
+
+        //校验成功
         Success =3,
+        //校验失败
         Failure= 4,
+
+        //过期
         Expired=5,
         UnKnown=-1,
 
@@ -36,5 +44,7 @@ namespace IQBCore.IQBPay.BaseEnum
         O2O_BuyerPhoneVerify = 200,
 
         ReCharge = 300,
+
+        OO_Register = 400,
     }
 }

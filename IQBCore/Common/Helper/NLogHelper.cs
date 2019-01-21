@@ -12,7 +12,35 @@ namespace IQBCore.Common.Helper
         private static Logger _FileLogger = LogManager.GetLogger("FileNLog");
         private static Logger _FileErrorLogger = LogManager.GetLogger("ErrorNLog");
 
+        private static Logger _GameInfoLogger = LogManager.GetLogger("GameInfoLog");
+        private static Logger _GameErrorLogger = LogManager.GetLogger("GameErrorLog");
+
         private static Logger _DbLogger = LogManager.GetLogger("DBLogger");
+
+
+        public static void GameInfo(string txt)
+        {
+            try
+            {
+                _GameInfoLogger.Info(txt);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public static void GameError(string txt)
+        {
+            try
+            {
+                _GameErrorLogger.Info(txt);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
 
         public static void InfoTxt(string txt)
         {

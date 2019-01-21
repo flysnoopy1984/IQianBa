@@ -113,6 +113,13 @@ namespace IQBCore.Common.Helper
 
         #endregion
 
+        #region Game
+        public static string GenerateRoomCode()
+        {
+            return DateTime.Now.ToString("MMdd") + GetRnd(4, true, false, false, false, "");
+        }
+        #endregion
+
 
     }
 }

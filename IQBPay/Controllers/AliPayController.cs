@@ -385,73 +385,38 @@ namespace IQBPay.Controllers
                         string accessToken = this.getAccessToken(true);
                        
                        //代理
+                       /*
                         UpdateUserBalance(db, order.AgentOpenId, order.RateAmount,TransactionType.Agent_Order_Comm,ref _ReportOrder);
                         try
                         {
                             PPOrderPayNT notice = new PPOrderPayNT(accessToken, order.AgentOpenId, order);
                             notice.Push();
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             NLogHelper.ErrorTxt("【PayNotify】微信消息推送失败：" + ex.Message);
                         }
-                    
 
-                        #region (原)代理打款
-                        /*EUserInfo agentUI = db.DBUserInfo.Where(u => u.OpenId == order.AgentOpenId).FirstOrDefault();
-                        tranfer = payManager.TransferHandler(TransferTarget.Agent, BaseController.SubApp, BaseController.SubApp, agentUI,ref order,0, accessToken,BaseController.GlobalConfig);
-                        db.DBTransferAmount.Add(tranfer);
-                        if(tranfer.TransferStatus != TransferStatus.Success)
-                            TransferError++;
-                        */
-                        #endregion
+
+                      
 
                         //上级代理佣金
                         if (!string.IsNullOrEmpty(order.ParentOpenId) && order.ParentCommissionAmount > 0)
                         {
 
-                            //agentComm = db.DBAgentCommission.Where(c => c.OrderNo == order.OrderNo && c.ParentOpenId == order.ParentOpenId && c.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
-                            //agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
-
-                            //EUserInfo parentUi = new EUserInfo();
-                            //parentUi.AliPayAccount = agentComm.ParentAliPayAccount;
-
-                            ////用户转账函数赋值
-                            //parentUi.OpenId = agentComm.ParentOpenId;
-                            //parentUi.Name = agentComm.ParentName;
+                          
 
                             UpdateUserBalance(db, order.ParentOpenId, order.ParentCommissionAmount,TransactionType.Parent_Comm, ref _ReportOrder);
-                            //tranfer = payManager.TransferHandler(TransferTarget.ParentAgent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order,0, null,BaseController.GlobalConfig);
-                            //db.DBTransferAmount.Add(tranfer);
-                            
-                            //if(tranfer.TransferStatus == TransferStatus.Success)
-                            //    agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
-                            //else
-                            //    TransferError++;
+                          
                         }
                         //3级
                         if (!string.IsNullOrEmpty(order.L3OpenId) && order.L3CommissionAmount>0)
                         {
-                            //agentComm = db.DBAgentCommission.Where(c => c.OrderNo == order.OrderNo && c.ParentOpenId == order.L3OpenId && c.AgentCommissionStatus == AgentCommissionStatus.Open).FirstOrDefault();
-                            //agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
-
-                            //EUserInfo parentUi = new EUserInfo();
-                            //parentUi.AliPayAccount = agentComm.ParentAliPayAccount;
-
-                            ////用户转账函数赋值
-                            //parentUi.OpenId = agentComm.ParentOpenId;
-                            //parentUi.Name = agentComm.ParentName;
-
+                           
                             UpdateUserBalance(db, order.L3OpenId, order.L3CommissionAmount,TransactionType.L3_Comm, ref _ReportOrder);
 
-                            //tranfer = payManager.TransferHandler(TransferTarget.L3Agent, BaseController.SubApp, BaseController.SubApp, parentUi, ref order,0, null, BaseController.GlobalConfig);
-                            //db.DBTransferAmount.Add(tranfer);
-
-                            //if (tranfer.TransferStatus == TransferStatus.Success)
-                            //    agentComm.AgentCommissionStatus = AgentCommissionStatus.Closed;
-                            //else
-                            //    TransferError++;
                         }
+                        */
 
                             //用户打款
                        //  Log.log("PayNotify 开始用户打款");

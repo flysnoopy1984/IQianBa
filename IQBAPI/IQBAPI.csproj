@@ -168,9 +168,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BannerController.cs" />
     <Compile Include="Controllers\BaseAPIController.cs" />
+    <Compile Include="Controllers\Games\GamingController.cs" />
+    <Compile Include="Controllers\Games\RoomController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
+    <Compile Include="Controllers\Unity\SMSController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -208,6 +211,14 @@
     <ProjectReference Include="..\IQBCore\IQBCore.csproj">
       <Project>{079669b1-7659-41c1-b5d6-fa7f634fab3a}</Project>
       <Name>IQBCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IQBGames\GameCommon\GameCommon.csproj">
+      <Project>{b6cf63c4-aeea-4206-9948-fdb7c15e5382}</Project>
+      <Name>GameCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IQBGames\GameModel\GameModel.csproj">
+      <Project>{9f07fa7f-aab1-4eca-a027-9c4e263dc0a2}</Project>
+      <Name>GameModel</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

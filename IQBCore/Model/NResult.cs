@@ -38,6 +38,7 @@ namespace IQBCore.Model
             set {
                 _IsSuccess = false;
                 _ErrorMsg = value;
+                SuccessMsg = "";
             }
         }
 

@@ -105,6 +105,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Extension\DateTimeExtension.cs" />
     <Compile Include="Common\Helper\CookieHelper.cs" />
     <Compile Include="Common\Helper\DateHelper.cs" />
     <Compile Include="Common\Helper\ImgHelper.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Common\Helper\UtilityHelper.cs" />
     <Compile Include="DataBase\OOContent.cs" />
     <Compile Include="DataBase\OOTContent.cs" />
+    <Compile Include="DataBase\PPContent.cs" />
     <Compile Include="IOS\APNS\IOSPushMessage.cs" />
     <Compile Include="IOS\APNS\IOSPushSetting.cs" />
     <Compile Include="IQBPay\BaseEnum\SMSEnum.cs" />
@@ -295,6 +297,7 @@
     <Compile Include="OO\BaseEnum\OOChannel.cs" />
     <Compile Include="OO\BaseEnum\OrderStatus.cs" />
     <Compile Include="OO\BaseEnum\RecordStatus.cs" />
+    <Compile Include="OO\BaseEnum\RegisterChannel.cs" />
     <Compile Include="OO\BaseEnum\TaskStatus.cs" />
     <Compile Include="OO\BaseEnum\TaskType.cs" />
     <Compile Include="OO\BaseEnum\UserBehaviorType.cs" />

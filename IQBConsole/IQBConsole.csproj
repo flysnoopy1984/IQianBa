@@ -59,9 +59,41 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\RefDll\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Fleck, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fleck.1.0.3\lib\net45\Fleck.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.4.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.2.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PushSharp.Apple">
       <HintPath>..\RefDll\PushSharp.Apple.dll</HintPath>
@@ -69,10 +101,36 @@
     <Reference Include="PushSharp.Core">
       <HintPath>..\RefDll\PushSharp.Core.dll</HintPath>
     </Reference>
+    <Reference Include="SuperSocket.Common, Version=1.6.6.1, Culture=neutral, PublicKeyToken=6c80000676988ebb, processorArchitecture=MSIL">
+      <HintPath>..\packages\SuperSocket.1.6.6.1\lib\net45\SuperSocket.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SuperSocket.Facility, Version=1.6.6.1, Culture=neutral, PublicKeyToken=6c80000676988ebb, processorArchitecture=MSIL">
+      <HintPath>..\packages\SuperSocket.1.6.6.1\lib\net45\SuperSocket.Facility.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SuperSocket.SocketBase, Version=1.6.6.1, Culture=neutral, PublicKeyToken=6c80000676988ebb, processorArchitecture=MSIL">
+      <HintPath>..\packages\SuperSocket.1.6.6.1\lib\net45\SuperSocket.SocketBase.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SuperSocket.SocketEngine, Version=1.6.6.1, Culture=neutral, PublicKeyToken=6c80000676988ebb, processorArchitecture=MSIL">
+      <HintPath>..\packages\SuperSocket.Engine.1.6.6.1\lib\net45\SuperSocket.SocketEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SuperSocket.SocketService, Version=1.6.6.1, Culture=neutral, PublicKeyToken=6c80000676988ebb, processorArchitecture=MSIL">
+      <HintPath>..\packages\SuperSocket.Engine.1.6.6.1\lib\net45\SuperSocket.SocketService.exe</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SuperSocket.WebSocket, Version=1.6.6.1, Culture=neutral, PublicKeyToken=6c80000676988ebb, processorArchitecture=MSIL">
+      <HintPath>..\packages\SuperSocket.WebSocket.1.6.6.1\lib\net45\SuperSocket.WebSocket.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -88,18 +146,36 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushSharp.cs" />
     <Compile Include="PushToAPNs.cs" />
+    <Compile Include="SocketServer\OOSocketServer.cs" />
+    <Compile Include="SocketServer\OOWebSocket.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Config\log4net.config" />
+    <None Include="Config\log4net.unix.config" />
     <None Include="message.json" />
     <None Include="packages.config" />
+    <None Include="supersocket.cmd" />
+    <None Include="supersocket.sh" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IQBCore\IQBCore.csproj">
       <Project>{079669b1-7659-41c1-b5d6-fa7f634fab3a}</Project>
       <Name>IQBCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IQBGames\GameCommon\GameCommon.csproj">
+      <Project>{b6cf63c4-aeea-4206-9948-fdb7c15e5382}</Project>
+      <Name>GameCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IQBGames\GameModel\GameModel.csproj">
+      <Project>{9f07fa7f-aab1-4eca-a027-9c4e263dc0a2}</Project>
+      <Name>GameModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IQBGames\GameServer\GameServer.csproj">
+      <Project>{1E2542B2-CE9E-433C-A8A0-A12348F95A32}</Project>
+      <Name>GameServer</Name>
     </ProjectReference>
     <ProjectReference Include="..\IQBPay\IQBPay.csproj">
       <Project>{7e6d5001-c117-4953-b10e-cb9de9d9f1ba}</Project>
@@ -120,10 +196,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ooopic_1522392468.ico" />
+    <Content Include="Scripts\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.4.js" />
+    <Content Include="Scripts\jquery-1.6.4.min.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.0.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.0.min.js" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
