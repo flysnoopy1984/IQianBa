@@ -1,8 +1,7 @@
 ﻿using GameModel.WSJsonData;
 using GameServer.Command;
 using Newtonsoft.Json;
-using SuperSocket.SocketBase.Command;
-using SuperSocket.SocketBase.Protocol;
+
 using SuperSocket.WebSocket.SubProtocol;
 using System;
 using System.Collections.Generic;
@@ -12,8 +11,9 @@ using System.Threading.Tasks;
 
 namespace GameServer.Command
 {
-    public class NewConnect : SubCommandBase<GameUserSession>
+    public class NEWC : SubCommandBase<GameUserSession>
     {
+      
         public override void ExecuteCommand(GameUserSession session, SubRequestInfo requestInfo)
         {
             var jsonStr = requestInfo.Body;
@@ -25,6 +25,5 @@ namespace GameServer.Command
                 session.Send($"Hello！你好{session.OpenId},欢迎您来到房间{session.RoomCode}");
             }
         }
-
     }
 }

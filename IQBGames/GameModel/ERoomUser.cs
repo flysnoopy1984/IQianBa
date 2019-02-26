@@ -21,5 +21,13 @@ namespace GameModel
         public string UserOpenId { get; set; }
 
         public RoomUserStatus UserStatus { get; set; }
+
+        /// <summary>
+        /// 座位号
+        /// </summary>
+        public int SeatNo { get; set; }
+
+       
+
     }
 }

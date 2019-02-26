@@ -30,5 +30,7 @@ namespace GameModel
 
 
         public DateTime CreateTime { get; set; }
+
+        
     }
 }

@@ -34,10 +34,15 @@ namespace GameServer
             Console.WriteLine("Server Start");
 
             _GameServer.NewSessionConnected += _GameServer_NewSessionConnected;
-        //    _GameServer.NewMessageReceived += _GameServer_NewMessageReceived;
+            _GameServer.NewMessageReceived += _GameServer_NewMessageReceived;
+            _GameServer.SessionClosed += _GameServer_SessionClosed;
 
 
+        }
 
+        private void _GameServer_SessionClosed(GameUserSession session, CloseReason value)
+        {
+            Console.WriteLine("Session Closed");
         }
 
         private void _GameServer_NewMessageReceived(GameUserSession session, string value)
