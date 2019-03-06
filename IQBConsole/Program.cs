@@ -1,11 +1,12 @@
 ﻿using GameModel;
 using GameModel.Enums;
+using GameRedis;
+using GameRedis.Games;
 using GameServer;
 using IQBConsole.SocketServer;
+using IQBConsole.Test;
 using IQBCore.IOS.APNS;
 using IQBCore.IQBPay.Models.OutParameter;
-using IQBRedis;
-using IQBRedis.Games;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using System;
@@ -31,20 +32,27 @@ namespace IQBConsole
         static OOWebSocket _WebSocket = new OOWebSocket();
 
         static GameRunner _websockerRuner = new GameRunner();
-
+        static TestRunner _testRuner = new TestRunner();
+        static RedisManager redis = new RedisManager();
+        static RoomUserRedis _roomUserRedis = new RoomUserRedis();
+        static GameRedis.Games.GameRedis _gameRedis = new GameRedis.Games.GameRedis();
         static void Main(string[] args)
         {
           
             try
             {
-                 _websockerRuner.InitSocket();
+                var r = _gameRedis.SetGameStatus("test", GameStatus.WaitPlayer);
+                _gameRedis.SetGameStatus("test2", GameStatus.Settlement);
+                //Console.WriteLine(no);
+                //  RedisTest.TestTable();
+                // _websockerRuner.InitSocket();
                 // _WebSocket.Init();
                 // _SocketServer.Init();
                 //PushSharp ps = new PushSharp();
                 //ps.StartServer();
 
                 //ps.SendMsg();
-                //RedisManager redis = new RedisManager();
+                //
                 //ConnectionMultiplexer conn = redis.NewConnection();
                 //  _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
                 //   redis.WriteSortedSet2<string>("test1", "abc", 0);

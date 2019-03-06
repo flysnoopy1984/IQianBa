@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameRedis.Games
+namespace GameModel.WebSocketData
 {
-    public class AppRedis: BaseRedis
+    public class BaseWSJsonData
     {
+        public int Action { get; set; }
 
     }
 }

@@ -190,6 +190,7 @@
     <Compile Include="PushToAPNs.cs" />
     <Compile Include="SocketServer\OOSocketServer.cs" />
     <Compile Include="SocketServer\OOWebSocket.cs" />
+    <Compile Include="Test\RedisTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -223,9 +224,9 @@
       <Project>{7e6d5001-c117-4953-b10e-cb9de9d9f1ba}</Project>
       <Name>IQBPay</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IQBRedis\IQBRedis.csproj">
+    <ProjectReference Include="..\IQBRedis\GameRedis.csproj">
       <Project>{cf29e509-157b-4b82-92bf-1722c0247673}</Project>
-      <Name>IQBRedis</Name>
+      <Name>GameRedis</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

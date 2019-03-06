@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IQBRedis.Games
+namespace GameModel.Enums
 {
-    public class OneGameRedis:BaseRedis
+    public enum MessageSendTarget
     {
-        
+        Self,
+        UserInRoom,
+        PlayerInRoom,
+        AllUser,
     }
 }

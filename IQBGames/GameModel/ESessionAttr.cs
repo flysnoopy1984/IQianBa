@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameModel.WSJsonData
+namespace GameModel
 {
-    public class jdNewConnect:BaseWSJsonData
+    public class ESessionAttr
     {
         public string OpenId { get; set; }
 
-        public string RoomCode { get; set; }
+        public string UserName { get; set; }
+
+        public int Weight { get; set; }
+
+        
     }
 }

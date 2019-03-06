@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameRedis.Games
+namespace GameModel.WebSocketData.SendData
 {
-    public class AppRedis: BaseRedis
+    public class ResultError
     {
-
     }
 }

@@ -9,22 +9,33 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Test</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
         var ws = new WebSocket("ws://47.101.130.0:8090");
-        ws.onopen = function (evt) {
-            var e = evt;
-            ws.send("NewConnect aaa");
+        ws.onopen = function (e) {
+            var json = 'NewConnect {"OpenId":"o3nwE0punwkLi4oBtW961BuyMRLE",\
+                                    "UserName":"jacky", \
+                                    "Weight":0 \
+}';
+            ws.send(json);
         }
+
         ws.onclose = function (evt) {
             var e = evt;
         }
+
         ws.onerror = function (evt) {
             var e = evt;
+        }
+
+        ws.onmessage = function (e) {
+            $("#msg").text(e.data);
         }
     </script>
 </head>
 <body>
-    <div> 
+    <div id="msg">
+
     </div>
 </body>
 </html>

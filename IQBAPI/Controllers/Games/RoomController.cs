@@ -2,10 +2,10 @@
 using GameCommon.DataBase;
 using GameModel;
 using GameModel.Enums;
+using GameRedis.Games;
 using IQBCore.Common.Helper;
 using IQBCore.IQBPay.Models.OutParameter;
-using IQBRedis;
-using IQBRedis.Games;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -166,13 +166,13 @@ namespace IQBAPI.Controllers.Games
 
         #region Redis
         [HttpPost]
-        public OutAPIResult UserSitDown_Redis(string UserOpenId,int SeatNo)
+        public OutAPIResult UserSitDown_Redis(string UserOpenId,int SeatNo,decimal coins)
         {
             OutAPIResult result = new OutAPIResult();
             RoomUserRedis redis = new RoomUserRedis();
             try
             {
-                result = redis.UserSitDown(UserOpenId, SeatNo);
+                result = redis.UserSitDown(UserOpenId, SeatNo,coins);
 
             }
             catch (Exception ex)

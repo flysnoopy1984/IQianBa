@@ -7,8 +7,8 @@
     <ProjectGuid>{CF29E509-157B-4B82-92BF-1722C0247673}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IQBRedis</RootNamespace>
-    <AssemblyName>IQBRedis</AssemblyName>
+    <RootNamespace>GameRedis</RootNamespace>
+    <AssemblyName>GameRedis</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -98,7 +98,8 @@
   <ItemGroup>
     <Compile Include="Games\AppRedis.cs" />
     <Compile Include="Games\BaseRedis.cs" />
-    <Compile Include="Games\OneGameRedis.cs" />
+    <Compile Include="Games\GameRedis.cs" />
+    <Compile Include="Games\GameTableRedis.cs" />
     <Compile Include="Games\RoomRedis.cs" />
     <Compile Include="Games\RoomUserRedis.cs" />
     <Compile Include="GK.cs" />

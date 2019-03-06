@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IQBRedis
+namespace GameRedis
 {
     /// <summary>
     /// Game_Key
@@ -17,7 +17,12 @@ namespace IQBRedis
         public const string U_RoomCode = "U_RoomCode";
         public const string U_RoomWeight = "U_RoomWeight";
 
-       
+        public const string GameStatus = "GameStatus";
+
+        public const string GameDotPosition = "Game_Dot_Pos";
+     //   public const string RoomPlayer = "RoomPlayer";
+
+
 
         public const string ALLRoomCode = "ALLRoomCode";
 
@@ -41,10 +46,26 @@ namespace IQBRedis
             return roomCode + "_One";
         }
 
-        public static string GetRoomUser(string roomCode, string openId)
+        public static string RoomPlayer(string roomCode)
         {
-            return roomCode + "_" + openId;
+            return  roomCode+"_Player";
+        }
+
+        public static string RoomTable(string roomCode)
+        {
+            return roomCode + "_Table";
+        }
+
+        public static string UserInfo(string openId)
+        {
+            return "U_" + openId;
         }
        
+
+        //public static string GameStatus(string roomCode)
+        //{
+        //    return roomCode + "_GameStatus";
+        //}
+
     }
 }

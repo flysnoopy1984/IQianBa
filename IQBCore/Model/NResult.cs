@@ -12,10 +12,13 @@ namespace IQBCore.Model
         {
             IsSuccess = true;
             SuccessMsg = "成功";
+            resultList = new List<T>();
         }
         public T resultObj { get; set; }
 
         public List<T> resultList { get; set; }
+
+        public Dictionary<string,T> resultDict { get; set; }
 
         private bool _IsSuccess;
         public bool IsSuccess

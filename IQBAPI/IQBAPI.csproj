@@ -187,9 +187,9 @@
       <Project>{9f07fa7f-aab1-4eca-a027-9c4e263dc0a2}</Project>
       <Name>GameModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\IQBRedis\IQBRedis.csproj">
+    <ProjectReference Include="..\IQBRedis\GameRedis.csproj">
       <Project>{cf29e509-157b-4b82-92bf-1722c0247673}</Project>
-      <Name>IQBRedis</Name>
+      <Name>GameRedis</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

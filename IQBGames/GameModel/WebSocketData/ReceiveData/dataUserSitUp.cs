@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameModel.WSJsonData
+namespace GameModel.WebSocketData.ReceiveData
 {
-    public class BaseWSJsonData
+    public class dataUserSitUp: BaseWSJsonData
     {
-        public int Action { get; set; }
-
+        public string OpenId { get; set; }
     }
 }

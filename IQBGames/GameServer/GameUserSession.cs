@@ -8,18 +8,30 @@ using SuperSocket.SocketBase.Protocol;
 using SuperSocket.WebSocket;
 using SuperSocket.WebSocket.Protocol;
 using SuperSocket.WebSocket.SubProtocol;
+using GameServer.Engine;
+using GameModel;
 
 namespace GameServer
 {
     public class GameUserSession: WebSocketSession<GameUserSession>
     {
-        public string RoomCode { get; set; }
+        public GameServer GameServer
+        {
+            get
+            {
+                return (GameServer)AppServer;
+            }
+        }
 
-        public string OpenId { get; set; }
-
-        public string UserName { get; set; }
-
-
+        private ESessionAttr _GameAttr;
+        public ESessionAttr GameAttr
+        {
+            get
+            {
+                if (_GameAttr == null) _GameAttr = new ESessionAttr();
+                return _GameAttr;
+            }
+        }
 
         protected override void OnSessionStarted()
         {
@@ -28,6 +40,7 @@ namespace GameServer
 
         protected override void OnSessionClosed(CloseReason reason)
         {
+
             base.OnSessionClosed(reason);
         }
 
@@ -45,6 +58,8 @@ namespace GameServer
         {
             base.HandleUnknownCommand(requestInfo);
         }
+
+        
 
      
 

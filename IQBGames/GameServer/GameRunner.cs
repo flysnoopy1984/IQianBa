@@ -17,8 +17,8 @@ namespace GameServer
             ServerConfig serverConfig = new ServerConfig();
             serverConfig.Port = 8090;
             serverConfig.Mode = SocketMode.Tcp;
-
-
+            serverConfig.TextEncoding = "UTF-8";
+           
             if (!_GameServer.Setup(serverConfig))
             {
                 Console.WriteLine("Server Serup 失败");
@@ -33,27 +33,27 @@ namespace GameServer
             }
             Console.WriteLine("Server Start");
 
+            
             _GameServer.NewSessionConnected += _GameServer_NewSessionConnected;
-            _GameServer.NewMessageReceived += _GameServer_NewMessageReceived;
+            
+         //   _GameServer.NewMessageReceived += _GameServer_NewMessageReceived;
             _GameServer.SessionClosed += _GameServer_SessionClosed;
-
-
         }
 
         private void _GameServer_SessionClosed(GameUserSession session, CloseReason value)
-        {
-            Console.WriteLine("Session Closed");
+        {       
+                Console.WriteLine("Session Closed");
         }
 
-        private void _GameServer_NewMessageReceived(GameUserSession session, string value)
-        {
-            Console.WriteLine("GetMessage:" + value);
-        }
+        //private void _GameServer_NewMessageReceived(GameUserSession session, string value)
+        //{
+        //    Console.WriteLine("GetMessage:" + value);
+        //}
 
         private void _GameServer_NewSessionConnected(GameUserSession session)
         {
-            Console.WriteLine("New Session");
            
+            Console.WriteLine($"New Session.Now has {_GameServer.SessionCount}");
         }
 
       

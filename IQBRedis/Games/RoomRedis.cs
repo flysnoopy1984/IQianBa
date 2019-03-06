@@ -10,50 +10,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IQBRedis.Games
+namespace GameRedis.Games
 {
     public class RoomRedis: BaseRedis
     {
-       
-       
+        private static Object _LockRoom = new Object();
 
+        /// <summary>
+        /// SuccessMsg: RoomCode, IntMsg:>0 说明是找到的
+        /// </summary>
+        /// <param name="userOpenId"></param>
+        /// <param name="weight"></param>
+        /// <returns></returns>
         public OutAPIResult FindOrCreateRoom(string userOpenId, int weight)
         {
 
             OutAPIResult result = new OutAPIResult();
             try
             {
-               // ERoom room = null;
-               
-                var roomKey = GK.AllRoomScore(weight);
-                string roomCode = "";
+                lock(_LockRoom)
+                {
+                    var roomKey = GK.AllRoomScore(weight);
+                    string roomCode = "";
 
-               //获取可用的房间
-                var list = _redis.FindSortedSet<string>(roomKey, 0, GameConfig.Room_Max_PlayerCount);
-                if (list.Count > 0)
-                {
-                    roomCode = list[0];
-                }    
-                else
-                {
-                  
-                    string createResult = CreateRoom(weight,out roomCode);
-                    if(createResult != null)
+                    //获取可用的房间
+                    var list = _redis.FindSortedSet<string>(roomKey, 0, GameConfig.Room_Max_PlayerCount);
+                    if (list.Count > 0)
                     {
-                        result.ErrorMsg = createResult;
-                        return result;
+                        roomCode = list[0];
+                        result.IntMsg = 1;
                     }
-                    if(string.IsNullOrWhiteSpace(roomCode))
+                    else
                     {
-                        result.ErrorMsg = "Room 没有创建成功，Code 空";
-                        return result;       
+                        string createResult = CreateRoom(weight, out roomCode);
+                        if (createResult != null)
+                        {
+                            result.ErrorMsg = createResult;
+                            return result;
+                        }
+                        if (string.IsNullOrWhiteSpace(roomCode))
+                        {
+                            result.ErrorMsg = "Room 没有创建成功，Code 空";
+                            return result;
+                        }
                     }
-                   
+                    result.SuccessMsg = roomCode;
                 }
-                result.SuccessMsg = roomCode;
-
-               
-              
             }
             catch(Exception ex)
             {
@@ -70,8 +72,7 @@ namespace IQBRedis.Games
             string msg = null;
             roomCode = StringHelper.GenerateRoomCode();
             try
-            {
-               
+            { 
                 var AllRoomScoreKey = GK.AllRoomScore(weight);
                 
                 ERoom room = new ERoom
@@ -101,10 +102,6 @@ namespace IQBRedis.Games
                 msg = ex.Message;
             }
             return msg;
-        }
-
-       
-
-       
+        }  
     }
 }

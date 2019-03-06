@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -42,18 +46,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ECard.cs" />
+    <Compile Include="Enums\CardType.cs" />
+    <Compile Include="Enums\GameActionCode.cs" />
+    <Compile Include="Enums\GameStatus.cs" />
+    <Compile Include="Enums\MessageSendTarget.cs" />
+    <Compile Include="Enums\MessageType.cs" />
     <Compile Include="EOneGame.cs" />
-    <Compile Include="Enums\RoomUserStatus.cs" />
     <Compile Include="ERoom.cs" />
     <Compile Include="ERoomUser.cs" />
     <Compile Include="EUserInfo.cs" />
+    <Compile Include="ESessionAttr.cs" />
+    <Compile Include="Message\IGameMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WSJsonData\BaseWSJsonData.cs" />
-    <Compile Include="WSJsonData\jdNewConnect.cs" />
+    <Compile Include="WebSocketData\BaseWSJsonData.cs" />
+    <Compile Include="WebSocketData\ReceiveData\dataNewConnect.cs" />
+    <Compile Include="WebSocketData\ReceiveData\dataUserSitDown.cs" />
+    <Compile Include="Message\BaseNormalMsg.cs" />
+    <Compile Include="Message\MessageNormalError.cs" />
+    <Compile Include="WebSocketData\ReceiveData\dataUserSitUp.cs" />
+    <Compile Include="WebSocketData\SendData\ResultError.cs" />
+    <Compile Include="WebSocketData\SendData\ResultGameStaring.cs" />
+    <Compile Include="WebSocketData\SendData\ResultGameWait.cs" />
+    <Compile Include="WebSocketData\SendData\ResultUserSitDown.cs" />
+    <Compile Include="WebSocketData\SendData\ResultUserSitUp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\IQBCore\IQBCore.csproj">
+      <Project>{079669B1-7659-41C1-B5D6-FA7F634FAB3A}</Project>
+      <Name>IQBCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

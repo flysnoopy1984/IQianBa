@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace GameModel.Enums
 {
-    public enum RoomUserStatus
+    public enum MessageType
     {
-        Standup = 0,
+        Normal =0,
+        Error = -1,
 
-        SitDown = 1,
-        
+
     }
 }

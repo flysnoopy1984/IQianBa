@@ -1,5 +1,6 @@
 ﻿using IQBCore.Common.Helper;
 using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.Model;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core;
@@ -11,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IQBRedis
+namespace GameRedis
 {
     public class RedisManager
     {
@@ -106,6 +107,78 @@ namespace IQBRedis
 
         #region Set
 
+       
+        public RedisValue[] SetGetAll(string key)
+        {
+            ConnectionMultiplexer conn = GetUsingConn();
+          
+            try
+            {
+                if (conn.GetDatabase().SetLength(key) == 0)
+                    return null;
+                return conn.GetDatabase().SetMembers(key);
+            }
+            finally
+            {
+                if (_TransConn == null)
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
+            }
+          
+        }
+        public List<T> SetGetAll<T>(string key)
+        {
+            ConnectionMultiplexer conn = GetUsingConn();
+            List<T> result = new List<T>();
+            try
+            {
+                _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
+                var values = _RedisClient.SetMembers<T>(key);
+                result =  values.ToList();
+            }
+            finally
+            {
+                if (_TransConn == null)
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
+            }
+            return result;
+
+        }
+
+        public bool SetAdd(string key, RedisValue data) 
+        {
+            ConnectionMultiplexer conn = GetUsingConn();
+            bool result = false;
+
+            try
+            {
+                if (_Trans != null)
+                {
+                 //   RedisValue v = JsonConvert.SerializeObject(data);
+                    _Trans.SetAddAsync(key, data);
+                }
+                else
+                {
+                    conn.GetDatabase().SetAdd(key, data);
+                }
+
+            }
+            finally
+            {
+                if (_TransConn == null)
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
+            }
+            return result;
+        }
+
         public bool SetAdd<T>(string key, T data) where T : class
         {
             ConnectionMultiplexer conn = GetUsingConn();
@@ -121,7 +194,7 @@ namespace IQBRedis
                 else
                 {
                     _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
-
+                    
                     result = _RedisClient.SetAdd<T>(key, data);
                 }
                
@@ -196,7 +269,7 @@ namespace IQBRedis
             {
                 _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
                 r = _RedisClient.SetRemove<T>(key, data);
-               
+              
             }
             
             finally
@@ -496,7 +569,7 @@ namespace IQBRedis
             ConnectionMultiplexer conn = GetUsingConn();
             try
             {
-
+        
                 return conn.GetDatabase().KeyDelete(key);
             }
             catch (Exception ex)
@@ -698,6 +771,89 @@ namespace IQBRedis
                     _RedisClient.HashSet<T>(hashKey, hashField, value);
                 }
 
+            }
+            catch (Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+            }
+            finally
+            {
+                if (_TransConn == null)
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
+            }
+            return r;
+        }
+
+        public OutAPIResult HashDelete(RedisKey hashKey, RedisValue hashField)
+        {
+            ConnectionMultiplexer conn = GetUsingConn();
+            OutAPIResult r = new OutAPIResult();
+            try
+            {
+                if (_Trans != null)
+                {
+                    _Trans.HashDeleteAsync(hashKey, hashField);
+                    
+                }
+                else
+                {
+                    _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
+                    _RedisClient.HashDelete(hashKey, hashField);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+            }
+            finally
+            {
+                if (_TransConn == null)
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
+            }
+            return r;
+        }
+
+        public NResult<T> HashFindAllValue<T>(RedisKey hashKey)
+        {
+            ConnectionMultiplexer conn = GetUsingConn();
+            NResult<T> r = new NResult<T>();
+            try
+            {
+               
+                _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
+                r.resultList = _RedisClient.HashGetAll<T>(hashKey).Values.ToList();
+            }
+            catch (Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+            }
+            finally
+            {
+                if (_TransConn == null)
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
+            }
+            return r;
+        }
+
+        public NResult<T> HashFindAll<T>(RedisKey hashKey)
+        {
+            ConnectionMultiplexer conn = GetUsingConn();
+            NResult<T> r = new NResult<T>();
+            try
+            {
+
+                _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
+                r.resultDict = _RedisClient.HashGetAll<T>(hashKey);
             }
             catch (Exception ex)
             {

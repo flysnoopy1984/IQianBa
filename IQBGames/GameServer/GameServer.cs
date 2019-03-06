@@ -10,6 +10,26 @@ namespace GameServer
 {
     public class GameServer: WebSocketServer<GameUserSession>
     {
+       // public static Dictionary<string, List<string>> Room_UserSession { get; set; }
+        public Dictionary<string,string> User_OpenIdSession { get; set; }
+        public GameServer()
+        {
+            User_OpenIdSession = new Dictionary<string, string>();
+        }
+
+        public void SetOpenIdSession(string openId,string curSessionId)
+        {
+            if (User_OpenIdSession.ContainsKey(openId))
+            {
+
+                var userSession = GetSessionByID(User_OpenIdSession[openId]);
+              //  User_OpenIdSession.Remove(openId);
+                if (userSession != null)
+                    userSession.Close(SuperSocket.SocketBase.CloseReason.InternalError);
+            }
+
+            User_OpenIdSession[openId] = curSessionId;
+        }
         protected override void OnStarted()
         {
             base.OnStarted();
@@ -17,12 +37,10 @@ namespace GameServer
 
         protected override void OnStopped()
         {
+            
             base.OnStopped();
         }
 
-        protected override void ExecuteCommand(GameUserSession session, IWebSocketFragment requestInfo)
-        {
-            base.ExecuteCommand(session, requestInfo);
-        }
+      
     }
 }

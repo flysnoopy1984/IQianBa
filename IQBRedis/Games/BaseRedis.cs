@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IQBRedis.Games
+namespace GameRedis.Games
 {
     public class BaseRedis
     {
