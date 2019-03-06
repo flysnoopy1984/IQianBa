@@ -11,29 +11,96 @@
     <title>Test</title>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
-        var ws = new WebSocket("ws://47.101.130.0:8090");
-        ws.onopen = function (e) {
-            var json = 'NewConnect {"OpenId":"o3nwE0punwkLi4oBtW961BuyMRLE",\
-                                    "UserName":"jacky", \
+        var ws1 = null;
+        var ws2 = null;
+
+        //ws.onclose = function (evt) {
+        //    var e = evt;
+        //}
+
+      
+      
+
+        function UserSitDown(n) {
+            if (n == 1) {
+              
+                var json = 'UserSitDown {"OpenId":"o3nwE0punwkLi4oBtW961BuyMRLE",\
+                                    "SeatNo":-1, \
+                                    "Coins":100 \
+}';
+                ws1.send(json);
+            }
+            else {
+              
+                ws2.onopen = function (e) {
+
+                    var json = 'UserSitDown {"OpenId":"xxxxUnwkLi4oBtW961BuyMRLE",\
+                                    "SeatNo":-1, \
+                                    "Coins":120 \
+}';
+                    ws2.send(json);
+                }
+            }
+           
+        }
+
+        function EntryGame(n) {
+            if (n == 1)
+            {
+                if (ws1 == null)
+                    ws1 = new WebSocket("ws://47.101.130.0:8090");
+                ws1.onopen = function (e) {
+
+                    var json = 'EntryGame {"OpenId":"o3nwE0punwkLi4oBtW961BuyMRLE",\
+                                    "UserName":"jacky1", \
                                     "Weight":0 \
 }';
-            ws.send(json);
-        }
+                    ws1.send(json);
+                }
 
-        ws.onclose = function (evt) {
-            var e = evt;
-        }
+                ws1.onerror = function (e) {
+                    alert(e);
+                }
 
-        ws.onerror = function (evt) {
-            var e = evt;
-        }
+                ws1.onmessage = function (e) {
+                    var text = $("#msg").text();
+                    text += "|" + e.data;
 
-        ws.onmessage = function (e) {
-            $("#msg").text(e.data);
+                    $("#msg").text(text);
+                }
+            }
+            else {
+                if (ws2 == null)
+                    ws2 = new WebSocket("ws://47.101.130.0:8090");
+                ws2.onopen = function (e) {
+
+                    var json = 'EntryGame {"OpenId":"xxxxUnwkLi4oBtW961BuyMRLE",\
+                                    "UserName":"jacky1", \
+                                    "Weight":0 \
+}';
+                    ws2.send(json);
+                }
+
+                ws2.onerror = function (e) {
+                    alert(e);
+                }
+
+
+                ws2.onmessage = function (e) {
+                    var text = $("#msg").text();
+                    text += "|" + e.data;
+
+                    $("#msg").text(text);
+                }
+            } 
         }
     </script>
 </head>
 <body>
+    <input type="button" value="进入1" onclick="EntryGame(1);" />
+    <input type="button" value="进入2" onclick="EntryGame(2);" />
+    <input type="button" value="座下1" onclick="UserSitDown(1);" />
+    <input type="button" value="座下2" onclick="UserSitDown(2);" />
     <div id="msg">
 
     </div>
