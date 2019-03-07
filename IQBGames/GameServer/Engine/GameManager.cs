@@ -64,14 +64,36 @@ namespace GameServer.Engine
 
         public EOneGame GameData
         {
-            get { return _GameData; }
+
+            get {
+                if (_GameData == null) _GameData = new EOneGame();
+                return _GameData;
+            }
+        }
+
+        public GameStatus GameStatus
+        {
+            get
+            {
+                var r = GameRedis.GetGameStatus(_RoomCode);
+                return (GameStatus)r.IntMsg;
+            }
+        }
+
+        public string RoomCode
+        {
+           get {
+                if(string.IsNullOrEmpty(_RoomCode))
+                {
+                    _RoomCode = RoomUserRedis.GetUserRoomCode(_UserOpenId);
+                }
+                return _RoomCode;
+            }
         }
 
         public GameManager(string userOpenId)
         {
             _UserOpenId = userOpenId;
-
-
         }
 
         private void GetGameData()
@@ -97,13 +119,16 @@ namespace GameServer.Engine
 
         private void InitNewGameData()
         {
-            _GameRedis.SetGameStatus(_RoomCode, GameStatus.NoGame);
+            GameRedis.SetGameStatus(_RoomCode, GameStatus.NoGame);
 
         }
+
+       
 
         public OutAPIResult GameInfo(int weight)
         {
             OutAPIResult r = new OutAPIResult();
+            bool IsNewRoom = false;
             try
             {
                 r = RoomRedis.FindOrCreateRoom(_UserOpenId, weight);
@@ -113,11 +138,14 @@ namespace GameServer.Engine
 
                     //房间是新建的
                     if(r.IntMsg==0)
+                    {
                         InitNewGameData();
+                        IsNewRoom = true;
+                    }
+                    r = RoomUserRedis.UserEntryRoom(weight, _UserOpenId, _RoomCode);
+                    if (!r.IsSuccess) return r;
 
-                    RoomUserRedis.UserEntryRoom(weight, _UserOpenId, _RoomCode);
-
-                    MoveNextGameStatus();
+              
 
                     GetGameData();
                 }
@@ -133,10 +161,10 @@ namespace GameServer.Engine
         /// <summary>
         /// 每次调用 游戏状态会继续
         /// </summary>
-        public void MoveNextGameStatus()
+        public GameStatus MoveNextGameStatus()
         {
             //检查游戏状态
-            var gs = (GameStatus)GameRedis.GetGameStatus(_RoomCode).IntMsg;
+            var gs = (GameStatus)GameRedis.GetGameStatus(RoomCode).IntMsg;
             GameStatus nextStatus = gs;
             switch (gs)
             {
@@ -156,7 +184,8 @@ namespace GameServer.Engine
                     nextStatus = GameStatus.Shuffle;
                     break;
             }
-            _GameRedis.SetGameStatus(_RoomCode, GameStatus.NoGame);
+            _GameRedis.SetGameStatus(_RoomCode, nextStatus);
+            return nextStatus;
 
         }
 
@@ -170,6 +199,7 @@ namespace GameServer.Engine
                     result.SeatNo = r.IntMsg;
                 else
                     result.ErrorMsg = r.ErrorMsg;
+
             }
             catch (Exception ex)
             {

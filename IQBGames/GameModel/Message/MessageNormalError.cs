@@ -20,13 +20,18 @@ namespace GameModel.Message
                 return MessageType.Error;
             }
         }
-
         private MessageSendTarget _SendTarget;
-        public MessageSendTarget SendTarget
+        MessageSendTarget IGameMessage.MessageSendTarget
         {
-            get { return _SendTarget; }
-            set { _SendTarget = value; }
+            get
+            {
+                if (_SendTarget == null) _SendTarget = new MessageSendTarget();
+                return _SendTarget;
+            }
         }
+
+
+
 
         string IGameMessage.GetMessage()
         {

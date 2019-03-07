@@ -11,18 +11,21 @@ namespace GameModel.WebSocketData.SendData
     /// <summary>
     /// 通知客户端洗牌,发牌
     /// </summary>
-    public class ResultGameStaring : BaseNormalMsg
+    public class ResultGameShuffle : BaseNormalMsg
     {
         public override GameActionCode Action
         {
             get
             {
-                return GameActionCode.Staring;
+                return GameActionCode.Shuffle;
             }
         }
-        public ResultGameStaring()
+     
+        public  ResultGameShuffle(string roomCode)
         {
-            SendTarget = MessageSendTarget.UserInRoom;
+            IGameMessage ig = this;
+            ig.MessageSendTarget.SendTarget = SendTarget.UserInRoom;
+            ig.MessageSendTarget.TargetRoom = roomCode;
         }
 
 

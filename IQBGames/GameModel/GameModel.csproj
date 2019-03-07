@@ -50,7 +50,7 @@
     <Compile Include="Enums\CardType.cs" />
     <Compile Include="Enums\GameActionCode.cs" />
     <Compile Include="Enums\GameStatus.cs" />
-    <Compile Include="Enums\MessageSendTarget.cs" />
+    <Compile Include="Enums\SendTarget.cs" />
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="EOneGame.cs" />
     <Compile Include="ERoom.cs" />
@@ -58,8 +58,10 @@
     <Compile Include="EUserInfo.cs" />
     <Compile Include="ESessionAttr.cs" />
     <Compile Include="Message\IGameMessage.cs" />
+    <Compile Include="Message\MessageSendTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebSocketData\BaseWSJsonData.cs" />
+    <Compile Include="WebSocketData\ReceiveData\dataBackHall.cs" />
     <Compile Include="WebSocketData\ReceiveData\dataNewConnect.cs" />
     <Compile Include="WebSocketData\ReceiveData\dataUserSitDown.cs" />
     <Compile Include="Message\BaseNormalMsg.cs" />

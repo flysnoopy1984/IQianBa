@@ -9,7 +9,7 @@ namespace GameModel.Message
 {
     public interface IGameMessage
     {
-        MessageSendTarget SendTarget { get; set; }
+        MessageSendTarget MessageSendTarget { get;}
         string GetMessage();
     }
 }

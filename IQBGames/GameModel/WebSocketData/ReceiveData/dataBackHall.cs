@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameModel.Enums
+namespace GameModel.WebSocketData.ReceiveData
 {
-    public enum MessageSendTarget
+    public class dataBackHall:BaseWSJsonData
     {
-        Self,
-        UserInRoom,
-        PlayerInRoom,
-        AllUser,
     }
 }

@@ -14,6 +14,8 @@ namespace GameModel
 
         public int Weight { get; set; }
 
+        public string RoomCode { get; set; }
+
         
     }
 }

@@ -15,8 +15,7 @@ namespace GameModel.Message
         private MessageType _MessageType;
         public BaseNormalMsg()
         {
-            _MessageType = MessageType.Normal;
-            _SendTarget = MessageSendTarget.Self;
+            _MessageType = MessageType.Normal; 
         }
     
         private string _ErrorMsg;
@@ -41,10 +40,14 @@ namespace GameModel.Message
         }
 
         private MessageSendTarget _SendTarget; 
-        public MessageSendTarget SendTarget
+
+        MessageSendTarget IGameMessage.MessageSendTarget
         {
-            get{return _SendTarget;}
-            set{_SendTarget = value;}
+            get
+            {
+                if (_SendTarget == null) _SendTarget = new MessageSendTarget();
+                return _SendTarget;
+            }
         }
 
         string IGameMessage.GetMessage()

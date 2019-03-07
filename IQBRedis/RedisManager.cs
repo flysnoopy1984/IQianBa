@@ -22,7 +22,7 @@ namespace GameRedis
         private ConnectionMultiplexer _TransConn;
         private ITransaction _Trans = null;
         private ConnectionMultiplexer _RedisConn;
-        private static readonly object ConnLocker = new object();
+        private readonly object ConnLocker = new object();
 
 
         //private static int _ReadisMaxReadPool = int.Parse(ConfigurationManager.AppSettings["Redis_Max_Read_Pool"]);
@@ -61,7 +61,8 @@ namespace GameRedis
 
         public ConnectionMultiplexer NewConnection()
         {
-           return ConnectionMultiplexer.Connect(_RedisHost);  
+           var conn =  ConnectionMultiplexer.Connect(_RedisHost);
+            return conn;
         }
 
         public ConnectionMultiplexer StartTrans()
@@ -179,7 +180,7 @@ namespace GameRedis
             return result;
         }
 
-        public bool SetAdd<T>(string key, T data) where T : class
+        public bool SetAddT<T>(string key, T data) where T : class
         {
             ConnectionMultiplexer conn = GetUsingConn();
             bool result = false;
@@ -607,69 +608,78 @@ namespace GameRedis
             }
             
         }
-        public OutAPIResult HashUpdate(RedisKey key, RedisValue hashField, RedisValue value)
-        {
-            ConnectionMultiplexer conn = GetUsingConn();
-            OutAPIResult r = new OutAPIResult();
-            try
-            {
-                if (_Trans != null)
-                {
-                    _Trans.HashDeleteAsync(key, hashField);
-                    _Trans.HashSetAsync(key, hashField, value);
-                }
-                else
-                {
-                    var db = conn.GetDatabase();
-                    r.IsSuccess = db.HashDelete(key, hashField);
-                    r.IsSuccess = db.HashSet(key, hashField, value);
-                }
+
+        //public OutAPIResult HashUpdate(RedisKey key, RedisValue hashField, RedisValue value)
+        //{
+        //    ConnectionMultiplexer conn = GetUsingConn();
+        //    OutAPIResult r = new OutAPIResult();
+        //    try
+        //    {
+        //        if (_Trans != null)
+        //        {
+        //            _Trans.HashDeleteAsync(key, hashField);
+        //            _Trans.HashSetAsync(key, hashField, value);
+        //        }
+        //        else
+        //        {
+        //            var db = conn.GetDatabase();
+        //            r.IsSuccess = db.HashDelete(key, hashField);
+        //            r.IsSuccess = db.HashSet(key, hashField, value);
+        //        }
                     
-            }
-            catch (Exception ex)
-            {
-                r.ErrorMsg = ex.Message;
-            }
-            finally
-            {
-                if (_TransConn == null)
-                {
-                    conn.Close();
-                    conn.Dispose();
-                }
-            }
-            return r;
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        r.ErrorMsg = ex.Message;
+        //    }
+        //    finally
+        //    {
+        //        if (_TransConn == null)
+        //        {
+        //            conn.Close();
+        //            conn.Dispose();
+        //        }
+        //    }
+        //    return r;
+        //}
 
-        public OutAPIResult HashAdd(RedisKey key, RedisValue hashField,RedisValue value)
-        {
-            ConnectionMultiplexer conn = GetUsingConn();
-            OutAPIResult r = new OutAPIResult();
-            try
-            {
-                if (_Trans != null)
-                {
+        //public OutAPIResult HashUpdate<T>(RedisKey hashKey, RedisValue hashField, T value)
+        //{
+        //    ConnectionMultiplexer conn = GetUsingConn();
+        //    OutAPIResult r = new OutAPIResult();
+        //    try
+        //    {
+        //        if (_Trans != null)
+        //        {
 
-                    _Trans.HashSetAsync(key, hashField, value);
-                }
-                else
-                    r.IsSuccess =  conn.GetDatabase().HashSet(key, hashField,value);
-             
-            }
-            catch (Exception ex)
-            {
-                r.ErrorMsg = ex.Message;
-            }
-            finally
-            {
-                if (_TransConn == null)
-                {
-                    conn.Close();
-                    conn.Dispose();
-                }
-            }
-            return r;
-        }
+        //            RedisValue v = JsonConvert.SerializeObject(value);
+        //            _Trans.HashDeleteAsync(hashKey, hashField);
+        //            _Trans.HashSetAsync(hashKey, hashField, v);
+        //        }
+        //        else
+        //        {
+        //            _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
+        //            _RedisClient.HashDelete(hashKey, hashField);
+        //            _RedisClient.HashSet<T>(hashKey, hashField, value);
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        r.ErrorMsg = ex.Message;
+        //    }
+        //    finally
+        //    {
+        //        if (_TransConn == null)
+        //        {
+        //            conn.Close();
+        //            conn.Dispose();
+        //        }
+        //    }
+        //    return r;
+        //}
+
+        
 
         public RedisValue[] HashValues(RedisKey key)
         {
@@ -694,12 +704,36 @@ namespace GameRedis
             }
         }
 
+        public T HashGet<T>(RedisKey key, RedisValue hashField)
+        {
+            ConnectionMultiplexer conn = GetUsingConn();
+            try
+            {
+                _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
+                return _RedisClient.HashGet<T>(key, hashField);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                if (_TransConn == null)
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
+            }
+        }
         public RedisValue HashGet(RedisKey key, RedisValue hashField)
         {
             ConnectionMultiplexer conn = GetUsingConn();
             try
             {
-               
+              //  _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
+              //return   _RedisClient.HashGet<string>(key, hashField);
                 return conn.GetDatabase().HashGet(key, hashField);
             }
             catch (Exception ex)
@@ -717,7 +751,7 @@ namespace GameRedis
             }
         }
 
-        public OutAPIResult HashUpdate<T>(RedisKey hashKey, RedisValue hashField, T value)
+        public OutAPIResult HashAdd(RedisKey key, RedisValue hashField, RedisValue value)
         {
             ConnectionMultiplexer conn = GetUsingConn();
             OutAPIResult r = new OutAPIResult();
@@ -726,16 +760,18 @@ namespace GameRedis
                 if (_Trans != null)
                 {
 
-                    RedisValue v = JsonConvert.SerializeObject(value);
-                    _Trans.HashDeleteAsync(hashKey, hashField);
-                    _Trans.HashSetAsync(hashKey, hashField, v);
+                    _Trans.HashSetAsync(key, hashField, value);
                 }
                 else
                 {
-                    _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
-                    _RedisClient.HashDelete(hashKey, hashField);
-                    _RedisClient.HashSet<T>(hashKey, hashField, value);
+                    var db = conn.GetDatabase();
+                    var v = db.HashGet(key, hashField);
+                    if (v == value)
+                        r.IsSuccess = true;
+                    else
+                        r.IsSuccess = db.HashSet(key, hashField, value);
                 }
+                    
 
             }
             catch (Exception ex)
@@ -753,8 +789,9 @@ namespace GameRedis
             return r;
         }
 
-        public OutAPIResult HashAdd<T>(RedisKey hashKey, RedisValue hashField, T value)
+        public OutAPIResult HashAddT<T>(RedisKey hashKey, RedisValue hashField, T value)
         {
+           
             ConnectionMultiplexer conn = GetUsingConn();
             OutAPIResult r = new OutAPIResult();
             try
@@ -826,8 +863,8 @@ namespace GameRedis
             NResult<T> r = new NResult<T>();
             try
             {
-               
-                _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
+              
+                 _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
                 r.resultList = _RedisClient.HashGetAll<T>(hashKey).Values.ToList();
             }
             catch (Exception ex)
@@ -851,7 +888,7 @@ namespace GameRedis
             NResult<T> r = new NResult<T>();
             try
             {
-
+               
                 _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
                 r.resultDict = _RedisClient.HashGetAll<T>(hashKey);
             }

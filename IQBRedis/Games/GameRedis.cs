@@ -17,7 +17,7 @@ namespace GameRedis.Games
             OutAPIResult r = new OutAPIResult();
             try
             {
-                r = _redis.HashAdd(GK.GameStatus, RoomCode, status);
+                r = _redis.HashAdd(GK.GameStatus, RoomCode, (int)status);
             
             }
             catch (Exception ex)
