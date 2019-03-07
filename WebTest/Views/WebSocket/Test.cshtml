@@ -32,14 +32,11 @@
             }
             else {
               
-                ws2.onopen = function (e) {
-
-                    var json = 'UserSitDown {"OpenId":"xxxxUnwkLi4oBtW961BuyMRLE",\
+                var json = 'UserSitDown {"OpenId":"xxxxUnwkLi4oBtW961BuyMRLE",\
                                     "SeatNo":-1, \
                                     "Coins":120 \
 }';
-                    ws2.send(json);
-                }
+                ws2.send(json);
             }
            
         }
@@ -65,7 +62,7 @@
                 ws1.onmessage = function (e) {
                     var text = $("#msg").text();
                     text += "|" + e.data;
-
+                    text = e.data;
                     $("#msg").text(text);
                 }
             }
@@ -90,6 +87,7 @@
                     var text = $("#msg").text();
                     text += "|" + e.data;
 
+                    text = e.data;
                     $("#msg").text(text);
                 }
             } 
