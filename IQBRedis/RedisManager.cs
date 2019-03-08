@@ -25,40 +25,13 @@ namespace GameRedis
         private readonly object ConnLocker = new object();
 
 
-        //private static int _ReadisMaxReadPool = int.Parse(ConfigurationManager.AppSettings["Redis_Max_Read_Pool"]);
-        //private static int _ReadisMaxWritePool = int.Parse(ConfigurationManager.AppSettings["Redis_Max_Write_Pool"]);
-        //private static readonly PooledRedisClientManager _Pool = null;
-        //private static string RedisHost
-        //{
-        //    get
-        //    {
-        //        if (_RedisHost == null)
-        //        {
-        //            _RedisHost = ConfigurationManager.AppSettings["RedisHost"];
-        //        }
-
-        //        return _RedisHost;
-        //    }
-        //}
-
         public RedisManager()
         {
           //  _RedisConn = ConnectionMultiplexer.Connect(_RedisHost);
            
         }
 
-        static RedisManager()
-        {
-
-            //var host = _RedisHost.Split(',');
-            //_Pool = new PooledRedisClientManager(host, host, new RedisClientManagerConfig()
-            //{
-            //    MaxReadPoolSize = _ReadisMaxReadPool,
-            //    MaxWritePoolSize = _ReadisMaxWritePool,
-            //    AutoStart = true
-            //});
-        }
-
+       
         public ConnectionMultiplexer NewConnection()
         {
            var conn =  ConnectionMultiplexer.Connect(_RedisHost);

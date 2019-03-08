@@ -5,19 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameModel.Message;
+using GameServer.Engine;
 
 namespace GameServer.Command
 {
     public class BackHall : BaseGameCommand<dataBackHall>
     {
-        public override List<BaseNormalMsg> HandleData(GameUserSession session, dataBackHall Data)
+        public override List<IGameMessage> HandleData(GameUserSession session, dataBackHall Data)
         {
-            throw new NotImplementedException();
+            List<IGameMessage> result = new List<IGameMessage>();
+            GameManager gameManager = session.GameManager;
+            var r = gameManager.UserBackHall();
+
+            result.Add(r);
+            return result;
         }
 
         public override bool VerifyCommandData(dataBackHall InData)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

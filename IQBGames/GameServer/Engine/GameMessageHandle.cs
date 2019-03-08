@@ -36,7 +36,7 @@ namespace GameServer.Engine
             }
         }
 
-        public void Push(List<BaseNormalMsg> msgList)
+        public void Push(List<IGameMessage> msgList)
         {
 
             foreach(var msg in msgList)
@@ -46,7 +46,7 @@ namespace GameServer.Engine
            
         }
 
-        public void Push(BaseNormalMsg msg)
+        public void Push(IGameMessage msg)
         {
 
             if (msg.MessageType == GameModel.Enums.MessageType.Error)

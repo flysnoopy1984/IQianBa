@@ -33,6 +33,17 @@ namespace GameServer
             }
         }
 
+        private GameManager _gameManager;
+        public GameManager GameManager
+        {
+            get
+            {
+                if (_gameManager == null)
+                    _gameManager = new GameManager(GameAttr.OpenId);
+                return _gameManager;
+            }
+        }
+
         protected override void OnSessionStarted()
         {
             base.OnSessionStarted();

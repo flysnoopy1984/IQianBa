@@ -5,12 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SuperSocket.WebSocket.Protocol;
+using GameServer.Engine;
 
 namespace GameServer
 {
     public class GameServer: WebSocketServer<GameUserSession>
     {
-       // public static Dictionary<string, List<string>> Room_UserSession { get; set; }
+        private GameDataHandle _GameDataHandle;
+        public GameDataHandle GameDataHandle
+        {
+
+            get
+            {
+                if (_GameDataHandle == null) _GameDataHandle = new GameDataHandle();
+                return _GameDataHandle;
+            }
+        }
         public Dictionary<string,string> User_OpenIdSession { get; set; }
         public GameServer()
         {
@@ -30,6 +40,8 @@ namespace GameServer
 
             User_OpenIdSession[openId] = curSessionId;
         }
+
+
         protected override void OnStarted()
         {
             base.OnStarted();

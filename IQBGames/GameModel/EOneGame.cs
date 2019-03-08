@@ -27,6 +27,8 @@ namespace GameModel
         /// </summary>
         public List<ERoomUser> PlayerList { get; set; }
 
+        public List<int> RemainCardList { get; set; }
+
         /// <summary>
         /// 桌上指针(用户大小盲注)
         /// </summary>

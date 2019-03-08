@@ -19,9 +19,14 @@ namespace GameModel.Enums
         Shuffle = 2,
 
         /// <summary>
+        /// 洗好牌发牌中,不能有人进入
+        /// </summary>
+        ShuffleEnd = 3,
+
+        /// <summary>
         /// 游戏中
         /// </summary>
-        Playing = 3,
+        Playing = 10,
 
         /// <summary>
         /// 一局将结束，在算账

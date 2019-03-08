@@ -14,7 +14,7 @@ namespace GameRedis.Games
 {
     public class RoomRedis: BaseRedis
     {
-        private Object _LockRoom = new Object();
+        private readonly Object _LockRoom = new Object();
 
         /// <summary>
         /// SuccessMsg: RoomCode, IntMsg:>0 说明是找到的

@@ -8,6 +8,6 @@ namespace GameModel.WebSocketData.ReceiveData
 {
     public class dataUserSitUp: BaseWSJsonData
     {
-        public string OpenId { get; set; }
+       
     }
 }

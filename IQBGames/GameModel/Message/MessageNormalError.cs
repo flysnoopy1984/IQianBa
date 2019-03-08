@@ -25,12 +25,17 @@ namespace GameModel.Message
         {
             get
             {
-                if (_SendTarget == null) _SendTarget = new MessageSendTarget();
+                if (_SendTarget == null)
+                    _SendTarget = new MessageSendTarget();
                 return _SendTarget;
             }
         }
 
-
+        public MessageNormalError() { }
+        public MessageNormalError(string error)
+        {
+            ErrorMsg = error;
+        }
 
 
         string IGameMessage.GetMessage()

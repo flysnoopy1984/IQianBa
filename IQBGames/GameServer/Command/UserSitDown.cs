@@ -26,11 +26,7 @@ namespace GameServer.Command
 
         public override bool VerifyCommandData(dataUserSitDown InData)
         {
-            if(string.IsNullOrEmpty(InData.OpenId))
-            {
-                base.GameMessageHandle.PushErrorMsg("错误，没有获取您的身份，请重新登陆");
-                return false;
-            }
+          
             if (InData.SeatNo!=-1 && InData.SeatNo<=0)
             {
                 base.GameMessageHandle.PushErrorMsg("没有获取座位号！");
@@ -44,11 +40,11 @@ namespace GameServer.Command
             return true;
         }
 
-        public override List<BaseNormalMsg> HandleData(GameUserSession session, dataUserSitDown Data)
+        public override List<IGameMessage> HandleData(GameUserSession session, dataUserSitDown Data)
         {
-            List<BaseNormalMsg> result = new List<BaseNormalMsg>();
+            List<IGameMessage> result = new List<IGameMessage>();
             //用户坐下
-            GameManager gameManager = new GameManager(Data.OpenId);
+            GameManager gameManager = session.GameManager;
             var r = gameManager.UserSitDown(Data.SeatNo, Data.Coins);
             result.Add(r);
 
@@ -63,7 +59,9 @@ namespace GameServer.Command
                         result.Add(new ResultGameWait());
                     if (gs == GameStatus.Shuffle)
                     {
-                        result.Add(new ResultGameShuffle(gameManager.RoomCode));
+                        ResultGameShuffle shuffleMsg = new ResultGameShuffle(gameManager.RoomCode);
+
+                        result.Add(shuffleMsg);
                     }
                 }
                 session.GameAttr.RoomCode = gameManager.RoomCode;

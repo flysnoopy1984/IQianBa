@@ -15,8 +15,8 @@ namespace GameRedis.Games
 {
     public class RoomUserRedis: BaseRedis
     {
-        private  Object _lockSitDown = new Object();
-        private  Object _lockSitUp = new Object();
+        private readonly Object _lockSitDown = new Object();
+        private readonly Object _lockSitUp = new Object();
 
         public int GetAllPlayerCount(string roomCode)
         {
@@ -82,7 +82,35 @@ namespace GameRedis.Games
             return r;
         }
 
-       
+        public OutAPIResult UserLogin(int weight, string userOpenId, string roomCode)
+        {
+            var userKey = GK.UserInfo(userOpenId);
+
+            OutAPIResult r = new OutAPIResult();
+            try
+            {
+                _redis.StartTrans();
+                _redis.HashAdd(userKey, GK.U_UserOpenId, userOpenId);
+                _redis.HashAdd(userKey, GK.U_RoomCode, roomCode);
+                _redis.HashAdd(userKey, GK.U_RoomWeight, weight);
+                _redis.HashAdd(userKey, GK.U_SeatNo, 0);
+                r.IsSuccess = _redis.EndTrans();
+
+                if (!r.IsSuccess)
+                {
+                    _redis.KeyDelete(userKey);
+                    r.ErrorMsg = ($"用户信息登陆失败");
+                    return r;
+                }
+            }
+            catch(Exception ex)
+            {
+                r.ErrorMsg = ($"用户信息登陆失败");
+                NLogHelper.GameError($"[RoomUserRedis]UserLogin:用户[{userOpenId}]进入房间[{roomCode}]失败:{ex.Message}");
+            }
+            return r;
+        }
+
         /// <summary>
         /// 一般用户进入房间
         /// </summary>
@@ -93,39 +121,12 @@ namespace GameRedis.Games
         public OutAPIResult UserEntryRoom(int weight,string userOpenId,string roomCode)
         {
             OutAPIResult r = new OutAPIResult();
-           
             var oneRoomUserKey = GK.GetOneRoomUser(roomCode);
-
-            var userKey = GK.UserInfo(userOpenId);
-            //获取用户信息
-            //var hasRoomUser = _redis.HashExist(userKey, GK.U_UserOpenId);
-            //if(hasRoomUser)
-            //    _redis.KeyDelete(userKey);
-
-            //创建Redis用户信息
-            _redis.StartTrans();
-            _redis.HashAdd(userKey, GK.U_UserOpenId, userOpenId);
-            _redis.HashAdd(userKey, GK.U_RoomCode, roomCode);
-            _redis.HashAdd(userKey, GK.U_RoomWeight, weight);
-            _redis.HashAdd(userKey, GK.U_SeatNo,0);
-            r.IsSuccess = _redis.EndTrans();
-
         
-            if (!r.IsSuccess)
-            {
-                _redis.KeyDelete(userKey);
-                r.ErrorMsg = ($"[RoomUserRedis]UserEntry:用户[{userOpenId}]进入房间[{roomCode}]，获取信息失败");
-                return r;
-            }
-            //加入房间
-            // r.IsSuccess = _redis.SetUpdate<string>(oneRoomUserKey, userOpenId);
+            //登陆用户信息
+         
             r = _redis.HashAdd(oneRoomUserKey, userOpenId,roomCode);
-            if (r.IsSuccess == false)
-            {
-                r.ErrorMsg = ($"[RoomUserRedis]UserEntry:用户[{userOpenId}]进入房间[{roomCode}]失败");
-                _redis.KeyDelete(userKey);
-            }
-                
+          
             return r;
         }
 

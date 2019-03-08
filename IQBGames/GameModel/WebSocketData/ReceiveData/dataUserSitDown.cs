@@ -8,7 +8,7 @@ namespace GameModel.WebSocketData.ReceiveData
 {
     public class dataUserSitDown:BaseWSJsonData
     {
-        public string OpenId { get; set; }
+       
 
         public int SeatNo { get; set; }
 

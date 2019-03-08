@@ -20,10 +20,10 @@ namespace GameServer.Command
             }
         }
 
-        public override List<BaseNormalMsg> HandleData(GameUserSession session, dataUserSitUp Data)
+        public override List<IGameMessage> HandleData(GameUserSession session, dataUserSitUp Data)
         {
-            List<BaseNormalMsg> result = new List<BaseNormalMsg>();
-            GameManager gameManager = new GameManager(Data.OpenId);
+            List<IGameMessage> result = new List<IGameMessage>();
+            GameManager gameManager = session.GameManager;
             var r =  gameManager.UserSitUp();
           
             result.Add(r);
@@ -32,11 +32,6 @@ namespace GameServer.Command
 
         public override bool VerifyCommandData(dataUserSitUp InData)
         {
-            if (string.IsNullOrEmpty(InData.OpenId))
-            {
-                base.GameMessageHandle.PushErrorMsg("错误，没有获取您的身份，请重新登陆");
-                return false;
-            }
             return true;
         }
     }

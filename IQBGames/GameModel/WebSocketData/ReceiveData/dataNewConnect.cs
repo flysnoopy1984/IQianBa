@@ -8,7 +8,7 @@ namespace GameModel.WebSocketData.ReceiveData
 {
     public class dataNewConnect:BaseWSJsonData
     {
-        public string OpenId { get; set; }
+       
 
         public string RoomCode { get; set; }
 

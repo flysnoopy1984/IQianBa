@@ -67,6 +67,7 @@
     <Compile Include="Message\BaseNormalMsg.cs" />
     <Compile Include="Message\MessageNormalError.cs" />
     <Compile Include="WebSocketData\ReceiveData\dataUserSitUp.cs" />
+    <Compile Include="WebSocketData\SendData\ResultBackHall.cs" />
     <Compile Include="WebSocketData\SendData\ResultError.cs" />
     <Compile Include="WebSocketData\SendData\ResultGameStaring.cs" />
     <Compile Include="WebSocketData\SendData\ResultGameWait.cs" />

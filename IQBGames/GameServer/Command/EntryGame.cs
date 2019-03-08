@@ -22,15 +22,11 @@ namespace GameServer.Commond
     {
         public override bool VerifyCommandData(dataNewConnect InData)
         {
-            if (string.IsNullOrEmpty(InData.OpenId))
-            {
-                base.GameMessageHandle.PushErrorMsg("错误，没有获取您的身份，请重新登陆");
-                return false;
-            }
+            
             return true;
         }
 
-        public override List<BaseNormalMsg> HandleData(GameUserSession session, dataNewConnect data)
+        public override List<IGameMessage> HandleData(GameUserSession session, dataNewConnect data)
         {
 
             session.GameAttr.OpenId = data.OpenId;
@@ -39,34 +35,44 @@ namespace GameServer.Commond
 
             session.GameServer.SetOpenIdSession(data.OpenId, session.SessionID);
 
-            List<BaseNormalMsg> msgList = new List<BaseNormalMsg>();
+            List<IGameMessage> msgList = new List<IGameMessage>();
 
-            var oneGame = FindGame(data.OpenId, data.Weight);
-            session.GameAttr.RoomCode = oneGame.RoomCode;
+            var gameManager = session.GameManager;
+            var r = gameManager.UserEntryRoom(data.Weight);
+            if (r.IsSuccess)
+            {
+                session.GameAttr.RoomCode = gameManager.RoomCode;
+                var GameData = session.GameServer.GameDataHandle.GetGameData(gameManager.RoomCode);
+                msgList.Add(GameData);
+            }
+            else
+                msgList.Add(new MessageNormalError(r.ErrorMsg));
+          //  var oneGame = FindGame(data.OpenId, data.Weight,);
+           
 
 
-            msgList.Add(oneGame);
+           
             return msgList;
         
         }
 
-        private EOneGame FindGame(string userOpenId,int weight)
+        private EOneGame EntryRoom(string userOpenId,int weight,GameManager gameManager)
         {
             EOneGame game = null;
-            try
-            {
-                GameManager gameManager = new GameManager(userOpenId);
-                var r = gameManager.GameInfo(weight);
-                if(!r.IsSuccess)
-                    gameManager.GameData.ErrorMsg = r.ErrorMsg;
-                return gameManager.GameData;
+            //try
+            //{
+               
+               
+            //    if(!r.IsSuccess)
+            //        gameManager.GameData.ErrorMsg = r.ErrorMsg;
+            //    return gameManager.GameData;
 
 
-            }
-            catch(Exception ex)
-            {
-                game.ErrorMsg = ex.Message;
-            }
+            //}
+            //catch(Exception ex)
+            //{
+            //    game.ErrorMsg = ex.Message;
+            //}
             return game;
             
         }

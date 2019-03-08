@@ -8,5 +8,6 @@ namespace GameModel.WebSocketData.ReceiveData
 {
     public class dataBackHall:BaseWSJsonData
     {
+
     }
 }

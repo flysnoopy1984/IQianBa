@@ -57,19 +57,18 @@ namespace GameServer.Engine
         }
         #endregion
 
-      
-        private EOneGame _GameData;
+     //   private EOneGame _GameData;
         private string _RoomCode;
         private string _UserOpenId;
 
-        public EOneGame GameData
-        {
+        //public EOneGame GameData
+        //{
 
-            get {
-                if (_GameData == null) _GameData = new EOneGame();
-                return _GameData;
-            }
-        }
+        //    get {
+        //        if (_GameData == null) _GameData = new EOneGame();
+        //        return _GameData;
+        //    }
+        //}
 
         public GameStatus GameStatus
         {
@@ -96,26 +95,26 @@ namespace GameServer.Engine
             _UserOpenId = userOpenId;
         }
 
-        private void GetGameData()
-        {
-            try
-            {
-                _GameData = new EOneGame
-                {
-                    RoomCode = _RoomCode,
-                    CurD = GameTableRedis.DotPosition(_RoomCode).IntMsg,
-                    GameStatus = (GameStatus)GameRedis.GetGameStatus(_RoomCode).IntMsg,
-                    PlayerList = RoomUserRedis.GetAllPlayer(_RoomCode).resultList,
-                    TableCardList = GameTableRedis.TableCardList(_RoomCode).resultList,
-                };
-            }
-            catch(Exception ex)
-            {
-                _GameData.ErrorMsg = ex.Message;
-            }
+        //private void GetGameData()
+        //{
+        //    try
+        //    {
+        //        _GameData = new EOneGame
+        //        {
+        //            RoomCode = _RoomCode,
+        //            CurD = GameTableRedis.DotPosition(_RoomCode).IntMsg,
+        //            GameStatus = (GameStatus)GameRedis.GetGameStatus(_RoomCode).IntMsg,
+        //            PlayerList = RoomUserRedis.GetAllPlayer(_RoomCode).resultList,
+        //            TableCardList = GameTableRedis.TableCardList(_RoomCode).resultList,
+        //        };
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        _GameData.ErrorMsg = ex.Message;
+        //    }
            
            
-        }
+        //}
 
         private void InitNewGameData()
         {
@@ -123,31 +122,27 @@ namespace GameServer.Engine
 
         }
 
-       
-
-        public OutAPIResult GameInfo(int weight)
+        public OutAPIResult UserEntryRoom(int weight)
         {
             OutAPIResult r = new OutAPIResult();
-            bool IsNewRoom = false;
             try
             {
                 r = RoomRedis.FindOrCreateRoom(_UserOpenId, weight);
                 if (r.IsSuccess)
                 {
                     _RoomCode = r.SuccessMsg;
-
                     //房间是新建的
                     if(r.IntMsg==0)
-                    {
                         InitNewGameData();
-                        IsNewRoom = true;
-                    }
-                    r = RoomUserRedis.UserEntryRoom(weight, _UserOpenId, _RoomCode);
+
+                    r = RoomUserRedis.UserLogin(weight, _UserOpenId, _RoomCode);
+                    if (r.IsSuccess)
+                        r = RoomUserRedis.UserEntryRoom(weight, _UserOpenId, _RoomCode);
+                    
+
                     if (!r.IsSuccess) return r;
 
-              
-
-                    GetGameData();
+                  //  GetGameData();
                 }
             }
             catch(Exception ex)
@@ -224,6 +219,29 @@ namespace GameServer.Engine
             }
 
             return result;
+        }
+
+        public ResultBackHall UserBackHall()
+        {
+            ResultBackHall result = new ResultBackHall();
+            try
+            {
+                var r = RoomUserRedis.UserExitRoom(_UserOpenId);
+                if (!r.IsSuccess)
+                    result.ErrorMsg = r.ErrorMsg;
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+            }
+
+            return result;
+
+        }
+
+        public void DoShuffle()
+        {
+
         }
     }
 }

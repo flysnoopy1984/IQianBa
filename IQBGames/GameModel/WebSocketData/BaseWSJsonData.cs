@@ -8,7 +8,7 @@ namespace GameModel.WebSocketData
 {
     public class BaseWSJsonData
     {
-        public int Action { get; set; }
+        public string OpenId { get; set; }
 
     }
 }

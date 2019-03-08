@@ -28,7 +28,7 @@ namespace GameServer.Command
 
         public abstract bool VerifyCommandData(T InData);
 
-        public abstract List<BaseNormalMsg> HandleData(GameUserSession session,T Data);
+        public abstract List<IGameMessage> HandleData(GameUserSession session,T Data);
 
         private T Data = null;
 
@@ -43,15 +43,25 @@ namespace GameServer.Command
             }
 
             var preData = JsonConvert.DeserializeObject<T>(Body);
-            var r = VerifyCommandData(preData);
 
-            if (r == false)
-                return null;
-            else
-                Data = preData;
+            if (!VerifyBaseData(preData)) return null;
+           
+            if (!VerifyCommandData(preData)) return null;
+           
+            Data = preData;
 
             return Data;
         }
+
+        private bool VerifyBaseData(T preData)
+        {
+            if (string.IsNullOrEmpty(preData.OpenId))
+            {
+                GameMessageHandle.PushErrorMsg("错误，没有获取您的身份，请重新登陆");
+                return false;
+            }
+            return true;
+        } 
 
         public override void ExecuteCommand(GameUserSession session, SubRequestInfo requestInfo)
         {
@@ -61,6 +71,8 @@ namespace GameServer.Command
 
                 if (Data != null)
                 {
+                    session.GameAttr.OpenId = this.Data.OpenId;
+
                     var msgData = HandleData(session, this.Data);
 
                     GameMessageHandle.Push(msgData);
