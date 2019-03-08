@@ -39,12 +39,14 @@ namespace GameServer.Commond
 
             session.GameServer.SetOpenIdSession(data.OpenId, session.SessionID);
 
-            List<BaseNormalMsg> result = new List<BaseNormalMsg>();
+            List<BaseNormalMsg> msgList = new List<BaseNormalMsg>();
 
             var oneGame = FindGame(data.OpenId, data.Weight);
-            
-            result.Add(oneGame);
-            return result;
+            session.GameAttr.RoomCode = oneGame.RoomCode;
+
+
+            msgList.Add(oneGame);
+            return msgList;
         
         }
 

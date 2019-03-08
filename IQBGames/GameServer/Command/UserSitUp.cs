@@ -25,6 +25,7 @@ namespace GameServer.Command
             List<BaseNormalMsg> result = new List<BaseNormalMsg>();
             GameManager gameManager = new GameManager(Data.OpenId);
             var r =  gameManager.UserSitUp();
+          
             result.Add(r);
             return result;
         }

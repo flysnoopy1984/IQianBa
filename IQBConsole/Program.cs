@@ -29,7 +29,7 @@ namespace IQBConsole
         static int _interval = 60;
 
         static OOSocketServer _SocketServer = new OOSocketServer();
-        static OOWebSocket _WebSocket = new OOWebSocket();
+      
 
         static GameRunner _websockerRuner = new GameRunner();
         static TestRunner _testRuner = new TestRunner();
@@ -41,11 +41,12 @@ namespace IQBConsole
           
             try
             {
-                var r = _gameRedis.SetGameStatus("test", GameStatus.WaitPlayer);
-                _gameRedis.SetGameStatus("test2", GameStatus.Settlement);
+                _websockerRuner.InitSocket();
+                //var r = _gameRedis.SetGameStatus("test", GameStatus.WaitPlayer);
+                //_gameRedis.SetGameStatus("test2", GameStatus.Settlement);
                 //Console.WriteLine(no);
                 //  RedisTest.TestTable();
-                // _websockerRuner.InitSocket();
+
                 // _WebSocket.Init();
                 // _SocketServer.Init();
                 //PushSharp ps = new PushSharp();
@@ -53,8 +54,14 @@ namespace IQBConsole
 
                 //ps.SendMsg();
                 //
-                //ConnectionMultiplexer conn = redis.NewConnection();
-                //  _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
+                //var r = redis.HashAdd("TestKey", "Field", "shanghai");
+                //r = redis.HashAdd("TestKey", "Field", "shanghai");
+               // string s = redis.HashGet(GK.GameStatus, "03077460");
+              //  Console.WriteLine(s);
+                //redis.HashAdd("TestKey", "Field", s);
+                //s = redis.HashGet("TestKey", "Field");
+
+
                 //   redis.WriteSortedSet2<string>("test1", "abc", 0);
                 //  var r = redis.FindSortedSet<string>("test1");
                 // RedisValue rv = JsonConvert.SerializeObject("abc");

@@ -1,4 +1,5 @@
-﻿using GameModel.Message;
+﻿using GameModel.Enums;
+using GameModel.Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,7 @@ namespace GameServer.Engine
 {
     public class GameMessageHandle
     {
-        static GameMessageHandle()
-        {
-           
-            
-        }
+      
         public GameMessageHandle()
         {
             
@@ -62,38 +59,56 @@ namespace GameServer.Engine
         {
             var msg = new MessageNormalError();
             msg.ErrorMsg = msgString;
-            ErrorQueue.Add(msg);
-           
+            ErrorQueue.Add(msg); 
         }
 
+        private void RunQueue(GameUserSession session,List<IGameMessage> msgList, bool runOnce = true)
+        {
+            foreach (IGameMessage gameMsg in msgList)
+            {
+                var msgStr = gameMsg.GetMessage();
+                var sendTarget = gameMsg.MessageSendTarget.SendTarget;
+                switch (sendTarget)
+                {
+                    case SendTarget.UserInRoom:
+                        var targetList = session.GameServer.GetSessions(a => a.GameAttr.RoomCode == gameMsg.MessageSendTarget.TargetRoom);
+                        foreach(var target in targetList)
+                        {
+                            target.Send(msgStr);
+                        }
+                        break;
+                    case SendTarget.Self:
+                        session.Send(msgStr);
+                        break;
+                }
+               
+                if (runOnce) break;
+            }
+        }
         public void Run(GameUserSession session, bool endIfError = true)
         {
             try
             {
                 if (_ErrorQueue != null)
                 {
-                    foreach (IGameMessage gameMsg in ErrorQueue)
-                    {
-                        var msgStr = gameMsg.GetMessage();
-                        session.Send(msgStr);
-                        if (endIfError)
-                            return;
-                    }
+                    RunQueue(session, _ErrorQueue, true);
                 }
 
                 if (_MessageQueue != null)
                 {
-                    foreach (IGameMessage gameMsg in MessageQueue)
-                    {
-                        var msgStr = gameMsg.GetMessage();
-                        session.Send(msgStr);
-                    }
+                    RunQueue(session, _MessageQueue, false);
                 }
+                
             }
             catch(Exception ex)
             {
                 if (session.Connected)
                     session.Send("错误，请联系管理员！");
+            }
+            finally
+            {
+                ErrorQueue.Clear();
+                MessageQueue.Clear();
             }
            
         }

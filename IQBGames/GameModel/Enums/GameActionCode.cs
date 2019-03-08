@@ -15,7 +15,7 @@ namespace GameModel.Enums
         PlayerSitDown = 1,
         PlayerSitUp = 2,
         Wait =3,
-        Staring =4,
+        Shuffle = 4,
 
     }
 }

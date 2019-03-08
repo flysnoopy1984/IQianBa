@@ -1,5 +1,7 @@
-﻿using GameModel.Message;
+﻿using GameModel.Enums;
+using GameModel.Message;
 using GameModel.WebSocketData.ReceiveData;
+using GameModel.WebSocketData.SendData;
 using GameServer.Engine;
 using IQBCore.Common.Helper;
 using Newtonsoft.Json;
@@ -45,9 +47,31 @@ namespace GameServer.Command
         public override List<BaseNormalMsg> HandleData(GameUserSession session, dataUserSitDown Data)
         {
             List<BaseNormalMsg> result = new List<BaseNormalMsg>();
+            //用户坐下
             GameManager gameManager = new GameManager(Data.OpenId);
             var r = gameManager.UserSitDown(Data.SeatNo, Data.Coins);
             result.Add(r);
+
+            //游戏下一阶段
+            if(r.MessageType == MessageType.Normal)
+            {
+               if (gameManager.GameStatus == GameModel.Enums.GameStatus.NoGame ||
+               gameManager.GameStatus == GameModel.Enums.GameStatus.WaitPlayer)
+                {
+                    var gs = gameManager.MoveNextGameStatus();
+                    if (gs == GameStatus.WaitPlayer)
+                        result.Add(new ResultGameWait());
+                    if (gs == GameStatus.Shuffle)
+                    {
+                        result.Add(new ResultGameShuffle(gameManager.RoomCode));
+                    }
+                }
+                session.GameAttr.RoomCode = gameManager.RoomCode;
+
+            }
+           
+               
+
             return result;
             
         }

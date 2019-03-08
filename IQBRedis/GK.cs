@@ -43,7 +43,7 @@ namespace GameRedis
 
         public static string GetOneRoomUser(string roomCode)
         {
-            return roomCode + "_One";
+            return roomCode + "_RoomUser";
         }
 
         public static string RoomPlayer(string roomCode)
