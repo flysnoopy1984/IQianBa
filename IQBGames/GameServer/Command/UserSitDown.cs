@@ -60,15 +60,11 @@ namespace GameServer.Command
                     if (gs == GameStatus.Shuffle)
                     {
                         ResultGameShuffle shuffleMsg = new ResultGameShuffle(gameManager.RoomCode);
-
                         result.Add(shuffleMsg);
                     }
                 }
                 session.GameAttr.RoomCode = gameManager.RoomCode;
-
             }
-           
-               
 
             return result;
             

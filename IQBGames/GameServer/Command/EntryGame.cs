@@ -47,36 +47,12 @@ namespace GameServer.Commond
             }
             else
                 msgList.Add(new MessageNormalError(r.ErrorMsg));
-          //  var oneGame = FindGame(data.OpenId, data.Weight,);
-           
-
-
-           
+          
             return msgList;
         
         }
 
-        private EOneGame EntryRoom(string userOpenId,int weight,GameManager gameManager)
-        {
-            EOneGame game = null;
-            //try
-            //{
-               
-               
-            //    if(!r.IsSuccess)
-            //        gameManager.GameData.ErrorMsg = r.ErrorMsg;
-            //    return gameManager.GameData;
-
-
-            //}
-            //catch(Exception ex)
-            //{
-            //    game.ErrorMsg = ex.Message;
-            //}
-            return game;
-            
-        }
-
+      
         public override string Name
         {
             get
@@ -85,52 +61,7 @@ namespace GameServer.Commond
             }
         }
 
-        #region Old
-        //try
-        //{
-        //    var jsonStr = requestInfo.Body;
-        //    if (!string.IsNullOrEmpty(jsonStr))
-        //    {
 
-        //        cmdNewConnect data = JsonConvert.DeserializeObject<cmdNewConnect>(requestInfo.Body);
-
-        //        if (string.IsNullOrEmpty(data.OpenId))
-        //        {
-
-        //            session.Send($"错误，没有获取您的身份，请重新登陆");
-        //            session.Close();
-        //            return;
-        //        }
-        //        else
-        //        {
-
-        //            if (DataManager.UserOpenIdList.ContainsKey(data.OpenId))
-        //            {
-
-        //                var userSession = session.AppServer.GetSessionByID(DataManager.UserOpenIdList[data.OpenId]);
-        //                if (userSession != null)
-        //                    userSession.Close();
-        //            }
-
-        //            DataManager.UserOpenIdList[data.OpenId] = session.SessionID;
-
-        //            session.UserName = data.UserName;
-        //            session.OpenId = data.OpenId;
-
-        //            string msg = FindGame(data.OpenId, data.Weight);
-        //            session.Send(msg);
-        //        }
-        //    }
-        //    else
-        //    {
-
-        //    }
-        //}
-        //catch(Exception ex)
-        //{
-        //    NLogHelper.GameError($"EntryGame:{ex.Message}");
-        //}
-        #endregion
         
 
        

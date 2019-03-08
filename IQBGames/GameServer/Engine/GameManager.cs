@@ -141,8 +141,7 @@ namespace GameServer.Engine
                     
 
                     if (!r.IsSuccess) return r;
-
-                  //  GetGameData();
+                 
                 }
             }
             catch(Exception ex)
