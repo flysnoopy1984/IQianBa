@@ -26,6 +26,8 @@ namespace GameServer.Command
             }
         }
 
+       
+
         public abstract bool VerifyCommandData(T InData);
 
         public abstract List<IGameMessage> HandleData(GameUserSession session,T Data);
@@ -87,5 +89,7 @@ namespace GameServer.Command
                 GameMessageHandle.Run(session);
 
         }
+
+        
     }
 }

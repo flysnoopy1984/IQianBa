@@ -20,6 +20,9 @@ namespace GameModel
         /// </summary>
         public int Value { get; set; }
 
+        /// <summary>
+        /// 黑桃 红心 方块 红桃
+        /// </summary>
         public CardType CardType { get; set; }
     }
 }

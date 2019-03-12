@@ -15,6 +15,8 @@ namespace GameServer
 {
     public class GameUserSession: WebSocketSession<GameUserSession>
     {
+        
+
         public GameServer GameServer
         {
             get
@@ -39,8 +41,20 @@ namespace GameServer
             get
             {
                 if (_gameManager == null)
-                    _gameManager = new GameManager(GameAttr.OpenId);
+                    _gameManager = new GameManager(GameAttr.OpenId,this);
                 return _gameManager;
+            }
+        }
+
+        public void KeepOneSession(string openId)
+        {
+            var existSession = GameServer.GetSessions(a => a.GameAttr.OpenId == openId);
+            if (existSession.Count()> 0)
+            {
+               foreach(var session in existSession)
+               {
+                    session.Close(SuperSocket.SocketBase.CloseReason.InternalError);
+               }
             }
         }
 

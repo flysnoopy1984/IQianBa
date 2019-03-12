@@ -1,6 +1,8 @@
 ﻿using GameModel;
 using GameModel.Enums;
 using GameRedis.Games;
+using IQBCore.IQBPay.Models.OutParameter;
+using IQBCore.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,61 +57,78 @@ namespace GameServer.Engine
         }
         #endregion
 
-        private Dictionary<string, EOneGame> _GameDataDic;
-        //public Dictionary<string,EOneGame> GameDataDic {
-        //    get
-        //    {
-        //        if (_GameDataDic == null)
-        //            _GameDataDic = new Dictionary<string, EOneGame>();
-        //        return _GameDataDic;
-        //    }
-        //}
-
-        public GameDataHandle()
+        
+        private EOneGame _OneGame;
+        public GameDataHandle(EOneGame game)
         {
-            _GameDataDic = new Dictionary<string, EOneGame>();
+            _OneGame = game;
         }
 
-        public EOneGame GetGameData(string roomCode)
+        public static NResult<GameDataHandle> GenerateNew(GameServer server,string RoomCode)
         {
-            if (!_GameDataDic.ContainsKey(roomCode))
+            NResult<GameDataHandle> r = new NResult<GameDataHandle>();
+            EOneGame game = new EOneGame(RoomCode);
+           
+            GameDataHandle handle = new GameDataHandle(game);
+            try
             {
-             
-                var gamedata = new EOneGame
-                {
-                    RoomCode = roomCode,
-                    CurD = GameTableRedis.DotPosition(roomCode).IntMsg,
-                    GameStatus = (GameStatus)GameRedis.GetGameStatus(roomCode).IntMsg,
-                    PlayerList = RoomUserRedis.GetAllPlayer(roomCode).resultList,
-                    TableCardList = GameTableRedis.TableCardList(roomCode).resultList,
-                    RemainCardList = new  Dictionary<int, int>()
-                };
-                InitRemainCard(roomCode);
-                _GameDataDic.Add(roomCode, gamedata);
+                handle.InitNewGameData();
+                handle.InitRemainCard();
+               
 
+                if (server.GameDataDic.ContainsKey(RoomCode))
+                    r.ErrorMsg = "房间已存在！";
+                else
+                    server.GameDataDic.Add(RoomCode, handle);
             }
-
-            return _GameDataDic[roomCode];
+            catch(Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+            }
+           
+            return r;
         }
 
-        public void InitRemainCard(string roomCode)
+        public EOneGame GetGameData(bool NeedRefrush = false)
+        {
+          
+            if (NeedRefrush)
+            {
+                var roomCode = _OneGame.RoomCode;
+                _OneGame.CurD = GameTableRedis.DotPosition(roomCode).IntMsg;
+                _OneGame.GameStatus = (GameStatus)GameRedis.GetGameStatus(roomCode).IntMsg;
+                _OneGame.PlayerList = RoomUserRedis.GetAllPlayer(roomCode).resultList;
+                _OneGame.TableCardList = CardManager.NoToCard(GameTableRedis.TableCardList(roomCode).resultList);
+                _OneGame.RemainCardList = CardManager.InitNewCards();
+             
+            }
+            return _OneGame;
+        }
+
+        public void InitRemainCard()
         {
             try
             {
-                var gamedata = _GameDataDic[roomCode];
-                gamedata.RemainCardList.Clear();
-                for(int i=1;i<=52;i++)
-                {
-                    gamedata.RemainCardList.Add(i, i);
-                }
+                _OneGame.RemainCardList = CardManager.InitNewCards();
             }
             catch
             {
 
             }
-           
         }
 
+        private void InitNewGameData()
+        {
+             GameRedis.SetGameStatus(_OneGame.RoomCode, GameStatus.NoGame);
+        }
+        public GameStatus GameStatus
+        {
+            get
+            {
+                var r = GameRedis.GetGameStatus(_OneGame.RoomCode);
+                return (GameStatus)r.IntMsg;
+            }
+        }
 
     }
 }

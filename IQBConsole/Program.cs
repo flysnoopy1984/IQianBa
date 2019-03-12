@@ -41,7 +41,22 @@ namespace IQBConsole
           
             try
             {
-                _websockerRuner.InitSocket();
+                //Task SubTask = new Task(() =>
+                //{
+                //    Console.WriteLine(DateTime.Now.Second);
+                //    SpinWait.SpinUntil(() =>
+                //    {
+                //        return false;
+                //    }, 2 * 1000);
+
+                //    Console.WriteLine(DateTime.Now.Second);
+                //});
+                //SubTask.Start();
+                int s = 13 % 13;
+               Console.WriteLine(s);
+               // s = 37 / 12;
+               // Console.WriteLine(s);
+                // _websockerRuner.InitSocket();
                 //var r = _gameRedis.SetGameStatus("test", GameStatus.WaitPlayer);
                 //_gameRedis.SetGameStatus("test2", GameStatus.Settlement);
                 //Console.WriteLine(no);
@@ -56,8 +71,8 @@ namespace IQBConsole
                 //
                 //var r = redis.HashAdd("TestKey", "Field", "shanghai");
                 //r = redis.HashAdd("TestKey", "Field", "shanghai");
-               // string s = redis.HashGet(GK.GameStatus, "03077460");
-              //  Console.WriteLine(s);
+                // string s = redis.HashGet(GK.GameStatus, "03077460");
+                //  Console.WriteLine(s);
                 //redis.HashAdd("TestKey", "Field", s);
                 //s = redis.HashGet("TestKey", "Field");
 

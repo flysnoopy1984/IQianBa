@@ -51,16 +51,21 @@ namespace GameServer.Command
             //游戏下一阶段
             if(r.MessageType == MessageType.Normal)
             {
-               if (gameManager.GameStatus == GameModel.Enums.GameStatus.NoGame ||
-               gameManager.GameStatus == GameModel.Enums.GameStatus.WaitPlayer)
+               var gs = gameManager.GameDataHandle.GameStatus;
+
+               if (gs == GameModel.Enums.GameStatus.NoGame ||
+               gs == GameModel.Enums.GameStatus.WaitPlayer)
                 {
-                    var gs = gameManager.MoveNextGameStatus();
-                    if (gs == GameStatus.WaitPlayer)
+                    var nextGs = gameManager.MoveNextGameStatus();
+                    if (nextGs == GameStatus.WaitPlayer)
                         result.Add(new ResultGameWait());
-                    if (gs == GameStatus.Shuffle)
+                    if (nextGs == GameStatus.Shuffle)
                     {
                         ResultGameShuffle shuffleMsg = new ResultGameShuffle(gameManager.RoomCode);
                         result.Add(shuffleMsg);
+
+                        ResultGameShuffleEnd shuffleEndMsg = new ResultGameShuffleEnd(gameManager.RoomCode);
+                        base.GameMessageHandle.PushDelayMsg(session, shuffleEndMsg, 4);
                     }
                 }
                 session.GameAttr.RoomCode = gameManager.RoomCode;

@@ -12,14 +12,14 @@ namespace IQBConsole.Test
         static GameTableRedis gameRedis = new GameTableRedis();
         public static void TestTable()
         {
-            string roomCode = "TestRoom";
-            //   gameRedis.AddCard(roomCode, 3);
-            gameRedis.CleanCard(roomCode);
-              var r =  gameRedis.TableCardList(roomCode);
-            foreach(int no in r.resultList)
-            {
-                Console.WriteLine(no);
-            }
+            //string roomCode = "TestRoom";
+            ////   gameRedis.AddCard(roomCode, 3);
+            //gameRedis.CleanCard(roomCode);
+            //  var r =  gameRedis.TableCardList(roomCode);
+            //foreach(int no in r.resultList)
+            //{
+            //    Console.WriteLine(no);
+            //}
         }
     }
 }

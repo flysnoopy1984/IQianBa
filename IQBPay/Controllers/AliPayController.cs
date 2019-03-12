@@ -385,8 +385,9 @@ namespace IQBPay.Controllers
                         string accessToken = this.getAccessToken(true);
                        
                        //代理
-                       /*
+                       
                         UpdateUserBalance(db, order.AgentOpenId, order.RateAmount,TransactionType.Agent_Order_Comm,ref _ReportOrder);
+                        /*
                         try
                         {
                             PPOrderPayNT notice = new PPOrderPayNT(accessToken, order.AgentOpenId, order);
@@ -418,8 +419,8 @@ namespace IQBPay.Controllers
                         }
                         */
 
-                            //用户打款
-                       //  Log.log("PayNotify 开始用户打款");
+                        //用户打款
+                        //  Log.log("PayNotify 开始用户打款");
                         tranfer = payManager.TransferHandler(TransferTarget.User, BaseController.App, BaseController.SubApp,null, ref order,0, null, BaseController.GlobalConfig);
                         _ReportOrder.BuyerInCome = tranfer.TransferAmount;
                         _ReportOrder.BuyerPhone = order.BuyerMobilePhone;

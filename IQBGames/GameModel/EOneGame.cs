@@ -11,6 +11,10 @@ namespace GameModel
 {
     public class EOneGame:BaseNormalMsg
     {
+        public EOneGame() { }
+        public EOneGame(string rc) {
+            RoomCode = rc;
+        }
         public GameStatus GameStatus { get; set; }
         /// <summary>
         /// 当前游戏所在房间Code
@@ -20,14 +24,14 @@ namespace GameModel
         /// <summary>
         /// 当前游戏桌上的牌
         /// </summary>
-        public List<int> TableCardList { get; set; }
+        public Dictionary<int, ECard> TableCardList { get; set; }
 
         /// <summary>
         /// 当前游戏玩家信息
         /// </summary>
         public List<ERoomUser> PlayerList { get; set; }
 
-        public Dictionary<int,int> RemainCardList { get; set; }
+        public Dictionary<int,ECard> RemainCardList { get; set; }
 
         /// <summary>
         /// 桌上指针(用户大小盲注)

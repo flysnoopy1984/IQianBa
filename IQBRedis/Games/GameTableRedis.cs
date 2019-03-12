@@ -17,7 +17,7 @@ namespace GameRedis.Games
             NResult<int> r = new NResult<int>();
             try
             {
-                r.resultList = _redis.SetGetAll<int>(GK.RoomTable(RoomCode));  
+               r.resultList =  _redis.SetGetAll<int>(GK.RoomTable(RoomCode));    
             }
             catch (Exception ex)
             {

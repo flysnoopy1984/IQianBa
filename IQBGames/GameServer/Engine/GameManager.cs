@@ -57,92 +57,74 @@ namespace GameServer.Engine
         }
         #endregion
 
-     //   private EOneGame _GameData;
-        private string _RoomCode;
+    
+      
         private string _UserOpenId;
+        private GameUserSession _Session;
 
-        //public EOneGame GameData
-        //{
-
-        //    get {
-        //        if (_GameData == null) _GameData = new EOneGame();
-        //        return _GameData;
-        //    }
-        //}
-
-        public GameStatus GameStatus
-        {
-            get
-            {
-                var r = GameRedis.GetGameStatus(_RoomCode);
-                return (GameStatus)r.IntMsg;
-            }
-        }
+      
+        
 
         public string RoomCode
         {
            get {
-                if(string.IsNullOrEmpty(_RoomCode))
-                {
-                    _RoomCode = RoomUserRedis.GetUserRoomCode(_UserOpenId);
-                }
-                return _RoomCode;
+                return RoomUserRedis.GetUserRoomCode(_UserOpenId);
             }
         }
 
-        public GameManager(string userOpenId)
+        public GameManager(string userOpenId,GameUserSession session)
         {
+           // _RoomCode = RoomCode;
             _UserOpenId = userOpenId;
+            _Session = session;
         }
 
-        //private void GetGameData()
-        //{
-        //    try
-        //    {
-        //        _GameData = new EOneGame
-        //        {
-        //            RoomCode = _RoomCode,
-        //            CurD = GameTableRedis.DotPosition(_RoomCode).IntMsg,
-        //            GameStatus = (GameStatus)GameRedis.GetGameStatus(_RoomCode).IntMsg,
-        //            PlayerList = RoomUserRedis.GetAllPlayer(_RoomCode).resultList,
-        //            TableCardList = GameTableRedis.TableCardList(_RoomCode).resultList,
-        //        };
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        _GameData.ErrorMsg = ex.Message;
-        //    }
-           
-           
-        //}
-
-        private void InitNewGameData()
+        public GameDataHandle GameDataHandle
         {
-            GameRedis.SetGameStatus(_RoomCode, GameStatus.NoGame);
-
+            get
+            {
+                if (!string.IsNullOrEmpty(RoomCode))
+                    return _Session.GameServer.GameDataDic[RoomCode];
+                else
+                    throw new Exception("未进入房间，不能获取数据！");
+            }
         }
 
-        public OutAPIResult UserEntryRoom(int weight)
+      
+
+       
+
+
+        public OutAPIResult FindAvailableRoom(int weight)
         {
             OutAPIResult r = new OutAPIResult();
             try
             {
                 r = RoomRedis.FindOrCreateRoom(_UserOpenId, weight);
-                if (r.IsSuccess)
+                if(r.IsSuccess)
                 {
-                    _RoomCode = r.SuccessMsg;
-                    //房间是新建的
-                    if(r.IntMsg==0)
-                        InitNewGameData();
-
-                    r = RoomUserRedis.UserLogin(weight, _UserOpenId, _RoomCode);
-                    if (r.IsSuccess)
-                        r = RoomUserRedis.UserEntryRoom(weight, _UserOpenId, _RoomCode);
-                    
-
-                    if (!r.IsSuccess) return r;
-                 
+                   // this._RoomCode = r.SuccessMsg;
+                   
                 }
+                
+            }
+            catch(Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+            }
+            return r;
+            
+        }
+        public OutAPIResult UserEntryRoom(string roomCode)
+        {
+            OutAPIResult r = new OutAPIResult();
+            try
+            {
+              //  _RoomCode = roomCode;
+
+                r = RoomUserRedis.UserLogin(_UserOpenId, roomCode);
+                if (r.IsSuccess)
+                    r = RoomUserRedis.UserEntryRoom(_UserOpenId, roomCode);
             }
             catch(Exception ex)
             {
@@ -158,7 +140,8 @@ namespace GameServer.Engine
         public GameStatus MoveNextGameStatus()
         {
             //检查游戏状态
-            var gs = (GameStatus)GameRedis.GetGameStatus(RoomCode).IntMsg;
+            var roomCode = RoomCode;
+            var gs = (GameStatus)GameRedis.GetGameStatus(roomCode).IntMsg;
             GameStatus nextStatus = gs;
             switch (gs)
             {
@@ -178,7 +161,7 @@ namespace GameServer.Engine
                     nextStatus = GameStatus.Shuffle;
                     break;
             }
-            _GameRedis.SetGameStatus(_RoomCode, nextStatus);
+            _GameRedis.SetGameStatus(roomCode, nextStatus);
             return nextStatus;
 
         }
@@ -238,8 +221,16 @@ namespace GameServer.Engine
 
         }
 
+        public ResultGameShuffleEnd ShuffleEnd(string roomCode)
+        {
+            ResultGameShuffleEnd msg = new ResultGameShuffleEnd(roomCode);
+            return msg;
+        }
+
         public void DoShuffle()
         {
+         //  var data =  _Session.GameServer.GetGameData(_RoomCode);
+          //  data.TableCardList = 
 
         }
     }

@@ -33,17 +33,20 @@ namespace GameServer.Commond
             session.GameAttr.UserName = data.UserName;
             session.GameAttr.Weight = data.Weight;
 
-            session.GameServer.SetOpenIdSession(data.OpenId, session.SessionID);
+            session.KeepOneSession(data.OpenId);
 
             List<IGameMessage> msgList = new List<IGameMessage>();
+            var GameManager = session.GameManager;
+            var r = GameManager.FindAvailableRoom(data.Weight);
+            if (r.IsSuccess)
+                r = GameManager.UserEntryRoom(r.SuccessMsg);
 
-            var gameManager = session.GameManager;
-            var r = gameManager.UserEntryRoom(data.Weight);
             if (r.IsSuccess)
             {
-                session.GameAttr.RoomCode = gameManager.RoomCode;
-                var GameData = session.GameServer.GameDataHandle.GetGameData(gameManager.RoomCode);
-                msgList.Add(GameData);
+
+                var DataHandle = GameManager.GameDataHandle;
+                var oneGame = DataHandle.GetGameData();
+                msgList.Add(oneGame);
             }
             else
                 msgList.Add(new MessageNormalError(r.ErrorMsg));

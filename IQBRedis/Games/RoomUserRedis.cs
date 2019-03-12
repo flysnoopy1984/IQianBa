@@ -82,7 +82,7 @@ namespace GameRedis.Games
             return r;
         }
 
-        public OutAPIResult UserLogin(int weight, string userOpenId, string roomCode)
+        public OutAPIResult UserLogin(string userOpenId, string roomCode)
         {
             var userKey = GK.UserInfo(userOpenId);
 
@@ -92,7 +92,7 @@ namespace GameRedis.Games
                 _redis.StartTrans();
                 _redis.HashAdd(userKey, GK.U_UserOpenId, userOpenId);
                 _redis.HashAdd(userKey, GK.U_RoomCode, roomCode);
-                _redis.HashAdd(userKey, GK.U_RoomWeight, weight);
+               // _redis.HashAdd(userKey, GK.U_RoomWeight, weight);
                 _redis.HashAdd(userKey, GK.U_SeatNo, 0);
                 r.IsSuccess = _redis.EndTrans();
 
@@ -118,7 +118,7 @@ namespace GameRedis.Games
         /// <param name="userOpenId"></param>
         /// <param name="roomCode"></param>
         /// <returns></returns>
-        public OutAPIResult UserEntryRoom(int weight,string userOpenId,string roomCode)
+        public OutAPIResult UserEntryRoom(string userOpenId,string roomCode)
         {
             OutAPIResult r = new OutAPIResult();
             var oneRoomUserKey = GK.GetOneRoomUser(roomCode);

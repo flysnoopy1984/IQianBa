@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GameServer.Engine
@@ -38,12 +39,25 @@ namespace GameServer.Engine
 
         public void Push(List<IGameMessage> msgList)
         {
-
             foreach(var msg in msgList)
             {
                 Push(msg);
             }
-           
+        }
+
+        public void PushDelayMsg(GameUserSession session,IGameMessage msg,int AfterSec)
+        {
+            Task SubTask = new Task(() =>
+            {
+                SpinWait.SpinUntil(() =>
+                {
+                    return false;
+                }, AfterSec*1000);
+
+                session.Send(msg.GetMessage());
+
+            });
+            SubTask.Start();
         }
 
         public void Push(IGameMessage msg)

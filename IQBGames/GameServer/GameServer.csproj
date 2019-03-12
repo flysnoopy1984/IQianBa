@@ -79,6 +79,7 @@
     <Compile Include="Command\EntryGame.cs" />
     <Compile Include="Command\UserSitDown.cs" />
     <Compile Include="Command\UserSitUp.cs" />
+    <Compile Include="Engine\CardManager.cs" />
     <Compile Include="Engine\GameDataHandle.cs" />
     <Compile Include="Engine\GameManager.cs" />
     <Compile Include="Engine\GameMessageHandle.cs" />

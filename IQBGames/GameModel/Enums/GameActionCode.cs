@@ -16,6 +16,7 @@ namespace GameModel.Enums
         PlayerSitUp = 2,
         Wait =3,
         Shuffle = 4,
+        ShuffleEnd =5,
         BackHall =100,
 
     }
