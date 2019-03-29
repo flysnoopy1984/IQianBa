@@ -20,7 +20,7 @@ namespace IQBWX.Controllers.API
 {
     public class SMSController : ApiController
     {
-       
+        private const int SMSMaxIntervalSec = 600;
 
         [HttpGet]
         public string NewMemberSMSVerify(int userId)
@@ -81,7 +81,7 @@ namespace IQBWX.Controllers.API
                     TimeSpan endtimespan = new TimeSpan(sms.SendDateTime.Ticks);
                     TimeSpan timespan = nowtimespan.Subtract(endtimespan).Duration();
                     int CurSec = Convert.ToInt32(timespan.TotalSeconds);
-                    if (CurSec > 600)
+                    if (CurSec > SMSMaxIntervalSec)
                     {
                         OutSMS.SMSVerifyStatus = SMSVerifyStatus.Expired;
                     }
@@ -176,9 +176,9 @@ namespace IQBWX.Controllers.API
 
                     InSMS inSMS = new InSMS();
                     inSMS.Init();
-                    inSMS.Tpl_id = Convert.ToInt32(SMSTemplate.VerifyCode).ToString();
+                    inSMS.Tpl_id = Convert.ToInt32(SMSTemplate.NormalVerify).ToString();
                     inSMS.PhoneNumber = mobilePhone;
-                    inSMS.Parameters = VerifyCode;
+                    inSMS.Parameters = VerifyCode + "," + SMSMaxIntervalSec / 60;
 
                     if (!this.DoSMS(inSMS))
                     {

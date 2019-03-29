@@ -143,6 +143,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\CatchSite\HJB\script\hjb.js" />
+    <Content Include="Content\Component\jquery-confirm.js" />
+    <Content Include="Content\Component\jquery-confirm.min.css" />
     <Content Include="Content\Config\PopPolicy.xml" />
     <Content Include="Content\Css\AgentAccount.css" />
     <Content Include="Content\Css\AgentQRAdjustment.css" />
@@ -165,6 +167,7 @@
     <Content Include="Content\Css\PP.css" />
     <Content Include="Content\Css\DoTransfer.css" />
     <Content Include="Content\Css\ReceiveOrder.css" />
+    <Content Include="Content\Css\ShuaDan\Reg.css" />
     <Content Include="Content\Css\ValidStyle.css" />
     <Content Include="Content\Css\WebCss.css" />
     <Content Include="Content\images\404_02.jpg" />
@@ -318,6 +321,7 @@
     <Content Include="Content\Script\OutPay.js" />
     <Content Include="Content\Script\Pay.js" />
     <Content Include="Content\Script\IQBPay\PPOrderList.js" />
+    <Content Include="Content\Script\ShuaDan\Reg.js" />
     <Content Include="Content\Script\SSO.js" />
     <Content Include="Content\Script\Summery.js" />
     <Content Include="Content\Script\swiper-3.4.2.jquery.min.js" />
@@ -362,6 +366,7 @@
     <Compile Include="Controllers\PartyStoreController.cs" />
     <Compile Include="Controllers\PPAdminController.cs" />
     <Compile Include="Controllers\PPController.cs" />
+    <Compile Include="Controllers\ShuaDanController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UnionController.cs" />
     <Compile Include="Controllers\ValidController.cs" />
@@ -384,6 +389,7 @@
     </Compile>
     <Compile Include="Handler\CometAsyncHandler.cs" />
     <Compile Include="Handler\CometResult.cs" />
+    <Compile Include="Handler\UserInviteHandle.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Config\EPoPCommissionConfigration.cs" />
@@ -484,7 +490,6 @@
     <Content Include="Views\PP\Agent_QR_ARList.cshtml" />
     <Content Include="Views\PP\AgentList.cshtml" />
     <Content Include="Views\PP\InviteCode.cshtml" />
-    <Content Include="Views\Test\TestQR.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\PP\PayWithAccount.cshtml" />
     <Content Include="Views\Test\MediaList.cshtml" />
@@ -523,6 +528,10 @@
     <Content Include="Views\PP\PaySuccess.cshtml" />
     <Content Include="Views\PPAdmin\ReviewPaySuccess.cshtml" />
     <Content Include="Views\PP\AgentQRAdjustment.cshtml" />
+    <Content Include="Views\ShuaDan\Reg.cshtml" />
+    <Content Include="Views\Test\TestQR.cshtml" />
+    <Content Include="Views\ShuaDan\Index.cshtml" />
+    <Content Include="Views\ShuaDan\ErrorPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

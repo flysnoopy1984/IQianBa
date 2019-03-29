@@ -20,7 +20,7 @@ namespace GameServer.Commond
 {
     public class EntryGame : BaseGameCommand<dataNewConnect>
     {
-        public override bool VerifyCommandData(dataNewConnect InData)
+        public override bool VerifyCommandData(dataNewConnect InData,GameUserSession session)
         {
             
             return true;
@@ -38,14 +38,25 @@ namespace GameServer.Commond
             List<IGameMessage> msgList = new List<IGameMessage>();
             var GameManager = session.GameManager;
             var r = GameManager.FindAvailableRoom(data.Weight);
-            if (r.IsSuccess)
-                r = GameManager.UserEntryRoom(r.SuccessMsg);
-
+           
             if (r.IsSuccess)
             {
-
+                //表明是新房间，则初始化新游戏的数据
+                if (r.IntMsg == 0)
+                    GameDataHandle.GenerateEmptyGame(session.GameServer, r.SuccessMsg);
+                else
+                {
+                    GameDataHandle.ReCoverData(session.GameServer, r.SuccessMsg);
+                }               
+                   
+                //用户进入房间
+                r = GameManager.UserEntryRoom(r.SuccessMsg);
+            }
+            if (r.IsSuccess)
+            {
+                /*【注】如果服务器宕机，GameDataHandle将空*/
                 var DataHandle = GameManager.GameDataHandle;
-                var oneGame = DataHandle.GetGameData();
+                var oneGame = DataHandle.GetGameData(true);
                 msgList.Add(oneGame);
             }
             else

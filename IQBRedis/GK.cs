@@ -26,6 +26,8 @@ namespace GameRedis
 
         public const string ALLRoomCode = "ALLRoomCode";
 
+        public const string ALLRoomEntity = "ALLRoomEntity";
+
         public static string SeatNo(int no)
         {
             return "SN" + no;
@@ -60,7 +62,11 @@ namespace GameRedis
         {
             return "U_" + openId;
         }
-       
+
+        //public static string AllRoom()
+        //{
+        //    return "SN" + no;
+        //}
 
         //public static string GameStatus(string roomCode)
         //{

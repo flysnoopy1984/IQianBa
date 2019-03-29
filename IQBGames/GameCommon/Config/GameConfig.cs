@@ -11,5 +11,7 @@ namespace GameCommon.Config
         public const int Room_Max_Count = 20;
 
         public const int Room_Max_PlayerCount = 8;
+
+        public const int Table_Cards_Count = 5;
     }
 }

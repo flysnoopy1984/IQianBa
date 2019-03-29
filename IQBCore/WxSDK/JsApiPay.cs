@@ -108,6 +108,8 @@ namespace WxPayAPI
             }
         }
 
+      
+
         public static string GetAccessToken()
         {
             WxPayData data = new WxPayData();
@@ -153,24 +155,19 @@ namespace WxPayAPI
 
                 //请求url以获取数据
                 string result = HttpService.Get(url);
-           //     log.log("GetOpenidAndAccessTokenFromCode result:" + result);
-                //Log.Debug(this.GetType().ToString(), "GetOpenidAndAccessTokenFromCode response : " + result);
-
+         
                 //保存access_token，用于收货地址获取
                 JsonData jd = JsonMapper.ToObject(result);
                 access_token = (string)jd["access_token"];
 
                 //获取用户openid
                 openid = (string)jd["openid"];
-                /*
-                Log.Debug(this.GetType().ToString(), "Get openid : " + openid);
-                Log.Debug(this.GetType().ToString(), "Get access_token : " + access_token);
-                */
+            
             
             }
             catch (Exception ex)
             {
-                Log.Error(this.GetType().ToString(), ex.ToString());
+                NLogHelper.ErrorTxt("GetOpenidAndAccessTokenFromCode:"+ex.Message);
                 throw new WxPayException(ex.ToString());
             }
         }

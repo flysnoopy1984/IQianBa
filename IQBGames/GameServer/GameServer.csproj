@@ -79,10 +79,11 @@
     <Compile Include="Command\EntryGame.cs" />
     <Compile Include="Command\UserSitDown.cs" />
     <Compile Include="Command\UserSitUp.cs" />
-    <Compile Include="Engine\CardManager.cs" />
+    <Compile Include="Engine\CardDataManager.cs" />
     <Compile Include="Engine\GameDataHandle.cs" />
     <Compile Include="Engine\GameManager.cs" />
     <Compile Include="Engine\GameMessageHandle.cs" />
+    <Compile Include="Engine\GameSyncTask.cs" />
     <Compile Include="GameRunner.cs" />
     <Compile Include="GameServer.cs" />
     <Compile Include="GameUserSession.cs" />
@@ -105,6 +106,10 @@
     <ProjectReference Include="..\..\IQBRedis\GameRedis.csproj">
       <Project>{cf29e509-157b-4b82-92bf-1722c0247673}</Project>
       <Name>GameRedis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GameCommon\GameCommon.csproj">
+      <Project>{B6CF63C4-AEEA-4206-9948-FDB7C15E5382}</Project>
+      <Name>GameCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\GameModel\GameModel.csproj">
       <Project>{9F07FA7F-AAB1-4ECA-A027-9C4E263DC0A2}</Project>

@@ -53,8 +53,7 @@ namespace IQBCore.Common.Helper
                     result = sr.ReadToEnd();
                     if (needLog)
                     {
-                        IQBLog log = new IQBLog();
-                        log.log("HttpHelper Get Method:" + result);
+                        NLogHelper.InfoTxt("【Http Get】:" + result);
                     }
 
 

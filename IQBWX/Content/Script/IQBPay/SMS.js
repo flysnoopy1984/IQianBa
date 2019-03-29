@@ -136,6 +136,7 @@
                         return data.SMSVerifyStatus;
                     case 5:
                         alert("验证码已失效，请重新获取！");
+                        CodeCtrl.val("");
                         return data.SMSVerifyStatus;
                     case 3:
                         ////验证成功

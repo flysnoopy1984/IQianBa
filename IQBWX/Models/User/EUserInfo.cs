@@ -76,6 +76,8 @@ namespace IQBWX.Models.User
         [MaxLength(10)]
         public string SubscribeTime { get; set; }
 
+        public UserScanChannel ScanChannel { get; set; }
+
         /// <summary>
         /// 扫码进入用的哪个二维码
         /// </summary>

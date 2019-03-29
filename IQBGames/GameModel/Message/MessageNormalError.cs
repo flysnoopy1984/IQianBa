@@ -36,11 +36,15 @@ namespace GameModel.Message
         {
             ErrorMsg = error;
         }
-
-
         string IGameMessage.GetMessage()
         {
             return JsonConvert.SerializeObject(this);
+        }
+        private string _SessionId = null;
+        public string SessionId
+        {
+           get { return _SessionId; }
+           set { _SessionId = value; }
         }
     }
 }

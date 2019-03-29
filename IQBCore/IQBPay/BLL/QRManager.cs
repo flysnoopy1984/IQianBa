@@ -14,6 +14,7 @@ using IQBCore.IQBWX.Models.OutParameter;
 using Newtonsoft.Json;
 using System.Security.Policy;
 using System.IO;
+using IQBCore.IQBPay.Models.OutParameter;
 
 namespace IQBCore.IQBPay.BLL
 {
@@ -202,6 +203,12 @@ namespace IQBCore.IQBPay.BLL
 
         }
 
+        /// <summary>
+        /// 邀请码
+        /// </summary>
+        /// <param name="qr"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static EQRInfo CreateMasterUrlById(EQRInfo qr, HttpContext context)
         {
             try
@@ -443,5 +450,57 @@ namespace IQBCore.IQBPay.BLL
 
             return qrUser;
         }
+
+        /// <summary>
+        /// 刷单邀请码
+        /// </summary>
+        /// <param name="qr"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        #region ShuaDan
+        public static OutAPIResult CreateShuaDan_InviteQR(HttpContext context)
+        {
+            OutAPIResult r = new OutAPIResult();
+            try
+            {
+
+                string url = "http://wx.iqianba.cn/api/wx/CreateShuDanInviteQR";
+                string data = string.Format("?sId={0}", 100);
+                url += data;
+                string res = HttpHelper.RequestUrlSendMsg(url, HttpHelper.HttpMethod.Post, data, "application/x-www-form-urlencoded");
+                SSOQR obj = JsonConvert.DeserializeObject<SSOQR>(res);
+               //qr.TargetUrl = obj.TargetUrl;
+
+                System.Drawing.Image bkImg = ImgHelper.GetImgFromUrl(obj.TargetUrl);
+                string filePath = "/Content/QR/ShuaDan.jpg";
+               //// qr.OrigFilePath = filePath;
+
+                string fullPath = context.Server.MapPath(filePath);
+               // bkImg.Save(fullPath);
+
+                Bitmap logo = new Bitmap(context.Server.MapPath(@"/Content/QR/TX_Logo_100.png"));
+
+                Bitmap finImg = ImgHelper.ImageWatermark(new Bitmap(bkImg), logo);
+
+               // filePath = "/Content/QR/ShuaDan.jpg";
+              //  qr.FilePath = filePath;
+               // fullPath = context.Server.MapPath(filePath);
+                finImg.Save(fullPath);
+
+                finImg.Dispose();
+                bkImg.Dispose();
+
+               // return qr;
+
+            }
+            catch (Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+                throw ex;
+            }
+            return r;
+        }
+        #endregion
+
     }
 }

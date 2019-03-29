@@ -69,7 +69,8 @@
     <Compile Include="WebSocketData\ReceiveData\dataUserSitUp.cs" />
     <Compile Include="WebSocketData\SendData\ResultBackHall.cs" />
     <Compile Include="WebSocketData\SendData\ResultError.cs" />
-    <Compile Include="WebSocketData\SendData\ResultGameShuffle.cs" />
+    <Compile Include="WebSocketData\SendData\ResultGameShuffleStart.cs" />
+    <Compile Include="WebSocketData\SendData\ResultGameShuffling.cs" />
     <Compile Include="WebSocketData\SendData\ResultGameWait.cs" />
     <Compile Include="WebSocketData\SendData\ResultGameShuffleEnd.cs" />
     <Compile Include="WebSocketData\SendData\ResultUserSitDown.cs" />

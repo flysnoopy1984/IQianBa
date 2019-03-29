@@ -53,7 +53,8 @@ namespace GameServer
             {
                foreach(var session in existSession)
                {
-                    session.Close(SuperSocket.SocketBase.CloseReason.InternalError);
+                    if(session.SessionID != this.SessionID)
+                        session.Close(SuperSocket.SocketBase.CloseReason.InternalError);
                }
             }
         }

@@ -11,6 +11,7 @@ using IQBWX.Common;
 using IQBWX.Controllers;
 using IQBWX.DataBase;
 using IQBWX.DataBase.IQBPay;
+using IQBWX.Handler;
 using IQBWX.Models.Results;
 using IQBWX.Models.User;
 using IQBWX.Models.WX;
@@ -255,9 +256,7 @@ namespace IQBWX.BLL
                 ESSOLogin sso = null;
                 string ssoToken = null;
                 EUserInfo ui =null ,pui = null;
-
-             
-
+              
                 if (msg.Event == "scan")
                     ssoToken = msg.EventKey;
                 else if (msg.Event == "subscribe")
@@ -271,15 +270,24 @@ namespace IQBWX.BLL
                         return false;
                     }
                 }
-
                 
+
+                //iqianba 代理邀请码进入
                 if (ssoToken.StartsWith(IQBConstant.WXQR_IQBPAY_PREFIX))
                 {
                     string qrId = ssoToken.Substring(IQBConstant.WXQR_IQBPAY_PREFIX.Length);
                     IQBAuth(msg, controller,qrId);
                     return true;
                 }
-                
+                //刷单 扫码进入
+                if (ssoToken.StartsWith(IQBConstant.WXQR_ShuaDan_PREFIX))
+                {
+                    NLogHelper.InfoTxt("ShuaDan 进入:" + ssoToken);
+                    this.ResponseXml = msg.toText(UserInviteHandle.ShuaDan(msg));
+                   // NLogHelper.InfoTxt("ShuaDan Response:" + ResponseXml);
+                    return true;
+                }
+
                 using (WXContent db = new WXContent())
                 {
                     sso = db.GetSSOEntity(ssoToken);
@@ -378,8 +386,8 @@ namespace IQBWX.BLL
                 //获取对应的UserInfo, 若没有获取到需要报错
                 pui = db.GetBySceneId(ui.ScanSceneId);
                 ui.ParentOpenId = pui.openid;
-
             }
+
             controller.Session[IQBWXConst.SessionToken] = accessToken;
 
             db.InsertUserInfo(ui);

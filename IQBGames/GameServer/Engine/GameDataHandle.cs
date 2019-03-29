@@ -59,23 +59,59 @@ namespace GameServer.Engine
 
         
         private EOneGame _OneGame;
+        private CardDataManager _CardDataManager;
+
+        public CardDataManager CardDataManager
+        {
+            get
+            {
+                return _CardDataManager;
+            }
+        }
+
         public GameDataHandle(EOneGame game)
         {
             _OneGame = game;
+            _CardDataManager = new CardDataManager();
         }
 
-        public static NResult<GameDataHandle> GenerateNew(GameServer server,string RoomCode)
+
+        public static OutAPIResult ReCoverData(GameServer server, string RoomCode)
         {
-            NResult<GameDataHandle> r = new NResult<GameDataHandle>();
+            OutAPIResult r = new OutAPIResult();
+         
+            try
+            {
+
+                if (server.GameDataDic.ContainsKey(RoomCode))
+                    return r;
+                else
+                {
+                    EOneGame game = new EOneGame(RoomCode);
+                    GameDataHandle handle = new GameDataHandle(game);
+
+                    server.GameDataDic.Add(RoomCode, handle);
+                }
+                   
+            }
+            catch (Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+            }
+
+            return r;
+        }
+
+        public static OutAPIResult GenerateEmptyGame(GameServer server,string RoomCode)
+        {
+            OutAPIResult r = new OutAPIResult();
             EOneGame game = new EOneGame(RoomCode);
            
             GameDataHandle handle = new GameDataHandle(game);
             try
             {
                 handle.InitNewGameData();
-                handle.InitRemainCard();
-               
-
+              
                 if (server.GameDataDic.ContainsKey(RoomCode))
                     r.ErrorMsg = "房间已存在！";
                 else
@@ -91,35 +127,31 @@ namespace GameServer.Engine
 
         public EOneGame GetGameData(bool NeedRefrush = false)
         {
-          
             if (NeedRefrush)
             {
                 var roomCode = _OneGame.RoomCode;
                 _OneGame.CurD = GameTableRedis.DotPosition(roomCode).IntMsg;
                 _OneGame.GameStatus = (GameStatus)GameRedis.GetGameStatus(roomCode).IntMsg;
                 _OneGame.PlayerList = RoomUserRedis.GetAllPlayer(roomCode).resultList;
-                _OneGame.TableCardList = CardManager.NoToCard(GameTableRedis.TableCardList(roomCode).resultList);
-                _OneGame.RemainCardList = CardManager.InitNewCards();
-             
+                if(_CardDataManager.PlayCards.Count>0)
+                {
+                    foreach (var player in _OneGame.PlayerList)
+                    {
+                        player.CardList = _CardDataManager.PlayCards[player.SeatNo];
+                    }
+                }
+               
+                _OneGame.TableCardList = _CardDataManager.TableCards; //CardDataManager.NoToCard(GameTableRedis.TableCardList(roomCode).resultList);
+                //_OneGame. = _CardDataManager.RemainCards;
             }
             return _OneGame;
         }
 
-        public void InitRemainCard()
-        {
-            try
-            {
-                _OneGame.RemainCardList = CardManager.InitNewCards();
-            }
-            catch
-            {
-
-            }
-        }
-
         private void InitNewGameData()
         {
-             GameRedis.SetGameStatus(_OneGame.RoomCode, GameStatus.NoGame);
+            //设置游戏状态为等待用户
+            GameRedis.SetGameStatus(_OneGame.RoomCode, GameStatus.NoGame);
+           
         }
         public GameStatus GameStatus
         {

@@ -31,7 +31,7 @@ namespace GameModel
         /// </summary>
         public List<ERoomUser> PlayerList { get; set; }
 
-        public Dictionary<int,ECard> RemainCardList { get; set; }
+    //    public Dictionary<int,ECard> RemainCardList { get; set; }
 
         /// <summary>
         /// 桌上指针(用户大小盲注)

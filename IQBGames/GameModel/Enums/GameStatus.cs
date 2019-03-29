@@ -16,12 +16,17 @@ namespace GameModel.Enums
         /// <summary>
         /// 洗牌
         /// </summary>
-        Shuffle = 2,
+        StartShuffle = 2,
 
         /// <summary>
-        /// 洗好牌发牌中,不能有人进入
+        /// 洗牌中，允许玩家入座
         /// </summary>
-        ShuffleEnd = 3,
+        Shuffling=3,
+
+        /// <summary>
+        /// 洗好牌发牌中,不能有人入座
+        /// </summary>
+        ShuffleEnd = 4,
 
         /// <summary>
         /// 游戏中
@@ -31,6 +36,6 @@ namespace GameModel.Enums
         /// <summary>
         /// 一局将结束，在算账
         /// </summary>
-        Settlement = 4,
+        Settlement = 20,
     }
 }

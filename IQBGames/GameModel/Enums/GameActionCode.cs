@@ -12,11 +12,12 @@ namespace GameModel.Enums
     public enum GameActionCode
     {
         ShowOneGame = 0,
-        PlayerSitDown = 1,
-        PlayerSitUp = 2,
-        Wait =3,
-        Shuffle = 4,
-        ShuffleEnd =5,
+        PlayerSitDown = 101,
+        PlayerSitUp = 102,
+        Wait =1,
+        ShuffleStart = 2,
+        Shuffling =3,
+        ShuffleEnd =4,
         BackHall =100,
 
     }

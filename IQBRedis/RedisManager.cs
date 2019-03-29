@@ -66,7 +66,7 @@ namespace GameRedis
             {
                 if (_RedisConn == null || !_RedisConn.IsConnected)
                 {
-                    lock(ConnLocker)
+                    lock (ConnLocker)
                     {
                         _RedisConn = ConnectionMultiplexer.Connect(_RedisHost);
                     }
@@ -855,7 +855,7 @@ namespace GameRedis
             return r;
         }
 
-        public NResult<T> HashFindAll<T>(RedisKey hashKey)
+        public NResult<T> HashFindAllT<T>(RedisKey hashKey)
         {
             ConnectionMultiplexer conn = GetUsingConn();
             NResult<T> r = new NResult<T>();
@@ -864,6 +864,38 @@ namespace GameRedis
                
                 _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
                 r.resultDict = _RedisClient.HashGetAll<T>(hashKey);
+            }
+            catch (Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+            }
+            finally
+            {
+                if (_TransConn == null)
+                {
+                    conn.Close();
+                    conn.Dispose();
+                }
+            }
+            return r;
+        }
+
+        public NResult<string> HashFindAll(RedisKey hashKey)
+        {
+            ConnectionMultiplexer conn = GetUsingConn();
+            NResult<string> r = new NResult<string>();
+            r.resultDict = new Dictionary<string, string>();
+            try
+            {
+             
+                var db = conn.GetDatabase();
+                var allvalues = db.HashGetAll(hashKey);
+                foreach(var v in allvalues)
+                {
+                    r.resultDict.Add(v.Name, v.Value);
+                }
+
+               
             }
             catch (Exception ex)
             {

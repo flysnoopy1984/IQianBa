@@ -3,6 +3,7 @@ using GameModel.Enums;
 using GameRedis;
 using GameRedis.Games;
 using GameServer;
+using GameServer.Engine;
 using IQBConsole.SocketServer;
 using IQBConsole.Test;
 using IQBCore.IOS.APNS;
@@ -36,35 +37,18 @@ namespace IQBConsole
         static RedisManager redis = new RedisManager();
         static RoomUserRedis _roomUserRedis = new RoomUserRedis();
         static GameRedis.Games.GameRedis _gameRedis = new GameRedis.Games.GameRedis();
+        static CardDataManager cardmrg = new CardDataManager();
         static void Main(string[] args)
         {
           
             try
             {
-                //Task SubTask = new Task(() =>
-                //{
-                //    Console.WriteLine(DateTime.Now.Second);
-                //    SpinWait.SpinUntil(() =>
-                //    {
-                //        return false;
-                //    }, 2 * 1000);
+                  _websockerRuner.InitSocket();
 
-                //    Console.WriteLine(DateTime.Now.Second);
-                //});
-                //SubTask.Start();
-                int s = 13 % 13;
-               Console.WriteLine(s);
-               // s = 37 / 12;
-               // Console.WriteLine(s);
-                // _websockerRuner.InitSocket();
-                //var r = _gameRedis.SetGameStatus("test", GameStatus.WaitPlayer);
-                //_gameRedis.SetGameStatus("test2", GameStatus.Settlement);
-                //Console.WriteLine(no);
-                //  RedisTest.TestTable();
-
-                // _WebSocket.Init();
-                // _SocketServer.Init();
-                //PushSharp ps = new PushSharp();
+              
+                    //var roomSeatKey = GK.Room_Seat("03258363");
+                //var dicSeat = redis.HashFindAll(roomSeatKey);
+                // PushSharp ps = new PushSharp();
                 //ps.StartServer();
 
                 //ps.SendMsg();

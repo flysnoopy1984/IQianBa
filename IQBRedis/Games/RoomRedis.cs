@@ -17,7 +17,7 @@ namespace GameRedis.Games
         private readonly Object _LockRoom = new Object();
 
         /// <summary>
-        /// SuccessMsg: RoomCode, IntMsg:>0 说明是找到的
+        /// SuccessMsg: RoomCode, IntMsg:0代表新房间
         /// </summary>
         /// <param name="userOpenId"></param>
         /// <param name="weight"></param>
@@ -84,7 +84,7 @@ namespace GameRedis.Games
                 };
                 //房间Code加入应用全局
                 _redis.SetAdd(GK.ALLRoomCode, roomCode);
-                //  _redis.WriteJson<ERoom>(room.Code, room);
+                _redis.HashAddT<ERoom>(GK.ALLRoomEntity,room.Code, room);
                 //创建座位
                 var roomSeatKey = GK.Room_Seat(roomCode);
                 _redis.KeyDelete(roomSeatKey);

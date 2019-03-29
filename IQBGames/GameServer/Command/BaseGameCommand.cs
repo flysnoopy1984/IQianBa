@@ -28,38 +28,38 @@ namespace GameServer.Command
 
        
 
-        public abstract bool VerifyCommandData(T InData);
+        public abstract bool VerifyCommandData(T InData, GameUserSession session);
 
         public abstract List<IGameMessage> HandleData(GameUserSession session,T Data);
 
         private T Data = null;
 
-        public T InitInData(string Body)
+        public T InitInData(string Body,GameUserSession session)
         {
             Console.WriteLine($"{this.Name}:{Body}");
 
             if (string.IsNullOrEmpty(Body))
             {
-                GameMessageHandle.PushErrorMsg("没有获取数据");
+                GameMessageHandle.PushErrorMsg("没有获取数据", session);
                 return null;
             }
 
             var preData = JsonConvert.DeserializeObject<T>(Body);
 
-            if (!VerifyBaseData(preData)) return null;
+            if (!VerifyBaseData(preData, session)) return null;
            
-            if (!VerifyCommandData(preData)) return null;
+            if (!VerifyCommandData(preData, session)) return null;
            
             Data = preData;
 
             return Data;
         }
 
-        private bool VerifyBaseData(T preData)
+        private bool VerifyBaseData(T preData,GameUserSession session)
         {
             if (string.IsNullOrEmpty(preData.OpenId))
             {
-                GameMessageHandle.PushErrorMsg("错误，没有获取您的身份，请重新登陆");
+                GameMessageHandle.PushErrorMsg("错误，没有获取您的身份，请重新登陆", session);
                 return false;
             }
             return true;
@@ -69,7 +69,7 @@ namespace GameServer.Command
         {
             try
             {
-                InitInData(requestInfo.Body);
+                InitInData(requestInfo.Body,session);
 
                 if (Data != null)
                 {
@@ -77,16 +77,16 @@ namespace GameServer.Command
 
                     var msgData = HandleData(session, this.Data);
 
-                    GameMessageHandle.Push(msgData);
+                    GameMessageHandle.Push(msgData,session);
                 }
             }
             catch(Exception ex)
             {
-                GameMessageHandle.PushErrorMsg(ex.Message);
+                GameMessageHandle.PushErrorMsg(ex.Message,session);
             }
            
             if (session.Connected)
-                GameMessageHandle.Run(session);
+                GameMessageHandle.Run(session.GameServer);
 
         }
 

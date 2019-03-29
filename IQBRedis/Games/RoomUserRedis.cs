@@ -15,8 +15,8 @@ namespace GameRedis.Games
 {
     public class RoomUserRedis: BaseRedis
     {
-        private readonly Object _lockSitDown = new Object();
-        private readonly Object _lockSitUp = new Object();
+ 
+       // private readonly Object _lockSitUp = new Object();
 
         public int GetAllPlayerCount(string roomCode)
         {
@@ -67,7 +67,7 @@ namespace GameRedis.Games
                 {
                     RoomCode = roomCode,
                     UserOpenId = userOpenId,
-                    CardList = new List<int>(),
+                    CardList = new List<ECard>(),
                     RemainCoins = coins,
                     SeatNo = seatNo,
                 };
@@ -183,17 +183,8 @@ namespace GameRedis.Games
         private OutAPIResult CheckRoomUserHash(string userOpenId)
         {
             OutAPIResult result = new OutAPIResult();
-           
+
             var userKey = GK.UserInfo(userOpenId);
-            RedisValue rv = _redis.HashGet(userKey, GK.U_RoomWeight);
-            if (rv.IsNullOrEmpty)
-            {
-                result.IntMsg = 1;
-                result.ErrorMsg = "获取您的信息错误，请重新进入房间";
-                NLogHelper.GameError($"UserSitDown Error: 用户{userOpenId}没有找到Weight");
-                return result;
-            }
-            result.IntMsg = (int)rv;
 
             RedisValue roomCode = _redis.HashGet(userKey, GK.U_RoomCode);
             if (roomCode.IsNullOrEmpty)
@@ -204,6 +195,17 @@ namespace GameRedis.Games
                 return result;
             }
 
+            ERoom room = _redis.HashGet<ERoom>(GK.ALLRoomEntity,roomCode);
+         //   RedisValue rv = _redis.HashGet(userKey, GK.U_RoomWeight);
+            if (room == null)
+            {
+                result.IntMsg = 1;
+                result.ErrorMsg = "获取您的信息错误，请重新进入房间";
+                NLogHelper.GameError($"UserSitDown Error: 用户{userOpenId}没有找到Weight");
+                return result;
+            }
+
+            result.IntMsg = room.Weight;
             result.SuccessMsg = roomCode;
             return result;
         }
@@ -230,71 +232,64 @@ namespace GameRedis.Games
                 var AllRoomScoreKey = GK.AllRoomScore(weight);
                 var roomSeatKey = GK.Room_Seat(roomCode);
                
-                lock (_lockSitDown)
-                {
+               
                     //系统分配入座
-                    if(seatNo == -1)
+                if(seatNo == -1)
+                {
+                    var userSeat = (int)_redis.HashGet(userKey, GK.U_SeatNo);
+                    if (userSeat > 0)
                     {
-                        var userSeat = (int)_redis.HashGet(userKey, GK.U_SeatNo);
-                        if (userSeat > 0)
-                        {
-                            result.ErrorMsg = "您已入座";
-                            return result;
-                        }
-                        seatNo = sysAssignSeat(roomCode);
-                        if(seatNo == 0)
-                        {
-                            result.ErrorMsg = "没有位置可坐";
-                            return result;
-                        }
-                    }
-                    //选定入座
-                    else
-                    {
-                        var seatUser = _redis.HashGet(roomSeatKey, seatNo);
-                        if (!string.IsNullOrEmpty(seatUser))
-                        {
-                            result.ErrorMsg = "已有人坐下";
-                            return result;
-                        }
-                    }
-
-
-
-                    _redis.StartTrans();
-                    _redis.HashAdd(roomSeatKey, GK.SeatNo(seatNo), userOpenId);
-                    _redis.HashAdd(userKey, GK.U_SeatNo, seatNo);
-
-                    var r = _redis.EndTrans();
-
-                    if (r == true)
-                    {
-                        double? dr = _redis.AdjustScore(AllRoomScoreKey, roomCode, 1);
-                        if (dr == null)
-                        {
-                            _redis.StartTrans();
-                            _redis.HashAdd(roomSeatKey, GK.SeatNo(seatNo), "");
-                            _redis.HashAdd(userKey, GK.U_SeatNo, -1);
-                            _redis.EndTrans();
-                        }
-                        else
-                            AddNewPlayer(userOpenId, roomCode, seatNo, coins);
-
-
-                    }
-                    else
-                    {
-                        _redis.HashAdd(roomSeatKey, GK.SeatNo(seatNo), "");
-
-                        result.ErrorMsg = "坐下失败，请尝试重进房间！";
-                        NLogHelper.GameError($"UserSitDown Error: 用户{userOpenId}坐下失败。");
+                        result.ErrorMsg = "您已入座";
                         return result;
                     }
-                    result.SuccessMsg = roomCode;
-                    result.IntMsg = seatNo;
-                   
-                  
+                    seatNo = sysAssignSeat(roomCode);
+                    if(seatNo == 0)
+                    {
+                        result.ErrorMsg = "没有位置可坐";
+                        return result;
+                    }
                 }
+                //选定入座
+                else
+                {
+                    var seatUser = _redis.HashGet(roomSeatKey, seatNo);
+                    if (!string.IsNullOrEmpty(seatUser))
+                    {
+                        result.ErrorMsg = "已有人坐下";
+                        return result;
+                    }
+                }
+
+                _redis.StartTrans();
+                _redis.HashAdd(roomSeatKey, GK.SeatNo(seatNo), userOpenId);
+                _redis.HashAdd(userKey, GK.U_SeatNo, seatNo);
+
+                var r = _redis.EndTrans();
+
+                if (r == true)
+                {
+                    double? dr = _redis.AdjustScore(AllRoomScoreKey, roomCode, 1);
+                    if (dr == null)
+                    {
+                        _redis.StartTrans();
+                        _redis.HashAdd(roomSeatKey, GK.SeatNo(seatNo), "");
+                        _redis.HashAdd(userKey, GK.U_SeatNo, -1);
+                        _redis.EndTrans();
+                    }
+                    else
+                        AddNewPlayer(userOpenId, roomCode, seatNo, coins);
+                }
+                else
+                {
+                    _redis.HashAdd(roomSeatKey, GK.SeatNo(seatNo), "");
+
+                    result.ErrorMsg = "坐下失败，请尝试重进房间！";
+                    NLogHelper.GameError($"UserSitDown Error: 用户{userOpenId}坐下失败。");
+                    return result;
+                }
+                result.SuccessMsg = roomCode;
+                result.IntMsg = seatNo;
+
             }
             catch (Exception ex)
             {
@@ -319,18 +314,26 @@ namespace GameRedis.Games
         public int sysAssignSeat(string roomCode)
         {
             var roomSeatKey = GK.Room_Seat(roomCode);
-            var dicSeat = _redis.HashFindAll<string>(roomSeatKey);
-            if(dicSeat.resultDict !=null)
+            try
             {
-                foreach (KeyValuePair<string,string> seat in dicSeat.resultDict)
+                var dicSeat = _redis.HashFindAll(roomSeatKey);
+                if (dicSeat.resultDict != null)
                 {
-                    if(string.IsNullOrEmpty(seat.Value))
+                    foreach (KeyValuePair<string, string> seat in dicSeat.resultDict)
                     {
-                        return GetSeatNo(seat.Key);
+                        if (string.IsNullOrEmpty(seat.Value))
+                        {
+                            return GetSeatNo(seat.Key);
+                        }
                     }
+                    return 0;
                 }
-                return 0;
             }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+          
             return -1;
 
         }
@@ -346,6 +349,22 @@ namespace GameRedis.Games
             {
                 return null;
             }
+        }
+
+        public static int GetUserSeatNo(string userOpenId)
+        {
+            try
+            {
+                var userKey = GK.UserInfo(userOpenId);
+                RedisManager _redis = new RedisManager();
+                var userSeat = (int)_redis.HashGet(userKey, GK.U_SeatNo);
+                return userSeat;
+            }
+            catch
+            {
+                return -1;
+            }
+          
         }
 
         /// <summary>
@@ -367,47 +386,44 @@ namespace GameRedis.Games
                 var roomSeatKey = GK.Room_Seat(roomCode);
 
                 int seatNo;
-                lock (_lockSitDown)
+                var r = int.TryParse(_redis.HashGet(userKey, GK.U_SeatNo), out seatNo);
+                if (r && seatNo > 0)
                 {
-                    var r = int.TryParse(_redis.HashGet(userKey, GK.U_SeatNo), out seatNo);
-                    if (r && seatNo > 0)
+                    _redis.StartTrans();
+                    _redis.HashAdd(roomSeatKey, GK.SeatNo(seatNo), "");
+                    _redis.HashAdd(userKey, GK.U_SeatNo, 0);
+                    r = _redis.EndTrans();
+                    if (r == true)
                     {
-                        _redis.StartTrans();
-                        _redis.HashAdd(roomSeatKey, GK.SeatNo(seatNo), "");
-                        _redis.HashAdd(userKey, GK.U_SeatNo, 0);
-                        r = _redis.EndTrans();
-                        if (r == true)
+                        double? dr = _redis.AdjustScore(AllRoomScoreKey, roomCode, -1);
+                        if (dr == null)
                         {
-                            double? dr = _redis.AdjustScore(AllRoomScoreKey, roomCode, -1);
-                            if (dr == null)
-                            {
-                                _redis.StartTrans();
-                                _redis.HashAdd(roomSeatKey, GK.SeatNo(seatNo), userOpenId);
-                                _redis.HashAdd(userKey, GK.U_SeatNo, seatNo);
-                                _redis.EndTrans();
-                            }
-                            else
-                                ExitPlayer(userOpenId, roomCode);
-                                
+                            _redis.StartTrans();
+                            _redis.HashAdd(roomSeatKey, GK.SeatNo(seatNo), userOpenId);
+                            _redis.HashAdd(userKey, GK.U_SeatNo, seatNo);
+                            _redis.EndTrans();
                         }
                         else
-                        {
-                            _redis.HashAdd(userKey, GK.U_SeatNo, seatNo);
-
-                            result.ErrorMsg = "坐下失败，请尝试重进房间！";
-                            NLogHelper.GameError($"UserSitDown Error: 用户{userOpenId}坐下失败.");
-                            return result;
-                        }
+                            ExitPlayer(userOpenId, roomCode);
 
                     }
-                        else
+                    else
                     {
-                        result.ErrorMsg = "您已站起"; 
+                        _redis.HashAdd(userKey, GK.U_SeatNo, seatNo);
+
+                        result.ErrorMsg = "坐下失败，请尝试重进房间！";
+                        NLogHelper.GameError($"UserSitDown Error: 用户{userOpenId}坐下失败.");
                         return result;
                     }
+
                 }
-               
-              
+                else
+                {
+                    result.ErrorMsg = "您已站起";
+                    return result;
+                }
+
+
             }
             catch (Exception ex)
             {

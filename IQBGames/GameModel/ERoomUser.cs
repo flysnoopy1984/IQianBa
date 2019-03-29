@@ -23,7 +23,7 @@ namespace GameModel
         /// <summary>
         /// 当前发到的牌
         /// </summary>
-        public List<int> CardList { get; set; }
+        public List<ECard> CardList { get; set; }
 
         /// <summary>
         /// 当前桌上剩余的资金（坐下后有效）

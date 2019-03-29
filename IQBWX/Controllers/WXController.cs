@@ -73,7 +73,7 @@ namespace IQBWX.Controllers
                     }
                     else
                     {
-                        jsonStr = "{\"action_name\": \"QR_LIMIT_STR_SCENE\", \"action_info\":{\"scene\": {\"scene_str\":\"" + ssoToken + "\"}}}";
+                        jsonStr = "{\"action_name\": \"QR_LIMIT_STR_SCENE\", \"action_info\":{\"scene\": {\"scene_str\":\"" + ssoToken + "\",\"scene_id\":" + account + "}}}";
                     }
                 }
 
@@ -129,10 +129,30 @@ namespace IQBWX.Controllers
             WXQRResult resObj = this.getQR("", token.access_token, inQR.QRId, false);
             string Picurl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + resObj.ticket + "";
             ssrQR.TargetUrl = Picurl;
-         
-            
+
             return ssrQR;
         }
+
+
+        /// <summary>
+        /// 创建刷单
+        /// </summary>
+        /// <param name="inQR"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public SSOQR CreateShuDanInviteQR(string sId)
+        {
+            AccessToken token = this.getToken();
+            SSOQR ssrQR = new SSOQR();
+            var ss = IQBConstant.WXQR_ShuaDan_PREFIX;
+            WXQRResult resObj = this.getQR(sId, token.access_token, ss, false);
+            string Picurl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + resObj.ticket + "";
+            ssrQR.TargetUrl = Picurl;
+
+            return ssrQR;
+        }
+
+
 
 
         public string downloadQR(WXQRResult qrObj,string saveFileName)

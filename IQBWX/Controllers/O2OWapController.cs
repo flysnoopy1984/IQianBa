@@ -74,11 +74,11 @@ namespace IQBWX.Controllers
             //{
             //    return RedirectToAction("ErrorMessage", "Home", new { code = 2002 });
             //}
-            if (!string.IsNullOrEmpty(UserSession.AgentPhone))
-            {
-                string url = ConfigurationManager.AppSettings["Site_WX"] +"/O2OWap/AgentEntry";
-                return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg="已校验用户！" , backUrl = url });
-            }
+            //if (!string.IsNullOrEmpty(UserSession.AgentPhone))
+            //{
+            //    string url = ConfigurationManager.AppSettings["Site_WX"] +"/O2OWap/AgentEntry";
+            //    return RedirectToAction("ErrorMessage", "Home", new { code = 2000, ErrorMsg="已校验用户！" , backUrl = url });
+            //}
 
 
             return View();

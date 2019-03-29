@@ -105,6 +105,14 @@ namespace IQBPay.Controllers
 
             return View();
         }
+
+        public ActionResult CreateQR()
+        {
+
+            QRManager.CreateShuaDan_InviteQR(System.Web.HttpContext.Current);
+
+            return View();
+        }
         public ActionResult Batch()
         {
             //using (AliPayContent db = new AliPayContent())

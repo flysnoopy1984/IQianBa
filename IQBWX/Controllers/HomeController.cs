@@ -76,6 +76,8 @@ namespace IQBWX.Controllers
                     StreamReader reader = new StreamReader(Request.InputStream);
                     string strXml = reader.ReadToEnd();
 
+                //    NLogHelper.InfoTxt("WX Message:"+strXml);
+
                     if (string.IsNullOrEmpty(strXml))
                         return View();
                
@@ -103,7 +105,7 @@ namespace IQBWX.Controllers
                             menuEvent.ResponseXml = wxMsg.toText("有事留言，代理请联系你的介绍人！");
                         break;
                     }
-                    //log.log("Message: " + menuEvent. ResponseXml);
+                  NLogHelper.InfoTxt("Message: " + menuEvent. ResponseXml);
                     if (menuEvent.ResponseXml != null)
                         return Content(menuEvent.ResponseXml);
 

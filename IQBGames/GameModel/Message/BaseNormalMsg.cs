@@ -50,6 +50,8 @@ namespace GameModel.Message
             }
         }
 
+      
+
         string IGameMessage.GetMessage()
         {
             if (MessageType == MessageType.Normal)
@@ -62,6 +64,13 @@ namespace GameModel.Message
                 };
                 return JsonConvert.SerializeObject(errorMsg);
             }
+        }
+
+        private string _SessionId = null;
+        string IGameMessage.SessionId
+        {
+            get { return _SessionId; }
+            set { _SessionId = value; }
         }
     }
 }

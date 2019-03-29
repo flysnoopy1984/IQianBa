@@ -11,6 +11,8 @@ namespace GameModel.Message
     {
         MessageType MessageType { get; }
         MessageSendTarget MessageSendTarget { get;}
+
+        string SessionId { get; set; }
         string GetMessage();
     }
 }

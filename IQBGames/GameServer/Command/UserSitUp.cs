@@ -30,7 +30,7 @@ namespace GameServer.Command
             return result;
         }
 
-        public override bool VerifyCommandData(dataUserSitUp InData)
+        public override bool VerifyCommandData(dataUserSitUp InData, GameUserSession session)
         {
             return true;
         }

@@ -1,18 +1,24 @@
 ﻿
 @{
-    Layout = null;
+    ViewBag.Title = "TestQR";
+    Layout = "~/Views/Shared/_O2OLayout.cshtml";
 }
 
-<!DOCTYPE html>
+<script type="text/javascript">
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>TestQR</title>
-</head>
-<body>
-    <div> 
-       
-    </div>
-</body>
-</html>
+    $(function () {
+        DoCreateQR = function () {
+            var url = "/api/wx/CreateShuDanInviteQR?sId=100&ss=SD";
+            $.ajax({
+                type: 'post',
+                url: url,
+                data: { "sId": 100, "ss": "SD"},
+                success: function (res) {
+                    alert(res.TargetUrl);
+                },
+            });
+        }
+        
+    })
+</script>
+<input type="button" id="btnCreateQR" value="CreateQR" onclick="DoCreateQR();" />

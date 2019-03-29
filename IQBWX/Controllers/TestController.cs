@@ -24,6 +24,12 @@ namespace IQBWX.Controllers
             return View();
         }
 
+        public ActionResult TestQR()
+        {
+           
+            return View();
+        }
+
         public ActionResult NewMemberNT()
         {
             string accessToken = this.getAccessToken(true);

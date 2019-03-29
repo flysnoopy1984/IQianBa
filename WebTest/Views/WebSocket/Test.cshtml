@@ -9,96 +9,177 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Test</title>
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/Scripts/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
         var ws1 = null;
         var ws2 = null;
+        var openId = "";
+        var SeatNo = -1;
+        var pl = null;
+        $(function () {
+            Init=function(){
+                if (ws1 == null)
+                {
+                    ws1 = new WebSocket("ws://47.101.130.0:8090");
 
-        //ws.onclose = function (evt) {
-        //    var e = evt;
-        //}
+                    ws1.onopen = function (e) {
 
-      
-      
+                    }
+
+                    ws1.onerror = function (e) {
+                        alert("Error");
+                    }
+
+                    ws1.onmessage = function (e) {
+                        var text = e.data;
+                        var jsonObj = JSON.parse(text);
+                        var ac = jsonObj.Action;
+
+                        switch(ac)
+                        {
+
+                            case 0:
+                                pl = jsonObj.PlayerList;
+                                $.each(pl, function (i) {
+                                    AddSeat(pl[i].SeatNo);
+                                });
+                                break;
+                            case 101:
+                                SeatNo = jsonObj.SeatNo;
+                                var found = false;
+                                $.each(pl, function (i) {
+                                    if (pl[i].SeatNo == SeatNo)
+                                    {
+                                        found = true;
+                                        return false;
+                                    }
+                                });
+                                if(!found)
+                                    AddSeat(SeatNo);
+                                break;
+                            case 1:
+                                $("#Notice").text("等待玩家中。。。");
+                                break;
+                            case 2:
+                            case 3:
+                                $("#Notice").text("洗牌中。。。");
+                                break;
+                            case 4:
+                                $("#Notice").text("洗牌完成，游戏中");
+                                break;
+                        }
+
+                        $("#msg").text(text);
+
+                    }
+                }
+
+            }
+            Init();
+        });
+
+        function AddSeat(SeatNo){
+            var html = ' <div class="SeatDiv">';
+            html += '<div >No ' + SeatNo + '</div>';
+            html += ' <img src="/Content/Images/seat.png" />';
+            html += '</div>';
+            var SeatArea = $(".SeatArea");
+            SeatArea.append(html);
+        }
+
 
         function UserSitDown(n) {
-            if (n == 1) {
-              
-                var json = 'UserSitDown {"OpenId":"o3nwE0punwkLi4oBtW961BuyMRLE",\
+
+            var openId = $("#OpenId").val();
+
+            var json = 'UserSitDown {"OpenId":"' + openId + '",\
                                     "SeatNo":-1, \
                                     "Coins":100 \
 }';
-                ws1.send(json);
-            }
-            else {
-              
-                var json = 'UserSitDown {"OpenId":"xxxxUnwkLi4oBtW961BuyMRLE",\
-                                    "SeatNo":-1, \
-                                    "Coins":120 \
-}';
-                ws2.send(json);
-            }
-           
+            ws1.send(json);
+
         }
 
         function EntryGame(n) {
-            if (n == 1)
-            {
-                if (ws1 == null)
-                    ws1 = new WebSocket("ws://47.101.130.0:8090");
-                ws1.onopen = function (e) {
 
-                    var json = 'EntryGame {"OpenId":"o3nwE0punwkLi4oBtW961BuyMRLE",\
-                                    "UserName":"jacky1", \
+            var openId = $("#OpenId").val();
+
+            var json = 'EntryGame {"OpenId":"' + openId + '",\
+                                    "UserName":"' + openId + '_Name", \
                                     "Weight":0 \
 }';
-                    ws1.send(json);
-                }
+            ws1.send(json);
+        }
 
-                ws1.onerror = function (e) {
-                    alert(e);
-                }
+        function UserSitUp(n) {
 
-                ws1.onmessage = function (e) {
-                    var text = $("#msg").text();
-                    text += "|" + e.data;
-                    text = e.data;
-                    $("#msg").text(text);
-                }
-            }
-            else {
-                if (ws2 == null)
-                    ws2 = new WebSocket("ws://47.101.130.0:8090");
-                ws2.onopen = function (e) {
+            var openId = $("#OpenId").val();
 
-                    var json = 'EntryGame {"OpenId":"xxxxUnwkLi4oBtW961BuyMRLE",\
-                                    "UserName":"jacky1", \
-                                    "Weight":0 \
-}';
-                    ws2.send(json);
-                }
+            var json = 'UserSitUp {"OpenId":"' + openId + '",\
+                                  }';
+            ws1.send(json);
 
-                ws2.onerror = function (e) {
-                    alert(e);
-                }
+        }
 
+        function UserExit(n) {
 
-                ws2.onmessage = function (e) {
-                    var text = $("#msg").text();
-                    text += "|" + e.data;
+            var openId = $("#OpenId").val();
 
-                    text = e.data;
-                    $("#msg").text(text);
-                }
-            } 
+            var json = 'UserExit {"OpenId":"' + openId + '",}';
+            ws1.send(json);
+
+        }
+
+        function Test() {
+
+            var openId = $("#OpenId").val();
+
+            var json = 'BackHall {"OpenId":"' + openId + '",}';
+            ws1.send(json);
+
         }
     </script>
+    <style type="text/css">
+        .SeatDiv {
+            width: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .SeatArea {
+            display: flex;
+        }
+    </style>
 </head>
 <body>
-    <input type="button" value="进入1" onclick="EntryGame(1);" />
-    <input type="button" value="进入2" onclick="EntryGame(2);" />
-    <input type="button" value="座下1" onclick="UserSitDown(1);" />
-    <input type="button" value="座下2" onclick="UserSitDown(2);" />
+    <div>
+        <div>
+            OpenId:<input type="text" id="OpenId" value="Test1" />
+        </div>
+        @*<div>
+                Name:<input type="text" id="uName" value="Test1" />
+            </div>*@
+
+    </div>
+    <div>
+        <input type="button" value="进入1" onclick="EntryGame(1);" />
+        <input type="button" value="站起1" onclick="UserSitUp(1);" />
+        <input type="button" value="座下1" onclick="UserSitDown(1);" />
+        <input type="button" value="离开1" onclick="Exit(1);" />
+        <input type="button" value="TestNew" onclick="Test();" />
+    </div>
+    <div id="Notice"></div>
+    <div class="SeatArea">
+        @*<div class="SeatDiv">
+                <div >No 1</div>
+                <img src="~/Content/Images/seat.png" />
+            </div>
+            <div class="SeatDiv">
+                <div>No 1</div>
+                <img src="~/Content/Images/seat.png" />
+            </div>*@
+    </div>
     <div id="msg">
 
     </div>

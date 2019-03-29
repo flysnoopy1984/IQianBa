@@ -28,6 +28,7 @@
             }
         });
     }
+
     generateData = function (data) {
 
         var PayMethod = -1;

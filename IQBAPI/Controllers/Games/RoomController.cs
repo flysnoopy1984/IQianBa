@@ -199,30 +199,30 @@ namespace IQBAPI.Controllers.Games
             return result;
         }
 
-        [HttpPost]
-        public OutAPIResult EntryAvailableRoom_Redis(string userOpenId, int weight)
-        {
-            OutAPIResult result = new OutAPIResult();
-            RoomRedis roomRedis = new RoomRedis();
-            RoomUserRedis roomUserRedis = new RoomUserRedis();
-            try
-            {
-                lock (_EntryRoom)
-                {
-                    result = roomRedis.FindOrCreateRoom(userOpenId, weight);
-                    if(result.IsSuccess)
-                    {
-                        result = roomUserRedis.UserEntryRoom(weight,userOpenId, result.SuccessMsg);
-                    }
-                }
+        //[HttpPost]
+        //public OutAPIResult EntryAvailableRoom_Redis(string userOpenId, int weight)
+        //{
+        //    OutAPIResult result = new OutAPIResult();
+        //    RoomRedis roomRedis = new RoomRedis();
+        //    RoomUserRedis roomUserRedis = new RoomUserRedis();
+        //    try
+        //    {
+        //        lock (_EntryRoom)
+        //        {
+        //            result = roomRedis.FindOrCreateRoom(userOpenId, weight);
+        //            if(result.IsSuccess)
+        //            {
+        //                result = roomUserRedis.UserEntryRoom(weight,userOpenId, result.SuccessMsg);
+        //            }
+        //        }
 
-            }
-            catch (Exception ex)
-            {
-                result.ErrorMsg = ex.Message;
-            }
-            return result;
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        result.ErrorMsg = ex.Message;
+        //    }
+        //    return result;
+        //}
 
         [HttpPost]
         public OutAPIResult ExitRoom_Redis(string userOpenId)

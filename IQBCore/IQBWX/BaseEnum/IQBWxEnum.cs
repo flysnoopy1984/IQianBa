@@ -100,4 +100,13 @@ namespace IQBCore.IQBWX.BaseEnum
         //您的验证码为{1}，请于{2}分钟内填写。如非本人操作，请忽略短信
         NormalVerify = 65091,
     }
+
+    /// <summary>
+    /// 用户注册渠道
+    /// </summary>
+    public enum UserScanChannel
+    {
+        SD =100,
+        Other =0,
+    }
 }

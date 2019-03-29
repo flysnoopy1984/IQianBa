@@ -64,5 +64,9 @@ namespace IQBCore.Common.Constant
         public const string DefaultDateTime= "1900-1-1";
 
         #endregion
+
+        #region ShuaDan
+        public const string WXQR_ShuaDan_PREFIX = "SD";
+        #endregion
     }
 }
