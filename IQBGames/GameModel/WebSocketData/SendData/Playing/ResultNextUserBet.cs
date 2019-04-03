@@ -6,22 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 using GameModel.Enums;
 
-namespace GameModel.WebSocketData.SendData
+namespace GameModel.WebSocketData.SendData.Playing
 {
-    public class ResultUserSitDown:BaseNormalMsg
+    public class ResultNextUserBet: BaseNormalMsg
     {
+        public string NextUserOpenId { get; set; }
+
+        public int NextSeatNo { get; set; }
+
         public override GameActionCode Action
         {
             get
             {
-                return GameActionCode.PlayerSitDown;
+                return GameActionCode.NextUserBet;
             }
         }
-
-        public int SeatNo { get; set; }
-
-        public string RoomCode { get; set; }
-
-
     }
 }

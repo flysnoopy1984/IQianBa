@@ -18,6 +18,8 @@ namespace GameModel.WebSocketData.SendData
             }
         }
 
+        public int CurBetSeatNo { get; set; }
+
         public ResultGameShuffleEnd(string roomCode)
         {
             IGameMessage ig = this;

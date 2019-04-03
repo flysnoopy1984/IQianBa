@@ -287,6 +287,7 @@
     <Compile Include="Model\BaseModel.cs" />
     <Compile Include="Model\BaseInPage.cs" />
     <Compile Include="Model\BasePageModel.cs" />
+    <Compile Include="Model\DicResult.cs" />
     <Compile Include="Model\ErrorMsg.cs" />
     <Compile Include="Model\JqueryValid.cs" />
     <Compile Include="Model\NResult.cs" />

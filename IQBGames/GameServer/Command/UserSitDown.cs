@@ -1,8 +1,11 @@
-﻿using GameModel.Enums;
+﻿using GameCommon.Config;
+using GameModel;
+using GameModel.Enums;
 using GameModel.Message;
 using GameModel.WebSocketData.ReceiveData;
 using GameModel.WebSocketData.SendData;
 using GameServer.Engine;
+using GameServer.Engine.Sync;
 using IQBCore.Common.Helper;
 using Newtonsoft.Json;
 using SuperSocket.WebSocket.SubProtocol;
@@ -61,7 +64,8 @@ namespace GameServer.Command
                 //游戏下一阶段
                 if (r.MessageType == MessageType.Normal)
                 {
-                    var gs = gameManager.GameDataHandle.GameStatus;
+                    var gameInfo = gameManager.GetGameBasic();
+                    var gs = gameInfo.GameStatus;
                     if (gs == GameStatus.NoGame ||
                     gs == GameStatus.WaitPlayer ||
                     gs == GameStatus.Shuffling)
@@ -78,12 +82,15 @@ namespace GameServer.Command
                             result.Add(shuffleStartMsg);
 
                             if(shuffleStartMsg.MessageType == MessageType.Normal)
-                                gameManager.SetGameStatus(nextGs);
+                            {
+                                gameManager.PrePareNewGame(gameInfo);
+                             
+                            }
 
-                            //洗牌异步指令
-                            CreateSyncTask(gameManager.RoomCode, session.GameServer);
+                            //洗牌异步指令,洗牌结束需要通知前端，开始游戏
+                            SyncTask_ShuffleEnd(gameManager,gameInfo, session.GameServer);
                         }
-                        else if(nextGs == GameStatus.Shuffling)
+                        else if (nextGs == GameStatus.Shuffling)
                         {
                             ResultGameShuffling shuffleMsg = gameManager.WhileShuffling();
                             result.Add(shuffleMsg);
@@ -97,20 +104,30 @@ namespace GameServer.Command
             
         }
 
-        private void CreateSyncTask(string RoomCode,GameServer gameServer)
+        private void SyncTask_ShuffleEnd(GameManager gm,EGameInfo gi, GameServer gameServer)
         {
-            ResultGameShuffleEnd shuffleEndMsg = new ResultGameShuffleEnd(RoomCode);
             var msgList = new List<IGameMessage>();
-            msgList.Add(shuffleEndMsg);
-            GameSyncTask syncTask = new GameSyncTask(msgList);
-            syncTask.afterTaskEvent += SyncTask_afterTaskEvent;
-            syncTask.RunSyncTask(4, gameServer, RoomCode);
+            ResultGameShuffleEnd shuffleEndMsg = new ResultGameShuffleEnd(gm.RoomCode);
+
+            gi = gm.GetFirstSeatAndBet(gi);
+            if(gi.CurD == -1)
+            {
+                msgList.Add(new ResultError("系统错误！",gm.RoomCode));
+            }
+            else
+            {
+                shuffleEndMsg.CurBetSeatNo = gi.BetSeat;
+          
+                msgList.Add(shuffleEndMsg);
+            }
+            ShuffleEndTask syncTask = new ShuffleEndTask(msgList);
+            syncTask.RunSyncTask(GameConfig.Game_Shuffle_Sec,gameServer,gm,gi);
+
+         
+
         }
 
-        private void SyncTask_afterTaskEvent(string RoomCode)
-        {
-            GameManager.SetGameStatus(GameStatus.ShuffleEnd, RoomCode);
-        }
+       
 
     }
 }

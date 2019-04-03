@@ -90,7 +90,7 @@ namespace GameRedis.Games
                 _redis.KeyDelete(roomSeatKey);
                 for (int i=1;i<= GameConfig.Room_Max_PlayerCount;i++)
                 {
-                    _redis.HashAdd(roomSeatKey, GK.SeatNo(i), "");
+                    _redis.HashAdd(roomSeatKey, i, "");
                 }
                 
                 //利用score 记录房间玩家数量

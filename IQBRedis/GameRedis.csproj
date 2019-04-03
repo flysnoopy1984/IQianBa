@@ -99,7 +99,6 @@
     <Compile Include="Games\AppRedis.cs" />
     <Compile Include="Games\BaseRedis.cs" />
     <Compile Include="Games\GameRedis.cs" />
-    <Compile Include="Games\GameTableRedis.cs" />
     <Compile Include="Games\RoomRedis.cs" />
     <Compile Include="Games\RoomUserRedis.cs" />
     <Compile Include="GK.cs" />

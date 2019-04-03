@@ -34,16 +34,7 @@ namespace GameServer.Engine
                 return _RoomRedis;
             }
         }
-        private GameTableRedis _GameTableRedis;
-        private GameTableRedis GameTableRedis
-        {
-            get
-            {
-                if (_GameTableRedis == null)
-                    _GameTableRedis = new GameTableRedis();
-                return _GameTableRedis;
-            }
-        }
+
 
         private GameRedis.Games.GameRedis _GameRedis;
         private GameRedis.Games.GameRedis GameRedis
@@ -125,13 +116,38 @@ namespace GameServer.Engine
             return r;
         }
 
+        public EGameInfo GetGameInfo()
+        {
+            return _OneGame.BasicInfo;
+        }
+
+        public OutAPIResult SetGameInfo(EGameInfo gi)
+        {
+            OutAPIResult r = new OutAPIResult();
+            try
+            {
+                GameRedis.SetGameBasic(gi);
+                _OneGame.BasicInfo = gi;
+            }
+            catch(Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+            }
+            return r;
+           
+        }
+
         public EOneGame GetGameData(bool NeedRefrush = false)
         {
             if (NeedRefrush)
             {
-                var roomCode = _OneGame.RoomCode;
-                _OneGame.CurD = GameTableRedis.DotPosition(roomCode).IntMsg;
-                _OneGame.GameStatus = (GameStatus)GameRedis.GetGameStatus(roomCode).IntMsg;
+                var roomCode = _OneGame.BasicInfo.RoomCode;
+                EGameInfo basicInfo = GameRedis.GetGameBasic(roomCode).resultObj;
+                _OneGame.BasicInfo = basicInfo;
+                //_OneGame.BasicInfo.CurD = basicInfo.CurD;
+                //_OneGame.BasicInfo.GameStatus = basicInfo.GameStatus;
+                //_OneGame.BasicInfo.GameTurn = basicInfo.GameTurn;
+
                 _OneGame.PlayerList = RoomUserRedis.GetAllPlayer(roomCode).resultList;
                 if(_CardDataManager.PlayCards.Count>0)
                 {
@@ -142,25 +158,26 @@ namespace GameServer.Engine
                 }
                
                 _OneGame.TableCardList = _CardDataManager.TableCards; //CardDataManager.NoToCard(GameTableRedis.TableCardList(roomCode).resultList);
-                //_OneGame. = _CardDataManager.RemainCards;
+               
             }
             return _OneGame;
         }
 
         private void InitNewGameData()
         {
-            //设置游戏状态为等待用户
-            GameRedis.SetGameStatus(_OneGame.RoomCode, GameStatus.NoGame);
-           
-        }
-        public GameStatus GameStatus
-        {
-            get
-            {
-                var r = GameRedis.GetGameStatus(_OneGame.RoomCode);
-                return (GameStatus)r.IntMsg;
-            }
-        }
+            _OneGame.BasicInfo.GameTurn = GameTurn.NotStart;
+            _OneGame.BasicInfo.GameStatus = GameStatus.NoGame;
+            _OneGame.BasicInfo.CurD = -1;
+          
 
+            //设置游戏状态为等待用户
+            GameRedis.SetGameBasic(_OneGame.BasicInfo);
+            
+          //  GameRedis.SetGameStatus(_OneGame.BasicInfo.RoomCode, GameStatus.NoGame);
+           
+
+
+        }
+      
     }
 }

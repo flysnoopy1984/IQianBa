@@ -6,19 +6,16 @@ using System.Threading.Tasks;
 
 namespace IQBCore.Model
 {
-    public class NResult<T>
+    public class DicResult<T,J>
     {
-        public NResult()
+        public DicResult()
         {
             IsSuccess = true;
             SuccessMsg = "成功";
-            resultList = new List<T>();
+            resultDic = new Dictionary<T, J>();
         }
-        public T resultObj { get; set; }
 
-        public List<T> resultList { get; set; }
-
-      //  public Dictionary<string,T> resultDict { get; set; }
+        public Dictionary<T,J> resultDic { get; set; }
 
         private bool _IsSuccess;
         public bool IsSuccess
@@ -38,7 +35,8 @@ namespace IQBCore.Model
         public string ErrorMsg
         {
             get { return _ErrorMsg; }
-            set {
+            set
+            {
                 _IsSuccess = false;
                 _ErrorMsg = value;
                 SuccessMsg = "";
@@ -48,6 +46,5 @@ namespace IQBCore.Model
         public string SuccessMsg { get; set; }
 
         public int IntMsg { get; set; }
-
     }
 }

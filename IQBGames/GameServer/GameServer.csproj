@@ -77,13 +77,15 @@
     <Compile Include="Command\BackHall.cs" />
     <Compile Include="Command\BaseGameCommand.cs" />
     <Compile Include="Command\EntryGame.cs" />
+    <Compile Include="Command\Playing\UserWaitBet.cs" />
     <Compile Include="Command\UserSitDown.cs" />
     <Compile Include="Command\UserSitUp.cs" />
     <Compile Include="Engine\CardDataManager.cs" />
     <Compile Include="Engine\GameDataHandle.cs" />
     <Compile Include="Engine\GameManager.cs" />
     <Compile Include="Engine\GameMessageHandle.cs" />
-    <Compile Include="Engine\GameSyncTask.cs" />
+    <Compile Include="Engine\Sync\ShuffleEndTask.cs" />
+    <Compile Include="Engine\Sync\UserWaitBetTask.cs" />
     <Compile Include="GameRunner.cs" />
     <Compile Include="GameServer.cs" />
     <Compile Include="GameUserSession.cs" />

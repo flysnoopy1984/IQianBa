@@ -13,14 +13,12 @@ namespace GameModel
     {
         public EOneGame() { }
         public EOneGame(string rc) {
-            RoomCode = rc;
+            // RoomCode = rc;
+            BasicInfo = new EGameInfo(rc);
         }
-        public GameStatus GameStatus { get; set; }
-        /// <summary>
-        /// 当前游戏所在房间Code
-        /// </summary>
-        public string RoomCode { get; set; }
 
+        public EGameInfo BasicInfo { get; set; }
+      
         /// <summary>
         /// 当前游戏桌上的牌
         /// </summary>
@@ -31,13 +29,12 @@ namespace GameModel
         /// </summary>
         public List<ERoomUser> PlayerList { get; set; }
 
-    //    public Dictionary<int,ECard> RemainCardList { get; set; }
-
         /// <summary>
-        /// 桌上指针(用户大小盲注)
+        /// 游戏桌面
         /// </summary>
-        //当前按钮位置
-        public int CurD { get; set; }
+        public Dictionary<int,List<ETurnCoins>> TurnCoinList { get; set; }
+
+      
 
         public override GameActionCode Action
         {
@@ -46,5 +43,18 @@ namespace GameModel
                 return GameActionCode.ShowOneGame;
             }          
         }
+
+        //public GameStatus GameStatus { get; set; }
+
+        //public GameTurn GameTurn { get; set; }
+        /// <summary>
+        /// 当前游戏所在房间Code
+        /// </summary>
+        //  public string RoomCode { get; set; }
+        /// <summary>
+        /// 桌上指针(用户大小盲注)
+        /// </summary>
+        //当前按钮位置
+        //  public int CurD { get; set; }
     }
 }

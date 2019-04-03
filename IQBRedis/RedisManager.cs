@@ -564,7 +564,7 @@ namespace GameRedis
             ConnectionMultiplexer conn = GetUsingConn();
             try
             {
-
+        
                 return conn.GetDatabase().HashExists(key, hashField);
             }
             catch (Exception ex)
@@ -855,15 +855,16 @@ namespace GameRedis
             return r;
         }
 
-        public NResult<T> HashFindAllT<T>(RedisKey hashKey)
+        public DicResult<string,T> HashFindAllT<T>(RedisKey hashKey)
         {
             ConnectionMultiplexer conn = GetUsingConn();
-            NResult<T> r = new NResult<T>();
+            DicResult<string, T> r = new DicResult<string, T>();
             try
             {
                
                 _RedisClient = new StackExchangeRedisCacheClient(conn, new NewtonsoftSerializer());
-                r.resultDict = _RedisClient.HashGetAll<T>(hashKey);
+          
+                r.resultDic = _RedisClient.HashGetAll<T>(hashKey);
             }
             catch (Exception ex)
             {
@@ -880,26 +881,23 @@ namespace GameRedis
             return r;
         }
 
-        public NResult<string> HashFindAll(RedisKey hashKey)
+        public HashEntry[] HashFindAll(RedisKey hashKey) 
         {
             ConnectionMultiplexer conn = GetUsingConn();
-            NResult<string> r = new NResult<string>();
-            r.resultDict = new Dictionary<string, string>();
+            HashEntry[] result = null;
+        //    r.resultDict = new Dictionary<string, int> Dictionary<string, string>();
             try
             {
              
                 var db = conn.GetDatabase();
-                var allvalues = db.HashGetAll(hashKey);
-                foreach(var v in allvalues)
-                {
-                    r.resultDict.Add(v.Name, v.Value);
-                }
-
+                result = db.HashGetAll(hashKey);
+              
                
             }
             catch (Exception ex)
             {
-                r.ErrorMsg = ex.Message;
+               
+               // r.ErrorMsg = ex.Message;
             }
             finally
             {
@@ -909,7 +907,7 @@ namespace GameRedis
                     conn.Dispose();
                 }
             }
-            return r;
+            return result;
         }
         #endregion
     }

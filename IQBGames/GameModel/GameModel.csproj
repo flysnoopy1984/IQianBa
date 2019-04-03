@@ -47,6 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ECard.cs" />
+    <Compile Include="Enums\SeatStauts.cs" />
+    <Compile Include="ESeatUser.cs" />
+    <Compile Include="ETurnCoins.cs" />
+    <Compile Include="EGameInfo.cs" />
     <Compile Include="Enums\CardType.cs" />
     <Compile Include="Enums\GameActionCode.cs" />
     <Compile Include="Enums\GameStatus.cs" />
@@ -67,6 +71,9 @@
     <Compile Include="Message\BaseNormalMsg.cs" />
     <Compile Include="Message\MessageNormalError.cs" />
     <Compile Include="WebSocketData\ReceiveData\dataUserSitUp.cs" />
+    <Compile Include="WebSocketData\ReceiveData\Playing\dataUserEndBet.cs" />
+    <Compile Include="WebSocketData\ReceiveData\Playing\dataUserWaitBet.cs" />
+    <Compile Include="WebSocketData\SendData\Playing\ResultNextUserBet.cs" />
     <Compile Include="WebSocketData\SendData\ResultBackHall.cs" />
     <Compile Include="WebSocketData\SendData\ResultError.cs" />
     <Compile Include="WebSocketData\SendData\ResultGameShuffleStart.cs" />

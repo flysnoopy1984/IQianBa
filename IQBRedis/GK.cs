@@ -17,12 +17,15 @@ namespace GameRedis
         public const string U_RoomCode = "U_RoomCode";
         public const string U_RoomWeight = "U_RoomWeight";
 
+        public const string GameBasic = "GameBasicInfo";
+
         public const string GameStatus = "GameStatus";
 
+   
+
         public const string GameDotPosition = "Game_Dot_Pos";
-     //   public const string RoomPlayer = "RoomPlayer";
-
-
+     
+        
 
         public const string ALLRoomCode = "ALLRoomCode";
 
@@ -61,6 +64,11 @@ namespace GameRedis
         public static string UserInfo(string openId)
         {
             return "U_" + openId;
+        }
+
+        public static string GameBasicInfo(string roomCode)
+        {
+            return roomCode + "_GameInfo";
         }
 
         //public static string AllRoom()

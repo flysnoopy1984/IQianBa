@@ -302,14 +302,14 @@ namespace GameRedis.Games
             return result;
         }
 
-        public static int GetSeatNo(string seat)
-        {
-            if(!string.IsNullOrEmpty(seat))
-            {
-                return int.Parse(seat.Substring(2));
-            }
-            return -1;
-        }
+        //public static int GetSeatNo(string seat)
+        //{
+        //    if(!string.IsNullOrEmpty(seat))
+        //    {
+        //        return int.Parse(seat.Substring(2));
+        //    }
+        //    return -1;
+        //}
 
         public int sysAssignSeat(string roomCode)
         {
@@ -317,15 +317,23 @@ namespace GameRedis.Games
             try
             {
                 var dicSeat = _redis.HashFindAll(roomSeatKey);
-                if (dicSeat.resultDict != null)
+                if (dicSeat != null)
                 {
-                    foreach (KeyValuePair<string, string> seat in dicSeat.resultDict)
+                    foreach(var seat in dicSeat)
                     {
                         if (string.IsNullOrEmpty(seat.Value))
                         {
-                            return GetSeatNo(seat.Key);
+                            return (int)seat.Name;
                         }
                     }
+                    //foreach (KeyValuePair<int, string> seat in dicSeat.resultDict)
+                    //{
+                    //    if (string.IsNullOrEmpty(seat.Value))
+                    //    {
+                    //        return seat.Key;
+                    //       // return GetSeatNo(seat.Key);
+                    //    }
+                    //}
                     return 0;
                 }
             }
@@ -432,6 +440,30 @@ namespace GameRedis.Games
             }
             return result;
 
+        }
+
+        /// <summary>
+        /// 找到下一个可用的桌上指针位置
+        /// </summary>
+        /// <param name="RoomCode"></param>
+        /// <returns></returns>
+        public DicResult<int,string> FindAllSeatNo(string roomCode)
+        {
+            DicResult<int, string> r = new DicResult<int, string>();
+            try
+            {
+                var roomSeatKey = GK.Room_Seat(roomCode);
+                var dicSeat = _redis.HashFindAll(roomSeatKey);
+                foreach(var s in dicSeat)
+                {
+                    r.resultDic.Add((int)s.Name, s.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+            }
+            return r;
         }
     }
 }

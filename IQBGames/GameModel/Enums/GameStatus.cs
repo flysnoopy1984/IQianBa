@@ -38,4 +38,15 @@ namespace GameModel.Enums
         /// </summary>
         Settlement = 20,
     }
+
+    public enum GameTurn
+    {
+        NotStart = 0,
+        FirstTurn =1,
+        SecTurn =2,
+        ThirdTurn =3,
+        FourthTurn =4,
+        End = -1,
+    }
+
 }
