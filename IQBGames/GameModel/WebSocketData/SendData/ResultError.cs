@@ -1,14 +1,15 @@
-﻿using GameModel.Message;
+﻿using GameModel.Message.SendData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameModel.Enums;
+using GameModel.Message;
 
 namespace GameModel.WebSocketData.SendData
 {
-    public class ResultError : BaseNormalMsg
+    public class ResultError : BaseSendMsg
     {
         public override GameActionCode Action
         {

@@ -7,34 +7,29 @@ using System.Threading.Tasks;
 using GameModel.Enums;
 using GameModel.Message;
 
-namespace GameModel.WebSocketData.SendData
+namespace GameModel.WebSocketData.SendData.Playing
 {
-    /// <summary>
-    /// 通知客户端洗牌,发牌
-    /// </summary>
-    public class ResultGameShuffleStart : BaseSendMsg
+    public class ResultPlayerFollow : BaseSendMsg
     {
         public override GameActionCode Action
         {
             get
             {
-                return GameActionCode.ShuffleStart;
+                return GameActionCode.PlayerFollow;
             }
         }
-     
-        public  ResultGameShuffleStart(string roomCode)
+
+        public ResultPlayerFollow(string roomCode)
         {
             IGameMessage ig = this;
             ig.MessageSendTarget.SendTarget = SendTarget.UserInRoom;
             ig.MessageSendTarget.TargetRoom = roomCode;
         }
 
-        //   public List<ECard> TableCards { get; set; }
+        public string FollowCoinsUserOpenId { get; set; }
 
-     
+        public string NextUserOpenId { get; set; }
 
-       
-
-
+        public decimal FollowCoins { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameModel.WebSocketData.ReceiveData.Playing
 {
-    public class dataUserEndBet: BaseWSJsonData
+    public class dataUserEndBet: BaseReceiveData
     {
         public decimal BetCoins { get; set; }
     }

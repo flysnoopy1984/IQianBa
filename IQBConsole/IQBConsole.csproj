@@ -186,7 +186,7 @@
     <Compile Include="PushToAPNs.cs" />
     <Compile Include="SocketServer\OOSocketServer.cs" />
     <Compile Include="SocketServer\OOWebSocket.cs" />
-    <Compile Include="Test\RedisTest.cs" />
+    <Compile Include="Test\GameTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

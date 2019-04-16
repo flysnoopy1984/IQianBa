@@ -33,6 +33,7 @@ namespace GameServer
                 if (_GameAttr == null) _GameAttr = new ESessionAttr();
                 return _GameAttr;
             }
+            set { _GameAttr = value; }
         }
 
         private GameManager _gameManager;
@@ -41,20 +42,24 @@ namespace GameServer
             get
             {
                 if (_gameManager == null)
-                    _gameManager = new GameManager(GameAttr.OpenId,this);
+                    _gameManager = new GameManager(GameAttr.UserOpenId,this);
                 return _gameManager;
             }
         }
 
         public void KeepOneSession(string openId)
         {
-            var existSession = GameServer.GetSessions(a => a.GameAttr.OpenId == openId);
+            var existSession = GameServer.GetSessions(a => a.GameAttr.UserOpenId == openId);
             if (existSession.Count()> 0)
             {
                foreach(var session in existSession)
                {
                     if(session.SessionID != this.SessionID)
+                    {
+                        this.GameAttr = session.GameAttr;
                         session.Close(SuperSocket.SocketBase.CloseReason.InternalError);
+                    }
+                       
                }
             }
         }

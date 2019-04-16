@@ -1,4 +1,4 @@
-﻿using GameModel.Message;
+﻿using GameModel.Message.SendData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using GameModel.Enums;
 
 namespace GameModel.WebSocketData.SendData
 {
-    public class ResultBackHall : BaseNormalMsg
+    public class ResultBackHall : BaseSendMsg
     {
         public override GameActionCode Action
         {

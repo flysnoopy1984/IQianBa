@@ -1,7 +1,7 @@
 ﻿
 using GameModel;
 using GameModel.Message;
-using GameModel.WebSocketData;
+using GameModel.WebSocketData.ReceiveData;
 using GameServer.Engine;
 using Newtonsoft.Json;
 using SuperSocket.WebSocket.SubProtocol;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace GameServer.Command
 {
-    public abstract class BaseGameCommand<T> : SubCommandBase<GameUserSession> where T : BaseWSJsonData
+    public abstract class BaseGameCommand<T> : SubCommandBase<GameUserSession> where T : BaseReceiveData
     {
         private GameMessageHandle _GameMessageHandle;
         public GameMessageHandle GameMessageHandle
@@ -73,7 +73,7 @@ namespace GameServer.Command
 
                 if (Data != null)
                 {
-                    session.GameAttr.OpenId = this.Data.OpenId;
+                    session.GameAttr.UserOpenId = this.Data.OpenId;
 
                     var msgData = HandleData(session, this.Data);
 

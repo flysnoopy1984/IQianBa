@@ -177,6 +177,7 @@
     <Compile Include="IQBPay\Models\O2O\ROrderSteps.cs" />
     <Compile Include="IQBPay\Models\O2O\RSimpleEntity.cs" />
     <Compile Include="IQBPay\Models\OutParameter\HashKeyValue.cs" />
+    <Compile Include="IQBPay\Models\OutParameter\SResult.cs" />
     <Compile Include="IQBPay\Models\Page\PNewMemberReview.cs" />
     <Compile Include="IQBPay\Models\Page\PPayData.cs" />
     <Compile Include="IQBPay\Models\Page\PPaySelection.cs" />

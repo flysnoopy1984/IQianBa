@@ -77,7 +77,10 @@
     <Compile Include="Command\BackHall.cs" />
     <Compile Include="Command\BaseGameCommand.cs" />
     <Compile Include="Command\EntryGame.cs" />
-    <Compile Include="Command\Playing\UserWaitBet.cs" />
+    <Compile Include="Command\Playing\PlayerAddCoins.cs" />
+    <Compile Include="Command\Playing\PlayerFollow.cs" />
+    <Compile Include="Command\Playing\PlayerGiveUp.cs" />
+    <Compile Include="Command\Playing\PlayerPass.cs" />
     <Compile Include="Command\UserSitDown.cs" />
     <Compile Include="Command\UserSitUp.cs" />
     <Compile Include="Engine\CardDataManager.cs" />

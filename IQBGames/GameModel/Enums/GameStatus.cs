@@ -34,9 +34,14 @@ namespace GameModel.Enums
         Playing = 10,
 
         /// <summary>
-        /// 一局将结束，在算账
+        /// 一局将结束，在翻牌，
+        /// </summary> 
+        GameEndShowingCard = 20,
+
+        /// <summary>
+        /// 在算账
         /// </summary>
-        Settlement = 20,
+        GameEndSettlement = 21,
     }
 
     public enum GameTurn
@@ -46,7 +51,7 @@ namespace GameModel.Enums
         SecTurn =2,
         ThirdTurn =3,
         FourthTurn =4,
-        End = -1,
+        End = 5,
     }
 
 }

@@ -54,23 +54,23 @@ namespace GameServer.Engine
             }
          }
 
-        private Dictionary<int, List<ECard>> _PlayCards;
+       // private Dictionary<int, List<ECard>> _PlayCards;
         /// <summary>
         /// Key:座位号，Value 牌
         /// </summary>
-        public Dictionary<int, List<ECard>> PlayCards {
-            get {
-                if (_PlayCards == null)
-                {
-                    _PlayCards = new Dictionary<int, List<ECard>>();
-                    for (int i= 1;i<=GameConfig.Room_Max_PlayerCount;i++)
-                    {
-                        _PlayCards.Add(i, new List<ECard>());
-                    }
-                }
-                return _PlayCards;
-            }
-        }
+        //public Dictionary<int, List<ECard>> PlayCards {
+        //    get {
+        //        if (_PlayCards == null)
+        //        {
+        //            _PlayCards = new Dictionary<int, List<ECard>>();
+        //            for (int i= 1;i<=GameConfig.Room_Max_PlayerCount;i++)
+        //            {
+        //                _PlayCards.Add(i, new List<ECard>());
+        //            }
+        //        }
+        //        return _PlayCards;
+        //    }
+        //}
 
         /// <summary>
         /// Key:有序编码
@@ -101,26 +101,26 @@ namespace GameServer.Engine
         {
             TableCards.Clear();
 
-            CleanPlayerCards();
+           // CleanPlayerCards();
 
             if (RemainCards.Count < 52)
                 _RemainCards = InitNewCards();
         }
 
-        public void CleanPlayerCards()
-        {
-            for (int i = 1; i <= GameConfig.Room_Max_PlayerCount; i++)
-            {
-                PlayCards[i].Clear();
-            }
-        }
-        public void ShuffleCard()
+        //public void CleanPlayerCards()
+        //{
+        //    for (int i = 1; i <= GameConfig.Room_Max_PlayerCount; i++)
+        //    {
+        //        PlayCards[i].Clear();
+        //    }
+        //}
+        public void ShuffleCard(List<ERoomUser> PlayerList)
         {
             InitCardPile();
 
             DealToTable();
 
-            DealToAllPlayer();
+            DealToAllPlayer(PlayerList);
 
         }
 
@@ -137,18 +137,30 @@ namespace GameServer.Engine
             }
         }
 
-        private void DealToAllPlayer()
+        private void DealToAllPlayer(List<ERoomUser> PlayerList)
         {
-            for (int i = 1; i <= 8; i++)
+            foreach(ERoomUser player in PlayerList)
             {
-                PlayCards[i].Clear();
-                for (int j =0;j<2;j++)
+                if (player.CardList == null) player.CardList = new List<ECard>();
+                else player.CardList.Clear();
+
+                for (int j = 0; j < 2; j++)
                 {
                     var card = PickCardFromPile();
-                    PlayCards[i].Add(card);
+                    player.CardList.Add(card);
+                    
                 }
-               
             }
+            //for (int i = 1; i <= 8; i++)
+            //{
+            //    PlayCards[i].Clear();
+            //    for (int j =0;j<2;j++)
+            //    {
+            //        var card = PickCardFromPile();
+            //        PlayCards[i].Add(card);
+            //    }
+               
+            //}
         }
 
         public ECard PickCardFromPile()

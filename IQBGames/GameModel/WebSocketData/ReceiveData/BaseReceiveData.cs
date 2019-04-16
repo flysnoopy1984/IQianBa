@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameModel.Enums
+namespace GameModel.WebSocketData.ReceiveData
 {
-    public enum SeatStauts
+    public class BaseReceiveData
     {
-        Playing = 0,
-
-        WaitPlay = -1,
+        public string OpenId { get; set; }
 
     }
 }

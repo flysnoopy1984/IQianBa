@@ -10,146 +10,37 @@
     <meta name="viewport" content="width=device-width" />
     <title>Test</title>
     <script src="~/Content/Scripts/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript">
-        var ws1 = null;
-        var ws2 = null;
-        var openId = "";
-        var SeatNo = -1;
-        var pl = null;
-        $(function () {
-            Init=function(){
-                if (ws1 == null)
-                {
-                    ws1 = new WebSocket("ws://47.101.130.0:8090");
-
-                    ws1.onopen = function (e) {
-
-                    }
-
-                    ws1.onerror = function (e) {
-                        alert("Error");
-                    }
-
-                    ws1.onmessage = function (e) {
-                        var text = e.data;
-                        var jsonObj = JSON.parse(text);
-                        var ac = jsonObj.Action;
-
-                        switch(ac)
-                        {
-
-                            case 0:
-                                pl = jsonObj.PlayerList;
-                                $.each(pl, function (i) {
-                                    AddSeat(pl[i].SeatNo);
-                                });
-                                break;
-                            case 101:
-                                SeatNo = jsonObj.SeatNo;
-                                var found = false;
-                                $.each(pl, function (i) {
-                                    if (pl[i].SeatNo == SeatNo)
-                                    {
-                                        found = true;
-                                        return false;
-                                    }
-                                });
-                                if(!found)
-                                    AddSeat(SeatNo);
-                                break;
-                            case 1:
-                                $("#Notice").text("等待玩家中。。。");
-                                break;
-                            case 2:
-                            case 3:
-                                $("#Notice").text("洗牌中。。。");
-                                break;
-                            case 4:
-                                $("#Notice").text("洗牌完成，游戏中");
-                                break;
-                        }
-
-                        $("#msg").text(text);
-
-                    }
-                }
-
-            }
-            Init();
-        });
-
-        function AddSeat(SeatNo){
-            var html = ' <div class="SeatDiv">';
-            html += '<div >No ' + SeatNo + '</div>';
-            html += ' <img src="/Content/Images/seat.png" />';
-            html += '</div>';
-            var SeatArea = $(".SeatArea");
-            SeatArea.append(html);
-        }
-
-
-        function UserSitDown(n) {
-
-            var openId = $("#OpenId").val();
-
-            var json = 'UserSitDown {"OpenId":"' + openId + '",\
-                                    "SeatNo":-1, \
-                                    "Coins":100 \
-}';
-            ws1.send(json);
-
-        }
-
-        function EntryGame(n) {
-
-            var openId = $("#OpenId").val();
-
-            var json = 'EntryGame {"OpenId":"' + openId + '",\
-                                    "UserName":"' + openId + '_Name", \
-                                    "Weight":0 \
-}';
-            ws1.send(json);
-        }
-
-        function UserSitUp(n) {
-
-            var openId = $("#OpenId").val();
-
-            var json = 'UserSitUp {"OpenId":"' + openId + '",\
-                                  }';
-            ws1.send(json);
-
-        }
-
-        function UserExit(n) {
-
-            var openId = $("#OpenId").val();
-
-            var json = 'UserExit {"OpenId":"' + openId + '",}';
-            ws1.send(json);
-
-        }
-
-        function Test() {
-
-            var openId = $("#OpenId").val();
-
-            var json = 'BackHall {"OpenId":"' + openId + '",}';
-            ws1.send(json);
-
-        }
-    </script>
+    <script src="~/Content/Scripts/TestWebSocket.js"></script>
+    
     <style type="text/css">
-        .SeatDiv {
-            width: 150px;
+        .SeatDiv{
+          width: 150px;
             display: flex;
             flex-direction: column;
+   
             align-items: center;
         }
-
-        .SeatArea {
-            display: flex;
+        .SeatArea{
+            display:flex;
+            margin-bottom:20px;
         }
+        .TableArea{
+            display:flex;
+            width: 500px;
+            justify-content: space-between;
+        }
+
+        .CardDiv{
+            border:1px solid #ffd800;
+            width:80px;
+            height:40px;
+            text-align:center;
+        }
+        .CoinDiv{
+            margin-top:10px;
+            margin-bottom:10px;
+        }
+
     </style>
 </head>
 <body>
@@ -158,29 +49,42 @@
             OpenId:<input type="text" id="OpenId" value="Test1" />
         </div>
         @*<div>
-                Name:<input type="text" id="uName" value="Test1" />
-            </div>*@
+            Name:<input type="text" id="uName" value="Test1" />
+        </div>*@
 
     </div>
     <div>
-        <input type="button" value="进入1" onclick="EntryGame(1);" />
-        <input type="button" value="站起1" onclick="UserSitUp(1);" />
-        <input type="button" value="座下1" onclick="UserSitDown(1);" />
-        <input type="button" value="离开1" onclick="Exit(1);" />
-        <input type="button" value="TestNew" onclick="Test();" />
+        <input type="button" value="进入" onclick="EntryGame(1);" />
+        <input type="button" value="站起" onclick="UserSitUp(1);" />
+        <input type="button" value="座下" onclick="UserSitDown(1);" />
+        <input type="button" value="离开" onclick="Exit(1);" />
+       
+    </div>
+    <div>
+        <input type="button" value="Pass" onclick="Pass();" />
+        <input type="button" value="AllIn" onclick="AllIn();" />
+        <input type="button" value="Follow" onclick="Follow();" />
+        <input type="button" value="AddCoins" onclick="AddCoins();" />
     </div>
     <div id="Notice"></div>
     <div class="SeatArea">
         @*<div class="SeatDiv">
-                <div >No 1</div>
-                <img src="~/Content/Images/seat.png" />
-            </div>
-            <div class="SeatDiv">
-                <div>No 1</div>
-                <img src="~/Content/Images/seat.png" />
-            </div>*@
+            <div >No 1</div>
+            <img src="~/Content/Images/seat.png" />
+        </div>
+        <div class="SeatDiv">
+            <div>No 1</div>
+            <img src="~/Content/Images/seat.png" />
+        </div>*@
     </div>
-    <div id="msg">
+    <div class="TableArea" style="margin-top:20px; margin-bottom:20px;">
+        @*<div class="CardDiv">[红桃]_2</div>
+        <div class="CardDiv">[红桃]_2</div>
+        <div class="CardDiv">[红桃]_2</div>
+        <div class="CardDiv">[红桃]_2</div>
+        <div class="CardDiv">[红桃]_2</div>*@
+    </div>
+    <div id="msg" style="margin-top:20px;">
 
     </div>
 </body>

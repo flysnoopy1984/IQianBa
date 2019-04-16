@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace GameModel.WebSocketData.ReceiveData.Playing
 {
-    public class dataUserWaitBet: BaseReceiveData
+    public class dataPlayerFollow: BaseReceiveData
     {
-     
-
-       
+        public decimal FollowCoins { get; set; }
     }
 }

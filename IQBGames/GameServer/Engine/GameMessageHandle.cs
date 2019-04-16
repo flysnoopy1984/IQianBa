@@ -1,5 +1,6 @@
 ﻿using GameModel.Enums;
 using GameModel.Message;
+using GameModel.WebSocketData.SendData.Playing;
 using IQBCore.Common.Helper;
 using System;
 using System.Collections.Generic;
@@ -51,21 +52,7 @@ namespace GameServer.Engine
             }
         }
 
-        //public void PushDelayMsg(IGameMessage msg,int AfterSec)
-        //{
-        //    Task SubTask = new Task(() =>
-        //    {
-        //        SpinWait.SpinUntil(() =>
-        //        {
-        //            return false;
-        //        }, AfterSec*1000);
-        //        Push(msg);
-        //        RunQueue(_MessageQueue);
-        //        //  session.Send(msg.GetMessage());
-
-        //    });
-        //    SubTask.Start();
-        //}
+      
 
         private void Push(IGameMessage msg)
         {
@@ -133,7 +120,8 @@ namespace GameServer.Engine
             }
         
         }
-        public void Run(GameServer GameServer)
+
+        public bool Run(GameServer GameServer)
         {
             _GameServer = GameServer;
             if(_GameServer != null)
@@ -143,12 +131,13 @@ namespace GameServer.Engine
                     if (_ErrorQueue != null && _ErrorQueue.Count>0)
                     {
                         RunQueue(_ErrorQueue, true);
-                        return;
+                        return false;
                     }
 
                     if (_MessageQueue != null && _MessageQueue.Count > 0)
                     {
                         RunQueue(_MessageQueue);
+                        return true;
                     }
 
                 }
@@ -162,8 +151,42 @@ namespace GameServer.Engine
 
                 }
             }
-           
+            return false;
            
         }
+
+
+        public static ResultGameEndShowCard CreateGameEndShowCardMsg(string RoomCode)
+        {
+            ResultGameEndShowCard msg = new ResultGameEndShowCard(RoomCode);
+            return msg;
+        }
+
+        public static ResultPlayerGiveUp CreateResultPlayerGiveUpMsg(string RoomCode,string giveUpOpenId,string nextOpenId)
+        {
+            ResultPlayerGiveUp msg = new ResultPlayerGiveUp(RoomCode);
+            msg.GiveUpUserOpenId = giveUpOpenId;
+            msg.NextUserOpenId = nextOpenId;
+            return msg;
+        }
+
+        public static ResultPlayerPass CreateResultPlayerPassMsg(string RoomCode, string passOpenId, string nextOpenId)
+        {
+            ResultPlayerPass msg = new ResultPlayerPass(RoomCode);
+            msg.PassUserOpenId = passOpenId;
+            msg.NextUserOpenId = nextOpenId;
+            return msg;
+        }
+
+        public static ResultPlayerAddCoins CreateResultPlayerAddCoinsMsg(string RoomCode, string addCoinsOpenId, string nextOpenId,decimal addCoins)
+        {
+            ResultPlayerAddCoins msg = new ResultPlayerAddCoins(RoomCode);
+            msg.AddCoinsUserOpenId = addCoinsOpenId;
+            msg.NextUserOpenId = nextOpenId;
+            msg.AddCoins = addCoins;
+            return msg;
+        }
+
+
     }
 }

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameModel.WebSocketData
+namespace GameModel.Enums
 {
-    public class BaseWSJsonData
+    public enum CoinType
     {
-        public string OpenId { get; set; }
+        Add=1,
+        Follow = 2,
 
     }
 }

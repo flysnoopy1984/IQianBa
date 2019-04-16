@@ -42,7 +42,7 @@ namespace GameServer.Engine
             get
             {
                 if (_GameRedis == null)
-                    _GameRedis = new GameRedis.Games.GameRedis();
+                    _GameRedis = new GameRedis.Games.GameRedis(_OneGame.BasicInfo.RoomCode);
                 return _GameRedis;
             }
         }
@@ -60,17 +60,81 @@ namespace GameServer.Engine
             }
         }
 
+        private Queue<ERoomUser> _PlayerQueue = null;
+
+        private Queue<ERoomUser> _PlayerDoneQueue = null;
+
+        private Queue<ERoomUser> _PlayerQuitQueue = null;
+
+
         public GameDataHandle(EOneGame game)
         {
             _OneGame = game;
             _CardDataManager = new CardDataManager();
         }
 
+        protected Queue<ERoomUser> PlayerQueue {
+            get {
+                if (_PlayerQueue == null)
+                    _PlayerQueue = new Queue<ERoomUser>();
+                return _PlayerQueue; }
+        }
+
+        protected Queue<ERoomUser> PlayerDoneQueue
+        {
+            get
+            {
+                if (_PlayerDoneQueue == null)
+                    _PlayerDoneQueue = new Queue<ERoomUser>();
+                return _PlayerDoneQueue;
+            }
+        }
+
+        protected Queue<ERoomUser> PlayerQuitQueue
+        {
+            get
+            {
+                if (_PlayerQuitQueue == null)
+                    _PlayerQuitQueue = new Queue<ERoomUser>();
+                return _PlayerQuitQueue;
+            }
+        }
+
+        public EGameInfo GetGameInfo()
+        {
+            return _OneGame.BasicInfo;
+        }
+
+        public OutAPIResult SetGameInfo(EGameInfo gi)
+        {
+            OutAPIResult r = new OutAPIResult();
+            try
+            {
+                GameRedis.SetGameBasic(gi);
+                _OneGame.BasicInfo = gi;
+            }
+            catch (Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+            }
+            return r;
+
+        }
+
+        public EGameCoins GetGameCoins()
+        {
+            return _OneGame.GameCoins;
+        }
+
+        public void AddPlayerCoins(ECoinDetail coinDetail)
+        {
+            _OneGame.GameCoins.AddCoins(coinDetail);
+
+        }
 
         public static OutAPIResult ReCoverData(GameServer server, string RoomCode)
         {
             OutAPIResult r = new OutAPIResult();
-         
             try
             {
 
@@ -116,27 +180,6 @@ namespace GameServer.Engine
             return r;
         }
 
-        public EGameInfo GetGameInfo()
-        {
-            return _OneGame.BasicInfo;
-        }
-
-        public OutAPIResult SetGameInfo(EGameInfo gi)
-        {
-            OutAPIResult r = new OutAPIResult();
-            try
-            {
-                GameRedis.SetGameBasic(gi);
-                _OneGame.BasicInfo = gi;
-            }
-            catch(Exception ex)
-            {
-                r.ErrorMsg = ex.Message;
-            }
-            return r;
-           
-        }
-
         public EOneGame GetGameData(bool NeedRefrush = false)
         {
             if (NeedRefrush)
@@ -144,40 +187,124 @@ namespace GameServer.Engine
                 var roomCode = _OneGame.BasicInfo.RoomCode;
                 EGameInfo basicInfo = GameRedis.GetGameBasic(roomCode).resultObj;
                 _OneGame.BasicInfo = basicInfo;
-                //_OneGame.BasicInfo.CurD = basicInfo.CurD;
-                //_OneGame.BasicInfo.GameStatus = basicInfo.GameStatus;
-                //_OneGame.BasicInfo.GameTurn = basicInfo.GameTurn;
-
+              
                 _OneGame.PlayerList = RoomUserRedis.GetAllPlayer(roomCode).resultList;
-                if(_CardDataManager.PlayCards.Count>0)
-                {
-                    foreach (var player in _OneGame.PlayerList)
-                    {
-                        player.CardList = _CardDataManager.PlayCards[player.SeatNo];
-                    }
-                }
-               
+            
                 _OneGame.TableCardList = _CardDataManager.TableCards; //CardDataManager.NoToCard(GameTableRedis.TableCardList(roomCode).resultList);
                
+
             }
             return _OneGame;
         }
 
         private void InitNewGameData()
         {
-            _OneGame.BasicInfo.GameTurn = GameTurn.NotStart;
+            _OneGame.BasicInfo.GameTurn = 0;
             _OneGame.BasicInfo.GameStatus = GameStatus.NoGame;
-            _OneGame.BasicInfo.CurD = -1;
-          
+        
 
             //设置游戏状态为等待用户
             GameRedis.SetGameBasic(_OneGame.BasicInfo);
             
           //  GameRedis.SetGameStatus(_OneGame.BasicInfo.RoomCode, GameStatus.NoGame);
-           
-
 
         }
-      
+
+        /// <summary>
+        /// 一局开始缓存玩家,根据GameInfo需要对玩家重新排列
+        /// </summary>
+        /// <param name="PlayerList"></param>
+        public void SetCachePlayer(List<ERoomUser> PlayerList,EGameInfo gi)
+        {
+            InitQueue();
+
+            var p = PlayerList[gi.FirstPlayerIndex];
+            PlayerQueue.Enqueue(p);
+            int i = gi.FirstPlayerIndex+1;
+
+            while (PlayerQueue.Count< PlayerList.Count)
+            {
+                if (i == PlayerList.Count)
+                    i = 0;
+                p = PlayerList[i];
+                PlayerQueue.Enqueue(p);
+            }
+          
+        }
+
+        public Queue<ERoomUser> GetCachePlayer()
+        {
+            return PlayerQueue;
+        }
+
+        public ERoomUser PopPlayer()
+        {
+            if(PlayerQueue.Count != 0)
+            {
+                var Player = PlayerQueue.Dequeue();
+
+                PlayerDoneQueue.Enqueue(Player);
+
+                return Player;
+            }
+            return null;
+        }
+
+        public void ReloadPlayer()
+        {
+            while(PlayerDoneQueue.Count>0)
+            {
+                var p = PlayerDoneQueue.Dequeue();
+                if (p.PlayerStauts >= 0)
+                {
+                    p.PlayerStauts = PlayerStauts.PrepareBet;
+                    PlayerQueue.Enqueue(p);
+                }
+                else
+                    PlayerQuitQueue.Enqueue(p);
+            }
+        }
+
+        public EGameInfo MoveNextTurn(EGameInfo gi,bool needSave = false)
+        {
+            if(gi.GameTurn != GameTurn.End)
+            {
+                if (gi.GameTurn == GameTurn.FourthTurn)
+                    gi.GameTurn = GameTurn.End;
+                else
+                    gi.GameTurn++;
+            }
+
+            if(needSave) this.SetGameInfo(gi);
+            return gi;
+        }
+
+        public ERoomUser PeekAvaliblePlayer(EGameInfo gi)
+        {
+         
+            while (PlayerQueue.Count > 0)
+            {
+                var Player = PlayerQueue.Peek();
+                if (Player.PlayerStauts == PlayerStauts.PrepareBet)
+                    return Player;
+                else
+                {
+                    PlayerQuitQueue.Enqueue(PopPlayer());
+                }
+            }
+
+            return null;
+        }
+
+        private void InitQueue()
+        {
+            PlayerQueue.Clear();
+            PlayerDoneQueue.Clear();
+            PlayerQuitQueue.Clear();
+        }
+
+
+
+
     }
 }

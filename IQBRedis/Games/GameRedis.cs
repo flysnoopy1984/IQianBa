@@ -15,7 +15,13 @@ namespace GameRedis.Games
 {
     public class GameRedis: BaseRedis
     {
+        private string _RoomCode; 
+        public GameRedis(string rc)
+        {
+            _RoomCode = rc;
+        }
 
+        #region Game Basic Info
         public OutAPIResult SetGameBasic(EGameInfo gameInfo)
         {
             OutAPIResult r = new OutAPIResult();
@@ -29,32 +35,6 @@ namespace GameRedis.Games
                 var key = GK.GameBasic;
 
                 r =_redis.HashAddT<EGameInfo>(key, gameInfo.RoomCode, gameInfo);
-            }
-            catch (Exception ex)
-            {
-                r.ErrorMsg = ex.Message;
-            }
-
-            return r;
-        }
-
-        public OutAPIResult SetGameBasic(string RoomCode,GameStatus newStatus,GameTurn newTurn)
-        {
-            OutAPIResult r = new OutAPIResult();
-            try
-            {
-                if (string.IsNullOrEmpty(RoomCode))
-                {
-                    r.ErrorMsg = "为获取游戏房间号!";
-                    return r;
-                }
-                var key = GK.GameBasic;
-
-                var gi = _redis.HashGet<EGameInfo>(key, RoomCode);
-                gi.GameStatus = newStatus;
-                gi.GameTurn = newTurn;
-
-                r = _redis.HashAddT<EGameInfo>(key, RoomCode, gi);
             }
             catch (Exception ex)
             {
@@ -82,14 +62,22 @@ namespace GameRedis.Games
             return r;
         }
 
+        #endregion
 
-        public OutAPIResult SetGameStatus(string RoomCode,GameStatus status)
+        #region TableCard
+
+        public OutAPIResult SetTableCards(List<ECard> tableCards)
         {
             OutAPIResult r = new OutAPIResult();
             try
             {
-                r = _redis.HashAdd(GK.GameStatus, RoomCode, (int)status);
-            
+                string Key = GK.TableCard(_RoomCode);
+                int No = 1;
+                foreach(ECard card in tableCards)
+                {
+                    _redis.HashAddT(Key, No, card);
+                    No++;
+                }
             }
             catch (Exception ex)
             {
@@ -99,107 +87,63 @@ namespace GameRedis.Games
             return r;
         }
 
-        public OutAPIResult GetGameStatus(string RoomCode)
+        public NResult<ECard> GetTableCards()
         {
-            OutAPIResult r = new OutAPIResult();
+            NResult<ECard> result = new NResult<ECard>();
             try
             {
-                r.IntMsg = (int)_redis.HashGet(GK.GameStatus, RoomCode);
-                 
+                string Key = GK.TableCard(_RoomCode);
+                result = _redis.HashFindAllValue<ECard>(Key);
             }
             catch (Exception ex)
             {
-                r.ErrorMsg = ex.Message;
+                result.ErrorMsg = ex.Message;
             }
 
-            return r;
-        }
-
-
-
-        public OutAPIResult GetGameTurn(string RoomCode)
-        {
-            OutAPIResult r = new OutAPIResult();
-            try
-            {
-                r.IntMsg = (int)_redis.HashGet(GK.GameStatus, RoomCode);
-
-            }
-            catch (Exception ex)
-            {
-                r.ErrorMsg = ex.Message;
-            }
-
-            return r;
-        }
-
-        #region Table
-        public NResult<int> TableCardList(string RoomCode)
-        {
-            NResult<int> r = new NResult<int>();
-            try
-            {
-                r.resultList = _redis.SetGetAll<int>(GK.RoomTable(RoomCode));
-            }
-            catch (Exception ex)
-            {
-                r.ErrorMsg = ex.Message;
-            }
-
-            return r;
-        }
-
-        public OutAPIResult AddCard(string RoomCode, int CardNo)
-        {
-            OutAPIResult r = new OutAPIResult();
-            try
-            {
-                RedisValue v = CardNo;
-                _redis.SetAdd(GK.RoomTable(RoomCode), v);
-
-            }
-            catch (Exception ex)
-            {
-                r.ErrorMsg = ex.Message;
-            }
-
-            return r;
-        }
-
-        public OutAPIResult CleanCard(string RoomCode)
-        {
-            OutAPIResult r = new OutAPIResult();
-            try
-            {
-                r.IsSuccess = _redis.KeyDelete(GK.RoomTable(RoomCode));
-
-            }
-            catch (Exception ex)
-            {
-                r.ErrorMsg = ex.Message;
-            }
-
-            return r;
-        }
-
-        public OutAPIResult DotPosition(string RoomCode)
-        {
-            OutAPIResult r = new OutAPIResult();
-            try
-            {
-                r.IntMsg = (int)_redis.HashGet(GK.GameDotPosition, RoomCode);
-
-            }
-            catch (Exception ex)
-            {
-                r.ErrorMsg = ex.Message;
-            }
-
-            return r;
+            return result;
         }
         #endregion
 
-       
+        #region GameCoins
+
+        public OutAPIResult AddCoinDetail(string RoomCode,ECoinDetail PileCoin)
+        {
+            OutAPIResult r = new OutAPIResult();
+            try
+            {
+                if (string.IsNullOrEmpty(RoomCode))
+                {
+                    r.ErrorMsg = "为获取游戏房间号!";
+                    return r;
+                }
+                var key = GK.CoinDetail(RoomCode);
+
+                r = _redis.HashAddT<ECoinDetail>(key, PileCoin.UserOpenId, PileCoin);
+            }
+            catch (Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+            }
+
+            return r;
+        }
+
+        //public SResult<EGameCoins> GetGameCoins()
+        //{
+        //    SResult<EGameCoins> result = new SResult<EGameCoins>();
+        //    try
+        //    {
+               
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        result.ErrorMsg = ex.Message;
+        //    }
+        //    return result;
+        //}
+        #endregion
+
+
 
     }
 }

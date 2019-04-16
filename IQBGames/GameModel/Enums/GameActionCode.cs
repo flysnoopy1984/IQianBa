@@ -21,6 +21,14 @@ namespace GameModel.Enums
         ShuffleEnd =4,
         //通知下一个押注者
         NextUserBet = 10,
+        PlayerGiveUp = 20,
+        PlayerFollow = 21,
+        PlayerPass = 22,
+        PlayerAddCoins = 23,
+        PlayerAllIn =24,
+
+        GameEndShowing = 50,
+        GameEndSettlement = 51,
 
         BackHall =100,
         PlayerSitDown = 101,

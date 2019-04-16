@@ -56,10 +56,10 @@ namespace GameRedis
             return  roomCode+"_Player";
         }
 
-        public static string RoomTable(string roomCode)
-        {
-            return roomCode + "_Table";
-        }
+        //public static string RoomTable(string roomCode)
+        //{
+        //    return roomCode + "_Table";
+        //}
 
         public static string UserInfo(string openId)
         {
@@ -69,6 +69,16 @@ namespace GameRedis
         public static string GameBasicInfo(string roomCode)
         {
             return roomCode + "_GameInfo";
+        }
+
+        public static string TableCard(string roomCode)
+        {
+            return roomCode + "_TableCards";
+        }
+
+        public static string CoinDetail(string roomCode)
+        {
+            return roomCode + "_CoinDetail";
         }
 
         //public static string AllRoom()

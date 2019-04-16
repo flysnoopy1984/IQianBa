@@ -1,4 +1,4 @@
-﻿using GameModel.Message;
+﻿using GameModel.Message.SendData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +8,13 @@ using GameModel.Enums;
 
 namespace GameModel.WebSocketData.SendData.Playing
 {
-    public class ResultNextUserBet: BaseNormalMsg
+    public class ResultGameEndSettlement : BaseSendMsg
     {
-        public string NextUserOpenId { get; set; }
-
-        public int NextSeatNo { get; set; }
-
         public override GameActionCode Action
         {
             get
             {
-                return GameActionCode.NextUserBet;
+                return GameActionCode.GameEndSettlement;
             }
         }
     }

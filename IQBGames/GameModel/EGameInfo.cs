@@ -13,15 +13,20 @@ namespace GameModel
         {
             RoomCode = rc;
         }
-        public int CurD { get; set; }
+        public string DotUserOpenId { get; set; }
 
-        public int BetSeat { get; set; }
+        public string CurBetUserOpenId { get; set; }
+
+        public string SmallBetUserOpenId { get; set; }
+
+        public string BigBetUserOpenId { get; set; }
+
+        public int FirstPlayerIndex { get; set; }
 
         public GameStatus GameStatus { get; set; }
 
         public GameTurn GameTurn { get; set; }
 
-      
 
         public string RoomCode { get; set; }
     }

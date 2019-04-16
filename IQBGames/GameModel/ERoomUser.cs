@@ -12,6 +12,10 @@ namespace GameModel
     [Table("RoomUser")]
     public class ERoomUser
     {
+        public ERoomUser()
+        {
+            PlayerStauts = PlayerStauts.NotSeat;
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -19,6 +23,8 @@ namespace GameModel
         public string RoomCode { get; set; }
 
         public string UserOpenId { get; set; }
+
+        public string Name { get; set; }
 
         /// <summary>
         /// 当前发到的牌
@@ -35,7 +41,9 @@ namespace GameModel
         /// </summary>
         public int SeatNo { get; set; }
 
-       
+        public PlayerStauts PlayerStauts { get; set; }
+
+
 
     }
 }

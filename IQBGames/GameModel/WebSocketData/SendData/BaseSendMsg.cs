@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameModel.Message
+namespace GameModel.Message.SendData
 {
-    public abstract class BaseNormalMsg: IGameMessage
+    public abstract class BaseSendMsg: IGameMessage
     {
         public abstract GameActionCode Action { get;}
 
         private MessageType _MessageType;
-        public BaseNormalMsg()
+        public BaseSendMsg()
         {
             _MessageType = MessageType.Normal; 
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameModel.WebSocketData.ReceiveData
 {
-    public class dataUserSitDown:BaseWSJsonData
+    public class dataUserSitDown:BaseReceiveData
     {
        
 

@@ -41,7 +41,24 @@ namespace GameRedis.Games
             }
             return r;
         }
-          
+
+        public NResult<ERoomUser> GetPlayer(string roomCode,string UserOpenId)
+        {
+            NResult<ERoomUser> r = new NResult<ERoomUser>();
+            try
+            {
+                string key = GK.RoomPlayer(roomCode);
+
+                r.resultObj = _redis.HashGet<ERoomUser>(key, UserOpenId);
+            }
+            catch (Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+
+            }
+            return r;
+        }
+
 
         private OutAPIResult ExitPlayer(string userOpenId,string roomCode)
         {
@@ -57,7 +74,22 @@ namespace GameRedis.Games
 
             return r;
         }
-      
+
+        public OutAPIResult SetPlayer(string roomCode, ERoomUser player)
+        {
+            OutAPIResult r = new OutAPIResult();
+            try
+            {
+                _redis.HashAddT<ERoomUser>(GK.RoomPlayer(roomCode), player.UserOpenId, player);
+            }
+            catch (Exception ex)
+            {
+                r.ErrorMsg = ex.Message;
+            }
+
+            return r;
+        }
+
         private OutAPIResult AddNewPlayer(string userOpenId, string roomCode,int seatNo,decimal coins)
         {
             OutAPIResult r = new OutAPIResult();
@@ -70,6 +102,7 @@ namespace GameRedis.Games
                     CardList = new List<ECard>(),
                     RemainCoins = coins,
                     SeatNo = seatNo,
+                    PlayerStauts = PlayerStauts.WaitPlay,
                 };
 
                 _redis.HashAddT<ERoomUser>(GK.RoomPlayer(roomCode), userOpenId, user);

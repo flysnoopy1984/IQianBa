@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameModel.WebSocketData.ReceiveData
+namespace GameModel.WebSocketData.ReceiveData.Playing
 {
-    public class dataUserSitUp: BaseReceiveData
+    public class dataPlayerPass: BaseReceiveData
     {
-       
     }
 }

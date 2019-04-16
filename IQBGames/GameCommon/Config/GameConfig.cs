@@ -25,5 +25,22 @@ namespace GameCommon.Config
         public const int Turn_Wait_Server = 18;
 
         public const int Turn_Wait_Client = 15;
+
+        public static decimal GetSmallBet(int weight)
+        {
+            switch(weight)
+            {
+                case 0:
+                    return 10;
+                case 1:
+                    return 50;
+                case 2:
+                    return 100;
+                case 3:
+                    return 500;         
+                
+            }
+            return 10;
+        }
     }
 }

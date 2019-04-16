@@ -1,5 +1,6 @@
 ﻿using GameModel.Enums;
-using GameModel.Message;
+
+using GameModel.Message.SendData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,16 +10,25 @@ using System.Threading.Tasks;
 
 namespace GameModel
 {
-    public class EOneGame:BaseNormalMsg
+    public class EOneGame:BaseSendMsg
     {
         public EOneGame() { }
         public EOneGame(string rc) {
             // RoomCode = rc;
             BasicInfo = new EGameInfo(rc);
+            GameCoins = new EGameCoins(rc);
         }
 
+        /// <summary>
+        /// 当前大小盲注，当前谁出牌，游戏状态
+        /// </summary>
         public EGameInfo BasicInfo { get; set; }
-      
+
+        /// <summary>
+        /// 押注币
+        /// </summary>
+        public EGameCoins GameCoins { get; set; }
+
         /// <summary>
         /// 当前游戏桌上的牌
         /// </summary>
@@ -32,10 +42,6 @@ namespace GameModel
         /// <summary>
         /// 游戏桌面
         /// </summary>
-        public Dictionary<int,List<ETurnCoins>> TurnCoinList { get; set; }
-
-      
-
         public override GameActionCode Action
         {
             get
@@ -44,17 +50,6 @@ namespace GameModel
             }          
         }
 
-        //public GameStatus GameStatus { get; set; }
-
-        //public GameTurn GameTurn { get; set; }
-        /// <summary>
-        /// 当前游戏所在房间Code
-        /// </summary>
-        //  public string RoomCode { get; set; }
-        /// <summary>
-        /// 桌上指针(用户大小盲注)
-        /// </summary>
-        //当前按钮位置
-        //  public int CurD { get; set; }
+   
     }
 }

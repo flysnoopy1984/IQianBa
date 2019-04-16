@@ -36,17 +36,21 @@ namespace IQBConsole
         static TestRunner _testRuner = new TestRunner();
         static RedisManager redis = new RedisManager();
         static RoomUserRedis _roomUserRedis = new RoomUserRedis();
-        static GameRedis.Games.GameRedis _gameRedis = new GameRedis.Games.GameRedis();
+       // static GameRedis.Games.GameRedis _gameRedis = new GameRedis.Games.GameRedis();
         static CardDataManager cardmrg = new CardDataManager();
+        static GameTest GameTest = new GameTest();
+        // static GameManager  gamemanager = new GameManager("")
         static void Main(string[] args)
         {
           
             try
             {
-                  _websockerRuner.InitSocket();
+                //  _websockerRuner.InitSocket();
+                var r = GameTest.GetRoom();
 
-              
-                    //var roomSeatKey = GK.Room_Seat("03258363");
+              //  GameTest.DoSomethine();
+
+                //var roomSeatKey = GK.Room_Seat("03258363");
                 //var dicSeat = redis.HashFindAll(roomSeatKey);
                 // PushSharp ps = new PushSharp();
                 //ps.StartServer();

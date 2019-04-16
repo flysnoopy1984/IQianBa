@@ -29,7 +29,7 @@ namespace GameServer.Commond
         public override List<IGameMessage> HandleData(GameUserSession session, dataNewConnect data)
         {
 
-            session.GameAttr.OpenId = data.OpenId;
+      
             session.GameAttr.UserName = data.UserName;
             session.GameAttr.Weight = data.Weight;
 

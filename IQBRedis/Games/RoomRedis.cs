@@ -65,8 +65,6 @@ namespace GameRedis.Games
             return result;
         }
 
-      
-
         private string CreateRoom(int weight,out string roomCode)
         {
             string msg = null;
@@ -103,5 +101,19 @@ namespace GameRedis.Games
             }
             return msg;
         }  
+
+        public SResult<ERoom> GetRoom(string RoomCode)
+        {
+            SResult<ERoom> result = new SResult<ERoom>();
+            try
+            {
+                result.Instance = _redis.HashGet<ERoom>(GK.ALLRoomEntity, RoomCode);
+            }
+            catch(Exception ex)
+            {
+                result.ErrorMsg = ex.Message;
+            }
+            return result;
+        }
     }
 }
