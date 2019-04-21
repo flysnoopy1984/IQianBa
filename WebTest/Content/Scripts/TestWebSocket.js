@@ -30,12 +30,12 @@ $(function () {
                             var stId = AddSeat(pl[i].SeatNo, pl[i].RemainCoins);
 
                             if (pl[i].CardList && pl[i].UserOpenId == myOpenId) {
-                               
+
                                 var card1 = GetCardName(pl[i].CardList[0]);
                                 var card2 = GetCardName(pl[i].CardList[1]);
-                                
+
                                 var cardHtml = "<div>" + card1 + "</div><div>" + card2 + "</div>";
-                              
+
                                 var html = "<div>" + cardHtml + "</div>";
 
                                 $("#" + stId).append(html);
@@ -50,15 +50,16 @@ $(function () {
                         break;
                     case 101:
                         SeatNo = jsonObj.SeatNo;
-                        var found = false;
-                        $.each(pl, function (i) {
-                            if (pl[i].SeatNo == SeatNo) {
-                                found = true;
-                                return false;
-                            }
-                        });
-                        if (!found)
-                            AddSeat(SeatNo);
+                        coins = jsonObj.RemainCoins;
+                        //var found = false;
+                        //$.each(pl, function (i) {
+                        //    if (pl[i].SeatNo == SeatNo) {
+                        //        found = true;
+                        //        return false;
+                        //    }
+                        //});
+                        //if (!found)
+                        AddSeat(SeatNo, coins);
                         break;
                     case 1:
                         $("#Notice").text("等待玩家中。。。");
@@ -98,21 +99,20 @@ function GetCardName(CardObj) {
     return cardName;
 }
 
-function AddTableCard(CardObj)
-{
+function AddTableCard(CardObj) {
     var card = GetCardName(CardObj);
     $(".TableArea").append('<div class="CardDiv">' + card + '</div>');
 }
 
-function AddSeat(SeatNo,RemainCoins) {
+function AddSeat(SeatNo, RemainCoins) {
     var Id = "sn" + SeatNo;
-    var consId = "coin"+SeatNo;
+    var consId = "coin" + SeatNo;
     var html = ' <div class="SeatDiv" id="' + Id + '">';
     html += '<div >No ' + SeatNo + '</div>';
     html += ' <img src="/Content/Images/seat.png" />';
     html += '<div id="' + consId + '" class="CoinDiv">' + RemainCoins + '</div>';
     html += '</div>';
-   
+
     var SeatArea = $(".SeatArea");
     SeatArea.append(html);
     return Id;
