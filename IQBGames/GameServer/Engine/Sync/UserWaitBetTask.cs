@@ -37,6 +37,7 @@ namespace GameServer.Engine.Sync
                     return false;
                 }, WaitSec * 1000);
 
+                //【有Bug 风险，用户突然离线】
                 var betSession = _GameServer.GetSessions(s => s.GameAttr.UserOpenId == _waitUserOpenId).FirstOrDefault();
                 GameManager gm = betSession.GameManager;
 

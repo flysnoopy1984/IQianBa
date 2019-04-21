@@ -61,7 +61,8 @@ namespace GameServer.Command
                 var r = gameManager.UserSitDown(Data.SeatNo, Data.Coins);
                 if(r.IsSuccess)
                 {
-                    ResultUserSitDown msg = new ResultUserSitDown();
+                    ResultUserSitDown msg = new ResultUserSitDown(gameManager.RoomCode);
+                    msg.RemainCoins = Data.Coins;
                     msg.RoomCode = r.SuccessMsg;
                     msg.SeatNo = r.IntMsg;
                     result.Add(msg);
@@ -100,7 +101,7 @@ namespace GameServer.Command
                         result.Add(shuffleMsg);
                     }
                 }
-                session.GameAttr.RoomCode = gameManager.RoomCode; 
+               
             }
            
             return result;

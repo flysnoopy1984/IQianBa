@@ -16,8 +16,14 @@ namespace GameModel
         }
         public string RoomCode { get; set; }
 
+        /// <summary>
+        /// 筹码概括
+        /// </summary>
         public Dictionary<int,decimal> PileCoins { get; set; }
 
+        /// <summary>
+        /// 筹码明细
+        /// </summary>
         protected Dictionary<int, List<ECoinDetail>> PlayerCoinsDetail { get; set; }
 
         public void AddCoins(ECoinDetail pc)
@@ -26,11 +32,17 @@ namespace GameModel
 
             if (PlayerCoinsDetail == null)
                 PlayerCoinsDetail = new Dictionary<int, List<ECoinDetail>>();
+            if (!PlayerCoinsDetail.ContainsKey(pileNum))
+                PlayerCoinsDetail.Add(pileNum, new List<ECoinDetail>());
+           
             PlayerCoinsDetail[pileNum].Add(pc);
 
             if (PileCoins == null)
                 PileCoins = new Dictionary<int, decimal>();
-            PileCoins[pileNum] = PileCoins[pileNum] + pc.Coins;
+            if (!PileCoins.ContainsKey(pileNum))
+                PileCoins.Add(pileNum, pc.Coins);
+            else
+                PileCoins[pileNum] = PileCoins[pileNum] + pc.Coins;
 
         }
 

@@ -45,8 +45,8 @@ namespace IQBConsole
           
             try
             {
-                //  _websockerRuner.InitSocket();
-                var r = GameTest.GetRoom();
+                  _websockerRuner.InitSocket();
+                //var r = GameTest.GetRoom();
 
               //  GameTest.DoSomethine();
 

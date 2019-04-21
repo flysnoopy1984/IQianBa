@@ -15,16 +15,16 @@ namespace GameCommon.Config
         /// <summary>
         /// 洗牌时间
         /// </summary>
-        public const int Game_Shuffle_Sec = 10;
+        public const int Game_Shuffle_Sec = 2;
 
         public const int Table_Cards_Count = 5;
 
         /// <summary>
         /// 每次押注服务端等待时间
         /// </summary>
-        public const int Turn_Wait_Server = 18;
+        public const int Turn_Wait_Server = 4;
 
-        public const int Turn_Wait_Client = 15;
+        public const int Turn_Wait_Client = 4;
 
         public static decimal GetSmallBet(int weight)
         {

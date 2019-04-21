@@ -47,10 +47,13 @@ namespace GameServer.Commond
                 else
                 {
                     GameDataHandle.ReCoverData(session.GameServer, r.SuccessMsg);
-                }               
-                   
+                }
+
+                session.GameAttr.RoomCode = r.SuccessMsg;
                 //用户进入房间
                 r = GameManager.UserEntryRoom(r.SuccessMsg);
+
+         
             }
             if (r.IsSuccess)
             {
@@ -61,7 +64,9 @@ namespace GameServer.Commond
             }
             else
                 msgList.Add(new MessageNormalError(r.ErrorMsg));
-          
+
+           
+
             return msgList;
         
         }

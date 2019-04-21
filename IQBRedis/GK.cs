@@ -31,9 +31,10 @@ namespace GameRedis
 
         public const string ALLRoomEntity = "ALLRoomEntity";
 
-        public static string SeatNo(int no)
+        public static int SeatNo(int no)
         {
-            return "SN" + no;
+            return no;
+           // return "SN" + no;
         }
         public static string Room_Seat(string roomCode)
         {
