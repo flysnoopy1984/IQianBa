@@ -63,16 +63,18 @@ $(function () {
                         AddSeat(SeatNo, coins, myOpenId);
                         break;
                     case 1:
-                        $("#Notice").text(GetStatusName(50));
+                        $("#Notice").text(GetStatusName(1));
 
                         break;
                     case 2:
+                        $("#Notice").text(GetStatusName(2));
+                        break;
                     case 3:
-                        $("#Notice").text(GetStatusName(50));
+                        $("#Notice").text(GetStatusName(3));
                         break;
                     case 4:
 
-                        $("#Notice").text(GetStatusName(50));
+                        $("#Notice").text(GetStatusName(4));
                         break;
                     case 50:
                         $("#Notice").text(GetStatusName(50));
@@ -250,5 +252,10 @@ function Test() {
 
 function StartStuffleGame() {
 
+    var openId = $("#OpenId").val();
 
+    var json = 'TestStartGame {"OpenId":"' + openId + '",\
+                                    "RoomCode":"04240608",\
+}';
+    ws1.send(json);
 }
