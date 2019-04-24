@@ -81,12 +81,14 @@
     <Compile Include="Command\Playing\PlayerFollow.cs" />
     <Compile Include="Command\Playing\PlayerGiveUp.cs" />
     <Compile Include="Command\Playing\PlayerPass.cs" />
+    <Compile Include="Command\Test\TestStartGame.cs" />
     <Compile Include="Command\UserSitDown.cs" />
     <Compile Include="Command\UserSitUp.cs" />
     <Compile Include="Engine\CardDataManager.cs" />
     <Compile Include="Engine\GameDataHandle.cs" />
     <Compile Include="Engine\GameManager.cs" />
     <Compile Include="Engine\GameMessageHandle.cs" />
+    <Compile Include="Engine\Sync\GameTaskManager.cs" />
     <Compile Include="Engine\Sync\ShuffleEndTask.cs" />
     <Compile Include="Engine\Sync\UserWaitBetTask.cs" />
     <Compile Include="GameRunner.cs" />

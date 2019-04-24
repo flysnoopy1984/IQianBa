@@ -1,8 +1,10 @@
 ﻿var ws1 = null;
 var ws2 = null;
 var openId = "";
-var SeatNo = -1;
+var gSeatNo = -1;
 var pl = null;
+
+var processClock = null;
 $(function () {
     Init = function () {
         if (ws1 == null) {
@@ -22,14 +24,19 @@ $(function () {
                 var ac = jsonObj.Action;
 
                 switch (ac) {
-
+                    //进入游戏
                     case 0:
+                        var GameInfo = jsonObj.BasicInfo;
+                        var gameStatus = GameInfo.GameStatus;
+                        $("#Notice").text(GetStatusName(gameStatus));
+
                         pl = jsonObj.PlayerList;
                         var myOpenId = $("#OpenId").val();
                         $.each(pl, function (i) {
-                            var stId = AddSeat(pl[i].SeatNo, pl[i].RemainCoins);
 
-                            if (pl[i].CardList && pl[i].UserOpenId == myOpenId) {
+                            var stId = AddSeat(pl[i].SeatNo, pl[i].RemainCoins, pl[i].UserOpenId);
+
+                            if (pl[i].CardList.length != 0 && pl[i].UserOpenId == myOpenId) {
 
                                 var card1 = GetCardName(pl[i].CardList[0]);
                                 var card2 = GetCardName(pl[i].CardList[1]);
@@ -51,26 +58,24 @@ $(function () {
                     case 101:
                         SeatNo = jsonObj.SeatNo;
                         coins = jsonObj.RemainCoins;
-                        //var found = false;
-                        //$.each(pl, function (i) {
-                        //    if (pl[i].SeatNo == SeatNo) {
-                        //        found = true;
-                        //        return false;
-                        //    }
-                        //});
-                        //if (!found)
-                        AddSeat(SeatNo, coins);
+                        var myOpenId = $("#OpenId").val();
+
+                        AddSeat(SeatNo, coins, myOpenId);
                         break;
                     case 1:
-                        $("#Notice").text("等待玩家中。。。");
+                        $("#Notice").text(GetStatusName(50));
+
                         break;
                     case 2:
                     case 3:
-                        $("#Notice").text("洗牌中。。。");
+                        $("#Notice").text(GetStatusName(50));
                         break;
                     case 4:
-                        $("#Notice").text("洗牌完成，游戏中");
+
+                        $("#Notice").text(GetStatusName(50));
                         break;
+                    case 50:
+                        $("#Notice").text(GetStatusName(50));
                 }
 
                 $("#msg").text(text);
@@ -80,7 +85,17 @@ $(function () {
 
     }
     Init();
+
+    // TestInit();
 });
+
+function TestInit() {
+    var html = '<div class="progress">';
+    html += '<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">';
+    html += '<span class="sr-only">40% 完成</span>';
+    html += '</div></div>';
+    $("#UserArea").append(html);
+}
 
 function GetCardName(CardObj) {
     var cardType = CardObj.CardType;
@@ -104,18 +119,65 @@ function AddTableCard(CardObj) {
     $(".TableArea").append('<div class="CardDiv">' + card + '</div>');
 }
 
-function AddSeat(SeatNo, RemainCoins) {
+function AddSeat(SeatNo, RemainCoins, userID) {
     var Id = "sn" + SeatNo;
     var consId = "coin" + SeatNo;
+
     var html = ' <div class="SeatDiv" id="' + Id + '">';
+    html += "<div>" + userID + "</div>";
+    html += '<div class="progress" style="width:120px;">';
+    html += '<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" pn=0>';
+    //html += '<span class="sr-only"></span>';
+    html += '</div></div>';
     html += '<div >No ' + SeatNo + '</div>';
+
     html += ' <img src="/Content/Images/seat.png" />';
     html += '<div id="' + consId + '" class="CoinDiv">' + RemainCoins + '</div>';
     html += '</div>';
 
     var SeatArea = $(".SeatArea");
     SeatArea.append(html);
+    // StartWaitUser(Id);
     return Id;
+}
+
+function StartWaitUser(seatId) {
+
+    processClock = setInterval("WaitingUser(seatId='" + seatId + "')", 1000);
+
+}
+
+function WaitingUser(seatId) {
+
+    var processBar = $("#" + seatId).find(".progress-bar");
+    var pn = parseInt(processBar.attr("pn"));
+
+    pn += 6.6;
+    processBar.attr("pn", pn);
+    processBar.css("width", pn + "%");
+    if (pn > 100)
+        clearInterval(processClock)
+}
+
+
+
+function GetStatusName(status) {
+    switch (status) {
+        case 0: return "没有游戏";
+        case 1: return "等待玩家中。。。";
+        case 2:
+        case 3:
+            return "洗牌中。。。";
+        case 4:
+            return "洗牌完成，游戏中";
+        case 10:
+            return "游戏中";
+        case 50:
+            return "游戏结束，翻牌中";
+        case 51:
+            return "游戏结束，结算";
+
+    }
 }
 
 
@@ -183,5 +245,9 @@ function Test() {
 
     var json = 'BackHall {"OpenId":"' + openId + '",}';
     ws1.send(json);
+
+}
+
+function StartStuffleGame() {
 
 }

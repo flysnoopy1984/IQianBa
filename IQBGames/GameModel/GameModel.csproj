@@ -71,6 +71,7 @@
     <Compile Include="WebSocketData\ReceiveData\dataUserSitDown.cs" />
     <Compile Include="WebSocketData\ReceiveData\Playing\dataPlayerAddCoins.cs" />
     <Compile Include="WebSocketData\ReceiveData\Playing\dataPlayerFollow.cs" />
+    <Compile Include="WebSocketData\ReceiveData\Test\dataTestStartGame.cs" />
     <Compile Include="WebSocketData\SendData\BaseSendMsg.cs" />
     <Compile Include="Message\MessageNormalError.cs" />
     <Compile Include="WebSocketData\ReceiveData\dataUserSitUp.cs" />

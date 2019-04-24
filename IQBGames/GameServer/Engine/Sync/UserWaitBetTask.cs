@@ -59,11 +59,12 @@ namespace GameServer.Engine.Sync
                     var msg = gm.WaitNextPlayer(gi);
                     if(msg !=null)
                     {
-                        list.Add(msg);
-                        _GameMessageHandle.Push(list);
+                        list.Add(msg);    
                     }
-                    
-                 
+                    _GameMessageHandle.Push(list);
+                    _GameMessageHandle.Run(_GameServer);
+
+
                 }
             });
             SubTask.Start();

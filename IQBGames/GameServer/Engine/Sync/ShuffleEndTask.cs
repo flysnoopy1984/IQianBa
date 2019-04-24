@@ -71,6 +71,7 @@ namespace GameServer.Engine.Sync
                     _GameManager.PlayerAddCoins(gi, gi.BigBetUserOpenId, smallBet*2, 0);
 
                     shuffleEndMsg.SmallBetAmount = smallBet;
+                //    shuffleEndMsg.SmallBetOpenId = gi.SmallBetUserOpenId;
                     shuffleEndMsg.BigBetAmount = smallBet * 2;
 
                     msgList.Add(shuffleEndMsg);
@@ -89,6 +90,9 @@ namespace GameServer.Engine.Sync
 
         public void Run(int AfterSec,GameServer GameServer,EGameInfo gi,int weight)
         {
+            //洗牌，并获取洗牌结束消息
+            var msgList = CreateShuffleEndMessage(weight);
+           
 
             Task SubTask = new Task(() =>
             {
@@ -98,30 +102,28 @@ namespace GameServer.Engine.Sync
                     return false;
                 }, AfterSec * 1000);
 
-                //确定牌的信息，开始位置，出牌玩家
-               var msgList = CreateShuffleEndMessage(weight);
-               _GameMessageHandle.Push(msgList);
-               var r =  _GameMessageHandle.Run(GameServer);
-               if (r == false) return;
+               //将洗牌的消息发送出去
+                _GameMessageHandle.Push(msgList);
+                var r = _GameMessageHandle.Run(GameServer);
+                if (r == false) return;
 
-            
-               gi.GameStatus = GameStatus.Playing;
+                gi.GameStatus = GameStatus.Playing;
                gi.GameTurn = GameTurn.FirstTurn;
                _GameManager.SetGameInfo(gi);
 
-               AfterShuffleEnd(GameServer, gi);
+               GameTaskManager.AfterShuffleEnd(GameServer, gi);
 
 
             });
             SubTask.Start();
         }
 
-        private void AfterShuffleEnd(GameServer gameServer, EGameInfo gi)
-        {
+        //private void AfterShuffleEnd(GameServer gameServer, EGameInfo gi)
+        //{
 
-            UserWaitBetTask waitTask = UserWaitBetTask.CreateNewInstance(gameServer, gi.CurBetUserOpenId);
-            waitTask.Run(GameConfig.Turn_Wait_Server);
+        //    UserWaitBetTask waitTask = UserWaitBetTask.CreateNewInstance(gameServer, gi.CurBetUserOpenId);
+        //    waitTask.Run(GameConfig.Turn_Wait_Server);
           
-        }
+        //}
     }
 }

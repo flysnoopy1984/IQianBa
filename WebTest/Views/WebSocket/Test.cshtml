@@ -9,48 +9,50 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Test</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script src="~/Content/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Content/Scripts/TestWebSocket.js"></script>
-    
+
     <style type="text/css">
-        .SeatDiv{
-          width: 150px;
+        .SeatDiv {
+            width: 150px;
             display: flex;
             flex-direction: column;
-   
             align-items: center;
         }
-        .SeatArea{
-            display:flex;
-            margin-bottom:20px;
+
+        .SeatArea {
+            display: flex;
+            margin-bottom: 20px;
         }
-        .TableArea{
-            display:flex;
+
+        .TableArea {
+            display: flex;
             width: 500px;
             justify-content: space-between;
         }
 
-        .CardDiv{
-            border:1px solid #ffd800;
-            width:80px;
-            height:40px;
-            text-align:center;
-        }
-        .CoinDiv{
-            margin-top:10px;
-            margin-bottom:10px;
+        .CardDiv {
+            border: 1px solid #ffd800;
+            width: 80px;
+            height: 40px;
+            text-align: center;
         }
 
+        .CoinDiv {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
-    <div>
+    <div id="UserArea">
         <div>
             OpenId:<input type="text" id="OpenId" value="Test1" />
         </div>
         @*<div>
-            Name:<input type="text" id="uName" value="Test1" />
-        </div>*@
+                Name:<input type="text" id="uName" value="Test1" />
+            </div>*@
 
     </div>
     <div>
@@ -58,7 +60,8 @@
         <input type="button" value="站起" onclick="UserSitUp(1);" />
         <input type="button" value="座下" onclick="UserSitDown(1);" />
         <input type="button" value="离开" onclick="Exit(1);" />
-       
+        <input type="button" value="重新开始" onclick="StartStuffleGame();" />
+
     </div>
     <div>
         <input type="button" value="Pass" onclick="Pass();" />
@@ -69,20 +72,20 @@
     <div id="Notice"></div>
     <div class="SeatArea">
         @*<div class="SeatDiv">
-            <div >No 1</div>
-            <img src="~/Content/Images/seat.png" />
-        </div>
-        <div class="SeatDiv">
-            <div>No 1</div>
-            <img src="~/Content/Images/seat.png" />
-        </div>*@
+                <div >No 1</div>
+                <img src="~/Content/Images/seat.png" />
+            </div>
+            <div class="SeatDiv">
+                <div>No 1</div>
+                <img src="~/Content/Images/seat.png" />
+            </div>*@
     </div>
     <div class="TableArea" style="margin-top:20px; margin-bottom:20px;">
         @*<div class="CardDiv">[红桃]_2</div>
-        <div class="CardDiv">[红桃]_2</div>
-        <div class="CardDiv">[红桃]_2</div>
-        <div class="CardDiv">[红桃]_2</div>
-        <div class="CardDiv">[红桃]_2</div>*@
+            <div class="CardDiv">[红桃]_2</div>
+            <div class="CardDiv">[红桃]_2</div>
+            <div class="CardDiv">[红桃]_2</div>
+            <div class="CardDiv">[红桃]_2</div>*@
     </div>
     <div id="msg" style="margin-top:20px;">
 

@@ -52,11 +52,12 @@ namespace GameServer.Commond
                 session.GameAttr.RoomCode = r.SuccessMsg;
                 //用户进入房间
                 r = GameManager.UserEntryRoom(r.SuccessMsg);
-
          
             }
             if (r.IsSuccess)
             {
+
+
                 /*【注】如果服务器宕机，GameDataHandle将空*/
                 var DataHandle = GameManager.GameDataHandle;
                 var oneGame = DataHandle.GetGameData(true);

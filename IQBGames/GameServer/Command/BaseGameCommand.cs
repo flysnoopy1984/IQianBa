@@ -76,8 +76,8 @@ namespace GameServer.Command
                     session.GameAttr.UserOpenId = this.Data.OpenId;
 
                     var msgData = HandleData(session, this.Data);
-
-                    GameMessageHandle.Push(msgData,session);
+                    if(msgData!=null)
+                        GameMessageHandle.Push(msgData,session);
                 }
             }
             catch(Exception ex)

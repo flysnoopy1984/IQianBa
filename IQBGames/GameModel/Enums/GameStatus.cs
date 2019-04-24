@@ -36,12 +36,12 @@ namespace GameModel.Enums
         /// <summary>
         /// 一局将结束，在翻牌，
         /// </summary> 
-        GameEndShowingCard = 20,
+        GameEndShowingCard = 50,
 
         /// <summary>
         /// 在算账
         /// </summary>
-        GameEndSettlement = 21,
+        GameEndSettlement = 51,
     }
 
     public enum GameTurn

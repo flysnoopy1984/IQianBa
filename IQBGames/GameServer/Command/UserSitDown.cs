@@ -82,24 +82,24 @@ namespace GameServer.Command
                     var nextGs = gameManager.GetNextGameStatus(gameInfo,true);
                   
                     if (nextGs == GameStatus.WaitPlayer)
-                        result.Add(new ResultGameWait());
+                        result.Add(new ResultGameWait(gameInfo.RoomCode));
                     if (nextGs == GameStatus.StartShuffle)
                     {
                         //通知前端洗牌
                         ResultGameShuffleStart shuffleStartMsg = new ResultGameShuffleStart(gameInfo.RoomCode);
                         result.Add(shuffleStartMsg);
 
-                        if (shuffleStartMsg.MessageType == MessageType.Normal)
-                            gameManager.PrePareNewGame(gameInfo);
+                    
+                       gameManager.PrePareNewGame(gameInfo);
 
                         //洗牌异步指令,洗牌结束需要通知前端，开始游戏
-                        SyncTask_ShuffleEnd(session,gameInfo);
+                        GameTaskManager.SyncTask_ShuffleEnd(session,gameInfo);
                     }
-                    else if (nextGs == GameStatus.Shuffling)
-                    {
-                        ResultGameShuffling shuffleMsg = gameManager.WhileShuffling();
-                        result.Add(shuffleMsg);
-                    }
+                    //else if (nextGs == GameStatus.Shuffling)
+                    //{
+                    //    ResultGameShuffling shuffleMsg = gameManager.WhileShuffling();
+                    //    result.Add(shuffleMsg);
+                    //}
                 }
                
             }
@@ -108,11 +108,11 @@ namespace GameServer.Command
             
         }
 
-        private void SyncTask_ShuffleEnd(GameUserSession session,EGameInfo gi)
-        {
-            ShuffleEndTask syncTask =  new ShuffleEndTask(session.GameManager);
-            syncTask.Run(GameConfig.Game_Shuffle_Sec, session.GameServer, gi,session.GameAttr.Weight);
-        }
+        //public static void SyncTask_ShuffleEnd(GameUserSession session,EGameInfo gi)
+        //{
+        //    ShuffleEndTask syncTask =  new ShuffleEndTask(session.GameManager);
+        //    syncTask.Run(GameConfig.Game_Shuffle_Sec, session.GameServer, gi,session.GameAttr.Weight);
+        //}
 
        
 

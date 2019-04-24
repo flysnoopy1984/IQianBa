@@ -265,7 +265,6 @@ namespace GameRedis.Games
                 var AllRoomScoreKey = GK.AllRoomScore(weight);
                 var roomSeatKey = GK.Room_Seat(roomCode);
                
-               
                     //系统分配入座
                 if(seatNo == -1)
                 {

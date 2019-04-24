@@ -22,8 +22,11 @@ namespace GameModel.WebSocketData.SendData
        public EGameInfo GameInfo { get; set; }
 
         public decimal SmallBetAmount { get; set; }
+        public string SmallBetOpenId { get; set; }
+
 
         public decimal BigBetAmount { get; set; }
+        public string BigBetOpenId { get; set; }
 
         public ResultGameShuffleEnd(string roomCode)
         {

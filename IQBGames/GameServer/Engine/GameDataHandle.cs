@@ -237,13 +237,16 @@ namespace GameServer.Engine
             return PlayerQueue;
         }
 
-        public ERoomUser PopPlayer()
+        public ERoomUser PopPlayer(PlayerStauts playerStatus)
         {
             if(PlayerQueue.Count != 0)
             {
                 var Player = PlayerQueue.Dequeue();
-
-                PlayerDoneQueue.Enqueue(Player);
+                if (playerStatus == PlayerStauts.OffLine ||
+                    playerStatus == PlayerStauts.GiveUp)
+                    PlayerQuitQueue.Enqueue(Player);
+                else
+                    PlayerDoneQueue.Enqueue(Player);
 
                 return Player;
             }
@@ -281,17 +284,25 @@ namespace GameServer.Engine
 
         public ERoomUser PeekAvaliblePlayer(EGameInfo gi)
         {
-         
+            ERoomUser result = null;
+            //只剩一个人时，比赛也是结束了
+            if (PlayerQueue.Count + PlayerDoneQueue.Count == 1)
+                return null;
+
             while (PlayerQueue.Count > 0)
             {
                 var Player = PlayerQueue.Peek();
                 if (Player.PlayerStauts == PlayerStauts.PrepareBet)
-                    return Player;
+                {
+                    result = Player;
+                    break;
+                }    
                 else
                 {
-                    PlayerQuitQueue.Enqueue(PopPlayer());
+                    PlayerQuitQueue.Enqueue(PopPlayer(Player.PlayerStauts));
                 }
             }
+           
 
             return null;
         }

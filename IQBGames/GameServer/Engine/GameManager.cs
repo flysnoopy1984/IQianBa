@@ -295,6 +295,7 @@ namespace GameServer.Engine
         public List<ERoomUser> DoShuffle()
         {
             List<ERoomUser> Players = RoomUserRedis.GetAllPlayer(RoomCode).resultList;
+          
 
             CardDataManager.ShuffleCard(Players);
 
@@ -310,13 +311,29 @@ namespace GameServer.Engine
 
         }
 
+        public void StartNewGame(GameUserSession session, string RoomCode)
+        {
+            EGameInfo gi = new EGameInfo(RoomCode)
+            {
+                RoomCode = RoomCode,
+                BigBetUserOpenId = "",
+                DotUserOpenId = "",
+                CurBetUserOpenId = "",
+                FirstPlayerIndex = -1,
+                SmallBetUserOpenId = "",
+                GameStatus = GameStatus.NoGame,
+                GameTurn = GameTurn.NotStart,
+
+            };
+            PrePareNewGame(gi);
+
+            
+            GameTaskManager.SyncTask_ShuffleEnd(session, gi);
+        }
+
         
 
-        public ResultGameShuffling WhileShuffling()
-        {
-            ResultGameShuffling result = new ResultGameShuffling();
-            return result;
-        }
+   
 
         public bool CanSitDown()
         {
@@ -330,12 +347,13 @@ namespace GameServer.Engine
 
        
 
-        public void PrePareNewGame(EGameInfo gi = null)
+        public EGameInfo PrePareNewGame(EGameInfo gi = null)
         {
             if (gi == null) gi = this.GetGameBasic();
 
             gi.GameStatus = GameStatus.Shuffling;
             gi.GameTurn = GameTurn.NotStart;
+            return gi;
            
         }
 
@@ -450,7 +468,7 @@ namespace GameServer.Engine
         {
             try
             {
-                var player = this.GameDataHandle.PopPlayer();
+                var player = this.GameDataHandle.PopPlayer(PlayerStauts.Pass);
                 player.PlayerStauts = PlayerStauts.Pass;
                 RoomUserRedis.SetPlayer(RoomCode, player);
             }
@@ -464,7 +482,7 @@ namespace GameServer.Engine
         {
             try
             {
-                var player = this.GameDataHandle.PopPlayer();
+                var player = this.GameDataHandle.PopPlayer(PlayerStauts.GiveUp);
                 player.PlayerStauts = PlayerStauts.GiveUp;
                 RoomUserRedis.SetPlayer(RoomCode, player);
             }
@@ -479,7 +497,7 @@ namespace GameServer.Engine
         {
             try
             {
-                var player = this.GameDataHandle.PopPlayer();
+                var player = this.GameDataHandle.PopPlayer(PlayerStauts.Follow);
                 player.PlayerStauts = PlayerStauts.Follow;
                 RoomUserRedis.SetPlayer(RoomCode, player);
 
@@ -525,7 +543,7 @@ namespace GameServer.Engine
             GameDataHandle.ReloadPlayer();
 
             //获取当前玩家，并修改状态
-            var player = this.GameDataHandle.PopPlayer();
+            var player = this.GameDataHandle.PopPlayer(PlayerStauts.AddCoins);
             player.PlayerStauts = PlayerStauts.AddCoins;
             RoomUserRedis.SetPlayer(RoomCode, player);
 
