@@ -23,8 +23,7 @@ namespace GameServer.Command
             ResultGameShuffleStart shuffleStartMsg = new ResultGameShuffleStart(Data.RoomCode);
             result.Add(shuffleStartMsg);
 
-            var gi = gameManager.PrePareNewGame();
-            GameTaskManager.SyncTask_ShuffleEnd(session, gi);
+            gameManager.StartNewGame(session, Data.RoomCode);
 
             return result;
         }

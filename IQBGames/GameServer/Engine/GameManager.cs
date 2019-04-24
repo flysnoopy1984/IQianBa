@@ -86,10 +86,7 @@ namespace GameServer.Engine
             _Session = session;
         }
 
-        public ERoom GetRoom()
-        {
-            return RoomRedis.GetRoom(RoomCode).Instance;
-        }
+      
 
         public GameDataHandle GameDataHandle
         {
@@ -421,7 +418,7 @@ namespace GameServer.Engine
                     return result;
                 }
                 
-                if (gi.DotUserOpenId == null)
+                if (string.IsNullOrEmpty(gi.DotUserOpenId))
                     gi.DotUserOpenId = playerList[0].UserOpenId;
 
                 for (int i = 0; i < playerList.Count; i++)
