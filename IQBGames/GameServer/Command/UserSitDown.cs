@@ -90,10 +90,10 @@ namespace GameServer.Command
                         result.Add(shuffleStartMsg);
 
                     
-                       gameManager.PrePareNewGame(gameInfo);
+                    //   gameManager.PrePareNewGameInfo(gameInfo);
 
                         //洗牌异步指令,洗牌结束需要通知前端，开始游戏
-                        GameTaskManager.SyncTask_ShuffleEnd(session,gameInfo);
+                        GameTaskManager.SyncTask_ShuffleEnd(session);
                     }
                     //else if (nextGs == GameStatus.Shuffling)
                     //{

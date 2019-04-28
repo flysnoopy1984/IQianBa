@@ -1,7 +1,7 @@
 ﻿var ws1 = null;
 var ws2 = null;
 var openId = "";
-var gSeatNo = -1;
+var MySeatNo = -1;
 var pl = null;
 
 var processClock = null;
@@ -73,7 +73,8 @@ $(function () {
                         $("#Notice").text(GetStatusName(3));
                         break;
                     case 4:
-
+                        var betUserId = jsonObj.GameInfo.CurBetUserOpenId;
+                        if()
                         $("#Notice").text(GetStatusName(4));
                         break;
                     case 50:

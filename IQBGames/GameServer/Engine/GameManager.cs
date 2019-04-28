@@ -322,10 +322,10 @@ namespace GameServer.Engine
                 GameTurn = GameTurn.NotStart,
 
             };
-            PrePareNewGame(gi);
+            PrePareNewGameInfo(gi);
 
             
-            GameTaskManager.SyncTask_ShuffleEnd(session, gi);
+            GameTaskManager.SyncTask_ShuffleEnd(session);
         }
 
         
@@ -344,7 +344,7 @@ namespace GameServer.Engine
 
        
 
-        public EGameInfo PrePareNewGame(EGameInfo gi = null)
+        public EGameInfo PrePareNewGameInfo(EGameInfo gi = null)
         {
             if (gi == null) gi = this.GetGameBasic();
 

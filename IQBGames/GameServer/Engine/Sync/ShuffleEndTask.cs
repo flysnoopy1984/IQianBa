@@ -47,7 +47,7 @@ namespace GameServer.Engine.Sync
                 if (r.IsSuccess)
                 {
                     var gi = r.Instance;
-                    gi.GameStatus = GameStatus.ShuffleEnd;
+                    gi.GameStatus = GameStatus.Playing;
                     gi.GameTurn = GameTurn.FirstTurn;
 
                     //保存游戏信息
@@ -88,11 +88,11 @@ namespace GameServer.Engine.Sync
 
         }
 
-        public void Run(int AfterSec,GameServer GameServer,EGameInfo gi,int weight)
+        public void Run(int AfterSec,GameServer GameServer,int weight)
         {
             //洗牌，并获取洗牌结束消息
             var msgList = CreateShuffleEndMessage(weight);
-           
+          
 
             Task SubTask = new Task(() =>
             {
@@ -107,9 +107,16 @@ namespace GameServer.Engine.Sync
                 var r = _GameMessageHandle.Run(GameServer);
                 if (r == false) return;
 
-                gi.GameStatus = GameStatus.Playing;
-               gi.GameTurn = GameTurn.FirstTurn;
-               _GameManager.SetGameInfo(gi);
+                //EGameInfo gi = null; 
+                //if (msgList[0] is ResultGameShuffleEnd)
+                //{
+                //    var rgseMsg = msgList[0] as ResultGameShuffleEnd;
+                //    rgseMsg.GameInfo = gi;
+                //} 
+                var gi = _GameManager.GetGameBasic();
+               // gi.GameStatus = GameStatus.Playing;
+               //gi.GameTurn = GameTurn.FirstTurn;
+               //_GameManager.SetGameInfo(gi);
 
                GameTaskManager.AfterShuffleEnd(GameServer, gi);
 

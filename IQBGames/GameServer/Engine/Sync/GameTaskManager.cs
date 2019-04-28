@@ -18,11 +18,11 @@ namespace GameServer.Engine.Sync
 
         }
 
-        public static void SyncTask_ShuffleEnd(GameUserSession session, EGameInfo gi)
+        public static void SyncTask_ShuffleEnd(GameUserSession session)
         {
 
             ShuffleEndTask syncTask = new ShuffleEndTask(session.GameManager);
-            syncTask.Run(GameConfig.Game_Shuffle_Sec, session.GameServer, gi,session.GameAttr.Weight);
+            syncTask.Run(GameConfig.Game_Shuffle_Sec, session.GameServer,session.GameAttr.Weight);
 
         }
     }
