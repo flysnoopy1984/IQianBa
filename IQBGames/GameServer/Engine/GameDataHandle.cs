@@ -42,7 +42,7 @@ namespace GameServer.Engine
             get
             {
                 if (_GameRedis == null)
-                    _GameRedis = new GameRedis.Games.GameRedis(_OneGame.BasicInfo.RoomCode);
+                    _GameRedis = new GameRedis.Games.GameRedis(_OneGame.GameInfo.RoomCode);
                 return _GameRedis;
             }
         }
@@ -102,7 +102,7 @@ namespace GameServer.Engine
 
         public EGameInfo GetGameInfo()
         {
-            return _OneGame.BasicInfo;
+            return _OneGame.GameInfo;
         }
 
         public OutAPIResult SetGameInfo(EGameInfo gi)
@@ -111,7 +111,7 @@ namespace GameServer.Engine
             try
             {
                 GameRedis.SetGameBasic(gi);
-                _OneGame.BasicInfo = gi;
+                _OneGame.GameInfo = gi;
             }
             catch (Exception ex)
             {
@@ -184,9 +184,9 @@ namespace GameServer.Engine
         {
             if (NeedRefrush)
             {
-                var roomCode = _OneGame.BasicInfo.RoomCode;
+                var roomCode = _OneGame.GameInfo.RoomCode;
                 EGameInfo basicInfo = GameRedis.GetGameBasic(roomCode).resultObj;
-                _OneGame.BasicInfo = basicInfo;
+                _OneGame.GameInfo = basicInfo;
               
                 _OneGame.PlayerList = RoomUserRedis.GetAllPlayer(roomCode).resultList;
             
@@ -199,12 +199,12 @@ namespace GameServer.Engine
 
         private void InitNewGameData()
         {
-            _OneGame.BasicInfo.GameTurn = 0;
-            _OneGame.BasicInfo.GameStatus = GameStatus.NoGame;
+            _OneGame.GameInfo.GameTurn = 0;
+            _OneGame.GameInfo.GameStatus = GameStatus.NoGame;
         
 
             //设置游戏状态为等待用户
-            GameRedis.SetGameBasic(_OneGame.BasicInfo);
+            GameRedis.SetGameBasic(_OneGame.GameInfo);
             
           //  GameRedis.SetGameStatus(_OneGame.BasicInfo.RoomCode, GameStatus.NoGame);
 

@@ -45,7 +45,7 @@ namespace IQBConsole
           
             try
             {
-                redis.HashDelete("GameBasicInfo", "-1");
+             //   redis.HashDelete("GameBasicInfo", "-1");
                   _websockerRuner.InitSocket();
                 //var r = GameTest.GetRoom();
 

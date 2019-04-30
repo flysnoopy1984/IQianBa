@@ -320,6 +320,7 @@ namespace GameServer.Engine
                 SmallBetUserOpenId = "",
                 GameStatus = GameStatus.NoGame,
                 GameTurn = GameTurn.NotStart,
+                CurRequreCoins = 0,
 
             };
             PrePareNewGameInfo(gi);
@@ -443,7 +444,7 @@ namespace GameServer.Engine
                 gi.BigBetUserOpenId = playerList[bIndex].UserOpenId;
                 gi.SmallBetUserOpenId = playerList[sIndex].UserOpenId;
                 gi.CurBetUserOpenId = playerList[cIndex].UserOpenId;
-
+               
                 gi.FirstPlayerIndex = cIndex;
 
                 result.Instance = gi;

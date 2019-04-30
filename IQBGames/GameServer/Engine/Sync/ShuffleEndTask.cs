@@ -50,8 +50,7 @@ namespace GameServer.Engine.Sync
                     gi.GameStatus = GameStatus.Playing;
                     gi.GameTurn = GameTurn.FirstTurn;
 
-                    //保存游戏信息
-                    _GameManager.SetGameInfo(gi);
+                   
 
                     //确认并缓存玩家队列
                     _GameManager.GameDataHandle.SetCachePlayer(players,gi);
@@ -73,6 +72,10 @@ namespace GameServer.Engine.Sync
                     shuffleEndMsg.SmallBetAmount = smallBet;
                 //    shuffleEndMsg.SmallBetOpenId = gi.SmallBetUserOpenId;
                     shuffleEndMsg.BigBetAmount = smallBet * 2;
+
+                    gi.CurRequreCoins = smallBet;
+                    //保存游戏信息
+                    _GameManager.SetGameInfo(gi);
 
                     msgList.Add(shuffleEndMsg);
                 }

@@ -15,14 +15,14 @@ namespace GameModel
         public EOneGame() { }
         public EOneGame(string rc) {
             // RoomCode = rc;
-            BasicInfo = new EGameInfo(rc);
+            GameInfo = new EGameInfo(rc);
             GameCoins = new EGameCoins(rc);
         }
 
         /// <summary>
         /// 当前大小盲注，当前谁出牌，游戏状态
         /// </summary>
-        public EGameInfo BasicInfo { get; set; }
+        public EGameInfo GameInfo { get; set; }
 
         /// <summary>
         /// 押注币

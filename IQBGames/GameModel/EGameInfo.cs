@@ -21,6 +21,11 @@ namespace GameModel
 
         public string BigBetUserOpenId { get; set; }
 
+        /// <summary>
+        /// 当前出牌人至少出多少筹码
+        /// </summary>
+        public decimal CurRequreCoins { get; set; }
+
         public int FirstPlayerIndex { get; set; }
 
         public GameStatus GameStatus { get; set; }
