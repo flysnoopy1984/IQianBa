@@ -320,7 +320,7 @@ namespace GameServer.Engine
                 SmallBetUserOpenId = "",
                 GameStatus = GameStatus.NoGame,
                 GameTurn = GameTurn.NotStart,
-                CurRequreCoins = 0,
+                CurRequireCoins = 0,
 
             };
             PrePareNewGameInfo(gi);
@@ -355,19 +355,22 @@ namespace GameServer.Engine
            
         }
 
+        
 
         /// <summary>
         /// 判断 GameStatus 是否为GameEndShowingCard
         /// </summary>
         /// <returns></returns>
-        public EGameInfo PreNextPlayer(bool NeedSave = false)
+        public EGameInfo PreNextStep(bool NeedSave = false)
         {
             var gi = this.GameDataHandle.GetGameInfo();
             var player = this.GameDataHandle.PeekAvaliblePlayer(gi);
             //返回null表示没有找到下一个玩家，此轮结束
             if (player == null)
             {
+                //跳转下一轮
                 gi = this.GameDataHandle.MoveNextTurn(gi);
+
                 if(gi.GameTurn != GameTurn.End)
                 {
                     this.GameDataHandle.ReloadPlayer();
@@ -375,7 +378,7 @@ namespace GameServer.Engine
                     //如果再是null,游戏结束
                     if (player == null)
                     {
-                        this.GameEndShowCard();
+                        gi = this.GameEndShowCard();
                     }
                 }               
             }
@@ -385,7 +388,28 @@ namespace GameServer.Engine
             if(NeedSave)  this.SetGameInfo(gi);
             return gi;
         }
+        public List<ECard> DealCard(EGameInfo gi)
+        {
+            List<ECard> list = null;
 
+            if (gi.GameTurn == GameTurn.Send3Card)
+            {
+                list = new List<ECard>();
+                for (int i = 0; i < 3; i++)
+                    list.Add(this.CardDataManager.TableCards[i]);
+            }
+            else if (gi.GameTurn == GameTurn.Send4Card)
+            {
+                list = new List<ECard>();
+                list.Add(this.CardDataManager.TableCards[3]);
+            }
+            else if(gi.GameTurn == GameTurn.Send5Card)
+            {
+                list = new List<ECard>();
+                list.Add(this.CardDataManager.TableCards[4]);
+            }
+            return list;
+        }
         public IGameMessage WaitNextPlayer(EGameInfo gi)
         {
             if (gi.GameStatus == GameModel.Enums.GameStatus.GameEndShowingCard)

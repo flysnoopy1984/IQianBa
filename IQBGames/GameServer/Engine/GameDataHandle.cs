@@ -189,8 +189,10 @@ namespace GameServer.Engine
                 _OneGame.GameInfo = basicInfo;
               
                 _OneGame.PlayerList = RoomUserRedis.GetAllPlayer(roomCode).resultList;
+
             
-                _OneGame.TableCardList = _CardDataManager.TableCards; //CardDataManager.NoToCard(GameTableRedis.TableCardList(roomCode).resultList);
+                _OneGame.TableCardList = _CardDataManager.TableCards;
+               
                
 
             }
@@ -275,7 +277,13 @@ namespace GameServer.Engine
                 if (gi.GameTurn == GameTurn.FourthTurn)
                     gi.GameTurn = GameTurn.End;
                 else
+                {
+                  
                     gi.GameTurn++;
+                }
+                    
+
+                gi.CurRequireCoins = 0;
             }
 
             if(needSave) this.SetGameInfo(gi);

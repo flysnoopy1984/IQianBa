@@ -69,6 +69,7 @@
     <Compile Include="WebSocketData\ReceiveData\dataBackHall.cs" />
     <Compile Include="WebSocketData\ReceiveData\dataNewConnect.cs" />
     <Compile Include="WebSocketData\ReceiveData\dataUserSitDown.cs" />
+    <Compile Include="WebSocketData\ReceiveData\Playing\dataDealCardDone.cs" />
     <Compile Include="WebSocketData\ReceiveData\Playing\dataPlayerAddCoins.cs" />
     <Compile Include="WebSocketData\ReceiveData\Playing\dataPlayerFollow.cs" />
     <Compile Include="WebSocketData\ReceiveData\Test\dataTestStartGame.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="WebSocketData\ReceiveData\Playing\dataPlayerPass.cs" />
     <Compile Include="WebSocketData\ReceiveData\Playing\dataUserEndBet.cs" />
     <Compile Include="WebSocketData\ReceiveData\Playing\dataUserWaitBet.cs" />
+    <Compile Include="WebSocketData\SendData\Playing\ResultDealCard.cs" />
     <Compile Include="WebSocketData\SendData\Playing\ResultGameEndSettlement.cs" />
     <Compile Include="WebSocketData\SendData\Playing\ResultGameEndShowCard.cs" />
     <Compile Include="WebSocketData\SendData\Playing\ResultPlayerAddCoins.cs" />

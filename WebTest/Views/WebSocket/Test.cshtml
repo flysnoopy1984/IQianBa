@@ -43,6 +43,12 @@
             margin-top: 10px;
             margin-bottom: 10px;
         }
+
+        #GameInfo {
+            margin: 5px;
+            display: flex;
+            flex-direction: column;
+        }
     </style>
 </head>
 <body>
@@ -55,6 +61,7 @@
             </div>*@
 
     </div>
+
     <div>
         <input type="button" value="进入" onclick="EntryGame(1);" />
         <input type="button" value="站起" onclick="UserSitUp(1);" />
@@ -62,13 +69,21 @@
         <input type="button" value="离开" onclick="Exit(1);" />
         <input type="button" value="重新开始" onclick="StartStuffleGame();" />
 
-
     </div>
     <div>
         <input type="button" value="Pass" onclick="Pass();" />
         <input type="button" value="AllIn" onclick="AllIn();" />
         <input type="button" value="Follow" onclick="Follow();" />
         <input type="button" value="AddCoins" onclick="AddCoins();" />
+    </div>
+    <div id="GameInfo">
+        <div id="giStatus"></div>
+        <div id="giTurn"></div>
+        <div id="giReqCoins"></div>
+        <div id="giCurOpenId"></div>
+        <div id="giSmall"></div>
+        <div id="giBig"></div>
+        <div id="giDot"></div>
     </div>
     <div id="Notice"></div>
     <div class="SeatArea">

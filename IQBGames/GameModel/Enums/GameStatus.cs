@@ -28,6 +28,8 @@ namespace GameModel.Enums
         /// </summary>
         ShuffleEnd = 4,
 
+       
+
         /// <summary>
         /// 游戏中
         /// </summary>
@@ -48,10 +50,13 @@ namespace GameModel.Enums
     {
         NotStart = 0,
         FirstTurn =1,
-        SecTurn =2,
-        ThirdTurn =3,
-        FourthTurn =4,
-        End = 5,
+        Send3Card = 2,
+        SecTurn =3,
+        Send4Card = 4,
+        ThirdTurn =5,
+        Send5Card = 6,
+        FourthTurn =7,
+        End = 8,
     }
 
 }

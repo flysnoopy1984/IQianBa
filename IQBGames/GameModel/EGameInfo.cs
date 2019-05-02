@@ -24,7 +24,7 @@ namespace GameModel
         /// <summary>
         /// 当前出牌人至少出多少筹码
         /// </summary>
-        public decimal CurRequreCoins { get; set; }
+        public decimal CurRequireCoins { get; set; }
 
         public int FirstPlayerIndex { get; set; }
 

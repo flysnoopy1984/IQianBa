@@ -27,6 +27,8 @@ namespace GameModel.Enums
         PlayerAddCoins = 23,
         PlayerAllIn =24,
 
+        DealCard = 30,
+
         GameEndShowing = 50,
         GameEndSettlement = 51,
 

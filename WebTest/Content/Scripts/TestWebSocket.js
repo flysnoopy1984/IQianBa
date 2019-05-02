@@ -26,7 +26,10 @@ $(function () {
                 switch (ac) {
                     //进入游戏
                     case 0:
-                        var GameInfo = jsonObj.BasicInfo;
+                        var GameInfo = jsonObj.GameInfo;
+
+                        SetGameInfo(GameInfo);
+
                         var gameStatus = GameInfo.GameStatus;
                         $("#Notice").text(GetStatusName(gameStatus));
 
@@ -60,7 +63,7 @@ $(function () {
                         coins = jsonObj.RemainCoins;
                         var myOpenId = $("#OpenId").val();
 
-                        AddSeat(SeatNo, coins, myOpenId);
+                        AddSeat(SeatNo, coins, myOpenId).text();
                         break;
                     case 1:
                         $("#Notice").text(GetStatusName(1));
@@ -73,8 +76,24 @@ $(function () {
                         $("#Notice").text(GetStatusName(3));
                         break;
                     case 4:
+
+                        var gi = jsonObj.GameInfo;
+                        SetGameInfo(gi);
+
                         var betUserId = jsonObj.GameInfo.CurBetUserOpenId;
-                        if()
+                        //    var myOpenId = $("#OpenId").val();
+
+                        $(".SeatArea").children().each(function () {
+                            var seatOpenId = $(this).find("#seatUserId").text();
+                            if (seatOpenId == betUserId) {
+                                var seatNo = $(this).attr("Id");
+                                StartWaitUser(seatNo);
+                                return false;
+                            }
+
+                        });
+
+
                         $("#Notice").text(GetStatusName(4));
                         break;
                     case 50:
@@ -122,17 +141,21 @@ function AddTableCard(CardObj) {
     $(".TableArea").append('<div class="CardDiv">' + card + '</div>');
 }
 
-function AddSeat(SeatNo, RemainCoins, userID) {
+function AddSeat(SeatNo, RemainCoins, userId) {
     var Id = "sn" + SeatNo;
     var consId = "coin" + SeatNo;
+    var myOpenId = $("#OpenId").val();
 
+    if (userId == myOpenId) {
+        MySeatNo = SeatNo;
+    }
     var html = ' <div class="SeatDiv" id="' + Id + '">';
-    html += "<div>" + userID + "</div>";
+    html += "<div id='seatUserId'>" + userId + "</div>";
     html += '<div class="progress" style="width:120px;">';
     html += '<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" pn=0>';
     //html += '<span class="sr-only"></span>';
     html += '</div></div>';
-    html += '<div >No ' + SeatNo + '</div>';
+    html += '<div id="SeatNo">No ' + SeatNo + '</div>';
 
     html += ' <img src="/Content/Images/seat.png" />';
     html += '<div id="' + consId + '" class="CoinDiv">' + RemainCoins + '</div>';
@@ -144,6 +167,19 @@ function AddSeat(SeatNo, RemainCoins, userID) {
     return Id;
 }
 
+
+function SetGameInfo(gi) {
+    if (gi != "" || gi != null) {
+        $("#giStatus").text("游戏状态：" + GetStatusName(gi.GameStatus));
+        $("#giTurn").text("局：" + gi.GameTurn);
+        $("#giCurOpenId").text("当期出牌人：" + gi.CurBetUserOpenId);
+        $("#giSmall").text("小盲注：" + gi.SmallBetUserOpenId);
+        $("#giBig").text("大盲注：" + gi.BigBetUserOpenId);
+        $("#giDot").text("Dot：" + gi.DotUserOpenId);
+
+        $("#giReqCoins").text("需押注：" + gi.CurRequreCoins);
+    }
+}
 function StartWaitUser(seatId) {
 
     processClock = setInterval("WaitingUser(seatId='" + seatId + "')", 1000);
@@ -227,6 +263,7 @@ function UserExit(n) {
 }
 
 function Pass() {
+    var openId = $("#OpenId").val();
 
 }
 
@@ -254,6 +291,19 @@ function Test() {
 function StartStuffleGame() {
 
     var openId = $("#OpenId").val();
+
+    $(".SeatArea").find(".progress-bar").each(function () {
+
+        var obj = $(this);
+        obj.attr("pn", 0);
+        obj.css("width", "0%");
+
+
+
+
+    });
+
+
 
     var json = 'TestStartGame {"OpenId":"' + openId + '",\
                                     "RoomCode":"04240608",\

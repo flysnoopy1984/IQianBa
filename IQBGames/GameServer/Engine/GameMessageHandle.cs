@@ -1,4 +1,5 @@
-﻿using GameModel.Enums;
+﻿using GameModel;
+using GameModel.Enums;
 using GameModel.Message;
 using GameModel.WebSocketData.SendData.Playing;
 using IQBCore.Common.Helper;
@@ -187,6 +188,12 @@ namespace GameServer.Engine
             return msg;
         }
 
+        public static ResultDealCard CreateDealCardMsg(string RoomCode,List<ECard> cardList)
+        {
+            ResultDealCard msg = new ResultDealCard(RoomCode);
+            msg.DealCardList = cardList;
+            return msg;
+        }
 
     }
 }

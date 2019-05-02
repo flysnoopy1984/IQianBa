@@ -19,15 +19,25 @@ namespace GameServer.Command.Playing
 
             gm.PlayerGiveUp();
 
-            var gi = gm.PreNextPlayer(true);
-            var msg = gm.WaitNextPlayer(gi);
-            if (msg != null)
-                msgList.Add(msg);
+            var gi = gm.PreNextStep(true);
+            var dealCards = gm.DealCard(gi);
+            if (dealCards != null)
+            {
+                var cardsMsg = GameMessageHandle.CreateDealCardMsg(gm.RoomCode, dealCards);
+                msgList.Add(cardsMsg);
+            }
             else
             {
-                ResultPlayerGiveUp giveUpMsg = GameMessageHandle.CreateResultPlayerGiveUpMsg(gm.RoomCode, Data.OpenId, gi.CurBetUserOpenId);
-                msgList.Add(giveUpMsg);
+                var msg = gm.WaitNextPlayer(gi);
+                if (msg != null)
+                    msgList.Add(msg);
+                else
+                {
+                    ResultPlayerGiveUp giveUpMsg = GameMessageHandle.CreateResultPlayerGiveUpMsg(gm.RoomCode, Data.OpenId, gi.CurBetUserOpenId);
+                    msgList.Add(giveUpMsg);
+                }
             }
+          
             return msgList;
         }
 

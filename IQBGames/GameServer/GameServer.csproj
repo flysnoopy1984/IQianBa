@@ -77,6 +77,7 @@
     <Compile Include="Command\BackHall.cs" />
     <Compile Include="Command\BaseGameCommand.cs" />
     <Compile Include="Command\EntryGame.cs" />
+    <Compile Include="Command\Playing\DealCardDone.cs" />
     <Compile Include="Command\Playing\PlayerAddCoins.cs" />
     <Compile Include="Command\Playing\PlayerFollow.cs" />
     <Compile Include="Command\Playing\PlayerGiveUp.cs" />

@@ -54,7 +54,7 @@ namespace GameServer.Engine.Sync
                                                                                   gi.CurBetUserOpenId);
                     list.Add(giveUpMsg);
 
-                    gi = gm.PreNextPlayer(true);
+                    gi = gm.PreNextStep(true);
 
                     var msg = gm.WaitNextPlayer(gi);
                     if(msg !=null)

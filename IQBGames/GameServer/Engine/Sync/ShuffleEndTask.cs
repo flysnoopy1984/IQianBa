@@ -73,7 +73,7 @@ namespace GameServer.Engine.Sync
                 //    shuffleEndMsg.SmallBetOpenId = gi.SmallBetUserOpenId;
                     shuffleEndMsg.BigBetAmount = smallBet * 2;
 
-                    gi.CurRequreCoins = smallBet;
+                    gi.CurRequireCoins = smallBet;
                     //保存游戏信息
                     _GameManager.SetGameInfo(gi);
 
