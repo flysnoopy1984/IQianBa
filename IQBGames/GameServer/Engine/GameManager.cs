@@ -310,22 +310,15 @@ namespace GameServer.Engine
 
         public void StartNewGame(GameUserSession session, string RoomCode)
         {
-            EGameInfo gi = new EGameInfo(RoomCode)
-            {
-                RoomCode = RoomCode,
-                BigBetUserOpenId = "",
-                DotUserOpenId = "",
-                CurBetUserOpenId = "",
-                FirstPlayerIndex = -1,
-                SmallBetUserOpenId = "",
-                GameStatus = GameStatus.NoGame,
-                GameTurn = GameTurn.NotStart,
-                CurRequireCoins = 0,
+           
+            PrePareNewGameInfo(RoomCode);
 
-            };
-            PrePareNewGameInfo(gi);
+            var game =  GameDataHandle.GetGameData();
+            game.GameCoins = new EGameCoins(RoomCode);
+           
 
-            
+
+
             GameTaskManager.SyncTask_ShuffleEnd(session);
         }
 
@@ -345,10 +338,24 @@ namespace GameServer.Engine
 
        
 
-        public EGameInfo PrePareNewGameInfo(EGameInfo gi = null)
+        public EGameInfo PrePareNewGameInfo(string RoomCode)
         {
-            if (gi == null) gi = this.GetGameBasic();
+        
+            EGameInfo gi = new EGameInfo(RoomCode)
+            {
+                RoomCode = RoomCode,
+                BigBetUserOpenId = "",
+                DotUserOpenId = "",
+                CurBetUserOpenId = "",
+                FirstPlayerIndex = -1,
+                SmallBetUserOpenId = "",
+                GameStatus = GameStatus.NoGame,
+                GameTurn = GameTurn.NotStart,
+                CurRequireCoins = 0,
 
+            };
+
+            gi.FirstPlayerIndex = 0;
             gi.GameStatus = GameStatus.Shuffling;
             gi.GameTurn = GameTurn.NotStart;
             return gi;
@@ -424,7 +431,7 @@ namespace GameServer.Engine
             return null;
         }
 
-        public SResult<EGameInfo> GetFirstDotAndBet(List<ERoomUser> playerList)
+        public SResult<EGameInfo> GetFirstDotAndBet(string roomCode,List<ERoomUser> playerList)
         {
             SResult<EGameInfo> result = new SResult<EGameInfo>();
             try
@@ -434,7 +441,7 @@ namespace GameServer.Engine
                 var bIndex = -1;
                 var sIndex = -1;
                 var cIndex = -1;
-                EGameInfo gi = this.GameDataHandle.GetGameInfo();
+                EGameInfo gi = this.PrePareNewGameInfo(roomCode);
               
                
                 if(gi == null || playerList == null)

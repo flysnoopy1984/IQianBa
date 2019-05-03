@@ -19,7 +19,9 @@ namespace GameModel.WebSocketData.SendData
             }
         }
 
-       public EGameInfo GameInfo { get; set; }
+        public EGameInfo GameInfo { get; set; }
+ 
+        public EGameCoins GameCoins { get; set; }
 
         public decimal SmallBetAmount { get; set; }
 

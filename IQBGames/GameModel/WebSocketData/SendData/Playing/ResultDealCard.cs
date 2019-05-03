@@ -21,6 +21,8 @@ namespace GameModel.WebSocketData.SendData.Playing
             }
         }
 
+        public string NextUserOpenId { get; set; }
+
         public ResultDealCard(string roomCode)
         {
             IGameMessage ig = this;

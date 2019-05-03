@@ -90,6 +90,7 @@
     <Compile Include="Engine\GameManager.cs" />
     <Compile Include="Engine\GameMessageHandle.cs" />
     <Compile Include="Engine\Sync\GameTaskManager.cs" />
+    <Compile Include="Engine\Sync\DealCardDoneTask.cs" />
     <Compile Include="Engine\Sync\ShuffleEndTask.cs" />
     <Compile Include="Engine\Sync\UserWaitBetTask.cs" />
     <Compile Include="GameRunner.cs" />

@@ -13,6 +13,7 @@ namespace GameModel
         {
             RoomCode = rc;
         }
+
         public string DotUserOpenId { get; set; }
 
         public string CurBetUserOpenId { get; set; }

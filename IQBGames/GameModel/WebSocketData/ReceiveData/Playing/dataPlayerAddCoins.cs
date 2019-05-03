@@ -8,6 +8,6 @@ namespace GameModel.WebSocketData.ReceiveData.Playing
 {
     public class dataPlayerAddCoins: BaseReceiveData
     {
-        public decimal AddCoins { get; set; }
+        public decimal Coins { get; set; }
     }
 }

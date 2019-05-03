@@ -6,11 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 using GameModel.Message;
 using GameServer.Engine;
+using GameServer.Engine.Sync;
 
 namespace GameServer.Command.Playing
 {
     public class PlayerFollow : BaseGameCommand<dataPlayerFollow>
     {
+        public override string Name
+        {
+            get
+            {
+                return "Follow";
+            }
+        }
         public override List<IGameMessage> HandleData(GameUserSession session, dataPlayerFollow Data)
         {
             List<IGameMessage> msgList = new List<IGameMessage>();
@@ -24,8 +32,14 @@ namespace GameServer.Command.Playing
             var dealCards = gm.DealCard(gi);
             if(dealCards !=null)
             {
-                var cardsMsg = GameMessageHandle.CreateDealCardMsg(gm.RoomCode, dealCards);
+                var followMsg = GameMessageHandle.CreateResultPlayerFollowMsg(gm.RoomCode, Data.OpenId, "", Data.FollowCoins);
+                msgList.Add(followMsg);
+
+                gi = gm.PreNextStep(true);
+                var cardsMsg = GameMessageHandle.CreateDealCardMsg(gm.RoomCode, dealCards,gi);
                 msgList.Add(cardsMsg);
+
+                GameTaskManager.SyncTask_DealCardDone(session,gi);
             }
             else
             {
@@ -34,8 +48,8 @@ namespace GameServer.Command.Playing
                     msgList.Add(msg);
                 else
                 {
-                    var passMsg = GameMessageHandle.CreateResultPlayerPassMsg(gm.RoomCode, Data.OpenId, gi.CurBetUserOpenId);
-                    msgList.Add(passMsg);
+                    var followMsg = GameMessageHandle.CreateResultPlayerFollowMsg(gm.RoomCode, Data.OpenId, gi.CurBetUserOpenId,Data.FollowCoins);
+                    msgList.Add(followMsg);
                 }
             }
           

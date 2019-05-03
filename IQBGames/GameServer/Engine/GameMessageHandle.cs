@@ -179,6 +179,15 @@ namespace GameServer.Engine
             return msg;
         }
 
+        public static ResultPlayerFollow CreateResultPlayerFollowMsg(string RoomCode, string passOpenId, string nextOpenId,decimal coins)
+        {
+            ResultPlayerFollow msg = new ResultPlayerFollow(RoomCode);
+            msg.FollowCoinsUserOpenId = passOpenId;
+            msg.NextUserOpenId = nextOpenId;
+            msg.FollowCoins = coins;
+            return msg;
+        }
+
         public static ResultPlayerAddCoins CreateResultPlayerAddCoinsMsg(string RoomCode, string addCoinsOpenId, string nextOpenId,decimal addCoins)
         {
             ResultPlayerAddCoins msg = new ResultPlayerAddCoins(RoomCode);
@@ -188,9 +197,10 @@ namespace GameServer.Engine
             return msg;
         }
 
-        public static ResultDealCard CreateDealCardMsg(string RoomCode,List<ECard> cardList)
+        public static ResultDealCard CreateDealCardMsg(string RoomCode,List<ECard> cardList,EGameInfo gi)
         {
             ResultDealCard msg = new ResultDealCard(RoomCode);
+            msg.NextUserOpenId = gi.CurBetUserOpenId;
             msg.DealCardList = cardList;
             return msg;
         }

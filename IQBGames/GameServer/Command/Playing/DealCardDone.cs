@@ -14,10 +14,13 @@ namespace GameServer.Command.Playing
         public override List<IGameMessage> HandleData(GameUserSession session, dataDealCardDone Data)
         {
             List<IGameMessage> result = new List<IGameMessage>();
-            GameManager gm = session.GameManager;
+            //GameManager gm = session.GameManager;
 
-            var gi = gm.PreNextStep(true);
-
+            //var gi = gm.PreNextStep(true);
+            //var msg = gm.WaitNextPlayer(gi);
+            //if (msg != null)
+            //    result.Add(msg);
+          
 
             return result;
         }

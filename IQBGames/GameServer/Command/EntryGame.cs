@@ -20,6 +20,7 @@ namespace GameServer.Commond
 {
     public class EntryGame : BaseGameCommand<dataNewConnect>
     {
+        
         public override bool VerifyCommandData(dataNewConnect InData,GameUserSession session)
         {
             

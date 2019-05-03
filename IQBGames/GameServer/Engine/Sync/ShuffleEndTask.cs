@@ -42,15 +42,13 @@ namespace GameServer.Engine.Sync
                 players = players.OrderBy(a => a.SeatNo).ToList();
 
                 //初始化Dot,大小盲注
-                SResult<EGameInfo> r = _GameManager.GetFirstDotAndBet(players);
+                SResult<EGameInfo> r = _GameManager.GetFirstDotAndBet(_GameManager.RoomCode,players);
 
                 if (r.IsSuccess)
                 {
                     var gi = r.Instance;
                     gi.GameStatus = GameStatus.Playing;
                     gi.GameTurn = GameTurn.FirstTurn;
-
-                   
 
                     //确认并缓存玩家队列
                     _GameManager.GameDataHandle.SetCachePlayer(players,gi);
@@ -63,6 +61,7 @@ namespace GameServer.Engine.Sync
                         shuffleEndMsg.PlayerCards.Add(p.UserOpenId, p.CardList);
 
 
+                  //  var GameCoins = 
                     //大小盲注押注
                    // var Room = _GameManager.GetRoom();
                     var smallBet = GameConfig.GetSmallBet(weight);
@@ -73,7 +72,9 @@ namespace GameServer.Engine.Sync
                 //    shuffleEndMsg.SmallBetOpenId = gi.SmallBetUserOpenId;
                     shuffleEndMsg.BigBetAmount = smallBet * 2;
 
-                    gi.CurRequireCoins = smallBet;
+                    gi.CurRequireCoins = smallBet*2;
+
+                    shuffleEndMsg.GameCoins = _GameManager.GameDataHandle.GetGameData().GameCoins;
                     //保存游戏信息
                     _GameManager.SetGameInfo(gi);
 
@@ -121,7 +122,7 @@ namespace GameServer.Engine.Sync
                //gi.GameTurn = GameTurn.FirstTurn;
                //_GameManager.SetGameInfo(gi);
 
-               GameTaskManager.AfterShuffleEnd(GameServer, gi);
+               GameTaskManager.WaitBetUser(GameServer, gi.CurBetUserOpenId);
 
 
             });

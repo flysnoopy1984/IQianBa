@@ -6,12 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using GameModel.Message;
 using GameServer.Engine;
+using GameServer.Engine.Sync;
 
 namespace GameServer.Command.Playing
 {
-    public class PlayerPass : BaseGameCommand<dataPlayerGiveUp>
+    public class PlayerPass : BaseGameCommand<dataPlayerPass>
     {
-        public override List<IGameMessage> HandleData(GameUserSession session, dataPlayerGiveUp Data)
+        public override string Name
+        {
+            get
+            {
+                return "Pass";
+            }
+        }
+
+        public override List<IGameMessage> HandleData(GameUserSession session, dataPlayerPass Data)
         {
 
             List<IGameMessage> msgList = new List<IGameMessage>();
@@ -22,8 +31,13 @@ namespace GameServer.Command.Playing
             var dealCards = gm.DealCard(gi);
             if (dealCards != null)
             {
-                var cardsMsg = GameMessageHandle.CreateDealCardMsg(gm.RoomCode, dealCards);
+                var passMsg = GameMessageHandle.CreateResultPlayerPassMsg(gm.RoomCode, Data.OpenId,"");
+                msgList.Add(passMsg);
+
+                gi = gm.PreNextStep(true);
+                var cardsMsg = GameMessageHandle.CreateDealCardMsg(gm.RoomCode, dealCards,gi);
                 msgList.Add(cardsMsg);
+                GameTaskManager.SyncTask_DealCardDone(session, gi);
             }
             else
             {
@@ -40,7 +54,7 @@ namespace GameServer.Command.Playing
             return msgList;
         }
 
-        public override bool VerifyCommandData(dataPlayerGiveUp InData, GameUserSession session)
+        public override bool VerifyCommandData(dataPlayerPass InData, GameUserSession session)
         {
             GameManager gm = session.GameManager;
             var gi = gm.GameDataHandle.GetGameInfo();
