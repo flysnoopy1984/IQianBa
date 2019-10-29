@@ -54,7 +54,7 @@ function checkPhone() {
 
 // 验证手机号
 function isPhoneNo(phone) {
-    var pattern = /^1[34578]\d{9}$/;
+    var pattern = /^1[345789]\d{9}$/;
     return pattern.test(phone);
 }
 

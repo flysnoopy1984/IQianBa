@@ -131,7 +131,7 @@ namespace IQBWX.Controllers
                                 {
                                     openId = wxUser.openid;
                                     ui = new Models.User.EUserInfo(wxUser);
-                                 
+
                                     // 
                                     ui.ScanChannel = IQBCore.IQBWX.BaseEnum.UserScanChannel.SD;
                                     db.UserInfo.Add(ui);
@@ -145,7 +145,7 @@ namespace IQBWX.Controllers
                             catch (Exception ex)
                             {
 
-                                  NLogHelper.ErrorTxt("【shuaDan】WXLogin:" + ex.Message);
+                                NLogHelper.ErrorTxt("【shuaDan】WXLogin:" + ex.Message);
                             }
 
                         }
@@ -158,7 +158,7 @@ namespace IQBWX.Controllers
 
                     }
                 }
-             //   NLogHelper.InfoTxt("OpenId:" + openId);
+                //   NLogHelper.InfoTxt("OpenId:" + openId);
                 return RedirectToAction("Reg", "ShuaDan", new { OpenId = openId });
 
             }

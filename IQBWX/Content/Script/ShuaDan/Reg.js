@@ -61,13 +61,13 @@
     Init = function () {
       
        
-        openId = getUrlParam("OpenId");
+        //openId = getUrlParam("OpenId");
 
-        if (openId == undefined || openId == "" || openId == null)
-        {
-            window.location.href = "ErrorPage?errormsg=非法进入,请扫码进入";
-            return;
-        } 
+        //if (openId == undefined || openId == "" || openId == null)
+        //{
+        //    window.location.href = "ErrorPage?errormsg=非法进入,请扫码进入";
+        //    return;
+        //} 
         InitSMS("phone_num", "code_num", "btn_GetVerifyCode", "btn_ConfirmVerifyCode", 45, SMSSuccess, BeforeSMS, EndSMS);
      
     };

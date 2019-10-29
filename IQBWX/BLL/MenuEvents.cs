@@ -438,8 +438,6 @@ namespace IQBWX.BLL
                 log.log("SubscribeHandler Inner Error:" + ex.StackTrace);
             }
          
-            
-            
         }
 
        
